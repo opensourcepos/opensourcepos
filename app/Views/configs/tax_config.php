@@ -1,10 +1,10 @@
 <?php
 /**
- * @var array $tax_code_options
- * @var array $tax_category_options
- * @var array $tax_jurisdiction_options
+ * @var array  $tax_code_options
+ * @var array  $tax_category_options
+ * @var array  $tax_jurisdiction_options
  * @var string $controller_name
- * @var array $config
+ * @var array  $config
  */
 ?>
 
@@ -22,7 +22,7 @@
                         'name'  => 'tax_id',
                         'id'    => 'tax_id',
                         'class' => 'form-control input-sm',
-                        'value' => $config['tax_id']
+                        'value' => $config['tax_id'],
                     ]) ?>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                         'name'    => 'tax_included',
                         'id'      => 'tax_included',
                         'value'   => 'tax_included',
-                        'checked' => $config['tax_included'] == 1
+                        'checked' => $config['tax_included'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                         'name'  => 'default_tax_1_name',
                         'id'    => 'default_tax_1_name',
                         'class' => 'form-control input-sm',
-                        'value' => $config['default_tax_1_name'] !== false ? $config['default_tax_1_name'] : lang('Items.sales_tax_1')
+                        'value' => $config['default_tax_1_name'] !== false ? $config['default_tax_1_name'] : lang('Items.sales_tax_1'),
                     ]) ?>
                 </div>
                 <div class="col-xs-1 input-group">
@@ -54,7 +54,7 @@
                         'name'  => 'default_tax_1_rate',
                         'id'    => 'default_tax_1_rate',
                         'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_1_rate'])
+                        'value' => to_tax_decimals($config['default_tax_1_rate']),
                     ]) ?>
                     <span class="input-group-addon input-sm">%</span>
                 </div>
@@ -67,7 +67,7 @@
                         'name'  => 'default_tax_2_name',
                         'id'    => 'default_tax_2_name',
                         'class' => 'form-control input-sm',
-                        'value' => $config['default_tax_2_name'] !== false ? $config['default_tax_2_name'] : lang('Items.sales_tax_2')
+                        'value' => $config['default_tax_2_name'] !== false ? $config['default_tax_2_name'] : lang('Items.sales_tax_2'),
                     ]) ?>
                 </div>
                 <div class="col-xs-1 input-group">
@@ -75,7 +75,7 @@
                         'name'  => 'default_tax_2_rate',
                         'id'    => 'default_tax_2_rate',
                         'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_2_rate'])
+                        'value' => to_tax_decimals($config['default_tax_2_rate']),
                     ]) ?>
                     <span class="input-group-addon input-sm">%</span>
                 </div>
@@ -88,7 +88,7 @@
                         'name'    => 'use_destination_based_tax',
                         'id'      => 'use_destination_based_tax',
                         'value'   => 'use_destination_based_tax',
-                        'checked' => $config['use_destination_based_tax'] == 1
+                        'checked' => $config['use_destination_based_tax'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                         'default_tax_code',
                         $tax_code_options,
                         $config['default_tax_code'],
-                        'class="form-control input-sm"'
+                        'class="form-control input-sm"',
                     ) ?>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                         'default_tax_category',
                         $tax_category_options,
                         $config['default_tax_category'],
-                        'class="form-control input-sm"'
+                        'class="form-control input-sm"',
                     ) ?>
                 </div>
             </div>
@@ -124,7 +124,7 @@
                         'default_tax_jurisdiction',
                         $tax_jurisdiction_options,
                         $config['default_tax_jurisdiction'],
-                        'class="form-control input-sm"'
+                        'class="form-control input-sm"',
                     ) ?>
                 </div>
             </div>
@@ -133,7 +133,7 @@
                 'name'  => 'submit_tax',
                 'id'    => 'submit_tax',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -179,10 +179,10 @@
 
             rules: {
                 default_tax_1_rate: {
-                    remote: "<?= "$controller_name/checkNumeric" ?>"
+                    remote: "<?= "{$controller_name}/checkNumeric" ?>"
                 },
                 default_tax2_rate: {
-                    remote: "<?= "$controller_name/checkNumeric" ?>"
+                    remote: "<?= "{$controller_name}/checkNumeric" ?>"
                 },
             },
 

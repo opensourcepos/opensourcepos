@@ -9,21 +9,20 @@ use stdClass;
 /**
  * Tax Jurisdiction class
  */
-
 class Tax_jurisdiction extends Model
 {
-    protected $table = 'tax_jurisdictions';
-    protected $primaryKey = 'cashup_id';
+    protected $table            = 'tax_jurisdictions';
+    protected $primaryKey       = 'cashup_id';
     protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'jurisdiction_name',
         'tax_group',
         'tax_type',
         'reporting_authority',
         'tax_group_sequence',
         'cascade_sequence',
-        'deleted'
+        'deleted',
     ];
 
     /**
@@ -34,7 +33,7 @@ class Tax_jurisdiction extends Model
         $builder = $this->db->table('tax_jurisdictions');
         $builder->where('jurisdiction_id', $jurisdiction_id);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return $builder->get()->getNumRows() === 1;    // TODO: ===
     }
 
     /**
@@ -48,9 +47,7 @@ class Tax_jurisdiction extends Model
         return $builder->countAllResults();
     }
 
-    /***
-     * Gets information about the particular record
-     */
+    // Gets information about the particular record
     public function get_info(int $jurisdiction_id): object
     {
         $builder = $this->db->table('tax_jurisdictions');
@@ -58,18 +55,18 @@ class Tax_jurisdiction extends Model
         $builder->where('deleted', 0);
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             return $query->getRow();
-        } else {    // TODO: this else is not needed.  Just put everything below it without an else.
-            // Get empty base parent object
-            $tax_jurisdiction_obj = new stdClass();
+        }      // TODO: this else is not needed.  Just put everything below it without an else.
+        // Get empty base parent object
+        $tax_jurisdiction_obj = new stdClass();
 
-            // Get all the fields from the table
-            foreach ($this->db->getFieldNames('tax_jurisdictions') as $field) {
-                $tax_jurisdiction_obj->$field = '';
-            }
-            return $tax_jurisdiction_obj;
+        // Get all the fields from the table
+        foreach ($this->db->getFieldNames('tax_jurisdictions') as $field) {
+            $tax_jurisdiction_obj->{$field} = '';
         }
+
+        return $tax_jurisdiction_obj;
     }
 
     /**
@@ -110,9 +107,10 @@ class Tax_jurisdiction extends Model
     public function save_value(array &$jurisdiction_data, int $jurisdiction_id = NEW_ENTRY): bool
     {
         $builder = $this->db->table('tax_jurisdictions');
-        if ($jurisdiction_id == NEW_ENTRY || !$this->exists($jurisdiction_id)) {
+        if ($jurisdiction_id === NEW_ENTRY || ! $this->exists($jurisdiction_id)) {
             if ($builder->insert($jurisdiction_data)) {    // TODO: Replace this with simply a return of the result of insert()... see update() below.
                 $jurisdiction_data['jurisdiction_id'] = $this->db->insertID();
+
                 return true;
             }
 
@@ -142,12 +140,12 @@ class Tax_jurisdiction extends Model
                 'reporting_authority' => $value['reporting_authority'],
                 'tax_group_sequence'  => $value['tax_group_sequence'],
                 'cascade_sequence'    => $value['cascade_sequence'],
-                'deleted'             => '0'
+                'deleted'             => '0',
             ];
 
             $this->save_value($tax_jurisdiction_data, $value['jurisdiction_id']);
 
-            if ($value['jurisdiction_id'] == NEW_ENTRY) {
+            if ($value['jurisdiction_id'] === NEW_ENTRY) {
                 $not_to_delete[] = $tax_jurisdiction_data['jurisdiction_id'];
             } else {
                 $not_to_delete[] = $value['jurisdiction_id'];
@@ -158,17 +156,20 @@ class Tax_jurisdiction extends Model
         $deleted_tax_jurisdictions = $this->get_all()->getResultArray();
 
         foreach ($deleted_tax_jurisdictions as $key => $tax_jurisdiction_data) {
-            if (!in_array($tax_jurisdiction_data['jurisdiction_id'], $not_to_delete)) {
+            if (! in_array($tax_jurisdiction_data['jurisdiction_id'], $not_to_delete, true)) {
                 $this->delete($tax_jurisdiction_data['jurisdiction_id']);
             }
         }
 
         $this->db->transComplete();
+
         return $this->db->transStatus();
     }
 
     /**
      * Soft deletes a specific tax jurisdiction
+     *
+     * @param mixed|null $jurisdiction_id
      */
     public function delete($jurisdiction_id = null, bool $purge = false): bool
     {
@@ -203,11 +204,21 @@ class Tax_jurisdiction extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'jurisdiction_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'jurisdiction_name';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'jurisdiction_name';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
         $builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 
@@ -237,7 +248,7 @@ class Tax_jurisdiction extends Model
     }
 
     /**
-     * @return array[]
+     * @return list<array>
      */
     public function get_empty_row(): array
     {
@@ -250,8 +261,8 @@ class Tax_jurisdiction extends Model
                 'reporting_authority' => '',
                 'tax_group_sequence'  => '',
                 'cascade_sequence'    => '',
-                'deleted'             => ''
-            ]
+                'deleted'             => '',
+            ],
         ];
     }
 }

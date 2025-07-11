@@ -2,7 +2,7 @@
 /**
  * @var array $labels_1
  * @var array $series_data_1
- * @var bool $show_currency
+ * @var bool  $show_currency
  * @var array $config
  */
 ?>
@@ -37,7 +37,7 @@
                     <?php
                     if ($show_currency) {
                         if (is_right_side_currency_symbol()) {
-                    ?>
+                            ?>
                             return value + '<?= esc($config['currency_symbol'], 'js') ?>';
                         <?php } else { ?>
                             return '<?= esc($config['currency_symbol'], 'js') ?>' + value;

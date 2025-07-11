@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array $mailchimp
+ * @var array  $mailchimp
  * @var string $controller_name
  */
 ?>
@@ -24,7 +24,7 @@
                             'name'  => 'mailchimp_api_key',
                             'id'    => 'mailchimp_api_key',
                             'class' => 'form-control input-sm',
-                            'value' => $mailchimp['api_key']
+                            'value' => $mailchimp['api_key'],
                         ]) ?>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                             'mailchimp_list_id',
                             $mailchimp['lists'],
                             $mailchimp['list_id'],
-                            'id="mailchimp_list_id" class="form-control input-sm"'
+                            'id="mailchimp_list_id" class="form-control input-sm"',
                         ) ?>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 'name'  => 'submit_mailchimp',
                 'id'    => 'submit_mailchimp',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -69,7 +69,7 @@
     // Validation and submit handling
     $(document).ready(function() {
         $('#mailchimp_api_key').change(function() {
-            $.post("<?= "$controller_name/checkMailchimpApiKey" ?>", {
+            $.post("<?= "{$controller_name}/checkMailchimpApiKey" ?>", {
                     'mailchimp_api_key': $('#mailchimp_api_key').val()
                 },
                 function(response) {

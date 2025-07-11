@@ -5,7 +5,7 @@
 </script>
 
 <div class="jumbotron" style="max-width: 60%; margin: auto;">
-    <?= form_open("messages/send/", ['id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post', 'class' => 'form-horizontal']) ?>
+    <?= form_open('messages/send/', ['id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post', 'class' => 'form-horizontal']) ?>
         <fieldset>
 
             <legend style="text-align: center;"><?= lang('Messages.sms_send') ?></legend>
@@ -28,7 +28,7 @@
                 'name'  => 'submit_form',
                 'id'    => 'submit_form',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>

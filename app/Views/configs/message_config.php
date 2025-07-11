@@ -22,7 +22,7 @@
                             'name'  => 'msg_uid',
                             'id'    => 'msg_uid',
                             'class' => 'form-control input-sm required',
-                            'value' => $config['msg_uid']
+                            'value' => $config['msg_uid'],
                         ]) ?>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                             'name'  => 'msg_pwd',
                             'id'    => 'msg_pwd',
                             'class' => 'form-control input-sm required',
-                            'value' => $config['msg_pwd']
+                            'value' => $config['msg_pwd'],
                         ]) ?>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                             'name'  => 'msg_src',
                             'id'    => 'msg_src',
                             'class' => 'form-control input-sm required',
-                            'value' => $config['msg_src'] == null ? $config['company'] : $config['msg_src']
+                            'value' => $config['msg_src'] === null ? $config['company'] : $config['msg_src'],
                         ]) ?>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                         'id'          => 'msg_msg',
                         'class'       => 'form-control input-sm',
                         'value'       => $config['msg_msg'],
-                        'placeholder' => lang('Config.msg_msg_placeholder')
+                        'placeholder' => lang('Config.msg_msg_placeholder'),
                     ]) ?>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                 'name'  => 'submit_message',
                 'id'    => 'submit_message',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>

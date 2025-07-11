@@ -1,12 +1,13 @@
 <?php
 /**
  * @var object $item_info
- * @var array $stock_locations
- * @var array $item_quantities
+ * @var array  $stock_locations
+ * @var array  $item_quantities
  */
 
 use App\Models\Employee;
 use App\Models\Inventory;
+
 ?>
 
 <?= form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
@@ -22,7 +23,7 @@ use App\Models\Inventory;
                         'id'       => 'item_number',
                         'class'    => 'form-control input-sm',
                         'disabled' => '',
-                        'value'    => $item_info->item_number
+                        'value'    => $item_info->item_number,
                     ]) ?>
                 </div>
             </div>
@@ -36,7 +37,7 @@ use App\Models\Inventory;
                     'id'       => 'name',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => $item_info->name
+                    'value'    => $item_info->name,
                 ]) ?>
             </div>
         </div>
@@ -51,7 +52,7 @@ use App\Models\Inventory;
                         'id'       => 'category',
                         'class'    => 'form-control input-sm',
                         'disabled' => '',
-                        'value'    => $item_info->category
+                        'value'    => $item_info->category,
                     ]) ?>
                 </div>
             </div>
@@ -72,7 +73,7 @@ use App\Models\Inventory;
                     'id'       => 'quantity',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => to_quantity_decimals(current($item_quantities))
+                    'value'    => to_quantity_decimals(current($item_quantities)),
                 ]) ?>
             </div>
         </div>
@@ -96,16 +97,16 @@ use App\Models\Inventory;
         <?php
         // The tbody content of the table will be filled in by the javascript (see bottom of page)
         $employee = model(Employee::class);
-        $inventory = model(Inventory::class);
+$inventory        = model(Inventory::class);
 
-        $inventory_array = $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
-        $employee_name = [];
+$inventory_array = $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
+$employee_name   = [];
 
-        foreach ($inventory_array as $row) {
-            $employee_data = $employee->get_info($row['trans_user']);
-            $employee_name[] = $employee_data->first_name . ' ' . $employee_data->last_name;
-        }
-        ?>
+foreach ($inventory_array as $row) {
+    $employee_data   = $employee->get_info($row['trans_user']);
+    $employee_name[] = $employee_data->first_name . ' ' . $employee_data->last_name;
+}
+?>
     </tbody>
 </table>
 

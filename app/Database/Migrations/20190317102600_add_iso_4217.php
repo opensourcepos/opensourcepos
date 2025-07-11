@@ -18,5 +18,7 @@ class Migration_add_iso_4217 extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+    }
 }

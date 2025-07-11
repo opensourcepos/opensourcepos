@@ -16,17 +16,11 @@ class Office extends Secure_Controller
         parent::__construct('office', null, 'office');
     }
 
-    /**
-     * @return void
-     */
     public function getIndex(): void
     {
         echo view('home/office');
     }
 
-    /**
-     * @return void
-     */
     public function logout(): void
     {
         $this->employee = model(Employee::class);

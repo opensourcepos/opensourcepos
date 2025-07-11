@@ -19,7 +19,7 @@
                 'name'  => 'submit_stock',
                 'id'    => 'submit_stock',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -29,7 +29,7 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        var location_count = <?= sizeof($stock_locations) ?>;
+        var location_count = <?= count($stock_locations) ?>;
 
         var hide_show_remove = function() {
             if ($("input[name*='stock_location']:enabled").length > 1) {
@@ -83,7 +83,7 @@
                         }, {
                             type: response.success ? 'success' : 'danger'
                         });
-                        $("#stock_locations").load('<?= "config/stockLocations" ?>', init_add_remove_locations);
+                        $("#stock_locations").load('<?= 'config/stockLocations' ?>', init_add_remove_locations);
                     },
                     dataType: 'json'
                 });
@@ -95,8 +95,8 @@
                 <?php
                 $i = 0;
 
-                foreach ($stock_locations as $location => $location_data) {
-                ?>
+foreach ($stock_locations as $location => $location_data) {
+    ?>
                     <?= 'stock_location_' . ++$i ?>: {
                         required: true,
                         stock_location: true,
@@ -107,10 +107,10 @@
 
             messages: {
                 <?php
-                $i = 0;
+    $i = 0;
 
-                foreach ($stock_locations as $location => $location_data) {
-                ?>
+foreach ($stock_locations as $location => $location_data) {
+    ?>
                     <?= 'stock_location_' . ++$i ?>: "<?= lang('Config.stock_location_required') ?>",
                 <?php } ?>
             }

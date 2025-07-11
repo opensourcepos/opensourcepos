@@ -1,8 +1,8 @@
 <?php
 /**
  * @var string $selected_printer
- * @var bool $print_after_sale
- * @var array $config
+ * @var bool   $print_after_sale
+ * @var array  $config
  */
 ?>
 
@@ -16,13 +16,13 @@
             jsPrintSetup.setOption('marginBottom', '<?= $config['print_bottom_margin'] ?>');
             jsPrintSetup.setOption('marginRight', '<?= $config['print_right_margin'] ?>');
 
-            <?php if (!$config['print_header']) { ?>
+            <?php if (! $config['print_header']) { ?>
                 // Set page header
                 jsPrintSetup.setOption('headerStrLeft', '');
                 jsPrintSetup.setOption('headerStrCenter', '');
                 jsPrintSetup.setOption('headerStrRight', '');
             <?php } ?>
-            <?php if (!$config['print_footer']) { ?>
+            <?php if (! $config['print_footer']) { ?>
                 // Set empty page footer
                 jsPrintSetup.setOption('footerStrLeft', '');
                 jsPrintSetup.setOption('footerStrCenter', '');
@@ -40,7 +40,7 @@
                     // Clears user preferences always silent print value
                     // to enable using 'printSilent' option
                     jsPrintSetup.clearSilentPrint();
-                    <?php if (!$config['print_silently']) { ?>
+                    <?php if (! $config['print_silently']) { ?>
                         // Suppress print dialog (for this context only)
                         jsPrintSetup.setOption('printSilent', 1);
                     <?php } ?>

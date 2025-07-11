@@ -1,10 +1,7 @@
-<?php
-/**
+<?= /**
  * @var string $heading
  * @var string $message
- */
-
-echo "\nERROR: ",
+ */ "\nERROR: ",
 esc($heading),
 "\n\n",
 esc($message),

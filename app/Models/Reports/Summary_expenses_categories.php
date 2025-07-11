@@ -7,22 +7,18 @@ use Config\OSPOS;
 class Summary_expenses_categories extends Summary_report
 {
     /**
-     * @return array[]
+     * @return list<array>
      */
     protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
-            ['category_name'    => lang('Reports.expenses_category')],
+            ['category_name' => lang('Reports.expenses_category')],
             ['count'            => lang('Reports.count')],
             ['total_amount'     => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'],
-            ['total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter']
+            ['total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter'],
         ];
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getData(array $inputs): array
     {
         $config = config(OSPOS::class)->settings;
@@ -46,10 +42,6 @@ class Summary_expenses_categories extends Summary_report
         return $builder->get()->getResultArray();
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getSummaryData(array $inputs): array
     {
         $config = config(OSPOS::class)->settings;

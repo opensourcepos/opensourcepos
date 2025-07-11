@@ -1,9 +1,9 @@
 <?php
 /**
- * @var object $user_info
- * @var array $allowed_modules
+ * @var object                           $user_info
+ * @var array                            $allowed_modules
  * @var CodeIgniter\HTTP\IncomingRequest $request
- * @var array $config
+ * @var array                            $config
  */
 
 use Config\Services;
@@ -21,7 +21,7 @@ $request = Services::request();
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="<?= 'resources/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>">
 
-    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+    <?php if (ENVIRONMENT === 'development' || get_cookie('debug') === 'true' || $request->getGet('debug') === 'true') : ?>
         <!-- inject:debug:css -->
         <!-- endinject -->
         <!-- inject:debug:js -->
@@ -31,7 +31,7 @@ $request = Services::request();
         <!-- endinject -->
 
         <!-- Tweaks to the UI for a particular theme should drop here  -->
-        <?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
+        <?php if ($config['theme'] !== 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
             <link rel="stylesheet" href="<?= 'css/' . esc($config['theme']) . '.css' ?>">
         <?php } ?>
         <!-- inject:prod:js -->
@@ -57,7 +57,7 @@ $request = Services::request();
                 </div>
 
                 <div class="navbar-right" style="margin: 0;">
-                    <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+                    <?= anchor("home/changePassword/{$user_info->person_id}", "{$user_info->first_name} {$user_info->last_name}", ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
                     <span>&nbsp;|&nbsp;</span>
                     <?= anchor('home/logout', lang('Login.logout')) ?>
                 </div>
@@ -84,9 +84,9 @@ $request = Services::request();
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <?php foreach ($allowed_modules as $module): ?>
-                            <li class="<?= $module->module_id == $request->getUri()->getSegment(1) ? 'active' : '' ?>">
-                                <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
-                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" style="border: none;" alt="Module Icon"><br>
+                            <li class="<?= $module->module_id === $request->getUri()->getSegment(1) ? 'active' : '' ?>">
+                                <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.{$module->module_id}") ?>" class="menu-icon">
+                                    <img src="<?= base_url("images/menubar/{$module->module_id}.svg") ?>" style="border: none;" alt="Module Icon"><br>
                                     <?= lang('Module.' . $module->module_id) ?>
                                 </a>
                             </li>

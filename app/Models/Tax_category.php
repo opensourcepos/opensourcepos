@@ -9,17 +9,16 @@ use stdClass;
 /**
  * Tax Category class
  */
-
 class Tax_category extends Model
 {
-    protected $table = 'tax_categories';
-    protected $primaryKey = 'tax_category_id';
+    protected $table            = 'tax_categories';
+    protected $primaryKey       = 'tax_category_id';
     protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'tax_category',
         'tax_group_sequence',
-        'deleted'
+        'deleted',
     ];
 
     /**
@@ -30,7 +29,7 @@ class Tax_category extends Model
         $builder = $this->db->table('tax_categories');
         $builder->where('tax_category_id', $tax_category_id);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: probably should be ===
+        return $builder->get()->getNumRows() === 1;    // TODO: probably should be ===
     }
 
     /**
@@ -54,18 +53,18 @@ class Tax_category extends Model
         $builder->where('deleted', 0);
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: probably should be === since getNumRows returns an int
+        if ($query->getNumRows() === 1) {    // TODO: probably should be === since getNumRows returns an int
             return $query->getRow();
-        } else {
-            // Get empty base parent object
-            $tax_category_obj = new stdClass();
-
-            // Get all the fields from the table
-            foreach ($this->db->getFieldNames('tax_categories') as $field) {
-                $tax_category_obj->$field = '';    // TODO: This logic doesn't make sense to me... it appears that each field is being assigned to '' rather than the result.  Shouldn't this be $tax_category_obj->field = $field;?
-            }
-            return $tax_category_obj;
         }
+        // Get empty base parent object
+        $tax_category_obj = new stdClass();
+
+        // Get all the fields from the table
+        foreach ($this->db->getFieldNames('tax_categories') as $field) {
+            $tax_category_obj->{$field} = '';    // TODO: This logic doesn't make sense to me... it appears that each field is being assigned to '' rather than the result.  Shouldn't this be $tax_category_obj->field = $field;?
+        }
+
+        return $tax_category_obj;
     }
 
     /**
@@ -108,7 +107,7 @@ class Tax_category extends Model
     {
         $builder = $this->db->table('tax_categories');
 
-        if ($tax_category_id == NEW_ENTRY || !$this->exists($tax_category_id)) {
+        if ($tax_category_id === NEW_ENTRY || ! $this->exists($tax_category_id)) {
             if ($builder->insert($tax_category_data)) {
                 $tax_category_data['tax_category_id'] = $this->db->insertID();
 
@@ -137,12 +136,12 @@ class Tax_category extends Model
             $tax_category_data = [
                 'tax_category'       => $value['tax_category'],
                 'tax_group_sequence' => $value['tax_group_sequence'],
-                'deleted'            => '0'
+                'deleted'            => '0',
             ];
 
             $this->save_value($tax_category_data, $value['tax_category_id']);
 
-            if ($value['tax_category_id'] == NEW_ENTRY) {
+            if ($value['tax_category_id'] === NEW_ENTRY) {
                 $not_to_delete[] = $tax_category_data['tax_category_id'];
             } else {
                 $not_to_delete[] = $value['tax_category_id'];
@@ -153,17 +152,20 @@ class Tax_category extends Model
         $deleted_tax_categories = $this->get_all()->getResultArray();
 
         foreach ($deleted_tax_categories as $key => $tax_category_data) {
-            if (!in_array($tax_category_data['tax_category_id'], $not_to_delete)) {
+            if (! in_array($tax_category_data['tax_category_id'], $not_to_delete, true)) {
                 $this->delete($tax_category_data['tax_category_id']);
             }
         }
 
         $this->db->transComplete();
+
         return $this->db->transStatus();
     }
 
     /**
      * Soft delete a specific row
+     *
+     * @param mixed|null $tax_category_id
      */
     public function delete($tax_category_id = null, bool $purge = false): bool
     {
@@ -198,11 +200,21 @@ class Tax_category extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_category', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'tax_category';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'tax_category';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
         $builder = $this->db->table('tax_categories AS tax_categories');
 
@@ -228,10 +240,6 @@ class Tax_category extends Model
         return $builder->get();
     }
 
-    /**
-     * @param string $search
-     * @return array
-     */
     public function get_tax_category_suggestions(string $search): array
     {
         $suggestions = [];
@@ -239,7 +247,7 @@ class Tax_category extends Model
         $builder = $this->db->table('tax_categories');
         $builder->where('deleted', 0);
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $builder->like('tax_category', '%' . $search . '%');
         }
 
@@ -253,7 +261,7 @@ class Tax_category extends Model
     }
 
     /**
-     * @return array[]
+     * @return list<array>
      */
     public function get_empty_row(): array
     {
@@ -262,8 +270,8 @@ class Tax_category extends Model
                 'tax_category_id'    => NEW_ENTRY,
                 'tax_category'       => '',
                 'tax_group_sequence' => '',
-                'deleted'            => ''
-            ]
+                'deleted'            => '',
+            ],
         ];
     }
 }

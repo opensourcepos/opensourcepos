@@ -33,7 +33,7 @@ class Migration_RefundTracking extends Migration
                     ON sales.sale_id = sales_taxes.sale_id
                 WHERE sales.sale_status = \'' . COMPLETED . '\' AND sales_taxes.tax_type = \'1\'
                 GROUP BY sale_id
-            )'
+            )',
         );
 
         $this->db->query(
@@ -47,7 +47,7 @@ class Migration_RefundTracking extends Migration
                 . 'LEFT OUTER JOIN ' . $this->db->prefixTable('migrate_taxes') . ' AS sumpay_taxes '
                 . 'ON sales.sale_id = sumpay_taxes.sale_id '
                 . 'WHERE sales.sale_status = \'' . COMPLETED . '\' GROUP BY sale_id
-            )'
+            )',
         );
 
         $this->db->query('UPDATE ' . $this->db->prefixTable('migrate_sales') . ' AS sumpay_items '
@@ -64,7 +64,7 @@ class Migration_RefundTracking extends Migration
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_payments') . ' AS sales_payments
                     ON sales.sale_id = sales_payments.sale_id
                 WHERE sales.sale_status = \'' . COMPLETED . '\' GROUP BY sale_id
-            )'
+            )',
         );
 
         // You may be asking yourself why the following is not creating a temporary table.
@@ -78,7 +78,7 @@ class Migration_RefundTracking extends Migration
                 FROM ' . $this->db->prefixTable('migrate_sales') . ' AS a
                 JOIN ' . $this->db->prefixTable('migrate_payments') . ' AS b ON a.sale_id = b.sale_id
                 WHERE total_payments > trans_amount AND number_payments = 1
-            )'
+            )',
         );
 
         // Update existing cash transactions with refund amount
@@ -91,7 +91,7 @@ class Migration_RefundTracking extends Migration
             WHERE EXISTS
                 (SELECT b.refund_amount
                     FROM ' . $this->db->prefixTable('migrate_refund') . ' AS b
-                    WHERE a.sale_id = b.sale_id AND a.payment_type = \'' . $cash_payment . ' \')'
+                    WHERE a.sale_id = b.sale_id AND a.payment_type = \'' . $cash_payment . ' \')',
         );
 
         // Insert new cash refund transactions for non-cash payments
@@ -102,7 +102,7 @@ class Migration_RefundTracking extends Migration
             FROM ' . $this->db->prefixTable('migrate_refund') . ' AS r
             JOIN ' . $this->db->prefixTable('sales_payments') . ' AS p ON r.sale_id = p.sale_id
             JOIN ' . $this->db->prefixTable('migrate_sales') . ' AS s ON r.sale_id = s.sale_id
-            WHERE p.payment_type != \'' . $cash_payment . '\''
+            WHERE p.payment_type != \'' . $cash_payment . '\'',
         );
 
         // Post migration cleanup
@@ -112,5 +112,7 @@ class Migration_RefundTracking extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+    }
 }

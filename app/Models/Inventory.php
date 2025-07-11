@@ -9,28 +9,22 @@ use CodeIgniter\Model;
  * Inventory class
  *
  * @property employee employee
- *
  */
 class Inventory extends Model
 {
-    protected $table = 'inventory';
-    protected $primaryKey = 'trans_id';
+    protected $table            = 'inventory';
+    protected $primaryKey       = 'trans_id';
     protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'trans_items',
         'trans_user',
         'trans_date',
         'trans_comment',
         'trans_inventory',
-        'trans_location'
+        'trans_location',
     ];
 
-    /**
-     * @param $comment
-     * @param $inventory_data
-     * @return bool
-     */
     public function update($comment = null, $inventory_data = null): bool
     {
         $builder = $this->db->table('inventory');
@@ -41,10 +35,6 @@ class Inventory extends Model
 
     /**
      * Retrieves inventory data given an item_id.
-     *
-     * @param int $item_id
-     * @param bool $location_id
-     * @return ResultInterface
      */
     public function get_inventory_data_for_item(int $item_id, bool $location_id = false): ResultInterface
     {
@@ -62,11 +52,13 @@ class Inventory extends Model
 
     /**
      * @param int $item_id ID number for the item to have quantity reset.
+     *
      * @return bool|int|string The row id of the inventory table on insert or false on failure
      */
     public function reset_quantity(int $item_id): bool|int|string
     {
         $inventory_sums = $this->get_inventory_sum($item_id);
+
         foreach ($inventory_sums as $inventory_sum) {
             if ($inventory_sum['sum'] > 0) {
                 $employee = model(Employee::class);
@@ -76,7 +68,7 @@ class Inventory extends Model
                     'trans_items'     => $item_id,
                     'trans_location'  => $inventory_sum['location_id'],
                     'trans_comment'   => lang('Items.is_deleted'),
-                    'trans_user'      => $employee->get_logged_in_employee_info()->person_id
+                    'trans_user'      => $employee->get_logged_in_employee_info()->person_id,
                 ]);
             }
         }
@@ -84,10 +76,6 @@ class Inventory extends Model
         return true;
     }
 
-    /**
-     * @param int $item_id
-     * @return array
-     */
     public function get_inventory_sum(int $item_id): array
     {
         $builder = $this->db->table('inventory');

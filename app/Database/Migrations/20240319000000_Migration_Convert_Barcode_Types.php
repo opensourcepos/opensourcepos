@@ -15,7 +15,7 @@ class Migration_Convert_Barcode_Types extends Migration
     public function __construct(?Forge $forge = null)
     {
         $this->appconfig = model(Appconfig::class);
-        $this->config = config(OSPOS::class)->settings;
+        $this->config    = config(OSPOS::class)->settings;
 
         parent::__construct($forge);
     }
@@ -25,19 +25,21 @@ class Migration_Convert_Barcode_Types extends Migration
      */
     public function up(): void
     {
-
         $old_barcode_type = $this->config['barcode_type'];
 
         switch ($old_barcode_type) {
             case 'Code39':
                 $new_barcode_type = 'C39';
                 break;
+
             case 'Ean13':
                 $new_barcode_type = 'EAN13';
                 break;
+
             case 'Ean8':
                 $new_barcode_type = 'EAN8';
                 break;
+
             default:
             case 'Code128':
                 $new_barcode_type = 'C128';
@@ -58,12 +60,15 @@ class Migration_Convert_Barcode_Types extends Migration
             case 'C39':
                 $old_barcode_type = 'Code39';
                 break;
+
             case 'EAN13':
                 $old_barcode_type = 'Ean13';
                 break;
+
             case 'EAN8':
                 $old_barcode_type = 'Ean8';
                 break;
+
             default:
             case 'C128':
                 $old_barcode_type = 'Code128';

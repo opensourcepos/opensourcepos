@@ -1,9 +1,9 @@
 <?php
 /**
  * @var string $currency_code
- * @var array $rounding_options
+ * @var array  $rounding_options
  * @var string $controller_name
- * @var array $config
+ * @var array  $config
  */
 ?>
 
@@ -21,7 +21,7 @@
                         'name'  => 'number_locale',
                         'id'    => 'number_locale',
                         'class' => 'form-control input-sm',
-                        'value' => $config['number_locale']
+                        'value' => $config['number_locale'],
                     ]) ?>
                     <?= form_hidden(['name' => 'save_number_locale', 'value' => $config['number_locale']]) ?>
                 </div>
@@ -44,7 +44,7 @@
                         'name'    => 'thousands_separator',
                         'id'      => 'thousands_separator',
                         'value'   => 'thousands_separator',
-                        'checked' => $config['thousands_separator'] == 1
+                        'checked' => $config['thousands_separator'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                         'name'  => 'currency_symbol',
                         'id'    => 'currency_symbol',
                         'class' => 'form-control input-sm number_locale',
-                        'value' => $config['currency_symbol']
+                        'value' => $config['currency_symbol'],
                     ]) ?>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                         'name'  => 'currency_code',
                         'id'    => 'currency_code',
                         'class' => 'form-control input-sm number_locale',
-                        'value' => $currency_code
+                        'value' => $currency_code,
                     ]) ?>
                 </div>
             </div>
@@ -81,10 +81,10 @@
                         [
                             '0' => '0',
                             '1' => '1',
-                            '2' => '2'
+                            '2' => '2',
                         ],
                         $config['currency_decimals'],
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
             </div>
@@ -99,10 +99,10 @@
                             '1' => '1',
                             '2' => '2',
                             '3' => '3',
-                            '4' => '4'
+                            '4' => '4',
                         ],
                         $config['tax_decimals'],
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
             </div>
@@ -116,10 +116,10 @@
                             '0' => '0',
                             '1' => '1',
                             '2' => '2',
-                            '3' => '3'
+                            '3' => '3',
                         ],
                         $config['quantity_decimals'],
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
             </div>
@@ -133,10 +133,10 @@
                             '-1' => '-1',
                             '0'  => '0',
                             '1'  => '1',
-                            '2'  => '2'
+                            '2'  => '2',
                         ],
                         $config['cash_decimals'],
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
                 <div class="col-xs-1">
@@ -153,7 +153,7 @@
                         'cash_rounding_code',
                         $rounding_options,
                         $config['cash_rounding_code'],
-                        'class="form-control input-sm"'
+                        'class="form-control input-sm"',
                     ) ?>
                 </div>
             </div>
@@ -168,10 +168,10 @@
                             'debitcreditcash' => lang('Sales.debit') . ' / ' . lang('Sales.credit') . ' / ' . lang('Sales.cash'),
                             'debitcashcredit' => lang('Sales.debit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.credit'),
                             'creditdebitcash' => lang('Sales.credit') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.cash'),
-                            'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit')
+                            'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit'),
                         ],
                         $config['payment_options_order'],
-                        'class="form-control input-sm"'
+                        'class="form-control input-sm"',
                     ) ?>
                 </div>
             </div>
@@ -182,7 +182,7 @@
                     <?= form_input([
                         'name'  => 'country_codes',
                         'class' => 'form-control input-sm',
-                        'value' => $config['country_codes']
+                        'value' => $config['country_codes'],
                     ]) ?>
                 </div>
                 <div class="col-xs-1">
@@ -201,7 +201,7 @@
                         'language',
                         get_languages(),
                         current_language_code(true) . ':' . current_language(true),
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
             </div>
@@ -212,8 +212,8 @@
                     <?= form_dropdown(
                         'timezone',
                         get_timezones(),
-                        $config['timezone'] ? $config['timezone'] : date_default_timezone_get(),
-                        ['class' => 'form-control input-sm']
+                        $config['timezone'] ?: date_default_timezone_get(),
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
             </div>
@@ -225,7 +225,7 @@
                         'dateformat',
                         get_dateformats(),
                         $config['dateformat'],
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
                 <div class="col-sm-2">
@@ -233,7 +233,7 @@
                         'timeformat',
                         get_timeformats(),
                         $config['timeformat'],
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
             </div>
@@ -245,7 +245,7 @@
                         'name'    => 'date_or_time_format',
                         'id'      => 'date_or_time_format',
                         'value'   => 'date_or_time_format',
-                        'checked' => $config['date_or_time_format'] == 1
+                        'checked' => $config['date_or_time_format'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -267,10 +267,10 @@
                             '9'  => lang('Config.financial_year_sep'),
                             '10' => lang('Config.financial_year_oct'),
                             '11' => lang('Config.financial_year_nov'),
-                            '12' => lang('Config.financial_year_dec')
+                            '12' => lang('Config.financial_year_dec'),
                         ],
                         $config['financial_year'],
-                        ['class' => 'form-control input-sm']
+                        ['class' => 'form-control input-sm'],
                     ) ?>
                 </div>
             </div>
@@ -279,7 +279,7 @@
                 'name'  => 'submit_locale',
                 'id'    => 'submit_locale',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -299,7 +299,7 @@
             data['currency_symbol'] = $('#currency_symbol').val();
             data['currency_code'] = $('#currency_code').val();
             data['thousands_separator'] = $('#thousands_separator').is(":checked")
-            $.post("<?= "$controller_name/checkNumberLocale" ?>",
+            $.post("<?= "{$controller_name}/checkNumberLocale" ?>",
                 data,
                 function(response) {
                     $("input[name='save_number_locale']").val(response.save_number_locale);
@@ -316,7 +316,7 @@
                 number_locale: {
                     required: true,
                     remote: {
-                        url: "<?= "$controller_name/checkNumberLocale" ?>",
+                        url: "<?= "{$controller_name}/checkNumberLocale" ?>",
                         type: 'POST',
                         data: {
                             'number_locale': function() {

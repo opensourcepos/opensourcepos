@@ -14,23 +14,23 @@ class Migration_fix_keys_for_db_upgrade extends Migration
     {
         helper('migration');
 
-        $forge = Database::forge();
+        $forge  = Database::forge();
         $fields = [
             'deleted' => [
-                'type' => 'TINYINT',
+                'type'       => 'TINYINT',
                 'constraint' => 1,
-                'default' => 0,
-                'null' => false,
+                'default'    => 0,
+                'null'       => false,
             ],
         ];
         $forge->modifyColumn('tax_codes', $fields);
 
-        if (!indexExists('customers', 'company_name')) {
+        if (! indexExists('customers', 'company_name')) {
             $forge->addKey('company_name', false, false, 'company_name');
             $forge->processIndexes('customers');
         }
 
-        $checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
+        $checkSql         = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
         $foreignKeyExists = $this->db->query($checkSql)->getRow();
 
         if ($foreignKeyExists) {
@@ -51,7 +51,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
      */
     public function down(): void
     {
-        $checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
+        $checkSql         = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
         $foreignKeyExists = $this->db->query($checkSql)->getRow();
 
         if ($foreignKeyExists) {

@@ -5,20 +5,17 @@ namespace App\Models\Reports;
 use App\Models\Item;
 
 /**
- *
- *
- * @property item item
- *
+ * @property Item item
  */
 class Inventory_summary extends Report
 {
     /**
-     * @return array[]
+     * @return list<array>
      */
     public function getDataColumns(): array
     {
         return [
-            ['item_name'         => lang('Reports.item_name')],
+            ['item_name' => lang('Reports.item_name')],
             ['item_number'       => lang('Reports.item_number')],
             ['category'          => lang('Reports.category')],
             ['quantity'          => lang('Reports.quantity')],
@@ -27,14 +24,10 @@ class Inventory_summary extends Report
             ['location_name'     => lang('Reports.stock_location')],
             ['cost_price'        => lang('Reports.cost_price'), 'sorter' => 'number_sorter'],
             ['unit_price'        => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
-            ['subtotal'          => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter']
+            ['subtotal'          => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter'],
         ];
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getData(array $inputs): array
     {
         $item = model(Item::class);
@@ -50,7 +43,7 @@ class Inventory_summary extends Report
             stock_locations.location_name,
             items.cost_price,
             items.unit_price,
-            (items.cost_price * item_quantities.quantity) AS sub_total_value'
+            (items.cost_price * item_quantities.quantity) AS sub_total_value',
         );
         $builder->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
         $builder->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
@@ -59,13 +52,13 @@ class Inventory_summary extends Report
         $builder->where('stock_locations.deleted', 0);
 
         // Should be corresponding to the values Inventory_summary::getItemCountDropdownArray() returns
-        if ($inputs['item_count'] == 'zero_and_less') {
+        if ($inputs['item_count'] === 'zero_and_less') {
             $builder->where('item_quantities.quantity <=', 0);
-        } elseif ($inputs['item_count'] == 'more_than_zero') {
+        } elseif ($inputs['item_count'] === 'more_than_zero') {
             $builder->where('item_quantities.quantity >', 0);
         }
 
-        if ($inputs['location_id'] != 'all') {
+        if ($inputs['location_id'] !== 'all') {
             $builder->where('stock_locations.location_id', $inputs['location_id']);
         }
 
@@ -79,8 +72,6 @@ class Inventory_summary extends Report
      * calculates the total value of the given inventory summary by summing all sub_total_values (see Inventory_summary::getData())
      *
      * @param array $inputs expects the reports-data-array which Inventory_summary::getData() returns
-     *
-     * @return array
      */
     public function getSummaryData(array $inputs): array
     {
@@ -88,7 +79,7 @@ class Inventory_summary extends Report
             'total_inventory_value'   => 0,
             'total_quantity'          => 0,
             'total_low_sell_quantity' => 0,
-            'total_retail'            => 0
+            'total_retail'            => 0,
         ];
 
         foreach ($inputs as $input) {
@@ -103,15 +94,13 @@ class Inventory_summary extends Report
 
     /**
      * returns the array for the dropdown-element item-count in the form for the inventory summary-report
-     *
-     * @return array
      */
     public function getItemCountDropdownArray(): array
     {
         return [
             'all'            => lang('Reports.all'),
             'zero_and_less'  => lang('Reports.zero_and_less'),
-            'more_than_zero' => lang('Reports.more_than_zero')
+            'more_than_zero' => lang('Reports.more_than_zero'),
         ];
     }
 }

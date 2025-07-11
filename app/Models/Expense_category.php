@@ -11,14 +11,14 @@ use stdClass;
  */
 class Expense_category extends Model
 {
-    protected $table = 'expense_categories';
-    protected $primaryKey = 'expense_category_id';
+    protected $table            = 'expense_categories';
+    protected $primaryKey       = 'expense_category_id';
     protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'category_name',
         'category_description',
-        'deleted'
+        'deleted',
     ];
 
     /**
@@ -29,7 +29,7 @@ class Expense_category extends Model
         $builder = $this->db->table('expense_categories');
         $builder->where('expense_category_id', $expense_category_id);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return $builder->get()->getNumRows() === 1;    // TODO: ===
     }
 
     /**
@@ -53,19 +53,18 @@ class Expense_category extends Model
         $builder->where('deleted', 0);
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             return $query->getRow();
-        } else {
-            // Get empty base parent object, as $item_kit_id is NOT an item kit
-            $expense_obj = new stdClass();
-
-            // Get all the fields from items table
-            foreach ($this->db->getFieldNames('expense_categories') as $field) {
-                $expense_obj->$field = '';
-            }
-
-            return $expense_obj;
         }
+        // Get empty base parent object, as $item_kit_id is NOT an item kit
+        $expense_obj = new stdClass();
+
+        // Get all the fields from items table
+        foreach ($this->db->getFieldNames('expense_categories') as $field) {
+            $expense_obj->{$field} = '';
+        }
+
+        return $expense_obj;
     }
 
     /**
@@ -107,7 +106,7 @@ class Expense_category extends Model
     {
         $builder = $this->db->table('expense_categories');
 
-        if ($expense_category_id == NEW_ENTRY || !$this->exists($expense_category_id)) {
+        if ($expense_category_id === NEW_ENTRY || ! $this->exists($expense_category_id)) {
             if ($builder->insert($expense_category_data)) {
                 $expense_category_data['expense_category_id'] = $this->db->insertID();
 
@@ -147,11 +146,21 @@ class Expense_category extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'category_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'category_name';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'category_name';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
         $builder = $this->db->table('expense_categories AS expense_categories');
 

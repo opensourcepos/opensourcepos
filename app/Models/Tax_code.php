@@ -12,16 +12,16 @@ use stdClass;
  */
 class Tax_code extends Model
 {
-    protected $table = 'tax_codes';
-    protected $primaryKey = 'tax_code_id';
+    protected $table            = 'tax_codes';
+    protected $primaryKey       = 'tax_code_id';
     protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'tax_code',
         'tax_code_name',
         'city',
         'state',
-        'deleted'
+        'deleted',
     ];
 
     /**
@@ -32,7 +32,7 @@ class Tax_code extends Model
         $builder = $this->db->table('tax_codes');
         $builder->where('tax_code', $tax_code);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: this should be === since getNumRows returns an int
+        return $builder->get()->getNumRows() === 1;    // TODO: this should be === since getNumRows returns an int
     }
 
     /**
@@ -51,7 +51,7 @@ class Tax_code extends Model
      */
     public function get_info(?int $tax_code_id): object
     {
-        if ($tax_code_id != null) {
+        if ($tax_code_id !== null) {
             $builder = $this->db->table('tax_codes');
 
             $builder->where('tax_code_id', $tax_code_id);
@@ -59,18 +59,18 @@ class Tax_code extends Model
             $query = $builder->get();
         }
 
-        if ($tax_code_id != null && $query->getNumRows() === 1) {
+        if ($tax_code_id !== null && $query->getNumRows() === 1) {
             return $query->getRow();
-        } else {
-            // Get empty base parent object
-            $tax_code_obj = new stdClass();
-
-            // Get all the fields from the table
-            foreach ($this->db->getFieldNames('tax_codes') as $field) {
-                $tax_code_obj->$field = null;
-            }
-            return $tax_code_obj;
         }
+        // Get empty base parent object
+        $tax_code_obj = new stdClass();
+
+        // Get all the fields from the table
+        foreach ($this->db->getFieldNames('tax_codes') as $field) {
+            $tax_code_obj->{$field} = null;
+        }
+
+        return $tax_code_obj;
     }
 
     /**
@@ -106,16 +106,15 @@ class Tax_code extends Model
 
     /**
      *  Inserts or updates a row
+     *
+     * @param mixed $tax_code_data
      */
     public function save($tax_code_data): bool
     {
         $builder = $this->db->table('tax_codes');
 
-        if (!$this->exists($tax_code_data['tax_code'])) {
-            if ($builder->insert($tax_code_data)) {    // TODO: this should be refactored to return $builder->insert($tax_code_data); in the same way that $builder->update() below is the return.  Look for this in the other save functions as well.
-                return true;
-            }
-            return false;
+        if (! $this->exists($tax_code_data['tax_code'])) {
+            return (bool) ($builder->insert($tax_code_data));     // TODO: this should be refactored to return $builder->insert($tax_code_data); in the same way that $builder->update() below is the return.  Look for this in the other save functions as well.
         }
 
         $builder->where('tax_code', $tax_code_data['tax_code']);
@@ -139,7 +138,7 @@ class Tax_code extends Model
                 'tax_code_name' => $value['tax_code_name'],
                 'city'          => $value['city'],
                 'state'         => $value['state'],
-                'deleted'       => '0'
+                'deleted'       => '0',
             ];
             $this->save($tax_code_data);
             $not_to_delete[] = $tax_code_data['tax_code'];
@@ -149,17 +148,20 @@ class Tax_code extends Model
         $deleted_tax_codes = $this->get_all()->getResultArray();
 
         foreach ($deleted_tax_codes as $key => $tax_code_data) {
-            if (!in_array($tax_code_data['tax_code'], $not_to_delete)) {
+            if (! in_array($tax_code_data['tax_code'], $not_to_delete, true)) {
                 $this->delete($tax_code_data['tax_code']);
             }
         }
 
         $this->db->transComplete();
+
         return $this->db->transStatus();
     }
 
     /**
      * Deletes a specific tax code
+     *
+     * @param mixed|null $tax_code
      */
     public function delete($tax_code = null, bool $purge = false): bool
     {
@@ -194,11 +196,21 @@ class Tax_code extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'tax_code_name';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'tax_code_name';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
         $builder = $this->db->table('tax_codes AS tax_codes');
 
@@ -241,10 +253,9 @@ class Tax_code extends Model
         $builder->where('state', $state);
         $builder->where('deleted', 0);
 
-
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             return $query->getRow()->tax_code_id;
         }
 
@@ -255,25 +266,20 @@ class Tax_code extends Model
 
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: this should be ===
+        if ($query->getNumRows() === 1) {    // TODO: this should be ===
             return $query->getRow()->tax_code_id;
-        } else {
-            return $config['default_tax_code'];
         }
+
+        return $config['default_tax_code'];
     }
 
-    /**
-     * @param string $search
-     * @param int $limit
-     * @return array
-     */
     public function get_tax_codes_search_suggestions(string $search, int $limit = 25): array
     {
         $suggestions = [];
 
         $builder = $this->db->table('tax_codes');
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $builder->like('tax_code', $search);
             $builder->orLike('tax_code_name', $search);
         }
@@ -294,7 +300,7 @@ class Tax_code extends Model
     }
 
     /**
-     * @return array[]
+     * @return list<array>
      */
     public function get_empty_row(): array
     {
@@ -305,8 +311,8 @@ class Tax_code extends Model
                 'tax_code_name' => '',
                 'city'          => '',
                 'state'         => '',
-                'deleted'       => 0
-            ]
+                'deleted'       => 0,
+            ],
         ];
     }
 }

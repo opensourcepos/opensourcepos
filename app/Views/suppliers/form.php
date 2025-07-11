@@ -2,14 +2,14 @@
 /**
  * @var string $controller_name
  * @var object $person_info
- * @var array $categories
+ * @var array  $categories
  */
 ?>
 
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'supplier_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("{$controller_name}/save/{$person_info->person_id}", ['id' => 'supplier_form', 'class' => 'form-horizontal']) ?>
     <fieldset id="supplier_basic_info">
 
         <div class="form-group form-group-sm">
@@ -19,7 +19,7 @@
                     'name'  => 'company_name',
                     'id'    => 'company_name_input',
                     'class' => 'form-control input-sm',
-                    'value' => html_entity_decode($person_info->company_name)
+                    'value' => html_entity_decode($person_info->company_name),
                 ]) ?>
             </div>
         </div>
@@ -38,7 +38,7 @@
                     'name'  => 'agency_name',
                     'id'    => 'agency_name_input',
                     'class' => 'form-control input-sm',
-                    'value' => $person_info->agency_name
+                    'value' => $person_info->agency_name,
                 ]) ?>
             </div>
         </div>
@@ -52,7 +52,7 @@
                     'name'  => 'account_number',
                     'id'    => 'account_number',
                     'class' => 'form-control input-sm',
-                    'value' => $person_info->account_number
+                    'value' => $person_info->account_number,
                 ]) ?>
             </div>
         </div>
@@ -64,7 +64,7 @@
                     'name'  => 'tax_id',
                     'id'    => 'tax_id',
                     'class' => 'form-control input-sm',
-                    'value' => $person_info->tax_id
+                    'value' => $person_info->tax_id,
                 ]) ?>
             </div>
         </div>

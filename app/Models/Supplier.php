@@ -9,17 +9,17 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Supplier extends Person
 {
-    protected $table = 'suppliers';
-    protected $primaryKey = 'person_id';
+    protected $table            = 'suppliers';
+    protected $primaryKey       = 'person_id';
     protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'company_name',
         'account_number',
         'tax_id',
         'deleted',
         'agency_name',
-        'category'
+        'category',
     ];
 
     /**
@@ -31,7 +31,7 @@ class Supplier extends Person
         $builder->join('people', 'people.person_id = suppliers.person_id');
         $builder->where('suppliers.person_id', $person_id);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return $builder->get()->getNumRows() === 1;    // TODO: ===
     }
 
     /**
@@ -73,20 +73,19 @@ class Supplier extends Person
         $builder->where('suppliers.person_id', $person_id);
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             return $query->getRow();
-        } else {
-            // Get empty base parent object, as $supplier_id is NOT a supplier
-            $person_obj = parent::get_info(NEW_ENTRY);
-
-            // Get all the fields from supplier table
-            // Append those fields to base parent object, we have a complete empty object
-            foreach ($this->db->getFieldNames('suppliers') as $field) {
-                $person_obj->$field = '';
-            }
-
-            return $person_obj;
         }
+        // Get empty base parent object, as $supplier_id is NOT a supplier
+        $person_obj = parent::get_info(NEW_ENTRY);
+
+        // Get all the fields from supplier table
+        // Append those fields to base parent object, we have a complete empty object
+        foreach ($this->db->getFieldNames('suppliers') as $field) {
+            $person_obj->{$field} = '';
+        }
+
+        return $person_obj;
     }
 
     /**
@@ -114,9 +113,9 @@ class Supplier extends Person
 
         if (parent::save_value($person_data, $supplier_id)) {
             $builder = $this->db->table('suppliers');
-            if ($supplier_id == NEW_ENTRY || !$this->exists($supplier_id)) {
+            if ($supplier_id === NEW_ENTRY || ! $this->exists($supplier_id)) {
                 $supplier_data['person_id'] = $person_data['person_id'];
-                $success = $builder->insert($supplier_data);
+                $success                    = $builder->insert($supplier_data);
             } else {
                 $builder->where('person_id', $supplier_id);
                 $success = $builder->update($supplier_data);
@@ -132,6 +131,8 @@ class Supplier extends Person
 
     /**
      * Deletes one supplier
+     *
+     * @param mixed|null $supplier_id
      */
     public function delete($supplier_id = null, bool $purge = false): bool
     {
@@ -195,7 +196,7 @@ class Supplier extends Person
             $suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name];
         }
 
-        if (!$unique) {
+        if (! $unique) {
             $builder = $this->db->table('suppliers');
             $builder->join('people', 'suppliers.person_id = people.person_id');
             $builder->where('deleted', 0);
@@ -249,11 +250,11 @@ class Supplier extends Person
     public function search(string $search, ?int $rows = 25, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values on null
-        $rows = $rows ?? 25;
-        $limit_from = $limit_from ?? 0;
-        $sort = $sort ?? 'last_name';
-        $order = $order ?? 'asc';
-        $count_only = $count_only ?? false;
+        $rows ??= 25;
+        $limit_from ??= 0;
+        $sort ??= 'last_name';
+        $order ??= 'asc';
+        $count_only ??= false;
 
         $builder = $this->db->table('suppliers AS suppliers');
 
@@ -295,21 +296,23 @@ class Supplier extends Person
     {
         return [
             GOODS_SUPPLIER => lang('Suppliers.goods'),
-            COST_SUPPLIER => lang('Suppliers.cost')
+            COST_SUPPLIER  => lang('Suppliers.cost'),
         ];
     }
 
     /**
      * Return a category name given its id.
+     *
      * @param int $supplier_type Constant representing the type of supplier.
+     *
      * @return string Language string for the given supplier type.
      */
     public function get_category_name(int $supplier_type): string
     {
-        if ($supplier_type == 0) {
+        if ($supplier_type === 0) {
             return lang('Suppliers.goods');
-        } else {
-            return  lang('Suppliers.cost');
         }
+
+        return lang('Suppliers.cost');
     }
 }

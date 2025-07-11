@@ -2,11 +2,11 @@
 /**
  * @var string $title
  * @var string $subtitle
- * @var array $overall_summary_data
- * @var array $details_data
- * @var array $headers
- * @var array $summary_data
- * @var array $config
+ * @var array  $overall_summary_data
+ * @var array  $details_data
+ * @var array  $headers
+ * @var array  $summary_data
+ * @var array  $config
  */
 ?>
 
@@ -22,7 +22,7 @@
 
 <div id="report_summary">
     <?php foreach ($overall_summary_data as $name => $value) { ?>
-        <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+        <div class="summary_row"><?= lang("Reports.{$name}") . ': ' . to_currency($value) ?></div>
     <?php } ?>
 </div>
 
@@ -31,12 +31,12 @@
         <?= view('partial/bootstrap_tables_locale') ?>
 
         var details_data = <?= json_encode(esc($details_data)) ?>;
-        <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
+        <?php if ($config['customer_reward_enable'] && ! empty($details_data_rewards)) { ?>
             var details_data_rewards = <?= json_encode(esc($details_data_rewards)) ?>;
         <?php } ?>
         var init_dialog = function() {
             <?php if (isset($editable)) { ?>
-                table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row')) ?>');
+                table_support.submit_handler('<?= esc(site_url("reports/get_detailed_{$editable}_row")) ?>');
                 dialog_support.init("a.modal-dlg");
             <?php } ?>
         };
@@ -71,7 +71,7 @@
                         data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
                     });
 
-                    <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
+                    <?php if ($config['customer_reward_enable'] && ! empty($details_data_rewards)) { ?>
                         $detail.append('<table></table>').find("table").bootstrapTable({
                             columns: <?= transform_headers_readonly(esc($headers['details_rewards'])) ?>,
                             data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]

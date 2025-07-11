@@ -24,9 +24,6 @@ class OSPOS extends BaseConfig
         $this->set_settings();
     }
 
-    /**
-     * @return void
-     */
     public function set_settings(): void
     {
         $cache = $this->cache->get('settings');
@@ -35,6 +32,7 @@ class OSPOS extends BaseConfig
             $this->settings = decode_array($cache);
         } else {
             $appconfig = model(Appconfig::class);
+
             foreach ($appconfig->get_all()->getResult() as $app_config) {
                 $this->settings[$app_config->key] = $app_config->value;
             }
@@ -42,9 +40,6 @@ class OSPOS extends BaseConfig
         }
     }
 
-    /**
-     * @return void
-     */
     public function update_settings(): void
     {
         $this->cache->delete('settings');

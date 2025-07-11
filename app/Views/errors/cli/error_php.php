@@ -3,7 +3,7 @@
  * @var string $severity
  * @var string $message
  * @var string $filepath
- * @var int $line
+ * @var int    $line
  */
 ?>
 
@@ -17,7 +17,7 @@ Line Number: <?= $line ?>
 <?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE): ?>
     Backtrace:
     <?php foreach (debug_backtrace() as $error): ?>
-        <?php if (isset($error['file']) && strpos($error['file'], realpath(ROOTPATH)) !== 0): ?>
+        <?php if (isset($error['file']) && ! str_starts_with($error['file'], realpath(ROOTPATH))): ?>
             File: <?= esc($error['file']), "\n" ?>
             Line: <?= $error['line'], "\n" ?>
             Function: <?= esc($error['function']), "\n\n" ?>

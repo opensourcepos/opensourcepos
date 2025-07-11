@@ -11,16 +11,16 @@ use stdClass;
  */
 class Giftcard extends Model
 {
-    protected $table = 'giftcards';
-    protected $primaryKey = 'giftcard_id';
+    protected $table            = 'giftcards';
+    protected $primaryKey       = 'giftcard_id';
     protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'giftcard_number',
         'value',
         'deleted',
         'person_id',
-        'record_time'
+        'record_time',
     ];
 
     /**
@@ -32,7 +32,7 @@ class Giftcard extends Model
         $builder->where('giftcard_id', $giftcard_id);
         $builder->where('deleted', 0);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return $builder->get()->getNumRows() === 1;    // TODO: ===
     }
 
     /**
@@ -43,7 +43,7 @@ class Giftcard extends Model
         $builder = $this->db->table('giftcards');
         $builder->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
         $builder->where('giftcard_number REGEXP \'^[0-9]+$\'');
-        $builder->orderBy("giftcard_number", "desc");
+        $builder->orderBy('giftcard_number', 'desc');
         $builder->limit(1);
 
         return $builder->get()->getRow();
@@ -72,17 +72,15 @@ class Giftcard extends Model
 
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             return $query->getRow();
-        } else {    // TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
-            return $this->getEmptyObject('giftcards');
-        }
+        }      // TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
+
+        return $this->getEmptyObject('giftcards');
     }
 
     /**
      * Initializes an empty object based on database definitions
-     * @param string $table_name
-     * @return object
      */
     private function getEmptyObject(string $table_name): object
     {
@@ -93,10 +91,10 @@ class Giftcard extends Model
         foreach ($this->db->getFieldData($table_name) as $field) {
             $field_name = $field->name;
 
-            if (in_array($field->type, ['int', 'tinyint', 'decimal'])) {
-                $empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+            if (in_array($field->type, ['int', 'tinyint', 'decimal'], true)) {
+                $empty_obj->{$field_name} = ($field->primary_key === 1) ? NEW_ENTRY : 0;
             } else {
-                $empty_obj->$field_name = null;
+                $empty_obj->{$field_name} = null;
             }
         }
 
@@ -114,7 +112,7 @@ class Giftcard extends Model
 
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             return $query->getRow()->giftcard_id;
         }
 
@@ -141,10 +139,10 @@ class Giftcard extends Model
     {
         $builder = $this->db->table('giftcards');
 
-        if ($giftcard_id == NEW_ENTRY || !$this->exists($giftcard_id)) {
+        if ($giftcard_id === NEW_ENTRY || ! $this->exists($giftcard_id)) {
             if ($builder->insert($giftcard_data)) {
                 $giftcard_data['giftcard_number'] = $this->db->insertID();
-                $giftcard_data['giftcard_id'] = $this->db->insertID();
+                $giftcard_data['giftcard_id']     = $this->db->insertID();
 
                 return true;
             }
@@ -170,6 +168,8 @@ class Giftcard extends Model
 
     /**
      * Deletes one giftcard
+     *
+     * @param mixed|null $giftcard_id
      */
     public function delete($giftcard_id = null, bool $purge = false): bool
     {
@@ -242,18 +242,38 @@ class Giftcard extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'giftcard_number', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'giftcard_number';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'giftcard_number';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'giftcard_number';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'giftcard_number';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
         $builder = $this->db->table('giftcards');
 
@@ -291,7 +311,7 @@ class Giftcard extends Model
      */
     public function get_giftcard_value(string $giftcard_number): float    // TODO: we may need to do a search for all float values and for currencies cast them to strings at the point where we get them from the database.
     {
-        if (!$this->exists($this->get_giftcard_id($giftcard_number))) {
+        if (! $this->exists($this->get_giftcard_id($giftcard_number))) {
             return 0;
         }
 
@@ -313,6 +333,8 @@ class Giftcard extends Model
 
     /**
      * Determines if a given giftcard_name exists
+     *
+     * @param mixed $giftcard_name
      */
     public function exists_giftcard_name($giftcard_name): bool
     {
@@ -322,7 +344,7 @@ class Giftcard extends Model
         $builder->where('giftcard_number', $giftcard_name);
         $builder->where('deleted', 0);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return $builder->get()->getNumRows() === 1;    // TODO: ===
     }
 
     /**
@@ -330,9 +352,9 @@ class Giftcard extends Model
      */
     public function generate_unique_giftcard_name(string $value): string
     {
-        $value = str_replace('.', 'DE', $value);
-        $random = bin2hex(openssl_random_pseudo_bytes(3));
-        $giftcard_name = "$random-$value";
+        $value         = str_replace('.', 'DE', $value);
+        $random        = bin2hex(openssl_random_pseudo_bytes(3));
+        $giftcard_name = "{$random}-{$value}";
 
         if ($this->exists_giftcard_name($giftcard_name)) {
             $this->generate_unique_giftcard_name($value);
@@ -345,11 +367,12 @@ class Giftcard extends Model
      * Gets gift card customer_id by gift card number
      *
      * @param string $giftcard_number Gift card number
+     *
      * @return int The customer_id of the gift card if it exists, 0 otherwise.
      */
     public function get_giftcard_customer(string $giftcard_number): int
     {
-        if (!$this->exists($this->get_giftcard_id($giftcard_number))) {
+        if (! $this->exists($this->get_giftcard_id($giftcard_number))) {
             return 0;
         }
 

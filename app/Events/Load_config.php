@@ -9,11 +9,11 @@ use Config\OSPOS;
 use Config\Services;
 
 /**
- * @property my_migration migration;
- * @property session session;
- * @property appconfig appconfig;
- * @property mixed $migration_config
+ * @property Appconfig appconfig;
+ * @property MY_Migration migration;
+ * @property Session session;
  * @property mixed $config
+ * @property mixed $migration_config
  */
 class Load_config
 {
@@ -26,22 +26,22 @@ class Load_config
     {
         // Migrations
         $migration_config = config('Migrations');
-        $migration = new MY_Migration($migration_config);
+        $migration        = new MY_Migration($migration_config);
 
         $this->session = session();
 
         // Database Configuration
         $config = config(OSPOS::class);
 
-        if (!$migration->is_latest()) {
+        if (! $migration->is_latest()) {
             $this->session->destroy();
         }
 
         // Language
         $language_exists = file_exists('../app/Language/' . current_language_code());
 
-        if (current_language_code() == null || current_language() == null || !$language_exists) {    // TODO: current_language() is undefined
-            $config->settings['language'] = 'english';
+        if (current_language_code() === null || current_language() === null || ! $language_exists) {    // TODO: current_language() is undefined
+            $config->settings['language']      = 'english';
             $config->settings['language_code'] = 'en';
         }
 

@@ -10,7 +10,7 @@ function create_pdf(string $html, string $filename = ''): string
     $dompdf->loadHtml(str_replace(['\n', '\r'], '', $html));
     $dompdf->render();
 
-    if ($filename != '') {
+    if ($filename !== '') {
         $dompdf->stream($filename . '.pdf');
     } else {    // TODO: Not all paths return a value.
         return $dompdf->output();

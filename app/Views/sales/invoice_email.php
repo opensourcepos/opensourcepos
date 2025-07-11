@@ -5,17 +5,17 @@
  * @var string $company_info
  * @var string $invoice_number
  * @var string $transaction_date
- * @var float $amount_due
- * @var float $total
- * @var float $discount
- * @var array $cart
- * @var float $subtotal
- * @var array $taxes
- * @var array $payments
- * @var float $amount_change
+ * @var float  $amount_due
+ * @var float  $total
+ * @var float  $discount
+ * @var array  $cart
+ * @var float  $subtotal
+ * @var array  $taxes
+ * @var array  $payments
+ * @var float  $amount_change
  * @var string $barcode
- * @var int $sale_id
- * @var array $config
+ * @var int    $sale_id
+ * @var array  $config
  */
 ?>
 
@@ -31,16 +31,17 @@
     <?php
     if (isset($error_message)) {
         echo '<div class="alert alert-dismissible alert-danger">' . $error_message . '</div>';
+
         exit;
     }
-    ?>
+?>
 
     <div id="page-wrap">
         <div id="header"><?= lang('Sales.invoice') ?></div>
         <table id="info">
             <tr>
                 <td id="logo">
-                    <?php if ($config['company_logo'] != '') { ?>
+                    <?php if ($config['company_logo'] !== '') { ?>
                         <img id="image" src="data:<?= esc($mimetype, 'attr') ?>;base64,<?= base64_encode(file_get_contents('uploads/' . esc($config['company_logo']))) ?>" alt="company_logo">
                     <?php } ?>
                 </td>
@@ -85,9 +86,9 @@
                 <th><?= lang('Sales.discount') ?></th>
                 <?php
                 $invoice_columns = 6;
-                if ($discount > 0) {
-                    $invoice_columns = $invoice_columns + 1;
-                ?>
+if ($discount > 0) {
+    $invoice_columns++;
+    ?>
                     <th><?= lang('Sales.customer_discount') ?></th>
                 <?php } ?>
                 <th><?= lang('Sales.total') ?></th>
@@ -95,14 +96,14 @@
 
             <?php
             foreach ($cart as $line => $item) {
-                if ($item['print_option'] == PRINT_YES) {
-            ?>
+                if ($item['print_option'] === PRINT_YES) {
+                    ?>
                     <tr class="item-row">
                         <td><?= $item['item_number'] ?></td>
                         <td class="item-name"><?= esc($item['name']) ?></td>
                         <td><?= to_quantity_decimals($item['quantity']) ?></td>
                         <td><?= to_currency($item['price']) ?></td>
-                        <td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
+                        <td><?= ($item['discount_type'] === FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                         <?php if ($item['discount'] > 0): ?>
                             <td><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
                         <?php endif; ?>
@@ -111,7 +112,7 @@
             <?php
                 }
             }
-            ?>
+?>
 
             <tr>
                 <td colspan="<?= $invoice_columns ?>" align="center"><?= '&nbsp;' ?></td>
@@ -126,7 +127,7 @@
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                    <td colspan="2" class="total-line"><?= (float) $tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
                     <td id="taxes" class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
                 </tr>
             <?php } ?>
@@ -138,14 +139,14 @@
             </tr>
 
             <?php
-            $only_sale_check = false;
-            $show_giftcard_remainder = false;
+$only_sale_check         = false;
+$show_giftcard_remainder = false;
 
-            foreach ($payments as $payment_id => $payment) {
-                $only_sale_check |= $payment['payment_type'] == lang('Sales.check');
-                $splitpayment = explode(':', $payment['payment_type']);    // TODO: $splitpayment does not meet the variable naming conventions for this project
-                $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
-            ?>
+foreach ($payments as $payment_id => $payment) {
+    $only_sale_check |= $payment['payment_type'] === lang('Sales.check');
+    $splitpayment = explode(':', $payment['payment_type']);    // TODO: $splitpayment does not meet the variable naming conventions for this project
+    $show_giftcard_remainder |= $splitpayment[0] === lang('Sales.giftcard');
+    ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
                     <td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
@@ -161,7 +162,7 @@
                 </tr>
             <?php } ?>
 
-            <?php if (!empty($payments)) { ?>
+            <?php if (! empty($payments)) { ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
                     <td colspan="2" class="total-line"><?= lang($amount_change >= 0 ? ($only_sale_check ? 'Sales.check_balance' : 'Sales.change_due') : 'Sales.amount_due') ?></td>

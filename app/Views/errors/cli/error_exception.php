@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var object $exception
  * @var string $message

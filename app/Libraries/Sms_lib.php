@@ -2,18 +2,14 @@
 
 namespace app\Libraries;
 
-use CodeIgniter\Encryption\Encryption;
-use CodeIgniter\Encryption\EncrypterInterface;
 use Config\OSPOS;
 use Config\Services;
-
 
 /**
  * SMS library
  *
  * Library with utilities to send texts via SMS Gateway (requires proxy implementation)
  */
-
 class Sms_lib
 {
     /**
@@ -27,11 +23,11 @@ class Sms_lib
         $encrypter = Services::encrypter();
 
         $password = $config['msg_pwd'];
-        if (!empty($password)) {
+        if (! empty($password)) {
             $password = $encrypter->decrypt($password);
         }
 
-        $username = $config['msg_uid'];
+        $username   = $config['msg_uid'];
         $originator = $config['msg_src'];
 
         $response = false;

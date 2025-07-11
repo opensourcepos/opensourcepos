@@ -51,36 +51,30 @@ class Barcode_lib
         'PHARMA2T' => 'Pharma Code Two Tracks',
     ];
 
-    /**
-     * @return array
-     */
     public function get_list_barcodes(): array
     {
         return $this->supported_barcodes;
     }
 
-    /**
-     * @return array
-     */
     public function get_barcode_config(): array
     {
         $config = config(OSPOS::class)->settings;
 
-        $data['company'] = $config['company'];
-        $data['barcode_content'] = $config['barcode_content'];
-        $data['barcode_type'] = $config['barcode_type'];
-        $data['barcode_font'] = $config['barcode_font'];
-        $data['barcode_font_size'] = $config['barcode_font_size'];
-        $data['barcode_height'] = $config['barcode_height'];
-        $data['barcode_width'] = $config['barcode_width'];
-        $data['barcode_first_row'] = $config['barcode_first_row'];
-        $data['barcode_second_row'] = $config['barcode_second_row'];
-        $data['barcode_third_row'] = $config['barcode_third_row'];
-        $data['barcode_num_in_row'] = $config['barcode_num_in_row'];
-        $data['barcode_page_width'] = $config['barcode_page_width'];
-        $data['barcode_page_cellspacing'] = $config['barcode_page_cellspacing'];
+        $data['company']                   = $config['company'];
+        $data['barcode_content']           = $config['barcode_content'];
+        $data['barcode_type']              = $config['barcode_type'];
+        $data['barcode_font']              = $config['barcode_font'];
+        $data['barcode_font_size']         = $config['barcode_font_size'];
+        $data['barcode_height']            = $config['barcode_height'];
+        $data['barcode_width']             = $config['barcode_width'];
+        $data['barcode_first_row']         = $config['barcode_first_row'];
+        $data['barcode_second_row']        = $config['barcode_second_row'];
+        $data['barcode_third_row']         = $config['barcode_third_row'];
+        $data['barcode_num_in_row']        = $config['barcode_num_in_row'];
+        $data['barcode_page_width']        = $config['barcode_page_width'];
+        $data['barcode_page_cellspacing']  = $config['barcode_page_cellspacing'];
         $data['barcode_generate_if_empty'] = $config['barcode_generate_if_empty'];
-        $data['barcode_formats'] = $config['barcode_formats'] !== 'null' ? $config['barcode_formats'] : [];
+        $data['barcode_formats']           = $config['barcode_formats'] !== 'null' ? $config['barcode_formats'] : [];
 
         return $data;
     }
@@ -88,8 +82,9 @@ class Barcode_lib
     /**
      * Returns the value to be used in the barcode.
      *
-     * @param array $item Contains item data
+     * @param array $item           Contains item data
      * @param array $barcode_config Contains barcode configuration
+     *
      * @return string Barcode value
      */
     private function get_barcode_value(array $item, array $barcode_config): string
@@ -99,15 +94,10 @@ class Barcode_lib
             : $item['item_id'];
     }
 
-    /**
-     * @param array $item
-     * @param array $barcode_config
-     * @return string
-     */
     private function generate_barcode(array $item, array $barcode_config): string
     {
         try {
-            $generator = new BarcodeGeneratorSVG();
+            $generator     = new BarcodeGeneratorSVG();
             $barcode_value = $this->get_barcode_value($item, $barcode_config);
 
             return $generator->getBarcode($barcode_value, $barcode_config['barcode_type'], 2, $barcode_config['barcode_height']);
@@ -119,32 +109,26 @@ class Barcode_lib
         }
     }
 
-    /**
-     * @param $barcode_content
-     * @return string
-     */
     public function generate_receipt_barcode($barcode_content): string
     {
         try {
             $generator = new BarcodeGeneratorSVG();
+
             return $generator->getBarcode($barcode_content, $generator::TYPE_CODE_128);
         } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
+
             return '';
         }
     }
 
     /**
      * Displays the barcode.  Called in a View.
-     *
-     * @param array $item
-     * @param array $barcode_config
-     * @return string
      */
     public function display_barcode(array $item, array $barcode_config): string
     {
         if ((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id'])) {
-            $barcode = $this->generate_barcode($item, $barcode_config);
+            $barcode       = $this->generate_barcode($item, $barcode_config);
             $display_table = '<table>';
             $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
             $display_table .= '<tr><td style="text-align: center;"><div class="barcode">$barcode</div></td></tr>';
@@ -155,32 +139,26 @@ class Barcode_lib
             return $display_table;
         }
 
-        return "Item number or Item ID not found in the item array.";    // TODO: this needs to be run through the translation engine.
+        return 'Item number or Item ID not found in the item array.';    // TODO: this needs to be run through the translation engine.
     }
 
-    /**
-     * @param $layout_type
-     * @param array $item
-     * @param array $barcode_config
-     * @return string
-     */
     private function manage_display_layout($layout_type, array $item, array $barcode_config): string
     {
         $result = '';
         helper('text');
 
-        if ($layout_type == 'name') {
+        if ($layout_type === 'name') {
             $result = $item['name'];
-        } elseif ($layout_type == 'category' && isset($item['category'])) {
-            $result = lang('Items.category') . " " . $item['category'];
-        } elseif ($layout_type == 'cost_price' && isset($item['cost_price'])) {
-            $result = lang('Items.cost_price') . " " . to_currency($item['cost_price']);
-        } elseif ($layout_type == 'unit_price' && isset($item['unit_price'])) {
-            $result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
-        } elseif ($layout_type == 'company_name') {
+        } elseif ($layout_type === 'category' && isset($item['category'])) {
+            $result = lang('Items.category') . ' ' . $item['category'];
+        } elseif ($layout_type === 'cost_price' && isset($item['cost_price'])) {
+            $result = lang('Items.cost_price') . ' ' . to_currency($item['cost_price']);
+        } elseif ($layout_type === 'unit_price' && isset($item['unit_price'])) {
+            $result = lang('Items.unit_price') . ' ' . to_currency($item['unit_price']);
+        } elseif ($layout_type === 'company_name') {
             $result = $barcode_config['company'];
-        } elseif ($layout_type == 'item_code') {
-            $result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
+        } elseif ($layout_type === 'item_code') {
+            $result = $barcode_config['barcode_content'] !== 'id' && isset($item['item_number'])
                 ? $item['item_number']
                 : $item['item_id'];
         }
@@ -190,9 +168,6 @@ class Barcode_lib
 
     /**
      * Finds all acceptable fonts to be used. Called in a View.
-     *
-     * @param string $folder
-     * @return array
      */
     public function listfonts(string $folder): array    // TODO: This function does not follow naming conventions.
     {
@@ -215,9 +190,6 @@ class Barcode_lib
 
     /**
      * Returns the name of the font from the file name.  Called in a View.
-     *
-     * @param string $font_file_name
-     * @return string
      */
     public function get_font_name(string $font_file_name): string
     {

@@ -35,12 +35,11 @@ if (isset($error)) {
         </div>
     </div>
 
-    <?php
-    echo form_button([
+    <?= form_button([
         'name'    => 'generate_report',
         'id'      => 'generate_report',
         'content' => lang('Common.submit'),
-        'class'   => 'btn btn-primary btn-sm'
+        'class'   => 'btn btn-primary btn-sm',
     ]) ?>
 
 <?= form_close() ?>

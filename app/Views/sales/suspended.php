@@ -4,8 +4,8 @@
  * @var array $config
  */
 
-use App\Models\Employee;
 use App\Models\Customer;
+use App\Models\Employee;
 
 ?>
 
@@ -42,22 +42,22 @@ use App\Models\Customer;
                 <td>
                     <?php
                     if (isset($suspended_sale['customer_id'])) {
-                        $customer = model(Customer::class);    // TODO: Should we be accessing a model in a view rather than passing this data to the view via the controller?
+                        $customer      = model(Customer::class);    // TODO: Should we be accessing a model in a view rather than passing this data to the view via the controller?
                         $customer_data = $customer->get_info($suspended_sale['customer_id']);
-                        echo esc("$customer_data->first_name $customer_data->last_name");
+                        echo esc("{$customer_data->first_name} {$customer_data->last_name}");
                     } else {
-                    ?>
+                        ?>
                         &nbsp;
                     <?php } ?>
                 </td>
                 <td>
                     <?php
-                    if (isset($suspended_sale['employee_id'])) {
-                        $employee = model(Employee::class);
-                        $employee_data = $employee->get_info($suspended_sale['employee_id']);
-                        echo esc("$employee_data->first_name $employee_data->last_name");
-                    } else {
-                    ?>
+                        if (isset($suspended_sale['employee_id'])) {
+                            $employee      = model(Employee::class);
+                            $employee_data = $employee->get_info($suspended_sale['employee_id']);
+                            echo esc("{$employee_data->first_name} {$employee_data->last_name}");
+                        } else {
+                            ?>
                         &nbsp;
                     <?php } ?>
                 </td>

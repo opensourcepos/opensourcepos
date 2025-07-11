@@ -56,6 +56,6 @@ class Pager extends BaseConfig
         'first_tag_open'   => '<li>',
         'first_tagl_close' => '</li>',
         'last_tag_open'    => '<li>',
-        'last_tagl_close'  => '</li>'
+        'last_tagl_close'  => '</li>',
     ];
 }

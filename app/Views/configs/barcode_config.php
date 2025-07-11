@@ -20,7 +20,7 @@
                         'barcode_type',
                         $support_barcode,
                         $config['barcode_type'],
-                        'class="form-control input-sm"'
+                        'class="form-control input-sm"',
                     ) ?>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         'name'  => 'barcode_width',
                         'id'    => 'barcode_width',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['barcode_width']
+                        'value' => $config['barcode_width'],
                     ]) ?>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                         'name'  => 'barcode_height',
                         'id'    => 'barcode_height',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['barcode_height']
+                        'value' => $config['barcode_height'],
                     ]) ?>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                         'barcode_font',
                         $barcode_fonts,
                         $config['barcode_font'],
-                        'class="form-control input-sm" required'
+                        'class="form-control input-sm" required',
                     ) ?>
                 </div>
                 <div class="col-sm-2">
@@ -74,7 +74,7 @@
                         'name'  => 'barcode_font_size',
                         'id'    => 'barcode_font_size',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['barcode_font_size']
+                        'value' => $config['barcode_font_size'],
                     ]) ?>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                         'name'    => 'allow_duplicate_barcodes',
                         'id'      => 'allow_duplicate_barcodes',
                         'value'   => 'allow_duplicate_barcodes',
-                        'checked' => $config['allow_duplicate_barcodes'] == 1
+                        'checked' => $config['allow_duplicate_barcodes'] === 1,
                     ]) ?>
                     &nbsp;
                     <label class="control-label">
@@ -102,7 +102,7 @@
                         <?= form_radio([
                             'name'    => 'barcode_content',
                             'value'   => 'id',
-                            'checked' => $config['barcode_content'] == 'id'
+                            'checked' => $config['barcode_content'] === 'id',
                         ]) ?>
                         <?= lang('Config.barcode_id') ?>
                     </label>
@@ -110,7 +110,7 @@
                         <?= form_radio([
                             'name'    => 'barcode_content',
                             'value'   => 'number',
-                            'checked' => $config['barcode_content'] == 'number'
+                            'checked' => $config['barcode_content'] === 'number',
                         ]) ?>
                         <?= lang('Config.barcode_number') ?>
                     </label>
@@ -120,7 +120,7 @@
                         <?= form_checkbox([
                             'name'    => 'barcode_generate_if_empty',
                             'value'   => 'barcode_generate_if_empty',
-                            'checked' => $config['barcode_generate_if_empty'] == 1
+                            'checked' => $config['barcode_generate_if_empty'] === 1,
                         ]) ?>
                         <?= lang('Config.barcode_generate_if_empty') ?>
                     </label>
@@ -132,13 +132,13 @@
                 <div class="col-xs-4">
                     <?php
                     $barcode_formats = json_decode(config('OSPOS')->settings['barcode_formats']);
-                    echo form_dropdown([
-                        'name'      => 'barcode_formats[]',
-                        'id'        => 'barcode_formats',
-                        'options'   => !empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : [],
-                        'multiple'  => 'multiple',
-                        'data-role' => 'tagsinput'
-                    ]) ?>
+echo form_dropdown([
+    'name'      => 'barcode_formats[]',
+    'id'        => 'barcode_formats',
+    'options'   => ! empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : [],
+    'multiple'  => 'multiple',
+    'data-role' => 'tagsinput',
+]) ?>
                 </div>
             </div>
 
@@ -156,10 +156,10 @@
                                     'category'     => lang('Items.category'),
                                     'cost_price'   => lang('Items.cost_price'),
                                     'unit_price'   => lang('Items.unit_price'),
-                                    'company_name' => lang('Suppliers.company_name')
+                                    'company_name' => lang('Suppliers.company_name'),
                                 ],
                                 $config['barcode_first_row'],
-                                ['class' => 'form-control input-sm']
+                                ['class' => 'form-control input-sm'],
                             ); ?>
                         </div>
                         <label class="control-label col-sm-1"><?= lang('Config.barcode_second_row') . ' ' ?></label>
@@ -173,10 +173,10 @@
                                     'cost_price'   => lang('Items.cost_price'),
                                     'unit_price'   => lang('Items.unit_price'),
                                     'item_code'    => lang('Items.item_number'),
-                                    'company_name' => lang('Suppliers.company_name')
+                                    'company_name' => lang('Suppliers.company_name'),
                                 ],
                                 $config['barcode_second_row'],
-                                ['class' => 'form-control input-sm']
+                                ['class' => 'form-control input-sm'],
                             ) ?>
                         </div>
                         <label class="control-label col-sm-1"><?= lang('Config.barcode_third_row') . ' ' ?></label>
@@ -190,10 +190,10 @@
                                     'cost_price'   => lang('Items.cost_price'),
                                     'unit_price'   => lang('Items.unit_price'),
                                     'item_code'    => lang('Items.item_number'),
-                                    'company_name' => lang('Suppliers.company_name')
+                                    'company_name' => lang('Suppliers.company_name'),
                                 ],
                                 $config['barcode_third_row'],
-                                ['class' => 'form-control input-sm']
+                                ['class' => 'form-control input-sm'],
                             ) ?>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                         'name'  => 'barcode_num_in_row',
                         'id'    => 'barcode_num_in_row',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['barcode_num_in_row']
+                        'value' => $config['barcode_num_in_row'],
                     ]) ?>
                 </div>
             </div>
@@ -220,7 +220,7 @@
                             'name'  => 'barcode_page_width',
                             'id'    => 'barcode_page_width',
                             'class' => 'form-control input-sm required',
-                            'value' => $config['barcode_page_width']
+                            'value' => $config['barcode_page_width'],
                         ]) ?>
                         <span class="input-group-addon input-sm">%</span>
                     </div>
@@ -235,7 +235,7 @@
                             'name'  => 'barcode_page_cellspacing',
                             'id'    => 'barcode_page_cellspacing',
                             'class' => 'form-control input-sm required',
-                            'value' => $config['barcode_page_cellspacing']
+                            'value' => $config['barcode_page_cellspacing'],
                         ]) ?>
                         <span class="input-group-addon input-sm">px</span>
                     </div>
@@ -246,7 +246,7 @@
                 'name'  => 'submit_barcode',
                 'id'    => 'submit_barcode',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
