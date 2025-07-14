@@ -22,6 +22,8 @@ script:
   - sed -i 's/opensourcepos.tar.gz/opensourcepos.$version.tgz/g' package.json
   - npm ci && npm install -g gulp && npm run build
   - docker build . --target ospos -t ospos
+  - docker build . --target ospos_test -t ospos_test
+  - docker run --rm ospos_test /app/vendor/bin/phpunit --testdox
   - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
 env:
   global:
