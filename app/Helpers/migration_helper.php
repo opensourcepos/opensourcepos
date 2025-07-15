@@ -213,6 +213,36 @@ function foreignKeyExists(string $constraintName, string $tableName): bool {
 }
 
 /**
+ * Drops a column from a table if it exists.
+ *
+ * @param string $table The name of the table.
+ * @param string $column The name of the column to drop.
+ * @return void
+ */
+function dropColumnIfExists(string $table, string $column): void
+{
+    $prefix = overridePrefix();
+
+    $db = Database::connect();
+    $builder = $db->table('information_schema.COLUMNS');
+
+    // Check if the column exists in the table
+    $builder->select('COLUMN_NAME')
+        ->where('TABLE_SCHEMA', $db->database)
+        ->where('TABLE_NAME', $prefix . $table)
+        ->where('COLUMN_NAME', $column);
+
+    $query = $builder->get();
+
+    if ($query->getNumRows() > 0)
+    {
+        // Drop the column if it exists
+        $db->query("ALTER TABLE `" . $prefix . "$table` DROP COLUMN `$column`");
+    }
+    overridePrefix($prefix);
+}
+
+/**
  * Checks if the current database is MariaDB.
  *
  * @return bool true if the database is MariaDB, false otherwise.
