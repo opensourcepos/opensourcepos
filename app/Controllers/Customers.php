@@ -376,7 +376,7 @@ class Customers extends Persons
     public function getCsv(): DownloadResponse
     {
         $name = 'importCustomers.csv';
-        $data = file_get_contents(WRITEPATH . "uploads/$name");
+        $data = file_get_contents(WRITEPATH . "writable/uploads/$name");
         return $this->response->download($name, $data);
     }
 
