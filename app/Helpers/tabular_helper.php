@@ -466,8 +466,8 @@ function get_item_data_row(object $item): array
         $ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 
         $images = $ext == ''
-            ? glob("./uploads/item_pics/$item->pic_filename.*")
-            : glob("./uploads/item_pics/$item->pic_filename");
+            ? glob("./writable/uploads/item_pics/$item->pic_filename.*")
+            : glob("./writable/uploads/item_pics/$item->pic_filename");
 
         if (sizeof($images) > 0) {
             $image .= '<a class="rollover" href="' . base_url($images[0]) . '"><img alt="Image thumbnail" src="' . site_url('items/PicThumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '"></a>';
