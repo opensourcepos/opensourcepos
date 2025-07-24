@@ -2,10 +2,9 @@
 
 namespace App\Database\Migrations;
 
+use App\Models\Attribute;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
-use App\Models\Attribute;
-use Config\Database;
 use Config\OSPOS;
 use DateTime;
 
@@ -52,7 +51,7 @@ class Migration_database_optimizations extends Migration
             $attribute_links = $builder->get();
 
             if ($attribute_links) {
-                $builder = $this->db->table('attribute_links');
+                $builder         = $this->db->table('attribute_links');
                 $attribute_links = $attribute_links->getResultArray() ?: [];
 
                 foreach ($attribute_links->getResultArray() as $attribute_link) {
@@ -64,11 +63,13 @@ class Migration_database_optimizations extends Migration
                         case DECIMAL:
                             $value = $attribute_value['attribute_decimal'];
                             break;
+
                         case DATE:
-                            $config = config(OSPOS::class)->settings;
+                            $config         = config(OSPOS::class)->settings;
                             $attribute_date = DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
-                            $value = $attribute_date->format($config['dateformat']);
+                            $value          = $attribute_date->format($config['dateformat']);
                             break;
+
                         default:
                             $value = $attribute_value['attribute_value'];
                             break;
@@ -87,6 +88,8 @@ class Migration_database_optimizations extends Migration
 
     /**
      * Given the type of attribute, deletes any duplicates it finds in the attribute_values table and reassigns those
+     *
+     * @param mixed $attribute_type
      */
     private function migrate_duplicate_attribute_values($attribute_type): void
     {
@@ -96,9 +99,9 @@ class Migration_database_optimizations extends Migration
         $column = 'attribute_' . strtolower($attribute_type);
 
         $builder = $this->db->table('attribute_values');
-        $builder->select("$column");
+        $builder->select("{$column}");
         $builder->groupBy($column);
-        $builder->having("COUNT($column) > 1");
+        $builder->having("COUNT({$column}) > 1");
         $duplicated_values = $builder->get();
 
         foreach ($duplicated_values->getResultArray() as $duplicated_value) {
@@ -110,7 +113,7 @@ class Migration_database_optimizations extends Migration
             $builder = $this->db->table('attribute_values');
             $builder->select('attribute_id');
             $builder->where($column, $duplicated_value[$column]);
-            $builder->where("attribute_id IN ($subquery)", null, false);
+            $builder->where("attribute_id IN ({$subquery})", null, false);
             $attribute_ids_to_fix = $builder->get();
 
             $this->reassign_duplicate_attribute_values($attribute_ids_to_fix, $duplicated_value);
@@ -123,11 +126,11 @@ class Migration_database_optimizations extends Migration
      * Updates the attribute_id in all attribute_link rows with duplicated attribute_ids then deletes unneeded rows from attribute_values
      *
      * @param ResultInterface $attribute_ids_to_fix All attribute_ids that need to parsed
-     * @param array $attribute_value The attribute value in question.
+     * @param array           $attribute_value      The attribute value in question.
      */
     private function reassign_duplicate_attribute_values(ResultInterface $attribute_ids_to_fix, array $attribute_value): void
     {
-        $attribute_ids = $attribute_ids_to_fix->getResultArray();
+        $attribute_ids       = $attribute_ids_to_fix->getResultArray();
         $retain_attribute_id = $attribute_ids[0]['attribute_id'];
 
         foreach ($attribute_ids as $attribute_id) {
@@ -147,5 +150,7 @@ class Migration_database_optimizations extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+    }
 }

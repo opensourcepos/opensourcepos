@@ -23,6 +23,7 @@ use HTMLPurifier_Config;
  */
 class Services extends BaseService
 {
+    private static $htmlPurifier;
     /*
      * public static function example($getShared = true)
      * {
@@ -57,16 +58,14 @@ class Services extends BaseService
         return new \App\Libraries\MY_Language($locale);
     }
 
-    private static $htmlPurifier;
-
     public static function htmlPurifier($getShared = true)
     {
         if ($getShared) {
             return static::getSharedInstance('htmlPurifier');
         }
 
-        if (!isset(static::$htmlPurifier)) {
-            $config = HTMLPurifier_Config::createDefault();
+        if (! isset(static::$htmlPurifier)) {
+            $config               = HTMLPurifier_Config::createDefault();
             static::$htmlPurifier = new HTMLPurifier($config);
         }
 

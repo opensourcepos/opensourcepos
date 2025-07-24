@@ -2,8 +2,8 @@
 
 namespace App\Database\Migrations;
 
-use CodeIgniter\Database\Migration;
 use App\Models\Attribute;
+use CodeIgniter\Database\Migration;
 
 class Migration_remove_duplicate_links extends Migration
 {
@@ -22,7 +22,7 @@ class Migration_remove_duplicate_links extends Migration
     /**
      * Given the type of attribute, deletes any duplicates it finds in the attribute_values table and reassigns those
      *
-     * @property attribute $attribute
+     * @property Attribute $attribute
      */
     private function migrate_duplicate_attribute_links(): void
     {
@@ -60,5 +60,7 @@ class Migration_remove_duplicate_links extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+    }
 }

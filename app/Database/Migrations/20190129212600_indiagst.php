@@ -11,7 +11,7 @@ class Migration_IndiaGST extends Migration
      */
     public function up(): void
     {
-        if (!$this->db->fieldExists('sales_tax_code', 'customers')) {
+        if (! $this->db->fieldExists('sales_tax_code', 'customers')) {
             return;
         }
 
@@ -49,11 +49,10 @@ class Migration_IndiaGST extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+    }
 
-    /**
-     * @return int
-     */
     private function get_count_of_tax_code_entries(): int
     {
         $builder = $this->db->table('tax_codes_backup');
@@ -62,9 +61,6 @@ class Migration_IndiaGST extends Migration
         return $builder->get()->getRow()->count;
     }
 
-    /**
-     * @return int
-     */
     private function get_count_of_sales_taxes_entries(): int
     {
         $builder = $this->db->table('sales_taxes_backup');
@@ -73,9 +69,6 @@ class Migration_IndiaGST extends Migration
         return $builder->get()->getRow()->count;
     }
 
-    /**
-     * @return int
-     */
     private function get_count_of_rate_entries(): int
     {
         $builder = $this->db->table('tax_code_rates_backup');
@@ -88,8 +81,6 @@ class Migration_IndiaGST extends Migration
      *  This copies the old tax code configuration into the new tax code configuration
      *  assigning a tax_code_id id to the entry  This only needs to be done if there are
      *  tax codes in the table.
-     *
-     * @return void
      */
     private function migrate_tax_code_data(): void
     {
@@ -102,8 +93,6 @@ class Migration_IndiaGST extends Migration
      *  This will assign a tax code id using the tax code field that was left in place on the customer table.
      *  After it is complete then it will drop the old customer tax code.
      *  This MUST run so that the old tax code is dropped
-     *
-     * @return void
      */
     private function migrate_customer_tax_codes(): void
     {
@@ -136,9 +125,6 @@ class Migration_IndiaGST extends Migration
             . 'order by sale_id');
     }
 
-    /**
-     * @return void
-     */
     private function migrate_tax_rates(): void
     {
         // Create a dummy jurisdiction record and retrieve the jurisdiction rate id
@@ -156,9 +142,6 @@ class Migration_IndiaGST extends Migration
             . ' ON tax_code = rate_tax_code');
     }
 
-    /**
-     * @return void
-     */
     private function drop_backups(): void
     {
         $this->db->query('DROP TABLE IF EXISTS ' . $this->db->prefixTable('tax_codes_backup'));

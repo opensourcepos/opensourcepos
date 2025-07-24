@@ -6,7 +6,6 @@ use CodeIgniter\Language\Language;
 
 class MY_Language extends Language
 {
-
     public function getLine(string $line, array $args = [])
     {
         // If no file is given, just parse the line
@@ -20,7 +19,7 @@ class MY_Language extends Language
 
         $output = $this->getTranslationOutput($this->locale, $file, $parsedLine);
 
-        if ($output === NULL && strpos($this->locale, '-')) {
+        if ($output === null && strpos($this->locale, '-')) {
             [$locale] = explode('-', $this->locale, 2);
 
             [$file, $parsedLine] = $this->parseLine($line, $locale);
@@ -29,7 +28,7 @@ class MY_Language extends Language
         }
 
         // If still not found, try English
-        if ($output === NULL || $output === "") {
+        if ($output === null || $output === '') {
             [$file, $parsedLine] = $this->parseLine($line, 'en');
 
             $output = $this->getTranslationOutput('en', $file, $parsedLine);

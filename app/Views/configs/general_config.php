@@ -1,11 +1,11 @@
 <?php
 /**
- * @var array $themes
- * @var array $image_allowed_types
- * @var array $selected_image_allowed_types
- * @var bool $show_office_group
+ * @var array  $themes
+ * @var array  $image_allowed_types
+ * @var array  $selected_image_allowed_types
+ * @var bool   $show_office_group
  * @var string $controller_name
- * @var array $config
+ * @var array  $config
  */
 ?>
 
@@ -25,11 +25,11 @@
                                 'theme',
                                 $themes,
                                 $config['theme'],
-                                'class="form-control input-sm" id="theme-change"'
+                                'class="form-control input-sm" id="theme-change"',
                             ) ?>
                         </div>
                         <div class="col-sm-7">
-                            <a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
+                            <a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' === ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
                                 <span><?= lang('Config.theme_preview') . ' ' . ucfirst(esc($config['theme'])) . ' ' ?></span>
                                 <span class="glyphicon glyphicon-new-window"></span>
                             </a>
@@ -45,10 +45,10 @@
                         'login_form',
                         [
                             'floating_labels' => lang('Config.floating_labels'),
-                            'input_groups'    => lang('Config.input_groups')
+                            'input_groups'    => lang('Config.input_groups'),
                         ],
                         $config['login_form'],
-                        'class="form-control input-sm"'
+                        'class="form-control input-sm"',
                     ) ?>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                             'type'  => 'number',
                             'min'   => 0,
                             'max'   => 100,
-                            'value' => $config['default_sales_discount']
+                            'value' => $config['default_sales_discount'],
                         ]) ?>
                         <span class="input-group-btn">
                             <?= form_checkbox([
@@ -76,7 +76,7 @@
                                 'data-onstyle' => 'success',
                                 'data-on'      => '<b>' . $config['currency_symbol'] . '</b>',
                                 'data-off'     => '<b>%</b>',
-                                'checked'      => $config['default_sales_discount_type'] == 1
+                                'checked'      => $config['default_sales_discount_type'] === 1,
                             ]) ?>
                         </span>
                     </div>
@@ -94,7 +94,7 @@
                             'type'  => 'number',
                             'min'   => 0,
                             'max'   => 100,
-                            'value' => $config['default_receivings_discount']
+                            'value' => $config['default_receivings_discount'],
                         ]) ?>
                         <span class="input-group-btn">
                             <?= form_checkbox([
@@ -106,7 +106,7 @@
                                 'data-onstyle' => 'success',
                                 'data-on'      => '<b>' . $config['currency_symbol'] . '</b>',
                                 'data-off'     => '<b>%</b>',
-                                'checked'      => $config['default_receivings_discount_type'] == 1
+                                'checked'      => $config['default_receivings_discount_type'] === 1,
                             ]) ?>
                         </span>
                     </div>
@@ -120,7 +120,7 @@
                         'name'    => 'enforce_privacy',
                         'id'      => 'enforce_privacy',
                         'value'   => 'enforce_privacy',
-                        'checked' => $config['enforce_privacy'] == 1
+                        'checked' => $config['enforce_privacy'] === 1,
                     ]) ?>
                     &nbsp;
                     <label class="control-label">
@@ -136,7 +136,7 @@
                         'name'    => 'receiving_calculate_average_price',
                         'id'      => 'receiving_calculate_average_price',
                         'value'   => 'receiving_calculate_average_price',
-                        'checked' => $config['receiving_calculate_average_price'] == 1
+                        'checked' => $config['receiving_calculate_average_price'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                         'type'  => 'number',
                         'min'   => 10,
                         'max'   => 1000,
-                        'value' => $config['lines_per_page']
+                        'value' => $config['lines_per_page'],
                     ]) ?>
                 </div>
             </div>
@@ -165,10 +165,10 @@
                                 'notify_vertical_position',
                                 [
                                     'top'    => lang('Config.top'),
-                                    'bottom' => lang('Config.bottom')
+                                    'bottom' => lang('Config.bottom'),
                                 ],
                                 $config['notify_vertical_position'],
-                                'class="form-control input-sm"'
+                                'class="form-control input-sm"',
                             ) ?>
                         </div>
                         <div class="col-sm-2">
@@ -177,10 +177,10 @@
                                 [
                                     'left'   => lang('Config.left'),
                                     'center' => lang('Config.center'),
-                                    'right'  => lang('Config.right')
+                                    'right'  => lang('Config.right'),
                                 ],
                                 $config['notify_horizontal_position'],
-                                'class="form-control input-sm"'
+                                'class="form-control input-sm"',
                             ) ?>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                                     'value'          => $config['image_max_width'],
                                     'data-toggle'    => 'tooltip',
                                     'data-placement' => 'top',
-                                    'title'          => lang('Config.image_max_width_tooltip')
+                                    'title'          => lang('Config.image_max_width_tooltip'),
                                 ]) ?>
                             </div>
                         </div>
@@ -225,7 +225,7 @@
                                     'value'          => $config['image_max_height'],
                                     'data-toggle'    => 'tooltip',
                                     'data-placement' => 'top',
-                                    'title'          => lang('Config.image_max_height_tooltip')
+                                    'title'          => lang('Config.image_max_height_tooltip'),
                                 ]) ?>
                             </div>
                         </div>
@@ -244,7 +244,7 @@
                                     'value'          => $config['image_max_size'],
                                     'data-toggle'    => 'tooltip',
                                     'data-placement' => 'top',
-                                    'title'          => lang('Config.image_max_size_tooltip')
+                                    'title'          => lang('Config.image_max_size_tooltip'),
                                 ]) ?>
                             </div>
                         </div>
@@ -260,7 +260,7 @@
                                     'data-none-selected-text'   => lang('Common.none_selected_text'),
                                     'data-selected-text-format' => 'count > 1',
                                     'data-style'                => 'btn-default btn-sm',
-                                    'data-width'                => '100%'
+                                    'data-width'                => '100%',
                                 ]) ?>
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                         'name'    => 'gcaptcha_enable',
                         'id'      => 'gcaptcha_enable',
                         'value'   => 'gcaptcha_enable',
-                        'checked' => $config['gcaptcha_enable'] == 1
+                        'checked' => $config['gcaptcha_enable'] === 1,
                     ]) ?>
                     <label class="control-label">
                         <a href="https://www.google.com/recaptcha/admin" target="_blank">
@@ -292,7 +292,7 @@
                         'name'  => 'gcaptcha_site_key',
                         'id'    => 'gcaptcha_site_key',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['gcaptcha_site_key']
+                        'value' => $config['gcaptcha_site_key'],
                     ]) ?>
                 </div>
             </div>
@@ -304,7 +304,7 @@
                         'name'  => 'gcaptcha_secret_key',
                         'id'    => 'gcaptcha_secret_key',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['gcaptcha_secret_key']
+                        'value' => $config['gcaptcha_secret_key'],
                     ]) ?>
                 </div>
             </div>
@@ -322,10 +322,10 @@
                                         'name'        => lang('Items.name'),
                                         'item_number' => lang('Items.number_information'),
                                         'unit_price'  => lang('Items.unit_price'),
-                                        'cost_price'  => lang('Items.cost_price')
+                                        'cost_price'  => lang('Items.cost_price'),
                                     ],
                                     $config['suggestions_first_column'],
-                                    'class="form-control input-sm"'
+                                    'class="form-control input-sm"',
                                 ) ?>
                             </div>
                         </div>
@@ -339,10 +339,10 @@
                                         'name'        => lang('Items.name'),
                                         'item_number' => lang('Items.number_information'),
                                         'unit_price'  => lang('Items.unit_price'),
-                                        'cost_price'  => lang('Items.cost_price')
+                                        'cost_price'  => lang('Items.cost_price'),
                                     ],
                                     $config['suggestions_second_column'],
-                                    'class="form-control input-sm"'
+                                    'class="form-control input-sm"',
                                 ) ?>
                             </div>
                         </div>
@@ -356,10 +356,10 @@
                                         'name'        => lang('Items.name'),
                                         'item_number' => lang('Items.number_information'),
                                         'unit_price'  => lang('Items.unit_price'),
-                                        'cost_price'  => lang('Items.cost_price')
+                                        'cost_price'  => lang('Items.cost_price'),
                                     ],
                                     $config['suggestions_third_column'],
-                                    'class="form-control input-sm"'
+                                    'class="form-control input-sm"',
                                 ) ?>
                             </div>
                         </div>
@@ -374,7 +374,7 @@
                         <?= form_radio([
                             'name'    => 'giftcard_number',
                             'value'   => 'series',
-                            'checked' => $config['giftcard_number'] == 'series'
+                            'checked' => $config['giftcard_number'] === 'series',
                         ]) ?>
                         <?= lang('Config.giftcard_series') ?>
                     </label>
@@ -382,7 +382,7 @@
                         <?= form_radio([
                             'name'    => 'giftcard_number',
                             'value'   => 'random',
-                            'checked' => $config['giftcard_number'] == 'random'
+                            'checked' => $config['giftcard_number'] === 'random',
                         ]) ?>
                         <?= lang('Config.giftcard_random') ?>
                     </label>
@@ -396,7 +396,7 @@
                         'name'    => 'derive_sale_quantity',
                         'id'      => 'derive_sale_quantity',
                         'value'   => 'derive_sale_quantity',
-                        'checked' => $config['derive_sale_quantity'] == 1
+                        'checked' => $config['derive_sale_quantity'] === 1,
                     ]) ?>
                     &nbsp;
                     <label class="control-label">
@@ -412,7 +412,7 @@
                         'name'    => 'show_office_group',
                         'id'      => 'show_office_group',
                         'value'   => 'show_office_group',
-                        'checked' => $show_office_group > 0
+                        'checked' => $show_office_group > 0,
                     ]) ?>
                 </div>
             </div>
@@ -424,7 +424,7 @@
                         'name'    => 'multi_pack_enabled',
                         'id'      => 'multi_pack_enabled',
                         'value'   => 'multi_pack_enabled',
-                        'checked' => $config['multi_pack_enabled'] == 1
+                        'checked' => $config['multi_pack_enabled'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -436,7 +436,7 @@
                         'name'    => 'include_hsn',
                         'id'      => 'include_hsn',
                         'value'   => 'include_hsn',
-                        'checked' => $config['include_hsn'] == 1
+                        'checked' => $config['include_hsn'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -448,7 +448,7 @@
                         'name'    => 'category_dropdown',
                         'id'      => 'category_dropdown',
                         'value'   => 'category_dropdown',
-                        'checked' => $config['category_dropdown'] == 1
+                        'checked' => $config['category_dropdown'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -457,7 +457,7 @@
                 'name'  => 'submit_general',
                 'id'    => 'submit_general',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -489,11 +489,11 @@
             rules: {
                 lines_per_page: {
                     required: true,
-                    remote: "<?= "$controller_name/checkNumeric" ?>"
+                    remote: "<?= "{$controller_name}/checkNumeric" ?>"
                 },
                 default_sales_discount: {
                     required: true,
-                    remote: "<?= "$controller_name/checkNumeric" ?>"
+                    remote: "<?= "{$controller_name}/checkNumeric" ?>"
                 },
                 gcaptcha_site_key: {
                     required: "#gcaptcha_enable:checked"

@@ -2,7 +2,7 @@
 /**
  * @var string $controller_name
  * @var string $table_headers
- * @var array $config
+ * @var array  $config
  */
 ?>
 
@@ -34,11 +34,11 @@
 
 <div id="title_bar" class="btn-toolbar">
     <?php if ($controller_name === 'customers') { ?>
-        <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang(ucfirst($controller_name) . '.import_items_csv') ?>">
+        <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "{$controller_name}/csvImport" ?>" title="<?= lang(ucfirst($controller_name) . '.import_items_csv') ?>">
             <span class="glyphicon glyphicon-import">&nbsp;</span><?= lang('Common.import_csv') ?>
         </button>
     <?php } ?>
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
+    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "{$controller_name}/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
         <span class="glyphicon glyphicon-user">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new') ?>
     </button>
 </div>

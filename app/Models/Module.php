@@ -10,26 +10,22 @@ use CodeIgniter\Model;
  */
 class Module extends Model
 {
-    protected $table = 'modules';
-    protected $primaryKey = 'module_id';
+    protected $table            = 'modules';
+    protected $primaryKey       = 'module_id';
     protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'name_lang_key',
         'desc_lang_key',
-        'sort'
+        'sort',
     ];
 
-    /**
-     * @param string $module_id
-     * @return string
-     */
     public function get_module_name(string $module_id): string
     {
         $builder = $this->db->table('modules');
-        $query = $builder->getWhere(['module_id' => $module_id], 1);
+        $query   = $builder->getWhere(['module_id' => $module_id], 1);
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             $row = $query->getRow();
 
             return lang($row->name_lang_key);
@@ -38,16 +34,12 @@ class Module extends Model
         return lang('Errors.unknown');
     }
 
-    /**
-     * @param string $module_id
-     * @return string
-     */
     public function get_module_desc(string $module_id): string    // TODO: This method doesn't seem to be called in the code.  Is it needed?  Also, probably should change the name to get_module_description()
     {
         $builder = $this->db->table('modules');
-        $query = $builder->getWhere(['module_id' => $module_id], 1);
+        $query   = $builder->getWhere(['module_id' => $module_id], 1);
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             $row = $query->getRow();
 
             return lang($row->desc_lang_key);
@@ -56,9 +48,6 @@ class Module extends Model
         return lang('Errors.unknown');
     }
 
-    /**
-     * @return ResultInterface
-     */
     public function get_all_permissions(): ResultInterface
     {
         $builder = $this->db->table('permissions');
@@ -66,9 +55,6 @@ class Module extends Model
         return $builder->get();
     }
 
-    /**
-     * @return ResultInterface
-     */
     public function get_all_subpermissions(): ResultInterface
     {
         $builder = $this->db->table('permissions');
@@ -80,9 +66,6 @@ class Module extends Model
         return $builder->get();
     }
 
-    /**
-     * @return ResultInterface
-     */
     public function get_all_modules(): ResultInterface
     {
         $builder = $this->db->table('modules');
@@ -91,13 +74,9 @@ class Module extends Model
         return $builder->get();
     }
 
-    /**
-     * @param int $person_id
-     * @return ResultInterface
-     */
     public function get_allowed_home_modules(int $person_id): ResultInterface
     {
-        $menus = ['home', 'both'];
+        $menus   = ['home', 'both'];
         $builder = $this->db->table('modules');    // TODO: this is duplicated with the code below... probably refactor a method and just pass through whether home/office modules are needed.
         $builder->join('permissions', 'permissions.permission_id = modules.module_id');
         $builder->join('grants', 'permissions.permission_id = grants.permission_id');
@@ -109,13 +88,9 @@ class Module extends Model
         return $builder->get();
     }
 
-    /**
-     * @param int $person_id
-     * @return ResultInterface
-     */
     public function get_allowed_office_modules(int $person_id): ResultInterface
     {
-        $menus = ['office', 'both'];
+        $menus   = ['office', 'both'];
         $builder = $this->db->table('modules');    // TODO: Duplicated code
         $builder->join('permissions', 'permissions.permission_id = modules.module_id');
         $builder->join('grants', 'permissions.permission_id = grants.permission_id');

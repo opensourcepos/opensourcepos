@@ -1,9 +1,9 @@
 <?php
 /**
  * @var string $specific_input_name
- * @var array $specific_input_data
- * @var array $sale_type_options
- * @var array $config
+ * @var array  $specific_input_data
+ * @var array  $sale_type_options
+ * @var array  $config
  */
 ?>
 
@@ -53,7 +53,7 @@ if (isset($error)) {
                     'class' => 'form-control input-sm required',
                     'type'  => 'number',
                     'min'   => 0,
-                    'value' => $config['default_sales_discount']
+                    'value' => $config['default_sales_discount'],
                 ]) ?>
             </div>
         <?php } ?>
@@ -66,12 +66,11 @@ if (isset($error)) {
         </div>
     </div>
 
-    <?php
-    echo form_button([
+    <?= form_button([
         'name'    => 'generate_report',
         'id'      => 'generate_report',
         'content' => lang('Common.submit'),
-        'class'   => 'btn btn-primary btn-sm'
+        'class'   => 'btn btn-primary btn-sm',
     ]) ?>
 
 <?= form_close() ?>
