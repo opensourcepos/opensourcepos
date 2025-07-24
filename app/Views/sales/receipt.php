@@ -42,9 +42,50 @@ if (isset($error_message)) {
     </script>
 <?php endif; ?>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Avatar toggle functionality
+        const STORAGE_KEY = 'receipt_avatar_visible';
+        
+        // Get saved state from localStorage, default to visible (true)
+        let isAvatarVisible = localStorage.getItem(STORAGE_KEY) !== 'false';
+        
+        // Apply initial state
+        updateAvatarVisibility(isAvatarVisible);
+        
+        // Handle toggle button click
+        $('#toggle_avatar_button').click(function() {
+            isAvatarVisible = !isAvatarVisible;
+            updateAvatarVisibility(isAvatarVisible);
+            localStorage.setItem(STORAGE_KEY, isAvatarVisible);
+        });
+        
+        function updateAvatarVisibility(visible) {
+            const $avatarElements = $('.receipt-avatar-column');
+            const $toggleButton = $('#toggle_avatar_button');
+            const $toggleText = $('#avatar_toggle_text');
+            
+            if (visible) {
+                $avatarElements.removeClass('hidden');
+                $toggleButton.removeClass('active');
+                $toggleText.text('Hide Avatar');
+            } else {
+                $avatarElements.addClass('hidden');
+                $toggleButton.addClass('active');
+                $toggleText.text('Show Avatar');
+            }
+        }
+    });
+</script>
+
 <?= view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align: right;">
+    <a href="javascript:void(0);">
+        <div class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+            <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
+        </div>
+    </a>
     <a href="javascript:printdoc();">
         <div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print') ?></div>
     </a>
