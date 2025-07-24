@@ -64,6 +64,7 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
 
     <table id="receipt_items">
         <tr>
+            <th style="width: 15%;"><?= lang('Items.image') ?></th>
             <th style="width: 40%;"><?= lang('Items.item') ?></th>
             <th style="width: 20%;"><?= lang('Common.price') ?></th>
             <th style="width: 20%;"><?= lang('Sales.quantity') ?></th>
@@ -72,6 +73,13 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
 
         <?php foreach (array_reverse($cart, true) as $line => $item) { ?>
             <tr>
+                <td>
+
+                    <?php if (!empty($item['pic_filename'])): ?>
+                        <img src="<?= base_url('uploads/item_pics/' . esc($item['pic_filename'], 'url')) ?>" alt="avatar" style="height:40px;max-width:40px;">
+                       
+                    <?php endif; ?>
+                </td>
                 <td><?= esc($item['name'] . ' ' . $item['attribute_values']) ?></td>
                 <td><?= to_currency($item['price']) ?></td>
                 <td><?= to_quantity_decimals($item['quantity']) . ' ' . ($show_stock_locations ? ' [' . esc($item['stock_name']) . ']' : '') ?>&nbsp;&nbsp;&nbsp;x <?= $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1 ?></td>

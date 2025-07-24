@@ -51,6 +51,7 @@
 
     <table id="receipt_items">
         <tr>
+             <th style="width: 15%;"><?= lang('Items.image') ?></th>
             <th style="width: 40%;"><?= lang('Sales.description_abbrv') ?></th>
             <th style="width: 20%;"><?= lang('Sales.price') ?></th>
             <th style="width: 20%;"><?= lang('Sales.quantity') ?></th>
@@ -64,6 +65,12 @@
             if ($item['print_option'] == PRINT_YES) {
         ?>
                 <tr>
+                    <td>
+                         <?php if (!empty($item['pic_filename'])): ?>
+                                       <img src="<?= base_url('uploads/item_pics/' . esc($item['pic_filename'], 'url')) ?>" alt="avatar" style="height:40px;max-width:40px;">
+                       
+                        <?php endif; ?>
+                    </td>
                     <td><?= esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
                     <td><?= to_currency($item['price']) ?></td>
                     <td><?= to_quantity_decimals($item['quantity']) ?></td>

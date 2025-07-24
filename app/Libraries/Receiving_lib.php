@@ -341,7 +341,8 @@ class Receiving_lib
                 'price'                      => $price,
                 'receiving_quantity'         => $receivingQuantity,
                 'receiving_quantity_choices' => $receivingQuantityChoices,
-                'total'                      => $this->get_item_total($quantity, $price, $discount, $discountType, $receivingQuantity)
+                'total'                      => $this->get_item_total($quantity, $price, $discount, $discountType, $receivingQuantity),
+                'pic_filename'               => $itemInfo->pic_filename,
             ]
         ];
 

@@ -63,7 +63,8 @@ use App\Models\Employee;
             onLoadSuccess: function(response) {
                 $('a.rollover').imgPreview({
                     imgCSS: {
-                        width: 200
+                        width: 200,
+                        
                     },
                     distanceFromCursor: {
                         top: 10,
@@ -124,7 +125,7 @@ use App\Models\Employee;
 </div>
 
 <div id="table_holder">
-    <table id="table"></table>
+    <table id="table" style="padding:10px; !important"></table>
 </div>
 
 <?= view('partial/footer') ?>
