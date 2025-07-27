@@ -62,3 +62,21 @@
 .discount {
     font-weight: bold;
 }
+
+/* Avatar toggle functionality */
+.receipt-avatar-column {
+    display: table-cell;
+}
+
+.receipt-avatar-column.hidden {
+    display: none !important;
+}
+
+.receipt-avatar-toggle-btn {
+    margin-right: 5px;
+}
+
+.receipt-avatar-toggle-btn.active {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
