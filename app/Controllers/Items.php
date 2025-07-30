@@ -147,8 +147,8 @@ class Items extends Secure_Controller
         helper('file');
 
         $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
-        $images = glob("./uploads/item_pics/$pic_filename");
-        $base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
+        $images = glob("./writable/uploads/item_pics/$pic_filename");
+        $base_path = './writable/uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
 
         if (sizeof($images) > 0) {
             $image_path = $images[0];
@@ -367,9 +367,9 @@ class Items extends Secure_Controller
         if ($item_info->pic_filename != null) {
             $file_extension = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
             if (empty($file_extension)) {
-                $images = glob("./uploads/item_pics/$item_info->pic_filename.*");
+                $images = glob("./writable/uploads/item_pics/$item_info->pic_filename.*");
             } else {
-                $images = glob("./uploads/item_pics/$item_info->pic_filename");
+                $images = glob("./writable/uploads/item_pics/$item_info->pic_filename");
             }
             $data['image_path']    = sizeof($images) > 0 ? base_url($images[0]) : '';
         } else {
