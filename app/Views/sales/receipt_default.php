@@ -57,13 +57,13 @@
         $total_colspan = 4; // avatar + description + price + quantity
         ?>
         <tr>
-             <th class="receipt-avatar-column" style="width: 15%;"><?= lang('Items.image') ?></th>
+             <th class="receipt-avatar-column" style="width: 10%;"><?= lang('Items.image') ?></th>
             <th style="width: 40%;"><?= lang('Sales.description_abbrv') ?></th>
-            <th style="width: 20%;"><?= lang('Sales.price') ?></th>
-            <th style="width: 20%;"><?= lang('Sales.quantity') ?></th>
+            <th style="width: 15%;"><?= lang('Sales.price') ?></th>
+            <th style="width: 15%;"><?= lang('Sales.quantity') ?></th>
             <th style="width: 20%;" class="total-value"><?= lang('Sales.total') ?></th>
             <?php if ($config['receipt_show_tax_ind']) { ?>
-                <th style="width: 20%;"></th>
+                <th style="width: 10%;"></th>
             <?php } ?>
         </tr>
         <?php
