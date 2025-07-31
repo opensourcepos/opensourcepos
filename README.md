@@ -42,6 +42,7 @@ The features include:
 - Selectable Bootstrap based UI theme with Bootswatch
 - MailChimp integration
 - Optional Google reCAPTCHA to protect the login page from brute force attacks
+- Optional Cloudflare Turnstile as a privacy-focused alternative to reCAPTCHA
 - GDPR ready
 
 ## 🧪 Live Demo

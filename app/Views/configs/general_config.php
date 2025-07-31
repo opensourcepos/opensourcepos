@@ -310,6 +310,47 @@
             </div>
 
             <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.turnstile_enable'), 'turnstile_enable', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-1">
+                    <?= form_checkbox([
+                        'name'    => 'turnstile_enable',
+                        'id'      => 'turnstile_enable',
+                        'value'   => 'turnstile_enable',
+                        'checked' => ($config['turnstile_enable'] ?? 0) == 1
+                    ]) ?>
+                    <label class="control-label">
+                        <a href="https://developers.cloudflare.com/turnstile/" target="_blank">
+                            <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.turnstile_tooltip') ?>"></span>
+                        </a>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.turnstile_site_key'), 'config_turnstile_site_key', ['class' => 'required control-label col-xs-2', 'id' => 'config_turnstile_site_key']) ?>
+                <div class="col-xs-4">
+                    <?= form_input([
+                        'name'  => 'turnstile_site_key',
+                        'id'    => 'turnstile_site_key',
+                        'class' => 'form-control input-sm required',
+                        'value' => $config['turnstile_site_key'] ?? ''
+                    ]) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.turnstile_secret_key'), 'config_turnstile_secret_key', ['class' => 'required control-label col-xs-2', 'id' => 'config_turnstile_secret_key']) ?>
+                <div class="col-xs-4">
+                    <?= form_input([
+                        'name'  => 'turnstile_secret_key',
+                        'id'    => 'turnstile_secret_key',
+                        'class' => 'form-control input-sm required',
+                        'value' => $config['turnstile_secret_key'] ?? ''
+                    ]) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.suggestions_layout'), 'suggestions_layout', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-sm-10">
                     <div class="form-group form-group-sm row">
@@ -480,7 +521,21 @@
             return arguments.callee;
         })();
 
+        var enable_disable_turnstile_enable = (function() {
+            var turnstile_enable = $("#turnstile_enable").is(":checked");
+            if (turnstile_enable) {
+                $("#turnstile_site_key, #turnstile_secret_key").prop("disabled", !turnstile_enable).addClass("required");
+                $("#config_turnstile_site_key, #config_turnstile_secret_key").addClass("required");
+            } else {
+                $("#turnstile_site_key, #turnstile_secret_key").prop("disabled", turnstile_enable).removeClass("required");
+                $("#config_turnstile_site_key, #config_turnstile_secret_key").removeClass("required");
+            }
+
+            return arguments.callee;
+        })();
+
         $("#gcaptcha_enable").change(enable_disable_gcaptcha_enable);
+        $("#turnstile_enable").change(enable_disable_turnstile_enable);
 
         $('#general_config_form').validate($.extend(form_support.handler, {
 
@@ -500,6 +555,12 @@
                 },
                 gcaptcha_secret_key: {
                     required: "#gcaptcha_enable:checked"
+                },
+                turnstile_site_key: {
+                    required: "#turnstile_enable:checked"
+                },
+                turnstile_secret_key: {
+                    required: "#turnstile_enable:checked"
                 }
             },
 
@@ -517,6 +578,12 @@
                 },
                 gcaptcha_secret_key: {
                     required: "<?= lang('Config.gcaptcha_secret_key_required') ?>"
+                },
+                turnstile_site_key: {
+                    required: "<?= lang('Config.turnstile_site_key_required') ?>"
+                },
+                turnstile_secret_key: {
+                    required: "<?= lang('Config.turnstile_secret_key_required') ?>"
                 }
             },
 
@@ -524,6 +591,7 @@
                 $(form).ajaxSubmit({
                     beforeSerialize: function(arr, $form, options) {
                         $("#gcaptcha_site_key, #gcaptcha_secret_key").prop("disabled", false);
+                        $("#turnstile_site_key, #turnstile_secret_key").prop("disabled", false);
                         return true;
                     },
                     success: function(response) {
@@ -534,6 +602,7 @@
                         })
                         // Set back disabled state
                         enable_disable_gcaptcha_enable();
+                        enable_disable_turnstile_enable();
                     },
                     dataType: 'json'
                 });
