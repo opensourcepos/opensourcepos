@@ -1,0 +1,89 @@
+name: Sync with Upstream OSPOS
+
+on:
+  schedule:
+    # Run every Sunday at midnight UTC
+    - cron: '0 0 * * 0'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      force_sync:
+        description: 'Force sync even if there are conflicts'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  sync-upstream:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/opensourcepos/opensourcepos.git
+          git fetch upstream
+      
+      - name: Check for upstream changes
+        id: check_changes
+        run: |
+          UPSTREAM_COMMITS=$(git rev-list --count master..upstream/master)
+          echo "upstream_commits=$UPSTREAM_COMMITS" >> $GITHUB_OUTPUT
+          echo "Found $UPSTREAM_COMMITS new commits in upstream"
+      
+      - name: Sync with upstream
+        if: steps.check_changes.outputs.upstream_commits > 0
+        run: |
+          echo "🔄 Syncing with upstream..."
+          git checkout master
+          
+          # Try to merge upstream changes
+          if git merge upstream/master --no-edit; then
+            echo "✅ Successfully merged upstream changes"
+            git push origin master
+            echo "📤 Pushed updates to fork"
+          else
+            echo "⚠️ Merge conflicts detected"
+            echo "Please resolve conflicts manually"
+            exit 1
+          fi
+      
+      - name: Create Pull Request for conflicts
+        if: failure()
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Sync with upstream - conflicts detected"
+          title: "🔄 Upstream Sync - Manual Conflict Resolution Required"
+          body: |
+            ## Upstream Sync Conflicts
+            
+            This PR was created because there were conflicts when trying to automatically sync with the upstream OSPOS repository.
+            
+            **Please review and resolve conflicts manually:**
+            
+            1. Check the conflicted files
+            2. Resolve conflicts while preserving your custom changes
+            3. Test the merged code
+            4. Merge this PR when ready
+            
+            **Upstream repository:** https://github.com/opensourcepos/opensourcepos
+          branch: sync-upstream-conflicts
+          delete-branch: true
+      
+      - name: Notify success
+        if: success() && steps.check_changes.outputs.upstream_commits > 0
+        run: |
+          echo "✅ Successfully synced with upstream OSPOS!"
+          echo "📊 Merged ${{ steps.check_changes.outputs.upstream_commits }} new commits"

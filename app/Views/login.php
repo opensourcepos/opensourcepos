@@ -127,32 +127,65 @@
         document.addEventListener('DOMContentLoaded', function() {
             const loginForm = document.querySelector('form');
             if (loginForm) {
+                let submitAttempts = 0;
+                
                 loginForm.addEventListener('submit', function(e) {
+                    submitAttempts++;
                     let captchaValid = true;
+                    let captchaWidgetFound = false;
                     
                     <?php if ($gcaptcha_enabled): ?>
                     // Check Google reCAPTCHA
-                    if (typeof grecaptcha !== 'undefined') {
-                        const recaptchaResponse = grecaptcha.getResponse();
-                        if (!recaptchaResponse) {
-                            captchaValid = false;
+                    const recaptchaDiv = document.querySelector('.g-recaptcha');
+                    if (recaptchaDiv) {
+                        captchaWidgetFound = true;
+                        if (typeof grecaptcha !== 'undefined') {
+                            const recaptchaResponse = grecaptcha.getResponse();
+                            if (!recaptchaResponse) {
+                                captchaValid = false;
+                            }
+                        } else {
+                            captchaValid = false; // reCAPTCHA script not loaded
                         }
                     }
                     <?php endif; ?>
                     
                     <?php if ($turnstile_enabled): ?>
                     // Check Cloudflare Turnstile
-                    const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]');
-                    if (turnstileResponse && !turnstileResponse.value) {
-                        captchaValid = false;
+                    const turnstileDiv = document.querySelector('.cf-turnstile');
+                    if (turnstileDiv) {
+                        captchaWidgetFound = true;
+                        const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]');
+                        if (!turnstileResponse || !turnstileResponse.value) {
+                            captchaValid = false;
+                        }
                     }
                     <?php endif; ?>
                     
+                    // If no captcha widget found, allow submission (captcha disabled)
+                    if (!captchaWidgetFound) {
+                        return true;
+                    }
+                    
                     if (!captchaValid) {
                         e.preventDefault();
-                        alert('Please complete the security verification.');
+                        e.stopPropagation();
+                        
+                        if (submitAttempts === 1) {
+                            alert('Please complete the security verification.');
+                        } else {
+                            alert('Security verification required. If you continue to see this message, please contact the administrator.');
+                        }
+                        
+                        // Reset submit attempts after a delay
+                        setTimeout(function() {
+                            submitAttempts = 0;
+                        }, 5000);
+                        
                         return false;
                     }
+                    
+                    return true;
                 });
             }
         });
