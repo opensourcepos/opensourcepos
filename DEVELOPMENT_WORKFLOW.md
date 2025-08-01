@@ -16,39 +16,53 @@ sahand009/opensourcepos (your fork)
 ## Quick Commands
 
 ### Sync with Upstream
-```powershell
+```cmd
 # Manual sync
-.\sync-upstream.ps1
+git fetch upstream
+git checkout master
+git pull origin master
+git merge upstream/master --no-edit
+git push origin master
 
-# Or using the branch manager
-.\manage-branches.ps1 -Action sync
+# Or use the batch script
+.\sync-upstream.bat
 ```
 
 ### Feature Branch Management
-```powershell
+```cmd
 # Create new feature branch
-.\manage-branches.ps1 -Action create -BranchName "turnstile-enhancement"
+git checkout master
+git pull origin master
+git checkout -b feature/your-feature-name
+git push -u origin feature/your-feature-name
 
 # List all branches
-.\manage-branches.ps1 -Action list
+git branch -a
 
 # Switch to feature branch
-.\manage-branches.ps1 -Action switch -BranchName "feature/turnstile-enhancement"
+git checkout feature/your-feature-name
 
 # Merge feature to master
-.\manage-branches.ps1 -Action merge -BranchName "feature/turnstile-enhancement"
+git checkout master
+git pull origin master
+git merge feature/your-feature-name --no-edit
+git push origin master
 
 # Delete feature branch
-.\manage-branches.ps1 -Action delete -BranchName "feature/turnstile-enhancement"
+git branch -d feature/your-feature-name
+git push origin --delete feature/your-feature-name
 ```
 
 ## Workflow Steps
 
 ### 1. Starting a New Feature
 
-```powershell
+```cmd
 # Create and switch to new feature branch
-.\manage-branches.ps1 -Action create -BranchName "my-new-feature"
+git checkout master
+git pull origin master
+git checkout -b feature/my-new-feature
+git push -u origin feature/my-new-feature
 
 # Make your changes
 # ... edit files ...
@@ -63,19 +77,27 @@ git push origin feature/my-new-feature
 
 The repository automatically syncs with upstream every Sunday, or you can manually sync:
 
-```powershell
+```cmd
 # Manual sync
-.\sync-upstream.ps1
+git fetch upstream
+git checkout master
+git pull origin master
+git merge upstream/master --no-edit
+git push origin master
 ```
 
 ### 3. Merging Features
 
-```powershell
+```cmd
 # Merge your feature to master
-.\manage-branches.ps1 -Action merge -BranchName "feature/my-new-feature"
+git checkout master
+git pull origin master
+git merge feature/my-new-feature --no-edit
+git push origin master
 
 # Clean up (optional)
-.\manage-branches.ps1 -Action delete -BranchName "feature/my-new-feature"
+git branch -d feature/my-new-feature
+git push origin --delete feature/my-new-feature
 ```
 
 ## Automatic Synchronization
@@ -116,9 +138,12 @@ When upstream changes conflict with your changes:
 
 ## Example Feature Development
 
-```powershell
+```cmd
 # 1. Create feature branch
-.\manage-branches.ps1 -Action create -BranchName "enhanced-reporting"
+git checkout master
+git pull origin master
+git checkout -b feature/enhanced-reporting
+git push -u origin feature/enhanced-reporting
 
 # 2. Develop your feature
 # ... make changes to reports ...
@@ -127,10 +152,14 @@ git commit -m "Add enhanced reporting features"
 git push origin feature/enhanced-reporting
 
 # 3. Merge when ready
-.\manage-branches.ps1 -Action merge -BranchName "feature/enhanced-reporting"
+git checkout master
+git pull origin master
+git merge feature/enhanced-reporting --no-edit
+git push origin master
 
 # 4. Clean up
-.\manage-branches.ps1 -Action delete -BranchName "feature/enhanced-reporting"
+git branch -d feature/enhanced-reporting
+git push origin --delete feature/enhanced-reporting
 ```
 
 ## Monitoring
