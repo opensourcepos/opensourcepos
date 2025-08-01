@@ -687,10 +687,10 @@ class Items extends Secure_Controller
             $item_data['reorder_level'] = 0;
         }
 
-        $tax_category_id = intval($this->request->getPost('tax_category_id'));
+        $tax_category_id = $this->request->getPost('tax_category_id');
 
         if (!isset($tax_category_id)) {
-            $item_data['tax_category_id'] = '';
+            $item_data['tax_category_id'] = null;
         } else {
             $item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? null : intval($this->request->getPost('tax_category_id'));
         }

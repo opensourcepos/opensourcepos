@@ -21,4 +21,4 @@ We release patches for security vulnerabilities. Which versions are eligible to 
 
 ## Reporting a Vulnerability
 
-Please report (suspected) security vulnerabilities to **[jekkos@opensourcepos.org](mailto:jekkos@opensourcepos.org)**. You will receive a response from us within 48 hours. If the issue is confirmed, we will release a patch as soon as possible depending on complexity but historically within a few days.
+Please report (suspected) security vulnerabilities to **[jekkos@steganos.dev](mailto:jekkos@steganos.dev)**. You will receive a response from us within 48 hours. If the issue is confirmed, we will release a patch as soon as possible depending on complexity but historically within a few days.

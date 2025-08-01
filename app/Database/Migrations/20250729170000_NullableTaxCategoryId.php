@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Migration_MissingConfigKeys extends Migration
+class Migration_NullableTaxCategoryId extends Migration
 {
     /**
      * Perform a migration step.
