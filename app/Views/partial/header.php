@@ -23,7 +23,6 @@ $request = Services::request();
 
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:debug:css -->
-        <link rel="stylesheet" href="resources/css/jquery-ui-fe010342cb.css">
         <link rel="stylesheet" href="resources/css/bootstrap-dialog-1716ef6e7c.css">
         <link rel="stylesheet" href="resources/css/jasny-bootstrap-40bf85f3ed.css">
         <link rel="stylesheet" href="resources/css/bootstrap-datetimepicker-66374fba71.css">
