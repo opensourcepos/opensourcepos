@@ -4,6 +4,7 @@
  * @var bool $is_latest
  * @var string $latest_version
  * @var bool $gcaptcha_enabled
+ * @var bool $turnstile_enabled
  * @var array $config
  * @var $validation
  */
@@ -92,7 +93,11 @@
                 <?php
                 if ($gcaptcha_enabled) {
                     echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-                    echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . $config['gcaptcha_site_key'] . '"></div>';
+                    echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . ($config['gcaptcha_site_key'] ?? '') . '"></div>';
+                }
+                if ($turnstile_enabled) {
+                    echo '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>';
+                    echo '<div class="cf-turnstile mb-3" style="text-align: center;" data-sitekey="' . ($config['turnstile_site_key'] ?? '') . '"></div>';
                 }
                 ?>
                 <div class="d-grid">
@@ -115,6 +120,77 @@
             <span><?= lang('Common.software_title') ?></span>
         </div>
     </footer>
+
+    <?php if ($gcaptcha_enabled || $turnstile_enabled): ?>
+    <script>
+        // Enhanced form validation for CAPTCHA systems
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.querySelector('form');
+            if (loginForm) {
+                let submitAttempts = 0;
+                
+                loginForm.addEventListener('submit', function(e) {
+                    submitAttempts++;
+                    let captchaValid = true;
+                    let captchaWidgetFound = false;
+                    
+                    <?php if ($gcaptcha_enabled): ?>
+                    // Check Google reCAPTCHA
+                    const recaptchaDiv = document.querySelector('.g-recaptcha');
+                    if (recaptchaDiv) {
+                        captchaWidgetFound = true;
+                        if (typeof grecaptcha !== 'undefined') {
+                            const recaptchaResponse = grecaptcha.getResponse();
+                            if (!recaptchaResponse) {
+                                captchaValid = false;
+                            }
+                        } else {
+                            captchaValid = false; // reCAPTCHA script not loaded
+                        }
+                    }
+                    <?php endif; ?>
+                    
+                    <?php if ($turnstile_enabled): ?>
+                    // Check Cloudflare Turnstile
+                    const turnstileDiv = document.querySelector('.cf-turnstile');
+                    if (turnstileDiv) {
+                        captchaWidgetFound = true;
+                        const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]');
+                        if (!turnstileResponse || !turnstileResponse.value) {
+                            captchaValid = false;
+                        }
+                    }
+                    <?php endif; ?>
+                    
+                    // If no captcha widget found, allow submission (captcha disabled)
+                    if (!captchaWidgetFound) {
+                        return true;
+                    }
+                    
+                    if (!captchaValid) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (submitAttempts === 1) {
+                            alert('Please complete the security verification.');
+                        } else {
+                            alert('Security verification required. If you continue to see this message, please contact the administrator.');
+                        }
+                        
+                        // Reset submit attempts after a delay
+                        setTimeout(function() {
+                            submitAttempts = 0;
+                        }, 5000);
+                        
+                        return false;
+                    }
+                    
+                    return true;
+                });
+            }
+        });
+    </script>
+    <?php endif; ?>
 </body>
 
 </html>

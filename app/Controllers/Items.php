@@ -137,35 +137,87 @@ class Items extends Secure_Controller
     }
 
     /**
+ * Helper method to serve images with proper headers
+ * @param string $imagePath
+ * @return void
+ */
+
+    private function serveImage(string $imagePath): void
+{
+    if (!file_exists($imagePath)) {
+        $this->response->setStatusCode(404);
+        $this->response->send();
+        return;
+    }
+
+    $mimeType = mime_content_type($imagePath);
+    $this->response->setContentType($mimeType);
+    $this->response->setHeader('Content-Length', filesize($imagePath));
+    $this->response->setBody(file_get_contents($imagePath));
+    $this->response->send();
+}
+
+
+    /**
      * AJAX function. Processes thumbnail of image. Called via tabular_helper
      * @param string $pic_filename
      * @return void
      * @noinspection PhpUnused
      */
     public function getPicThumb(string $pic_filename): void
-    {
-        helper('file');
+{
+    helper('file');
 
-        $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
-        $images = glob("./uploads/item_pics/$pic_filename");
-        $base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
+    $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
+    $upload_path = FCPATH . 'uploads/item_pics/';
+    
+    // Handle files with and without extensions
+    if (empty($file_extension)) {
+        $images = glob($upload_path . $pic_filename . '.*');
+    } else {
+        $images = glob($upload_path . $pic_filename);
+    }
+    
+    if (sizeof($images) > 0) {
+        $image_path = $images[0];
+        $actual_extension = pathinfo($image_path, PATHINFO_EXTENSION);
+        $base_path = $upload_path . pathinfo($pic_filename, PATHINFO_FILENAME);
+        $thumb_path = $base_path . "_thumb.$actual_extension";
 
-        if (sizeof($images) > 0) {
-            $image_path = $images[0];
-            $thumb_path = $base_path . "_thumb.$file_extension";
-
-            if (sizeof($images) < 2 && !file_exists($thumb_path)) {
+        // Try to create thumbnail if it doesn't exist
+        if (!file_exists($thumb_path)) {
+            try {
                 $image = Services::image('gd2');
                 $image->withFile($image_path)
                     ->resize(52, 32, true, 'height')
                     ->save($thumb_path);
+            } catch (Exception $e) {
+                // If thumbnail creation fails, serve original image
+                log_message('error', 'Thumbnail creation failed: ' . $e->getMessage());
+                $this->serveImage($image_path);
+                return;
             }
+        }
 
-            $this->response->setContentType(mime_content_type($thumb_path));
-            $this->response->setBody(file_get_contents($thumb_path));
+        // Serve thumbnail if it exists, otherwise serve original
+        if (file_exists($thumb_path)) {
+            $this->serveImage($thumb_path);
+        } else {
+            $this->serveImage($image_path);
+        }
+    } else {
+        // No image found, serve default
+        $default_image = FCPATH . 'public/images/no-img.png';
+        if (file_exists($default_image)) {
+            $this->serveImage($default_image);
+        } else {
+            // Return 404 if no default image
+            $this->response->setStatusCode(404);
             $this->response->send();
         }
     }
+}
+
 
     /**
      * Gives search suggestions based on what is being searched for

@@ -1,0 +1,69 @@
+---
+deployment:
+  tasks:
+    # Set deployment path (adjust if needed)
+    - export DEPLOYPATH=/public_html/
+    
+    # Create backup of existing .env file if it exists
+    - if [ -f $DEPLOYPATH/.env ]; then /bin/cp $DEPLOYPATH/.env $DEPLOYPATH/.env.backup; fi
+    
+    # Copy all files to deployment directory
+    - /bin/cp -R * $DEPLOYPATH
+    
+    # Copy hidden files
+    - /bin/cp -R .htaccess $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp -R .env.example $DEPLOYPATH/.env.example
+    
+    # Restore .env file if backup exists
+    - if [ -f $DEPLOYPATH/.env.backup ]; then /bin/cp $DEPLOYPATH/.env.backup $DEPLOYPATH/.env; fi
+    
+    # Set proper permissions for OSPOS directories
+    - /bin/chmod 755 $DEPLOYPATH/writable
+    - /bin/chmod -R 755 $DEPLOYPATH/writable/cache
+    - /bin/chmod -R 755 $DEPLOYPATH/writable/logs
+    - /bin/chmod -R 755 $DEPLOYPATH/writable/session
+    - /bin/chmod -R 755 $DEPLOYPATH/writable/uploads
+    - /bin/chmod -R 755 $DEPLOYPATH/public/uploads
+    
+    # Set permissions for public directory
+    - /bin/chmod 755 $DEPLOYPATH/public
+    - /bin/chmod 644 $DEPLOYPATH/public/index.php
+    
+    # Ensure vendor directory has proper permissions
+    - /bin/chmod -R 755 $DEPLOYPATH/vendor
+    
+    # Remove development files that shouldn't be in production
+    - /bin/rm -f $DEPLOYPATH/composer.json
+    - /bin/rm -f $DEPLOYPATH/composer.lock
+    - /bin/rm -f $DEPLOYPATH/phpunit.xml.dist
+    - /bin/rm -rf $DEPLOYPATH/tests
+    - /bin/rm -rf $DEPLOYPATH/.git
+    - /bin/rm -rf $DEPLOYPATH/.github
+    - /bin/rm -f $DEPLOYPATH/build*.ps1
+    - /bin/rm -f $DEPLOYPATH/build*.bat
+    - /bin/rm -f $DEPLOYPATH/manage-branches.*
+    - /bin/rm -f $DEPLOYPATH/sync-upstream.*
+    - /bin/rm -f $DEPLOYPATH/*.md
+    - /bin/rm -f $DEPLOYPATH/debug_*.php
+    - /bin/rm -f $DEPLOYPATH/test_*.php
+    - /bin/rm -f $DEPLOYPATH/fix_*.php
+    - /bin/rm -f $DEPLOYPATH/disable_*.php
+    - /bin/rm -f $DEPLOYPATH/add_*.php
+    - /bin/rm -f $DEPLOYPATH/check_*.php
+    - /bin/rm -f $DEPLOYPATH/setup_*.php
+    - /bin/rm -f $DEPLOYPATH/.cpanel.yml
+    
+    # Create uploads directory if it doesn't exist
+    - /bin/mkdir -p $DEPLOYPATH/public/uploads/items
+    - /bin/mkdir -p $DEPLOYPATH/public/uploads/receipts
+    - /bin/mkdir -p $DEPLOYPATH/public/uploads/barcodes
+    - /bin/chmod -R 755 $DEPLOYPATH/public/uploads
+    
+    # Display completion message
+    - echo "🚀 OSPOS deployment completed successfully!"
+    - echo "📁 Files deployed to: $DEPLOYPATH"
+    - echo "⚠️  Remember to:"
+    - echo "   1. Configure your .env file with database settings"
+    - echo "   2. Run database migrations if needed"
+    - echo "   3. Verify file permissions"
+    - echo "   4. Test the application"
