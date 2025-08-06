@@ -19,3 +19,5 @@ deployment:
     - /bin/chmod -R 755 $DEPLOYPATH/writable
     - /bin/chmod -R 755 $DEPLOYPATH/uploads
     - /bin/chmod 644 $DEPLOYPATH/index.php
+    - /bin/find $DEPLOYPATH -name "*.php" -exec chmod 644 {} \;
+    - /bin/find $DEPLOYPATH -type d -exec chmod 755 {} \;
