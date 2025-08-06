@@ -1,4 +1,5 @@
 ---
+# cPanel deployment configuration - updated for merge conflict resolution
 deployment:
   tasks:
     - export DEPLOYPATH=/public_html/
