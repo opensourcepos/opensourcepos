@@ -88,6 +88,8 @@ auth.json
 /.env.bak
 
 # Additional development and temporary files
+docs/CLOUDFLARE_SETUP.md
+docs/TURNSTILE_SETUP.md
 .package-lock.json
 package-lock.json
 
