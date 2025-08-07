@@ -284,7 +284,7 @@
         return function (resource, response) {
             var id = response.id !== undefined ? response.id.toString() : "";
             if (!response.success) {
-                $.notify($.text(response.message).html(), { type: 'danger' });
+                $.notify(response.message, { type: 'danger' });
             } else {
                 var message = response.message;
                 var selector = rows_selector(response.id);
