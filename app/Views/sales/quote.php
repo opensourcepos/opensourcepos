@@ -80,7 +80,7 @@ if (isset($error_message)) {
 
         <div id="logo">
             <?php if ($config['company_logo'] != '') { ?>
-                <img id="image" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="company_logo">
+                <img id="image" src="<?= base_url('writable/uploads/' . esc($config['company_logo'], 'url')) ?>" alt="company_logo">
             <?php } ?>
             <div>&nbsp;</div>
             <?php if ($config['receipt_show_company_name']) { ?>

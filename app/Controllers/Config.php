@@ -349,7 +349,7 @@ class Config extends Secure_Controller
             'file_ext'  => $file->guessExtension()
         ];
 
-        $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+        $file->move(WRITEPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
 
         return ($file_info);
     }
