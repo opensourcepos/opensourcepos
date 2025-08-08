@@ -86,3 +86,19 @@ auth.json
 /app/Database/database.sql
 /writable/cache/settings
 /.env.bak
+
+# Additional development and temporary files
+docs/CLOUDFLARE_SETUP.md
+docs/TURNSTILE_SETUP.md
+.package-lock.json
+package-lock.json
+
+# Testing and debug files
+test_*.php
+test_*.html
+debug_*.php
+*_test.php
+*_debug.php
+
+# Deployment trigger files
+.deployment-trigger

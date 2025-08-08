@@ -47,11 +47,23 @@ class OSPOSRules
         }
 
         $gcaptcha_enabled = array_key_exists('gcaptcha_enable', $this->config) && $this->config['gcaptcha_enable'];
+        $turnstile_enabled = array_key_exists('turnstile_enable', $this->config) && $this->config['turnstile_enable'];
+        
         if ($gcaptcha_enabled) {
             $g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
 
             if (!$this->gcaptcha_check($g_recaptcha_response)) {
                 $error = lang('Login.invalid_gcaptcha');
+
+                return false;
+            }
+        }
+        
+        if ($turnstile_enabled) {
+            $cf_turnstile_response = $this->request->getPost('cf-turnstile-response');
+
+            if (!$this->turnstile_check($cf_turnstile_response)) {
+                $error = lang('Login.invalid_turnstile');
 
                 return false;
             }
@@ -68,7 +80,7 @@ class OSPOSRules
      */
     private function gcaptcha_check($response): bool
     {
-        if (!empty($response)) {
+        if (!empty($response) && isset($this->config['gcaptcha_secret_key'])) {
             $check = [
                 'secret'   => $this->config['gcaptcha_secret_key'],
                 'response' => $response,
@@ -78,6 +90,42 @@ class OSPOSRules
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($check));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $result = curl_exec($ch);
+
+            curl_close($ch);
+
+            $status = json_decode($result, true);
+
+            if (!empty($status['success'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks to see if Turnstile verification was successful.
+     *
+     * @param $response
+     * @return bool true on successful Turnstile verification or false if Turnstile failed.
+     */
+    private function turnstile_check($response): bool
+    {
+        if (!empty($response) && isset($this->config['turnstile_secret_key'])) {
+            $check = [
+                'secret'   => $this->config['turnstile_secret_key'],
+                'response' => $response,
+                'remoteip' => $this->request->getIPAddress()
+            ];
+
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_URL, "https://challenges.cloudflare.com/turnstile/v0/siteverify");
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($check));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
