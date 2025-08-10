@@ -165,7 +165,7 @@ class Item_kits extends Secure_Controller
         $item_kit_data = [
             'name'              => $this->request->getPost('name'),
             'item_kit_number'   => $this->request->getPost('item_kit_number'),
-            'item_id'           => $this->request->getPost('kit_item_id') ? null : intval($this->request->getPost('kit_item_id')),
+            'item_id'           => $this->request->getPost('kit_item_id') ? intval($this->request->getPost('kit_item_id')) : null,
             'kit_discount'      => parse_decimals($this->request->getPost('kit_discount')),
             'kit_discount_type' => $this->request->getPost('kit_discount_type') === null ? PERCENT : intval($this->request->getPost('kit_discount_type')),
             'price_option'      => $this->request->getPost('price_option') === null ? PRICE_ALL : intval($this->request->getPost('price_option')),

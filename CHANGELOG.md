@@ -1,4 +1,5 @@
 [unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.0...HEAD
+[3.4.2]: https://github.com/opensourcepos/opensourcepos/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/opensourcepos/opensourcepos/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...3.4.0
 [3.3.9]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
