@@ -1,0 +1,37 @@
+# Alternative .cpanel.yml for subdirectory deployment
+# Use this version if you want to deploy OSPOS to a subdirectory like /public_html/ospos/
+
+---
+deployment:
+  tasks:
+    # Deploy to subdirectory (change 'ospos' to your preferred subdirectory name)
+    - export DEPLOYPATH=/public_html/ospos/
+    
+    # Create deployment directory if it doesn't exist
+    - /bin/mkdir -p $DEPLOYPATH
+    
+    # Backup existing .env file
+    - if [ -f $DEPLOYPATH/.env ]; then /bin/cp $DEPLOYPATH/.env $DEPLOYPATH/.env.backup; fi
+    
+    # Copy files
+    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R .htaccess $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp -R .env.example $DEPLOYPATH/.env.example
+    
+    # Restore .env file
+    - if [ -f $DEPLOYPATH/.env.backup ]; then /bin/cp $DEPLOYPATH/.env.backup $DEPLOYPATH/.env; fi
+    
+    # Set permissions
+    - /bin/chmod -R 755 $DEPLOYPATH/writable
+    - /bin/chmod -R 755 $DEPLOYPATH/public/uploads
+    - /bin/chmod 644 $DEPLOYPATH/public/index.php
+    
+    # Clean up development files
+    - /bin/rm -f $DEPLOYPATH/.cpanel.yml
+    - /bin/rm -rf $DEPLOYPATH/.git*
+    - /bin/rm -f $DEPLOYPATH/*.md
+    - /bin/rm -f $DEPLOYPATH/*_*.php
+    - /bin/rm -f $DEPLOYPATH/manage-branches.*
+    - /bin/rm -f $DEPLOYPATH/sync-upstream.*
+    
+    - echo "OSPOS deployed to subdirectory: $DEPLOYPATH"
