@@ -75,7 +75,7 @@ class Dinner_table extends Model
      * @param int $dinner_table_id
      * @return string
      */
-    public function get_name(int $dinner_table_id): string
+    public function get_name(?string $dinner_table_id): string
     {
         if (empty($dinner_table_id)) {
             return '';
