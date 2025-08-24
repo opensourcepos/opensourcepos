@@ -89,7 +89,6 @@ helper('url');
                         <?= form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
                     </li>
                 <?php } ?>
-
                 <li class="pull-right">
                     <button class="btn btn-default btn-sm modal-dlg" id="show_suspended_sales_button" data-href="<?= esc("$controller_name/suspended") ?>"
                         title="<?= lang(ucfirst($controller_name) . '.suspended_sales') ?>">
@@ -140,6 +139,7 @@ helper('url');
     <table class="sales_table_100" id="register">
         <thead>
             <tr>
+                 <th style="width: 15%;" ><?= lang('Items.image') ?></th>
                 <th style="width: 5%;"><?= lang('Common.delete') ?></th>
                 <th style="width: 15%;"><?= lang(ucfirst($controller_name) . '.item_number') ?></th>
                 <th style="width: 30%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
@@ -164,6 +164,13 @@ helper('url');
             ?>
                     <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
                         <tr>
+                             <td class="avatar-column">
+
+                                 <?php if (!empty($item['pic_filename'])): ?>
+                                       <img src="<?= base_url('uploads/item_pics/' . esc($item['pic_filename'], 'url')) ?>" alt="avatar" style="height:40px;max-width:40px;">
+                       
+                                  <?php endif; ?>
+                            </td>
                             <td>
                                 <?php
                                 echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
@@ -565,12 +572,24 @@ helper('url');
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        const redirect = function() {
-            window.location.href = "<?= site_url('sales'); ?>";
-        };
+        $(document).ready(function() {
+            // Initialize avatar column visibility from localStorage or default to visible
+            const isAvatarVisible = localStorage.getItem('avatarColumnVisible') !== 'false';
+            if (!isAvatarVisible) {
+                $('.avatar-column').hide();
+            }
 
-        $("#remove_customer_button").click(function() {
+            // Handle avatar toggle button click
+            $('#toggle_avatar_button').click(function() {
+                const isVisible = $('.avatar-column').is(':visible');
+                $('.avatar-column').toggle();
+                localStorage.setItem('avatarColumnVisible', !isVisible);
+                $(this).toggleClass('active');
+            });
+
+            const redirect = function() {
+                window.location.href = "<?= site_url('sales'); ?>";
+            };        $("#remove_customer_button").click(function() {
             $.post("<?= site_url('sales/removeCustomer'); ?>", redirect);
         });
 

@@ -30,17 +30,22 @@ class Login extends BaseController
                 ? $config['gcaptcha_enable']
                 : false;
 
+            $turnstile_enabled = array_key_exists('turnstile_enable', $config)
+                ? $config['turnstile_enable']
+                : false;
+
             $migration->migrate_to_ci4();
 
             $validation = Services::validation();
 
             $data = [
-                'has_errors'       => false,
-                'is_latest'        => $migration->is_latest(),
-                'latest_version'   => $migration->get_latest_migration(),
-                'gcaptcha_enabled' => $gcaptcha_enabled,
-                'config'           => $config,
-                'validation'       => $validation
+                'has_errors'        => false,
+                'is_latest'         => $migration->is_latest(),
+                'latest_version'    => $migration->get_latest_migration(),
+                'gcaptcha_enabled'  => $gcaptcha_enabled,
+                'turnstile_enabled' => $turnstile_enabled,
+                'config'            => $config,
+                'validation'        => $validation
             ];
 
             if ($this->request->getMethod() !== 'POST') {
