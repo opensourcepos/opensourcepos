@@ -90,8 +90,8 @@ use Config\OSPOS;
                 File Permissions:<br>
                 &#187; [writable/logs:]
                 <?php $logs = WRITEPATH . 'logs/';
-                $uploads = WRITEPATH . 'uploads/';
-                $images = WRITEPATH . 'uploads/item_pics/';
+                $uploads = FCPATH. 'uploads/';
+                $images = FCPATH. 'uploads/item_pics/';
                 $importCustomers = WRITEPATH . '/uploads/importCustomers.csv';    // TODO: This variable does not follow naming conventions for the project.
 
                 if (is_writable($logs)) {
@@ -109,7 +109,7 @@ use Config\OSPOS;
                 clearstatcache();
                 ?>
                 <br>
-                &#187; [writable/uploads:]
+                &#187; [public/uploads:]
                 <?php
                 if (is_writable($uploads)) {
                     echo ' -  ' . substr(sprintf("%o", fileperms($uploads)), -4) . ' |  ' . '<span style="color: green;">     Writable &#x2713 </span>';
@@ -128,7 +128,7 @@ use Config\OSPOS;
                 clearstatcache();
                 ?>
                 <br>
-                &#187; [writable/uploads/item_pics:]
+                &#187; [public/uploads/item_pics:]
                 <?php
                 if (is_writable($images)) {
                     echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |     ' . '<span style="color: green;"> Writable &#x2713 </span>';
