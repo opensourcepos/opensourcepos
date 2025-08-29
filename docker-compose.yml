@@ -15,7 +15,7 @@ services:
         networks:
             - app_net
         volumes:
-            - uploads:/app/writable/uploads
+            - uploads:/app/public/uploads
             - logs:/app/writable/logs
         environment:
             - CI_ENVIRONMENT=production
