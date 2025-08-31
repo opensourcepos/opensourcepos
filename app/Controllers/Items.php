@@ -20,6 +20,7 @@ use CodeIgniter\HTTP\DownloadResponse;
 use Config\OSPOS;
 use Exception;
 use Config\Services;
+use Exception;
 use ReflectionException;
 
 require_once('Secure_Controller.php');
@@ -997,107 +998,113 @@ class Items extends Secure_Controller
     public function postImportCsvFile(): void
     {
         helper('importfile_helper');
-        if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK) {
-            echo json_encode(['success' => false, 'message' => lang('Items.csv_import_failed')]);
-        } else {
-            if (file_exists($_FILES['file_path']['tmp_name'])) {
-                set_time_limit(240);
+        try {
+            if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK) {
+                echo json_encode(['success' => false, 'message' => lang('Items.csv_import_failed')]);
+            } else {
+                if (file_exists($_FILES['file_path']['tmp_name'])) {
+                    set_time_limit(240);
 
-                $failCodes = [];
-                $csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
-                $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-                $allowed_stock_locations = $this->stock_location->get_allowed_locations();
-                $attribute_definition_names    = $this->attribute->get_definition_names();
+                    $failCodes = [];
+                    $csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
+                    $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+                    $allowed_stock_locations = $this->stock_location->get_allowed_locations();
+                    $attribute_definition_names    = $this->attribute->get_definition_names();
 
-                unset($attribute_definition_names[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
+                    unset($attribute_definition_names[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
 
-                $attribute_data = [];
+                    $attribute_data = [];
 
-                foreach ($attribute_definition_names as $definition_name) {
-                    $attribute_data[$definition_name] = $this->attribute->get_definition_by_name($definition_name)[0];
+                    foreach ($attribute_definition_names as $definition_name) {
+                        $attribute_data[$definition_name] = $this->attribute->get_definition_by_name($definition_name)[0];
 
-                    if ($attribute_data[$definition_name]['definition_type'] === DROPDOWN) {
-                        $attribute_data[$definition_name]['dropdown_values'] = $this->attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
+                        if ($attribute_data[$definition_name]['definition_type'] === DROPDOWN) {
+                            $attribute_data[$definition_name]['dropdown_values'] = $this->attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
+                        }
                     }
-                }
-                $db = db_connect();
-                $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
+                    $db = db_connect();
+                    $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
 
-                foreach ($csv_rows as $key => $row) {
-                    $is_failed_row = false;
-                    $item_id = (int)$row['Id'];
-                    $is_update = ($item_id > 0);
-                    $item_data = [
-                        'item_id'       => $item_id,
-                        'name'          => $row['Item Name'],
-                        'description'   => $row['Description'],
-                        'category'      => $row['Category'],
-                        'cost_price'    => $row['Cost Price'],
-                        'unit_price'    => $row['Unit Price'],
-                        'reorder_level' => $row['Reorder Level'],
-                        'deleted'       => false,
-                        'hsn_code'      => $row['HSN'],
-                        'pic_filename'  => $row['Image']
-                    ];
+                    foreach ($csv_rows as $key => $row) {
+                        $is_failed_row = false;
+                        $item_id = (int)$row['Id'];
+                        $is_update = ($item_id > 0);
+                        $item_data = [
+                            'item_id'       => $item_id,
+                            'name'          => $row['Item Name'],
+                            'description'   => $row['Description'],
+                            'category'      => $row['Category'],
+                            'cost_price'    => $row['Cost Price'],
+                            'unit_price'    => $row['Unit Price'],
+                            'reorder_level' => $row['Reorder Level'],
+                            'deleted'       => false,
+                            'hsn_code'      => $row['HSN'],
+                            'pic_filename'  => $row['Image']
+                        ];
 
-                    if (!empty($row['supplier ID'])) {
-                        $item_data['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
-                    }
-
-                    if ($is_update) {
-                        $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? null : $row['Allow Alt Description'];
-                        $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? null : $row['Item has Serial Number'];
-                    } else {
-                        $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? '0' : '1';
-                        $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
-                    }
-
-                    if (!empty($row['Barcode']) && !$is_update) {
-                        $item_data['item_number'] = $row['Barcode'];
-                        $is_failed_row = $this->item->item_number_exists($item_data['item_number']);
-                    }
-
-                    if (!$is_failed_row) {
-                        $is_failed_row = $this->data_error_check($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
-                    }
-
-                    // Remove false, null, '' and empty strings but keep 0
-                    $item_data = array_filter($item_data, function ($value) {
-                        return $value !== null && strlen($value);
-                    });
-
-                    if (!$is_failed_row && $this->item->save_value($item_data, $item_id)) {
-                        $this->save_tax_data($row, $item_data);
-                        $this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
-                        $is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);    // TODO: $is_failed_row never gets used after this.
+                        if (!empty($row['supplier ID'])) {
+                            $item_data['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
+                        }
 
                         if ($is_update) {
-                            $item_data = array_merge($item_data, get_object_vars($this->item->get_info_by_id_or_number($item_id)));
+                            $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? null : $row['Allow Alt Description'];
+                            $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? null : $row['Item has Serial Number'];
+                        } else {
+                            $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? '0' : '1';
+                            $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
                         }
-                    } else {
-                        $failed_row = $key + 2;
-                        $failCodes[] = $failed_row;
-                        log_message('error', "CSV Item import failed on line $failed_row. This item was not imported.");
+
+                        if (!empty($row['Barcode']) && !$is_update) {
+                            $item_data['item_number'] = $row['Barcode'];
+                            $is_failed_row = $this->item->item_number_exists($item_data['item_number']);
+                        }
+
+                        if (!$is_failed_row) {
+                            $is_failed_row = $this->data_error_check($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
+                        }
+
+                        // Remove false, null, '' and empty strings but keep 0
+                        $item_data = array_filter($item_data, function ($value) {
+                            return $value !== null && strlen($value);
+                        });
+
+                        if (!$is_failed_row && $this->item->save_value($item_data, $item_id)) {
+                            $this->save_tax_data($row, $item_data);
+                            $this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
+                            $is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);    // TODO: $is_failed_row never gets used after this.
+
+                            if ($is_update) {
+                                $item_data = array_merge($item_data, get_object_vars($this->item->get_info_by_id_or_number($item_id)));
+                            }
+                        } else {
+                            $failed_row = $key + 2;
+                            $failCodes[] = $failed_row;
+                            log_message('error', "CSV Item import failed on line $failed_row. This item was not imported.");
+                        }
+
+                        unset($csv_rows[$key]);
                     }
 
-                    unset($csv_rows[$key]);
-                }
+                    $csv_rows = null;
 
-                $csv_rows = null;
+                    if (count($failCodes) > 0) {
+                        $message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
+                        $db->transRollback();
+                        echo json_encode(['success' => false, 'message' => $message]);
+                    } else {
+                        $db->transCommit();
 
-                if (count($failCodes) > 0) {
-                    $message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
-                    $db->transRollback();
-                    echo json_encode(['success' => false, 'message' => $message]);
+                        echo json_encode(['success' => true, 'message' => lang('Items.csv_import_success')]);
+                    }
                 } else {
-                    $db->transCommit();
-
-                    echo json_encode(['success' => true, 'message' => lang('Items.csv_import_success')]);
+                    echo json_encode(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
                 }
-            } else {
-                echo json_encode(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
             }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
         }
+
     }
 
     /**

@@ -1,79 +1,14 @@
-version: '2.2'
 
-volumes:
-    uploads:
-        driver: local
-    logs:
-        driver: local
-    mysql:
-        driver: local
-
-networks:
-    app_net:
-    db_net:
-
+include:
+  - docker-compose.yaml
 
 services:
-    ospos:
-        image: jekkos/opensourcepos:3.4.2
-        restart: always
-        depends_on:
-            - mysql
-        expose:
-            - "80"
-        networks:
-            - app_net
-        volumes:
-            - uploads:/app/writable/uploads
-            - logs:/app/writable/logs
-        environment:
-            - CI_ENVIRONMENT=${OSPOS_CI_ENV}
-            - FORCE_HTTPS=true
-            - PHP_TIMEZONE=UTC
-            - MYSQL_USERNAME=${OSPOS_MYSQL_USERNAME}
-            - MYSQL_PASSWORD=${OSPOS_MYSQL_PASSWORD}
-            - MYSQL_DB_NAME=ospos
-            - MYSQL_HOST_NAME=mysql
-
-    mysql:
-        image: mariadb:10.5
-        container_name: mysql
-        restart: always
-        expose:
-            - "3306"
-        networks:
-            - db_net
-        volumes:
-            - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
-            - mysql:/var/lib/mysql:rw
-        environment:
-            - MYSQL_ROOT_PASSWORD=${OSPOS_MYSQL_ROOT_PASSWORD}
-            - MYSQL_DATABASE=ospos
-            - MYSQL_USER=${OSPOS_MYSQL_USERNAME}
-            - MYSQL_PASSWORD=${OSPOS_MYSQL_PASSWORD}
-
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin
-        restart: always
-        depends_on:
-            - mysql
-        expose:
-            - "80"
-        networks:
-            - app_net
-        environment:
-            - MYSQL_USERNAME=${OSPOS_MYSQL_USERNAME}
-            - MYSQL_ROOT_PASSWORD=${OSPOS_MYSQL_ROOT_PASSWORD}
-            - PMA_HOST=mysql
-
     nginx:
         image: nginx:1.19-alpine
         container_name: nginx
         restart: always
         depends_on:
             - ospos
-            - phpmyadmin
             - certbot
         volumes:
             - ./docker/data/nginx/nginx.tmpl:/etc/nginx/nginx.tmpl:ro
