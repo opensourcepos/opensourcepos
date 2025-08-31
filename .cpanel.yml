@@ -1,0 +1,24 @@
+---
+# cPanel deployment configuration - updated for merge conflict resolution
+deployment:
+  tasks:
+    - export DEPLOYPATH=/public_html/
+    - /bin/cp -R app $DEPLOYPATH
+    - /bin/cp -R public/* $DEPLOYPATH
+    - /bin/cp -R vendor $DEPLOYPATH
+    - /bin/cp -R writable $DEPLOYPATH
+    - /bin/cp .env.example $DEPLOYPATH/
+    - /bin/cp .htaccess $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp spark $DEPLOYPATH/
+    - /bin/cp preload.php $DEPLOYPATH/
+    - /bin/cp composer.json $DEPLOYPATH/
+    - /bin/cp composer.lock $DEPLOYPATH/
+    - /bin/mkdir -p $DEPLOYPATH/writable/cache
+    - /bin/mkdir -p $DEPLOYPATH/writable/logs
+    - /bin/mkdir -p $DEPLOYPATH/writable/session
+    - /bin/mkdir -p $DEPLOYPATH/uploads
+    - /bin/chmod -R 755 $DEPLOYPATH/writable
+    - /bin/chmod -R 755 $DEPLOYPATH/uploads
+    - /bin/chmod 644 $DEPLOYPATH/index.php
+    - /bin/find $DEPLOYPATH -name "*.php" -exec chmod 644 {} \;
+    - /bin/find $DEPLOYPATH -type d -exec chmod 755 {} \;
