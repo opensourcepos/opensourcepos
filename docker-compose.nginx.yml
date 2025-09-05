@@ -1,6 +1,6 @@
 
 include:
-  - docker-compose.yaml
+  - docker-compose.phpmyadmin.yml
 
 services:
     nginx:
@@ -16,9 +16,7 @@ services:
             - ./docker/data/certbot/conf:/etc/letsencrypt:ro
             - ./docker/data/certbot/www:/var/www/certbot:ro
         ports:
-            - "80:80"
             - "443:443"
-            - "8000:8000"
         networks:
             - app_net
         environment:
