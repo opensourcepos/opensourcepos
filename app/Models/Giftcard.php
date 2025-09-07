@@ -198,7 +198,7 @@ class Giftcard extends Model
         $suggestions = [];
 
         $builder = $this->db->table('giftcards');
-        $builder->like('giftcard_number', $search);
+        $builder->where('giftcard_number', $search);
         $builder->where('deleted', 0);
         $builder->orderBy('giftcard_number', 'asc');
 
@@ -246,14 +246,7 @@ class Giftcard extends Model
         if ($limit_from == null) $limit_from = 0;
         if ($sort == null) $sort = 'giftcard_number';
         if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
-
-        // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'giftcard_number';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($count_only == null) $count_only = false;       
 
         $builder = $this->db->table('giftcards');
 
