@@ -3,9 +3,11 @@
 use Config\Database;
 
 /**
- * Migration helper
+ * Migration helper.
+ * @param string $path Path to migration script.
+ * @return bool Whether the migration executed successfully.
  */
-function execute_script(string $path): void
+function execute_script(string $path): bool
 {
     $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
     error_log("Migrating to $version (file: $path)");
@@ -16,17 +18,27 @@ function execute_script(string $path): void
 
     $db = Database::connect();
 
+    $success = true; // whether *all* queries succeeded
     foreach ($sqls as $statement) {
         $statement = "$statement;";
+        $hadError = !$db->simpleQuery($statement);
 
-        if (!$db->simpleQuery($statement)) {
+        if ($hadError) {
+            $success = false;
             foreach ($db->error() as $error) {
                 error_log("error: $error");
             }
         }
     }
 
-    error_log("Migrated to $version");
+    if ($success) {
+        error_log("Successfully migrated to $version");
+    }
+    else {
+        error_log("Could not migrate to $version.");
+    }
+
+    return $success;
 }
 
 /**
@@ -228,9 +240,9 @@ function dropColumnIfExists(string $table, string $column): void
 
     // Check if the column exists in the table
     $builder->select('COLUMN_NAME')
-        ->where('TABLE_SCHEMA', $db->database)
-        ->where('TABLE_NAME', $prefix . $table)
-        ->where('COLUMN_NAME', $column);
+            ->where('TABLE_SCHEMA', $db->database)
+            ->where('TABLE_NAME', $prefix . $table)
+            ->where('COLUMN_NAME', $column);
 
     $query = $builder->get();
 
