@@ -11,12 +11,21 @@ class Migration_MissingConfigKeys extends Migration
      */
     public function up(): void
     {
-        error_log('Migrating config table');
+        error_log('Starting transaction...');
+        $db = db_connect();
+        $db->transStart();
 
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_missing_config_keys.sql');
 
-        error_log('Migrating config table');
+        // execute_script returns whether everything executed successfully
+        if (execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_missing_config_keys.sql')) {
+            error_log('Migrated config table.');
+        }
+        else {
+            error_log('Failed to migrate config table.');
+        }
+
+        $db->transComplete();
     }
 
     /**
