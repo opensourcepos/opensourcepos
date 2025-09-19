@@ -42,6 +42,52 @@ function execute_script(string $path): bool
 }
 
 /**
+ * Migration helper that uses a transaction.
+ * @param string $path Path to migration script.
+ * @return bool Whether the migration executed successfully.
+ */
+function executeScriptWithTransaction(string $path): bool
+{
+    $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
+    error_log("Migrating to $version (file: $path) with transaction");
+
+    $sql = file_get_contents($path);
+    $sqls = explode(';', $sql);
+    array_pop($sqls);
+
+    $db = Database::connect();
+    $db->transStart();
+    error_log("Transaction started...");
+
+    $success = true; // whether *all* queries succeeded
+    foreach ($sqls as $statement) {
+        $statement = "$statement;";
+        // is there a reason the other execute script function uses simpleQuery()? it doesn't support transactions and
+        // there appears to be no benefit from using it
+        $hadError = !$db->query($statement);
+
+        if ($hadError) {
+            $success = false;
+            foreach ($db->error() as $error) {
+                error_log("error: $error");
+            }
+        }
+    }
+
+    if ($success) {
+        error_log("Successfully migrated to $version");
+    }
+    else {
+        error_log("Could not migrate to $version.");
+    }
+
+    $db->transComplete();
+    error_log("Transaction completed.");
+
+    return $success;
+}
+
+/**
  * Drops provided foreign key constraints from given table.
  * This is required to successfully create the generated unique constraint.
  *
