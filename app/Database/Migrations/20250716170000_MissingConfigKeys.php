@@ -14,11 +14,9 @@ class Migration_MissingConfigKeys extends Migration
         error_log('Migrating config keys...');
         helper('migration');
 
-        // executeScriptWithTransaction returns whether everything executed successfully
         if (executeScriptWithTransaction(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_missing_config_keys.sql')) {
             error_log('Migrated config keys.');
-        }
-        else {
+        } else {
             error_log('Failed to migrate config keys.');
         }
     }
