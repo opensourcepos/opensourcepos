@@ -18,7 +18,7 @@ function execute_script(string $path): bool
 
     $db = Database::connect();
 
-    $success = true; // whether *all* queries succeeded
+    $success = true;
     foreach ($sqls as $statement) {
         $statement = "$statement;";
         $hadError = !$db->simpleQuery($statement);
@@ -33,8 +33,7 @@ function execute_script(string $path): bool
 
     if ($success) {
         error_log("Successfully migrated to $version");
-    }
-    else {
+    } else {
         error_log("Could not migrate to $version.");
     }
 
@@ -57,21 +56,24 @@ function executeScriptWithTransaction(string $path): bool
 
     $db = Database::connect();
     $db->transStart();
-    error_log("Transaction started...");
 
-    $success = true; // whether *all* queries succeeded
-    foreach ($sqls as $statement) {
-        $statement = "$statement;";
-        // is there a reason the other execute script function uses simpleQuery()? it doesn't support transactions and
-        // there appears to be no benefit from using it
-        $hadError = !$db->query($statement);
+    $success = true;
+    try {
+        foreach ($sqls as $statement) {
+            $statement = "$statement;";
+            $hadError = !$db->query($statement);
 
-        if ($hadError) {
-            $success = false;
-            foreach ($db->error() as $error) {
-                error_log("error: $error");
+            if ($hadError) {
+                $success = false;
+                foreach ($db->error() as $error) {
+                    error_log("error: $error");
+                }
             }
         }
+    } catch (Exception $e) {
+        error_log("Could not migrate to $version: " . $e->getMessage());
+        $db->transComplete();
+        return false;
     }
 
     if ($success) {
@@ -81,8 +83,6 @@ function executeScriptWithTransaction(string $path): bool
     }
 
     $db->transComplete();
-    error_log("Transaction completed.");
-
     return $success;
 }
 
