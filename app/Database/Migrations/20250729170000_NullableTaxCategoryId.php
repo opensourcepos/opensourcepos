@@ -14,7 +14,7 @@ class Migration_NullableTaxCategoryId extends Migration
         error_log('Migrating config table');
 
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_missing_config_keys.sql');
+        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_nullable_tax_category_id.sql');
 
         error_log('Migrating config table');
     }

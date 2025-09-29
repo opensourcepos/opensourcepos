@@ -56,7 +56,7 @@ function executeScriptWithTransaction(string $path): bool
     array_pop($sqls);
 
     $db = Database::connect();
-    $db->transBegin();
+    $db->transStart();
     error_log("Transaction started...");
 
     $success = true; // whether *all* queries succeeded
@@ -80,7 +80,6 @@ function executeScriptWithTransaction(string $path): bool
         error_log("Could not migrate to $version.");
     }
 
-    $db->transRollback();
     $db->transComplete();
     error_log("Transaction completed.");
 
