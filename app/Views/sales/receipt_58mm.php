@@ -61,19 +61,11 @@
             <?php if($item['discount'] > 0) { ?>
                 <tr>
                     <?php
-                    if($item['discount_type'] == FIXED)
-                    {
-                    ?>
+                    if($item['discount_type'] == FIXED) { ?>
                         <td class="discount">&nbsp;&nbsp;<?= to_currency($item['discount']) . " " . lang('Sales.discount') ?></td>
-                    <?php
-                    }
-                    elseif($item['discount_type'] == PERCENT)
-                    {
-                    ?>
+                    <?php } elseif($item['discount_type'] == PERCENT) { ?>
                         <td class="discount">&nbsp;&nbsp;<?= to_decimals($item['discount']) . " " . lang('Sales.discount_included') ?></td>
-                    <?php
-                    }
-                    ?>
+                    <?php }?>
                     <td class="total-value"><?= to_currency($item['discounted_total']) ?></td>
                 </tr>
             <?php } ?>
