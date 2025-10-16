@@ -10,7 +10,7 @@ use Config\Database;
 function execute_script(string $path): bool
 {
     $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
-    error_log("Migrating to $version (file: $path)");
+    log_message('info',"Migrating to $version (file: $path)");
 
     $sql = file_get_contents($path);
     $sqls = explode(';', $sql);
@@ -32,10 +32,10 @@ function execute_script(string $path): bool
     }
 
     if ($success) {
-        error_log("Successfully migrated to $version");
+        log_message('info',"Successfully migrated to $version");
     }
     else {
-        error_log("Could not migrate to $version.");
+        log_message('info',"Could not migrate to $version.");
     }
 
     return $success;

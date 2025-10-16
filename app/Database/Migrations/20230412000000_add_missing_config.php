@@ -11,6 +11,7 @@ class Migration_add_missing_config extends Migration
      */
     public function up(): void
     {
+        log_message('info', 'Adding missing configs.');
         $image_values = [
             ['key' => 'account_number',                    'value' => ''],  // This has no current maintenance, but it's used in Sales
             ['key' => 'category_dropdown',                 'value' => ''],

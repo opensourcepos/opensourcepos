@@ -25,7 +25,7 @@ class Migration_Convert_Barcode_Types extends Migration
      */
     public function up(): void
     {
-
+        log_message('info', 'Converting barcode types.');
         $old_barcode_type = $this->config['barcode_type'];
 
         switch ($old_barcode_type) {
@@ -52,6 +52,7 @@ class Migration_Convert_Barcode_Types extends Migration
      */
     public function down(): void
     {
+        log_message('info', 'Converting barcode types.');
         $new_barcode_type = $this->config['barcode_type'];
 
         switch ($new_barcode_type) {

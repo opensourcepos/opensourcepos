@@ -34,7 +34,7 @@ class Migration_Sales_Tax_Data extends Migration
     public function up(): void
     {
         $number_of_unmigrated = $this->get_count_of_unmigrated();
-        error_log("Migrating sales tax history. The number of sales that will be migrated is $number_of_unmigrated");
+        log_message('info', "Migrating sales tax history. The number of sales that will be migrated is $number_of_unmigrated");
 
         if ($number_of_unmigrated > 0) {
             $unmigrated_invoices = $this->get_unmigrated($number_of_unmigrated)->getResultArray();
@@ -44,7 +44,7 @@ class Migration_Sales_Tax_Data extends Migration
             }
         }
 
-        error_log('Migrating sales tax history. The number of sales that will be migrated is finished.');
+        log_message('info', 'Migrating sales tax history. The number of sales that will be migrated is finished.');
     }
 
     /**
@@ -146,7 +146,7 @@ class Migration_Sales_Tax_Data extends Migration
             . ' ORDER BY SIT.sale_id) as US')->getResultArray();
 
         if (!$result) {
-            error_log('Database error in 20170502221506_sales_tax_data.php related to sales_taxes or sales_items_taxes.');
+            log_message('info', 'Database error in 20170502221506_sales_tax_data.php related to sales_taxes or sales_items_taxes.');
             return 0;
         }
 

@@ -16,7 +16,7 @@ class Migration_database_optimizations extends Migration
      */
     public function up(): void
     {
-        error_log('Migrating database_optimizations');
+        log_message('info', 'Migrating database optimizations.');
 
         $attribute = model(Attribute::class);
 
@@ -82,7 +82,7 @@ class Migration_database_optimizations extends Migration
 
         helper('migration');
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
-        error_log('Migrating database_optimizations completed');
+        log_message('info', 'Finished migrating database optimizations.');
     }
 
     /**
