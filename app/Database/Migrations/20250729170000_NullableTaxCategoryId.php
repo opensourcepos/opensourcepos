@@ -11,12 +11,12 @@ class Migration_NullableTaxCategoryId extends Migration
      */
     public function up(): void
     {
-        error_log('Migrating config table');
+        error_log('Migrating nullable tax category ID');
 
         helper('migration');
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_nullable_tax_category_id.sql');
 
-        error_log('Migrating config table');
+        error_log('Migrated nullable tax category ID');
     }
 
     /**
