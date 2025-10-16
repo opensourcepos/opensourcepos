@@ -19,8 +19,6 @@ class Migration_IndiaGST extends Migration
         helper('migration');
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_indiagst.sql');
 
-        error_log('Migrating tax configuration');
-
         $count_of_tax_codes = $this->get_count_of_tax_code_entries();
 
         if ($count_of_tax_codes > 0) {
@@ -42,8 +40,6 @@ class Migration_IndiaGST extends Migration
         }
 
         $this->drop_backups();
-
-        error_log('Migrating tax configuration completed');
     }
 
     /**

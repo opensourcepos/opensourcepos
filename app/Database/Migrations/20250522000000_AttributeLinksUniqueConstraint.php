@@ -12,7 +12,6 @@ class AttributeLinksUniqueConstraint extends Migration
      */
     public function up(): void
     {
-        error_log('Migrating attribute_links unique constraint started');
         helper('migration');
         $foreignKeys = [
             'ospos_attribute_links_ibfk_1',

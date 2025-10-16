@@ -13,6 +13,7 @@ class Migration_Attributes_fix_cascading_delete extends Migration
      */
     public function up(): void
     {
+        log_message('info', 'Fixing cascading deletes.');
         helper('migration');
 
         $this->db->query("ALTER TABLE `ospos_attribute_links` DROP INDEX `attribute_links_uq3`");

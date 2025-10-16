@@ -12,6 +12,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
      */
     public function up(): void
     {
+        log_message('info', 'Fixing keys for database upgrade.');
         helper('migration');
 
         $forge = Database::forge();

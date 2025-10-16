@@ -11,6 +11,7 @@ class Migration_taxgroupconstraint extends Migration
      */
     public function up(): void
     {
+        log_message('info', 'Migrating tax group constraints.');
         $this->db->query('ALTER TABLE ' . $this->db->prefixTable('tax_jurisdictions') . ' ADD CONSTRAINT tax_jurisdictions_uq1 UNIQUE (tax_group)');
     }
 

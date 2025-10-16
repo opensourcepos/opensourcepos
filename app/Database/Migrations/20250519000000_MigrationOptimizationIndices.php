@@ -12,7 +12,7 @@ class MigrationOptimizationIndices extends Migration
      */
     public function up(): void
     {
-        error_log('Migrating Optimization Indices');
+        log_message('info', 'Migrating Optimization Indices');
 
         helper('migration');
         $forge = Database::forge();
@@ -33,8 +33,6 @@ class MigrationOptimizationIndices extends Migration
             $forge->addKey(['trans_items', 'trans_date'], false, false, 'trans_items_trans_date');
             $forge->processIndexes('inventory');
         }
-
-        error_log('Migrating Optimization Indices');
     }
 
     /**

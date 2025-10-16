@@ -11,6 +11,8 @@ class Migration_fix_empty_reports extends Migration
      */
     public function up(): void
     {
+        log_message('info', 'Starting migration: Fix empty reports.');
+
         $builder = $this->db->table('stock_locations');
         $builder->select('location_name');
         $builder->where('location_id', 1);
@@ -23,6 +25,8 @@ class Migration_fix_empty_reports extends Migration
         $builder->where('permission_id', 'receivings_' . $location_name);
         $builder->orWhere('permission_id', 'sales_' . $location_name);
         $builder->update();
+
+        log_message('info', 'Finished migration: Fix empty reports.');
     }
 
     /**

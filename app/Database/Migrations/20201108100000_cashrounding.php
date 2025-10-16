@@ -11,6 +11,7 @@ class Migration_cashrounding extends Migration
      */
     public function up(): void
     {
+        log_message('info', 'Migrating cash rounding.');
         $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_payments') . ' ADD COLUMN `cash_adjustment` tinyint NOT NULL DEFAULT 0 AFTER `cash_refund`');
     }
 
