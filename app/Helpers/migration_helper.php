@@ -72,7 +72,7 @@ function executeScriptWithTransaction(string $path): bool
         }
     } catch (Exception $e) {
         error_log("Could not migrate to $version: " . $e->getMessage());
-        $db->transComplete();
+        $db->transRollback();
         return false;
     }
 
