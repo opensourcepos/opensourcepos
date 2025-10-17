@@ -12,11 +12,11 @@ class Migration_remove_duplicate_links extends Migration
      */
     public function up(): void
     {
-        error_log('Removing duplicate links.');
+        log_message('info', 'Removing duplicate links.');
 
         $this->migrate_duplicate_attribute_links();
 
-        error_log('Duplicate links removed.');
+        log_message('info', 'Duplicate links removed.');
     }
 
     /**
