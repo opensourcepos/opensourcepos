@@ -286,9 +286,9 @@ function dropColumnIfExists(string $table, string $column): void
 
     // Check if the column exists in the table
     $builder->select('COLUMN_NAME')
-            ->where('TABLE_SCHEMA', $db->database)
-            ->where('TABLE_NAME', $prefix . $table)
-            ->where('COLUMN_NAME', $column);
+        ->where('TABLE_SCHEMA', $db->database)
+        ->where('TABLE_NAME', $prefix . $table)
+        ->where('COLUMN_NAME', $column);
 
     $query = $builder->get();
 
