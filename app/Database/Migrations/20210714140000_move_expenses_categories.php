@@ -11,11 +11,11 @@ class Migration_move_expenses_categories extends Migration
      */
     public function up(): void
     {
-        error_log('Migrating expense categories module');
+        log_message('info', 'Migrating expense categories module');
 
         $this->db->simpleQuery("UPDATE ospos_grants SET menu_group = 'office' WHERE permission_id = 'expenses_categories'");
 
-        error_log('Migrating expense categories module completed');
+        log_message('info', 'Migrating expense categories module completed');
     }
 
     /**
