@@ -68,7 +68,7 @@ class Email_lib
         $result = $email->send();
 
         if (!$result) {
-            error_log($email->printDebugger());
+            log_message('error', $email->printDebugger());
         }
 
         return $result;

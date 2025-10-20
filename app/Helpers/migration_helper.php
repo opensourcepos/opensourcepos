@@ -10,7 +10,7 @@ use Config\Database;
 function execute_script(string $path): bool
 {
     $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
-    error_log("Migrating to $version (file: $path)");
+    log_message('info', "Migrating to $version (file: $path)");
 
     $sql = file_get_contents($path);
     $sqls = explode(';', $sql);
@@ -18,7 +18,7 @@ function execute_script(string $path): bool
 
     $db = Database::connect();
 
-    $success = true;
+    $success = true; // whether *all* queries succeeded
     foreach ($sqls as $statement) {
         $statement = "$statement;";
         $hadError = !$db->simpleQuery($statement);
@@ -26,15 +26,16 @@ function execute_script(string $path): bool
         if ($hadError) {
             $success = false;
             foreach ($db->error() as $error) {
-                error_log("error: $error");
+                log_message('error', "error: $error");
             }
         }
     }
 
     if ($success) {
-        error_log("Successfully migrated to $version");
-    } else {
-        error_log("Could not migrate to $version.");
+        log_message('info', "Successfully migrated to $version");
+    }
+    else {
+        log_message('info', "Could not migrate to $version.");
     }
 
     return $success;
@@ -48,7 +49,7 @@ function execute_script(string $path): bool
 function executeScriptWithTransaction(string $path): bool
 {
     $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
-    error_log("Migrating to $version (file: $path) with transaction");
+    log_message('info', "Migrating to $version (file: $path) with transaction");
 
     $sql = file_get_contents($path);
     $sqls = explode(';', $sql);
@@ -66,20 +67,20 @@ function executeScriptWithTransaction(string $path): bool
             if ($hadError) {
                 $success = false;
                 foreach ($db->error() as $error) {
-                    error_log("error: $error");
+                    log_message('info', "error: $error");
                 }
             }
         }
     } catch (Exception $e) {
-        error_log("Could not migrate to $version: " . $e->getMessage());
+        log_message('info', "Could not migrate to $version: " . $e->getMessage());
         $db->transRollback();
         return false;
     }
 
     if ($success) {
-        error_log("Successfully migrated to $version");
+        log_message('info', "Successfully migrated to $version");
     } else {
-        error_log("Could not migrate to $version.");
+        log_message('info', "Could not migrate to $version.");
     }
 
     $db->transComplete();
@@ -285,9 +286,9 @@ function dropColumnIfExists(string $table, string $column): void
 
     // Check if the column exists in the table
     $builder->select('COLUMN_NAME')
-            ->where('TABLE_SCHEMA', $db->database)
-            ->where('TABLE_NAME', $prefix . $table)
-            ->where('COLUMN_NAME', $column);
+        ->where('TABLE_SCHEMA', $db->database)
+        ->where('TABLE_NAME', $prefix . $table)
+        ->where('COLUMN_NAME', $column);
 
     $query = $builder->get();
 

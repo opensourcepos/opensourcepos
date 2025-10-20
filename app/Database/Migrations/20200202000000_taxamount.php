@@ -41,7 +41,7 @@ class Migration_TaxAmount extends Migration
             $tax_decimals = $this->appconfig->get_value('tax_decimals', 2);
             $number_of_unmigrated = $this->get_count_of_unmigrated();
 
-            error_log('Migrating sales tax fixing. The number of sales that will be migrated is ' . $number_of_unmigrated);
+            log_message('info', 'Migrating sales tax fixing. The number of sales that will be migrated is ' . $number_of_unmigrated);
 
             if ($number_of_unmigrated > 0) {
                 $unmigrated_invoices = $this->get_unmigrated($number_of_unmigrated)->getResultArray();
@@ -54,7 +54,7 @@ class Migration_TaxAmount extends Migration
                 $this->db->query('DROP TABLE ' . $this->db->prefixTable('sales_taxes_backup'));
             }
 
-            error_log('Migrating sales tax fixing. The number of sales that will be migrated is finished.');
+            log_message('info', 'Migrating sales tax fixing. The number of sales that will be migrated is finished.');
         }
     }
 
@@ -126,7 +126,7 @@ class Migration_TaxAmount extends Migration
             . ' ORDER BY SIT.sale_id) as US')->getResultArray();
 
         if (!$result) {
-            error_log('Database error in 20200202000000_taxamount.php related to sales_taxes or sales_items_taxes.');
+            log_message('info', 'Database error in 20200202000000_taxamount.php related to sales_taxes or sales_items_taxes.');
             return 0;
         }
 

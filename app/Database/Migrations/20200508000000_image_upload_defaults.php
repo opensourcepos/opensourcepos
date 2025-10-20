@@ -11,6 +11,7 @@ class Migration_image_upload_defaults extends Migration
      */
     public function up(): void
     {
+        log_message('info', 'Migrating image upload defaults.');
         $image_values = [
             ['key' => 'image_allowed_types', 'value' => 'gif|jpg|png'],
             ['key' => 'image_max_height',    'value' => '480'],
