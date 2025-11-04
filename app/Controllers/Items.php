@@ -312,6 +312,8 @@ class Items extends Secure_Controller
             $item_info->tax_category_id = null;
             $item_info->qty_per_pack = 1;
             $item_info->pack_name = lang('Items.default_pack_name');
+               $item_info->is_consignment = 0;
+            $item_info->consignment_rate = null;
 
             if ($use_destination_based_tax) {
                 $item_info->tax_category_id = $this->config['default_tax_category'];
