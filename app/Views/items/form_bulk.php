@@ -3,6 +3,7 @@
  * @var array $suppliers
  * @var array $allow_alt_description_choices
  * @var array $serialization_choices
+ * @var array $consignment_choices
  * @var string $controller_name
  * @var array $config
  */
@@ -43,6 +44,27 @@
             <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_dropdown('supplier_id', $suppliers, '', ['class' => 'form-control']) ?>
+            </div>
+        </div>
+
+               <div class="form-group form-group-sm">
+            <?= form_label(lang('Items.is_consignment'), 'is_consignment', ['class' => 'control-label col-xs-3']) ?>
+            <div class="col-xs-8">
+                <?= form_dropdown('is_consignment', $consignment_choices, '', ['class' => 'form-control']) ?>
+            </div>
+        </div>
+
+        <div class="form-group form-group-sm">
+            <?= form_label(lang('Items.consignment_rate'), 'consignment_rate', ['class' => 'control-label col-xs-3']) ?>
+            <div class="col-xs-4">
+                <div class="input-group input-group-sm">
+                    <?= form_input([
+                        'name'  => 'consignment_rate',
+                        'id'    => 'consignment_rate',
+                        'class' => 'form-control input-sm'
+                    ]) ?>
+                    <span class="input-group-addon"><b>%</b></span>
+                </div>
             </div>
         </div>
 
