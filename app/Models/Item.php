@@ -29,6 +29,8 @@ class Item extends Model
         'cost_price',
         'unit_price',
         'reorder_level',
+        'is_consignment',
+        'consignment_rate',
         'allow_alt_description',
         'is_serialized',
         'deleted',
@@ -152,6 +154,8 @@ class Item extends Model
             $builder->select('MAX(items.description) AS description');
             $builder->select('MAX(items.cost_price) AS cost_price');
             $builder->select('MAX(items.unit_price) AS unit_price');
+            $builder->select('MAX(items.is_consignment) AS is_consignment');
+            $builder->select('MAX(items.consignment_rate) AS consignment_rate');
             $builder->select('MAX(items.reorder_level) AS reorder_level');
             $builder->select('MAX(items.receiving_quantity) AS receiving_quantity');
             $builder->select('MAX(items.pic_filename) AS pic_filename');
