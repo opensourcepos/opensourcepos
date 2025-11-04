@@ -141,7 +141,11 @@ class Suppliers extends Persons
             'agency_name'    => $this->request->getPost('agency_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category'       => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'account_number' => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'tax_id'         => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
+            'tax_id'         => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT),
+            'is_consignor'   => $this->request->getPost('is_consignor') !== null,
+            'default_consignment_rate' => ($rate = $this->request->getPost('default_consignment_rate')) !== null && $rate !== ''
+                ? (parse_decimals($rate, tax_decimals()) ?: 0)
+                : 0
         ];
 
         if ($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id)) {
