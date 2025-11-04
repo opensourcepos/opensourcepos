@@ -1,10 +1,3 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
-diff --git a/app/Database/Migrations/20250801000000_add_consignment_support.php b/app/Database/Migrations/20250801000000_add_consignment_support.php
-new file mode 100644
-index 0000000000000000000000000000000000000000..318f8c19fa4a177a8cd028616337f4e46d994711
---- /dev/null
-+++ b/app/Database/Migrations/20250801000000_add_consignment_support.php
-@@ -0,0 +1,179 @@
 +<?php
 +
 +namespace App\Database\Migrations;
