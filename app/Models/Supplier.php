@@ -19,7 +19,9 @@ class Supplier extends Person
         'tax_id',
         'deleted',
         'agency_name',
-        'category'
+         'category',
+        'is_consignor',
+        'default_consignment_rate'
     ];
 
     /**
