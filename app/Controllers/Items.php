@@ -583,6 +583,12 @@ class Items extends Secure_Controller
         ];
 
         echo view('items/form_bulk', $data);
+                $data['consignment_choices'] = [
+            '' => lang('Items.do_nothing'),
+            1  => lang('Common.yes'),
+            0  => lang('Common.no')
+        ];
+
     }
 
     /**
@@ -609,6 +615,13 @@ class Items extends Secure_Controller
         $unit_price = parse_decimals($this->request->getPost('unit_price'));
         $reorder_level = parse_quantity($this->request->getPost('reorder_level'));
         $qty_per_pack = parse_quantity($this->request->getPost('qty_per_pack') ?? '');
+         $consignment_rate_input = $this->request->getPost('consignment_rate');
+        $consignment_rate = null;
+
+        if ($consignment_rate_input !== null && $consignment_rate_input !== '') {
+            $parsed_rate = parse_decimals($consignment_rate_input, tax_decimals());
+            $consignment_rate = $parsed_rate === false ? null : $parsed_rate;
+        }
 
         // Save item data
         $item_data = [
@@ -621,6 +634,8 @@ class Items extends Secure_Controller
             'item_number'           => empty($this->request->getPost('item_number')) ? null : $this->request->getPost('item_number'),
             'cost_price'            => $cost_price,
             'unit_price'            => $unit_price,
+            'is_consignment'        => $this->request->getPost('is_consignment') !== null,
+            'consignment_rate'      => $consignment_rate,
             'reorder_level'         => $reorder_level,
             'receiving_quantity'    => $receiving_quantity,
             'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
@@ -870,6 +885,11 @@ class Items extends Secure_Controller
             // This field is nullable, so treat it differently
             if ($key === 'supplier_id' && $value !== '') {
                 $item_data[$key] = $value;
+            } elseif ($key === 'consignment_rate' && $value !== '') {
+                $parsed_rate = parse_decimals($value, tax_decimals());
+                if ($parsed_rate !== false) {
+                    $item_data[$key] = $parsed_rate;
+                }
             } elseif ($value !== '' && !(in_array($key, ['item_ids', 'tax_names', 'tax_percents']))) {
                 $item_data[$key] = $value;
             }
