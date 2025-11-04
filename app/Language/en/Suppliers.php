@@ -1,9 +1,4 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
-diff --git a/app/Language/en/Suppliers.php b/app/Language/en/Suppliers.php
-index fa21844df168eb29fd54ffed63953e3230f1a098..c141582325a5fe608e3798897a225ea2ee0a2d88 100644
---- a/app/Language/en/Suppliers.php
-+++ b/app/Language/en/Suppliers.php
-@@ -1,25 +1,27 @@
+
  <?php
  
  return [
