@@ -1,11 +1,4 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
-diff --git a/app/Language/en/Consignments.php b/app/Language/en/Consignments.php
-new file mode 100644
-index 0000000000000000000000000000000000000000..a133f46339747802ed9f1c280157c220518a331d
---- /dev/null
-+++ b/app/Language/en/Consignments.php
-@@ -0,0 +1,27 @@
-+<?php
+<?php
 +
 +return [
 +    "manage_title"          => "Consignment Transactions",
