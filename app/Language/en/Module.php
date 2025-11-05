@@ -11,8 +11,10 @@
      "cashups_desc"               => "Add, Update, Delete, and Search Cashups.",
      "config"                     => "Configuration",
      "config_desc"                => "Change OSPOS's Configuration.",
-+    "consignments"               => "Consignments",
-+    "consignments_desc"          => "Track consigned sales and payouts.",
+    "consignments"               => "Consignments",
+    "consignments_desc"          => "Track consigned sales and payouts.",
+    "module_consignments"        => "Consignments",
+    "module_consignments_desc"   => "Manage consigned items, sales, and payouts.",
      "customers"                  => "Customers",
      "customers_desc"             => "Add, Update, Delete, and Search Customers.",
      "employees"                  => "Employees",
@@ -39,5 +41,4 @@
      "receivings_desc"            => "Process Purchase Orders.",
      "reports"                    => "Reports",
  
-EOF
-)
+];
