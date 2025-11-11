@@ -43,6 +43,37 @@
             </div>
         </div>
 
+        <div class="form-group form-group-sm">
+            <?= form_label(lang('Suppliers.is_consignor'), 'is_consignor', ['class' => 'control-label col-xs-3']) ?>
+            <div class="col-xs-8">
+                <div class="checkbox">
+                    <label>
+                        <?= form_checkbox([
+                            'name'    => 'is_consignor',
+                            'id'      => 'is_consignor',
+                            'value'   => 1,
+                            'checked' => !empty($person_info->is_consignor)
+                        ]) ?> <?= lang('Common.yes') ?>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-group-sm">
+            <?= form_label(lang('Suppliers.default_consignment_rate'), 'default_consignment_rate', ['class' => 'control-label col-xs-3']) ?>
+            <div class="col-xs-4">
+                <div class="input-group input-group-sm">
+                    <?= form_input([
+                        'name'  => 'default_consignment_rate',
+                        'id'    => 'default_consignment_rate',
+                        'class' => 'form-control input-sm',
+                        'value' => isset($person_info->default_consignment_rate) ? to_tax_decimals($person_info->default_consignment_rate) : ''
+                    ]) ?>
+                    <span class="input-group-addon"><b>%</b></span>
+                </div>
+            </div>
+        </div>
+
         <?= view('people/form_basic_info') ?>
 
         <div class="form-group form-group-sm">

@@ -6,6 +6,8 @@ use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use App\Libraries\Sale_lib;
+use App\Models\Consignment;
+use App\Models\Supplier;
 use Config\OSPOS;
 use ReflectionException;
 
@@ -521,7 +523,8 @@ class Sale extends Model
         $giftcard = model(Giftcard::class);
         $inventory = model('Inventory');
         $item = model(Item::class);
-
+         $consignment = model(Consignment::class);
+        $supplier_model = model(Supplier::class);
         $item_quantity = model(Item_quantity::class);
 
         if ($sale_id != NEW_ENTRY) {
@@ -618,7 +621,50 @@ class Sale extends Model
             $builder->insert($sales_items_data);
 
             if ($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED) {    // TODO: === ?
-                // Update stock quantity if item type is a standard stock item and the sale is a standard sale
+                    if (
+                $sale_status == COMPLETED
+                && !empty($cur_item_info->is_consignment)
+                && !empty($cur_item_info->supplier_id)
+            ) {
+                $quantity = (float)$item_data['quantity'];
+                $price = (float)$item_data['price'];
+                $discount = (float)$item_data['discount'];
+                $discount_type = (int)$item_data['discount_type'];
+
+                $line_total = $quantity * $price;
+                if ($discount_type == PERCENT) {
+                    $discount_amount = round($line_total * $discount / 100, totals_decimals());
+                } else {
+                    $discount_amount = round($discount * $quantity, totals_decimals());
+                }
+
+                $sale_amount = round($line_total - $discount_amount, totals_decimals());
+
+                $consignment_rate = $cur_item_info->consignment_rate;
+                if ($consignment_rate === null) {
+                    $supplier_info = $supplier_model->get_info($cur_item_info->supplier_id);
+                    $consignment_rate = $supplier_info->default_consignment_rate ?? 0;
+                }
+
+                $consignment_rate = (float)$consignment_rate;
+                $payout_amount = round($sale_amount * ($consignment_rate / 100), totals_decimals());
+
+                $consignment->insert([
+                    'sale_id'       => $sale_id,
+                    'sale_line'     => $item_data['line'],
+                    'item_id'       => $item_data['item_id'],
+                    'supplier_id'   => $cur_item_info->supplier_id,
+                    'location_id'   => $item_data['item_location'],
+                    'quantity'      => $quantity,
+                    'sale_amount'   => $sale_amount,
+                    'payout_rate'   => $consignment_rate,
+                    'payout_amount' => $payout_amount,
+                    'status'        => Consignment::STATUS_PENDING,
+                    'sold_at'       => $sales_data['sale_time']
+                ]);
+            }
+
+                                                                                       // Update stock quantity if item type is a standard stock item and the sale is a standard sale
                 $item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
 
                 $item_quantity->save_value(
@@ -765,7 +811,10 @@ class Sale extends Model
     public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = true): bool    // TODO: $employee_id and $update_inventory are never used in the function.
     {
         foreach ($sale_ids as $sale_id) {
+          $consignment = model(Consignment::class);
+        foreach ($sale_ids as $sale_id) {
             $this->update_sale_status($sale_id, SUSPENDED);
+            $consignment->restore_by_sale($sale_id);
         }
 
         return true;
@@ -816,7 +865,8 @@ class Sale extends Model
         }
 
         $this->update_sale_status($sale_id, CANCELED);
-
+                $consignment = model(Consignment::class);
+        $consignment->cancel_by_sale($sale_id);
         // Execute transaction
         $this->db->transComplete();
 
@@ -1336,7 +1386,9 @@ class Sale extends Model
         $builder->delete(['sale_id' => $sale_id]);
 
         $this->db->transComplete();
-
+        $consignment = model(Consignment::class);
+        $consignment->delete_by_sale($sale_id);
+ 
         return $this->db->transStatus();
     }
 
