@@ -38,13 +38,6 @@ gulp.task('compress', function() {
 });
 
 
-gulp.task('update-licenses', function() {
-    run('composer licenses --format=json --no-dev > public/license/composer.LICENSES').exec();
-    run('npx license-report --only=prod --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-prod.LICENSES').exec();
-    run('npx license-report --only=dev --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-dev.LICENSES').exec();
-    return pipeline(gulp.src('LICENSE'),gulp.dest('public/license'));
-});
-
 
 // Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
 gulp.task('copy-bootswatch', function() {
@@ -291,7 +284,6 @@ gulp.task('build-database', function() {
 // Run all required tasks
 gulp.task('default',
     gulp.series('clean',
-        'update-licenses',
         'copy-bootswatch',
         'copy-bootswatch5',
         'copy-bootstrap',
