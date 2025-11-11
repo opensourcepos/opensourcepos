@@ -397,6 +397,8 @@ function item_headers(): array
         ['company_name'  => lang('Suppliers.company_name')],
         ['cost_price'    => lang('Items.cost_price')],
         ['unit_price'    => lang('Items.unit_price')],
+        ['is_consignment' => lang('Items.is_consignment')],
+        ['consignment_rate' => lang('Items.consignment_rate')],
         ['quantity'      => lang('Items.quantity')]
     ];
 }
@@ -488,6 +490,10 @@ function get_item_data_row(object $item): array
         'company_name'  => $item->company_name,    // TODO: This isn't in the items table. Should this be here?
         'cost_price'    => to_currency($item->cost_price),
         'unit_price'    => to_currency($item->unit_price),
+        'is_consignment' => !empty($item->is_consignment) ? lang('Common.yes') : lang('Common.no'),
+        'consignment_rate' => $item->consignment_rate !== null
+            ? to_tax_decimals($item->consignment_rate) . '%'
+            : '-',
         'quantity'      => to_quantity_decimals($item->quantity),
         'tax_percents'  => !$tax_percents ? '-' : $tax_percents,
         'item_pic'      => $image
@@ -911,6 +917,75 @@ function get_cash_up_data_row(object $cash_up): array
             ]
         )
     ];
+}
+
+function consignment_headers(): array
+{
+    return [
+        ['consignment_transactions.consignment_id' => lang('Consignments.consignment_id')],
+        ['sold_at'            => lang('Consignments.sold_at')],
+        ['sale_reference'     => lang('Consignments.sale_reference')],
+        ['item_name'          => lang('Consignments.item')],
+        ['company_name'       => lang('Consignments.supplier')],
+        ['quantity'           => lang('Consignments.quantity')],
+        ['sale_amount'        => lang('Consignments.sale_amount')],
+        ['payout_rate'        => lang('Consignments.payout_rate')],
+        ['payout_amount'      => lang('Consignments.payout_amount')],
+        ['status_label'       => lang('Consignments.status')],
+        ['payout_date'        => lang('Consignments.payout_date')]
+    ];
+}
+
+function get_consignments_manage_table_headers(): string
+{
+    $headers = consignment_headers();
+    $headers[] = ['notes' => lang('Consignments.notes'), 'sortable' => false];
+    $headers[] = ['edit' => '', 'escape' => false];
+
+    return transform_headers($headers);
+}
+
+function get_consignment_data_row(object $consignment): array
+{
+    $controller = get_controller();
+    $config = config(OSPOS::class)->settings;
+
+    $sold_at = !empty($config['date_or_time_format'])
+        ? to_datetime(strtotime($consignment->sold_at))
+        : to_date(strtotime($consignment->sold_at));
+
+    $status = match ($consignment->status) {
+        App\Models\Consignment::STATUS_PAID     => lang('Consignments.paid'),
+        App\Models\Consignment::STATUS_CANCELED => lang('Consignments.canceled'),
+        default                                  => lang('Consignments.pending')
+    };
+
+    $columns = [
+        'consignment_transactions.consignment_id' => $consignment->consignment_id,
+        'sold_at'            => $sold_at,
+        'sale_reference'     => 'POS ' . $consignment->sale_id,
+        'item_name'          => $consignment->item_name,
+        'company_name'       => $consignment->company_name,
+        'quantity'           => to_quantity_decimals($consignment->quantity),
+        'sale_amount'        => to_currency($consignment->sale_amount),
+        'payout_rate'        => to_tax_decimals($consignment->payout_rate) . '%',
+        'payout_amount'      => to_currency($consignment->payout_amount),
+        'status_label'       => $status,
+        'payout_date'        => $consignment->payout_date ? to_datetime(strtotime($consignment->payout_date)) : '-',
+        'notes'              => $consignment->notes ?? ''
+    ];
+
+    $columns['edit'] = anchor(
+        "$controller/view/$consignment->consignment_id",
+        '<span class="glyphicon glyphicon-edit"></span>',
+        [
+            'class'           => 'modal-dlg',
+            'data-btn-submit' => lang('Common.submit'),
+            'title'           => lang('Consignments.update')
+        ]
+    );
+
+    return $columns;
 }
 
 /**

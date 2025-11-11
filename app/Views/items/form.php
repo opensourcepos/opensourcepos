@@ -174,6 +174,37 @@
             </div>
         </div>
 
+                <div class="form-group form-group-sm">
+            <?= form_label(lang('Items.is_consignment'), 'is_consignment', ['class' => 'control-label col-xs-3']) ?>
+            <div class="col-xs-8">
+                <div class="checkbox">
+                    <label>
+                        <?= form_checkbox([
+                            'name'    => 'is_consignment',
+                            'id'      => 'is_consignment',
+                            'value'   => 1,
+                            'checked' => !empty($item_info->is_consignment)
+                        ]) ?> <?= lang('Common.yes') ?>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-group-sm">
+            <?= form_label(lang('Items.consignment_rate'), 'consignment_rate', ['class' => 'control-label col-xs-3']) ?>
+            <div class="col-xs-4">
+                <div class="input-group input-group-sm">
+                    <?= form_input([
+                        'name'  => 'consignment_rate',
+                        'id'    => 'consignment_rate',
+                        'class' => 'form-control input-sm',
+                        'value' => $item_info->consignment_rate !== null ? to_tax_decimals($item_info->consignment_rate) : ''
+                    ]) ?>
+                    <span class="input-group-addon"><b>%</b></span>
+                </div>
+            </div>
+        </div>
+
         <div class="form-group form-group-sm">
             <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-4">

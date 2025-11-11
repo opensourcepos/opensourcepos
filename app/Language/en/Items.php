@@ -102,6 +102,8 @@ return [
     "successful_deleted"                 => "You have successfully deleted",
     "successful_updating"                => "You have successfully updated item",
     "supplier"                           => "Supplier",
+    "is_consignment"                    => "Consignment Item",
+    "consignment_rate"                  => "Consignment Rate (%)",
     "tax_1"                              => "Tax 1",
     "tax_2"                              => "Tax 2",
     "tax_3"                              => "",
