@@ -22,7 +22,6 @@ class Token_lib
         // Apply the transformation for the "%" tokens if any are used
         if (strpos($tokened_text, '%') !== false) {
             $tokened_text = strftime($tokened_text);    // TODO: these need to be converted to IntlDateFormatter::format()
-            error_log('strftime: ' . $tokened_text);
         }
 
         // Call scan to build an array of all of the tokens used in the text to be transformed
@@ -43,34 +42,36 @@ class Token_lib
         return str_replace($tokens_to_replace, $token_values, $tokened_text);
     }
 
-    public function renderUpdated(string $tokened_text, array $tokens = [], $save = true): string
+    /**
+     * Expands all the tokens found in a given text string and returns the results.
+     * @param string $tokenedText
+     * @param array $tokens
+     * @param bool $save
+     * @return string
+     */
+    public function renderUpdated(string $tokenedText, array $tokens = [], bool $save = true): string
     {
         // Apply the transformation for the "%" tokens if any are used
-        if (str_contains($tokened_text, '%')) {
-            $string_parts = $this->extractDateFormat($tokened_text);
-
-            // TODO: get locale from config or user browser
-            $formatter = new IntlDateFormatter('en-US', IntlDateFormatter::FULL,
-                IntlDateFormatter::NONE);
-            $formatter->setPattern($string_parts[1]);
-            $tokened_text = $string_parts[0] . $formatter->format(new DateTime()) . $string_parts[2];
-            error_log('IntlDateFormatter::format: ' . $tokened_text);
+        if (str_contains($tokenedText, '%')) {
+            $tokenedText = $this->applyDateFormats($tokenedText);
+            // replicate error in the original function
+            if (str_contains($tokenedText, '%')) {
+                return '';
+            }
         }
 
         // Call scan to build an array of all of the tokens used in the text to be transformed
-        $token_tree = $this->scan($tokened_text);
+        $token_tree = $this->scan($tokenedText);
 
         if (empty($token_tree)) {
-            if (str_contains($tokened_text, '%')) {
-                $string_parts = $this->extractDateFormat($tokened_text);
-
-                // TODO: get locale from config or user browser
-                $formatter = new IntlDateFormatter('en-US', IntlDateFormatter::FULL,
-                    IntlDateFormatter::NONE);
-                $formatter->setPattern($string_parts[1]);
-                $tokened_text = $string_parts[0] . $formatter->format(new DateTime()) . $string_parts[2];
+            if (str_contains($tokenedText, '%')) {
+                $tokenedText = $this->applyDateFormats($tokenedText);
+                // replicate error in the original function
+                if (str_contains($tokenedText, '%')) {
+                    return '';
+                }
             } else {
-                return $tokened_text;
+                return $tokenedText;
             }
         }
 
@@ -78,44 +79,42 @@ class Token_lib
         $tokens_to_replace = [];
         $this->generate($token_tree, $tokens_to_replace, $token_values, $save);
 
-        return str_replace($tokens_to_replace, $token_values, $tokened_text);
+        return str_replace($tokens_to_replace, $token_values, $tokenedText);
     }
 
     /**
-     * Extracts the date format from a string. Returns an array with the following elements:
-     * ```
-     * 0: The text before the date format
-     * 1: The date format
-     * 2: The text after the date format
-     * ```
+     * Replaces all date formats in a string with the current date in that format. A string that contains no date
+     * formats will be returned unchanged.
      * @param string $text
-     * @return string[]
+     * @return string
      */
-    private function extractDateFormat(string $text): array
+    public function applyDateFormats(string $text): string
     {
-        $rawChunks = explode('%', $text);
+        // TODO: get locale from config or user browser
+        $formatter = new IntlDateFormatter('en-US', IntlDateFormatter::FULL, IntlDateFormatter::NONE);
+        $dateTime = new DateTime();
 
-        $matches = [];
-        if (preg_match('/[\s:]/', $rawChunks[3], $matches, PREG_OFFSET_CAPTURE)) {
-            // chop off anything after the date format
-            $chunks = [
-                $rawChunks[0],
-                "$rawChunks[1]$rawChunks[2]" . substr($rawChunks[3], 0, $matches[0][1]),
-                substr($rawChunks[3], $matches[0][1])
-            ];
-        }
-        else {
-            $chunks = [
-                $rawChunks[0],
-                "$rawChunks[1]$rawChunks[2]$rawChunks[3]",
-                ""
-            ];
-        }
-
-        // TODO: update this to cover all edge cases
-        $chunks[1] = str_replace(['m', 'B'], ['M', 'LLLL'], $chunks[1]);
-
-        return $chunks;
+        return preg_replace_callback(
+            "/
+            %([a-zA-Z])\1{0,4} # '%' followed by 1-5 of a letter
+            [^a-zA-Z]+         # any non-alphabetic separator(s)
+            %([a-zA-Z])\2{0,4} # '%' followed by 1-5 of a letter
+            [^a-zA-Z]+         # any non-alphabetic separator(s)
+            %([a-zA-Z])\3{0,4} # '%' followed by 1-5 of a letter
+            (?=[^a-zA-Z]|$)    # any non-alphabetic (or end of string)
+        /x",
+            function ($match) use ($formatter, $dateTime) {
+                // TODO: update this to cover all edge cases between strftime and IntlDateFormatter
+                $pattern = str_replace(
+                    ['%', 'm', 'B', 'd'],
+                    ['', 'M', 'LLLL', 'dd'],
+                    $match[0]
+                );
+                $formatter->setPattern($pattern);
+                return $formatter->format($dateTime);
+            },
+            $text
+        );
     }
 
     /**
