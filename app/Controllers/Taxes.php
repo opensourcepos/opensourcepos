@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Tax_lib;
-use App\Models\enums\Rounding_mode;
+use App\Models\Enums\Rounding_mode;
 use App\Models\Tax;
 use App\Models\Tax_category;
 use App\Models\Tax_code;
@@ -150,7 +150,7 @@ class Taxes extends Secure_Controller
             $data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
         }
 
-        $data['rounding_options'] = rounding_mode::get_rounding_options();
+        $data['rounding_options'] = Rounding_mode::get_rounding_options();
         $data['html_rounding_options'] = $this->get_html_rounding_options();
 
         if ($tax_code == NEW_ENTRY) {   // TODO: Duplicated code
@@ -205,7 +205,7 @@ class Taxes extends Secure_Controller
         $tax_rate_info = $this->tax->get_info($tax_rate_id);
 
         $data['tax_rate_id'] = $tax_rate_id;
-        $data['rounding_options'] = rounding_mode::get_rounding_options();
+        $data['rounding_options'] = Rounding_mode::get_rounding_options();
 
         $data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
         $data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
@@ -215,7 +215,7 @@ class Taxes extends Secure_Controller
             $data['rate_tax_code_id'] = $this->config['default_tax_code'];
             $data['rate_tax_category_id'] = $this->config['default_tax_category'];
             $data['rate_jurisdiction_id'] = $this->config['default_tax_jurisdiction'];
-            $data['tax_rounding_code'] = rounding_mode::HALF_UP;
+            $data['tax_rounding_code'] = Rounding_mode::HALF_UP;
             $data['tax_rate'] = '0.0000';
         } else {
             $data['rate_tax_code_id'] = $tax_rate_info->rate_tax_code_id;
@@ -242,7 +242,7 @@ class Taxes extends Secure_Controller
 
         $tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
-        $data['rounding_options'] = rounding_mode::get_rounding_options();
+        $data['rounding_options'] = Rounding_mode::get_rounding_options();
         $data['html_rounding_options'] = $this->get_html_rounding_options();
 
         if ($this->config['tax_included']) {
@@ -306,7 +306,7 @@ class Taxes extends Secure_Controller
 
         $tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
-        $data['rounding_options'] = rounding_mode::get_rounding_options();
+        $data['rounding_options'] = Rounding_mode::get_rounding_options();
         $data['html_rounding_options'] = $this->get_html_rounding_options();
 
         if ($this->config['tax_included']) {
@@ -362,7 +362,7 @@ class Taxes extends Secure_Controller
      */
     public static function get_html_rounding_options(): string
     {
-        return rounding_mode::get_html_rounding_options();
+        return Rounding_mode::get_html_rounding_options();
     }
 
     /**
@@ -431,7 +431,7 @@ class Taxes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function save_tax_codes(): void
+    public function postSave_tax_codes(): void
     {
         $tax_code_id = $this->request->getPost('tax_code_id', FILTER_SANITIZE_NUMBER_INT);
         $tax_code = $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -464,7 +464,7 @@ class Taxes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function save_tax_jurisdictions(): void
+    public function postSave_tax_jurisdictions(): void
     {
         $jurisdiction_id = $this->request->getPost('jurisdiction_id', FILTER_SANITIZE_NUMBER_INT);
         $jurisdiction_name = $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -513,7 +513,7 @@ class Taxes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function save_tax_categories(): void
+    public function postSave_tax_categories(): void
     {
         $tax_category_id = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
         $tax_category = $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -543,7 +543,7 @@ class Taxes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function ajax_tax_codes(): void
+    public function getAjax_tax_codes(): void
     {
         $tax_codes = $this->tax_code->get_all()->getResultArray();
 
@@ -556,7 +556,7 @@ class Taxes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function ajax_tax_categories(): void
+    public function getAjax_tax_categories(): void
     {
         $tax_categories = $this->tax_category->get_all()->getResultArray();
 
@@ -569,7 +569,7 @@ class Taxes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function ajax_tax_jurisdictions(): void
+    public function getAjax_tax_jurisdictions(): void
     {
         $tax_jurisdictions = $this->tax_jurisdiction->get_all()->getResultArray();
 

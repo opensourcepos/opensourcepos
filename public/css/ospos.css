@@ -30,6 +30,10 @@ a.none {
     border-radius: 0;
 }
 
+.tab-pane {
+    padding-top: 10px;
+}
+
 .navbar-default .navbar-nav>.active>a,
 .navbar-default .navbar-nav>.active>a:hover,
 .navbar-default .navbar-nav>.active>a:focus {
