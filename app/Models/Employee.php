@@ -520,7 +520,7 @@ class Employee extends Person
     {
         $success = false;
 
-        if (ENVIRONMENT != 'testing') {
+        if (!getenv('DISALLOW_PASSWORD_CHANGE')) {
             $this->db->transStart();
 
             $builder = $this->db->table('employees');
