@@ -61,7 +61,7 @@ class Home extends Secure_Controller
                     'hash_version' => 2
                 ];
 
-                if ($this->employee->change_password($employee_data, $employee_id)) {
+                if ($this->employee->change_password($employee_data, $employee_id) && strlen($employee_data['password']) >= 8) {
                     echo json_encode([
                         'success' => true,
                         'message' => lang('Employees.successful_change_password'),
