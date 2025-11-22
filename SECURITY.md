@@ -18,6 +18,7 @@ We release patches for security vulnerabilities. Which versions are eligible to 
 | --------- | -------------------------------------------------- |
 | 7.3       | 3.3.5                                              |
 | 9.8       | 3.3.6                                              |
+| 6.8       | 3.4.2                                              |
 
 ## Reporting a Vulnerability
 
