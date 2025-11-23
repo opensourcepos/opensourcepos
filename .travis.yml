@@ -21,8 +21,8 @@ script:
   - npm version "$version-$branch-$rev" --force || true
   - sed -i 's/opensourcepos.tar.gz/opensourcepos.$version.tgz/g' package.json
   - npm ci && npm install -g gulp && npm run build
-  - docker build . --target ospos -t ospos
-  - docker build . --target ospos_test -t ospos_test
+  - docker buildx build --target ospos . --platform linux/arm64,linux/amd64 -t ospos
+  - docker build --target ospos_test . -t ospos_test
   - docker run --rm ospos_test /app/vendor/bin/phpunit --testdox
   - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
 env:
@@ -36,6 +36,14 @@ after_success:
   - gulp compress
   - mv dist/opensourcepos.tar.gz "dist/opensourcepos.$version.$rev.tgz"
   - mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
+before_install:
+  - mkdir -vp ~/.docker/cli-plugins/
+  - curl --silent -L "https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+  - chmod a+x ~/.docker/cli-plugins/docker-buildx
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  - docker buildx create --name multiarch --use
+  - docker buildx inspect --bootstrap
+
 deploy:
   - provider: releases
     edge: true
