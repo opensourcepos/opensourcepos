@@ -17,6 +17,13 @@
         document.getElementById('liveclock').innerHTML = moment().format("<?= dateformat_momentjs($config['dateformat'] . ' ' . $config['timeformat']) ?>");
     }
 
+    const notify = $.notify;
+
+    $.notify = function(content, options) {
+        const sanitizedContent = DOMPurify.sanitize(content);
+        return notify(sanitizedContent, options);
+    };
+
     $.notifyDefaults({
         placement: {
             align: "<?= esc($config['notify_horizontal_position'], 'js') ?>",
