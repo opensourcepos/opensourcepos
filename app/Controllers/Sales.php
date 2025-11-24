@@ -399,7 +399,7 @@ class Sales extends Secure_Controller
                 $cur_giftcard_customer = $giftcard->get_giftcard_customer($giftcard_num);
                 $customer_id = $this->sale_lib->get_customer();
 
-                if (isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id) {
+                if (isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id && $cur_giftcard_customer != null) {
                     $data['error'] = lang('Giftcards.cannot_use', [$giftcard_num]);
                 } elseif (($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() === 'sale') {
                     $data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value]);
@@ -417,7 +417,6 @@ class Sales extends Secure_Controller
                 $customer_id = $this->sale_lib->get_customer();
                 $package_id = $this->customer->get_info($customer_id)->package_id;
                 if (!empty($package_id)) {
-                    $package_name = $this->customer_rewards->get_name($package_id);    // TODO: this variable is never used.
                     $points = $this->customer->get_info($customer_id)->points;
                     $points = ($points == null ? 0 : $points);
 

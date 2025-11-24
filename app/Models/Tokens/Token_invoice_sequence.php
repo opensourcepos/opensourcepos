@@ -37,8 +37,7 @@ class Token_invoice_sequence extends Token
     {
         if (empty($this->value)) {
             return $this->appconfig->acquire_next_invoice_sequence($save);
-        } else {
-            return $this->value;
         }
+        return $this->value;
      }
 }

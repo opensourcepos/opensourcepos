@@ -347,7 +347,7 @@ class Giftcard extends Model
      * @param string $giftcard_number Gift card number
      * @return int The customer_id of the gift card if it exists, 0 otherwise.
      */
-    public function get_giftcard_customer(string $giftcard_number): int
+    public function get_giftcard_customer(string $giftcard_number): int|null
     {
         if (!$this->exists($this->get_giftcard_id($giftcard_number))) {
             return 0;

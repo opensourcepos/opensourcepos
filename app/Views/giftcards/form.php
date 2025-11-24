@@ -116,29 +116,22 @@
 
             rules: {
                 <?php if ($config['giftcard_number'] == 'series') { ?>
-                    person_name: {
-                        required: true
-                    },
                     giftcard_number: {
-                        required: true
+                        required: true,
+                        number: true,
+                        remote: {
+                            url: "<?= esc("$controller_name/checkNumberGiftcard") ?>",
+                            type: 'POST',
+                            data: {
+                                'giftcard_number': function() { return $('#giftcard_number').val() },
+                                'giftcard_id': '<?= esc($giftcard_id) ?>'
+                            }
+                        }
                     },
                 <?php } ?>
                 giftcard_amount: {
                     required: true,
-                    remote: {
-                        url: "<?= esc("$controller_name/checkNumberGiftcard") ?>",
-                        type: 'POST',
-                        data: {
-                            'amount': $('#giftcard_amount').val()
-                        },
-                        dataFilter: function(data) {
-                            var response = JSON.parse(data);
-                            if (response.success) {
-                                $('#giftcard_amount').val(response.giftcard_amount);
-                            }
-                            return response.success;
-                        }
-                    }
+                    remote: "<?= esc("$controller_name/checkNumeric") ?>"
                 }
             },
 
@@ -146,7 +139,8 @@
                 <?php if ($config['giftcard_number'] == 'series') { ?>
                     giftcard_number: {
                         required: "<?= lang('Giftcards.number_required') ?>",
-                        number: "<?= lang('Giftcards.number') ?>"
+                        number: "<?= lang('Giftcards.number') ?>",
+                        remote: "<?= lang('Giftcards.number_required') ?>"
                     },
                 <?php } ?>
                 giftcard_amount: {
