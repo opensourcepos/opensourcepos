@@ -27,6 +27,11 @@ if (isset($error_message)) {
 echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align: right;">
+    <a href="javascript:void(0);">
+        <div class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+            <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
+        </div>
+    </a>
     <a href="javascript:printdoc();">
         <div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print') ?></div>
     </a>
@@ -64,6 +69,7 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
 
     <table id="receipt_items">
         <tr>
+            <th class="receipt-avatar-column" style="width: 15%;"><?= lang('Items.image') ?></th>
             <th style="width: 40%;"><?= lang('Items.item') ?></th>
             <th style="width: 20%;"><?= lang('Common.price') ?></th>
             <th style="width: 20%;"><?= lang('Sales.quantity') ?></th>
@@ -72,6 +78,13 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
 
         <?php foreach (array_reverse($cart, true) as $line => $item) { ?>
             <tr>
+                <td class="receipt-avatar-column">
+
+                    <?php if (!empty($item['pic_filename'])): ?>
+                        <img src="<?= base_url('uploads/item_pics/' . esc($item['pic_filename'], 'url')) ?>" alt="avatar" style="height:40px;max-width:40px;">
+                       
+                    <?php endif; ?>
+                </td>
                 <td><?= esc($item['name'] . ' ' . $item['attribute_values']) ?></td>
                 <td><?= to_currency($item['price']) ?></td>
                 <td><?= to_quantity_decimals($item['quantity']) . ' ' . ($show_stock_locations ? ' [' . esc($item['stock_name']) . ']' : '') ?>&nbsp;&nbsp;&nbsp;x <?= $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1 ?></td>
@@ -131,5 +144,41 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
         <?= $receiving_id ?>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Avatar toggle functionality
+        const STORAGE_KEY = 'receipt_avatar_visible';
+        
+        // Get saved state from localStorage, default to visible (true)
+        let isAvatarVisible = localStorage.getItem(STORAGE_KEY) !== 'false';
+        
+        // Apply initial state
+        updateAvatarVisibility(isAvatarVisible);
+        
+        // Handle toggle button click
+        $('#toggle_avatar_button').click(function() {
+            isAvatarVisible = !isAvatarVisible;
+            updateAvatarVisibility(isAvatarVisible);
+            localStorage.setItem(STORAGE_KEY, isAvatarVisible);
+        });
+        
+        function updateAvatarVisibility(visible) {
+            const $avatarElements = $('.receipt-avatar-column');
+            const $toggleButton = $('#toggle_avatar_button');
+            const $toggleText = $('#avatar_toggle_text');
+            
+            if (visible) {
+                $avatarElements.removeClass('hidden');
+                $toggleButton.removeClass('active');
+                $toggleText.text('Hide Avatar');
+            } else {
+                $avatarElements.addClass('hidden');
+                $toggleButton.addClass('active');
+                $toggleText.text('Show Avatar');
+            }
+        }
+    });
+</script>
 
 <?= view('partial/footer') ?>
