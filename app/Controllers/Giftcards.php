@@ -160,9 +160,12 @@ class Giftcards extends Secure_Controller
      */
     public function postCheckNumberGiftcard(): void
     {
-        $giftcard_amount = parse_decimals($this->request->getPost('giftcard_amount'));
-        $parsed_value = filter_var($giftcard_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        echo json_encode(['success' => $parsed_value !== false && $parsed_value > 0 && $giftcard_amount !== false, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
+        $existing_id = $this->request->getPost('giftcard_id', FILTER_SANITIZE_NUMBER_INT);
+        $giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_NUMBER_INT);
+        $giftcard_id = $this->giftcard->get_giftcard_id($giftcard_number);
+        $success = ($giftcard_id == (int) $existing_id || !$giftcard_id );
+
+        echo $success ? 'true' : 'false';
     }
 
     /**
