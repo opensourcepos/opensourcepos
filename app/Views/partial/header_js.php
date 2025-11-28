@@ -20,8 +20,9 @@
     const notify = $.notify;
 
     $.notify = function(content, options) {
-        const sanitizedContent = DOMPurify.sanitize(content);
-        return notify(sanitizedContent, options);
+        const message = typeof content === "object" ? content.message : content;
+        const sanitizedMessage = DOMPurify.sanitize(message);
+        return notify(sanitizedMessage, options);
     };
 
     $.notifyDefaults({
