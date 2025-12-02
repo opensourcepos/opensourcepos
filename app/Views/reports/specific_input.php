@@ -9,11 +9,11 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
 
-<div id="page_title"><?= lang('Reports.report_input') ?></div>
+<?php
+$title_info['config_title'] = lang('Reports.report_input');
+echo view('configs/config_header', $title_info);
+?>
 
 <?php
 if (isset($error)) {
