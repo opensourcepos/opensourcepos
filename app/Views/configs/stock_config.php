@@ -3,27 +3,23 @@
  * @var array $stock_locations
  */
 ?>
+<?= form_open('config/saveLocations/', ['id' => 'location_config_form']) ?>
 
-<?= form_open('config/saveLocations/', ['id' => 'location_config_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
+    <?php
+    $title_info['config_title'] = lang('Config.location_configuration');
+    echo view('configs/config_header', $title_info);
+    ?>
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="stock_error_message_box" class="error_message_box"></ul>
+    <ul id="stock_error_message_box" class="error_message_box"></ul>
 
-            <div id="stock_locations">
-                <?= view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
-            </div>
-
-            <?= form_submit([
-                'name'  => 'submit_stock',
-                'id'    => 'submit_stock',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+    <div id="stock_locations">
+        <?= view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
     </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit" name="submit_stock"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
@@ -79,6 +75,7 @@
                 $(form).ajaxSubmit({
                     success: function(response) {
                         $.notify({
+                            icon: 'bi bi-bell-fill',
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'

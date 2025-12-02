@@ -5,85 +5,50 @@
 ?>
 
 <?= form_open('config/saveMessage/', ['id' => 'message_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="message_error_message_box" class="error_message_box"></ul>
+    <?php
+    $title_info['config_title'] = lang('Config.message_configuration');
+    echo view('configs/config_header', $title_info);
+    ?>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_uid'), 'msg_uid', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-4">
-                    <div class="input-group">
-                        <span class="input-group-addon input-sm">
-                            <i class="bi bi-person"></i>
-                        </span>
-                        <?= form_input([
-                            'name'  => 'msg_uid',
-                            'id'    => 'msg_uid',
-                            'class' => 'form-control input-sm required',
-                            'value' => $config['msg_uid']
-                        ]) ?>
-                    </div>
-                </div>
+    <ul id="message_error_message_box" class="error_message_box"></ul>
+
+    <div class="row">
+        <div class="col-12 col-lg-6 mb-3">
+            <label for="msg-uid" class="form-label"><?= lang('Config.msg_uid'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group">
+                <span class="input-group-text" id="msg-uid-icon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" id="msg-uid" aria-describedby="msg-uid-icon" required value="<?= $config['msg_uid']; ?>">
             </div>
+        </div>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_pwd'), 'msg_pwd', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-4">
-                    <div class="input-group">
-                        <span class="input-group-addon input-sm">
-                            <i class="bi bi-lock"></i>
-                        </span>
-                        <?= form_password([
-                            'name'  => 'msg_pwd',
-                            'id'    => 'msg_pwd',
-                            'class' => 'form-control input-sm required',
-                            'value' => $config['msg_pwd']
-                        ]) ?>
-                    </div>
-                </div>
+        <div class="col-12 col-lg-6 mb-3">
+            <label for="msg-pwd" class="form-label"><?= lang('Config.msg_pwd'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group">
+                <span class="input-group-text" id="msg-pwd-icon"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control" id="msg-pwd" aria-describedby="msg-pwd-icon" required value="<?= $config['msg_pwd']; ?>">
             </div>
+        </div>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_src'), 'msg_src', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-4">
-                    <div class="input-group">
-                        <span class="input-group-addon input-sm">
-                            <i class="bi bi-megaphone"></i>
-                        </span>
-                        <?= form_input([
-                            'name'  => 'msg_src',
-                            'id'    => 'msg_src',
-                            'class' => 'form-control input-sm required',
-                            'value' => $config['msg_src'] == null ? $config['company'] : $config['msg_src']
-                        ]) ?>
-                    </div>
-                </div>
+        <div class="col-12 col-lg-6 mb-3">
+            <label for="msg-src" class="form-label"><?= lang('Config.msg_src'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group">
+                <span class="input-group-text" id="msg-src-icon"><i class="bi bi-megaphone"></i></span>
+                <input type="text" class="form-control" id="msg-src" aria-describedby="msg-src-icon" required value="<?= $config['msg_src'] == null ? $config['company'] : $config['msg_src']; ?>">
             </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_msg'), 'msg_msg', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
-                    <?= form_textarea([
-                        'name'        => 'msg_msg',
-                        'id'          => 'msg_msg',
-                        'class'       => 'form-control input-sm',
-                        'value'       => $config['msg_msg'],
-                        'placeholder' => lang('Config.msg_msg_placeholder')
-                    ]) ?>
-                </div>
-            </div>
-
-            <?= form_submit([
-                'name'  => 'submit_message',
-                'id'    => 'submit_message',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+        </div>
     </div>
+
+    <label for="msg-msg" class="form-label"><?= lang('Config.msg_msg'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-chat-quote"></i></span>
+        <textarea class="form-control" name="msg_msg" id="msg-msg" rows="10" placeholder="<?= lang('Config.msg_msg_placeholder'); ?>" value="<?= $config['msg_msg']; ?>"></textarea>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit" name="submit_message"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">

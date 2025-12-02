@@ -7,32 +7,51 @@
  * @var array $config
  * @var $validation
  */
+
+// Manually setting some error messages for testing
+// $validation->setError('test', 'The test error is testing.');
+// $validation->setError('email', 'The email field is required.');
+// $has_errors = $validation->hasError('email');
+// $has_errors = $validation->hasError('test');
+
+// Manually set database migration message to show
+// $is_latest = false;
+// $latest_version = '1.0.0';
+
+// Manually set language for page, doesn't work for dynamic elements
+// \Config\Services::language()->setLocale('de-DE');
+
+// Manually set login form appearence
+// $config['login_form'] = 'input_groups';
+
+// Manually set theme
+// $config['theme'] = 'cerulean';
+
 ?>
 
 <!doctype html>
-<html lang="<?= current_language_code() ?>">
+<html lang="<?= current_language_code() ?>" data-bs-theme="<?= $config['color_mode'] ?>" <?= $config['rtl_language'] == 1 ? 'dir="rtl"' : '' ?>>
 
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
     <title><?= $config['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?= $config['responsive_design'] == 1 ? '<meta name="viewport" content="width=device-width, initial-scale=1">' : '' ?>
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <?php
-    $theme = (empty($config['theme'])
-        || 'paper' == $config['theme']
-        || 'readable' == $config['theme']
-        ? 'flatly'
-        : $config['theme']);
-    ?>
-    <link rel="stylesheet" href="resources/bootswatch5/<?= "$theme" ?>/bootstrap.min.css">
+    <?php $theme = (empty($config['theme']) ? 'flatly' : $config['theme']); ?>
+    <link rel="stylesheet" href="resources/bootswatch/<?= "$theme" ?>/bootstrap<?= $config['rtl_language'] == 1 ? '.rtl' : '' ?>.min.css">
     <link rel="stylesheet" href="resources/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/login.css">
     <meta name="theme-color" content="#2c3e50">
 </head>
 
 <body class="bg-secondary-subtle d-flex flex-column">
+    <!-- BS5 WIP message -->
+    <div data-notify="container" class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4 alert alert-warning position-absolute top-0 mt-3 start-50 translate-middle-x" role="alert">
+        <span data-notify="icon" class="me-2" role="img"><i class="bi bi-exclamation-diamond-fill"></i></span>
+        <span data-notify="message">WIP conversion to Bootstrap 5</span>
+    </div>
     <main class="d-flex justify-content-around align-items-center flex-grow-1">
         <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
             <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end border-secondary-subtle px-4 pb-3 p-md-4">

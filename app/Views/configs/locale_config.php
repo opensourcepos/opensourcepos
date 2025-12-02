@@ -5,285 +5,246 @@
  * @var string $controller_name
  * @var array $config
  */
+
+ $beta = '<sup><span class="badge bg-secondary">BETA</span></sup>';
 ?>
 
-<?= form_open('config/saveLocale/', ['id' => 'locale_config_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
+<?= form_open('config/saveLocale/', ['id' => 'locale_config_form']) ?>
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="locale_error_message_box" class="error_message_box"></ul>
+    <?php
+    $title_info['config_title'] = lang('Config.locale_configuration');
+    echo view('configs/config_header', $title_info);
+    ?>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_input([
-                        'name'  => 'number_locale',
-                        'id'    => 'number_locale',
-                        'class' => 'form-control input-sm',
-                        'value' => $config['number_locale']
-                    ]) ?>
-                    <?= form_hidden(['name' => 'save_number_locale', 'value' => $config['number_locale']]) ?>
-                </div>
-                <div class="col-xs-2">
-                    <label class="control-label">
-                        <a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank">
-                            <span class="bi bi-info-circle" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.number_locale_tooltip') ?>"></span>
-                        </a>
-                        <span id="number_locale_example">
-                            &nbsp;&nbsp;<?= to_currency(1234567890.12300) ?>
-                        </span>
-                    </label>
-                </div>
+    <ul id="locale_error_message_box" class="error_message_box"></ul>
+
+    <div class="row">
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="number_locale" class="form-label"><?= lang('Config.number_locale') ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-globe-americas"></i></span>
+                <input type="text" class="form-control" name="number_locale" id="number_locale" value="<?= $config['number_locale'] ?>">
             </div>
+        </div>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.thousands_separator'), 'thousands_separator', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_checkbox([
-                        'name'    => 'thousands_separator',
-                        'id'      => 'thousands_separator',
-                        'value'   => 'thousands_separator',
-                        'checked' => $config['thousands_separator'] == 1
-                    ]) ?>
-                </div>
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="number_locale_example" class="form-label">Localization Example</label>
+            <div class="mb-3" id="number_locale_example">
+                <?= to_currency(1234567890.12300) ?>&nbsp;
+                <a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank" rel="noopener">
+                    <i class="bi bi-link-45deg link-secondary" data-bs-toggle="tooltip" title="<?= lang('Config.number_locale_tooltip'); ?>"></i>
+                </a>
             </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.currency_symbol'), 'currency_symbol', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_input([
-                        'name'  => 'currency_symbol',
-                        'id'    => 'currency_symbol',
-                        'class' => 'form-control input-sm number_locale',
-                        'value' => $config['currency_symbol']
-                    ]) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.currency_code'), 'currency_code', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_input([
-                        'name'  => 'currency_code',
-                        'id'    => 'currency_code',
-                        'class' => 'form-control input-sm number_locale',
-                        'value' => $currency_code
-                    ]) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.currency_decimals'), 'currency_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_dropdown(
-                        'currency_decimals',
-                        [
-                            '0' => '0',
-                            '1' => '1',
-                            '2' => '2'
-                        ],
-                        $config['currency_decimals'],
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.tax_decimals'), 'tax_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_dropdown(
-                        'tax_decimals',
-                        [
-                            '0' => '0',
-                            '1' => '1',
-                            '2' => '2',
-                            '3' => '3',
-                            '4' => '4'
-                        ],
-                        $config['tax_decimals'],
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.quantity_decimals'), 'quantity_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_dropdown(
-                        'quantity_decimals',
-                        [
-                            '0' => '0',
-                            '1' => '1',
-                            '2' => '2',
-                            '3' => '3'
-                        ],
-                        $config['quantity_decimals'],
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.cash_decimals'), 'cash_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_dropdown(
-                        'cash_decimals',
-                        [
-                            '-1' => '-1',
-                            '0'  => '0',
-                            '1'  => '1',
-                            '2'  => '2'
-                        ],
-                        $config['cash_decimals'],
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-                <div class="col-xs-1">
-                    <label class="control-label">
-                        <span class="bi bi-info-circle" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.cash_decimals_tooltip') ?>"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_dropdown(
-                        'cash_rounding_code',
-                        $rounding_options,
-                        $config['cash_rounding_code'],
-                        'class="form-control input-sm"'
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.payment_options_order'), 'payment_options_order', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
-                    <?= form_dropdown(
-                        'payment_options_order',
-                        [
-                            'cashdebitcredit' => lang('Sales.cash') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.credit'),
-                            'debitcreditcash' => lang('Sales.debit') . ' / ' . lang('Sales.credit') . ' / ' . lang('Sales.cash'),
-                            'debitcashcredit' => lang('Sales.debit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.credit'),
-                            'creditdebitcash' => lang('Sales.credit') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.cash'),
-                            'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit')
-                        ],
-                        $config['payment_options_order'],
-                        'class="form-control input-sm"'
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_input([
-                        'name'  => 'country_codes',
-                        'class' => 'form-control input-sm',
-                        'value' => $config['country_codes']
-                    ]) ?>
-                </div>
-                <div class="col-xs-1">
-                    <label class="control-label">
-                        <a href="https://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank">
-                            <span class="bi bi-info-circle" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.country_codes_tooltip'); ?>"></span>
-                        </a>
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.language'), 'language', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
-                    <?= form_dropdown(
-                        'language',
-                        get_languages(),
-                        current_language_code(true) . ':' . current_language(true),
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.timezone'), 'timezone', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
-                    <?= form_dropdown(
-                        'timezone',
-                        get_timezones(),
-                        $config['timezone'] ? $config['timezone'] : date_default_timezone_get(),
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.datetimeformat'), 'datetimeformat', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-sm-2">
-                    <?= form_dropdown(
-                        'dateformat',
-                        get_dateformats(),
-                        $config['dateformat'],
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-                <div class="col-sm-2">
-                    <?= form_dropdown(
-                        'timeformat',
-                        get_timeformats(),
-                        $config['timeformat'],
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.date_or_time_format'), 'date_or_time_format', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_checkbox([
-                        'name'    => 'date_or_time_format',
-                        'id'      => 'date_or_time_format',
-                        'value'   => 'date_or_time_format',
-                        'checked' => $config['date_or_time_format'] == 1
-                    ]) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.financial_year'), 'financial_year', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
-                    <?= form_dropdown(
-                        'financial_year',
-                        [
-                            '1'  => lang('Config.financial_year_jan'),
-                            '2'  => lang('Config.financial_year_feb'),
-                            '3'  => lang('Config.financial_year_mar'),
-                            '4'  => lang('Config.financial_year_apr'),
-                            '5'  => lang('Config.financial_year_may'),
-                            '6'  => lang('Config.financial_year_jun'),
-                            '7'  => lang('Config.financial_year_jul'),
-                            '8'  => lang('Config.financial_year_aug'),
-                            '9'  => lang('Config.financial_year_sep'),
-                            '10' => lang('Config.financial_year_oct'),
-                            '11' => lang('Config.financial_year_nov'),
-                            '12' => lang('Config.financial_year_dec')
-                        ],
-                        $config['financial_year'],
-                        ['class' => 'form-control input-sm']
-                    ) ?>
-                </div>
-            </div>
-
-            <?= form_submit([
-                'name'  => 'submit_locale',
-                'id'    => 'submit_locale',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+        </div>
     </div>
+
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" role="switch" id="thousands_separator" name="thousands_separator" value="thousands_separator" <?= $config['thousands_separator'] == 1 ? 'checked' : '' ?>>
+        <label class="form-check-label" for="thousands_separator"><?= lang('Config.thousands_separator'); ?></label>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="currency_symbol" class="form-label"><?= lang('Config.currency_symbol') ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-currency-exchange"></i></span>
+                <input type="text" class="form-control" name="currency_symbol" id="currency_symbol" value="<?= $config['currency_symbol'] ?>">
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="currency_code" class="form-label"><?= lang('Config.currency_code') ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-cash"></i></span>
+                <input type="text" class="form-control" name="currency_code" id="currency_code" value="<?= $currency_code ?>">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="currency_decimals" class="form-label"><?= lang('Config.currency_decimals') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-coin"></i></label>
+                <select class="form-select" name="currency_decimals">
+                    <option value="0" <?= $config['currency_decimals'] == '0' ? 'selected' : '' ?>>0</option>
+                    <option value="1" <?= $config['currency_decimals'] == '1' ? 'selected' : '' ?>>1</option>
+                    <option value="2" <?= $config['currency_decimals'] == '2' ? 'selected' : '' ?>>2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="tax_decimals" class="form-label"><?= lang('Config.tax_decimals') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-archive"></i></label>
+                <select class="form-select" name="tax_decimals">
+                    <option value="0" <?= $config['tax_decimals'] == '0' ? 'selected' : '' ?>>0</option>
+                    <option value="1" <?= $config['tax_decimals'] == '1' ? 'selected' : '' ?>>1</option>
+                    <option value="2" <?= $config['tax_decimals'] == '2' ? 'selected' : '' ?>>2</option>
+                    <option value="3" <?= $config['tax_decimals'] == '3' ? 'selected' : '' ?>>3</option>
+                    <option value="4" <?= $config['tax_decimals'] == '4' ? 'selected' : '' ?>>4</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="quantity_decimals" class="form-label"><?= lang('Config.quantity_decimals') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-123"></i></label>
+                <select class="form-select" name="quantity_decimals">
+                    <option value="0" <?= $config['quantity_decimals'] == '0' ? 'selected' : '' ?>>0</option>
+                    <option value="1" <?= $config['quantity_decimals'] == '1' ? 'selected' : '' ?>>1</option>
+                    <option value="2" <?= $config['quantity_decimals'] == '2' ? 'selected' : '' ?>>2</option>
+                    <option value="3" <?= $config['quantity_decimals'] == '3' ? 'selected' : '' ?>>3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="cash_decimals" class="form-label"><?= lang('Config.cash_decimals') ?>
+                <i class="bi bi-info-circle-fill text-secondary" data-bs-toggle="tooltip" title="<?= lang('Config.cash_decimals_tooltip'); ?>"></i>
+            </label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-cash-coin"></i></label>
+                <select class="form-select" name="cash_decimals">
+                    <option value="0" <?= $config['cash_decimals'] == '0' ? 'selected' : '' ?>>0</option>
+                    <option value="1" <?= $config['cash_decimals'] == '1' ? 'selected' : '' ?>>1</option>
+                    <option value="2" <?= $config['cash_decimals'] == '2' ? 'selected' : '' ?>>2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <label for="cash_rounding_code" class="form-label"><?= lang('Config.cash_rounding') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-arrow-repeat"></i></label>
+                <select class="form-select" name="cash_rounding_code">
+                    <?php foreach ($rounding_options as $code => $label): ?>
+                        <option value="<?= $code ?>" <?= $config['cash_rounding_code'] == $code ? 'selected' : '' ?>><?= $label ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="payment_options_order" class="form-label"><?= lang('Config.payment_options_order') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-credit-card"></i></label>
+                <select class="form-select" name="payment_options_order" id="payment_options_order">
+                    <option value="cashdebitcredit" <?= $config['payment_options_order'] == 'cashdebitcredit' ? 'selected' : '' ?>><?= lang('Sales.cash') ?> / <?= lang('Sales.debit') ?> / <?= lang('Sales.credit') ?></option>
+                    <option value="debitcreditcash" <?= $config['payment_options_order'] == 'debitcreditcash' ? 'selected' : '' ?>><?= lang('Sales.debit') ?> / <?= lang('Sales.credit') ?> / <?= lang('Sales.cash') ?></option>
+                    <option value="debitcashcredit" <?= $config['payment_options_order'] == 'debitcashcredit' ? 'selected' : '' ?>><?= lang('Sales.debit') ?> / <?= lang('Sales.cash') ?> / <?= lang('Sales.credit') ?></option>
+                    <option value="creditdebitcash" <?= $config['payment_options_order'] == 'creditdebitcash' ? 'selected' : '' ?>><?= lang('Sales.credit') ?> / <?= lang('Sales.debit') ?> / <?= lang('Sales.cash') ?></option>
+                    <option value="creditcashdebit" <?= $config['payment_options_order'] == 'creditcashdebit' ? 'selected' : '' ?>><?= lang('Sales.credit') ?> / <?= lang('Sales.cash') ?> / <?= lang('Sales.debit') ?></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="country_codes" class="form-label">
+                <?= lang('Config.country_codes') ?>
+                <a href="https://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank" rel="noopener">
+                    <i class="bi bi-link-45deg text-secondary" data-bs-toggle="tooltip" title="<?= lang('Config.country_codes_tooltip'); ?>"></i>
+                </a>
+            </label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-code"></i></span>
+                <input type="text" class="form-control" name="country_codes" id="country_codes" value="<?= $config['country_codes'] ?>">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="language" class="form-label"><?= lang('Config.language') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-translate"></i></label>
+                <?= form_dropdown(
+                    'language',
+                    get_languages(),
+                    current_language_code(true) . ':' . current_language(true),
+                    ['class' => 'form-select']
+                ) ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" role="switch" id="rtl_language" name="rtl_language" value="rtl_language" <?= $config['rtl_language'] == 1 ? 'checked' : '' ?>>
+        <label class="form-check-label" for="rtl_language">RTL Language <?= $beta; ?></label>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="timezone" class="form-label"><?= lang('Config.timezone') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-clock"></i></label>
+                <?= form_dropdown(
+                    'timezone',
+                    get_timezones(),
+                    $config['timezone'] ? $config['timezone'] : date_default_timezone_get(),
+                    ['class' => 'form-select']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <label for="datetimeformat" class="form-label"><?= lang('Config.datetimeformat') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-calendar2"></i></label>
+                <?= form_dropdown(
+                    'dateformat',
+                    get_dateformats(),
+                    $config['dateformat'],
+                    ['class' => 'form-select']
+                ) ?>
+                <?= form_dropdown(
+                    'timeformat',
+                    get_timeformats(),
+                    $config['timeformat'],
+                    ['class' => 'form-select']
+                ) ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" role="switch" id="date_or_time_format" name="date_or_time_format" value="date_or_time_format" <?= $config['date_or_time_format'] == 1 ? 'checked' : '' ?>>
+        <label class="form-check-label" for="date_or_time_format"><?= lang('Config.date_or_time_format'); ?></label>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="financial_year" class="form-label"><?= lang('Config.financial_year') ?></label>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="bi bi-calendar2-month"></i></label>
+                <select class="form-select" name="financial_year" id="financial_year">
+                    <option value="1" <?= ($config['financial_year'] == '1' ? 'selected' : ''); ?>><?= lang('Config.financial_year_jan'); ?></option>
+                    <option value="2" <?= ($config['financial_year'] == '2' ? 'selected' : ''); ?>><?= lang('Config.financial_year_feb'); ?></option>
+                    <option value="3" <?= ($config['financial_year'] == '3' ? 'selected' : ''); ?>><?= lang('Config.financial_year_mar'); ?></option>
+                    <option value="4" <?= ($config['financial_year'] == '4' ? 'selected' : ''); ?>><?= lang('Config.financial_year_apr'); ?></option>
+                    <option value="5" <?= ($config['financial_year'] == '5' ? 'selected' : ''); ?>><?= lang('Config.financial_year_may'); ?></option>
+                    <option value="6" <?= ($config['financial_year'] == '6' ? 'selected' : ''); ?>><?= lang('Config.financial_year_jun'); ?></option>
+                    <option value="7" <?= ($config['financial_year'] == '7' ? 'selected' : ''); ?>><?= lang('Config.financial_year_jul'); ?></option>
+                    <option value="8" <?= ($config['financial_year'] == '8' ? 'selected' : ''); ?>><?= lang('Config.financial_year_aug'); ?></option>
+                    <option value="9" <?= ($config['financial_year'] == '9' ? 'selected' : ''); ?>><?= lang('Config.financial_year_sep'); ?></option>
+                    <option value="10" <?= ($config['financial_year'] == '10' ? 'selected' : ''); ?>><?= lang('Config.financial_year_oct'); ?></option>
+                    <option value="11" <?= ($config['financial_year'] == '11' ? 'selected' : ''); ?>><?= lang('Config.financial_year_nov'); ?></option>
+                    <option value="12" <?= ($config['financial_year'] == '12' ? 'selected' : ''); ?>><?= lang('Config.financial_year_dec'); ?></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit" name="submit_locale"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">

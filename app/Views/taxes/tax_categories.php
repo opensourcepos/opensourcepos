@@ -5,25 +5,17 @@
 ?>
 
 <?= form_open('taxes/save_tax_categories/', ['id' => 'tax_categories_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="tax_categories_error_message_box" class="error_message_box"></ul>
+    <ul id="tax_categories_error_message_box" class="error_message_box"></ul>
 
-            <div id="tax_categories">
-                <?= view('partial/tax_categories') ?>
-            </div>
-
-            <?= form_submit([
-                'name'  => 'submit_tax_categories',
-                'id'    => 'submit_tax_categories',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+    <div id="tax_categories">
+        <?= view('partial/tax_categories') ?>
     </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" name="submit_tax_categories"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
@@ -104,6 +96,7 @@
                 $(form).ajaxSubmit({
                     success: function(response) {
                         $.notify({
+                            icon: 'bi bi-bell-fill',
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'

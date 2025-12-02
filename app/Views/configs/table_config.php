@@ -5,38 +5,28 @@
  */
 ?>
 
-<?= form_open('config/saveTables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
+<?= form_open('config/saveTables/', ['id' => 'table_config_form']) ?>
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="table_error_message_box" class="error_message_box"></ul>
+    <?php
+    $title_info['config_title'] = lang('Config.table_configuration');
+    echo view('configs/config_header', $title_info);
+    ?>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_checkbox([
-                        'name'    => 'dinner_table_enable',
-                        'value'   => 'dinner_table_enable',
-                        'id'      => 'dinner_table_enable',
-                        'checked' => $config['dinner_table_enable'] == 1
-                    ]) ?>
-                </div>
-            </div>
+    <ul id="table_error_message_box" class="error_message_box"></ul>
 
-            <div id="dinner_tables">
-                <?= view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]) ?>
-            </div>
-
-            <?= form_submit([
-                'name'  => 'submit_table',
-                'id'    => 'submit_table',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" role="switch" id="dinner_table_enable" name="dinner_table_enable" value="dinner_table_enable" <?= $config['dinner_table_enable'] == 1 ? 'checked' : '' ?>>
+        <label class="form-check-label" for="dinner_table_enable"><?= lang('Config.dinner_table_enable'); ?></label>
     </div>
+
+    <div class="row" id="dinner_tables">
+        <?= view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]) ?>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit" name="submit_table"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
@@ -114,6 +104,7 @@
                     },
                     success: function(response) {
                         $.notify({
+                            icon: 'bi bi-bell-fill',
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'

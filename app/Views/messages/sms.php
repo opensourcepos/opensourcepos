@@ -1,39 +1,34 @@
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
+<?= form_open("messages/send/", ['id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post']) ?>
 
-<div class="jumbotron" style="max-width: 60%; margin: auto;">
-    <?= form_open("messages/send/", ['id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post', 'class' => 'form-horizontal']) ?>
-        <fieldset>
+    <?php
+    $title_info['config_title'] = lang('Messages.sms_send');
+    echo view('configs/config_header', $title_info);
+    ?>
 
-            <legend style="text-align: center;"><?= lang('Messages.sms_send') ?></legend>
-            <div class="form-group form-group-sm">
-                <label for="phone" class="col-xs-3 control-label"><?= lang('Messages.phone') ?></label>
-                <div class="col-xs-9">
-                    <input class="form-control input-sm" type="text" name="phone" placeholder="<?= lang('Messages.phone_placeholder') ?>">
-                    <span class="help-block" style="text-align: center;"><?= lang('Messages.multiple_phones') ?></span>
-                </div>
-            </div>
+    <div class="col mb-3">
+        <label for="message-recipients" class="form-label"><?= lang('Messages.phone'); ?></label>
+        <div class="input-group">
+            <span class="input-group-text" id="message-icon"><i class="bi bi-phone"></i></span>
+            <input type="text" name="phone" class="form-control" id="message-recipients" aria-describedby="message-icon" required placeholder="<?= lang('Messages.phone_placeholder'); ?>">
+        </div>
+        <span class="form-text"><?= lang('Messages.multiple_phones'); ?></span>
+    </div>
 
-            <div class="form-group form-group-sm">
-                <label for="message" class="col-xs-3 control-label"><?= lang('Messages.message') ?></label>
-                <div class="col-xs-9">
-                    <textarea class="form-control input-sm" rows="3" id="message" name="message" placeholder="<?= lang('Messages.message_placeholder') ?>"></textarea>
-                </div>
-            </div>
+    <div class="col mb-3">
+        <label for="text-message" class="form-label"><?= lang('Messages.message'); ?></label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-chat-quote"></i></span>
+            <textarea class="form-control" name="message" id="text-message" rows="10" placeholder="<?= lang('Messages.message_placeholder'); ?>"></textarea>
+        </div>
+    </div>
 
-            <?= form_submit([
-                'name'  => 'submit_form',
-                'id'    => 'submit_form',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" id="submit_form" name="submit_form">Send</button>
+    </div>
 
-        </fieldset>
-    <?= form_close() ?>
-</div>
+<?= form_close() ?>
 
 <?= view('partial/footer') ?>
 
@@ -45,6 +40,7 @@
                 $(form).ajaxSubmit({
                     success: function(response) {
                         $.notify({
+                            icon: 'bi bi-bell-fill',
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'

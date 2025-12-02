@@ -4,6 +4,10 @@
  */
 ?>
 
+<span class="d-flex justify-content-start add_customer_reward">
+    <button class="btn btn-outline-success mb-3" type="button"><i class="bi bi-plus-lg"></i>&nbsp;Add reward</button> <!-- TODO-BS5 translate -->
+</span>
+
 <?php
 $i = 0;
 
@@ -14,33 +18,14 @@ foreach ($customer_rewards as $reward_key => $reward_category) {
     ++$i;
 ?>
 
-    <div class="form-group form-group-sm" style="<?= $reward_category['deleted'] ? 'display: none;' : 'display: block;' ?>">
-        <?= form_label(lang('Config.customer_reward') . " $i", "customer_reward_$i", ['class' => 'required control-label col-xs-2']) ?>
-        <div class="col-xs-2">
-            <?php $form_data = [
-                'name'  => 'customer_reward_' . $customer_reward_id,
-                'id'    => 'customer_reward_' . $customer_reward_id,
-                'class' => 'customer_reward valid_chars form-control input-sm required',
-                'value' => $customer_reward_name
-            ];
-            $reward_category['deleted'] && $form_data['disabled'] = 'disabled';
-            echo form_input($form_data);
-            ?>
+    <div class="col-12 col-lg-6 <?= $reward_category['deleted'] ? 'd-none' : '' ?>">
+        <label for="customer_reward_<?= $i ?>" class="form-label"><?= lang('Config.customer_reward') . " $i"; ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text"><?= $customer_reward_id ?>.</span>
+            <input type="text" class="form-control customer_reward valid_chars w-25" name="customer_reward_<?= $customer_reward_id ?>" id="customer_reward_<?= $customer_reward_id ?>" value="<?= $customer_reward_name ?>" required <?= $reward_category['deleted'] ? 'disabled' : '' ?>>
+            <input type="number" min="0" class="form-control customer_reward valid_chars" name="reward_points_<?= $customer_reward_id ?>" id="reward_points_<?= $customer_reward_id ?>" value="<?= $customer_points_percent ?>" required <?= $reward_category['deleted'] ? 'disabled' : '' ?>>
+            <button class="btn btn-outline-danger remove_customer_reward" type="button"><i class="bi bi-x-lg"></i></button>
         </div>
-        <div class="col-xs-2">
-            <?php $form_data = [
-                'name'  => 'reward_points_' . $customer_reward_id,
-                'id'    => 'reward_points_' . $customer_reward_id,
-                'class' => 'customer_reward valid_chars form-control input-sm required',
-                'value' => $customer_points_percent
-            ];
-            $reward_category['deleted'] && $form_data['disabled'] = 'disabled';
-            echo form_input($form_data);
-            ?>
-        </div>
-        <span class="add_customer_reward bi bi-plus-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
-        <span>&nbsp;&nbsp;</span>
-        <span class="remove_customer_reward bi bi-dash-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
     </div>
 
 <?php } ?>

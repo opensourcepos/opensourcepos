@@ -251,8 +251,11 @@
                 localStorage[options.employee_id] = JSON.stringify(user_settings);
                 dialog_support.init("a.modal-dlg");
             },
+            loadingTemplate: function (loadingMessage) {
+                return '<div class="w-100 h-100 bg-body text-center pt-2"><div class="spinner-grow spinner-grow-sm"></div><span class="ps-1" role="status">' + loadingMessage + '</span></div>'
+            },
+            loadingFontSize: '1em',
             queryParamsType: 'limit',
-            iconSize: 'sm',
             silentSort: true,
             paginationVAlign: 'bottom',
             escape: true

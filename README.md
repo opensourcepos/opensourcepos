@@ -1,6 +1,10 @@
 <p align="center"><img src="https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/branding/emblem.svg" alt="Open Source Point of Sale Logo" width="auto" height="200"></p>
 <h3 align="center">Open Source Point of Sale</h3>
 
+## ☢️ Bootstrap 5 conversion WIP
+
+This is a heavily under construction build converting OSPOS from Bootstrap 3 to Bootstrap 5. Please do not use!
+
 <p align="center">
   <a href="#-introduction">Introduction</a> · <a href="#-live-demo">Demo</a> · <a href="#-installation">Installation</a> · 
   <a href="#-contributing">Contributing</a> · <a href="#-reporting-bugs">Bugs</a> · <a href="#-faq">FAQ</a> · 

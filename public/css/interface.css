@@ -1,0 +1,71 @@
+/* Standard Desktop Styling */
+html {
+    height: -webkit-fill-available; /* Prevent mobile webkit browsers from dropping footer behind the navigation bar */
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available; /* Prevent mobile webkit browsers from dropping footer behind the navigation bar */
+}
+
+@media (min-width: 1640px) {
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+      max-width: 1560px;
+    }
+  }
+
+nav img {
+    height: 2.5em;
+}
+
+nav li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+main {
+    overflow-x: auto;
+}
+
+section>div {
+    flex-basis: 10%;
+    white-space: nowrap;
+}
+
+section a {
+    text-decoration: none;
+}
+
+section>div img {
+    transition: all 0.1s ease-in-out;
+}
+
+section>div:hover img {
+    transform: scale(1.05);
+}
+
+section>div:hover .tile-text span {
+    color: rgba(255, 255, 255, 0.75)
+}
+
+section img {
+    height: 6em;
+}
+
+@media (max-width: 991.98px) {
+    .container-navbar {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    nav img {
+        height: 1.5em;
+    }
+
+    #navbar:last-child {
+        padding-bottom: 0.5em;
+    }
+}
+
+.mw-register {
+    min-width: 1114px;
+}

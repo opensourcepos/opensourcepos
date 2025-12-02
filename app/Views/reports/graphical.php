@@ -9,11 +9,10 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
-
-<div id="page_title"><?= esc($title) ?></div>
+<?php
+$title_info['config_title'] = esc($title);
+echo view('configs/config_header', $title_info);
+?>
 
 <div id="page_subtitle"><?= esc($subtitle) ?></div>
 

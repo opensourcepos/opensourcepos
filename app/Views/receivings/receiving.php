@@ -93,7 +93,7 @@ if (isset($success)) {
 
             <li class="pull-right">
                 <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-btn-new="<?= lang('Common.new') ?>" data-href="<?= "items/view" ?>" title="<?= lang('Sales.new_item') ?>">
-                    <i class="bi bi-tag icon-spacing"></i><?= lang('Sales.new_item') ?>
+                    <i class="bi bi-tag me-2"></i><?= lang('Sales.new_item') ?>
                 </button>
             </li>
         </ul>
@@ -272,7 +272,7 @@ if (isset($success)) {
 
             <?= anchor(
                 "$controller_name/removeSupplier",
-                '<i class="bi bi-x-circle icon-spacing"></i>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
+                '<i class="bi bi-x-circle me-2"></i>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
                 [
                     'class' => 'btn btn-danger btn-sm',
                     'id'    => 'remove_supplier_button',
@@ -296,7 +296,7 @@ if (isset($success)) {
                 ]) ?>
 
                 <button id="new_supplier_button" class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "suppliers/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new_supplier') ?>">
-                    <i class="bi bi-building-add icon-spacing"></i><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
+                    <i class="bi bi-building-add me-2"></i><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
                 </button>
 
             </div>
@@ -334,10 +334,10 @@ if (isset($success)) {
                         ]) ?>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <i class="bi bi-x-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle me-2"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <i class="bi bi-check-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle me-2"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 
@@ -415,10 +415,10 @@ if (isset($success)) {
                         </div>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <i class="bi bi-x-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle me-2"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <i class="bi bi-check-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle me-2"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 

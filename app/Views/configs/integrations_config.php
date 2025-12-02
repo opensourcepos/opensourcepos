@@ -4,65 +4,55 @@
  * @var string $controller_name
  */
 ?>
+<?= form_open('config/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data']) ?>
 
-<?= form_open('config/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
+    <?php
+    $title_info['config_title'] = lang('Config.integrations_configuration');
+    echo view('configs/config_header', $title_info);
+    ?>
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <div id="integrations_header"><?= lang('Config.mailchimp_configuration') ?></div>
-            <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
+    <legend class="fs-5"><?= lang('Config.mailchimp_configuration') ?></legend>
+    <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
-                    <div class="input-group">
-                        <span class="input-group-addon input-sm">
-                            <i class="bi bi-key"></i>
-                        </span>
-                        <?= form_input([
-                            'name'  => 'mailchimp_api_key',
-                            'id'    => 'mailchimp_api_key',
-                            'class' => 'form-control input-sm',
-                            'value' => $mailchimp['api_key']
-                        ]) ?>
-                    </div>
-                </div>
-                <div class="col-xs-1">
-                    <label class="control-label">
-                        <a href="https://eepurl.com/b9a05b" target="_blank">
-                            <span class="bi bi-info-circle" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') ?>"></span>
-                        </a>
-                    </label>
-                </div>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="mailchimp_api_key" class="form-label">
+                <?= lang('Config.mailchimp_api_key'); ?>
+                <!--<a href="https://eepurl.com/dyijVH" target="_blank" rel="noopener">
+                    <i class="bi bi-info-circle-fill text-secondary" data-bs-toggle="tooltip" title="<?= lang('Config.mailchimp_tooltip'); ?>"></i>
+                </a>-->
+            </label>
+            <div class="input-group">
+                <span class="input-group-text" id="mailchimp-api-key-icon"><i class="bi bi-key"></i></span>
+                <input type="text" class="form-control" name="mailchimp_api_key" id="mailchimp_api_key" aria-describedby="mailchimp-api-key-icon" value="<?= $mailchimp['api_key']; ?>">
             </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
-                    <div class="input-group">
-                        <span class="input-group-addon input-sm">
-                            <i class="bi bi-list-stars"></i>
-                        </span>
-                        <?= form_dropdown(
-                            'mailchimp_list_id',
-                            $mailchimp['lists'],
-                            $mailchimp['list_id'],
-                            'id="mailchimp_list_id" class="form-control input-sm"'
-                        ) ?>
-                    </div>
-                </div>
+            <div class="form-text mb-3">
+                <a class="link-secondary" href="https://eepurl.com/dyijVH" target="_blank" rel="noopener">
+                    <i class="bi bi-info-square pe-1"></i><?= lang('Config.mailchimp_tooltip') ?>
+                </a>
             </div>
+        </div>
 
-            <?= form_submit([
-                'name'  => 'submit_mailchimp',
-                'id'    => 'submit_mailchimp',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+        <div class="col-12 col-lg-6">
+            <label for="mailchimp_list_id" class="form-label"><?= lang('Config.mailchimp_lists'); ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="mailchimp-lists-icon"><i class="bi bi-list-stars"></i></span>
+                <select class="form-select" id="mailchimp_list_id" aria-describedby="mailchimp-lists-icon" <?= $mailchimp['api_key'] == null ? 'disabled' : '' ?>>
+                    <option>Choose...</option>
+                    <?php foreach($mailchimp['lists'] as $value => $display_text): ?>
+                        <option value="<?= $value; ?>" <?= $value == $mailchimp['list_id'] ? 'selected' : ''; ?>>
+                            <?= $display_text; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
     </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" name="sumbit_mailchimp"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
@@ -74,6 +64,7 @@
                 },
                 function(response) {
                     $.notify({
+                        icon: 'bi bi-bell-fill',
                         message: response.message
                     }, {
                         type: response.success ? 'success' : 'danger'

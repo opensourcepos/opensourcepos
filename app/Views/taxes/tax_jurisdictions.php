@@ -6,25 +6,17 @@
 ?>
 
 <?= form_open('taxes/save_tax_jurisdictions/', ['id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="tax_jurisdictions_error_message_box" class="error_message_box"></ul>
+    <ul id="tax_jurisdictions_error_message_box" class="error_message_box"></ul>
 
-            <div id="tax_jurisdictions">
-                <?= view('partial/tax_jurisdictions') ?>
-            </div>
-
-            <?= form_submit([
-                'name'  => 'submit_tax_jurisdictions',
-                'id'    => 'submit_tax_jurisdictions',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+    <div id="tax_jurisdictions">
+        <?= view('partial/tax_jurisdictions') ?>
     </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" name="submit_tax_jurisdictions"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
@@ -108,6 +100,7 @@
                 $(form).ajaxSubmit({
                     success: function(response) {
                         $.notify({
+                            icon: 'bi bi-bell-fill',
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'
