@@ -83,7 +83,7 @@
                 <div class="input-group">
                     <?= form_input(['name' => 'definition_value', 'class' => 'form-control input-sm', 'id' => 'definition_value']) ?>
                     <span id="add_attribute_value" class="input-group-addon input-sm btn btn-default">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <i class="bi bi-plus-circle"></i>
                     </span>
                 </div>
             </div>
