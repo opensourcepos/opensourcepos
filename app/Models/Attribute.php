@@ -822,7 +822,7 @@ class Attribute extends Model
         }
 
         // New Attribute
-        if (empty($attribute_id) || empty($item_id)) {
+        if (empty($attribute_id) || empty($item_id) || $attribute_id == -1) {
             $attribute_id = $this->attributeValueExists($attribute_value, $definition_type);
 
             if (!$attribute_id) {

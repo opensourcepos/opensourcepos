@@ -103,7 +103,7 @@ class Sale extends Model
     /**
      * Get number of rows for the takings (sales/manage) view
      */
-    public function get_found_rows(string $search, array $filters): int
+    public function get_found_rows(?string $search, array $filters): int
     {
         return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', true);
     }
@@ -111,7 +111,7 @@ class Sale extends Model
     /**
      * Get the sales data for the takings (sales/manage) view
      */
-    public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'sales.sale_time', ?string $order = 'desc', ?bool $count_only = false)
+    public function search(?string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'sales.sale_time', ?string $order = 'desc', ?bool $count_only = false)
     {
         // Set default values
         if ($rows == null) $rows = 0;
@@ -209,7 +209,7 @@ class Sale extends Model
     /**
      * Get the payment summary for the takings (sales/manage) view
      */
-    public function get_payments_summary(string $search, array $filters): array
+    public function get_payments_summary(?string $search, array $filters): array
     {
         $config = config(OSPOS::class)->settings;
 
@@ -311,7 +311,7 @@ class Sale extends Model
     /**
      * Gets search suggestions
      */
-    public function get_search_suggestions(string $search, int $limit = 25): array    // TODO: $limit is never used.
+    public function get_search_suggestions(?string $search, int $limit = 25): array    // TODO: $limit is never used.
     {
         $suggestions = [];
 
@@ -396,7 +396,7 @@ class Sale extends Model
     /**
      * Checks if valid receipt
      */
-    public function is_valid_receipt(string &$receipt_sale_id): bool    // TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
+    public function is_valid_receipt(string|null &$receipt_sale_id): bool    // TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
     {
         $config = config(OSPOS::class)->settings;
 
@@ -1449,7 +1449,7 @@ class Sale extends Model
      * @param BaseBuilder $builder
      * @return void
      */
-    private function add_filters_to_query(string $search, array $filters, BaseBuilder $builder): void
+    private function add_filters_to_query(?string $search, array $filters, BaseBuilder $builder): void
     {
         if (!empty($search)) {    // TODO: this is duplicated code.  We should think about refactoring out a method
             if ($filters['is_valid_receipt']) {
