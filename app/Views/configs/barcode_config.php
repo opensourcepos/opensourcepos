@@ -90,7 +90,7 @@
                     ]) ?>
                     &nbsp;
                     <label class="control-label">
-                        <span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.barcode_tooltip') ?>"></span>
+                        <span class="bi bi-exclamation-triangle" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.barcode_tooltip') ?>"></span>
                     </label>
                 </div>
             </div>

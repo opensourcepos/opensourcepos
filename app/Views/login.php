@@ -27,6 +27,7 @@
         : $config['theme']);
     ?>
     <link rel="stylesheet" href="resources/bootswatch5/<?= "$theme" ?>/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/login.css">
     <meta name="theme-color" content="#2c3e50">
 </head>
@@ -72,19 +73,13 @@
                 <?php elseif ('input_groups' == ($config['login_form'])): ?>
                     <div class="input-group mt-3">
                         <span class="input-group-text" id="input-username">
-                            <svg class="bi bi-person-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.username') ?></title>
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                            </svg>
+                            <i class="bi bi-person" title="<?= lang('Common.icon') . '&nbsp;' . lang('Login.username') ?>"></i>
                         </span>
                         <input class="form-control" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="input-password">
-                            <svg class="bi bi-key-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.password') ?></title>
-                                <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
-                            </svg>
+                            <i class="bi bi-lock" title="<?= lang('Common.icon') . '&nbsp;' . lang('Login.password') ?>"></i>
                         </span>
                         <input class="form-control" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                     </div>

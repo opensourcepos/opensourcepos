@@ -18,7 +18,7 @@
             <?= form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
+                    <span class="input-group-addon input-sm"><i class="bi bi-upc-scan"></i></span>
                     <?= form_input([
                         'name'  => 'item_kit_number',
                         'id'    => 'item_kit_number',
@@ -192,7 +192,7 @@
             <tbody>
                 <?php foreach ($item_kit_items as $item_kit_item) { ?>
                     <tr>
-                        <td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        <td><a href="#" onclick="return delete_item_kit_row(this);"><i class="bi bi-trash"></i></a></td>
                         <td><input class="quantity form-control input-sm" id="item_seq_<?= $item_kit_item['item_id'] ?>" name="item_kit_seq[<?= $item_kit_item['item_id'] ?>]" value="<?= parse_decimals($item_kit_item['kit_sequence'], 0) ?>"></td>
                         <td><?= esc($item_kit_item['name']) ?></td>
                         <td><input class="quantity form-control input-sm" id="item_qty_<?= $item_kit_item['item_id'] ?>" name="item_kit_qty[<?= $item_kit_item['item_id'] ?>]" value="<?= to_quantity_decimals($item_kit_item['quantity']) ?>"></td>
@@ -218,7 +218,7 @@
                     $('#item_kit_item_' + ui.item.value).val(parseFloat($('#item_kit_item_' + ui.item.value).val()) + 1);
                 } else {
                     $('#item_kit_items').append('<tr>' +
-                        '<td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>' +
+                        '<td><a href="#" onclick="return delete_item_kit_row(this);"><i class="bi bi-trash"></i></a></td>' +
                         '<td><input class="quantity form-control input-sm" id="item_seq_' + ui.item.value + '" name="item_kit_seq[' + ui.item.value + ']" value="0"></td>' +
                         '<td>' + ui.item.label + '</td>' +
                         '<td><input class="quantity form-control input-sm" id="item_qty_' + ui.item.value + '" name="item_kit_qty[' + ui.item.value + ']" value="1"></td>' +

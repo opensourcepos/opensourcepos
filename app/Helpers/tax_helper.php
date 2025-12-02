@@ -36,7 +36,7 @@ function get_tax_code_data_row($tax_code_row): array
         'state'         => $tax_code_row->state,
         'edit'          => anchor(
             "$controller_name/view_tax_codes/$tax_code_row->tax_code",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
                 'class'           => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
@@ -74,7 +74,7 @@ function get_tax_categories_data_row($tax_categories_row): array
         'tax_group_sequence' => $tax_categories_row->tax_group_sequence,
         'edit'               => anchor(
             "$controller_name/view/$tax_categories_row->tax_category_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
                 'class'           => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
@@ -111,7 +111,7 @@ function get_tax_jurisdictions_data_row($tax_jurisdiction_row): array
         'reporting_authority' => $tax_jurisdiction_row->reporting_authority,
         'edit'                => anchor(
             "$controller_name/view/$tax_jurisdiction_row->jurisdiction_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
                 'class'           => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
@@ -157,7 +157,7 @@ function get_tax_rates_data_row($tax_rates_row): array
         'rounding_code_name' => Rounding_mode::get_rounding_code_name($tax_rates_row->tax_rounding_code),
         'edit'               => anchor(
             "$controller_name/view/$tax_rates_row->tax_rate_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
                 'class'           => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),

@@ -96,7 +96,7 @@
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-user"></span>
+                            <i class="bi bi-person"></i>
                         </span>
                         <?= form_input([
                             'name'  => 'smtp_user',
@@ -113,7 +113,7 @@
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-asterisk"></span>
+                            <i class="bi bi-lock"></i>
                         </span>
                         <?= form_password([
                             'name'  => 'smtp_pass',

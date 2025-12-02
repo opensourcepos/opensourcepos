@@ -61,10 +61,6 @@ img.logo {
     margin-top: 1rem; /* Space between multiple validation errors */
 }
 
-.bi {
-    height: 1em;
-}
-
 footer a:not(:hover) {
     text-decoration: none;
 }
