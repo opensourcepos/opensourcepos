@@ -176,7 +176,7 @@
                     <span><?= nl2br($config['payment_message']) ?></span>
                     <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? $config['invoice_default_comments'] : $comments) ?></span>
                 </h5>
-                <?= nl2br($config['return_policy']) ?>
+                <?= nl2br(esc($config['return_policy'])) ?>
             </div>
             <div id="barcode">
                 <img alt=<?= '$sale_id' ?> src="data:image/svg+xml;base64,<?= base64_encode($barcode) ?>"><br>
