@@ -32,10 +32,8 @@
         }
     });
 
-    var cookie_name = "<?= esc(config('Cookie')->prefix, 'js') . esc(config('Security')->cookieName, 'js') ?>";
-
     var csrf_token = function() {
-        return Cookies.get(cookie_name);
+        return "<?= csrf_hash() ?>";
     };
 
     var csrf_form_base = function() {
