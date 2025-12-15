@@ -37,16 +37,24 @@
     ?>
 </div>
 
+<!-- Tiny Toggle Button -->
+<button id="toggleCostProfitButton" style="font-size: 10px; padding: 2px 5px; cursor: pointer; border: 1px solid #ddd; position: relative; bottom: 10px; left: 10px; opacity: 0.5;">
+    <?php echo lang('Reports.toggle_cost_and_profit'); ?>
+</button>
+
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         <?= view('partial/bootstrap_tables_locale') ?>
+        <?= view('partial/visibility_js') ?>
 
         $('#table')
             .addClass("table-striped")
             .addClass("table-bordered")
             .bootstrapTable({
-                columns: <?= transform_headers(esc($headers), true, false) ?>,
+                columns: applyColumnVisibility(<?= transform_headers(esc($headers), true, false) ?>),
                 stickyHeader: true,
+                stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
+                stickyHeaderOffsetRight: $('#table').offset().right + 'px',
                 pageSize: <?= $config['lines_per_page'] ?>,
                 sortable: true,
                 showExport: true,
@@ -57,7 +65,7 @@
                 data: <?= json_encode($data) ?>,
                 iconSize: 'sm',
                 paginationVAlign: 'bottom',
-                escape: true,
+                escape: false,
                 search: true
             });
     });
