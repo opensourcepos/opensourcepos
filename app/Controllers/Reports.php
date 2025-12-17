@@ -1727,7 +1727,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        $supplier_info = $this->supplier->get_info($supplier_id);
+        $supplier_info = $this->supplier->get_info((int) $supplier_id);
         $data = [
             'title'        => $supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . lang('Reports.report'),
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
