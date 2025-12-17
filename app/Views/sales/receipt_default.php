@@ -165,7 +165,7 @@
     </table>
 
     <div id="sale_return_policy">
-        <?= nl2br($config['return_policy']) ?>
+        <?= nl2br(esc($config['return_policy'])) ?>
     </div>
 
     <div id="barcode">

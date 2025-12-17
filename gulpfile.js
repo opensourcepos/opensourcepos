@@ -130,7 +130,6 @@ gulp.task('debug-js', function() {
         './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js',
         './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.js',
         './node_modules/bootstrap-notify/bootstrap-notify.js',
-        './node_modules/js-cookie/src/js.cookie.js',
         './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.js',
         './node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
         './node_modules/clipboard/dist/clipboard.js',
@@ -176,7 +175,6 @@ gulp.task('prod-js', function() {
         './node_modules/tableexport.jquery.plugin/tableExport.min.js'], { allowEmpty: true });
 
     var opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
-        './node_modules/js-cookie/src/js.cookie.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
         './public/js/nominatim.autocomplete.js']).pipe(uglify());
@@ -293,7 +291,6 @@ gulp.task('build-database', function() {
 // Run all required tasks
 gulp.task('default',
     gulp.series('clean',
-        'update-licenses',
         'copy-bootswatch',
         'copy-bootswatch5',
         'copy-bootstrap',
