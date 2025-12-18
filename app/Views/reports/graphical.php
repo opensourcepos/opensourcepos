@@ -19,6 +19,11 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 
+<button id="toggleCostProfitButton" type="button"
+  class="btn btn-light btn-default btn-sm border opacity-50 position-relative">
+  <?php echo lang('Reports.toggle_cost_and_profit'); ?>
+</button>
+
 <?= view($chart_type) ?>
 
 <div id="chart_report_summary">
@@ -27,65 +32,6 @@
   <?php } ?>
 </div>
 
-<button id="toggleCostProfitButton"
-        class="btn btn-light btn-default btn-sm border opacity-50 position-relative">
-    <?php echo lang('Reports.toggle_cost_and_profit'); ?>
-</button>
-
-<script>
-  <?php // used in reports ?>
-  // Utility functions for safe localStorage access
-  function safeSetItem(key, value) {
-    try {
-      localStorage.setItem(key, value);
-    } catch (e) {
-      console.error(`Failed to set item in localStorage: ${e.message}`);
-    }
-  }
-
-  function safeGetItem(key) {
-    try {
-      return localStorage.getItem(key);
-    } catch (e) {
-      console.error(`Failed to get item from localStorage: ${e.message}`);
-      return null; // Default fallback
-    }
-  }
-
-  // Initialize visibility settings from localStorage
-  var summaryVisibility = JSON.parse(safeGetItem('summaryVisibility')) || { cost: false, profit: false };
-
-  // Function to apply visibility for cost and profit rows
-  function applySummaryVisibility() {
-    var rows = $('#chart_report_summary .summary_row');
-    var costRow = rows.eq(rows.length - 2); // Second-to-last row
-    var profitRow = rows.eq(rows.length - 1); // Last row
-
-    if (summaryVisibility.cost === false) {
-      costRow.hide(); // Hide the cost row
-    } else {
-      costRow.show(); // Show the cost row
-    }
-
-    if (summaryVisibility.profit === false) {
-      profitRow.hide(); // Hide the profit row
-    } else {
-      profitRow.show(); // Show the profit row
-    }
-  }
-
-  // Toggle visibility when the button is clicked
-  $('#toggleCostProfitButton').click(function () {
-    summaryVisibility.cost = !summaryVisibility.cost;
-    summaryVisibility.profit = !summaryVisibility.profit;
-
-    safeSetItem('summaryVisibility', JSON.stringify(summaryVisibility));
-    applySummaryVisibility();
-  });
-
-  // Apply saved visibility state on page load
-  applySummaryVisibility();
-
-</script>
+<script src="<?= base_url('js/hide_cost_profit.js') ?>"></script>
 
 <?= view('partial/footer') ?>
