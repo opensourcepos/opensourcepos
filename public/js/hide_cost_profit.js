@@ -1,5 +1,6 @@
 /**
- * public/js/reports.js
+ * public/js/hide_cost_profit.js
+ * toggle cost and profit in graphical report.
  */
 $(function () {
   const safeSetItem = (key, value) => {
