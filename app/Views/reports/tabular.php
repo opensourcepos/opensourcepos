@@ -21,7 +21,7 @@
 
 <div id="toolbar">
   <div class="pull-left form-inline" role="toolbar">
-    <button id="toggleCostProfitButton" class="btn btn-light btn-default btn-sm border opacity-50 position-relative">
+    <button id="toggleCostProfitButton" class="btn btn-light btn-sm print_hide opacity-50">
       <?php echo lang('Reports.toggle_cost_and_profit'); ?>
     </button>
   </div>

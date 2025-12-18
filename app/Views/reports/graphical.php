@@ -20,7 +20,7 @@
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 
 <button id="toggleCostProfitButton" type="button"
-  class="btn btn-light btn-default btn-sm border opacity-50 position-relative">
+  class="btn btn-light btn-sm print_hide opacity-50">
   <?php echo lang('Reports.toggle_cost_and_profit'); ?>
 </button>
 
