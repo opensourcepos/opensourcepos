@@ -17,86 +17,86 @@
 <div id="page_subtitle"><?= esc($subtitle) ?></div>
 
 <div id="toolbar">
-  <div class="pull-left form-inline" role="toolbar">
-    <!-- Toggle Button -->
-    <button id="toggleCostProfitButton" class="btn btn-light btn-sm print_hide opacity-50">
-      <?php echo lang('Reports.toggle_cost_and_profit'); ?>
-    </button>
-  </div>
+    <div class="pull-left form-inline" role="toolbar">
+        <!-- Toggle Button -->
+        <button id="toggleCostProfitButton" class="btn btn-default btn-sm print_hide">
+            <?php echo lang('Reports.toggle_cost_and_profit'); ?>
+        </button>
+    </div>
 </div>
 
 <div id="table_holder">
-  <table id="table"></table>
+    <table id="table"></table>
 </div>
 
 <div id="report_summary">
-  <?php foreach ($overall_summary_data as $name => $value) { ?>
-    <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
-  <?php } ?>
+    <?php foreach ($overall_summary_data as $name => $value) { ?>
+        <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+    <?php } ?>
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function () {
-    <?= view('partial/bootstrap_tables_locale') ?>
+    $(document).ready(function () {
+        <?= view('partial/bootstrap_tables_locale') ?>
 
-    var details_data = <?= json_encode(esc($details_data)) ?>;
-    <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
-      var details_data_rewards = <?= json_encode(esc($details_data_rewards)) ?>;
-    <?php } ?>
-    <?= view('partial/visibility_js') ?>
+        var details_data = <?= json_encode(esc($details_data)) ?>;
+        <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
+            var details_data_rewards = <?= json_encode(esc($details_data_rewards)) ?>;
+        <?php } ?>
+        <?= view('partial/visibility_js') ?>
 
-    var init_dialog = function () {
-      <?php if (isset($editable)) { ?>
-        table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row')) ?>');
-        dialog_support.init("a.modal-dlg");
-      <?php } ?>
-    };
+        var init_dialog = function () {
+            <?php if (isset($editable)) { ?>
+                table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row')) ?>');
+                dialog_support.init("a.modal-dlg");
+            <?php } ?>
+        };
 
-    $('#table')
-      .addClass("table-striped")
-      .addClass("table-bordered")
-      .bootstrapTable({
-        columns: applyColumnVisibility(<?= transform_headers(esc($headers['summary']), true) ?>),
-        stickyHeader: true,
-        stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
-        stickyHeaderOffsetRight: $('#table').offset().right + 'px',
-        pageSize: <?= $config['lines_per_page'] ?>,
-        pagination: true,
-        sortable: true,
-        showColumns: true,
-        uniqueId: 'id',
-        showExport: true,
-        exportDataType: 'all',
-        exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
-        data: <?= json_encode($summary_data) ?>,
-        iconSize: 'sm',
-        paginationVAlign: 'bottom',
-        detailView: true,
-        escape: false,
-        search: true,
-        onPageChange: init_dialog,
-        onPostBody: function () {
-          dialog_support.init("a.modal-dlg");
-        },
-        onExpandRow: function (index, row, $detail) {
-          $detail.html('<table></table>').find("table").bootstrapTable({
-            columns: <?= transform_headers_readonly(esc($headers['details'])) ?>,
-            data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(
-              /(POS|RECV)\s*/g, '')]
-          });
+        $('#table')
+            .addClass("table-striped")
+            .addClass("table-bordered")
+            .bootstrapTable({
+                columns: applyColumnVisibility(<?= transform_headers(esc($headers['summary']), true) ?>),
+                stickyHeader: true,
+                stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
+                stickyHeaderOffsetRight: $('#table').offset().right + 'px',
+                pageSize: <?= $config['lines_per_page'] ?>,
+                pagination: true,
+                sortable: true,
+                showColumns: true,
+                uniqueId: 'id',
+                showExport: true,
+                exportDataType: 'all',
+                exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+                data: <?= json_encode($summary_data) ?>,
+                iconSize: 'sm',
+                paginationVAlign: 'bottom',
+                detailView: true,
+                escape: false,
+                search: true,
+                onPageChange: init_dialog,
+                onPostBody: function () {
+                    dialog_support.init("a.modal-dlg");
+                },
+                onExpandRow: function (index, row, $detail) {
+                    $detail.html('<table></table>').find("table").bootstrapTable({
+                        columns: <?= transform_headers_readonly(esc($headers['details'])) ?>,
+                        data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(
+                            /(POS|RECV)\s*/g, '')]
+                    });
 
-          <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
-            $detail.append('<table></table>').find("table").bootstrapTable({
-              columns: <?= transform_headers_readonly(esc($headers['details_rewards'])) ?>,
-              data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(
-                /(POS|RECV)\s*/g, '')]
+                    <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
+                        $detail.append('<table></table>').find("table").bootstrapTable({
+                            columns: <?= transform_headers_readonly(esc($headers['details_rewards'])) ?>,
+                            data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(
+                                /(POS|RECV)\s*/g, '')]
+                        });
+                    <?php } ?>
+                }
             });
-          <?php } ?>
-        }
-      });
 
-    init_dialog();
-  });
+        init_dialog();
+    });
 </script>
 
 <?= view('partial/footer') ?>
