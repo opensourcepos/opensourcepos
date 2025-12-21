@@ -8,6 +8,7 @@ public/license/*
 !public/license/.gitkeep
 app/Config/email.php
 npm-debug.log*
+.vscode
 
 # Docker
 !docker/.env

@@ -14,7 +14,7 @@ First of all, if you're seeing the message `system folder missing` after launchi
 2. Create/locate a new MySQL database to install Open Source Point of Sale into.
 3. Execute the file `app/Database/database.sql` to create the tables needed.
 4. Unzip and upload Open Source Point of Sale files to the web-server.
-5. Open `.env` file and modify credentials to connect to your database if needed.
+5. Open `.env` file and modify credentials to connect to your database if needed. (First copy .env.example to .env and update)
 7. Go to your install `public` dir via the browser.
 8. Log in using
    - Username: admin

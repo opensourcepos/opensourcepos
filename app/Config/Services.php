@@ -2,11 +2,12 @@
 
 namespace Config;
 
-use CodeIgniter\Config\BaseService;
-use CodeIgniter\HTTP\IncomingRequest;
-use Config\Services as AppServices;
+use Locale;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use CodeIgniter\Config\BaseService;
+use Config\Services as AppServices;
+use CodeIgniter\HTTP\IncomingRequest;
 
 /**
  * Services Configuration file.

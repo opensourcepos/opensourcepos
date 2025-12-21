@@ -19,6 +19,14 @@
 
 <div id="page_subtitle"><?= esc($subtitle) ?></div>
 
+<div id="toolbar">
+    <div class="pull-left form-inline" role="toolbar">
+        <button id="toggleCostProfitButton" class="btn btn-default btn-sm print_hide">
+            <?php echo lang('Reports.toggle_cost_and_profit'); ?>
+        </button>
+    </div>
+</div>
+
 <div id="table_holder">
     <table id="table"></table>
 </div>
@@ -27,26 +35,29 @@
     <?php
     foreach ($summary_data as $name => $value) {
         if ($name == "total_quantity") {
-    ?>
+            ?>
             <div class="summary_row"><?= lang("Reports.$name") . ": $value" ?></div>
         <?php } else { ?>
             <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
-    <?php
+            <?php
         }
     }
     ?>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         <?= view('partial/bootstrap_tables_locale') ?>
+        <?= view('partial/visibility_js') ?>
 
         $('#table')
             .addClass("table-striped")
             .addClass("table-bordered")
             .bootstrapTable({
-                columns: <?= transform_headers(esc($headers), true, false) ?>,
+                columns: applyColumnVisibility(<?= transform_headers(esc($headers), true, false) ?>),
                 stickyHeader: true,
+                stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
+                stickyHeaderOffsetRight: $('#table').offset().right + 'px',
                 pageSize: <?= $config['lines_per_page'] ?>,
                 sortable: true,
                 showExport: true,
@@ -57,7 +68,7 @@
                 data: <?= json_encode($data) ?>,
                 iconSize: 'sm',
                 paginationVAlign: 'bottom',
-                escape: true,
+                escape: false,
                 search: true
             });
     });
