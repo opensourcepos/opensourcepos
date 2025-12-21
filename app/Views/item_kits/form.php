@@ -220,7 +220,7 @@
                     $('#item_kit_items').append('<tr>' +
                         '<td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>' +
                         '<td><input class="quantity form-control input-sm" id="item_seq_' + ui.item.value + '" name="item_kit_seq[' + ui.item.value + ']" value="0"></td>' +
-                        '<td>' + ui.item.label + '</td>' +
+                        '<td>' + DOMPurify.sanitize(ui.item.label) + '</td>' +
                         '<td><input class="quantity form-control input-sm" id="item_qty_' + ui.item.value + '" name="item_kit_qty[' + ui.item.value + ']" value="1"></td>' +
                         '</tr>');
                 }
@@ -238,7 +238,7 @@
         var fill_value = function(event, ui) {
             event.preventDefault();
             $("input[name='kit_item_id']").val(ui.item.value);
-            $("input[name='item_name']").val(ui.item.label);
+            $("input[name='item_name']").val(DOMPurify.sanitize(ui.item.label));
         };
 
 
