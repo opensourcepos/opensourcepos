@@ -26,7 +26,7 @@
         <?php } ?>
 
         <?php if ($config['receipt_show_company_name']) { ?>
-            <div id="company_name"><?= $config['company'] ?></div>
+            <div id="company_name"><?= nl2br(esc($config['company'])) ?></div>
         <?php } ?>
 
         <div id="company_address"><?= nl2br(esc($config['address'])) ?></div>
@@ -69,7 +69,7 @@
                     <td><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td class="total-value"><?= to_currency($item[($config['receipt_show_total_discount'] ? 'total' : 'discounted_total')]) ?></td>
                     <?php if ($config['receipt_show_tax_ind']) { ?>
-                        <td><?= $item['taxed_flag'] ?></td>
+                        <td><?= esc($item['taxed_flag']) ?></td>
                     <?php } ?>
                 </tr>
                 <tr>

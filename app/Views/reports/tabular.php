@@ -68,7 +68,7 @@
                 data: <?= json_encode($data) ?>,
                 iconSize: 'sm',
                 paginationVAlign: 'bottom',
-                escape: false,
+                escape: true,
                 search: true
             });
     });

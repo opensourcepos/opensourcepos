@@ -72,7 +72,7 @@
                 iconSize: 'sm',
                 paginationVAlign: 'bottom',
                 detailView: true,
-                escape: false,
+                escape: true,
                 search: true,
                 onPageChange: init_dialog,
                 onPostBody: function () {

@@ -109,13 +109,3 @@ function remove_backup(): void
     log_message('info', "File $backup_path has been removed");
 }
 
-function purifyHtml($data)
-{
-    if (is_array($data)) {
-        return array_map('purifyHtml', $data);
-    } elseif (is_string($data)) {
-        return Services::HtmlPurifier()->purify($data);
-    }
-
-    return $data;
-}
