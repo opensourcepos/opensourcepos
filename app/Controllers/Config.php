@@ -17,6 +17,7 @@ use App\Models\Stock_location;
 use App\Models\Tax;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Encryption\EncrypterInterface;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\OSPOS;
 use Config\Services;
@@ -215,8 +216,9 @@ class Config extends Secure_Controller
     }
 
     /**
+     * @return string
      */
-    public function getIndex(): void
+    public function getIndex(): string
     {
         $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
@@ -224,6 +226,7 @@ class Config extends Secure_Controller
         $data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
         $data['barcode_fonts'] = $this->barcode_lib->listfonts('fonts');
         $data['logo_exists'] = $this->config['company_logo'] != '';
+        $data['logo_src'] = !empty($this->config['company_logo']) ? base_url('uploads/' . $this->config['company_logo']) : '';
         $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
         $data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
         $data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
@@ -272,17 +275,17 @@ class Config extends Secure_Controller
 
         $data['mailchimp']['lists'] = $this->_mailchimp();
 
-        echo view('configs/manage', $data);
+        return view('configs/manage', $data);
     }
 
     /**
      * Saves company information. Used in app/Views/configs/info_config.php
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveInfo(): void
+    public function postSaveInfo(): ResponseInterface
     {
         $upload_data = $this->upload_logo();
         $upload_success = empty($upload_data['error']);
@@ -306,7 +309,7 @@ class Config extends Secure_Controller
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
         $message = $upload_success ? $message : strip_tags($upload_data['error']);
 
-        echo json_encode(['success' => $success, 'message' => $message]);
+        return $this->response->setJSON(['success' => $success, 'message' => $message]);
     }
 
 
@@ -358,9 +361,10 @@ class Config extends Secure_Controller
      * Saves general configuration. Used in app/Views/configs/general_config.php
      *
      * @throws ReflectionException
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveGeneral(): void
+    public function postSaveGeneral(): ResponseInterface
     {
         $batch_save_data = [
             'theme'                             => $this->request->getPost('theme'),
@@ -407,16 +411,16 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Checks a number against the currently selected locale. Used in app/Views/configs/locale_config.php
      *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postCheckNumberLocale(): void
+    public function postCheckNumberLocale(): ResponseInterface
     {
         $number_locale = $this->request->getPost('number_locale');
         $save_number_locale = $this->request->getPost('save_number_locale');
@@ -438,7 +442,7 @@ class Config extends Secure_Controller
         $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
         $number_local_example = $fmt->format(1234567890.12300);
 
-        echo json_encode([
+        return $this->response->setJSON([
             'success'               => $number_local_example != false,
             'save_number_locale'    => $save_number_locale,
             'number_locale_example' => $number_local_example,
@@ -451,10 +455,10 @@ class Config extends Secure_Controller
      * Saves locale configuration. Used in app/Views/configs/locale_config.php
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveLocale(): void
+    public function postSaveLocale(): ResponseInterface
     {
         $exploded = explode(":", $this->request->getPost('language'));
         $batch_save_data = [
@@ -480,17 +484,17 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Saves email configuration. Used in app/Views/configs/email_config.php
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveEmail(): void
+    public function postSaveEmail(): ResponseInterface
     {
         $password = '';
 
@@ -511,17 +515,17 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Saves SMS message configuration. Used in app/Views/configs/message_config.php.
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveMessage(): void
+    public function postSaveMessage(): ResponseInterface
     {
         $password = '';
 
@@ -538,7 +542,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -565,15 +569,15 @@ class Config extends Secure_Controller
     /**
      * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/integrations_config.php
      *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postCheckMailchimpApiKey(): void
+    public function postCheckMailchimpApiKey(): ResponseInterface
     {
         $lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
         $success = count($lists) > 0;
 
-        echo json_encode([
+        return $this->response->setJSON([
             'success'         => $success,
             'message'         => lang('Config.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
             'mailchimp_lists' => $lists
@@ -584,10 +588,10 @@ class Config extends Secure_Controller
      * Saves Mailchimp configuration. Used in app/Views/configs/integrations_config.php
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveMailchimp(): void
+    public function postSaveMailchimp(): ResponseInterface
     {
         $api_key = '';
         $list_id = '';
@@ -608,56 +612,56 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Gets all stock locations. Used in app/Views/configs/stock_config.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getStockLocations(): void
+    public function getStockLocations(): string
     {
         $stock_locations = $this->stock_location->get_all()->getResultArray();
 
-        echo view('partial/stock_locations', ['stock_locations' => $stock_locations]);
+        return view('partial/stock_locations', ['stock_locations' => $stock_locations]);
     }
 
     /**
-     * @return void
+     * @return string
      */
-    public function getDinnerTables(): void
+    public function getDinnerTables(): string
     {
         $dinner_tables = $this->dinner_table->get_all()->getResultArray();
 
-        echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]);
+        return view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]);
     }
 
 
     /**
      * Gets all tax categories.
      *
-     * @return void
+     * @return string
      */
-    public function ajax_tax_categories(): void    // TODO: Is this function called anywhere in the code?
+    public function ajax_tax_categories(): string    // TODO: Is this function called anywhere in the code?
     {
         $tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
 
-        echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
+        return view('partial/tax_categories', ['tax_categories' => $tax_categories]);
     }
 
     /**
      * Gets all customer rewards. Used in app/Views/configs/reward_config.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getCustomerRewards(): void
+    public function getCustomerRewards(): string
     {
         $customer_rewards = $this->customer_rewards->get_all()->getResultArray();
 
-        echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
+        return view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
     }
 
     /**
@@ -677,10 +681,10 @@ class Config extends Secure_Controller
     /**
      * Saves stock locations. Used in app/Views/configs/stock_config.php
      *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveLocations(): void
+    public function postSaveLocations(): ResponseInterface
     {
         $this->db->transStart();
 
@@ -712,17 +716,17 @@ class Config extends Secure_Controller
 
         $success = $this->db->transStatus();
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Saves all dinner tables. Used in app/Views/configs/table_config.php
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveTables(): void
+    public function postSaveTables(): ResponseInterface
     {
         $this->db->transStart();
 
@@ -759,17 +763,17 @@ class Config extends Secure_Controller
 
         $success = $this->db->transStatus();
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Saves tax configuration. Used in app/Views/configs/tax_config.php
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveTax(): void
+    public function postSaveTax(): ResponseInterface
     {
         $default_tax_1_rate = $this->request->getPost('default_tax_1_rate');
         $default_tax_2_rate = $this->request->getPost('default_tax_2_rate');
@@ -791,17 +795,17 @@ class Config extends Secure_Controller
 
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 
-        echo json_encode(['success' => $success, 'message' => $message]);
+        return $this->response->setJSON(['success' => $success, 'message' => $message]);
     }
 
     /**
      * Saves customer rewards configuration. Used in app/Views/configs/reward_config.php
      *
-     * @throws ReflectionException
-     * @return void
-     * @noinspection PhpUnused
-     */
-    public function postSaveRewards(): void
+      * @throws ReflectionException
+      * @return ResponseInterface
+      * @noinspection PhpUnused
+      */
+    public function postSaveRewards(): ResponseInterface
     {
         $this->db->transStart();
 
@@ -845,17 +849,17 @@ class Config extends Secure_Controller
 
         $success = $this->db->transStatus();
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Saves barcode configuration. Used in app/Views/configs/barcode_config.php
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveBarcode(): void
+    public function postSaveBarcode(): ResponseInterface
     {
         $batch_save_data = [
             'barcode_type'              => $this->request->getPost('barcode_type'),
@@ -877,17 +881,17 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Saves receipt configuration. Used in app/Views/configs/receipt_config.php.
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveReceipt(): void
+    public function postSaveReceipt(): ResponseInterface
     {
         $batch_save_data = [
             'receipt_template'              => $this->request->getPost('receipt_template'),
@@ -912,17 +916,17 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Saves invoice configuration. Used in app/Views/configs/invoice_config.php.
      *
      * @throws ReflectionException
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveInvoice(): void
+    public function postSaveInvoice(): ResponseInterface
     {
         $batch_save_data = [
             'invoice_enable'              => $this->request->getPost('invoice_enable') != null,
@@ -953,20 +957,20 @@ class Config extends Secure_Controller
             }
         }
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
      * Removes the company logo from the database. Used in app/Views/configs/info_config.php.
      *
-     * @return void
+     * @return ResponseInterface
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postRemoveLogo(): void
+    public function postRemoveLogo(): ResponseInterface
     {
         $success = $this->appconfig->save(['company_logo' => '']);
 
-        echo json_encode(['success' => $success]);
+        return $this->response->setJSON(['success' => $success]);
     }
 }

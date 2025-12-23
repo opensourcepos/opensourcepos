@@ -32,7 +32,7 @@
 
 <div id="chart_report_summary">
     <?php foreach ($summary_data_1 as $name => $value) { ?>
-        <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+        <div class="summary_row"><?= lang("Reports.$name") . ': ' . esc(to_currency($value)) ?></div>
     <?php } ?>
 </div>
 

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Tax_jurisdiction;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 /**
@@ -23,13 +24,13 @@ class Tax_jurisdictions extends Secure_Controller
 
 
     /**
-     * @return void
+     * @return string
      */
-    public function getIndex(): void
+    public function getIndex(): string
     {
         $data['table_headers'] = get_tax_jurisdictions_table_headers();
 
-        echo view('taxes/tax_jurisdictions', $data);
+        return view('taxes/tax_jurisdictions', $data);
     }
 
     /**
@@ -37,7 +38,7 @@ class Tax_jurisdictions extends Secure_Controller
      *
      * @return void
      */
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -53,37 +54,37 @@ class Tax_jurisdictions extends Secure_Controller
             $data_rows[] = get_tax_jurisdictions_data_row($tax_jurisdiction);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
      * @param int $row_id
-     * @return void
+     * @return ResponseInterface
      */
-    public function getRow(int $row_id): void
+    public function getRow(int $row_id): ResponseInterface
     {
         $data_row = get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id));
 
-        echo json_encode($data_row);
+        return $this->response->setJSON($data_row);
     }
 
     /**
      * @param int $tax_jurisdiction_id
-     * @return void
+     * @return string
      */
-    public function getView(int $tax_jurisdiction_id = NEW_ENTRY): void
+    public function getView(int $tax_jurisdiction_id = NEW_ENTRY): string
     {
         $data['tax_jurisdiction_info'] = $this->tax_jurisdiction->get_info($tax_jurisdiction_id);
 
-        echo view("taxes/tax_jurisdiction_form", $data);
+        return view("taxes/tax_jurisdiction_form", $data);
     }
 
 
     /**
      * @param int $jurisdiction_id
-     * @return void
+     * @return ResponseInterface
      */
-    public function postSave(int $jurisdiction_id = NEW_ENTRY): void
+    public function postSave(int $jurisdiction_id = NEW_ENTRY): ResponseInterface
     {
         $tax_jurisdiction_data = [
             'jurisdiction_name'   => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -92,20 +93,20 @@ class Tax_jurisdictions extends Secure_Controller
 
         if ($this->tax_jurisdiction->save_value($tax_jurisdiction_data)) {
             if ($jurisdiction_id == NEW_ENTRY) {
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_adding'),
                     'id'      => $tax_jurisdiction_data['jurisdiction_id']
                 ]);
             } else {
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_updating'),
                     'id'      => $jurisdiction_id
                 ]);
             }
         } else {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
                 'id'      => NEW_ENTRY
@@ -114,19 +115,19 @@ class Tax_jurisdictions extends Secure_Controller
     }
 
     /**
-     * @return void
+     * @return ResponseInterface
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface
     {
         $tax_jurisdictions_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
         if ($this->tax_jurisdiction->delete_list($tax_jurisdictions_to_delete)) {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Tax_jurisdictions.successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . lang('Tax_jurisdictions.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')]);
         }
     }
 }

@@ -15,7 +15,7 @@
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
-    <title><?= $config['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
+    <title><?= esc($config['company']) . '&nbsp;|&nbsp;' . esc(lang('Common.software_short')) . '&nbsp;|&nbsp;' . esc(lang('Login.login')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
@@ -36,7 +36,7 @@
         <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
             <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end border-secondary-subtle px-4 pb-3 p-md-4">
                 <?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
-                    <img class="logo w-100" src="<?= base_url('uploads/' . $config['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . $config['company'] ?>">
+                    <img class="logo w-100" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
                 <?php else: ?>
                     <svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
                         <title><?= lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>

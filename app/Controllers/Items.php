@@ -15,6 +15,7 @@ use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
 
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
 use Config\OSPOS;
@@ -65,9 +66,9 @@ class Items extends Secure_Controller
     }
 
     /**
-     * @return void
+     * @return string
      */
-    public function getIndex(): void
+    public function getIndex(): string
     {
         $this->session->set('allow_temp_items', 0);
 
@@ -86,14 +87,14 @@ class Items extends Secure_Controller
             'temporary'      => lang('Items.temp')
         ];
 
-        echo view('items/manage', $data);
+        return view('items/manage', $data);
     }
 
     /**
      * Returns Items table data rows. This will be called with AJAX.
      * @noinspection PhpUnused
      **/
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -134,16 +135,16 @@ class Items extends Secure_Controller
             }
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
      * AJAX function. Processes thumbnail of image. Called via tabular_helper
      * @param string $pic_filename
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getPicThumb(string $pic_filename): void
+    public function getPicThumb(string $pic_filename): ResponseInterface
     {
         helper('file');
 
@@ -164,15 +165,17 @@ class Items extends Secure_Controller
 
             $this->response->setContentType(mime_content_type($thumb_path));
             $this->response->setBody(file_get_contents($thumb_path));
-            $this->response->send();
         }
+
+        return $this->response;
     }
 
     /**
      * Gives search suggestions based on what is being searched for
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function suggest_search(): void
+    public function suggest_search(): ResponseInterface
     {
         $options = [
             'search_custom' => $this->request->getPost('search_custom'),
@@ -182,71 +185,73 @@ class Items extends Secure_Controller
         $search = $this->request->getPost('term');
         $suggestions = $this->item->get_search_suggestions($search, $options);
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * AJAX Function used to get search suggestions from the model and return them in JSON format
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getSuggest(): void
+    public function getSuggest(): ResponseInterface
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getSuggestLowSell(): void
+    public function getSuggestLowSell(): ResponseInterface
     {
         $suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getSuggestKits(): void
+    public function getSuggestKits(): ResponseInterface
     {
         $suggestions = $this->item->get_kit_search_suggestions($this->request->getGet('term'), ['search_custom' => false, 'is_deleted' => false], true);
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * Gives search suggestions based on what is being searched for. Called from the view.
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getSuggestCategory(): void
+    public function getSuggestCategory(): ResponseInterface
     {
         $suggestions = $this->item->get_category_suggestions($this->request->getGet('term'));
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * Gives search suggestions based on what is being searched for.
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getSuggestLocation(): void
+    public function getSuggestLocation(): ResponseInterface
     {
         $suggestions = $this->item->get_location_suggestions($this->request->getGet('term'));
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * @param string $item_ids
-     * @return void
+     * @return ResponseInterface
      */
-    public function getRow(string $item_ids): void    // TODO: An array would be better for parameter.
+    public function getRow(string $item_ids): ResponseInterface    // TODO: An array would be better for parameter.
     {
         $item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
 
@@ -256,14 +261,14 @@ class Items extends Secure_Controller
             $result[$item_info->item_id] = get_item_data_row($item_info);
         }
 
-        echo json_encode($result);
+        return $this->response->setJSON($result);
     }
 
     /**
      * @param int $item_id
-     * @return void
+     * @return string
      */
-    public function getView(int $item_id = NEW_ENTRY): void    // TODO: Long function. Perhaps we need to refactor out some methods.
+    public function getView(int $item_id = NEW_ENTRY): string    // TODO: Long function. Perhaps we need to refactor out some methods.
     {
         $item_id ??= NEW_ENTRY;
 
@@ -395,17 +400,17 @@ class Items extends Secure_Controller
             $data['selected_low_sell_item'] = '';
         }
 
-        echo view('items/form', $data);
+        return view('items/form', $data);
     }
 
     /**
      * AJAX called function which returns the update inventory form view for an item
      *
      * @param int $item_id
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getInventory(int $item_id = NEW_ENTRY): void
+    public function getInventory(int $item_id = NEW_ENTRY): string
     {
         $item_info = $this->item->get_info($item_id);    // TODO: Duplicate code
 
@@ -424,15 +429,15 @@ class Items extends Secure_Controller
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
 
-        echo view('items/form_inventory', $data);
+        return view('items/form_inventory', $data);
     }
 
     /**
      * @param int $item_id
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getCountDetails(int $item_id = NEW_ENTRY): void
+    public function getCountDetails(int $item_id = NEW_ENTRY): string
     {
         $item_info = $this->item->get_info($item_id);    // TODO: Duplicate code
 
@@ -451,17 +456,17 @@ class Items extends Secure_Controller
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
 
-        echo view('items/form_count_details', $data);
+        return view('items/form_count_details', $data);
     }
 
     /**
      *  AJAX called function that generates barcodes for selected items.
      *
      * @param string $item_ids Colon separated list of item_id values to generate barcodes for.
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getGenerateBarcodes(string $item_ids): void    // TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
+    public function getGenerateBarcodes(string $item_ids): string    // TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
     {
         $item_ids = explode(':', $item_ids);
         $result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
@@ -477,16 +482,16 @@ class Items extends Secure_Controller
         }
         $data['items'] = $result;
 
-        echo view('barcodes/barcode_sheet', $data);
+        return view('barcodes/barcode_sheet', $data);
     }
 
     /**
      * Gathers attribute value information for an item and returns it in a view.
      *
      * @param int $item_id
-     * @return void
+     * @return string
      */
-    public function getAttributes(int $item_id = NEW_ENTRY): void
+    public function getAttributes(int $item_id = NEW_ENTRY): string
     {
         $data['item_id'] = $item_id;
         $definition_ids = json_decode($this->request->getGet('definition_ids') ?? '', true);
@@ -514,15 +519,15 @@ class Items extends Secure_Controller
             unset($data['definition_names'][$definition_id]);
         }
 
-        echo view('attributes/item', $data);
+        return view('attributes/item', $data);
     }
 
     /**
      * @param int $item_id
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function postAttributes(int $item_id = NEW_ENTRY): void
+    public function postAttributes(int $item_id = NEW_ENTRY): string
     {
         $data['item_id'] = $item_id;
         $definition_ids = json_decode($this->request->getPost('definition_ids'), true);
@@ -550,16 +555,16 @@ class Items extends Secure_Controller
             unset($data['definition_names'][$definition_id]);
         }
 
-        echo view('attributes/item', $data);
+        return view('attributes/item', $data);
     }
 
     /**
      * Edit multiple items. Used in app/Views/items/manage.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getBulkEdit(): void
+    public function getBulkEdit(): string
     {
         $suppliers = ['' => lang('Items.none')];
 
@@ -580,14 +585,15 @@ class Items extends Secure_Controller
             0  => lang('Items.change_all_to_unserialized')
         ];
 
-        echo view('items/form_bulk', $data);
+        return view('items/form_bulk', $data);
     }
 
     /**
      * @param int $item_id
+     * @return ResponseInterface
      * @throws ReflectionException
      */
-    public function postSave(int $item_id = NEW_ENTRY): void
+    public function postSave(int $item_id = NEW_ENTRY): ResponseInterface
     {
         $upload_data = $this->upload_image();
         $upload_success = empty($upload_data['error']);
@@ -717,16 +723,16 @@ class Items extends Secure_Controller
             if ($success && $upload_success) {
                 $message = lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name'];
 
-                echo json_encode(['success' => true, 'message' => $message, 'id' => $item_id]);
+                return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $item_id]);
             } else {
                 $message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($upload_data['error']);
 
-                echo json_encode(['success' => false, 'message' => $message, 'id' => $item_id]);
+                return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $item_id]);
             }
         } else {
             $message = lang('Items.error_adding_updating') . ' ' . $item_data['name'];
 
-            echo json_encode(['success' => false, 'message' => $message, 'id' => NEW_ENTRY]);
+            return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => NEW_ENTRY]);
         }
     }
 
@@ -777,49 +783,51 @@ class Items extends Secure_Controller
     /**
      * Ajax call to check to see if the item number, a.k.a. barcode, is already used by another item
      * If it exists then that is an error condition so return true for "error found"
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postCheckItemNumber(): void
+    public function postCheckItemNumber(): ResponseInterface
     {
         $exists = $this->item->item_number_exists($this->request->getPost('item_number'), $this->request->getPost('item_id'));
 
-        echo !$exists ? 'true' : 'false';
+        return $this->response->setJSON(!$exists ? 'true' : 'false');
     }
 
     /**
      * Checks to see if an item kit with the same name as the item already exists.
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function check_kit_exists(): void    // TODO: This function appears to be never called in the code.  Need to confirm.
+    public function check_kit_exists(): ResponseInterface    // TODO: This function appears to be never called in the code.  Need to confirm.
     {
         if ($this->request->getPost('item_number') === NEW_ENTRY) {
             $exists = $this->item_kit->item_kit_exists_for_name($this->request->getPost('name'));    // TODO: item_kit_exists_for_name doesn't exist in Item_kit.  I looked at the blame and it appears to have never existed.
         } else {
             $exists = false;
         }
-        echo !$exists ? 'true' : 'false';
+
+        return $this->response->setJSON(!$exists ? 'true' : 'false');
     }
 
     /**
      * @param $item_id
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getRemoveLogo($item_id): void
+    public function getRemoveLogo($item_id): ResponseInterface
     {
         $item_data = ['pic_filename' => null];
         $result = $this->item->save_value($item_data, $item_id);
 
-        echo json_encode(['success' => $result]);
+        return $this->response->setJSON(['success' => $result]);
     }
 
     /**
+     * @return ResponseInterface
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postSaveInventory($item_id = NEW_ENTRY): void
+    public function postSaveInventory($item_id = NEW_ENTRY): ResponseInterface
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $cur_item_info = $this->item->get_info($item_id);
@@ -847,19 +855,19 @@ class Items extends Secure_Controller
         if ($this->item_quantity->save_value($item_quantity_data, $item_id, $location_id)) {
             $message = lang('Items.successful_updating') . " $cur_item_info->name";
 
-            echo json_encode(['success' => true, 'message' => $message, 'id' => $item_id]);
+            return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $item_id]);
         } else {
             $message = lang('Items.error_adding_updating') . " $cur_item_info->name";
 
-            echo json_encode(['success' => false, 'message' => $message, 'id' => NEW_ENTRY]);
+            return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => NEW_ENTRY]);
         }
     }
 
     /**
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postBulkUpdate(): void
+    public function postBulkUpdate(): ResponseInterface
     {
         $items_to_update = $this->request->getPost('item_ids');
         $item_data = [];
@@ -891,23 +899,24 @@ class Items extends Secure_Controller
                 $this->item_taxes->save_multiple($items_taxes_data, $items_to_update);
             }
 
-            echo json_encode(['success' => true, 'message' => lang('Items.successful_bulk_edit'), 'id' => $items_to_update]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Items.successful_bulk_edit'), 'id' => $items_to_update]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Items.error_updating_multiple')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Items.error_updating_multiple')]);
         }
     }
 
     /**
+     * @return ResponseInterface
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface
     {
         $items_to_delete = $this->request->getPost('ids');
 
         if ($this->item->delete_list($items_to_delete)) {
             $message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
-            echo json_encode(['success' => true, 'message' => $message]);
+            return $this->response->setJSON(['success' => true, 'message' => $message]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Items.cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Items.cannot_be_deleted')]);
         }
     }
 
@@ -929,25 +938,26 @@ class Items extends Secure_Controller
     }
 
     /**
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getCsvImport(): void
+    public function getCsvImport(): string
     {
-        echo view('items/form_csv_import');
+        return view('items/form_csv_import');
     }
 
     /**
      * Imports items from CSV formatted file.
+     * @return ResponseInterface
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postImportCsvFile(): void
+    public function postImportCsvFile(): ResponseInterface
     {
         helper('importfile_helper');
         try {
             if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK) {
-                echo json_encode(['success' => false, 'message' => lang('Items.csv_import_failed')]);
+                return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_failed')]);
             } else {
                 if (file_exists($_FILES['file_path']['tmp_name'])) {
                     set_time_limit(240);
@@ -1037,19 +1047,18 @@ class Items extends Secure_Controller
                     if (count($failCodes) > 0) {
                         $message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
                         $db->transRollback();
-                        echo json_encode(['success' => false, 'message' => $message]);
+                        return $this->response->setJSON(['success' => false, 'message' => $message]);
                     } else {
                         $db->transCommit();
 
-                        echo json_encode(['success' => true, 'message' => lang('Items.csv_import_success')]);
+                        return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }
                 } else {
-                    echo json_encode(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
+                    return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
                 }
             }
         } catch (Exception $e) {
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-            return;
+            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
 
     }

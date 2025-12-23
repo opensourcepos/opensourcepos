@@ -11,6 +11,7 @@ use App\Models\Item_kit;
 use App\Models\Receiving;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
 use ReflectionException;
@@ -46,66 +47,66 @@ class Receivings extends Secure_Controller
     }
 
     /**
-     * @return void
+     * @return string
      */
-    public function getIndex(): void
+    public function getIndex(): string
     {
-        $this->_reload();
+        return $this->_reload();
     }
 
     /**
      * Returns search suggestions for an item. Used in app/Views/sales/register.php
      *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getItemSearch(): void
+    public function getItemSearch(): ResponseInterface
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * Gets search suggestions for a stock item. Used in app/Views/receivings/receiving.php
      *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getStockItemSearch(): void
+    public function getStockItemSearch(): ResponseInterface
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->item->get_stock_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * Set supplier if it exists in the database. Used in app/Views/receivings/receiving.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function postSelectSupplier(): void
+    public function postSelectSupplier(): string
     {
         $supplier_id = $this->request->getPost('supplier', FILTER_SANITIZE_NUMBER_INT);
         if ($this->supplier->exists($supplier_id)) {
             $this->receiving_lib->set_supplier($supplier_id);
         }
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
      * Change receiving mode for current receiving. Used in app/Views/receivings/receiving.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function postChangeMode(): void
+    public function postChangeMode(): string
     {
         $stock_destination = $this->request->getPost('stock_destination', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $stock_source = $this->request->getPost('stock_source', FILTER_SANITIZE_NUMBER_INT);
@@ -121,49 +122,49 @@ class Receivings extends Secure_Controller
             $this->receiving_lib->set_stock_destination($stock_destination);
         }
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
      * Sets receiving comment. Used in app/Views/receivings/receiving.php
-     *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSetComment(): void
+    public function postSetComment(): ResponseInterface
     {
         $this->receiving_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
      * Sets the print after sale flag for the receiving. Used in app/Views/receivings/receiving.php
-     *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSetPrintAfterSale(): void
+    public function postSetPrintAfterSale(): ResponseInterface
     {
         $this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale') != null);
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
      * Sets the reference number for the receiving.  Used in app/Views/receivings/receiving.php
-     *
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSetReference(): void
+    public function postSetReference(): ResponseInterface
     {
         $this->receiving_lib->set_reference($this->request->getPost('recv_reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
      * Add an item to the receiving. Used in app/Views/receivings/receiving.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function postAdd(): void
+    public function postAdd(): string
     {
         $data = [];
 
@@ -183,17 +184,17 @@ class Receivings extends Secure_Controller
             $data['error'] = lang('Receivings.unable_to_add_item');
         }
 
-        $this->_reload($data);    // TODO: Hungarian notation
+        return $this->_reload($data);    // TODO: Hungarian notation
     }
 
     /**
      * Edit line item in current receiving. Used in app/Views/receivings/receiving.php
      *
-     * @param $item_id
-     * @return void
+     * @param string|int|null $item_id
+     * @return string
      * @noinspection PhpUnused
      */
-    public function postEditItem($item_id): void
+    public function postEditItem($item_id): string
     {
         $data = [];
 
@@ -222,17 +223,16 @@ class Receivings extends Secure_Controller
             $data['error'] = lang('Receivings.error_editing_item');
         }
 
-        $this->_reload($data);    // TODO: Hungarian notation
+        return $this->_reload($data);    // TODO: Hungarian notation
     }
 
     /**
      * Edit a receiving. Used in app/Controllers/Receivings.php
-     *
      * @param $receiving_id
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getEdit($receiving_id): void
+    public function getEdit($receiving_id): string
     {
         $data = [];
 
@@ -251,63 +251,65 @@ class Receivings extends Secure_Controller
         $data['selected_supplier_id'] = $receiving_info['supplier_id'];
         $data['receiving_info'] = $receiving_info;
 
-        echo view('receivings/form', $data);
+        return view('receivings/form', $data);
     }
 
     /**
      * Deletes an item from the current receiving. Used in app/Views/receivings/receiving.php
      *
      * @param $item_number
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getDeleteItem($item_number): void
+    public function getDeleteItem($item_number): string
     {
         $this->receiving_lib->delete_item($item_number);
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
      * @throws ReflectionException
+     * @return ResponseInterface
      */
-    public function postDelete(int $receiving_id = -1, bool $update_inventory = true): void
+    public function postDelete(int $receiving_id = -1, bool $update_inventory = true): ResponseInterface
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$receiving_id];    // TODO: Replace -1 with constant
 
         if ($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory)) {    // TODO: Likely need to surround this block of code in a try-catch to catch the ReflectionException
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Receivings.successfully_deleted') . ' ' . count($receiving_ids) . ' ' . lang('Receivings.one_or_multiple'),
                 'ids'     => $receiving_ids
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
         }
     }
 
     /**
      * Removes a supplier from a receiving. Used in app/Views/receivings/receiving.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getRemoveSupplier(): void
+    public function getRemoveSupplier(): string
     {
         $this->receiving_lib->clear_reference();
         $this->receiving_lib->remove_supplier();
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
      * Complete and finalize receiving.  Used in app/Views/receivings/receiving.php
      *
+     * @return string
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postComplete(): void
+    public function postComplete(): string
     {
 
         $data = [];
@@ -356,18 +358,21 @@ class Receivings extends Secure_Controller
 
         $data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
-        echo view("receivings/receipt", $data);
+        $view = view("receivings/receipt", $data);
 
         $this->receiving_lib->clear_all();
+
+        return $view;
     }
 
     /**
      * Complete a receiving requisition. Used in app/Views/receivings/receiving.php.
      *
+     * @return string
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postRequisitionComplete(): void
+    public function postRequisitionComplete(): string
     {
         if ($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) {
             foreach ($this->receiving_lib->get_cart() as $item) {
@@ -376,11 +381,11 @@ class Receivings extends Secure_Controller
                 $this->receiving_lib->add_item($item['item_id'], -$item['quantity'], $this->receiving_lib->get_stock_source(), $item['discount_type']);
             }
 
-            $this->postComplete();
+            return $this->postComplete();
         } else {
             $data['error'] = lang('Receivings.error_requisition');
 
-            $this->_reload($data);    // TODO: Hungarian notation
+            return $this->_reload($data);    // TODO: Hungarian notation
         }
     }
 
@@ -388,10 +393,10 @@ class Receivings extends Secure_Controller
      * Gets the receipt for a receiving. Used in app/Views/receivings/form.php
      *
      * @param $receiving_id
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function getReceipt($receiving_id): void
+    public function getReceipt($receiving_id): string
     {
         $receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
         $this->receiving_lib->copy_entire_receiving($receiving_id);
@@ -424,16 +429,18 @@ class Receivings extends Secure_Controller
 
         $data['print_after_sale'] = false;
 
-        echo view("receivings/receipt", $data);
+        $view = view("receivings/receipt", $data);
 
         $this->receiving_lib->clear_all();
+
+        return $view;
     }
 
     /**
      * @param array $data
-     * @return void
+     * @return string
      */
-    private function _reload(array $data = []): void    // TODO: Hungarian notation
+    private function _reload(array $data = []): string    // TODO: Hungarian notation
     {
         $data['cart'] = $this->receiving_lib->get_cart();
         $data['modes'] = ['receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return')];
@@ -470,13 +477,14 @@ class Receivings extends Secure_Controller
 
         $data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
-        echo view("receivings/receiving", $data);
+        return view("receivings/receiving", $data);
     }
 
     /**
+     * @return ResponseInterface
      * @throws ReflectionException
      */
-    public function postSave(int $receiving_id = -1): void    // TODO: Replace -1 with a constant
+    public function postSave(int $receiving_id = -1): ResponseInterface    // TODO: Replace -1 with a constant
     {
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: newdate does not follow naming conventions
 
@@ -493,13 +501,13 @@ class Receivings extends Secure_Controller
 
         $this->inventory->update('RECV ' . $receiving_id, ['trans_date' => $receiving_time]);
         if ($this->receiving->update($receiving_id, $receiving_data)) {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Receivings.successfully_updated'),
                 'id'      => $receiving_id
             ]);
         } else {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Receivings.unsuccessfully_updated'),
                 'id'      => $receiving_id
@@ -510,13 +518,13 @@ class Receivings extends Secure_Controller
     /**
      * Cancel an in-process receiving. Used in app/Views/receivings/receiving.php
      *
-     * @return void
+     * @return string
      * @noinspection PhpUnused
      */
-    public function postCancelReceiving(): void
+    public function postCancelReceiving(): string
     {
         $this->receiving_lib->clear_all();
 
-        $this->_reload();    // TODO: Hungarian Notation
+        return $this->_reload();    // TODO: Hungarian Notation
     }
 }
