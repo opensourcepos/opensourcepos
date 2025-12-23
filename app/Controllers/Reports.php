@@ -1658,7 +1658,7 @@ class Reports extends Secure_Controller
             )
         ];
 
-        echo json_encode([$sale_id => $summary_data]);
+        $this->response->setJSON([$sale_id => $summary_data]);
     }
 
     /**

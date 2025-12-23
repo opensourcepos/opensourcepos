@@ -53,7 +53,7 @@ class Tax_jurisdictions extends Secure_Controller
             $data_rows[] = get_tax_jurisdictions_data_row($tax_jurisdiction);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -64,7 +64,7 @@ class Tax_jurisdictions extends Secure_Controller
     {
         $data_row = get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id));
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
@@ -92,20 +92,20 @@ class Tax_jurisdictions extends Secure_Controller
 
         if ($this->tax_jurisdiction->save_value($tax_jurisdiction_data)) {
             if ($jurisdiction_id == NEW_ENTRY) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_adding'),
                     'id'      => $tax_jurisdiction_data['jurisdiction_id']
                 ]);
             } else {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_updating'),
                     'id'      => $jurisdiction_id
                 ]);
             }
         } else {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
                 'id'      => NEW_ENTRY
@@ -121,12 +121,12 @@ class Tax_jurisdictions extends Secure_Controller
         $tax_jurisdictions_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
         if ($this->tax_jurisdiction->delete_list($tax_jurisdictions_to_delete)) {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Tax_jurisdictions.successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . lang('Tax_jurisdictions.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')]);
         }
     }
 }

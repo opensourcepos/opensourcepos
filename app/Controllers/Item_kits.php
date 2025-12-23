@@ -89,7 +89,7 @@ class Item_kits extends Secure_Controller
             $data_rows[] = get_item_kit_data_row($item_kit);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -100,7 +100,7 @@ class Item_kits extends Secure_Controller
         $search = $this->request->getPost('term');
         $suggestions = $this->item_kit->get_search_suggestions($search);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -112,7 +112,7 @@ class Item_kits extends Secure_Controller
         // Calculate the total cost and retail price of the Kit, so it can be added to the table refresh
         $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($row_id));
 
-        echo json_encode(get_item_kit_data_row($item_kit));
+        $this->response->setJSON(get_item_kit_data_row($item_kit));
     }
 
     /**
@@ -201,20 +201,20 @@ class Item_kits extends Secure_Controller
             }
 
             if ($new_item) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => $success,
                     'message' => lang('Item_kits.successful_adding') . ' ' . $item_kit_data['name'],
                     'id'      => $item_kit_id
                 ]);
             } else {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => $success,
                     'message' => lang('Item_kits.successful_updating') . ' ' . $item_kit_data['name'],
                     'id'      => $item_kit_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
                 'id'      => NEW_ENTRY
@@ -230,12 +230,12 @@ class Item_kits extends Secure_Controller
         $item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->item_kit->delete_list($item_kits_to_delete)) {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Item_kits.successful_deleted') . ' ' . count($item_kits_to_delete) . ' ' . lang('Item_kits.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Item_kits.cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Item_kits.cannot_be_deleted')]);
         }
     }
 

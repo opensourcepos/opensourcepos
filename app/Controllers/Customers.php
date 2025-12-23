@@ -72,7 +72,7 @@ class Customers extends Persons
 
         $data_row = get_customer_data_row($person, $stats);
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
 

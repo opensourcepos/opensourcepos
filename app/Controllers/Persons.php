@@ -38,7 +38,7 @@ abstract class Persons extends Secure_Controller
         $search = $this->request->getGet('term');
         $suggestions = $this->person->get_search_suggestions($search);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class Persons extends Secure_Controller
     {
         $data_row = get_person_data_row($this->person->get_info($row_id));
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**

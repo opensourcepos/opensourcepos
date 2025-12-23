@@ -53,7 +53,7 @@ class Attributes extends Secure_Controller
             $data_rows[] = get_attribute_definition_data_row($attribute_row);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -70,7 +70,7 @@ class Attributes extends Secure_Controller
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
         );
 
-        echo json_encode(['success' => $success != 0]);
+        $this->response->setJSON(['success' => $success != 0]);
     }
 
     /**
@@ -85,7 +85,7 @@ class Attributes extends Secure_Controller
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
 
-        echo json_encode(['success' => $success]);
+        $this->response->setJSON(['success' => $success]);
     }
 
     /**
@@ -128,20 +128,20 @@ class Attributes extends Secure_Controller
                     $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
                 }
 
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Attributes.definition_successful_adding') . ' ' . $definition_name,
                     'id'      => $definition_data['definition_id']
                 ]);
             } else { // Existing definition
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Attributes.definition_successful_updating') . ' ' . $definition_name,
                     'id'      => $definition_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
                 'id'      => NEW_ENTRY

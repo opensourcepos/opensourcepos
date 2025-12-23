@@ -62,27 +62,27 @@ class Home extends Secure_Controller
                 ];
 
                 if ($this->employee->change_password($employee_data, $employee_id) && strlen($employee_data['password']) >= 8) {
-                    echo json_encode([
+                    $this->response->setJSON([
                         'success' => true,
                         'message' => lang('Employees.successful_change_password'),
                         'id'      => $employee_id
                     ]);
                 } else { // Failure    // TODO: Replace -1 with constant
-                    echo json_encode([
+                    $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.unsuccessful_change_password'),
                         'id'      => -1
                     ]);
                 }
             } else {    // TODO: Replace -1 with constant
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Employees.current_password_invalid'),
                     'id'      => -1
                 ]);
             }
         } else {    // TODO: Replace -1 with constant
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.current_password_invalid'),
                 'id'      => -1

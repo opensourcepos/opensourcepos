@@ -64,7 +64,7 @@ class Cashups extends Secure_Controller
             $data_rows[] = get_cash_up_data_row($cash_up);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -192,7 +192,7 @@ class Cashups extends Secure_Controller
         $cash_ups_info = $this->cashup->get_info($row_id);
         $data_row = get_cash_up_data_row($cash_ups_info);
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
@@ -227,12 +227,12 @@ class Cashups extends Secure_Controller
         if ($this->cashup->save_value($cash_up_data, $cashup_id)) {
             // New cashup_id
             if ($cashup_id == NEW_ENTRY) {
-                echo json_encode(['success' => true, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']]);
             } else { // Existing Cashup
-                echo json_encode(['success' => true, 'message' => lang('Cashups.successful_updating'), 'id' => $cashup_id]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Cashups.successful_updating'), 'id' => $cashup_id]);
             }
         } else { // Failure
-            echo json_encode(['success' => false, 'message' => lang('Cashups.error_adding_updating'), 'id' => NEW_ENTRY]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Cashups.error_adding_updating'), 'id' => NEW_ENTRY]);
         }
     }
 

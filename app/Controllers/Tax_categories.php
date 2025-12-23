@@ -50,7 +50,7 @@ class Tax_categories extends Secure_Controller
             $data_rows[] = get_tax_categories_data_row($tax_category);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -61,7 +61,7 @@ class Tax_categories extends Secure_Controller
     {
         $data_row = get_tax_categories_data_row($this->tax_category->get_info($row_id));
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
