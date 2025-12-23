@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Cashup;
 use App\Models\Expense;
 use App\Models\Reports\Summary_payments;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
 
@@ -28,20 +29,20 @@ class Cashups extends Secure_Controller
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $data['table_headers'] = get_cashups_manage_table_headers();
 
         // filters that will be loaded in the multiselect dropdown
         $data['filters'] = ['is_deleted' => lang('Cashups.is_deleted')];
 
-        echo view('cashups/manage', $data);
+        return view('cashups/manage', $data);
     }
 
     /**
      * @return void
      */
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -64,14 +65,14 @@ class Cashups extends Secure_Controller
             $data_rows[] = get_cash_up_data_row($cash_up);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
      * @param int $cashup_id
      * @return void
      */
-    public function getView(int $cashup_id = NEW_ENTRY): void
+    public function getView(int $cashup_id = NEW_ENTRY): ResponseInterface|string
     {
         $data = [];
 
@@ -180,26 +181,26 @@ class Cashups extends Secure_Controller
 
         $data['cash_ups_info'] = $cash_ups_info;
 
-        echo view("cashups/form", $data);
+        return view("cashups/form", $data);
     }
 
     /**
      * @param int $row_id
      * @return void
      */
-    public function getRow(int $row_id): void
+    public function getRow(int $row_id): ResponseInterface|string
     {
         $cash_ups_info = $this->cashup->get_info($row_id);
         $data_row = get_cash_up_data_row($cash_ups_info);
 
-        echo json_encode($data_row);
+        return $this->response->setJSON($data_row);
     }
 
     /**
      * @param int $cashup_id
      * @return void
      */
-    public function postSave(int $cashup_id = NEW_ENTRY): void
+    public function postSave(int $cashup_id = NEW_ENTRY): ResponseInterface|string
     {
         $open_date = $this->request->getPost('open_date');
         $open_date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $open_date);
@@ -227,26 +228,26 @@ class Cashups extends Secure_Controller
         if ($this->cashup->save_value($cash_up_data, $cashup_id)) {
             // New cashup_id
             if ($cashup_id == NEW_ENTRY) {
-                echo json_encode(['success' => true, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']]);
             } else { // Existing Cashup
-                echo json_encode(['success' => true, 'message' => lang('Cashups.successful_updating'), 'id' => $cashup_id]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Cashups.successful_updating'), 'id' => $cashup_id]);
             }
         } else { // Failure
-            echo json_encode(['success' => false, 'message' => lang('Cashups.error_adding_updating'), 'id' => NEW_ENTRY]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Cashups.error_adding_updating'), 'id' => NEW_ENTRY]);
         }
     }
 
     /**
      * @return void
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface|string
     {
         $cash_ups_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->cashup->delete_list($cash_ups_to_delete)) {
-            echo json_encode(['success' => true, 'message' => lang('Cashups.successful_deleted') . ' ' . count($cash_ups_to_delete) . ' ' . lang('Cashups.one_or_multiple'), 'ids' => $cash_ups_to_delete]);
+            $this->response->setJSON(['success' => true, 'message' => lang('Cashups.successful_deleted') . ' ' . count($cash_ups_to_delete) . ' ' . lang('Cashups.one_or_multiple'), 'ids' => $cash_ups_to_delete]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Cashups.cannot_be_deleted'), 'ids' => $cash_ups_to_delete]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Cashups.cannot_be_deleted'), 'ids' => $cash_ups_to_delete]);
         }
     }
 
@@ -256,7 +257,7 @@ class Cashups extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postAjax_cashup_total(): void
+    public function postAjax_cashup_total(): ResponseInterface|string
     {
         $open_amount_cash = parse_decimals($this->request->getPost('open_amount_cash'));
         $transfer_amount_cash = parse_decimals($this->request->getPost('transfer_amount_cash'));
@@ -267,7 +268,7 @@ class Cashups extends Secure_Controller
 
         $total = $this->_calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check);    // TODO: hungarian notation
 
-        echo json_encode(['total' => to_currency_no_money($total)]);
+        $this->response->setJSON(['total' => to_currency_no_money($total)]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Module;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 /**
@@ -25,7 +26,7 @@ class Employees extends Persons
      *
      * @return void
      */
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -41,7 +42,7 @@ class Employees extends Persons
             $data_rows[] = get_person_data_row($person);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -49,29 +50,29 @@ class Employees extends Persons
      *
      * @return void
      */
-    public function getSuggest(): void
+    public function getSuggest(): ResponseInterface|string
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->employee->get_search_suggestions($search, 25, true);
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * @return void
      */
-    public function suggest_search(): void
+    public function suggest_search(): ResponseInterface|string
     {
         $search = $this->request->getPost('term');
         $suggestions = $this->employee->get_search_suggestions($search);
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * Loads the employee edit form
      */
-    public function getView(int $employee_id = NEW_ENTRY): void
+    public function getView(int $employee_id = NEW_ENTRY): ResponseInterface|string
     {
         $person_info = $this->employee->get_info($employee_id);
         foreach (get_object_vars($person_info) as $property => $value) {
@@ -98,13 +99,13 @@ class Employees extends Persons
         }
         $data['all_subpermissions'] = $permissions;
 
-        echo view('employees/form', $data);
+        return view('employees/form', $data);
     }
 
     /**
      * Inserts/updates an employee
      */
-    public function postSave(int $employee_id = NEW_ENTRY): void
+    public function postSave(int $employee_id = NEW_ENTRY): ResponseInterface|string
     {
         $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: duplicated code
         $last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -163,20 +164,20 @@ class Employees extends Persons
         if ($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id)) {
             // New employee
             if ($employee_id == NEW_ENTRY) {
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
                     'id'      => $employee_data['person_id']
                 ]);
             } else { // Existing employee
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
                     'id'      => $employee_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
                 'id'      => NEW_ENTRY
@@ -187,17 +188,17 @@ class Employees extends Persons
     /**
      * This deletes employees from the employees table
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface|string
     {
         $employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->employee->delete_list($employees_to_delete)) {    // TODO: this is passing a string, but delete_list expects an array
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Employees.successful_deleted') . ' ' . count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Employees.cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Employees.cannot_be_deleted')]);
         }
     }
 
@@ -208,7 +209,7 @@ class Employees extends Persons
      * @return void
      * @noinspection PhpUnused
      */
-    public function getCheckUsername($employee_id): void
+    public function getCheckUsername($employee_id): ResponseInterface|string
     {
         $exists = $this->employee->username_exists($employee_id, $this->request->getGet('username'));
         echo !$exists ? 'true' : 'false';

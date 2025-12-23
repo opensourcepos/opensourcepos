@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\HTTP\RedirectResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 
 class Home extends Secure_Controller
 {
@@ -14,10 +15,10 @@ class Home extends Secure_Controller
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $logged_in = $this->employee->is_logged_in();
-        echo view('home/home');
+        return view('home/home');
     }
 
     /**
@@ -37,7 +38,7 @@ class Home extends Secure_Controller
      *
      * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employee_id = -1): void    // TODO: Replace -1 with a constant
+    public function getChangePassword(int $employee_id = -1): ResponseInterface|string    // TODO: Replace -1 with a constant
     {
         $person_info = $this->employee->get_info($employee_id);
         foreach (get_object_vars($person_info) as $property => $value) {
@@ -45,13 +46,13 @@ class Home extends Secure_Controller
         }
         $data['person_info'] = $person_info;
 
-        echo view('home/form_change_password', $data);
+        return view('home/form_change_password', $data);
     }
 
     /**
      * Change employee password
      */
-    public function postSave(int $employee_id = -1): void    // TODO: Replace -1 with a constant
+    public function postSave(int $employee_id = -1): ResponseInterface|string    // TODO: Replace -1 with a constant
     {
         if (!empty($this->request->getPost('current_password')) && $employee_id != -1) {
             if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
@@ -62,27 +63,27 @@ class Home extends Secure_Controller
                 ];
 
                 if ($this->employee->change_password($employee_data, $employee_id) && strlen($employee_data['password']) >= 8) {
-                    echo json_encode([
+                    return $this->response->setJSON([
                         'success' => true,
                         'message' => lang('Employees.successful_change_password'),
                         'id'      => $employee_id
                     ]);
                 } else { // Failure    // TODO: Replace -1 with constant
-                    echo json_encode([
+                    return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.unsuccessful_change_password'),
                         'id'      => -1
                     ]);
                 }
             } else {    // TODO: Replace -1 with constant
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Employees.current_password_invalid'),
                     'id'      => -1
                 ]);
             }
         } else {    // TODO: Replace -1 with constant
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.current_password_invalid'),
                 'id'      => -1

@@ -19,11 +19,11 @@ class Suppliers extends Persons
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $data['table_headers'] = get_suppliers_manage_table_headers();
 
-        echo view('people/manage', $data);
+        return view('people/manage', $data);
     }
 
     /**
@@ -31,19 +31,19 @@ class Suppliers extends Persons
      * @param $row_id
      * @return void
      */
-    public function getRow($row_id): void
+    public function getRow($row_id): ResponseInterface|string
     {
         $data_row = get_supplier_data_row($this->supplier->get_info($row_id));
         $data_row['category'] = $this->supplier->get_category_name($data_row['category']);
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
      * Returns Supplier table data rows. This will be called with AJAX.
      * @return void
      **/
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -62,29 +62,29 @@ class Suppliers extends Persons
             $data_rows[] = $row;
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
      * Gives search suggestions based on what is being searched for
      **/
-    public function getSuggest(): void
+    public function getSuggest(): ResponseInterface|string
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->supplier->get_search_suggestions($search, true);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
      * @return void
      */
-    public function suggest_search(): void
+    public function suggest_search(): ResponseInterface|string
     {
         $search = $this->request->getPost('term');
         $suggestions = $this->supplier->get_search_suggestions($search, false);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -93,7 +93,7 @@ class Suppliers extends Persons
      * @param int $supplier_id
      * @return void
      */
-    public function getView(int $supplier_id = NEW_ENTRY): void
+    public function getView(int $supplier_id = NEW_ENTRY): ResponseInterface|string
     {
         $info = $this->supplier->get_info($supplier_id);
         foreach (get_object_vars($info) as $property => $value) {
@@ -102,7 +102,7 @@ class Suppliers extends Persons
         $data['person_info'] = $info;
         $data['categories'] = $this->supplier->get_categories();
 
-        echo view("suppliers/form", $data);
+        return view("suppliers/form", $data);
     }
 
     /**
@@ -111,7 +111,7 @@ class Suppliers extends Persons
      * @param int $supplier_id
      * @return void
      */
-    public function postSave(int $supplier_id = NEW_ENTRY): void
+    public function postSave(int $supplier_id = NEW_ENTRY): ResponseInterface|string
     {
         $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: Duplicate code
         $last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -147,21 +147,21 @@ class Suppliers extends Persons
         if ($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id)) {
             // New supplier
             if ($supplier_id == NEW_ENTRY) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Suppliers.successful_adding') . ' ' . $supplier_data['company_name'],
                     'id'      => $supplier_data['person_id']
                 ]);
             } else { // Existing supplier
 
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Suppliers.successful_updating') . ' ' . $supplier_data['company_name'],
                     'id'      => $supplier_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Suppliers.error_adding_updating') . ' ' .     $supplier_data['company_name'],
                 'id'      => NEW_ENTRY
@@ -174,17 +174,17 @@ class Suppliers extends Persons
      *
      * @return void
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface|string
     {
         $suppliers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
         if ($this->supplier->delete_list($suppliers_to_delete)) {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Suppliers.successful_deleted') . ' ' . count($suppliers_to_delete) . ' ' . lang('Suppliers.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Suppliers.cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Suppliers.cannot_be_deleted')]);
         }
     }
 }

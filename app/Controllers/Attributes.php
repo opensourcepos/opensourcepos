@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Attribute;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 require_once('Secure_Controller.php');
@@ -26,17 +27,17 @@ class Attributes extends Secure_Controller
      *
      * @return void
      **/
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $data['table_headers'] = get_attribute_definition_manage_table_headers();
 
-        echo view('attributes/manage', $data);
+        return view('attributes/manage', $data);
     }
 
     /**
      * Returns attribute table data rows. This will be called with AJAX.
      */
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -53,7 +54,7 @@ class Attributes extends Secure_Controller
             $data_rows[] = get_attribute_definition_data_row($attribute_row);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -61,7 +62,7 @@ class Attributes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveAttributeValue(): void
+    public function postSaveAttributeValue(): ResponseInterface|string
     {
         $success = $this->attribute->saveAttributeValue(
             html_entity_decode($this->request->getPost('attribute_value')),
@@ -70,7 +71,7 @@ class Attributes extends Secure_Controller
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
         );
 
-        echo json_encode(['success' => $success != 0]);
+        return $this->response->setJSON(['success' => $success != 0]);
     }
 
     /**
@@ -78,14 +79,14 @@ class Attributes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postDeleteDropdownAttributeValue(): void
+    public function postDeleteDropdownAttributeValue(): ResponseInterface|string
     {
         $success = $this->attribute->deleteDropdownAttributeValue(
             html_entity_decode($this->request->getPost('attribute_value')),
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
 
-        echo json_encode(['success' => $success]);
+        return $this->response->setJSON(['success' => $success]);
     }
 
     /**
@@ -95,7 +96,7 @@ class Attributes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveDefinition(int $definition_id = NO_DEFINITION_ID): void
+    public function postSaveDefinition(int $definition_id = NO_DEFINITION_ID): ResponseInterface|string
     {
         $definition_flags = 0;
 
@@ -128,20 +129,20 @@ class Attributes extends Secure_Controller
                     $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
                 }
 
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Attributes.definition_successful_adding') . ' ' . $definition_name,
                     'id'      => $definition_data['definition_id']
                 ]);
             } else { // Existing definition
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Attributes.definition_successful_updating') . ' ' . $definition_name,
                     'id'      => $definition_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
                 'id'      => NEW_ENTRY
@@ -155,24 +156,24 @@ class Attributes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getSuggestAttribute(int $definition_id): void
+    public function getSuggestAttribute(int $definition_id): ResponseInterface|string
     {
         $suggestions = $this->attribute->get_suggestions($definition_id, html_entity_decode($this->request->getGet('term')));
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * @param int $row_id
      * @return void
      */
-    public function getRow(int $row_id): void
+    public function getRow(int $row_id): ResponseInterface|string
     {
         $attribute_definition_info = $this->attribute->getAttributeInfo($row_id);
         $attribute_definition_info->definition_flags = $this->get_attributes($attribute_definition_info->definition_flags);
         $data_row = get_attribute_definition_data_row($attribute_definition_info);
 
-        echo json_encode($data_row);
+        return $this->response->setJSON($data_row);
     }
 
     /**
@@ -194,7 +195,7 @@ class Attributes extends Secure_Controller
      * @param int $definition_id
      * @return void
      */
-    public function getView(int $definition_id = NO_DEFINITION_ID): void
+    public function getView(int $definition_id = NO_DEFINITION_ID): ResponseInterface|string
     {
         $info = $this->attribute->getAttributeInfo($definition_id);
         foreach (get_object_vars($info) as $property => $value) {
@@ -212,22 +213,22 @@ class Attributes extends Secure_Controller
         $selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
         $data['selected_definition_flags'] = $this->get_attributes($selected_flags);
 
-        echo view('attributes/form', $data);
+        return view('attributes/form', $data);
     }
 
     /**
      * Deletes an attribute definition
      * @return void
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface|string
     {
         $attributes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if($this->attribute->deleteDefinitionList($attributes_to_delete)) {
             $message = lang('Attributes.definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . lang('Attributes.definition_one_or_multiple');
-            echo json_encode(['success' => true, 'message' => $message]);
+            return $this->response->setJSON(['success' => true, 'message' => $message]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Attributes.definition_cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Attributes.definition_cannot_be_deleted')]);
         }
     }
 }

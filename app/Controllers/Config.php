@@ -17,6 +17,7 @@ use App\Models\Stock_location;
 use App\Models\Tax;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Encryption\EncrypterInterface;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\OSPOS;
 use Config\Services;
@@ -216,7 +217,7 @@ class Config extends Secure_Controller
 
     /**
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
@@ -272,7 +273,7 @@ class Config extends Secure_Controller
 
         $data['mailchimp']['lists'] = $this->_mailchimp();
 
-        echo view('configs/manage', $data);
+        return view('configs/manage', $data);
     }
 
     /**
@@ -282,7 +283,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveInfo(): void
+    public function postSaveInfo(): ResponseInterface|string
     {
         $upload_data = $this->upload_logo();
         $upload_success = empty($upload_data['error']);
@@ -306,7 +307,7 @@ class Config extends Secure_Controller
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
         $message = $upload_success ? $message : strip_tags($upload_data['error']);
 
-        echo json_encode(['success' => $success, 'message' => $message]);
+        return $this->response->setJSON(['success' => $success, 'message' => $message]);
     }
 
 
@@ -360,7 +361,7 @@ class Config extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postSaveGeneral(): void
+    public function postSaveGeneral(): ResponseInterface|string
     {
         $batch_save_data = [
             'theme'                             => $this->request->getPost('theme'),
@@ -407,7 +408,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -416,7 +417,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postCheckNumberLocale(): void
+    public function postCheckNumberLocale(): ResponseInterface|string
     {
         $number_locale = $this->request->getPost('number_locale');
         $save_number_locale = $this->request->getPost('save_number_locale');
@@ -438,7 +439,7 @@ class Config extends Secure_Controller
         $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
         $number_local_example = $fmt->format(1234567890.12300);
 
-        echo json_encode([
+        $this->response->setJSON([
             'success'               => $number_local_example != false,
             'save_number_locale'    => $save_number_locale,
             'number_locale_example' => $number_local_example,
@@ -454,7 +455,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveLocale(): void
+    public function postSaveLocale(): ResponseInterface|string
     {
         $exploded = explode(":", $this->request->getPost('language'));
         $batch_save_data = [
@@ -480,7 +481,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -490,7 +491,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveEmail(): void
+    public function postSaveEmail(): ResponseInterface|string
     {
         $password = '';
 
@@ -511,7 +512,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -521,7 +522,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveMessage(): void
+    public function postSaveMessage(): ResponseInterface|string
     {
         $password = '';
 
@@ -538,7 +539,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -568,12 +569,12 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postCheckMailchimpApiKey(): void
+    public function postCheckMailchimpApiKey(): ResponseInterface|string
     {
         $lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
         $success = count($lists) > 0;
 
-        echo json_encode([
+        $this->response->setJSON([
             'success'         => $success,
             'message'         => lang('Config.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
             'mailchimp_lists' => $lists
@@ -587,7 +588,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveMailchimp(): void
+    public function postSaveMailchimp(): ResponseInterface|string
     {
         $api_key = '';
         $list_id = '';
@@ -608,7 +609,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -617,21 +618,21 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getStockLocations(): void
+    public function getStockLocations(): ResponseInterface|string
     {
         $stock_locations = $this->stock_location->get_all()->getResultArray();
 
-        echo view('partial/stock_locations', ['stock_locations' => $stock_locations]);
+        return view('partial/stock_locations', ['stock_locations' => $stock_locations]);
     }
 
     /**
      * @return void
      */
-    public function getDinnerTables(): void
+    public function getDinnerTables(): ResponseInterface|string
     {
         $dinner_tables = $this->dinner_table->get_all()->getResultArray();
 
-        echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]);
+        return view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]);
     }
 
 
@@ -640,11 +641,11 @@ class Config extends Secure_Controller
      *
      * @return void
      */
-    public function ajax_tax_categories(): void    // TODO: Is this function called anywhere in the code?
+    public function ajax_tax_categories(): ResponseInterface|string    // TODO: Is this function called anywhere in the code?
     {
         $tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
 
-        echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
+        return view('partial/tax_categories', ['tax_categories' => $tax_categories]);
     }
 
     /**
@@ -653,17 +654,17 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getCustomerRewards(): void
+    public function getCustomerRewards(): ResponseInterface|string
     {
         $customer_rewards = $this->customer_rewards->get_all()->getResultArray();
 
-        echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
+        return view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
     }
 
     /**
      * @return void
      */
-    private function _clear_session_state(): void    // TODO: Hungarian notation
+    private function _clear_session_state(): ResponseInterface|string    // TODO: Hungarian notation
     {
         $this->sale_lib->clear_sale_location();
         $this->sale_lib->clear_table();
@@ -680,7 +681,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveLocations(): void
+    public function postSaveLocations(): ResponseInterface|string
     {
         $this->db->transStart();
 
@@ -712,7 +713,7 @@ class Config extends Secure_Controller
 
         $success = $this->db->transStatus();
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -722,7 +723,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveTables(): void
+    public function postSaveTables(): ResponseInterface|string
     {
         $this->db->transStart();
 
@@ -759,7 +760,7 @@ class Config extends Secure_Controller
 
         $success = $this->db->transStatus();
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -769,7 +770,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveTax(): void
+    public function postSaveTax(): ResponseInterface|string
     {
         $default_tax_1_rate = $this->request->getPost('default_tax_1_rate');
         $default_tax_2_rate = $this->request->getPost('default_tax_2_rate');
@@ -791,7 +792,7 @@ class Config extends Secure_Controller
 
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 
-        echo json_encode(['success' => $success, 'message' => $message]);
+        $this->response->setJSON(['success' => $success, 'message' => $message]);
     }
 
     /**
@@ -801,7 +802,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveRewards(): void
+    public function postSaveRewards(): ResponseInterface|string
     {
         $this->db->transStart();
 
@@ -845,7 +846,7 @@ class Config extends Secure_Controller
 
         $success = $this->db->transStatus();
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -855,7 +856,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveBarcode(): void
+    public function postSaveBarcode(): ResponseInterface|string
     {
         $batch_save_data = [
             'barcode_type'              => $this->request->getPost('barcode_type'),
@@ -877,7 +878,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -887,7 +888,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveReceipt(): void
+    public function postSaveReceipt(): ResponseInterface|string
     {
         $batch_save_data = [
             'receipt_template'              => $this->request->getPost('receipt_template'),
@@ -912,7 +913,7 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -922,7 +923,7 @@ class Config extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveInvoice(): void
+    public function postSaveInvoice(): ResponseInterface|string
     {
         $batch_save_data = [
             'invoice_enable'              => $this->request->getPost('invoice_enable') != null,
@@ -953,7 +954,7 @@ class Config extends Secure_Controller
             }
         }
 
-        echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
 
     /**
@@ -963,10 +964,10 @@ class Config extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postRemoveLogo(): void
+    public function postRemoveLogo(): ResponseInterface|string
     {
         $success = $this->appconfig->save(['company_logo' => '']);
 
-        echo json_encode(['success' => $success]);
+        $this->response->setJSON(['success' => $success]);
     }
 }
