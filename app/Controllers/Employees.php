@@ -41,7 +41,7 @@ class Employees extends Persons
             $data_rows[] = get_person_data_row($person);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -54,7 +54,7 @@ class Employees extends Persons
         $search = $this->request->getGet('term');
         $suggestions = $this->employee->get_search_suggestions($search, 25, true);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -65,7 +65,7 @@ class Employees extends Persons
         $search = $this->request->getPost('term');
         $suggestions = $this->employee->get_search_suggestions($search);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -163,20 +163,20 @@ class Employees extends Persons
         if ($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id)) {
             // New employee
             if ($employee_id == NEW_ENTRY) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
                     'id'      => $employee_data['person_id']
                 ]);
             } else { // Existing employee
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
                     'id'      => $employee_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
                 'id'      => NEW_ENTRY
@@ -192,12 +192,12 @@ class Employees extends Persons
         $employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->employee->delete_list($employees_to_delete)) {    // TODO: this is passing a string, but delete_list expects an array
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Employees.successful_deleted') . ' ' . count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Employees.cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Employees.cannot_be_deleted')]);
         }
     }
 

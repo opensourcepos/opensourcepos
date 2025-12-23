@@ -36,7 +36,7 @@ class Suppliers extends Persons
         $data_row = get_supplier_data_row($this->supplier->get_info($row_id));
         $data_row['category'] = $this->supplier->get_category_name($data_row['category']);
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**

@@ -92,7 +92,7 @@ class Taxes extends Secure_Controller
             $data_rows[] = get_tax_rates_data_row($tax_rate_row);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -103,7 +103,7 @@ class Taxes extends Secure_Controller
         $search = $this->request->getPost('term');
         $suggestions = $this->tax->get_search_suggestions($search);    // TODO: There is no get_search_suggestions function in the tax model
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -116,7 +116,7 @@ class Taxes extends Secure_Controller
         $search = $this->request->getPost('term');
         $suggestions = $this->tax_category->get_tax_category_suggestions($search);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
 
@@ -128,7 +128,7 @@ class Taxes extends Secure_Controller
     {
         $data_row = get_tax_rates_data_row($this->tax->get_info($row_id));
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
@@ -388,12 +388,12 @@ class Taxes extends Secure_Controller
 
         if ($this->tax->save_value($tax_rate_data, $tax_rate_id)) {
             if ($tax_rate_id == NEW_ENTRY) {    // TODO: this needs to be replaced with ternary notation
-                echo json_encode(['success' => true, 'message' => lang('Taxes.tax_rate_successfully_added')]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Taxes.tax_rate_successfully_added')]);
             } else { // Existing tax_code
-                echo json_encode(['success' => true, 'message' => lang('Taxes.tax_rate_successful_updated')]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Taxes.tax_rate_successful_updated')]);
             }
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Taxes.tax_rate_error_adding_updating')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Taxes.tax_rate_error_adding_updating')]);
         }
     }
 
@@ -405,9 +405,9 @@ class Taxes extends Secure_Controller
         $tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
         if ($this->tax->delete_list($tax_codes_to_delete)) {    // TODO: this needs to be replaced with ternary notation
-            echo json_encode(['success' => true, 'message' => lang('Taxes.tax_code_successful_deleted')]);
+            $this->response->setJSON(['success' => true, 'message' => lang('Taxes.tax_code_successful_deleted')]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Taxes.tax_code_cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Taxes.tax_code_cannot_be_deleted')]);
         }
     }
 
@@ -422,7 +422,7 @@ class Taxes extends Secure_Controller
         $search = $this->request->getPostGet('term');
         $suggestions = $this->tax_code->get_tax_codes_search_suggestions($search);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -452,7 +452,7 @@ class Taxes extends Secure_Controller
 
         $success = $this->tax_code->save_tax_codes($array_save);
 
-        echo json_encode([
+        $this->response->setJSON([
             'success' => $success,
             'message' => lang('Taxes.tax_codes_saved_' . ($success ? '' : 'un') . 'successfully')
         ]);
@@ -489,7 +489,7 @@ class Taxes extends Secure_Controller
             ];
 
             if (in_array($tax_group[$key], $unique_tax_groups)) {    // TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Taxes.tax_group_not_unique', [$tax_group[$key]])
                 ]);

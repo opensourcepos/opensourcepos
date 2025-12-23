@@ -306,7 +306,7 @@ class Config extends Secure_Controller
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
         $message = $upload_success ? $message : strip_tags($upload_data['error']);
 
-        echo json_encode(['success' => $success, 'message' => $message]);
+        $this->response->setJSON(['success' => $success, 'message' => $message]);
     }
 
 

@@ -120,7 +120,7 @@ class Sales extends Secure_Controller
         $sale_info = $this->sale->get_info($row_id)->getRow();
         $data_row = get_sale_data_row($sale_info);
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**

@@ -65,7 +65,7 @@ class Receivings extends Secure_Controller
         $suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -80,7 +80,7 @@ class Receivings extends Secure_Controller
         $suggestions = $this->item->get_stock_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -277,13 +277,13 @@ class Receivings extends Secure_Controller
         $receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$receiving_id];    // TODO: Replace -1 with constant
 
         if ($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory)) {    // TODO: Likely need to surround this block of code in a try-catch to catch the ReflectionException
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Receivings.successfully_deleted') . ' ' . count($receiving_ids) . ' ' . lang('Receivings.one_or_multiple'),
                 'ids'     => $receiving_ids
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
         }
     }
 
@@ -493,13 +493,13 @@ class Receivings extends Secure_Controller
 
         $this->inventory->update('RECV ' . $receiving_id, ['trans_date' => $receiving_time]);
         if ($this->receiving->update($receiving_id, $receiving_data)) {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Receivings.successfully_updated'),
                 'id'      => $receiving_id
             ]);
         } else {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Receivings.unsuccessfully_updated'),
                 'id'      => $receiving_id

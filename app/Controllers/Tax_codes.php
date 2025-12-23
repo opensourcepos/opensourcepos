@@ -61,7 +61,7 @@ class Tax_codes extends Secure_Controller
             $data_rows[] = get_tax_code_data_row($tax_code);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -72,7 +72,7 @@ class Tax_codes extends Secure_Controller
     {
         $data_row = get_tax_code_data_row($this->tax_code->get_info($row_id));
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
@@ -102,20 +102,20 @@ class Tax_codes extends Secure_Controller
 
         if ($this->tax_code->save($tax_code_data)) {
             if ($tax_code_id == NEW_ENTRY) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_adding'),
                     'id'      => $tax_code_data['tax_code_id']
                 ]);
             } else {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_updating'),
                     'id'      => $tax_code_id
                 ]);
             }
         } else {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
                 'id'      => NEW_ENTRY
@@ -131,12 +131,12 @@ class Tax_codes extends Secure_Controller
         $tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
         if ($this->tax_code->delete_list($tax_codes_to_delete)) {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Tax_codes.successful_deleted') . ' ' . count($tax_codes_to_delete) . ' ' . lang('Tax_codes.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Tax_codes.cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Tax_codes.cannot_be_deleted')]);
         }
     }
 }

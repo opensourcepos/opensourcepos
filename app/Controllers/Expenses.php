@@ -78,7 +78,7 @@ class Expenses extends Secure_Controller
             $data_rows[] = get_expenses_data_last_row($expenses);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
     }
 
     /**
@@ -137,7 +137,7 @@ class Expenses extends Secure_Controller
         $expense_info = $this->expense->get_info($row_id);
         $data_row = get_expenses_data_row($expense_info);
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
@@ -167,12 +167,12 @@ class Expenses extends Secure_Controller
         if ($this->expense->save_value($expense_data, $expense_id)) {
             // New Expense
             if ($expense_id == NEW_ENTRY) {
-                echo json_encode(['success' => true, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);
             } else { // Existing Expense
-                echo json_encode(['success' => true, 'message' => lang('Expenses.successful_updating'), 'id' => $expense_id]);
+                $this->response->setJSON(['success' => true, 'message' => lang('Expenses.successful_updating'), 'id' => $expense_id]);
             }
         } else { // Failure
-            echo json_encode(['success' => false, 'message' => lang('Expenses.error_adding_updating'), 'id' => NEW_ENTRY]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Expenses.error_adding_updating'), 'id' => NEW_ENTRY]);
         }
     }
 
@@ -184,7 +184,7 @@ class Expenses extends Secure_Controller
         $expenses_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->expense->delete_list($expenses_to_delete)) {
-            echo json_encode(['success' => true, 'message' => lang('Expenses.successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('Expenses.one_or_multiple'), 'ids' => $expenses_to_delete]);
+            $this->response->setJSON(['success' => true, 'message' => lang('Expenses.successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('Expenses.one_or_multiple'), 'ids' => $expenses_to_delete]);
         } else {
             echo json_encode(['success' => false, 'message' => lang('Expenses.cannot_be_deleted'), 'ids' => $expenses_to_delete]);
         }
