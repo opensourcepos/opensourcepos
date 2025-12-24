@@ -37,9 +37,84 @@ class Token_lib
 
         $token_values = [];
         $tokens_to_replace = [];
-        $this->generate($token_tree, $tokens_to_replace, $token_values, $tokens, $save);
+        $this->generate($token_tree, $tokens_to_replace, $token_values, $save);
 
         return str_replace($tokens_to_replace, $token_values, $tokened_text);
+    }
+
+    /**
+     * Expands all the tokens found in a given text string and returns the results.
+     * @param string $tokenedText
+     * @param array $tokens
+     * @param bool $save
+     * @return string
+     */
+    public function renderUpdated(string $tokenedText, array $tokens = [], bool $save = true): string
+    {
+        // Apply the transformation for the "%" tokens if any are used
+        if (str_contains($tokenedText, '%')) {
+            $tokenedText = $this->applyDateFormats($tokenedText);
+            // replicate error in the original function
+            if (str_contains($tokenedText, '%')) {
+                return '';
+            }
+        }
+
+        // Call scan to build an array of all of the tokens used in the text to be transformed
+        $token_tree = $this->scan($tokenedText);
+
+        if (empty($token_tree)) {
+            if (str_contains($tokenedText, '%')) {
+                $tokenedText = $this->applyDateFormats($tokenedText);
+                // replicate error in the original function
+                if (str_contains($tokenedText, '%')) {
+                    return '';
+                }
+            } else {
+                return $tokenedText;
+            }
+        }
+
+        $token_values = [];
+        $tokens_to_replace = [];
+        $this->generate($token_tree, $tokens_to_replace, $token_values, $save);
+
+        return str_replace($tokens_to_replace, $token_values, $tokenedText);
+    }
+
+    /**
+     * Replaces all date formats in a string with the current date in that format. A string that contains no date
+     * formats will be returned unchanged.
+     * @param string $text
+     * @return string
+     */
+    public function applyDateFormats(string $text): string
+    {
+        // TODO: get locale from config or user browser
+        $formatter = new IntlDateFormatter('en-US', IntlDateFormatter::FULL, IntlDateFormatter::NONE);
+        $dateTime = new DateTime();
+
+        return preg_replace_callback(
+            "/
+            %([a-zA-Z])\1{0,4} # '%' followed by 1-5 of a letter
+            [^a-zA-Z]+         # any non-alphabetic separator(s)
+            %([a-zA-Z])\2{0,4} # '%' followed by 1-5 of a letter
+            [^a-zA-Z]+         # any non-alphabetic separator(s)
+            %([a-zA-Z])\3{0,4} # '%' followed by 1-5 of a letter
+            (?=[^a-zA-Z]|$)    # any non-alphabetic (or end of string)
+        /x",
+            function ($match) use ($formatter, $dateTime) {
+                // TODO: update this to cover all edge cases between strftime and IntlDateFormatter
+                $pattern = str_replace(
+                    ['%', 'm', 'B', 'd'],
+                    ['', 'M', 'LLLL', 'dd'],
+                    $match[0]
+                );
+                $formatter->setPattern($pattern);
+                return $formatter->format($dateTime);
+            },
+            $text
+        );
     }
 
     /**
@@ -133,11 +208,9 @@ class Token_lib
      * @param array $used_tokens
      * @param array $tokens_to_replace
      * @param array $token_values
-     * @param array $tokens
      * @param bool $save
-     * @return array
      */
-    public function generate(array $used_tokens, array &$tokens_to_replace, array &$token_values, array $tokens, bool $save = true): array    // TODO: $tokens
+    private function generate(array $used_tokens, array &$tokens_to_replace, array &$token_values, bool $save = true): void
     {
         foreach ($used_tokens as $token_code => $token_info) {
             // Generate value here based on the key value
@@ -152,8 +225,6 @@ class Token_lib
                 }
             }
         }
-
-        return $token_values;
     }
 
     /**
