@@ -65,6 +65,26 @@ class Items extends Secure_Controller
     }
 
     /**
+     * Check if user has items_stock permission
+     */
+    private function has_stock_permission(): bool
+    {
+        $employee = model('Employee');
+        $logged_in_employee = $employee->get_logged_in_employee_info();
+        return $employee->has_grant('items_stock', $logged_in_employee->person_id);
+    }
+
+    /**
+     * Check if user has items_view permission
+     */
+    private function has_view_permission(): bool
+    {
+        $employee = model('Employee');
+        $logged_in_employee = $employee->get_logged_in_employee_info();
+        return $employee->has_grant('items_view', $logged_in_employee->person_id);
+    }
+
+    /**
      * @return void
      */
     public function getIndex(): void
@@ -126,11 +146,21 @@ class Items extends Secure_Controller
         $total_rows = $this->item->get_found_rows($search, $filters);
         $data_rows = [];
 
+        // Check if user has stock permission to view cost price
+        $has_stock_permission = $this->has_stock_permission();
+
         foreach ($items->getResult() as $item) {
-            $data_rows[] = get_item_data_row($item);
+            $data_rows[] = get_item_data_row($item, ['has_stock_permission' => $has_stock_permission]);
 
             if ($item->pic_filename !== null) {
                 $this->update_pic_filename($item);
+            }
+        }
+
+        // If user doesn't have stock permission, mask cost_price to 0
+        if (!$has_stock_permission) {
+            foreach ($data_rows as &$row) {
+                $row['cost_price'] = to_currency(0);
             }
         }
 
@@ -252,8 +282,18 @@ class Items extends Secure_Controller
 
         $result = [];
 
+        // Check if user has stock permission to view cost price
+        $has_stock_permission = $this->has_stock_permission();
+
         foreach ($item_infos->getResult() as $item_info) {
-            $result[$item_info->item_id] = get_item_data_row($item_info);
+            $result[$item_info->item_id] = get_item_data_row($item_info, ['has_stock_permission' => $has_stock_permission]);
+        }
+
+        // If user doesn't have stock permission, mask cost_price to 0
+        if (!$has_stock_permission) {
+            foreach ($result as &$row) {
+                $row['cost_price'] = to_currency(0);
+            }
         }
 
         echo json_encode($result);
@@ -284,6 +324,11 @@ class Items extends Secure_Controller
         }
 
         $item_info = $this->item->get_info($item_id);
+
+        // Mask cost_price for view-only users
+        if (!$this->has_stock_permission()) {
+            $item_info->cost_price = 0;
+        }
 
         $data['allow_temp_item'] = ($data['allow_temp_item'] === 1 && $item_id !== NEW_ENTRY && $item_info->item_type != ITEM_TEMP) ? 0 : 1;
 
@@ -407,6 +452,12 @@ class Items extends Secure_Controller
      */
     public function getInventory(int $item_id = NEW_ENTRY): void
     {
+        // Check permission: only users with stock permission can update inventory
+        if (!$this->has_stock_permission()) {
+            echo json_encode(['success' => false, 'message' => lang('Items.permission_denied'), 'errors' => 'permission_denied']);
+            return;
+        }
+
         $item_info = $this->item->get_info($item_id);    // TODO: Duplicate code
 
         foreach (get_object_vars($item_info) as $property => $value) {
@@ -589,6 +640,12 @@ class Items extends Secure_Controller
      */
     public function postSave(int $item_id = NEW_ENTRY): void
     {
+        // Check if user has items_stock permission
+        if (!$this->has_stock_permission()) {
+            echo json_encode(['success' => false, 'message' => lang('Common.permission_denied')]);
+            return;
+        }
+
         $upload_data = $this->upload_image();
         $upload_success = empty($upload_data['error']);
 
@@ -821,6 +878,12 @@ class Items extends Secure_Controller
      */
     public function postSaveInventory($item_id = NEW_ENTRY): void
     {
+        // Check permission: only users with stock permission can update inventory
+        if (!$this->has_stock_permission()) {
+            echo json_encode(['success' => false, 'message' => lang('Common.permission_denied')]);
+            return;
+        }
+
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $cur_item_info = $this->item->get_info($item_id);
         $location_id = $this->request->getPost('stock_location');
@@ -901,6 +964,12 @@ class Items extends Secure_Controller
      */
     public function postDelete(): void
     {
+        // Check if user has items_stock permission
+        if (!$this->has_stock_permission()) {
+            echo json_encode(['success' => false, 'message' => lang('Common.permission_denied')]);
+            return;
+        }
+
         $items_to_delete = $this->request->getPost('ids');
 
         if ($this->item->delete_list($items_to_delete)) {
