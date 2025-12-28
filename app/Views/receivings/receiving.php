@@ -106,14 +106,15 @@ if (isset($success)) {
     <table class="sales_table_100" id="register">
         <thead>
             <tr>
+                <th style="width: 6%;"><?= lang('Items.image') ?></th>
                 <th style="width: 5%;"><?= lang('Common.delete') ?></th>
-                <th style="width: 15%;"><?= lang('Sales.item_number') ?></th>
-                <th style="width: 23%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
+                <th style="width: 12%;"><?= lang('Sales.item_number') ?></th>
+                <th style="width: 20%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
                 <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.cost') ?></th>
                 <th style="width: 8%;"><?= lang(ucfirst($controller_name) . '.quantity') ?></th>
                 <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.ship_pack') ?></th>
-                <th style="width: 14%;"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
-                <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.total') ?></th>
+                <th style="width: 12%;"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
+                <th style="width: 12%;"><?= lang(ucfirst($controller_name) . '.total') ?></th>
                 <th style="width: 5%;"><?= lang(ucfirst($controller_name) . '.update') ?></th>
             </tr>
         </thead>
@@ -133,6 +134,13 @@ if (isset($success)) {
                     <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 
                     <tr>
+                          <td class="avatar-column">
+
+                                 <?php if (!empty($item['pic_filename'])): ?>
+                                       <img src="<?= base_url('uploads/item_pics/' . esc($item['pic_filename'], 'url')) ?>" alt="avatar" style="height:40px;max-width:40px;">
+                       
+                                  <?php endif; ?>
+                            </td>
                         <td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
                         <td><?= esc($item['item_number']) ?></td>
                         <td style="text-align: center;">
