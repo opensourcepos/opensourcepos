@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "",
     "stock"                        => "",
     "stock_destination"            => "",
-    "stock_locaiton"               => "",
+    "stock_location"               => "",
     "stock_source"                 => "",
     "successfully_deleted"         => "",
     "successfully_updated"         => "",

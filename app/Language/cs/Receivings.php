@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Začněte psát jméno dodavatele...",
     "stock"                        => "Sklad",
     "stock_destination"            => "Cílový sklad",
-    "stock_locaiton"               => "Umístění skladu",
+    "stock_location"               => "Umístění skladu",
     "stock_source"                 => "",
     "successfully_deleted"         => "Smazáno",
     "successfully_updated"         => "Upraveno",

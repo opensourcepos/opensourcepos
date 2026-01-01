@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "開始輸入供應商名稱...",
     "stock"                        => "库存",
     "stock_destination"            => "Stock destination",
-    "stock_locaiton"               => "倉庫地址",
+    "stock_location"               => "倉庫地址",
     "stock_source"                 => "Stock source",
     "successfully_deleted"         => "删除成功",
     "successfully_updated"         => "进货记录更新成功",

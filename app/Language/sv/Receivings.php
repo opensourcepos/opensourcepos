@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Börja skriva leverantörens namn ...",
     "stock"                        => "Lager",
     "stock_destination"            => "Lagerplats",
-    "stock_locaiton"               => "Lagerplats",
+    "stock_location"               => "Lagerplats",
     "stock_source"                 => "Lagerplats",
     "successfully_deleted"         => "Du har tagit bort",
     "successfully_updated"         => "Mottagning uppdaterad",
