@@ -442,6 +442,17 @@ class Sale extends Model
         unset($update_data['payments']);
         $success = $builder->update($update_data);
 
+        $customer = model(Customer::class);
+
+        // Get current reward used
+        $current_payments = $this->get_sale_payments($sale_id)->getResultArray();
+        $current_reward_used = 0;
+        foreach ($current_payments as $payment) {
+            if (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
+                $current_reward_used += $payment['payment_amount'];
+            }
+        }
+
         // Touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
         if ($success && !empty($sale_data['payments'])) {
             // Run these queries as a transaction, we want to make sure we do all or nothing
@@ -490,6 +501,23 @@ class Sale extends Model
 
             $this->db->transComplete();
             $success &= $this->db->transStatus();
+        }
+
+        // Calculate new reward used
+        $new_reward_used = 0;
+        if (!empty($sale_data['payments'])) {
+            foreach ($sale_data['payments'] as $payment) {
+                if (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
+                    $new_reward_used += $payment['payment_amount'];
+                }
+            }
+        }
+
+        // Adjust reward points
+        $reward_adjustment = $new_reward_used - $current_reward_used;
+        if ($reward_adjustment != 0 && !empty($update_data['customer_id'])) {
+            $current_points = $customer->get_info($update_data['customer_id'])->points ?? 0;
+            $customer->update_reward_points_value($update_data['customer_id'], $current_points - $reward_adjustment);
         }
 
         return $success;
@@ -813,6 +841,21 @@ class Sale extends Model
                     $item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
                 }
             }
+        }
+
+        // Restore reward points if used
+        $payments = $this->get_sale_payments($sale_id)->getResultArray();
+        $reward_used = 0;
+        foreach ($payments as $payment) {
+            if (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
+                $reward_used += $payment['payment_amount'];
+            }
+        }
+        if ($reward_used > 0) {
+            $customer_id = $this->get_customer($sale_id)->person_id;
+            $customer = model(Customer::class);
+            $current_points = $customer->get_info($customer_id)->points ?? 0;
+            $customer->update_reward_points_value($customer_id, $current_points + $reward_used);
         }
 
         $this->update_sale_status($sale_id, CANCELED);
