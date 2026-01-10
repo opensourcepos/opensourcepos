@@ -33,7 +33,7 @@ use Config\OSPOS;
             </div>
             <div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
                 <?= lang('Config.ospos_info') . ':' ?>
-                <?= esc(config('App')->application_version) ?> - <?= esc(substr(config(OSPOS::class)->commit_sha1, 0, 6)) ?><br>
+                Snapshot <?= esc(config('App')->application_version) ?>
                 Language Code: <?= current_language_code() ?><br><br>
                 <div id="TimeError"></div>
                 Extensions & Modules:<br>
@@ -57,23 +57,23 @@ use Config\OSPOS;
                 function getBrowserNameAndVersion(string $userAgent): string
                 {
                     $browser = match (true) {
-                        strpos($userAgent, 'Opera')   !== false || strpos($userAgent, 'OPR/') !== false => 'Opera',
-                        strpos($userAgent, 'Edge')    !== false => 'Edge',
-                        strpos($userAgent, 'Chrome')  !== false => 'Chrome',
-                        strpos($userAgent, 'Safari')  !== false => 'Safari',
+                        strpos($userAgent, 'Opera') !== false || strpos($userAgent, 'OPR/') !== false => 'Opera',
+                        strpos($userAgent, 'Edge') !== false => 'Edge',
+                        strpos($userAgent, 'Chrome') !== false => 'Chrome',
+                        strpos($userAgent, 'Safari') !== false => 'Safari',
                         strpos($userAgent, 'Firefox') !== false => 'Firefox',
-                        strpos($userAgent, 'MSIE')    !== false || strpos($userAgent, 'Trident/7') !== false => 'Internet Explorer',
-                        default                       => 'Other',
+                        strpos($userAgent, 'MSIE') !== false || strpos($userAgent, 'Trident/7') !== false => 'Internet Explorer',
+                        default => 'Other',
                     };
 
                     $version = match ($browser) {
-                        'Opera'             => preg_match('/(Opera|OPR)\/([0-9.]+)/', $userAgent, $matches) ? $matches[2] : '',
-                        'Edge'              => preg_match('/Edge\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
-                        'Chrome'            => preg_match('/Chrome\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
-                        'Safari'            => preg_match('/Version\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
-                        'Firefox'           => preg_match('/Firefox\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Opera' => preg_match('/(Opera|OPR)\/([0-9.]+)/', $userAgent, $matches) ? $matches[2] : '',
+                        'Edge' => preg_match('/Edge\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Chrome' => preg_match('/Chrome\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Safari' => preg_match('/Version\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Firefox' => preg_match('/Firefox\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
                         'Internet Explorer' => preg_match('/(MSIE|rv:)([0-9.]+)/', $userAgent, $matches) ? $matches[2] : '',
-                        default             => '',
+                        default => '',
                     };
 
                     return $browser . ($version ? ' ' . $version : '');
@@ -90,10 +90,10 @@ use Config\OSPOS;
                 File Permissions:<br>
                 &#187; [writable/logs:]
                 <?php $logs = WRITEPATH . 'logs/';
-                $uploads = FCPATH. 'uploads/';
-                $images = FCPATH. 'uploads/item_pics/';
+                $uploads = FCPATH . 'uploads/';
+                $images = FCPATH . 'uploads/item_pics/';
                 $importCustomers = WRITEPATH . '/uploads/importCustomers.csv';    // TODO: This variable does not follow naming conventions for the project.
-
+                
                 if (is_writable($logs)) {
                     echo ' -  ' . substr(sprintf("%o", fileperms($logs)), -4) . ' |  ' . '<span style="color: green;">  Writable &#x2713 </span>';
                 } else {
@@ -165,11 +165,13 @@ use Config\OSPOS;
                 ?>
                 <br>
                 <?php
-                if (!((substr(decoct(fileperms($logs)), -4) == 750)
-                    && (substr(decoct(fileperms($uploads)), -4) == 750)
-                    && (substr(decoct(fileperms($images)), -4) == 750)
-                    && ((substr(decoct(fileperms($importCustomers)), -4) == 640)
-                        || (substr(decoct(fileperms($importCustomers)), -4) == 660)))) {
+                if (
+                    !((substr(decoct(fileperms($logs)), -4) == 750)
+                        && (substr(decoct(fileperms($uploads)), -4) == 750)
+                        && (substr(decoct(fileperms($images)), -4) == 750)
+                        && ((substr(decoct(fileperms($importCustomers)), -4) == 640)
+                            || (substr(decoct(fileperms($importCustomers)), -4) == 660)))
+                ) {
                     echo '<br><span style="color: red;"><strong>' . lang('Config.security_issue') . '</strong> <br>' . lang('Config.perm_risk') . '</span><br>';
                 } else {
                     echo '<br><span style="color: green;">' . lang('Config.no_risk') . '</strong> <br> </span>';
@@ -187,8 +189,10 @@ use Config\OSPOS;
                     echo '<br><span style="color: red;"> &#187; [writable/uploads/item_pics:] ' . lang('Config.is_writable') . '</span>';
                 }
 
-                if (!((substr(decoct(fileperms($importCustomers)), -4) == 640)
-                    || (substr(decoct(fileperms($importCustomers)), -4) == 660))) {
+                if (
+                    !((substr(decoct(fileperms($importCustomers)), -4) == 640)
+                        || (substr(decoct(fileperms($importCustomers)), -4) == 660))
+                ) {
                     echo '<br><span style="color: red;"> &#187; [importCustomers.csv:] ' . lang('Config.is_readable') . '</span>';
                 }
                 ?>
@@ -198,15 +202,15 @@ use Config\OSPOS;
 </div>
 
 <div style="text-align: center;">
-    <a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= lang('Config.report_an_issue') ?></a>
+    <a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a>
     <script type="text/javascript">
         var clipboard = new ClipboardJS('.copy');
 
-        clipboard.on('success', function(e) {
+        clipboard.on('success', function (e) {
             document.getSelection().removeAllRanges();
         });
 
-        $(function() {
+        $(function () {
             $('#timezone').clone().appendTo('#timezoneE');
         });
 

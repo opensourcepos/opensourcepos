@@ -17,16 +17,17 @@ $request = Services::request();
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
-    <title><?= esc($config['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="<?= 'resources/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>">
+    <title><?= esc($config['company']) . ' | Snapshot' ?></title>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet"
+        href="<?= 'resources/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>">
 
-    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true'): ?>
         <!-- inject:debug:css -->
         <!-- endinject -->
         <!-- inject:debug:js -->
         <!-- endinject -->
-    <?php else : ?>
+    <?php else: ?>
         <!--inject:prod:css -->
         <!-- endinject -->
 
@@ -71,22 +72,25 @@ $request = Services::request();
         <div class="navbar navbar-default" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand hidden-sm" href="<?= site_url() ?>">OSPOS</a>
+                    <a class="navbar-brand hidden-sm" href="<?= site_url() ?>">Snapshot</a>
                 </div>
 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <?php foreach ($allowed_modules as $module): ?>
                             <li class="<?= $module->module_id == $request->getUri()->getSegment(1) ? 'active' : '' ?>">
-                                <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
-                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" style="border: none;" alt="Module Icon"><br>
+                                <a href="<?= base_url($module->module_id) ?>"
+                                    title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
+                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>"
+                                        style="border: none;" alt="Module Icon"><br>
                                     <?= lang('Module.' . $module->module_id) ?>
                                 </a>
                             </li>
