@@ -1,4 +1,4 @@
-<?= view('partial/header') ?>
+<?= view('partial/header_adminlte') ?>
 
 <script type="text/javascript">
     dialog_support.init("a.modal-dlg");
@@ -76,4 +76,4 @@
     </div>
 </div>
 
-<?= view('partial/footer') ?>
+<?= view('partial/footer_adminlte') ?>

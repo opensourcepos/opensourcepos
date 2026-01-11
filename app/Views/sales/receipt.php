@@ -9,7 +9,7 @@ use App\Models\Employee;
 
 ?>
 
-<?= view('partial/header') ?>
+<?= view('partial/header_adminlte') ?>
 
 <?php
 if (isset($error_message)) {
@@ -63,4 +63,4 @@ if (isset($error_message)) {
 
 <?= view('sales/' . $config['receipt_template']) ?>
 
-<?= view('partial/footer') ?>
+<?= view('partial/footer_adminlte') ?>

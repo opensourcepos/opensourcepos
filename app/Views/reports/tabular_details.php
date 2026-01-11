@@ -10,7 +10,7 @@
  */
 ?>
 
-<?= view('partial/header') ?>
+<?= view('partial/header_adminlte') ?>
 
 <div id="page_title"><?= esc($title) ?></div>
 
@@ -99,4 +99,4 @@
     });
 </script>
 
-<?= view('partial/footer') ?>
+<?= view('partial/footer_adminlte') ?>

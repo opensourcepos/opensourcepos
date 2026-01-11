@@ -20,7 +20,7 @@
  */
 ?>
 
-<?= view('partial/header') ?>
+<?= view('partial/header_adminlte') ?>
 
 <?php
 if (isset($error_message)) {
@@ -256,4 +256,4 @@ if (isset($error_message)) {
     });
 </script>
 
-<?= view('partial/footer') ?>
+<?= view('partial/footer_adminlte') ?>

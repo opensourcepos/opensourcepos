@@ -1,5 +1,4 @@
-include:
-    - docker/docker-mysql.yml
+version: "3.8"
 
 services:
     sqlscript:
@@ -11,7 +10,7 @@ services:
         depends_on:
             - mysql
         ports:
-            - "8009:80"
+            - "8010:80"
         networks:
             - app_net
         volumes:
@@ -25,3 +24,32 @@ services:
             - MYSQL_PASSWORD=pointofsale
             - MYSQL_DB_NAME=ospos
             - MYSQL_HOST_NAME=mysql
+
+    mysql:
+        image: mariadb:10.5
+        container_name: mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        networks:
+            - app_net
+        volumes_from:
+            - sqlscript
+        volumes:
+            - mysql:/var/lib/mysql:rw
+        environment:
+            - MYSQL_ROOT_PASSWORD=pointofsale
+            - MYSQL_DATABASE=ospos
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=pointofsale
+
+volumes:
+    uploads:
+        driver: local
+    logs:
+        driver: local
+    mysql:
+        driver: local
+
+networks:
+    app_net:

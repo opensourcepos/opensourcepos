@@ -16,7 +16,7 @@
  */
 ?>
 
-<?= view('partial/header') ?>
+<?= view('partial/header_adminlte') ?>
 
 <?php
 if (isset($error_message)) {
@@ -132,4 +132,4 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
     </div>
 </div>
 
-<?= view('partial/footer') ?>
+<?= view('partial/footer_adminlte') ?>
