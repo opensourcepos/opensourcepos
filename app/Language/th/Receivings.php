@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "เริ่มต้นพิมพ์ชื่อผู้ผลิต...",
     "stock"                        => "คลังสินค้า",
     "stock_destination"            => "คลังสินค้าปลายทาง",
-    "stock_locaiton"               => "สถานที่เก็บสินค้า",
+    "stock_location"               => "สถานที่เก็บสินค้า",
     "stock_source"                 => "คลังสินค้าต้นทาง",
     "successfully_deleted"         => "คุณได้ทำการลบเรียบร้อยแล้ว",
     "successfully_updated"         => "ปรับปรุงใบรับสินค้าเรียบร้อยแล้ว",

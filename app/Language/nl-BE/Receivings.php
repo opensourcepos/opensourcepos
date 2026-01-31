@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Typ naam leverancier..",
     "stock"                        => "Voorraad",
     "stock_destination"            => "Stock bestemming",
-    "stock_locaiton"               => "Stock locatie",
+    "stock_location"               => "Stock locatie",
     "stock_source"                 => "Stock bron",
     "successfully_deleted"         => "Er werd(en)",
     "successfully_updated"         => "Order werd geupdatet",

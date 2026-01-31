@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Kezdje gépelni a beszállitó nevét",
     "stock"                        => "",
     "stock_destination"            => "Célraktár",
-    "stock_locaiton"               => "Raktár helyszin",
+    "stock_location"               => "Raktár helyszin",
     "stock_source"                 => "Raktár forrás",
     "successfully_deleted"         => "Sikeres törlés",
     "successfully_updated"         => "Átvétel sikeresen módositva",

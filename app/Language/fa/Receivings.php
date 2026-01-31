@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "شروع به تایپ کردن نام ارائه دهنده ...",
     "stock"                        => "موجودی",
     "stock_destination"            => "مقصد سهام",
-    "stock_locaiton"               => "موقعیت مکانی سهام",
+    "stock_location"               => "موقعیت مکانی سهام",
     "stock_source"                 => "منبع سهام",
     "successfully_deleted"         => "شما با موفقیت حذف شده اید",
     "successfully_updated"         => "دریافت با موفقیت به روز شد",

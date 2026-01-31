@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "התחל להקליד את שם הספק ...",
     "stock"                        => "מלאי",
     "stock_destination"            => "יעד מלאי",
-    "stock_locaiton"               => "מיקום מלאי",
+    "stock_location"               => "מיקום מלאי",
     "stock_source"                 => "מקור מלאי",
     "successfully_deleted"         => "נמחק בהצלחה",
     "successfully_updated"         => "החזרה עודכנה בהצלחה",
