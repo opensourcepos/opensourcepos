@@ -433,12 +433,13 @@ function get_items_manage_table_headers(): string
 /**
  * Get the html data row for the item
  */
-function get_item_data_row(object $item): array
+function get_item_data_row(object $item, array $permissions = []): array
 {
     $attribute = model(Attribute::class);
     $item_taxes = model(Item_taxes::class);
     $tax_category = model(Tax_category::class);
     $config = config(OSPOS::class)->settings;
+    $has_stock_permission = $permissions['has_stock_permission'] ?? true;
 
     if ($config['use_destination_based_tax']) {
         if ($item->tax_category_id == null) {    // TODO: === ?
@@ -493,25 +494,11 @@ function get_item_data_row(object $item): array
         'item_pic'      => $image
     ];
 
-    $icons = [
-        'inventory' => anchor(
-            "$controller/inventory/$item->item_id",
-            '<span class="glyphicon glyphicon-pushpin"></span>',
-            [
-                'class'           => 'modal-dlg',
-                'data-btn-submit' => lang('Common.submit'),
-                'title'           => lang(ucfirst($controller) . ".count")
-            ]
-        ),
-        'stock'     => anchor(
-            "$controller/countDetails/$item->item_id",
-            '<span class="glyphicon glyphicon-list-alt"></span>',
-            [
-                'class' => 'modal-dlg',
-                'title' => lang(ucfirst($controller) . ".details_count")
-            ]
-        ),
-        'edit'      => anchor(
+    $icons = [];
+    
+    // Only show edit button if user has stock permission
+    if ($has_stock_permission) {
+        $icons['edit'] = anchor(
             "$controller/view/$item->item_id",
             '<span class="glyphicon glyphicon-edit"></span>',
             [
@@ -519,8 +506,33 @@ function get_item_data_row(object $item): array
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
-        )
-    ];
+        );
+    }
+    
+    // Only show inventory button if user has stock permission
+    if ($has_stock_permission) {
+        $icons['inventory'] = anchor(
+            "$controller/inventory/$item->item_id",
+            '<span class="glyphicon glyphicon-pushpin"></span>',
+            [
+                'class'           => 'modal-dlg',
+                'data-btn-submit' => lang('Common.submit'),
+                'title'           => lang(ucfirst($controller) . ".count")
+            ]
+        );
+    }
+    
+    // Only show inventory details button if user has stock permission
+    if ($has_stock_permission) {
+        $icons['stock'] = anchor(
+            "$controller/countDetails/$item->item_id",
+            '<span class="glyphicon glyphicon-list-alt"></span>',
+            [
+                'class' => 'modal-dlg',
+                'title' => lang(ucfirst($controller) . ".details_count")
+            ]
+        );
+    }
 
     return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
 }
