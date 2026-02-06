@@ -169,6 +169,11 @@ class Employees extends Persons
                     'id'      => $employee_data['person_id']
                 ]);
             } else { // Existing employee
+                $logged_in_employee_id = session()->get('person_id');
+                if ($employee_id == $logged_in_employee_id) {
+                    session()->set('language_code', $employee_data['language_code']);
+                    session()->set('language', $employee_data['language']);
+                }
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
