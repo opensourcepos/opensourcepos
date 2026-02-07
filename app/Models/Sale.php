@@ -436,11 +436,40 @@ class Sale extends Model
      */
     public function update($sale_id = null, $sale_data = null): bool
     {
+        $previousCustomerRow = $this->db->table('sales')
+            ->select('customer_id')
+            ->where('sale_id', $sale_id)
+            ->get()
+            ->getRow();
+        $previousCustomerId = $previousCustomerRow ? $previousCustomerRow->customer_id : null;
+        log_message(
+            'debug',
+            'Sale::update start sale_id=' . $sale_id . ' previous_customer_id=' . ($previousCustomerId ?? 'null')
+        );
+
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
-        $update_data = $sale_data;
-        unset($update_data['payments']);
-        $success = $builder->update($update_data);
+        $updateData = $sale_data;
+        unset($updateData['payments']);
+        $success = $builder->update($updateData);
+
+        $customer = model(Customer::class);
+
+        // Get current reward used
+        $currentPayments = $this->get_sale_payments($sale_id)->getResultArray();
+        $currentRewardUsed = 0;
+        foreach ($currentPayments as $payment) {
+            if ($this->is_reward_payment($payment['payment_type'])) {
+                $currentRewardUsed += $payment['payment_amount'];
+            }
+        }
+        log_message(
+            'debug',
+            'Sale::update current rewards sale_id=' . $sale_id
+            . ' current_reward_used=' . $currentRewardUsed
+            . ' reward_labels=' . json_encode($this->get_reward_payment_labels())
+            . ' payments=' . json_encode($currentPayments)
+        );
 
         // Touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
         if ($success && !empty($sale_data['payments'])) {
@@ -490,6 +519,72 @@ class Sale extends Model
 
             $this->db->transComplete();
             $success &= $this->db->transStatus();
+        }
+
+        // Calculate new reward used
+        $newRewardUsed = 0;
+        if (!empty($sale_data['payments'])) {
+            foreach ($sale_data['payments'] as $payment) {
+                if ($this->is_reward_payment($payment['payment_type'])) {
+                    $newRewardUsed += $payment['payment_amount'];
+                }
+            }
+        } else {
+            $newRewardUsed = $currentRewardUsed;
+        }
+        log_message(
+            'debug',
+            'Sale::update new rewards sale_id=' . $sale_id
+            . ' new_reward_used=' . $newRewardUsed
+            . ' payments=' . json_encode($sale_data['payments'] ?? [])
+        );
+
+        // Adjust reward points
+        if ($success) {
+            $newCustomerId = $updateData['customer_id'] ?? null;
+            log_message(
+                'debug',
+                'Sale::update reward adjust sale_id=' . $sale_id
+                . ' previous_customer_id=' . ($previousCustomerId ?? 'null')
+                . ' new_customer_id=' . ($newCustomerId ?? 'null')
+                . ' current_reward_used=' . $currentRewardUsed
+                . ' new_reward_used=' . $newRewardUsed
+            );
+            if ($previousCustomerId != $newCustomerId) {
+                if (!empty($previousCustomerId) && $currentRewardUsed != 0) {
+                    $previousPoints = $customer->get_info($previousCustomerId)->points ?? 0;
+                    $customer->update_reward_points_value($previousCustomerId, $previousPoints + $currentRewardUsed);
+                    log_message(
+                        'debug',
+                        'Sale::update reward restore previous_customer_id=' . $previousCustomerId
+                        . ' previous_points=' . $previousPoints
+                        . ' restored=' . $currentRewardUsed
+                    );
+                }
+
+                if (!empty($newCustomerId) && $newRewardUsed != 0) {
+                    $newPoints = $customer->get_info($newCustomerId)->points ?? 0;
+                    $customer->update_reward_points_value($newCustomerId, $newPoints - $newRewardUsed);
+                    log_message(
+                        'debug',
+                        'Sale::update reward charge new_customer_id=' . $newCustomerId
+                        . ' new_points=' . $newPoints
+                        . ' charged=' . $newRewardUsed
+                    );
+                }
+            } else {
+                $rewardAdjustment = $newRewardUsed - $currentRewardUsed;
+                if ($rewardAdjustment != 0 && !empty($newCustomerId)) {
+                    $currentPoints = $customer->get_info($newCustomerId)->points ?? 0;
+                    $customer->update_reward_points_value($newCustomerId, $currentPoints - $rewardAdjustment);
+                    log_message(
+                        'debug',
+                        'Sale::update reward delta new_customer_id=' . $newCustomerId
+                        . ' current_points=' . $currentPoints
+                        . ' reward_adjustment=' . $rewardAdjustment
+                    );
+                }
+            }
         }
 
         return $success;
@@ -567,7 +662,7 @@ class Sale extends Model
                 $splitpayment = explode(':', $payment['payment_type']);    // TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
                 $cur_giftcard_value = $giftcard->get_giftcard_value($splitpayment[1]);    // TODO: this should be refactored to $current_giftcard_value
                 $giftcard->update_giftcard_value($splitpayment[1], $cur_giftcard_value - $payment['payment_amount']);
-            } elseif (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
+            } elseif ($this->is_reward_payment($payment['payment_type'])) {
                 $cur_rewards_value = $customer->get_info($customer_id)->points;
                 $customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount']);
                 $total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
@@ -813,6 +908,34 @@ class Sale extends Model
                     $item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
                 }
             }
+        }
+
+        // Restore reward points if used
+        $payments = $this->get_sale_payments($sale_id)->getResultArray();
+        $rewardUsed = 0;
+        foreach ($payments as $payment) {
+            if ($this->is_reward_payment($payment['payment_type'])) {
+                $rewardUsed += $payment['payment_amount'];
+            }
+        }
+        log_message(
+            'debug',
+            'Sale::delete reward usage sale_id=' . $sale_id
+            . ' reward_used=' . $rewardUsed
+            . ' reward_labels=' . json_encode($this->get_reward_payment_labels())
+            . ' payments=' . json_encode($payments)
+        );
+        if ($rewardUsed > 0) {
+            $customerId = $this->get_customer($sale_id)->person_id;
+            $customer = model(Customer::class);
+            $currentPoints = $customer->get_info($customerId)->points ?? 0;
+            $customer->update_reward_points_value($customerId, $currentPoints + $rewardUsed);
+            log_message(
+                'debug',
+                'Sale::delete reward restore customer_id=' . $customerId
+                . ' current_points=' . $currentPoints
+                . ' restored=' . $rewardUsed
+            );
         }
 
         $this->update_sale_status($sale_id, CANCELED);
@@ -1385,6 +1508,57 @@ class Sale extends Model
                 $rewards->save_value($rewards_data);
             }
         }
+    }
+
+    /**
+     * Determines if the payment type represents a rewards payment across locales.
+     */
+    private function is_reward_payment(string $payment_type): bool
+    {
+        if ($payment_type === '') {
+            return false;
+        }
+
+        foreach ($this->get_reward_payment_labels() as $label) {
+            if ($payment_type === $label) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns unique localized labels for the rewards payment type.
+     */
+    private function get_reward_payment_labels(): array
+    {
+        static $labels = null;
+
+        if ($labels !== null) {
+            return $labels;
+        }
+
+        $labels = [lang('Sales.rewards')];
+        $language_paths = glob(APPPATH . 'Language/*/Sales.php');
+        if (!empty($language_paths)) {
+            foreach ($language_paths as $sales_file) {
+                if (!is_file($sales_file)) {
+                    continue;
+                }
+
+                $translations = require $sales_file;
+                if (is_array($translations) && !empty($translations['rewards'])) {
+                    $labels[] = $translations['rewards'];
+                }
+            }
+        }
+
+        $labels = array_map('trim', $labels);
+        $labels = array_filter($labels, static fn($label) => $label !== '');
+        $labels = array_values(array_unique($labels));
+
+        return $labels;
     }
 
     /**
