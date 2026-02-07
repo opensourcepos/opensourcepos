@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Leveranciersnaam typen...",
     "stock"                        => "Voorraad",
     "stock_destination"            => "Voorraad bestemming",
-    "stock_locaiton"               => "Voorraad locatie",
+    "stock_location"               => "Voorraad locatie",
     "stock_source"                 => "Voorraad herkomst",
     "successfully_deleted"         => "Succesvol verwijderd",
     "successfully_updated"         => "Levering succesvol bijgewerkt",
