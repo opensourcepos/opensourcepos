@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Начните вводить название поставщика...",
     "stock"                        => "Запасы",
     "stock_destination"            => "Назначение запасов",
-    "stock_locaiton"               => "Расположение запасов",
+    "stock_location"               => "Расположение запасов",
     "stock_source"                 => "Источник запасов",
     "successfully_deleted"         => "Успешно удалено",
     "successfully_updated"         => "Закупка успешно обновлена",

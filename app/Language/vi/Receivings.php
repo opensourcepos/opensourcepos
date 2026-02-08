@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Bắt đầu bằng cách gõ tên của nhà cung cấp...",
     "stock"                        => "Kho",
     "stock_destination"            => "Kho đích",
-    "stock_locaiton"               => "Vị trí kho",
+    "stock_location"               => "Vị trí kho",
     "stock_source"                 => "Kho nguồn",
     "successfully_deleted"         => "Bạn đã xóa thành công",
     "successfully_updated"         => "Bạn đã cập nhật Nhập hàng thành công",
