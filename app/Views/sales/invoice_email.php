@@ -126,7 +126,7 @@
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
                     <td id="taxes" class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
                 </tr>
             <?php } ?>
@@ -148,7 +148,7 @@
             ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
+                    <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
                     <td class="total-value"><?= to_currency(-$payment['payment_amount']) ?></td>
                 </tr>
             <?php } ?>
@@ -174,7 +174,7 @@
             <div id="sale_return_policy">
                 <h5>
                     <span><?= nl2br($config['payment_message']) ?></span>
-                    <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? $config['invoice_default_comments'] : $comments) ?></span>
+                    <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? esc($config['invoice_default_comments']) : esc($comments)) ?></span>
                 </h5>
                 <?= nl2br(esc($config['return_policy'])) ?>
             </div>

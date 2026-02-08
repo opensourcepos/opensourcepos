@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <td class="meta-head"><?= lang('Common.date') ?></td>
-                            <td><?= $transaction_date ?></td>
+                            <td><?= esc($transaction_date) ?></td>
                         </tr>
                         <?php if ($amount_due > 0) { ?>
                             <tr>
@@ -128,7 +128,7 @@
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
                     <td id="taxes" class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
                 </tr>
             <?php } ?>
@@ -144,7 +144,7 @@
             <div id="sale_return_policy">
                 <h5>
                     <span><?= nl2br(esc($config['payment_message'])) ?></span>
-                    <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? $config['quote_default_comments'] : esc($comments)) ?></span>
+                    <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? esc($config['quote_default_comments']) : esc($comments)) ?></span>
                 </h5>
                 <?= nl2br(esc($config['return_policy'])) ?>
             </div>

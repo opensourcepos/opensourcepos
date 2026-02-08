@@ -143,7 +143,7 @@ if (isset($error_message)) {
                     <?php if ($include_hsn): ?>
                         <td style="text-align: center;"><?= esc($item['hsn_code']) ?></td>
                     <?php endif; ?>
-                    <td class="item-name"><?= ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name'] . ' ' . $item['attribute_values'] ?></td>
+                    <td class="item-name"><?= ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? esc($item['description']) : esc($item['name'] . ' ' . $item['attribute_values']) ?></td>
                     <td style="text-align: center;"><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td><?= to_currency($item['price']) ?></td>
                     <td style="height: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
@@ -155,7 +155,7 @@ if (isset($error_message)) {
                 <?php if ($item['is_serialized']) { ?>
                     <tr class="item-row">
                         <td class="item-description" colspan="<?= $invoice_columns - 1 ?>"></td>
-                        <td style="text-align: center;"><?= $item['serialnumber']    // TODO: serialnumber does not match variable naming conventions for this project ?></td>
+                        <td style="text-align: center;"><?= esc($item['serialnumber'])    // TODO: serialnumber does not match variable naming conventions for this project ?></td>
                     </tr>
         <?php
                 }
@@ -176,7 +176,7 @@ if (isset($error_message)) {
         <?php foreach ($taxes as $tax_group_index => $tax) { ?>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
                 <td class="total-value" id="taxes"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
             </tr>
         <?php } ?>
@@ -197,7 +197,7 @@ if (isset($error_message)) {
         ?>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
+                <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
                 <td class="total-value" id="paid"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>
