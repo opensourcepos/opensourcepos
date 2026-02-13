@@ -68,7 +68,7 @@ class Sales extends Secure_Controller
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $this->session->set('allow_temp_items', 1);
         $this->_reload();    // TODO: Hungarian Notation
@@ -80,7 +80,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getManage(): void
+    public function getManage(): ResponseInterface|string
     {
         $person_id = $this->session->get('person_id');
 
@@ -107,7 +107,7 @@ class Sales extends Secure_Controller
             }
             $data['selected_filters'] = $selected_filters;
 
-            echo view('sales/manage', $data);
+            return view('sales/manage', $data);
         }
     }
 
@@ -115,18 +115,18 @@ class Sales extends Secure_Controller
      * @param int $row_id
      * @return void
      */
-    public function getRow(int $row_id): void
+    public function getRow(int $row_id): ResponseInterface|string
     {
         $sale_info = $this->sale->get_info($row_id)->getRow();
         $data_row = get_sale_data_row($sale_info);
 
-        echo json_encode($data_row);
+        $this->response->setJSON($data_row);
     }
 
     /**
      * @return void
      */
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -166,7 +166,7 @@ class Sales extends Secure_Controller
             $data_rows[] = get_sale_data_last_row($sales);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
+        $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
     }
 
     /**
@@ -175,7 +175,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getItemSearch(): void
+    public function getItemSearch(): ResponseInterface|string
     {
         $suggestions = [];
         $receipt = $search = $this->request->getGet('term') != ''
@@ -189,13 +189,13 @@ class Sales extends Secure_Controller
         $suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true));
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
      * @return void
      */
-    public function suggest_search(): void
+    public function suggest_search(): ResponseInterface|string
     {
         $search = $this->request->getPost('term') != ''
             ? $this->request->getPost('term')
@@ -203,7 +203,7 @@ class Sales extends Secure_Controller
 
         $suggestions = $this->sale->get_search_suggestions($search);
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -212,7 +212,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSelectCustomer(): void
+    public function postSelectCustomer(): ResponseInterface|string
     {
         $customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
         if ($this->customer->exists($customer_id)) {
@@ -235,7 +235,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postChangeMode(): void
+    public function postChangeMode(): ResponseInterface|string
     {
         $mode = $this->request->getPost('mode', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $this->sale_lib->set_mode($mode);
@@ -283,7 +283,7 @@ class Sales extends Secure_Controller
      * @param int $sale_type
      * @return void
      */
-    public function change_register_mode(int $sale_type): void
+    public function change_register_mode(int $sale_type): ResponseInterface|string
     {
         $mode = match ($sale_type) {
             SALE_TYPE_QUOTE => 'sale_quote',
@@ -303,7 +303,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSetComment(): void
+    public function postSetComment(): ResponseInterface|string
     {
         $this->sale_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     }
@@ -314,7 +314,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSetInvoiceNumber(): void
+    public function postSetInvoiceNumber(): ResponseInterface|string
     {
         $this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number', FILTER_SANITIZE_NUMBER_INT));
     }
@@ -322,7 +322,7 @@ class Sales extends Secure_Controller
     /**
      * @return void
      */
-    public function postSetPaymentType(): void    // TODO: This function does not appear to be called anywhere in the code.
+    public function postSetPaymentType(): ResponseInterface|string    // TODO: This function does not appear to be called anywhere in the code.
     {
         $this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
         $this->_reload();    // TODO: Hungarian notation.
@@ -334,7 +334,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSetPrintAfterSale(): void
+    public function postSetPrintAfterSale(): ResponseInterface|string
     {
         $this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale') != 'false');
     }
@@ -345,7 +345,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSetPriceWorkOrders(): void
+    public function postSetPriceWorkOrders(): ResponseInterface|string
     {
         $price_work_orders = parse_decimals($this->request->getPost('price_work_orders'));
         $this->sale_lib->set_price_work_orders($price_work_orders);
@@ -357,7 +357,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSetEmailReceipt(): void
+    public function postSetEmailReceipt(): ResponseInterface|string
     {
         $this->sale_lib->set_email_receipt($this->request->getPost('email_receipt', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     }
@@ -368,7 +368,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postAddPayment(): void
+    public function postAddPayment(): ResponseInterface|string
     {
         $data = [];
         $giftcard = model(Giftcard::class);
@@ -463,7 +463,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getDeletePayment(string $payment_id): void
+    public function getDeletePayment(string $payment_id): ResponseInterface|string
     {
         helper('url');
 
@@ -478,7 +478,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postAdd(): void
+    public function postAdd(): ResponseInterface|string
     {
         $data = [];
 
@@ -559,7 +559,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postEditItem(string $line): void
+    public function postEditItem(string $line): ResponseInterface|string
     {
         $data = [];
 
@@ -605,7 +605,7 @@ class Sales extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function getDeleteItem(int $item_id): void
+    public function getDeleteItem(int $item_id): ResponseInterface|string
     {
         $this->sale_lib->delete_item($item_id);
 
@@ -620,7 +620,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getRemoveCustomer(): void
+    public function getRemoveCustomer(): ResponseInterface|string
     {
         $this->sale_lib->clear_giftcard_remainder();
         $this->sale_lib->clear_rewards_remainder();
@@ -639,7 +639,7 @@ class Sales extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postComplete(): void    // TODO: this function is huge.  Probably should be refactored.
+    public function postComplete(): ResponseInterface|string    // TODO: this function is huge.  Probably should be refactored.
     {
         $sale_id = $this->sale_lib->get_sale_id();
         $data = [];
@@ -765,7 +765,7 @@ class Sales extends Secure_Controller
                     $data['error_message'] = lang('Sales.transaction_failed');
                 } else {
                     $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-                    echo view('sales/' . $invoice_view, $data);
+                    return view('sales/' . $invoice_view, $data);
                     $this->sale_lib->clear_all();
                 }
             }
@@ -799,7 +799,7 @@ class Sales extends Secure_Controller
 
                 $data['barcode'] = null;
 
-                echo view('sales/work_order', $data);
+                return view('sales/work_order', $data);
                 $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
             }
@@ -827,7 +827,7 @@ class Sales extends Secure_Controller
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
                 $data['barcode'] = null;
 
-                echo view('sales/quote', $data);
+                return view('sales/quote', $data);
                 $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
             }
@@ -850,7 +850,7 @@ class Sales extends Secure_Controller
                 $data['error_message'] = lang('Sales.transaction_failed');
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-                echo view('sales/receipt', $data);
+                return view('sales/receipt', $data);
                 $this->sale_lib->clear_all();
             }
         }
@@ -899,7 +899,7 @@ class Sales extends Secure_Controller
             $message = lang($result ? "Sales." . $type . "_sent" : "Sales." . $type . "_unsent") . ' ' . $to;
         }
 
-        echo json_encode(['success' => $result, 'message' => $message, 'id' => $sale_id]);
+        $this->response->setJSON(['success' => $result, 'message' => $message, 'id' => $sale_id]);
 
         $this->sale_lib->clear_all();
 
@@ -934,7 +934,7 @@ class Sales extends Secure_Controller
             $message = lang($result ? 'Sales.receipt_sent' : 'Sales.receipt_unsent') . ' ' . $to;
         }
 
-        echo json_encode(['success' => $result, 'message' => $message, 'id' => $sale_id]);
+        $this->response->setJSON(['success' => $result, 'message' => $message, 'id' => $sale_id]);
 
         $this->sale_lib->clear_all();
 
@@ -1109,7 +1109,7 @@ class Sales extends Secure_Controller
      * @param array $data
      * @return void
      */
-    private function _reload(array $data = []): void    // TODO: Hungarian notation
+    private function _reload(array $data = []): ResponseInterface|string    // TODO: Hungarian notation
     {
         $sale_id = $this->session->get('sale_id');    // TODO: This variable is never used
 
@@ -1215,7 +1215,7 @@ class Sales extends Secure_Controller
             $data['customer_required'] = lang('Sales.customer_optional');
         }
 
-        echo view("sales/register", $data);
+        return view("sales/register", $data);
     }
 
     /**
@@ -1225,10 +1225,10 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getReceipt(int $sale_id): void
+    public function getReceipt(int $sale_id): ResponseInterface|string
     {
         $data = $this->_load_sale_data($sale_id);
-        echo view('sales/receipt', $data);
+        return view('sales/receipt', $data);
         $this->sale_lib->clear_all();
     }
 
@@ -1236,11 +1236,11 @@ class Sales extends Secure_Controller
      * @param int $sale_id
      * @return void
      */
-    public function getInvoice(int $sale_id): void
+    public function getInvoice(int $sale_id): ResponseInterface|string
     {
         $data = $this->_load_sale_data($sale_id);
 
-        echo view('sales/' . $data['invoice_view'], $data);
+        return view('sales/' . $data['invoice_view'], $data);
         $this->sale_lib->clear_all();
     }
 
@@ -1248,7 +1248,7 @@ class Sales extends Secure_Controller
      * @param int $sale_id
      * @return void
      */
-    public function getEdit(int $sale_id): void
+    public function getEdit(int $sale_id): ResponseInterface|string
     {
         $data = [];
 
@@ -1293,30 +1293,30 @@ class Sales extends Secure_Controller
 
         $data['new_payment_options'] = $payment_options;
 
-        echo view('sales/form', $data);
+        return view('sales/form', $data);
     }
 
     /**
      * @throws ReflectionException
      */
-    public function postDelete(int $sale_id = NEW_ENTRY, bool $update_inventory = true): void
+    public function postDelete(int $sale_id = NEW_ENTRY, bool $update_inventory = true): ResponseInterface|string
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
         if (!$has_grant) {
-            echo json_encode(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         } else {
             $sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
 
             if ($this->sale->delete_list($sale_ids, $employee_id, $update_inventory)) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Sales.successfully_deleted') . ' ' . count($sale_ids) . ' ' . lang('Sales.one_or_multiple'),
                     'ids'     => $sale_ids
                 ]);
             } else {
-                echo json_encode(['success' => false, 'message' => lang('Sales.unsuccessfully_deleted')]);
+                $this->response->setJSON(['success' => false, 'message' => lang('Sales.unsuccessfully_deleted')]);
             }
         }
     }
@@ -1326,24 +1326,24 @@ class Sales extends Secure_Controller
      * @param bool $update_inventory
      * @return void
      */
-    public function restore(int $sale_id = NEW_ENTRY, bool $update_inventory = true): void
+    public function restore(int $sale_id = NEW_ENTRY, bool $update_inventory = true): ResponseInterface|string
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
         if (!$has_grant) {
-            echo json_encode(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         } else {
             $sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
 
             if ($this->sale->restore_list($sale_ids, $employee_id, $update_inventory)) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Sales.successfully_restored') . ' ' . count($sale_ids) . ' ' . lang('Sales.one_or_multiple'),
                     'ids'     => $sale_ids
                 ]);
             } else {
-                echo json_encode(['success' => false, 'message' => lang('Sales.unsuccessfully_restored')]);
+                $this->response->setJSON(['success' => false, 'message' => lang('Sales.unsuccessfully_restored')]);
             }
         }
     }
@@ -1354,7 +1354,7 @@ class Sales extends Secure_Controller
      * @param int $sale_id
      * @throws ReflectionException
      */
-    public function postSave(int $sale_id = NEW_ENTRY): void
+    public function postSave(int $sale_id = NEW_ENTRY): ResponseInterface|string
     {
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -1435,9 +1435,9 @@ class Sales extends Secure_Controller
 
         $inventory->update('POS ' . $sale_id, ['trans_date' => $sale_time]);    // TODO: Reflection Exception
         if ($this->sale->update($sale_id, $sale_data)) {
-            echo json_encode(['success' => true, 'message' => lang('Sales.successfully_updated'), 'id' => $sale_id]);
+            $this->response->setJSON(['success' => true, 'message' => lang('Sales.successfully_updated'), 'id' => $sale_id]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Sales.unsuccessfully_updated'), 'id' => $sale_id]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Sales.unsuccessfully_updated'), 'id' => $sale_id]);
         }
     }
 
@@ -1450,7 +1450,7 @@ class Sales extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postCancel(): void
+    public function postCancel(): ResponseInterface|string
     {
         $sale_id = $this->sale_lib->get_sale_id();
         if ($sale_id != NEW_ENTRY && $sale_id != '') {
@@ -1481,7 +1481,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getDiscardSuspendedSale(): void
+    public function getDiscardSuspendedSale(): ResponseInterface|string
     {
         $suspended_id = $this->sale_lib->get_suspended_id();
         $this->sale_lib->clear_all();
@@ -1497,7 +1497,7 @@ class Sales extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postSuspend(): void
+    public function postSuspend(): ResponseInterface|string
     {
         $sale_id = $this->sale_lib->get_sale_id();
         $dinner_table = $this->sale_lib->get_dinner_table();
@@ -1534,12 +1534,12 @@ class Sales extends Secure_Controller
     /**
      * List suspended sales
      */
-    public function getSuspended(): void
+    public function getSuspended(): ResponseInterface|string
     {
         $data = [];
         $customer_id = $this->sale_lib->get_customer();
         $data['suspended_sales'] = $this->sale->get_all_suspended($customer_id);
-        echo view('sales/suspended', $data);
+        return view('sales/suspended', $data);
     }
 
     /**
@@ -1549,7 +1549,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postUnsuspend(): void
+    public function postUnsuspend(): ResponseInterface|string
     {
         $sale_id = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
         $this->sale_lib->clear_all();
@@ -1570,9 +1570,9 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getSalesKeyboardHelp(): void
+    public function getSalesKeyboardHelp(): ResponseInterface|string
     {
-        echo view('sales/help');
+        return view('sales/help');
     }
 
     /**
@@ -1581,7 +1581,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postCheckInvoiceNumber(): void
+    public function postCheckInvoiceNumber(): ResponseInterface|string
     {
         $sale_id = $this->request->getPost('sale_id', FILTER_SANITIZE_NUMBER_INT);
         $invoice_number = $this->request->getPost('invoice_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -1616,7 +1616,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postChangeItemNumber(): void
+    public function postChangeItemNumber(): ResponseInterface|string
     {
         $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
         $item_number = $this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -1635,7 +1635,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postChangeItemName(): void
+    public function postChangeItemName(): ResponseInterface|string
     {
         $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
         $name = $this->request->getPost('item_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -1658,7 +1658,7 @@ class Sales extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postChangeItemDescription(): void
+    public function postChangeItemDescription(): ResponseInterface|string
     {
         $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
         $description = $this->request->getPost('item_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

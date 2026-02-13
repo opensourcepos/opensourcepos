@@ -7,6 +7,7 @@ use App\Libraries\Barcode_lib;
 use App\Models\Item;
 use App\Models\Item_kit;
 use App\Models\Item_kit_items;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 class Item_kits extends Secure_Controller
@@ -61,17 +62,17 @@ class Item_kits extends Secure_Controller
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $data['table_headers'] = get_item_kits_manage_table_headers();
 
-        echo view('item_kits/manage', $data);
+        return view('item_kits/manage', $data);
     }
 
     /**
      * Returns Item_kit table data rows. This will be called with AJAX.
      */
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search') ?? '';
         $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -89,37 +90,37 @@ class Item_kits extends Secure_Controller
             $data_rows[] = get_item_kit_data_row($item_kit);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
      * @return void
      */
-    public function suggest_search(): void
+    public function suggest_search(): ResponseInterface|string
     {
         $search = $this->request->getPost('term');
         $suggestions = $this->item_kit->get_search_suggestions($search);
 
-        echo json_encode($suggestions);
+        return $this->response->setJSON($suggestions);
     }
 
     /**
      * @param int $row_id
      * @return void
      */
-    public function getRow(int $row_id): void
+    public function getRow(int $row_id): ResponseInterface|string
     {
         // Calculate the total cost and retail price of the Kit, so it can be added to the table refresh
         $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($row_id));
 
-        echo json_encode(get_item_kit_data_row($item_kit));
+        return $this->response->setJSON(get_item_kit_data_row($item_kit));
     }
 
     /**
      * @param int $item_kit_id
      * @return void
      */
-    public function getView(int $item_kit_id = NEW_ENTRY): void
+    public function getView(int $item_kit_id = NEW_ENTRY): ResponseInterface|string
     {
         $info = $this->item_kit->get_info($item_kit_id);
 
@@ -153,14 +154,14 @@ class Item_kits extends Secure_Controller
         $data['selected_kit_item_id'] = $info->kit_item_id;
         $data['selected_kit_item'] = ($item_kit_id > 0 && isset($info->kit_item_id)) ? $info->item_name : '';
 
-        echo view("item_kits/form", $data);
+        return view("item_kits/form", $data);
     }
 
     /**
      * @param int $item_kit_id
      * @return void
      */
-    public function postSave(int $item_kit_id = NEW_ENTRY): void
+    public function postSave(int $item_kit_id = NEW_ENTRY): ResponseInterface|string
     {
         $item_kit_data = [
             'name'              => $this->request->getPost('name'),
@@ -201,20 +202,20 @@ class Item_kits extends Secure_Controller
             }
 
             if ($new_item) {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => $success,
                     'message' => lang('Item_kits.successful_adding') . ' ' . $item_kit_data['name'],
                     'id'      => $item_kit_id
                 ]);
             } else {
-                echo json_encode([
+                $this->response->setJSON([
                     'success' => $success,
                     'message' => lang('Item_kits.successful_updating') . ' ' . $item_kit_data['name'],
                     'id'      => $item_kit_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
                 'id'      => NEW_ENTRY
@@ -225,17 +226,17 @@ class Item_kits extends Secure_Controller
     /**
      * @return void
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface|string
     {
         $item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->item_kit->delete_list($item_kits_to_delete)) {
-            echo json_encode([
+            $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Item_kits.successful_deleted') . ' ' . count($item_kits_to_delete) . ' ' . lang('Item_kits.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Item_kits.cannot_be_deleted')]);
+            $this->response->setJSON(['success' => false, 'message' => lang('Item_kits.cannot_be_deleted')]);
         }
     }
 
@@ -245,7 +246,7 @@ class Item_kits extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postCheckItemNumber(): void
+    public function postCheckItemNumber(): ResponseInterface|string
     {
         $exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('item_kit_id', FILTER_SANITIZE_NUMBER_INT));
         echo !$exists ? 'true' : 'false';
@@ -258,7 +259,7 @@ class Item_kits extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getGenerateBarcodes(string $item_kit_ids): void
+    public function getGenerateBarcodes(string $item_kit_ids): ResponseInterface|string
     {
         $barcode_lib = new Barcode_lib();
         $result = [];
@@ -289,6 +290,6 @@ class Item_kits extends Secure_Controller
         $data['barcode_config'] = $barcode_config;
 
         // Display barcodes
-        echo view("barcodes/barcode_sheet", $data);
+        return view("barcodes/barcode_sheet", $data);
     }
 }

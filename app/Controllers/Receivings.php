@@ -11,6 +11,7 @@ use App\Models\Item_kit;
 use App\Models\Receiving;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
 use ReflectionException;
@@ -48,7 +49,7 @@ class Receivings extends Secure_Controller
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
         $this->_reload();
     }
@@ -59,13 +60,13 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getItemSearch(): void
+    public function getItemSearch(): ResponseInterface|string
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -74,13 +75,13 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getStockItemSearch(): void
+    public function getStockItemSearch(): ResponseInterface|string
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->item->get_stock_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-        echo json_encode($suggestions);
+        $this->response->setJSON($suggestions);
     }
 
     /**
@@ -89,14 +90,14 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSelectSupplier(): void
+    public function postSelectSupplier(): ResponseInterface|string
     {
         $supplier_id = $this->request->getPost('supplier', FILTER_SANITIZE_NUMBER_INT);
         if ($this->supplier->exists($supplier_id)) {
             $this->receiving_lib->set_supplier($supplier_id);
         }
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
@@ -105,7 +106,7 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postChangeMode(): void
+    public function postChangeMode(): ResponseInterface|string
     {
         $stock_destination = $this->request->getPost('stock_destination', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $stock_source = $this->request->getPost('stock_source', FILTER_SANITIZE_NUMBER_INT);
@@ -121,7 +122,7 @@ class Receivings extends Secure_Controller
             $this->receiving_lib->set_stock_destination($stock_destination);
         }
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
@@ -163,7 +164,7 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postAdd(): void
+    public function postAdd(): ResponseInterface|string
     {
         $data = [];
 
@@ -183,7 +184,7 @@ class Receivings extends Secure_Controller
             $data['error'] = lang('Receivings.unable_to_add_item');
         }
 
-        $this->_reload($data);    // TODO: Hungarian notation
+        return $this->_reload($data);    // TODO: Hungarian notation
     }
 
     /**
@@ -193,7 +194,7 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postEditItem($item_id): void
+    public function postEditItem($item_id): ResponseInterface|string
     {
         $data = [];
 
@@ -222,7 +223,7 @@ class Receivings extends Secure_Controller
             $data['error'] = lang('Receivings.error_editing_item');
         }
 
-        $this->_reload($data);    // TODO: Hungarian notation
+        return $this->_reload($data);    // TODO: Hungarian notation
     }
 
     /**
@@ -232,7 +233,7 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getEdit($receiving_id): void
+    public function getEdit($receiving_id): ResponseInterface|string
     {
         $data = [];
 
@@ -251,7 +252,7 @@ class Receivings extends Secure_Controller
         $data['selected_supplier_id'] = $receiving_info['supplier_id'];
         $data['receiving_info'] = $receiving_info;
 
-        echo view('receivings/form', $data);
+        return view('receivings/form', $data);
     }
 
     /**
@@ -261,29 +262,29 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getDeleteItem($item_number): void
+    public function getDeleteItem($item_number): ResponseInterface|string
     {
         $this->receiving_lib->delete_item($item_number);
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
      * @throws ReflectionException
      */
-    public function postDelete(int $receiving_id = -1, bool $update_inventory = true): void
+    public function postDelete(int $receiving_id = -1, bool $update_inventory = true): ResponseInterface|string
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$receiving_id];    // TODO: Replace -1 with constant
 
         if ($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory)) {    // TODO: Likely need to surround this block of code in a try-catch to catch the ReflectionException
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Receivings.successfully_deleted') . ' ' . count($receiving_ids) . ' ' . lang('Receivings.one_or_multiple'),
                 'ids'     => $receiving_ids
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
         }
     }
 
@@ -293,12 +294,12 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getRemoveSupplier(): void
+    public function getRemoveSupplier(): ResponseInterface|string
     {
         $this->receiving_lib->clear_reference();
         $this->receiving_lib->remove_supplier();
 
-        $this->_reload();    // TODO: Hungarian notation
+        return $this->_reload();    // TODO: Hungarian notation
     }
 
     /**
@@ -307,7 +308,7 @@ class Receivings extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postComplete(): void
+    public function postComplete(): ResponseInterface|string
     {
 
         $data = [];
@@ -356,9 +357,11 @@ class Receivings extends Secure_Controller
 
         $data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
-        echo view("receivings/receipt", $data);
+        $view = view("receivings/receipt", $data);
 
         $this->receiving_lib->clear_all();
+
+        return $view;
     }
 
     /**
@@ -367,7 +370,7 @@ class Receivings extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function postRequisitionComplete(): void
+    public function postRequisitionComplete(): ResponseInterface|string
     {
         if ($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) {
             foreach ($this->receiving_lib->get_cart() as $item) {
@@ -376,11 +379,11 @@ class Receivings extends Secure_Controller
                 $this->receiving_lib->add_item($item['item_id'], -$item['quantity'], $this->receiving_lib->get_stock_source(), $item['discount_type']);
             }
 
-            $this->postComplete();
+            return $this->postComplete();
         } else {
             $data['error'] = lang('Receivings.error_requisition');
 
-            $this->_reload($data);    // TODO: Hungarian notation
+            return $this->_reload($data);    // TODO: Hungarian notation
         }
     }
 
@@ -391,7 +394,7 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function getReceipt($receiving_id): void
+    public function getReceipt($receiving_id): ResponseInterface|string
     {
         $receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
         $this->receiving_lib->copy_entire_receiving($receiving_id);
@@ -424,16 +427,18 @@ class Receivings extends Secure_Controller
 
         $data['print_after_sale'] = false;
 
-        echo view("receivings/receipt", $data);
+        $view = view("receivings/receipt", $data);
 
         $this->receiving_lib->clear_all();
+
+        return $view;
     }
 
     /**
      * @param array $data
      * @return void
      */
-    private function _reload(array $data = []): void    // TODO: Hungarian notation
+    private function _reload(array $data = []): ResponseInterface|string    // TODO: Hungarian notation
     {
         $data['cart'] = $this->receiving_lib->get_cart();
         $data['modes'] = ['receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return')];
@@ -470,13 +475,13 @@ class Receivings extends Secure_Controller
 
         $data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
-        echo view("receivings/receiving", $data);
+        return view("receivings/receiving", $data);
     }
 
     /**
      * @throws ReflectionException
      */
-    public function postSave(int $receiving_id = -1): void    // TODO: Replace -1 with a constant
+    public function postSave(int $receiving_id = -1): ResponseInterface|string    // TODO: Replace -1 with a constant
     {
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: newdate does not follow naming conventions
 
@@ -493,13 +498,13 @@ class Receivings extends Secure_Controller
 
         $this->inventory->update('RECV ' . $receiving_id, ['trans_date' => $receiving_time]);
         if ($this->receiving->update($receiving_id, $receiving_data)) {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Receivings.successfully_updated'),
                 'id'      => $receiving_id
             ]);
         } else {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Receivings.unsuccessfully_updated'),
                 'id'      => $receiving_id
@@ -513,10 +518,10 @@ class Receivings extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postCancelReceiving(): void
+    public function postCancelReceiving(): ResponseInterface|string
     {
         $this->receiving_lib->clear_all();
 
-        $this->_reload();    // TODO: Hungarian Notation
+        return $this->_reload();    // TODO: Hungarian Notation
     }
 }

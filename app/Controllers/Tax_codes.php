@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Tax_code;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 /**
@@ -24,9 +25,9 @@ class Tax_codes extends Secure_Controller
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): ResponseInterface|string
     {
-        echo view('taxes/tax_codes', $this->get_data());
+        return view('taxes/tax_codes', $this->get_data());
     }
 
     /**
@@ -44,7 +45,7 @@ class Tax_codes extends Secure_Controller
      *
      * @return void
      */
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -61,29 +62,29 @@ class Tax_codes extends Secure_Controller
             $data_rows[] = get_tax_code_data_row($tax_code);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
      * @param int $row_id
      * @return void
      */
-    public function getRow(int $row_id): void
+    public function getRow(int $row_id): ResponseInterface|string
     {
         $data_row = get_tax_code_data_row($this->tax_code->get_info($row_id));
 
-        echo json_encode($data_row);
+        return $this->response->setJSON($data_row);
     }
 
     /**
      * @param int $tax_code_id
      * @return void
      */
-    public function getView(int $tax_code_id = NEW_ENTRY): void
+    public function getView(int $tax_code_id = NEW_ENTRY): ResponseInterface|string
     {
         $data['tax_code_info'] = $this->tax_code->get_info($tax_code_id);
 
-        echo view("taxes/tax_code_form", $data);
+        return view("taxes/tax_code_form", $data);
     }
 
 
@@ -91,7 +92,7 @@ class Tax_codes extends Secure_Controller
      * @param int $tax_code_id
      * @return void
      */
-    public function postSave(int $tax_code_id = NEW_ENTRY): void
+    public function postSave(int $tax_code_id = NEW_ENTRY): ResponseInterface|string
     {
         $tax_code_data = [
             'tax_code'      => $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -102,20 +103,20 @@ class Tax_codes extends Secure_Controller
 
         if ($this->tax_code->save($tax_code_data)) {
             if ($tax_code_id == NEW_ENTRY) {
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_adding'),
                     'id'      => $tax_code_data['tax_code_id']
                 ]);
             } else {
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_updating'),
                     'id'      => $tax_code_id
                 ]);
             }
         } else {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
                 'id'      => NEW_ENTRY
@@ -126,17 +127,17 @@ class Tax_codes extends Secure_Controller
     /**
      * @return void
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface|string
     {
         $tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
         if ($this->tax_code->delete_list($tax_codes_to_delete)) {
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Tax_codes.successful_deleted') . ' ' . count($tax_codes_to_delete) . ' ' . lang('Tax_codes.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Tax_codes.cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Tax_codes.cannot_be_deleted')]);
         }
     }
 }
