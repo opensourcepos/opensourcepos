@@ -1205,7 +1205,7 @@ class Items extends Secure_Controller
             $dataType = getAttributeDataType($attributeData['definition_type']);
             $storedValue = $this->attribute->getAttributeValueByAttributeId($attributeId, $dataType);
 
-            //Update attribute value if only the case has changed.
+            // Update attribute value if only the case has changed.
             if ($storedValue !== $value) {
                 $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
             }
@@ -1336,6 +1336,7 @@ class Items extends Secure_Controller
             }
 
             $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
+            $this->attribute->deleteOrphanedValues();
         }
     }
 }

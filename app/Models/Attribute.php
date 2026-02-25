@@ -486,7 +486,7 @@ class Attribute extends Model
         }
 
         $this->delete_orphaned_links($definition_id);
-        $this->delete_orphaned_values();
+        $this->deleteOrphanedValues();
         return $success;
     }
 
@@ -614,24 +614,24 @@ class Attribute extends Model
     }
 
     /**
-     * @param int $item_id
-     * @param int|bool $definition_id
+     * @param int $itemId
+     * @param int|bool $definitionId
      * @return bool
      */
-    public function deleteAttributeLinks(int $item_id, int|bool $definition_id = false): bool
+    public function deleteAttributeLinks(int $itemId, int|bool $definitionId = false): bool
     {
-        $delete_data = ['item_id' => $item_id];
+        $deleteData = ['item_id' => $itemId];
 
         // Exclude rows where sale_id or receiving_id has a value
         $builder = $this->db->table('attribute_links');
         $builder->where('sale_id', null);
         $builder->where('receiving_id', null);
 
-        if (!empty($definition_id)) {
-            $delete_data += ['definition_id' => $definition_id];
+        if (!empty($definitionId)) {
+            $deleteData += ['definition_id' => $definitionId];
         }
 
-        return $builder->delete($delete_data);
+        return $builder->delete($deleteData);
     }
 
     /**
@@ -834,6 +834,14 @@ class Attribute extends Model
         helper('attribute');
         $dataType = getAttributeDataType($definitionType);
 
+        if ($definitionType === DATE) {
+            $config = config(OSPOS::class)->settings;
+            $date = DateTime::createFromFormat($config['dateformat'], $attributeValue);
+            if ($date !== false) {
+                $attributeValue = $date->format('Y-m-d');
+            }
+        }
+
         $this->db->transStart();
 
         // New Attribute
@@ -847,13 +855,11 @@ class Attribute extends Model
 
                 $attributeId = $this->db->insertID();
             } else { // Existing attribute but with capitalization differences
-                helper('attribute');
-                $dataType = getAttributeDataType($definitionType);
                 $storedValue = $this->getAttributeValueByAttributeId($attributeId, $dataType);
 
                 // Update attribute value if only the case has changed.
                 if ($storedValue !== $attributeValue) {
-                    $attributeId = $this->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeId, $definitionType);
+                    $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
                 }
             }
 
@@ -861,10 +867,7 @@ class Attribute extends Model
         }
         // Existing Attribute
         else {
-            $builder = $this->db->table('attribute_values');
-            $builder->set([$dataType => $attributeValue]);
-            $builder->where('attribute_id', $attributeId);
-            $builder->update();
+            $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
         }
 
         $this->db->transComplete();
@@ -953,7 +956,7 @@ class Attribute extends Model
      *
      * @return boolean true is returned if the delete was successful or false if there were any failures
      */
-    public function delete_orphaned_values(): bool
+    public function deleteOrphanedValues(): bool
     {
         $subquery = $this->db->table('attribute_links')
             ->distinct()
@@ -1041,7 +1044,7 @@ class Attribute extends Model
      *
      * @param int $definitionId
      * @param int $attributeId
-     * @return \CodeIgniter\Database\BaseBuilder
+     * @return void
      */
     private function deleteAttributeLinksByDefinitionIdAndAttributeId(int $definitionId, int $attributeId): void
     {
@@ -1051,5 +1054,22 @@ class Attribute extends Model
         $builder->where('definition_id', $definitionId);
         $builder->where('attribute_id', $attributeId);
         $builder->delete();
+    }
+
+    /**
+     * Updates the attribute_value, attribute_date, or attribute_decimal column in the attribute_values table based on
+     * the provided data type for a specific attribute ID.
+     *
+     * @param int $attributeId
+     * @param string $dataType
+     * @param mixed $attributeValue
+     * @return void
+     */
+    private function updateAttributeValue(int $attributeId, string $dataType, mixed $attributeValue): void
+    {
+        $builder = $this->db->table('attribute_values');
+        $builder->set([$dataType => $attributeValue]);
+        $builder->where('attribute_id', $attributeId);
+        $builder->update();
     }
 }
