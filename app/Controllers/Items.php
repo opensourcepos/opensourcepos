@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Item_lib;
-
 use App\Models\Attribute;
 use App\Models\Inventory;
 use App\Models\Item;
@@ -14,7 +13,6 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
-
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
 use Config\OSPOS;
@@ -494,7 +492,7 @@ class Items extends Secure_Controller
         $data['definition_names'] = $this->attribute->get_definition_names();
 
         foreach ($data['definition_values'] as $definition_id => $definition_value) {
-            $attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
+            $attribute_value = $this->attribute->getAttributeValue($item_id, $definition_id);
             $attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
             $values = &$data['definition_values'][$definition_id];
             $values['attribute_id'] = $attribute_id;
@@ -530,7 +528,7 @@ class Items extends Secure_Controller
         $data['definition_names'] = $this->attribute->get_definition_names();
 
         foreach ($data['definition_values'] as $definition_id => $definition_value) {
-            $attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
+            $attribute_value = $this->attribute->getAttributeValue($item_id, $definition_id);
             $attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
             $values = &$data['definition_values'][$definition_id];
             $values['attribute_id'] = $attribute_id;
@@ -1018,7 +1016,7 @@ class Items extends Secure_Controller
                         if (!$is_failed_row && $this->item->save_value($item_data, $item_id)) {
                             $this->save_tax_data($row, $item_data);
                             $this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
-                            $is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);    // TODO: $is_failed_row never gets used after this.
+                            $is_failed_row = $this->saveAttributeData($row, $item_data, $attribute_data);    // TODO: $is_failed_row never gets used after this.
 
                             if ($is_update) {
                                 $item_data = array_merge($item_data, get_object_vars($this->item->get_info_by_id_or_number($item_id)));
@@ -1150,28 +1148,31 @@ class Items extends Secure_Controller
     }
 
     /**
-     * Saves attribute data found in the CSV import.
+     * Saves attribute data found in one row of a CSV import file. Loops through all attribute definitions and checks
+     * if there is data for that attribute in the row. If there is, it saves the attribute value and link to the item.
      *
-     * @param array $row
-     * @param array $item_data
-     * @param array $definitions
-     * @return bool
+     * @param array $row Contains all parsed data from one row of the CSV import file
+     * @param array $itemData Contains data for the item being imported/updated from the CSV file.
+     * @param array $definitions Contains all attribute definitions in the system.
+     * @return bool Returns false if all attribute data saves correctly and true if there is an error saving any of
+     * the attribute data.
      */
-    private function save_attribute_data(array $row, array $item_data, array $definitions): bool
+    private function saveAttributeData(array $row, array $itemData, array $definitions): bool
     {
+        helper('attribute');
         foreach ($definitions as $definition) {
-            $attribute_name = $definition['definition_name'];
-            $attribute_value = $row["attribute_$attribute_name"];
+            $attributeName = $definition['definition_name'];
+            $attributeValue = $row["attribute_$attributeName"];
 
             // Create attribute value
-            if (!empty($attribute_value) || $attribute_value === '0') {
+            if (!empty($attributeValue) || $attributeValue === '0') {
                 if ($definition['definition_type'] === CHECKBOX) {
-                    $checkbox_is_unchecked = (strcasecmp($attribute_value, 'false') === 0 || $attribute_value === '0');
-                    $attribute_value = $checkbox_is_unchecked ? '0' : '1';
+                    $checkbox_is_unchecked = (strcasecmp($attributeValue, 'false') === 0 || $attributeValue === '0');
+                    $attributeValue = $checkbox_is_unchecked ? '0' : '1';
 
-                    $attribute_id = $this->store_attribute_value($attribute_value, $definition, $item_data['item_id']);
-                } elseif (!empty($attribute_value)) {
-                    $attribute_id = $this->store_attribute_value($attribute_value, $definition, $item_data['item_id']);
+                    $attribute_id = $this->storeAttributeValue($attributeValue, $definition, $itemData['item_id']);
+                } elseif (!empty($attributeValue)) {
+                    $attribute_id = $this->storeAttributeValue($attributeValue, $definition, $itemData['item_id']);
                 } else {
                     return true;
                 }
@@ -1186,17 +1187,32 @@ class Items extends Secure_Controller
 
     /**
      * Saves the attribute_value and attribute_link if necessary
+     * @param string $value
+     * @param array $attributeData
+     * @param int $itemId
+     * @return bool|int
      */
-    private function store_attribute_value(string $value, array $attribute_data, int $item_id)
+    private function storeAttributeValue(string $value, array $attributeData, int $itemId): bool|int
     {
-        $attribute_id = $this->attribute->attributeValueExists($value, $attribute_data['definition_type']);
+        $attribute_id = $this->attribute->attributeValueExists($value, $attributeData['definition_type']);
 
-        $this->attribute->deleteAttributeLinks($item_id, $attribute_data['definition_id']);
+        $this->attribute->deleteAttributeLinks($itemId, $attributeData['definition_id']);
 
         if (!$attribute_id) {
-            $attribute_id = $this->attribute->saveAttributeValue($value, $attribute_data['definition_id'], $item_id, false, $attribute_data['definition_type']);
-        } elseif (!$this->attribute->saveAttributeLink($item_id, $attribute_data['definition_id'], $attribute_id)) {
-            return false;
+            $attribute_id = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
+        } else {
+            helper('attribute');
+            $dataType = getAttributeDataType($attributeData['definition_type'], $value);
+            $storedValue = $this->attribute->getAttributeValueByAttributeId($attribute_id, $dataType);
+
+            //Update attribute value if only the case has changed.
+            if ($storedValue !== $value) {
+                $attribute_id = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attribute_id, $attributeData['definition_type']);
+            }
+
+            if (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attribute_id)) {
+                return false;
+            }
         }
 
         return $attribute_id;
@@ -1313,7 +1329,7 @@ class Items extends Secure_Controller
                     break;
                 case DECIMAL:
                     $attributeValue = parse_decimals($attributeValue);
-                // Fall through to save the attribute value
+                    // no break
                 default:
                     $attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);
                     break;

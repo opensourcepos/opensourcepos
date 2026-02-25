@@ -691,7 +691,7 @@ class Attribute extends Model
      * @param int $definition_id
      * @return object|null
      */
-    public function get_attribute_value(int $item_id, int $definition_id): ?object
+    public function getAttributeValue(int $item_id, int $definition_id): ?object
     {
         $builder = $this->db->table('attribute_values');
         $builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -706,6 +706,28 @@ class Attribute extends Model
         }
 
         return $this->getEmptyObject('attribute_values');
+    }
+
+    /**
+     * Gets a single attribute value by attribute ID.
+     *
+     * @param int $attributeId The attribute ID to look up
+     * @param string $dataType The column name to retrieve (attribute_value, attribute_date, or attribute_decimal)
+     * @return string|float|null The attribute value. Note: MySQL returns values as follows:
+     *                           - attribute_value (TEXT): string
+     *                           - attribute_date (DATE): string in 'Y-m-d' format
+     *                           - attribute_decimal (DECIMAL): string or float depending on CodeIgniter configuration
+     *                           Returns null if the attribute_id is not found.
+     */
+    public function getAttributeValueByAttributeId(int $attributeId, string $dataType): string|float|null
+    {
+        $builder = $this->db->table('attribute_values');
+        $builder->select($dataType);
+        $builder->where('attribute_id', $attributeId);
+        $builder->limit(1);
+        $row = $builder->get()->getRow();
+
+        return $row ? $row->$dataType : null;
     }
 
     /**
