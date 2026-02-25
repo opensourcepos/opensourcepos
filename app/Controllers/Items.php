@@ -1194,28 +1194,28 @@ class Items extends Secure_Controller
      */
     private function storeAttributeValue(string $value, array $attributeData, int $itemId): bool|int
     {
-        $attribute_id = $this->attribute->attributeValueExists($value, $attributeData['definition_type']);
+        $attributeId = $this->attribute->attributeValueExists($value, $attributeData['definition_type']);
 
         $this->attribute->deleteAttributeLinks($itemId, $attributeData['definition_id']);
 
-        if (!$attribute_id) {
-            $attribute_id = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
+        if (!$attributeId) {
+            $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
         } else {
             helper('attribute');
-            $dataType = getAttributeDataType($attributeData['definition_type'], $value);
-            $storedValue = $this->attribute->getAttributeValueByAttributeId($attribute_id, $dataType);
+            $dataType = getAttributeDataType($attributeData['definition_type']);
+            $storedValue = $this->attribute->getAttributeValueByAttributeId($attributeId, $dataType);
 
             //Update attribute value if only the case has changed.
             if ($storedValue !== $value) {
-                $attribute_id = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attribute_id, $attributeData['definition_type']);
+                $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
             }
 
-            if (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attribute_id)) {
+            if (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
                 return false;
             }
         }
 
-        return $attribute_id;
+        return $attributeId;
     }
 
     /**

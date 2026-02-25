@@ -119,7 +119,7 @@ class Attributes extends Secure_Controller
 
         $definition_name = $definition_data['definition_name'];
 
-        if ($this->attribute->save_definition($definition_data, $definition_id)) {
+        if ($this->attribute->saveDefinition($definition_data, $definition_id)) {
             // New definition
             if ($definition_id == NO_DEFINITION_ID) {
                 $definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
