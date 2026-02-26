@@ -9,6 +9,11 @@
  */
 
 use App\Models\Employee;
+
+$employee = model(Employee::class);
+$logged_in_employee = $employee->get_logged_in_employee_info();
+$has_stock_permission = $employee->has_grant('items_stock', $logged_in_employee->person_id);
+$has_view_permission = $employee->has_grant('items_view', $logged_in_employee->person_id);
 ?>
 
 <?= view('partial/header') ?>
@@ -76,6 +81,7 @@ use App\Models\Employee;
 </script>
 
 <div id="title_bar" class="btn-toolbar print_hide">
+    <?php if ($has_stock_permission): ?>
     <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang('Items.import_items_csv') ?>">
         <span class="glyphicon glyphicon-import">&nbsp;</span><?= lang('Common.import_csv') ?>
     </button>
@@ -83,16 +89,19 @@ use App\Models\Employee;
     <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
         <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new') ?>
     </button>
+    <?php endif; ?>
 </div>
 
 <div id="toolbar">
     <div class="pull-left form-inline" role="toolbar">
+        <?php if ($has_stock_permission): ?>
         <button id="delete" class="btn btn-default btn-sm print_hide">
             <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
         </button>
         <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/bulkEdit" ?>" title="<?= lang('Items.edit_multiple_items') ?>">
             <span class="glyphicon glyphicon-edit">&nbsp;</span><?= lang('Items.bulk_edit') ?>
         </button>
+        <?php endif; ?>
         <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href="<?= "$controller_name/generateBarcodes" ?>" title="<?= lang('Items.generate_barcodes') ?>">
             <span class="glyphicon glyphicon-barcode">&nbsp;</span><?= lang('Items.generate_barcodes') ?>
         </button>

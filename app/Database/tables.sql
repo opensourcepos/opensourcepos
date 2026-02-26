@@ -395,6 +395,7 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VALUES
     ('items_stock', 'items', 1),
+    ('items_view', 'items', 1),
     ('sales_stock', 'sales', 1),
     ('receivings_stock', 'receivings', 1);
 

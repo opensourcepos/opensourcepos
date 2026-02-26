@@ -187,6 +187,7 @@ class Stock_location extends Model
             $location_id = $this->db->insertID();
 
             $this->_insert_new_permission('items', $location_id, $location_name);    // TODO: need to refactor out the hungarian notation.
+            $this->_insert_new_subpermission('items_view', $location_id, $location_name);
             $this->_insert_new_permission('sales', $location_id, $location_name);
             $this->_insert_new_permission('receivings', $location_id, $location_name);
 
@@ -216,6 +217,7 @@ class Stock_location extends Model
             $builder->delete(['location_id' => $location_id]);
 
             $this->_insert_new_permission('items', $location_id, $location_name);
+            $this->_insert_new_subpermission('items_view', $location_id, $location_name);
             $this->_insert_new_permission('sales', $location_id, $location_name);
             $this->_insert_new_permission('receivings', $location_id, $location_name);
         }
@@ -254,6 +256,40 @@ class Stock_location extends Model
             $menu_group = $this->employee->get_menu_group($module, $employee['person_id']);
 
             $grants_data = ['permission_id' => $permission_id, 'person_id' => $employee['person_id'], 'menu_group' => $menu_group];
+
+            $builder->insert($grants_data);
+        }
+    }
+
+    /**
+     * Insert items_view sub-permission for a location
+     * @param string $permission_id
+     * @param int $location_id
+     * @param string $location_name
+     * @return void
+     */
+    private function _insert_new_subpermission(string $permission_id, int $location_id, string $location_name): void
+    {
+        // Insert items_view sub-permission for stock location
+        $subpermission_id = $permission_id . '_' . str_replace(' ', '_', $location_name);
+        $subpermission_data = ['permission_id' => $subpermission_id, 'module_id' => 'items', 'location_id' => $location_id];
+
+        $builder = $this->db->table('permissions');
+        $builder->insert($subpermission_data);
+
+        // Insert grants for items_view permission for all employees
+        $employee = model(Employee::class);
+        $employees = $employee->get_all();
+
+        $builder = $this->db->table('grants');
+
+        foreach ($employees->getResultArray() as $emp) {
+            $this->employee = model(Employee::class);
+
+            // Retrieve the menu_group assigned to the grant for items_view
+            $menu_group = $this->employee->get_menu_group('items', $emp['person_id']);
+
+            $grants_data = ['permission_id' => $subpermission_id, 'person_id' => $emp['person_id'], 'menu_group' => $menu_group];
 
             $builder->insert($grants_data);
         }
