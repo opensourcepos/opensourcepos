@@ -527,7 +527,7 @@ class Attribute extends Model
                 $builder = $this->db->table('attribute_definitions');
                 $success = $builder->insert($definitionData);
 
-                $definitionData['definition_id'] = $definitionId !== -1 ? $this->db->insertID() : $definitionId;
+                $definitionData['definition_id'] = $definitionId !== CATEGORY_DEFINITION_ID ? $this->db->insertID() : $definitionId;
             }
         }
 
@@ -722,7 +722,7 @@ class Attribute extends Model
     public function getAttributeValueByAttributeId(int $attributeId, string $dataType): string|float|null
     {
         helper('attribute');
-        validateAttributeValueType($dataType);
+        validate_attribute_value_type($dataType);
 
         $builder = $this->db->table('attribute_values');
         $builder->select($dataType);
@@ -836,7 +836,7 @@ class Attribute extends Model
     public function saveAttributeValue(string $attributeValue, int $definitionId, int|bool $itemId = false, int|bool $attributeId = false, string $definitionType = DROPDOWN): int
     {
         helper('attribute');
-        $dataType = getAttributeDataType($definitionType);
+        $dataType = get_attribute_data_type($definitionType);
 
         if ($definitionType === DATE) {
             $config = config(OSPOS::class)->settings;
@@ -1072,7 +1072,7 @@ class Attribute extends Model
     private function updateAttributeValue(int $attributeId, string $dataType, mixed $attributeValue): void
     {
         helper('attribute');
-        validateAttributeValueType($dataType);
+        validate_attribute_value_type($dataType);
 
         // Update the attribute_values table
         $builder = $this->db->table('attribute_values');
@@ -1080,11 +1080,11 @@ class Attribute extends Model
         $builder->where('attribute_id', $attributeId);
         $builder->update();
 
-        // Check if this attribute_id is linked to definition_id = -1 (category dropdown) using COUNT
+        // Check if this attribute_id is linked to definition_id = CATEGORY_DEFINITION_ID (category dropdown) using COUNT
         $linkBuilder = $this->db->table('attribute_links');
         $linkBuilder->selectCount('attribute_id', 'cnt');
         $linkBuilder->where('attribute_id', $attributeId);
-        $linkBuilder->where('definition_id', -1);
+        $linkBuilder->where('definition_id', CATEGORY_DEFINITION_ID);
         $countRow = $linkBuilder->get()->getRow();
         $isCategoryDropdownAttribute = $countRow && $countRow->cnt > 0;
 

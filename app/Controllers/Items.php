@@ -1202,7 +1202,7 @@ class Items extends Secure_Controller
             $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
         } else {
             helper('attribute');
-            $dataType = getAttributeDataType($attributeData['definition_type']);
+            $dataType = get_attribute_data_type($attributeData['definition_type']);
             $storedValue = $this->attribute->getAttributeValueByAttributeId($attributeId, $dataType);
 
             // Update attribute value if only the case has changed.

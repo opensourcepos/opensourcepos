@@ -9,7 +9,7 @@
  * @param string $input The attribute type constant (DATE, DECIMAL, etc.)
  * @return string The database column name for storing this attribute type
  */
-function getAttributeDataType(string $input): string
+function get_attribute_data_type(string $input): string
 {
     $columnMap = [
         DATE => 'attribute_date',
@@ -25,7 +25,7 @@ function getAttributeDataType(string $input): string
  * @param string $dataType
  * @return void
  */
-function validateAttributeValueType(string $dataType): void
+function validate_attribute_value_type(string $dataType): void
 {
     if (!in_array($dataType, ATTRIBUTE_VALUE_TYPES, true)) {
         throw new InvalidArgumentException('Invalid data type');
