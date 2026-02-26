@@ -9,7 +9,6 @@ use CodeIgniter\Model;
 use CodeIgniter\Database\RawSql;
 use Config\OSPOS;
 use DateTime;
-use InvalidArgumentException;
 use stdClass;
 use ReflectionClass;
 
@@ -854,7 +853,11 @@ class Attribute extends Model
             $attributeId = $existingAttributeId;
             $storedValue = $this->getAttributeValueByAttributeId($attributeId, $dataType);
 
-            if (strcasecmp($storedValue, $attributeValue) === 0 && $storedValue !== $attributeValue) {
+            if ($dataType === 'attribute_value'
+                && is_string($storedValue)
+                && strcasecmp($storedValue, $attributeValue) === 0
+                && $storedValue !== $attributeValue
+            ) {
                 $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
             }
         } else {
@@ -865,8 +868,7 @@ class Attribute extends Model
             $attributeId = $this->db->insertID();
         }
 
-        // Save link if itemId and definitionId are provided
-        if (!empty($itemId) && !empty($definitionId)) {
+        if (!empty($definitionId)) {
             $this->saveAttributeLink($itemId, $definitionId, $attributeId);
         }
 
