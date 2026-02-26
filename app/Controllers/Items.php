@@ -917,7 +917,7 @@ class Items extends Secure_Controller
      */
     public function getGenerateCsvFile(): DownloadResponse
     {
-        helper('importfile_helper');
+        helper('importfile');
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
         $allowed_attributes = $this->attribute->get_definition_names();
@@ -942,7 +942,7 @@ class Items extends Secure_Controller
      */
     public function postImportCsvFile(): void
     {
-        helper('importfile_helper');
+        helper('importfile');
         try {
             if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK) {
                 echo json_encode(['success' => false, 'message' => lang('Items.csv_import_failed')]);
@@ -1208,9 +1208,7 @@ class Items extends Secure_Controller
             // Update attribute value if only the case has changed.
             if (strcasecmp($storedValue, $value) === 0 && $storedValue !== $value) {
                 $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
-            }
-
-            if (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
+            } elseif (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
                 return false;
             }
         }

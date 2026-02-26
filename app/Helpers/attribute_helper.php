@@ -18,3 +18,16 @@ function getAttributeDataType(string $input): string
 
     return $columnMap[$input] ?? 'attribute_value';
 }
+
+/**
+ * Validates that the provided data type is an allowed attribute value type.
+ *
+ * @param string $dataType
+ * @return void
+ */
+function validateAttributeValueType(string $dataType): void
+{
+    if (!in_array($dataType, ATTRIBUTE_VALUE_TYPES, true)) {
+        throw new InvalidArgumentException('Invalid data type');
+    }
+}

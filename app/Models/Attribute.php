@@ -9,6 +9,7 @@ use CodeIgniter\Model;
 use CodeIgniter\Database\RawSql;
 use Config\OSPOS;
 use DateTime;
+use InvalidArgumentException;
 use stdClass;
 use ReflectionClass;
 
@@ -720,6 +721,7 @@ class Attribute extends Model
      */
     public function getAttributeValueByAttributeId(int $attributeId, string $dataType): string|float|null
     {
+        helper('attribute');
         validateAttributeValueType($dataType);
 
         $builder = $this->db->table('attribute_values');
@@ -1069,6 +1071,7 @@ class Attribute extends Model
      */
     private function updateAttributeValue(int $attributeId, string $dataType, mixed $attributeValue): void
     {
+        helper('attribute');
         validateAttributeValueType($dataType);
 
         // Update the attribute_values table
