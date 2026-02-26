@@ -109,3 +109,15 @@ function remove_backup(): void
     log_message('info', "File $backup_path has been removed");
 }
 
+/**
+ * @param string $dataType
+ * @return void
+ */
+function validateAttributeValueType(string $dataType): void
+{
+    if (!in_array($dataType, ATTRIBUTE_VALUE_TYPES, true)) {
+        throw new InvalidArgumentException('Invalid data type');
+    }
+}
+
+

@@ -9,6 +9,7 @@ use CodeIgniter\Model;
 use CodeIgniter\Database\RawSql;
 use Config\OSPOS;
 use DateTime;
+use InvalidArgumentException;
 use stdClass;
 use ReflectionClass;
 
@@ -720,6 +721,8 @@ class Attribute extends Model
      */
     public function getAttributeValueByAttributeId(int $attributeId, string $dataType): string|float|null
     {
+        validateAttributeValueType($dataType);
+
         $builder = $this->db->table('attribute_values');
         $builder->select($dataType);
         $builder->where('attribute_id', $attributeId);
@@ -1064,6 +1067,8 @@ class Attribute extends Model
      */
     private function updateAttributeValue(int $attributeId, string $dataType, mixed $attributeValue): void
     {
+        validateAttributeValueType($dataType);
+
         // Update the attribute_values table
         $builder = $this->db->table('attribute_values');
         $builder->set([$dataType => $attributeValue]);
@@ -1082,7 +1087,7 @@ class Attribute extends Model
         if ($isCategoryDropdownAttribute) {
             $itemsBuilder = $this->db->table('items');
             $itemsBuilder->set(['category' => $attributeValue]);
-            $itemsBuilder->where('LOWER(category)', strtolower($attributeValue));
+            $itemsBuilder->where('category', $attributeValue);
             $itemsBuilder->update();
         }
     }
