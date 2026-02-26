@@ -844,30 +844,27 @@ class Attribute extends Model
 
         $this->db->transStart();
 
-        // New Attribute
-        if (empty($attributeId) || empty($itemId) || $attributeId == -1) {
-            $attributeId = $this->attributeValueExists($attributeValue, $definitionType);
+        $existingAttributeId = $this->attributeValueExists($attributeValue, $definitionType);
 
-            if (!$attributeId) { // New attribute
-                $builder = $this->db->table('attribute_values');
-                $builder->set([$dataType => $attributeValue]);
-                $builder->insert();
+        // Update
+        if ($existingAttributeId) {
+            $attributeId = $existingAttributeId;
+            $storedValue = $this->getAttributeValueByAttributeId($attributeId, $dataType);
 
-                $attributeId = $this->db->insertID();
-            } else { // Existing attribute but with capitalization differences
-                $storedValue = $this->getAttributeValueByAttributeId($attributeId, $dataType);
-
-                // Update attribute value if only the case has changed.
-                if ($storedValue !== $attributeValue) {
-                    $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
-                }
+            if (strcasecmp($storedValue, $attributeValue) === 0 && $storedValue !== $attributeValue) {
+                $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
             }
-
-            $this->saveAttributeLink($itemId, $definitionId, $attributeId);
+        } else {
+            // Insert
+            $builder = $this->db->table('attribute_values');
+            $builder->set([$dataType => $attributeValue]);
+            $builder->insert();
+            $attributeId = $this->db->insertID();
         }
-        // Existing Attribute
-        else {
-            $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
+
+        // Save link if itemId and definitionId are provided
+        if (!empty($itemId) && !empty($definitionId)) {
+            $this->saveAttributeLink($itemId, $definitionId, $attributeId);
         }
 
         $this->db->transComplete();
@@ -1067,9 +1064,26 @@ class Attribute extends Model
      */
     private function updateAttributeValue(int $attributeId, string $dataType, mixed $attributeValue): void
     {
+        // Update the attribute_values table
         $builder = $this->db->table('attribute_values');
         $builder->set([$dataType => $attributeValue]);
         $builder->where('attribute_id', $attributeId);
         $builder->update();
+
+        // Check if this attribute_id is linked to definition_id = -1 (category dropdown) using COUNT
+        $linkBuilder = $this->db->table('attribute_links');
+        $linkBuilder->selectCount('attribute_id', 'cnt');
+        $linkBuilder->where('attribute_id', $attributeId);
+        $linkBuilder->where('definition_id', -1);
+        $countRow = $linkBuilder->get()->getRow();
+        $isCategoryDropdownAttribute = $countRow && $countRow->cnt > 0;
+
+        // Update the items.category column to match new capitalization.
+        if ($isCategoryDropdownAttribute) {
+            $itemsBuilder = $this->db->table('items');
+            $itemsBuilder->set(['category' => $attributeValue]);
+            $itemsBuilder->where('LOWER(category)', strtolower($attributeValue));
+            $itemsBuilder->update();
+        }
     }
 }
