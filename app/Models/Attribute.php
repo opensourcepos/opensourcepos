@@ -527,7 +527,7 @@ class Attribute extends Model
                 $builder = $this->db->table('attribute_definitions');
                 $success = $builder->insert($definitionData);
 
-                $definitionData['definition_id'] = $definitionId !== -1 ? $this->db->insertID() : $definitionId;
+                $definitionData['definition_id'] = $definitionId !== CATEGORY_DEFINITION_ID ? $this->db->insertID() : $definitionId;
             }
         }
 
@@ -1084,7 +1084,7 @@ class Attribute extends Model
         $linkBuilder = $this->db->table('attribute_links');
         $linkBuilder->selectCount('attribute_id', 'cnt');
         $linkBuilder->where('attribute_id', $attributeId);
-        $linkBuilder->where('definition_id', -1);
+        $linkBuilder->where('definition_id', CATEGORY_DEFINITION_ID);
         $countRow = $linkBuilder->get()->getRow();
         $isCategoryDropdownAttribute = $countRow && $countRow->cnt > 0;
 
