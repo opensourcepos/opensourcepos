@@ -950,31 +950,31 @@ class Items extends Secure_Controller
                     set_time_limit(240);
 
                     $failCodes = [];
-                    $csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
-                    $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-                    $allowed_stock_locations = $this->stock_location->get_allowed_locations();
-                    $attribute_definition_names    = $this->attribute->get_definition_names();
+                    $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
+                    $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+                    $allowedStockLocations = $this->stock_location->get_allowed_locations();
+                    $attributeDefinitionNames    = $this->attribute->get_definition_names();
 
-                    unset($attribute_definition_names[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
+                    unset($attributeDefinitionNames[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
 
-                    $attribute_data = [];
+                    $attributeData = [];
 
-                    foreach ($attribute_definition_names as $definition_name) {
-                        $attribute_data[$definition_name] = $this->attribute->get_definition_by_name($definition_name)[0];
+                    foreach ($attributeDefinitionNames as $definitionName) {
+                        $attributeData[$definitionName] = $this->attribute->get_definition_by_name($definitionName)[0];
 
-                        if ($attribute_data[$definition_name]['definition_type'] === DROPDOWN) {
-                            $attribute_data[$definition_name]['dropdown_values'] = $this->attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
+                        if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
+                            $attributeData[$definitionName]['dropdown_values'] = $this->attribute->get_definition_values($attributeData[$definitionName]['definition_id']);
                         }
                     }
                     $db = db_connect();
                     $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
 
-                    foreach ($csv_rows as $key => $row) {
-                        $is_failed_row = false;
-                        $item_id = (int)$row['Id'];
-                        $is_update = ($item_id > 0);
-                        $item_data = [
-                            'item_id'       => $item_id,
+                    foreach ($csvRows as $key => $row) {
+                        $isFailedRow = false;
+                        $itemId = (int)$row['Id'];
+                        $isUpdate = ($itemId > 0);
+                        $itemData = [
+                            'item_id'       => $itemId,
                             'name'          => $row['Item Name'],
                             'description'   => $row['Description'],
                             'category'      => $row['Category'],
@@ -987,49 +987,49 @@ class Items extends Secure_Controller
                         ];
 
                         if (!empty($row['supplier ID'])) {
-                            $item_data['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
+                            $itemData['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
                         }
 
-                        if ($is_update) {
-                            $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? null : $row['Allow Alt Description'];
-                            $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? null : $row['Item has Serial Number'];
+                        if ($isUpdate) {
+                            $itemData['allow_alt_description'] = empty($row['Allow Alt Description']) ? null : $row['Allow Alt Description'];
+                            $itemData['is_serialized'] = empty($row['Item has Serial Number']) ? null : $row['Item has Serial Number'];
                         } else {
-                            $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? '0' : '1';
-                            $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
+                            $itemData['allow_alt_description'] = empty($row['Allow Alt Description']) ? '0' : '1';
+                            $itemData['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
                         }
 
-                        if (!empty($row['Barcode']) && !$is_update) {
-                            $item_data['item_number'] = $row['Barcode'];
-                            $is_failed_row = $this->item->item_number_exists($item_data['item_number']);
+                        if (!empty($row['Barcode'])) {
+                            $itemData['item_number'] = $row['Barcode'];
+                            $isFailedRow = $this->item->item_number_exists($itemData['item_number']);
                         }
 
-                        if (!$is_failed_row) {
-                            $is_failed_row = $this->validateCSVData($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
+                        if (!$isFailedRow) {
+                            $isFailedRow = $this->validateCSVData($row, $itemData, $allowedStockLocations, $attributeDefinitionNames, $attributeData);
                         }
 
                         // Remove false, null, '' and empty strings but keep 0
-                        $item_data = array_filter($item_data, function ($value) {
+                        $itemData = array_filter($itemData, function ($value) {
                             return $value !== null && strlen($value);
                         });
 
-                        if (!$is_failed_row && $this->item->save_value($item_data, $item_id)) {
-                            $this->save_tax_data($row, $item_data);
-                            $this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
-                            $is_failed_row = $this->saveAttributeData($row, $item_data, $attribute_data);    // TODO: $is_failed_row never gets used after this.
+                        if (!$isFailedRow && $this->item->save_value($itemData, $itemId)) {
+                            $this->save_tax_data($row, $itemData);
+                            $this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId);
+                            $isFailedRow = $this->saveAttributeData($row, $itemData, $attributeData);    // TODO: $is_failed_row never gets used after this.
 
-                            if ($is_update) {
-                                $item_data = array_merge($item_data, get_object_vars($this->item->get_info_by_id_or_number($item_id)));
+                            if ($isUpdate) {
+                                $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
                             }
                         } else {
-                            $failed_row = $key + 2;
-                            $failCodes[] = $failed_row;
-                            log_message('error', "CSV Item import failed on line $failed_row. This item was not imported.");
+                            $failedRow = $key + 2;
+                            $failCodes[] = $failedRow;
+                            log_message('error', "CSV Item import failed on line $failedRow. This item was not imported.");
                         }
 
-                        unset($csv_rows[$key]);
+                        unset($csvRows[$key]);
                     }
 
-                    $csv_rows = null;
+                    $csvRows = null;
 
                     if (count($failCodes) > 0) {
                         $message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
@@ -1214,8 +1214,11 @@ class Items extends Secure_Controller
             $dataType = getAttributeDataType($attributeData['definition_type']);
             $storedValue = $this->attribute->getAttributeValueByAttributeId($attributeId, $dataType);
 
-            // Update attribute value if only the case has changed.
-            if (strcasecmp($storedValue, $value) === 0 && $storedValue !== $value) {
+            // Update attribute value if only the case has changed and only for text values.
+            if ($dataType === 'attribute_value'
+                && is_string($storedValue)
+                && strcasecmp($storedValue, $value) === 0
+                && $storedValue !== $value) {
                 $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
             } elseif (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
                 return false;
@@ -1333,6 +1336,7 @@ class Items extends Secure_Controller
             switch ($definitionType) {
                 case DROPDOWN:
                     $attributeId = $attributeValue;
+                    $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
                     break;
                 case DECIMAL:
                     $attributeValue = parse_decimals($attributeValue);
@@ -1341,8 +1345,6 @@ class Items extends Secure_Controller
                     $attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);
                     break;
             }
-
-            $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
         }
 
         $this->attribute->deleteOrphanedValues();
