@@ -937,7 +937,6 @@ class Items extends Secure_Controller
 
     /**
      * Imports items from CSV formatted file.
-     * @throws ReflectionException
      * @noinspection PhpUnused
      */
     public function postImportCsvFile(): void
@@ -1005,7 +1004,7 @@ class Items extends Secure_Controller
                         }
 
                         if (!$is_failed_row) {
-                            $is_failed_row = $this->data_error_check($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
+                            $is_failed_row = $this->validateCSVData($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
                         }
 
                         // Remove false, null, '' and empty strings but keep 0
@@ -1038,6 +1037,7 @@ class Items extends Secure_Controller
                         echo json_encode(['success' => false, 'message' => $message]);
                     } else {
                         $db->transCommit();
+                        $this->attribute->deleteOrphanedValues();
 
                         echo json_encode(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }
@@ -1056,56 +1056,56 @@ class Items extends Secure_Controller
      * Checks the entire line of data in an import file for errors
      *
      * @param array $row
-     * @param array $item_data
-     * @param array $allowed_locations
-     * @param array $definition_names
-     * @param array $attribute_data
+     * @param array $itemData
+     * @param array $allowedLocations
+     * @param array $definitionNames
+     * @param array $attributeData
      * @return    bool    Returns false if all data checks out and true when there is an error in the data
      */
-    private function data_error_check(array $row, array $item_data, array $allowed_locations, array $definition_names, array $attribute_data): bool    // TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed
+    private function validateCSVData(array $row, array $itemData, array $allowedLocations, array $definitionNames, array $attributeData): bool    // TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed
     {
-        $item_id = $row['Id'];
-        $is_update = (bool)$item_id;
+        $itemId = $row['Id'];
+        $isUpdate = (bool)$itemId;
 
         // Check for empty required fields
-        $check_for_empty = [
-            'name'       => $item_data['name'],
-            'category'   => $item_data['category'],
-            'unit_price' => $item_data['unit_price']
+        $valuesToCheckForEmpty = [
+            'name'       => $itemData['name'],
+            'category'   => $itemData['category'],
+            'unit_price' => $itemData['unit_price']
         ];
 
-        foreach ($check_for_empty as $key => $val) {
-            if (empty($val) && !$is_update) {
+        foreach ($valuesToCheckForEmpty as $key => $val) {
+            if (empty($val) && !$isUpdate) {
                 log_message('error', "Empty required value in $key.");
                 return true;
             }
         }
 
-        if (!$is_update) {
-            $item_data['cost_price'] = empty($item_data['cost_price']) ? 0 : $item_data['cost_price'];    // Allow for zero wholesale price
+        if (!$isUpdate) {
+            $itemData['cost_price'] = empty($itemData['cost_price']) ? 0 : $itemData['cost_price'];    // Allow for zero wholesale price
         } else {
-            if (!$this->item->exists($item_id)) {
-                log_message('error', "non-existent item_id: '$item_id' when either existing item_id or no item_id is required.");
+            if (!$this->item->exists($itemId)) {
+                log_message('error', "non-existent item_id: '$itemId' when either existing item_id or no item_id is required.");
                 return true;
             }
         }
 
         // Build array of fields to check for numerics
-        $check_for_numeric_values = [
-            'cost_price'    => $item_data['cost_price'],
-            'unit_price'    => $item_data['unit_price'],
-            'reorder_level' => $item_data['reorder_level'],
+        $valuesToCheckForNumeric = [
+            'cost_price'    => $itemData['cost_price'],
+            'unit_price'    => $itemData['unit_price'],
+            'reorder_level' => $itemData['reorder_level'],
             'supplier_id'   => $row['Supplier ID'],
             'Tax 1 Percent' => $row['Tax 1 Percent'],
             'Tax 2 Percent' => $row['Tax 2 Percent']
         ];
 
-        foreach ($allowed_locations as $location_name) {
-            $check_for_numeric_values[] = $row["location_$location_name"];
+        foreach ($allowedLocations as $location_name) {
+            $valuesToCheckForNumeric[] = $row["location_$location_name"];
         }
 
         // Check for non-numeric values which require numeric
-        foreach ($check_for_numeric_values as $key => $value) {
+        foreach ($valuesToCheckForNumeric as $key => $value) {
             if (!is_numeric($value) && !empty($value)) {
                 log_message('error', "non-numeric: '$value' for '$key' when numeric is required");
                 return true;
@@ -1113,30 +1113,34 @@ class Items extends Secure_Controller
         }
 
         // Check Attribute Data
-        foreach ($definition_names as $definition_name) {
-            if (!empty($row["attribute_$definition_name"])) {
-                $definition_type = $attribute_data[$definition_name]['definition_type'];
-                $attribute_value = $row["attribute_$definition_name"];
+        foreach ($definitionNames as $definitionName) {
+            if (!empty($row["attribute_$definitionName"])) {
+                $definitionType = $attributeData[$definitionName]['definition_type'];
+                $attributeValue = $row["attribute_$definitionName"];
 
-                switch ($definition_type) {
+                if (strcasecmp($attributeValue, '_DELETE_') === 0) {
+                    continue;
+                }
+
+                switch ($definitionType) {
                     case DROPDOWN:
-                        $dropdown_values = $attribute_data[$definition_name]['dropdown_values'];
-                        $dropdown_values[] = '';
+                        $dropdownValues = $attributeData[$definitionName]['dropdown_values'];
+                        $dropdownValues[] = '';
 
-                        if (!empty($attribute_value) && !in_array($attribute_value, $dropdown_values)) {
-                            log_message('error', "Value: '$attribute_value' is not an acceptable DROPDOWN value");
+                        if (!empty($attributeValue) && !in_array($attributeValue, $dropdownValues)) {
+                            log_message('error', "Value: '$attributeValue' is not an acceptable DROPDOWN value");
                             return true;
                         }
                         break;
                     case DECIMAL:
-                        if (!is_numeric($attribute_value) && !empty($attribute_value)) {
-                            log_message('error', "'$attribute_value' is not an acceptable DECIMAL value");
+                        if (!is_numeric($attributeValue) && !empty($attributeValue)) {
+                            log_message('error', "'$attributeValue' is not an acceptable DECIMAL value");
                             return true;
                         }
                         break;
                     case DATE:
-                        if (!valid_date($attribute_value) && !empty($attribute_value)) {
-                            log_message('error', "'$attribute_value' is not an acceptable DATE value. The value must match the set locale.");
+                        if (!valid_date($attributeValue) && !empty($attributeValue)) {
+                            log_message('error', "'$attributeValue' is not an acceptable DATE value. The value must match the set locale.");
                             return true;
                         }
                         break;
@@ -1163,6 +1167,11 @@ class Items extends Secure_Controller
         foreach ($definitions as $definition) {
             $attributeName = $definition['definition_name'];
             $attributeValue = $row["attribute_$attributeName"];
+
+            if (isset($attributeValue) && strcasecmp($attributeValue, '_DELETE_') === 0) {
+                $this->attribute->deleteAttributeLinks($itemData['item_id'], $definition['definition_id']);
+                continue;
+            }
 
             // Create attribute value
             if (!empty($attributeValue) || $attributeValue === '0') {

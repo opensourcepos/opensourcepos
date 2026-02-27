@@ -615,9 +615,13 @@ class Attribute extends Model
     }
 
     /**
-     * @param int $itemId
-     * @param int|bool $definitionId
-     * @return bool
+     * Deletes attribute links for a given item and optionally a given definition. Does not delete links where sale_id
+     * or receiving_id has a value. If a definitionId is not provided, deletes all attribute links for the item that do
+     * not have a sale_id or receiving_id value.
+     *
+     * @param int $itemId The item ID to delete links for.
+     * @param int|bool $definitionId The definition ID to delete links for. (optional)
+     * @return bool true if successful, false otherwise
      */
     public function deleteAttributeLinks(int $itemId, int|bool $definitionId = false): bool
     {
