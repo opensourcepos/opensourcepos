@@ -252,7 +252,7 @@ helper('url');
                                         echo form_input(['name' => 'description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'onClick' => 'this.select();']);
                                     } else {
                                         if ($item['description'] != '') {
-                                            echo $item['description'];
+                                            echo esc($item['description']);
                                             echo form_hidden('description', $item['description']);
                                         } else {
                                             echo lang(ucfirst($controller_name) . '.no_description');
