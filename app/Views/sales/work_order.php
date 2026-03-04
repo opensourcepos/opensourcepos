@@ -82,7 +82,7 @@ if (isset($error_message)) {
 
         <div id="logo">
             <?php if ($config['company_logo'] != '') { ?>
-                <img id="image" src="<?= base_url('uploads/' . $config['company_logo']) ?>" alt="company_logo">
+                <img id="image" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="company_logo">
             <?php } ?>
             <div>&nbsp;</div>
             <?php if ($config['receipt_show_company_name']) { ?>
@@ -156,7 +156,7 @@ if (isset($error_message)) {
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="3" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
                     <td class="total-value" id="taxes"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
                 </tr>
             <?php } ?>
@@ -176,7 +176,7 @@ if (isset($error_message)) {
         ?>
             <tr>
                 <td colspan="3" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
+                <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
                 <td class="total-value" id="paid"><?= to_currency($payment['payment_amount']) ?></td>
             </tr>
         <?php } ?>

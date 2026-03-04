@@ -114,7 +114,7 @@
             </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
-                    <td colspan="3" class="total-value"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?>:</td>
+                    <td colspan="3" class="total-value"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?>:</td>
                     <td class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
                 </tr>
         <?php
@@ -143,7 +143,7 @@
             $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
         ?>
             <tr>
-                <td colspan="3" style="text-align: right;"><?= $splitpayment[0] ?> </td>
+                <td colspan="3" style="text-align: right;"><?= esc($splitpayment[0]) ?> </td>
                 <td class="total-value"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>

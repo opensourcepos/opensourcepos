@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Empieza a escribir el nombre del proveedor...",
     "stock"                        => "Inventario",
     "stock_destination"            => "Inventario de Destino",
-    "stock_locaiton"               => "Ubicación de Inventario",
+    "stock_location"               => "Ubicación de Inventario",
     "stock_source"                 => "Inventario de Origen",
     "successfully_deleted"         => "Borro exitosamente",
     "successfully_updated"         => "Recepción exitosamente actualizada",

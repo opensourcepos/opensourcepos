@@ -19,7 +19,7 @@
     <div id="receipt_header" style="text-align: center;">
         <?php if ($config['company_logo'] != '') { ?>
             <div id="company_name">
-                <img id="image" src="data:image/png;base64,<?= base64_encode(file_get_contents('uploads/' . $config['company_logo'])) ?>" alt="company_logo">
+                <?= $img_tag ?>
             </div>
         <?php } ?>
 
@@ -131,7 +131,7 @@
             $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
         ?>
             <tr>
-                <td colspan="3" style="text-align: right;"><?= $splitpayment[0] ?> </td>
+                <td colspan="3" style="text-align: right;"><?= esc($splitpayment[0]) ?> </td>
                 <td style="text-align: right;"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>

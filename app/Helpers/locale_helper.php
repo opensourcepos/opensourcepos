@@ -89,6 +89,8 @@ function get_languages(): array
         'pt-BR:portuguese'            => 'Portuguese (Brazil)',
         'ro:romanian'                 => 'Romanian',
         'ru:russian'                  => 'Russian',
+        'sw-KE:swahili'               => 'Swahili (Kenya)',
+        'sw-TZ:swahili'               => 'Swahili (Tanzania)',
         'sv:swedish'                  => 'Swedish',
         'ta:tamil'                    => 'Tamil',
         'th:thai'                     => 'Thai',

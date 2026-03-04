@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Πληκτρολογήστε το όνομα του Προμηθευτή...",
     "stock"                        => "Απόθεμα",
     "stock_destination"            => "Προορισμός Αποθέματος",
-    "stock_locaiton"               => "Τοποθεσία Αποθέματος",
+    "stock_location"               => "Τοποθεσία Αποθέματος",
     "stock_source"                 => "Προέλευση Αποθέματος",
     "successfully_deleted"         => "Έχετε διαγράψει επιτυχώς",
     "successfully_updated"         => "Επιτυχής ενημέρωση Παραλαβής",

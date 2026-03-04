@@ -43,7 +43,7 @@ return [
     'start_typing_supplier_name' => "دەست بکە بە نووسینی ناوی دابینکەر...",
     'stock' => "کۆگا",
     'stock_destination' => "شوێنی مەبەستی کۆگا",
-    'stock_locaiton' => "شوێنی کۆگا",
+    'stock_location' => "شوێنی کۆگا",
     'stock_source' => "سەرچاوەی کۆگا",
     'successfully_deleted' => "بەسەرکەوتوویی سڕیتەوە",
     'successfully_updated' => "وەرگرتن بە سەرکەوتوویی نوێ کراوەتەوە",

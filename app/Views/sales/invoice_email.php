@@ -30,7 +30,7 @@
 <body>
     <?php
     if (isset($error_message)) {
-        echo '<div class="alert alert-dismissible alert-danger">' . $error_message . '</div>';
+        echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
         exit;
     }
     ?>
@@ -98,7 +98,7 @@
                 if ($item['print_option'] == PRINT_YES) {
             ?>
                     <tr class="item-row">
-                        <td><?= $item['item_number'] ?></td>
+                        <td><?= esc($item['item_number']) ?></td>
                         <td class="item-name"><?= esc($item['name']) ?></td>
                         <td><?= to_quantity_decimals($item['quantity']) ?></td>
                         <td><?= to_currency($item['price']) ?></td>
@@ -126,7 +126,7 @@
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
                     <td id="taxes" class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
                 </tr>
             <?php } ?>
@@ -148,7 +148,7 @@
             ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
+                    <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
                     <td class="total-value"><?= to_currency(-$payment['payment_amount']) ?></td>
                 </tr>
             <?php } ?>
@@ -174,13 +174,13 @@
             <div id="sale_return_policy">
                 <h5>
                     <span><?= nl2br($config['payment_message']) ?></span>
-                    <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? $config['invoice_default_comments'] : $comments) ?></span>
+                    <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? esc($config['invoice_default_comments']) : esc($comments)) ?></span>
                 </h5>
                 <?= nl2br(esc($config['return_policy'])) ?>
             </div>
             <div id="barcode">
-                <img alt=<?= '$sale_id' ?> src="data:image/svg+xml;base64,<?= base64_encode($barcode) ?>"><br>
-                <?= $sale_id ?>
+                <img alt="<?= esc($sale_id) ?>" src="data:image/svg+xml;base64,<?= base64_encode($barcode) ?>"><br>
+                <?= esc($sale_id) ?>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Employee;
 use App\Models\Module;
-
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
@@ -85,18 +85,17 @@ class Secure_Controller extends BaseController
 
     /**
      * AJAX function used to confirm whether values sent in the request are numeric
-     * @return void
+     * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getCheckNumeric(): void
+    public function getCheckNumeric(): ResponseInterface
     {
         foreach ($this->request->getGet() as $value) {
             if (parse_decimals($value) === false) {
-                echo 'false';
-                return;
+                return $this->response->setJSON('false');
             }
         }
-        echo 'true';
+        return $this->response->setJSON('true');
     }
 
     /**

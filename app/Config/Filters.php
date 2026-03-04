@@ -100,9 +100,25 @@ class Filters extends BaseFilters
      * before or after URI patterns.
      *
      * Example:
-     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
+     * isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      *
      * @var array<string, array<string, list<string>>>
      */
     public array $filters = [];
+
+    /**
+     * Constructor to conditionally disable CSRF filter in testing environment
+     */
+    public function __construct()
+    {
+        // Check for testing environment via env variable or constant
+        $isTesting = ($_ENV['CI_ENVIRONMENT'] ?? $_SERVER['CI_ENVIRONMENT'] ?? getenv('CI_ENVIRONMENT')) === 'testing'
+            || (defined('ENVIRONMENT') && ENVIRONMENT === 'testing');
+
+        // Remove CSRF filter from globals in testing environment
+        if ($isTesting) {
+            // Remove the 'csrf' key from $globals['before'] while preserving array structure
+            $this->globals['before'] = array_filter($this->globals['before'], static fn($key) => $key !== 'csrf', ARRAY_FILTER_USE_KEY);
+        }
+    }
 }

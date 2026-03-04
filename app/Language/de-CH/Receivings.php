@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Lieferantenname eingeben",
     "stock"                        => "",
     "stock_destination"            => "Lagerort (Ziel)",
-    "stock_locaiton"               => "Lagerort",
+    "stock_location"               => "Lagerort",
     "stock_source"                 => "Lagerort (Quelle)",
     "successfully_deleted"         => "Löschung erfolgreich",
     "successfully_updated"         => "Änderung erfolgreich",

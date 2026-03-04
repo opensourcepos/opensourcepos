@@ -21,6 +21,6 @@ class Migration_receipttaxindicator extends Migration
      */
     public function down(): void
     {
-        $this->db->query('DELETE FROM ' . $this->db->prefixTable('app_config') . ' WHERE key = \'receipt_show_tax_ind\'');
+        $this->db->query('DELETE FROM ' . $this->db->prefixTable('app_config') . ' WHERE `key` = \'receipt_show_tax_ind\'');
     }
 }
