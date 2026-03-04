@@ -84,7 +84,8 @@ class Reports extends Secure_Controller
 
             // Check access to report submodule
             if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
-                redirect('no_access/reports/reports_' . $submodule_id);
+                header('Location: ' . base_url('no_access/reports/reports_' . $submodule_id));
+                exit();
             }
         }
 
