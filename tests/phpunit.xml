@@ -10,6 +10,9 @@
     <testsuite name="Helpers">
         <directory>helpers</directory>
     </testsuite>
+    <testsuite name="Database">
+        <directory>Database</directory>
+    </testsuite>
 </testsuites>
 
 </phpunit>
