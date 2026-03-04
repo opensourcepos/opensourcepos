@@ -172,7 +172,7 @@ class Barcode_lib
         if ($layout_type == 'name') {
             $result = $item['name'];
         } elseif ($layout_type == 'category' && isset($item['category'])) {
-            $result = lang('Items.category') . " " . $item['category'];
+            $result = lang('Items.category') . " " . esc($item['category']);
         } elseif ($layout_type == 'cost_price' && isset($item['cost_price'])) {
             $result = lang('Items.cost_price') . " " . to_currency($item['cost_price']);
         } elseif ($layout_type == 'unit_price' && isset($item['unit_price'])) {

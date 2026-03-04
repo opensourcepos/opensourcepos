@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Expense_category;
+use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 class Expenses_categories extends Secure_Controller    // TODO: Is this class ever used?
@@ -19,17 +20,17 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
     /**
      * @return void
      */
-    public function getIndex(): void
+    public function getIndex(): string
     {
         $data['table_headers'] = get_expense_category_manage_table_headers();
 
-        echo view('expenses_categories/manage', $data);
+        return view('expenses_categories/manage', $data);
     }
 
     /**
      * Returns expense_category_manage table data rows. This will be called with AJAX.
      **/
-    public function getSearch(): void
+    public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
         $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -45,36 +46,36 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
             $data_rows[] = get_expense_category_data_row($expense_category);
         }
 
-        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
      * @param int $row_id
      * @return void
      */
-    public function getRow(int $row_id): void
+    public function getRow(int $row_id): ResponseInterface
     {
         $data_row = get_expense_category_data_row($this->expense_category->get_info($row_id));
 
-        echo json_encode($data_row);
+        return $this->response->setJSON($data_row);
     }
 
     /**
      * @param int $expense_category_id
      * @return void
      */
-    public function getView(int $expense_category_id = NEW_ENTRY): void
+    public function getView(int $expense_category_id = NEW_ENTRY): string
     {
         $data['category_info'] = $this->expense_category->get_info($expense_category_id);
 
-        echo view("expenses_categories/form", $data);
+        return view("expenses_categories/form", $data);
     }
 
     /**
      * @param int $expense_category_id
      * @return void
      */
-    public function postSave(int $expense_category_id = NEW_ENTRY): void
+    public function postSave(int $expense_category_id = NEW_ENTRY): ResponseInterface
     {
         $expense_category_data = [
             'category_name'        => $this->request->getPost('category_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -84,20 +85,20 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
         if ($this->expense_category->save_value($expense_category_data, $expense_category_id)) {
             // New expense_category
             if ($expense_category_id == NEW_ENTRY) {
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_adding'),
                     'id'      => $expense_category_data['expense_category_id']
                 ]);
             } else { // Existing Expense Category
-                echo json_encode([
+                return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_updating'),
                     'id'      => $expense_category_id
                 ]);
             }
         } else { // Failure
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
                 'id'      => NEW_ENTRY
@@ -108,17 +109,17 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
     /**
      * @return void
      */
-    public function postDelete(): void
+    public function postDelete(): ResponseInterface
     {
         $expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->expense_category->delete_list($expense_category_to_delete)) {    // TODO: Convert to ternary notation.
-            echo json_encode([
+            return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
         }
     }
 }

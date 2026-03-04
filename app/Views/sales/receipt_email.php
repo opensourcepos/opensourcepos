@@ -19,7 +19,7 @@
     <div id="receipt_header" style="text-align: center;">
         <?php if ($config['company_logo'] != '') { ?>
             <div id="company_name">
-                <img id="image" src="data:image/png;base64,<?= base64_encode(file_get_contents('uploads/' . $config['company_logo'])) ?>" alt="company_logo">
+                <?= $img_tag ?>
             </div>
         <?php } ?>
 

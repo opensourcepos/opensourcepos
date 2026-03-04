@@ -31,7 +31,7 @@
 
 <div id="report_summary">
     <?php foreach ($overall_summary_data as $name => $value) { ?>
-        <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+        <div class="summary_row"><?= lang("Reports.$name") . ': ' . esc(to_currency($value)) ?></div>
     <?php } ?>
 </div>
 
