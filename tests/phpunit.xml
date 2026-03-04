@@ -10,6 +10,12 @@
     <testsuite name="Helpers">
         <directory>helpers</directory>
     </testsuite>
+    <testsuite name="Models">
+        <directory>Models</directory>
+    </testsuite>
+    <testsuite name="Controllers">
+        <directory>Controllers</directory>
+    </testsuite>
 </testsuites>
 
 </phpunit>
