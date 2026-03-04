@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Təchizatçıın adını yazmağa başlayın ...",
     "stock"                        => "Ehtiyyat",
     "stock_destination"            => "Ehtiyyatın Hədəfi",
-    "stock_locaiton"               => "Ehtiyyatın Yeri",
+    "stock_location"               => "Ehtiyyatın Yeri",
     "stock_source"                 => "Ehtiyyatın Mənbəyi",
     "successfully_deleted"         => "cəmi",
     "successfully_updated"         => "alışda sehv var",

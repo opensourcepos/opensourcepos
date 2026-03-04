@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "ابداء بكتابة اسم المورد....",
     "stock"                        => "المخزون",
     "stock_destination"            => "المخزون المحول له",
-    "stock_locaiton"               => "مكان المخزون",
+    "stock_location"               => "مكان المخزون",
     "stock_source"                 => "مصدر المخزون",
     "successfully_deleted"         => "لقد تم الحذف",
     "successfully_updated"         => "لقد تم التحديث",

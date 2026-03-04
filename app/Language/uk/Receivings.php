@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Почніть вводити назву постачальника ...",
     "stock"                        => "Склад",
     "stock_destination"            => "Пункт призначення",
-    "stock_locaiton"               => "Розташування складу",
+    "stock_location"               => "Розташування складу",
     "stock_source"                 => "Походження складу",
     "successfully_deleted"         => "Успішно видалено",
     "successfully_updated"         => "Надходження успішно оновлено",
