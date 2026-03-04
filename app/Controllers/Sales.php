@@ -885,15 +885,45 @@ class Sales extends Secure_Controller
             $text = $this->token_lib->render($text, $tokens);
             $sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
 
-            // Generate email attachment: invoice in PDF format
-            $view = Services::renderer();
-            $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
+            $attachments = [];
+            $invoiceFormat = $this->config['invoice_format'] ?? 'pdf_only';
 
-            // Load PDF helper
-            helper(['dompdf', 'file']);
-            $filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
-            if (file_put_contents($filename, create_pdf($html)) !== false) {
-                $result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
+            if ($invoiceFormat === 'pdf_only' || $invoiceFormat === 'both') {
+                $view = Services::renderer();
+                $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
+
+                helper(['dompdf', 'file']);
+                $filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
+                if (file_put_contents($filename, create_pdf($html)) !== false) {
+                    $attachments[] = $filename;
+                }
+            }
+
+            if ($invoiceFormat === 'ubl_only' || $invoiceFormat === 'both') {
+                require(ROOTPATH . 'vendor/autoload.php');
+                $ubl_generator = new \App\Libraries\Ubl_generator();
+
+                try {
+                    $xml = $ubl_generator->generateUblInvoice($sale_data);
+                    $ubl_filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.xml';
+                    if (file_put_contents($ubl_filename, $xml) !== false) {
+                        $attachments[] = $ubl_filename;
+                    }
+                } catch (\Exception $e) {
+                    log_message('error', 'UBL attachment generation failed: ' . $e->getMessage());
+                }
+            }
+
+            if (!empty($attachments)) {
+                if (count($attachments) === 1) {
+                    $result = $this->email_lib->sendEmail($to, $subject, $text, $attachments[0]);
+                } else {
+                    $result = $this->email_lib->sendMultipleAttachments($to, $subject, $text, $attachments);
+                }
+
+                foreach ($attachments as $attachment) {
+                    @unlink($attachment);
+                }
             }
 
             $message = lang($result ? "Sales." . $type . "_sent" : "Sales." . $type . "_unsent") . ' ' . $to;
@@ -1245,6 +1275,41 @@ class Sales extends Secure_Controller
     }
 
     /**
+     * Edits an existing sale or work order. Used in app/Views/sales/form.php
+     *
+     * Generate and download UBL invoice
+     *
+     * @param int $sale_id
+     * @return ResponseInterface
+     * @throws \Exception
+     */
+    public function getUblInvoice(int $sale_id): ResponseInterface
+    {
+        $sale_data = $this->_load_sale_data($sale_id);
+
+        helper(['file']);
+        
+        require(ROOTPATH . 'vendor/autoload.php');
+        $ubl_generator = new \App\Libraries\Ubl_generator();
+
+        try {
+            $xml = $ubl_generator->generateUblInvoice($sale_data);
+
+            $filename = lang('Sales.invoice') . '-' . str_replace('/', '-', $sale_data['invoice_number']) . '.xml';
+
+            return $this->response
+                ->setHeader('Content-Type', 'application/xml')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->setBody($xml);
+        } catch (\Exception $e) {
+            log_message('error', 'UBL generation failed: ' . $e->getMessage());
+            return $this->response->setStatusCode(500)->setBody($e->getMessage());
+        }
+    }
+
+    /**
+     * Edits an existing sale or work order. Used in app/Views/sales/form.php
+     *
      * @param int $sale_id
      * @return void
      */
