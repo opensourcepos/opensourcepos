@@ -69,6 +69,7 @@ if (isset($error_message)) {
             <div class="btn btn-info btn-sm" id="show_email_button"><?= '<span class="glyphicon glyphicon-envelope">&nbsp;</span>' . lang('Sales.send_invoice') ?></div>
         </a>
     <?php endif; ?>
+    <?= anchor("sales/ublInvoice/$sale_id_num", '<span class="glyphicon glyphicon-download">&nbsp;</span>' . lang('Sales.download_ubl'), ['class' => 'btn btn-info btn-sm']) ?>
     <?= anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp;</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
     <?= anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp;</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
 </div>

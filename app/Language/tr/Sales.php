@@ -228,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "İş Emri Numarası diğerinden farklı olmalı.",
     "work_order_sent"                  => "İş Emri gönderildi:",
     "work_order_unsent"                => "İş Emri gönderilemedi:",
+    "sale_not_found"                   => "Satış bulunamadı",
 ];

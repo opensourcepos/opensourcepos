@@ -228,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "Werkorder Nummer moet uniek zijn.",
     "work_order_sent"                  => "Werkorder verzonder naar",
     "work_order_unsent"                => "Werkorder kon niet verzonden worden naar",
+    "sale_not_found"                   => "Verkoop niet gevonden",
 ];

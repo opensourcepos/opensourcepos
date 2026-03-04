@@ -228,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "מספר הזמנת עבודה חייב להיות ייחודי.",
     "work_order_sent"                  => "הזמנת עבודה נשלחה אל",
     "work_order_unsent"                => "הזמנת עבודה לא נשלחה אל",
+    "sale_not_found"                   => "המכירה לא נמצאה",
 ];

@@ -228,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "Số giấy giao việc phải là duy nhất.",
     "work_order_sent"                  => "Gửi Giấy giao việc cho",
     "work_order_unsent"                => "Gặp lỗi khi gửi Giấy giao việc cho",
+    "sale_not_found"                   => "Không tìm thấy giao dịch",
 ];

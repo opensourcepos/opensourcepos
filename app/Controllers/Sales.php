@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Email_lib;
+use App\Libraries\InvoiceAttachment\InvoiceAttachmentGenerator;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
 use App\Libraries\Token_lib;
+use App\Libraries\UBLGenerator;
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Dinner_table;
@@ -937,15 +939,28 @@ class Sales extends Secure_Controller
             $text = $this->token_lib->render($text, $tokens);
             $sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
 
-            // Generate email attachment: invoice in PDF format
-            $view = Services::renderer();
-            $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
+            // Add config and customer object for attachment generation
+            $sale_data['config'] = $this->config;
+            $customer_id = $this->sale_lib->get_customer();
+            if ($customer_id && $customer_id != NEW_ENTRY) {
+                $sale_data['customer_object'] = $this->customer->get_info($customer_id);
+            }
 
-            // Load PDF helper
-            helper(['dompdf', 'file']);
-            $filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
-            if (file_put_contents($filename, create_pdf($html)) !== false) {
-                $result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
+            // Generate attachments based on config
+            $invoiceFormat = $this->config['invoice_format'] ?? 'pdf_only';
+            $attachmentGenerator = InvoiceAttachmentGenerator::createFromConfig($invoiceFormat);
+            $attachments = $attachmentGenerator->generateAttachments($sale_data, $type);
+
+            if (!empty($attachments)) {
+                try {
+                    if (count($attachments) === 1) {
+                        $result = $this->email_lib->sendEmail($to, $subject, $text, $attachments[0]);
+                    } else {
+                        $result = $this->email_lib->sendMultipleAttachments($to, $subject, $text, $attachments);
+                    }
+                } finally {
+                    InvoiceAttachmentGenerator::cleanup($attachments);
+                }
             }
 
             $message = lang($result ? "Sales." . $type . "_sent" : "Sales." . $type . "_unsent") . ' ' . $to;
@@ -1304,6 +1319,47 @@ class Sales extends Secure_Controller
         $this->sale_lib->clear_all();
 
         return view('sales/' . $data['invoice_view'], $data);
+    }
+
+    /**
+     * Generate and download UBL invoice
+     *
+     * @param int $sale_id
+     * @return ResponseInterface
+     */
+    public function getUblInvoice($sale_id): ResponseInterface
+    {
+        $sale_info = $this->sale->get_info($sale_id)->getRowArray();
+
+        if (empty($sale_info) || empty($sale_info['invoice_number'])) {
+            return $this->response->setStatusCode(404)->setBody(lang('Sales.sale_not_found'));
+        }
+
+        try {
+            $sale_data = $this->_load_sale_data($sale_id);
+            $sale_data['config'] = $this->config;
+            $customer_id = $this->sale_lib->get_customer();
+            if ($customer_id && $customer_id != NEW_ENTRY) {
+                $sale_data['customer_object'] = $this->customer->get_info($customer_id);
+            }
+            $ublGenerator = new UBLGenerator();
+            $xml = $ublGenerator->generateUblInvoice($sale_data);
+
+            $rawFilename = lang('Sales.invoice') . '-' . str_replace('/', '-', $sale_data['invoice_number']) . '.xml';
+            $rawFilename = str_replace(["\r", "\n"], '', $rawFilename);
+            $safeFilename = preg_replace('/[^A-Za-z0-9._-]/', '_', $rawFilename);
+            $contentDisposition = 'attachment; filename="' . $safeFilename . '"; filename*=UTF-8\'\'' . rawurlencode($rawFilename);
+
+            return $this->response
+                ->setHeader('Content-Type', 'application/xml')
+                ->setHeader('Content-Disposition', $contentDisposition)
+                ->setBody($xml);
+        } catch (\Exception $e) {
+            log_message('error', 'UBL generation failed: ' . $e->getMessage());
+            return $this->response->setStatusCode(500)->setBody(lang('Sales.ubl_generation_failed'));
+        } finally {
+            $this->sale_lib->clear_all();
+        }
     }
 
     /**

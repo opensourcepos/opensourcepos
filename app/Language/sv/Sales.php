@@ -228,5 +228,6 @@ return [
     "work_order_number_duplicate"      => "Arbetsorder nummer måste vara unikt.",
     "work_order_sent"                  => "Arbetsorder skickad till",
     "work_order_unsent"                => "Arbetsorder gick ej att skicka till",
+    "sale_not_found"                   => "Försäljning hittades inte",
     "selected_customer"                => "Vald kund",
 ];

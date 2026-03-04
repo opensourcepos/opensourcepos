@@ -230,4 +230,5 @@ return [
     "work_order_number_duplicate"      => "Nambari ya Agizo la Kazi lazima iwe ya kipekee.",
     "work_order_sent"                  => "Agizo la Kazi limetumwa kwa",
     "work_order_unsent"                => "Imeshindikana kutuma Agizo la Kazi kwa",
+    "sale_not_found"                   => "Mauzo hayapatikani",
 ];
