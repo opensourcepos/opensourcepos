@@ -30,7 +30,7 @@
 <body>
     <?php
     if (isset($error_message)) {
-        echo '<div class="alert alert-dismissible alert-danger">' . $error_message . '</div>';
+        echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
         exit;
     }
     ?>
@@ -98,7 +98,7 @@
                 if ($item['print_option'] == PRINT_YES) {
             ?>
                     <tr class="item-row">
-                        <td><?= $item['item_number'] ?></td>
+                        <td><?= esc($item['item_number']) ?></td>
                         <td class="item-name"><?= esc($item['name']) ?></td>
                         <td><?= to_quantity_decimals($item['quantity']) ?></td>
                         <td><?= to_currency($item['price']) ?></td>
@@ -179,8 +179,8 @@
                 <?= nl2br(esc($config['return_policy'])) ?>
             </div>
             <div id="barcode">
-                <img alt=<?= '$sale_id' ?> src="data:image/svg+xml;base64,<?= base64_encode($barcode) ?>"><br>
-                <?= $sale_id ?>
+                <img alt="<?= esc($sale_id) ?>" src="data:image/svg+xml;base64,<?= base64_encode($barcode) ?>"><br>
+                <?= esc($sale_id) ?>
             </div>
         </div>
     </div>
