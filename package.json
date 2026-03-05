@@ -59,7 +59,7 @@
         "jquery-form": "^4.3.0",
         "jquery-ui-dist": "^1.12.1",
         "jquery-validation": "^1.19.5",
-        "jspdf": "^4.1.0",
+        "jspdf": "^4.2.0",
         "jspdf-autotable": "^5.0.7",
         "tableexport.jquery.plugin": "^1.30.0"
     },
