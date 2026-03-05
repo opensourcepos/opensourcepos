@@ -928,7 +928,7 @@ class Items extends Secure_Controller
      */
     public function getGenerateCsvFile(): DownloadResponse
     {
-        helper('importfile_helper');
+        helper('importfile');
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
         $allowed_attributes = $this->attribute->get_definition_names();
@@ -954,7 +954,7 @@ class Items extends Secure_Controller
      */
     public function postImportCsvFile(): ResponseInterface
     {
-        helper('importfile_helper');
+        helper('importfile');
         try {
             if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK) {
                 return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_failed')]);
@@ -1014,6 +1014,7 @@ class Items extends Secure_Controller
                         if (!empty($row['Barcode']) && !$is_update) {
                             $item_data['item_number'] = $row['Barcode'];
                             $is_failed_row = $this->item->item_number_exists($item_data['item_number']);
+                        if (!empty($row['Barcode'])) {
                         }
 
                         if (!$is_failed_row) {
