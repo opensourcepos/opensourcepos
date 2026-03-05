@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
+use App\Libraries\Image_lib;
 use App\Libraries\Item_lib;
 
 use App\Models\Attribute;
@@ -788,6 +789,10 @@ class Items extends Secure_Controller
         ];
 
         $file->move(FCPATH . 'uploads/item_pics/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+
+        $image_lib = new Image_lib();
+        $image_lib->strip_exif(FCPATH . 'uploads/item_pics/' . $file_info['raw_name'] . '.' . $file_info['file_ext']);
+
         return ($file_info);
     }
 

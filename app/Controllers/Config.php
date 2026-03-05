@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
+use App\Libraries\Image_lib;
 use App\Libraries\Mailchimp_lib;
 use App\Libraries\Receiving_lib;
 use App\Libraries\Sale_lib;
@@ -354,6 +355,9 @@ class Config extends Secure_Controller
         ];
 
         $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+
+        $image_lib = new Image_lib();
+        $image_lib->strip_exif(FCPATH . 'uploads/' . $file_info['raw_name'] . '.' . $file_info['file_ext']);
 
         return ($file_info);
     }
