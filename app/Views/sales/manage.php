@@ -55,6 +55,8 @@
                 }
             }
         });
+
+        <?= view('partial/table_filter_persistence') ?>
     });
 </script>
 
