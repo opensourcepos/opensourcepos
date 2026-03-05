@@ -22,24 +22,12 @@ use App\Models\Employee;
             );
         });
 
-        // When any filter is clicked and the dropdown window is closed
-        $('#filters').on('hidden.bs.select', function(e) {
-            table_support.refresh();
-        });
-
         // Load the preset daterange picker
         <?= view('partial/daterangepicker') ?>
         // Set the beginning of time as starting date
         $('#daterangepicker').data('daterangepicker').setStartDate("<?= date($config['dateformat'], mktime(0, 0, 0, 01, 01, 2010)) ?>");
         // Update the hidden inputs with the selected dates before submitting the search data
         var start_date = "<?= date('Y-m-d', mktime(0, 0, 0, 01, 01, 2010)) ?>";
-        $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
-            table_support.refresh();
-        });
-
-        $("#stock_location").change(function() {
-            table_support.refresh();
-        });
 
         <?php
         echo view('partial/bootstrap_tables_locale');
@@ -72,6 +60,8 @@ use App\Models\Employee;
                 })
             }
         });
+
+        <?= view('partial/table_filter_persistence', ['additional_params' => ['stock_location']]) ?>
     });
 </script>
 
