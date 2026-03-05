@@ -1,0 +1,116 @@
+name: Unit Tests
+
+on:
+  push:
+    paths:
+      - 'app/**/*.php'
+      - 'tests/**/*.php'
+      - '.github/workflows/unit-tests.yml'
+  pull_request:
+    paths:
+      - 'app/**/*.php'
+      - 'tests/**/*.php'
+      - '.github/workflows/unit-tests.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php-version }} Unit Tests
+    runs-on: ubuntu-22.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - '8.1'
+          - '8.2'
+          - '8.3'
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ospos_test
+          MYSQL_USER: ospos
+          MYSQL_PASSWORD: ospos
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: intl, mysqli, pdo_mysql, mbstring, json, dom, xml
+          coverage: xdebug
+
+      - name: Get composer cache directory
+        run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.COMPOSER_CACHE_FILES_DIR }}
+          key: ${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.php-version }}-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: composer install --no-progress --ansi --no-interaction
+
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" --silent; do
+            echo "Waiting for MySQL..."
+            sleep 1
+          done
+
+      - name: Setup test database
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS ospos_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL PRIVILEGES ON ospos_test.* TO 'ospos'@'%' IDENTIFIED BY 'ospos';"
+          mysql -h 127.0.0.1 -u root -proot -e "FLUSH PRIVILEGES;"
+
+      - name: Copy test environment config
+        run: |
+          if [ -f ".env.testing" ]; then
+            cp .env.testing .env
+          else
+            cp .env.example .env
+          fi
+
+      - name: Run migrations
+        run: php spark migrate --all || true
+
+      - name: Run unit tests
+        run: vendor/bin/phpunit --configuration tests/phpunit.xml --testsuite Helpers,Models,Controllers --colors=always --verbose
+
+      - name: Generate test report
+        if: always()
+        run: |
+          vendor/bin/phpunit --configuration tests/phpunit.xml --testsuite Helpers,Models,Controllers --log-junit build/logs/junit.xml --coverage-clover build/logs/clover.xml || true
+          echo "Test run completed"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-php-${{ matrix.php-version }}
+          path: build/logs/
+          retention-days: 30
