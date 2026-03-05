@@ -39,8 +39,20 @@ class Home extends Secure_Controller
      * @return string
      * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employee_id = -1): string    // TODO: Replace -1 with a constant
+    public function getChangePassword(int $employee_id = -1): string
     {
+        $logged_in_employee = $this->employee->get_logged_in_employee_info();
+        $current_person_id = $logged_in_employee->person_id;
+
+        if ($employee_id === -1) {
+            $employee_id = $current_person_id;
+        }
+
+        if (!$this->employee->can_modify_employee($employee_id, $current_person_id)) {
+            header('Location: ' . base_url('no_access/home/home'));
+            exit();
+        }
+
         $person_info = $this->employee->get_info($employee_id);
         foreach (get_object_vars($person_info) as $property => $value) {
             $person_info->$property = $value;
@@ -55,8 +67,21 @@ class Home extends Secure_Controller
      *
      * @return ResponseInterface
      */
-    public function postSave(int $employee_id = -1): ResponseInterface    // TODO: Replace -1 with a constant
+    public function postSave(int $employee_id = -1): ResponseInterface
     {
+        $current_user = $this->employee->get_logged_in_employee_info();
+
+        if ($employee_id === -1) {
+            $employee_id = $current_user->person_id;
+        }
+
+        if (!$this->employee->can_modify_employee($employee_id, $current_user->person_id)) {
+            return $this->response->setStatusCode(403)->setJSON([
+                'success' => false,
+                'message' => lang('Employees.unauthorized_modify')
+            ]);
+        }
+
         if (!empty($this->request->getPost('current_password')) && $employee_id != -1) {
             if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
                 // Validate password length BEFORE hashing
