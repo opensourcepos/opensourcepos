@@ -831,15 +831,13 @@ class Attribute extends Model
                 $attribute_id = $this->db->insertID();
             }
 
-            $data = [
-                'attribute_id'  => empty($attribute_id) ? null : $attribute_id,
-                'item_id'       => empty($item_id) ? null : $item_id,
-                'definition_id' => $definition_id
-            ];
-
-            $builder = $this->db->table('attribute_links');
-            $builder->set($data);
+            if ($dataType === 'attribute_value'
+                && is_string($storedValue)
+                && strcasecmp($storedValue, $attributeValue) === 0
+                && $storedValue !== $attributeValue
+            ) {
                 $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
+            }
         } else {
             // Insert
             $builder = $this->db->table('attribute_values');
