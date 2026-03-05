@@ -769,10 +769,13 @@ class Items extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
+        
+        // Sanitize filename to remove problematic characters like spaces
+        $sanitized_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $info['filename']);
 
         $file_info = [
             'orig_name' => $filename,
-            'raw_name'  => $info['filename'],
+            'raw_name'  => $sanitized_name,
             'file_ext'  => $file->guessExtension()
         ];
 
