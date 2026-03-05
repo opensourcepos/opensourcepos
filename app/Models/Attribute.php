@@ -9,6 +9,7 @@ use CodeIgniter\Model;
 use CodeIgniter\Database\RawSql;
 use Config\OSPOS;
 use DateTime;
+use InvalidArgumentException;
 use stdClass;
 use ReflectionClass;
 
@@ -514,7 +515,7 @@ class Attribute extends Model
     /**
      * Inserts or updates a definition
      */
-    public function save_definition(array &$definition_data, int $definition_id = NO_DEFINITION_ID): bool
+    public function saveDefinition(array &$definitionData, int $definitionId = NO_DEFINITION_ID): bool
     {
         $this->db->transStart();
 
@@ -526,10 +527,11 @@ class Attribute extends Model
                 $builder = $this->db->table('attribute_definitions');
                 $success = $builder->insert($definition_data);
                 $definition_data['definition_id'] = $this->db->insertID();
+                $definitionData['definition_id'] = $definitionId !== CATEGORY_DEFINITION_ID ? $this->db->insertID() : $definitionId;
             }
         }
 
-        // Definition already exists
+        // Update definition
         else {
             $builder = $this->db->table('attribute_definitions');
             $builder->select('definition_type');
@@ -541,16 +543,14 @@ class Attribute extends Model
             $from_definition_type = $row->definition_type;
             $to_definition_type = $definition_data['definition_type'];
 
-            // Update the definition values
-            $builder->where('definition_id', $definition_id);
+            // Update definition values
+            $builder->where('definition_id', $definitionId);
+            $success = $builder->update($definitionData);
+            $definitionData['definition_id'] = $definitionId;
 
-            $success = $builder->update($definition_data);
-            $definition_data['definition_id'] = $definition_id;
-
-            if ($from_definition_type !== $to_definition_type) {
-                if (!$this->convert_definition_data($definition_id, $from_definition_type, $to_definition_type)) {
-                    return false;
-                }
+            if ($from_definition_type !== $to_definition_type
+                && !$this->convert_definition_data($definitionId, $from_definition_type, $to_definition_type)) {
+                return false;
             }
         }
 
@@ -602,8 +602,8 @@ class Attribute extends Model
             $builder->update();
         } else {
             $data = [
-                'attribute_id'  => $attributeId,
-                'item_id'       => $itemId,
+                'attribute_id'  => empty($attributeId) ? null : $attributeId,
+                'item_id'       => empty($itemId) ? null : $itemId,
                 'definition_id' => $definitionId
             ];
             $builder->insert($data);
@@ -801,29 +801,26 @@ class Attribute extends Model
      * @param string $definition_type
      * @return int
      */
-    public function saveAttributeValue(string $attribute_value, int $definition_id, int|bool $item_id = false, int|bool $attribute_id = false, string $definition_type = DROPDOWN): int
+    public function saveAttributeValue(string $attributeValue, int $definitionId, int|bool $itemId = false, int|bool $attributeId = false, string $definitionType = DROPDOWN): int
     {
         $config = config(OSPOS::class)->settings;
+        if ($definitionType === DATE) {
+            $config = config(OSPOS::class)->settings;
+            $date = DateTime::createFromFormat($config['dateformat'], $attributeValue);
+            if ($date !== false) {
+                $attributeValue = $date->format('Y-m-d');
+            }
+        }
 
         $this->db->transStart();
 
-        switch ($definition_type) {
-            case DATE:
-                $data_type                = 'date';
-                $attribute_date_value    = DateTime::createFromFormat($config['dateformat'], $attribute_value);
-                $attribute_value        = $attribute_date_value->format('Y-m-d');
-                break;
-            case DECIMAL:
-                $data_type    = 'decimal';
-                break;
-            default:
-                $data_type    = 'value';
-                break;
-        }
+        $existingAttributeId = $this->attributeValueExists($attributeValue, $definitionType);
 
         // New Attribute
         if (empty($attribute_id) || empty($item_id) || $attribute_id == -1) {
             $attribute_id = $this->attributeValueExists($attribute_value, $definition_type);
+        // Update
+        if ($existingAttributeId) {
 
             if (!$attribute_id) {
 
@@ -842,14 +839,17 @@ class Attribute extends Model
 
             $builder = $this->db->table('attribute_links');
             $builder->set($data);
-            $builder->insert();
-        }
-        // Existing Attribute
-        else {
+                $this->updateAttributeValue($attributeId, $dataType, $attributeValue);
+        } else {
+            // Insert
             $builder = $this->db->table('attribute_values');
-            $builder->set(["attribute_$data_type" => $attribute_value]);
-            $builder->where('attribute_id', $attribute_id);
-            $builder->update();
+            $builder->set([$dataType => $attributeValue]);
+            $builder->insert();
+            $attributeId = $this->db->insertID();
+        }
+
+        if (!empty($definitionId)) {
+            $this->saveAttributeLink($itemId, $definitionId, $attributeId);
         }
 
         $this->db->transComplete();
@@ -1027,7 +1027,7 @@ class Attribute extends Model
      *
      * @param int $definitionId
      * @param int $attributeId
-     * @return \CodeIgniter\Database\BaseBuilder
+     * @return void
      */
     private function deleteAttributeLinksByDefinitionIdAndAttributeId(int $definitionId, int $attributeId): void
     {
@@ -1037,5 +1037,42 @@ class Attribute extends Model
         $builder->where('definition_id', $definitionId);
         $builder->where('attribute_id', $attributeId);
         $builder->delete();
+    }
+
+    /**
+     * Updates the attribute_value, attribute_date, or attribute_decimal column in the attribute_values table based on
+     * the provided data type for a specific attribute ID.
+     *
+     * @param int $attributeId
+     * @param string $dataType
+     * @param mixed $attributeValue
+     * @return void
+     */
+    private function updateAttributeValue(int $attributeId, string $dataType, mixed $attributeValue): void
+    {
+        helper('attribute');
+        validateAttributeValueType($dataType);
+
+        // Update the attribute_values table
+        $builder = $this->db->table('attribute_values');
+        $builder->set([$dataType => $attributeValue]);
+        $builder->where('attribute_id', $attributeId);
+        $builder->update();
+
+        // Check if this attribute_id is linked to definition_id = -1 (category dropdown) using COUNT
+        $linkBuilder = $this->db->table('attribute_links');
+        $linkBuilder->selectCount('attribute_id', 'cnt');
+        $linkBuilder->where('attribute_id', $attributeId);
+        $linkBuilder->where('definition_id', CATEGORY_DEFINITION_ID);
+        $countRow = $linkBuilder->get()->getRow();
+        $isCategoryDropdownAttribute = $countRow && $countRow->cnt > 0;
+
+        // Update the items.category column to match new capitalization.
+        if ($isCategoryDropdownAttribute) {
+            $itemsBuilder = $this->db->table('items');
+            $itemsBuilder->set(['category' => $attributeValue]);
+            $itemsBuilder->where('category', $attributeValue);
+            $itemsBuilder->update();
+        }
     }
 }
