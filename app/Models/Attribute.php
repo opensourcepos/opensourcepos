@@ -709,6 +709,31 @@ class Attribute extends Model
     }
 
     /**
+     * Gets a single attribute value by attribute ID.
+     *
+     * @param int $attributeId The attribute ID to look up
+     * @param string $dataType The column name to retrieve (attribute_value, attribute_date, or attribute_decimal)
+     * @return string|float|null The attribute value. Note: MySQL returns values as follows:
+     *                           - attribute_value (TEXT): string
+     *                           - attribute_date (DATE): string in 'Y-m-d' format
+     *                           - attribute_decimal (DECIMAL): string or float depending on CodeIgniter configuration
+     *                           Returns null if the attribute_id is not found.
+     */
+    public function getAttributeValueByAttributeId(int $attributeId, string $dataType): string|float|null
+    {
+        helper('attribute');
+        validateAttributeValueType($dataType);
+
+        $builder = $this->db->table('attribute_values');
+        $builder->select($dataType);
+        $builder->where('attribute_id', $attributeId);
+        $builder->limit(1);
+        $row = $builder->get()->getRow();
+
+        return $row ? $row->$dataType : null;
+    }
+
+    /**
      * Initializes an empty object based on database definitions
      * @param string $table_name
      * @return object
@@ -816,20 +841,10 @@ class Attribute extends Model
 
         $existingAttributeId = $this->attributeValueExists($attributeValue, $definitionType);
 
-        // New Attribute
-        if (empty($attribute_id) || empty($item_id) || $attribute_id == -1) {
-            $attribute_id = $this->attributeValueExists($attribute_value, $definition_type);
         // Update
         if ($existingAttributeId) {
-
-            if (!$attribute_id) {
-
-                $builder = $this->db->table('attribute_values');
-                $builder->set(["attribute_$data_type" => $attribute_value]);
-                $builder->insert();
-
-                $attribute_id = $this->db->insertID();
-            }
+            $attributeId = $existingAttributeId;
+            $storedValue = $this->getAttributeValueByAttributeId($attributeId, $dataType);
 
             if ($dataType === 'attribute_value'
                 && is_string($storedValue)
