@@ -1200,9 +1200,8 @@ class Items extends Secure_Controller
      */
     private function saveAttributeData(array $row, array $itemData, array $definitions): bool
     {
+        helper('attribute');
         foreach ($definitions as $definition) {
-            $attribute_name = $definition['definition_name'];
-            $attribute_value = $row["attribute_$attribute_name"];
             $attributeName = $definition['definition_name'];
             $attributeValue = $row["attribute_$attributeName"];
 
@@ -1245,10 +1244,6 @@ class Items extends Secure_Controller
 
         $this->attribute->deleteAttributeLinks($itemId, $attributeData['definition_id']);
 
-        if (!$attribute_id) {
-            $attribute_id = $this->attribute->saveAttributeValue($value, $attribute_data['definition_id'], $item_id, false, $attribute_data['definition_type']);
-        } elseif (!$this->attribute->saveAttributeLink($item_id, $attribute_data['definition_id'], $attribute_id)) {
-            return false;
         if (!$attributeId) {
             $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
         } else {
@@ -1378,16 +1373,15 @@ class Items extends Secure_Controller
             switch ($definitionType) {
                 case DROPDOWN:
                     $attributeId = $attributeValue;
+                    $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
                     break;
                 case DECIMAL:
                     $attributeValue = parse_decimals($attributeValue);
-                // Fall through to save the attribute value
+                    // no break
                 default:
                     $attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);
                     break;
             }
-
-            $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
         }
     }
 }
