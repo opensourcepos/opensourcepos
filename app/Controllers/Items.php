@@ -1234,20 +1234,40 @@ class Items extends Secure_Controller
 
     /**
      * Saves the attribute_value and attribute_link if necessary
+     * @param string $value
+     * @param array $attributeData
+     * @param int $itemId
+     * @return bool|int
      */
-    private function store_attribute_value(string $value, array $attribute_data, int $item_id)
+    private function storeAttributeValue(string $value, array $attributeData, int $itemId): bool|int
     {
-        $attribute_id = $this->attribute->attributeValueExists($value, $attribute_data['definition_type']);
+        $attributeId = $this->attribute->attributeValueExists($value, $attributeData['definition_type']);
 
-        $this->attribute->deleteAttributeLinks($item_id, $attribute_data['definition_id']);
+        $this->attribute->deleteAttributeLinks($itemId, $attributeData['definition_id']);
 
         if (!$attribute_id) {
             $attribute_id = $this->attribute->saveAttributeValue($value, $attribute_data['definition_id'], $item_id, false, $attribute_data['definition_type']);
         } elseif (!$this->attribute->saveAttributeLink($item_id, $attribute_data['definition_id'], $attribute_id)) {
             return false;
+        if (!$attributeId) {
+            $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
+        } else {
+            helper('attribute');
+            $dataType = getAttributeDataType($attributeData['definition_type']);
+            $storedValue = $this->attribute->getAttributeValueByAttributeId($attributeId, $dataType);
+
+            // Update attribute value if only the case has changed and only for text values.
+            if ($dataType === 'attribute_value'
+                && is_string($storedValue)
+                && strcasecmp($storedValue, $value) === 0
+                && $storedValue !== $value) {
+                $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
+            } elseif (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
+                return false;
+            }
         }
 
-        return $attribute_id;
+        return $attributeId;
     }
 
     /**
