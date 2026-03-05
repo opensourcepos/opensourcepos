@@ -1050,6 +1050,7 @@ class Items extends Secure_Controller
                         return $this->response->setJSON(['success' => false, 'message' => $message]);
                     } else {
                         $db->transCommit();
+                        $this->attribute->deleteOrphanedValues();
 
                         return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }
@@ -1388,5 +1389,7 @@ class Items extends Secure_Controller
                     break;
             }
         }
+
+        $this->attribute->deleteOrphanedValues();
     }
 }
