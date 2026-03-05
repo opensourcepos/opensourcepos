@@ -1158,7 +1158,11 @@ class Items extends Secure_Controller
                 $definition_type = $attribute_data[$definition_name]['definition_type'];
                 $attribute_value = $row["attribute_$definition_name"];
 
-                switch ($definition_type) {
+                if (strcasecmp($attributeValue, '_DELETE_') === 0) {
+                    continue;
+                }
+
+                switch ($definitionType) {
                     case DROPDOWN:
                         $dropdown_values = $attribute_data[$definition_name]['dropdown_values'];
                         $dropdown_values[] = '';
@@ -1195,11 +1199,18 @@ class Items extends Secure_Controller
      * @param array $definitions
      * @return bool
      */
-    private function save_attribute_data(array $row, array $item_data, array $definitions): bool
+    private function saveAttributeData(array $row, array $itemData, array $definitions): bool
     {
         foreach ($definitions as $definition) {
             $attribute_name = $definition['definition_name'];
             $attribute_value = $row["attribute_$attribute_name"];
+            $attributeName = $definition['definition_name'];
+            $attributeValue = $row["attribute_$attributeName"];
+
+            if (isset($attributeValue) && strcasecmp($attributeValue, '_DELETE_') === 0) {
+                $this->attribute->deleteAttributeLinks($itemData['item_id'], $definition['definition_id']);
+                continue;
+            }
 
             // Create attribute value
             if (!empty($attribute_value) || $attribute_value === '0') {
