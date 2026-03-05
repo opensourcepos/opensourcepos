@@ -88,9 +88,13 @@ class Sale_lib
         return $register_modes;
     }
 
-    /**
-     * @return array
-     */
+    private const ALLOWED_INVOICE_TYPES = [
+        'invoice',
+        'tax_invoice',
+        'custom_invoice',
+        'custom_tax_invoice'
+    ];
+
     public function get_invoice_type_options(): array
     {
         $invoice_types = [];
@@ -99,6 +103,11 @@ class Sale_lib
         $invoice_types['custom_invoice'] = lang('Sales.invoice_type_custom_invoice');
         $invoice_types['custom_tax_invoice'] = lang('Sales.invoice_type_custom_tax_invoice');
         return $invoice_types;
+    }
+
+    public static function isValidInvoiceType(string $invoice_type): bool
+    {
+        return in_array($invoice_type, self::ALLOWED_INVOICE_TYPES, true);
     }
 
     /**

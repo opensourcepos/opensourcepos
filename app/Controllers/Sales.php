@@ -755,8 +755,11 @@ class Sales extends Secure_Controller
                 $data['sale_status'] = COMPLETED;
                 $sale_type = SALE_TYPE_INVOICE;
 
-                // The PHP file name is the same as the invoice_type key
-                $invoice_view = $this->config['invoice_type'];
+                $invoice_type = $this->config['invoice_type'];
+                if (!Sale_lib::isValidInvoiceType($invoice_type)) {
+                    $invoice_type = 'invoice';
+                }
+                $invoice_view = $invoice_type;
 
                 // Save the data to the sales table
                 $data['sale_id_num'] = $this->sale->save_value($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $tax_details);
@@ -1107,6 +1110,9 @@ class Sales extends Secure_Controller
         }
 
         $invoice_type = $this->config['invoice_type'];
+        if (!Sale_lib::isValidInvoiceType($invoice_type)) {
+            $invoice_type = 'invoice';
+        }
         $data['invoice_view'] = $invoice_type;
 
         return $data;

@@ -942,7 +942,9 @@ class Config extends Secure_Controller
             'work_order_enable'           => $this->request->getPost('work_order_enable') != null,
             'work_order_format'           => $this->request->getPost('work_order_format'),
             'last_used_work_order_number' => $this->request->getPost('last_used_work_order_number', FILTER_SANITIZE_NUMBER_INT),
-            'invoice_type'                => $this->request->getPost('invoice_type')
+            'invoice_type'                => Sale_lib::isValidInvoiceType($this->request->getPost('invoice_type')) 
+                ? $this->request->getPost('invoice_type') 
+                : 'invoice'
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);
