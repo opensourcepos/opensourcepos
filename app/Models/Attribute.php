@@ -487,7 +487,7 @@ class Attribute extends Model
         }
 
         $this->delete_orphaned_links($definition_id);
-        $this->delete_orphaned_values();
+        $this->deleteOrphanedValues();
         return $success;
     }
 
@@ -519,14 +519,14 @@ class Attribute extends Model
     {
         $this->db->transStart();
 
-        // Definition doesn't exist
-        if ($definition_id === NO_DEFINITION_ID || !$this->exists($definition_id)) {
-            if ($this->exists($definition_id, true)) {
-                $success = $this->undelete($definition_id);
+        // Insert definition
+        if ($definitionId === NO_DEFINITION_ID || !$this->exists($definitionId)) {
+            if ($this->exists($definitionId, true)) {
+                $success = $this->undelete($definitionId);
             } else {
                 $builder = $this->db->table('attribute_definitions');
-                $success = $builder->insert($definition_data);
-                $definition_data['definition_id'] = $this->db->insertID();
+                $success = $builder->insert($definitionData);
+
                 $definitionData['definition_id'] = $definitionId !== CATEGORY_DEFINITION_ID ? $this->db->insertID() : $definitionId;
             }
         }
@@ -535,13 +535,13 @@ class Attribute extends Model
         else {
             $builder = $this->db->table('attribute_definitions');
             $builder->select('definition_type');
-            $builder->where('definition_id', $definition_id);
+            $builder->where('definition_id', $definitionId);
             $builder->where('deleted', ACTIVE);
             $query = $builder->get();
             $row = $query->getRow();
 
             $from_definition_type = $row->definition_type;
-            $to_definition_type = $definition_data['definition_type'];
+            $to_definition_type = $definitionData['definition_type'];
 
             // Update definition values
             $builder->where('definition_id', $definitionId);
@@ -615,24 +615,28 @@ class Attribute extends Model
     }
 
     /**
-     * @param int $item_id
-     * @param int|bool $definition_id
-     * @return bool
+     * Deletes attribute links for a given item and optionally a given definition. Does not delete links where sale_id
+     * or receiving_id has a value. If a definitionId is not provided, deletes all attribute links for the item that do
+     * not have a sale_id or receiving_id value.
+     *
+     * @param int $itemId The item ID to delete links for.
+     * @param int|bool $definitionId The definition ID to delete links for. (optional)
+     * @return bool true if successful, false otherwise
      */
-    public function deleteAttributeLinks(int $item_id, int|bool $definition_id = false): bool
+    public function deleteAttributeLinks(int $itemId, int|bool $definitionId = false): bool
     {
-        $delete_data = ['item_id' => $item_id];
+        $deleteData = ['item_id' => $itemId];
 
         // Exclude rows where sale_id or receiving_id has a value
         $builder = $this->db->table('attribute_links');
         $builder->where('sale_id', null);
         $builder->where('receiving_id', null);
 
-        if (!empty($definition_id)) {
-            $delete_data += ['definition_id' => $definition_id];
+        if (!empty($definitionId)) {
+            $deleteData += ['definition_id' => $definitionId];
         }
 
-        return $builder->delete($delete_data);
+        return $builder->delete($deleteData);
     }
 
     /**
@@ -691,7 +695,7 @@ class Attribute extends Model
      * @param int $definition_id
      * @return object|null
      */
-    public function get_attribute_value(int $item_id, int $definition_id): ?object
+    public function getAttributeValue(int $item_id, int $definition_id): ?object
     {
         $builder = $this->db->table('attribute_values');
         $builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -819,16 +823,25 @@ class Attribute extends Model
     }
 
     /**
-     * @param string $attribute_value
-     * @param int $definition_id
-     * @param $item_id
-     * @param $attribute_id
-     * @param string $definition_type
-     * @return int
+     * Saves an attribute value and creates an attribute link between the attribute value and item if necessary.
+     * If the attribute value already exists, it will simply create a link to the existing attribute value.
+     * If the attribute value exists but only has capitalization differences, it will update the existing attribute
+     * value to match the new capitalization.
+     * @param string $attributeValue The attribute value to be saved.
+     * @param int $definitionId The ID of the attribute definition this value is associated with.
+     * @param int|bool $itemId The ID of the item to link this attribute value to. If false, NULL will be inserted into
+     * the database for that itemId indicating it is a dropdown value and not linked to a specific item.
+     * @param int|bool $attributeId The ID of the attribute value if it already exists and is being updated. If false,
+     * a new attribute value will be created.
+     * @param string $definitionType The type of the attribute definition which will dictate which column the attribute
+     * value is saved to.
+     * @return int The attribute ID of the saved attribute value.
      */
     public function saveAttributeValue(string $attributeValue, int $definitionId, int|bool $itemId = false, int|bool $attributeId = false, string $definitionType = DROPDOWN): int
     {
-        $config = config(OSPOS::class)->settings;
+        helper('attribute');
+        $dataType = getAttributeDataType($definitionType);
+
         if ($definitionType === DATE) {
             $config = config(OSPOS::class)->settings;
             $date = DateTime::createFromFormat($config['dateformat'], $attributeValue);
@@ -867,7 +880,7 @@ class Attribute extends Model
 
         $this->db->transComplete();
 
-        return $attribute_id;
+        return $attributeId;
     }
 
     /**
@@ -900,15 +913,14 @@ class Attribute extends Model
         return $builder->update(['deleted' => DELETED]);
     }
 
-	/**
-	 * Deletes attribute links by definition ID
-	 *
-	 * @param int|array $definition_id
-	 */
+    /**
+     * Deletes attribute links by definition ID
+     *
+     * @param int|array $definition_id
+     */
     public function deleteAttributeLinksByDefinitionId(int|array $definition_id): void
     {
-        if(!is_array($definition_id))
-        {
+        if (!is_array($definition_id)) {
             $definition_id = [$definition_id];
         }
 
@@ -952,7 +964,7 @@ class Attribute extends Model
      *
      * @return boolean true is returned if the delete was successful or false if there were any failures
      */
-    public function delete_orphaned_values(): bool
+    public function deleteOrphanedValues(): bool
     {
         $subquery = $this->db->table('attribute_links')
             ->distinct()
