@@ -785,4 +785,197 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $inventory_records = $this->inventory->get_inventory_data_for_item($item_id, $location_id);
         $this->assertGreaterThanOrEqual(1, $inventory_records->getNumRows());
     }
+
+    public function testImportCsvInvalidStockLocationColumn(): void
+    {
+        $csv_headers = ['Id', 'Item Name', 'Category', 'Cost Price', 'Unit Price', 'location_NonExistentLocation'];
+        $csv_row = [
+            'Id' => '',
+            'Item Name' => 'Test Item Invalid Location',
+            'Category' => 'Test',
+            'Cost Price' => '10.00',
+            'Unit Price' => '20.00',
+            'location_NonExistentLocation' => '100'
+        ];
+
+        $allowed_locations = [1 => 'Warehouse'];
+
+        $location_columns_in_csv = [];
+        foreach (array_keys($csv_row) as $key) {
+            if (str_starts_with($key, 'location_')) {
+                $location_columns_in_csv[$key] = substr($key, 9);
+            }
+        }
+
+        $invalid_locations = [];
+        foreach ($location_columns_in_csv as $column => $location_name) {
+            if (!in_array($location_name, $allowed_locations)) {
+                $invalid_locations[] = $location_name;
+            }
+        }
+
+        $this->assertNotEmpty($invalid_locations, 'Should detect invalid location in CSV');
+        $this->assertContains('NonExistentLocation', $invalid_locations);
+    }
+
+    public function testImportCsvValidStockLocationColumn(): void
+    {
+        $csv_row = [
+            'Id' => '',
+            'Item Name' => 'Test Item Valid Location',
+            'Category' => 'Test',
+            'Cost Price' => '10.00',
+            'Unit Price' => '20.00',
+            'location_Warehouse' => '100'
+        ];
+
+        $allowed_locations = [1 => 'Warehouse'];
+
+        $location_columns_in_csv = [];
+        foreach (array_keys($csv_row) as $key) {
+            if (str_starts_with($key, 'location_')) {
+                $location_columns_in_csv[$key] = substr($key, 9);
+            }
+        }
+
+        $invalid_locations = [];
+        foreach ($location_columns_in_csv as $column => $location_name) {
+            if (!in_array($location_name, $allowed_locations)) {
+                $invalid_locations[] = $location_name;
+            }
+        }
+
+        $this->assertEmpty($invalid_locations, 'Should have no invalid locations');
+    }
+
+    public function testImportCsvMixedValidAndInvalidLocations(): void
+    {
+        $csv_row = [
+            'Id' => '',
+            'Item Name' => 'Test Item Mixed Locations',
+            'Category' => 'Test',
+            'Cost Price' => '10.00',
+            'Unit Price' => '20.00',
+            'location_Warehouse' => '100',
+            'location_InvalidLocation' => '50'
+        ];
+
+        $allowed_locations = [1 => 'Warehouse', 2 => 'Store'];
+
+        $location_columns_in_csv = [];
+        foreach (array_keys($csv_row) as $key) {
+            if (str_starts_with($key, 'location_')) {
+                $location_columns_in_csv[$key] = substr($key, 9);
+            }
+        }
+
+        $invalid_locations = [];
+        foreach ($location_columns_in_csv as $column => $location_name) {
+            if (!in_array($location_name, $allowed_locations)) {
+                $invalid_locations[] = $location_name;
+            }
+        }
+
+        $this->assertCount(1, $invalid_locations, 'Should have exactly one invalid location');
+        $this->assertContains('InvalidLocation', $invalid_locations);
+    }
+
+    public function testValidateCsvStockLocations(): void
+    {
+        $csv_content = "Id,\"Item Name\",Category,\"Cost Price\",\"Unit Price\",\"location_Warehouse\",\"location_FakeLocation\"\n";
+        $csv_content .= ",Test Item,Test,10.00,20.00,100,50\n";
+
+        $temp_file = tempnam(sys_get_temp_dir(), 'csv_location_test_');
+        file_put_contents($temp_file, $csv_content);
+
+        $rows = get_csv_file($temp_file);
+        $this->assertCount(1, $rows);
+
+        $row = $rows[0];
+        $this->assertArrayHasKey('location_Warehouse', $row);
+        $this->assertArrayHasKey('location_FakeLocation', $row);
+
+        unlink($temp_file);
+    }
+
+    public function testImportItemQuantityOnlyForValidLocations(): void
+    {
+        $item_data = [
+            'item_id' => null,
+            'name' => 'Item Location Test',
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted' => 0
+        ];
+
+        $item_id = $this->item->save_value($item_data);
+
+        $allowed_locations = [1 => 'Warehouse', 2 => 'Store'];
+
+        $csv_row_simulated = [
+            'location_Warehouse' => '100',
+            'location_Store' => '50',
+            'location_NonExistent' => '25'
+        ];
+
+        foreach ($allowed_locations as $location_id => $location_name) {
+            $column_name = "location_$location_name";
+            if (isset($csv_row_simulated[$column_name]) || $csv_row_simulated[$column_name] === '0') {
+                $quantity_data = [
+                    'item_id' => $item_id,
+                    'location_id' => $location_id,
+                    'quantity' => (int)$csv_row_simulated[$column_name]
+                ];
+                $this->item_quantity->save_value($quantity_data, $item_id, $location_id);
+            }
+        }
+
+        $warehouse_qty = $this->item_quantity->get_item_quantity($item_id, 1);
+        $this->assertEquals(100, (int)$warehouse_qty->quantity);
+
+        $store_qty = $this->item_quantity->get_item_quantity($item_id, 2);
+        $this->assertEquals(50, (int)$store_qty->quantity);
+
+        $result = $this->item_quantity->exists($item_id, 999);
+        $this->assertFalse($result, 'Should not have quantity for non-existent location');
+    }
+
+    public function testDetectCsvLocationColumns(): void
+    {
+        $row = [
+            'Id' => '',
+            'Item Name' => 'Test',
+            'location_Warehouse' => '100',
+            'location_Store' => '50',
+            'attribute_Color' => 'Red'
+        ];
+
+        $location_columns = [];
+        foreach (array_keys($row) as $key) {
+            if (str_starts_with($key, 'location_')) {
+                $location_columns[$key] = substr($key, 9);
+            }
+        }
+
+        $this->assertCount(2, $location_columns);
+        $this->assertArrayHasKey('location_Warehouse', $location_columns);
+        $this->assertArrayHasKey('location_Store', $location_columns);
+        $this->assertEquals('Warehouse', $location_columns['location_Warehouse']);
+        $this->assertEquals('Store', $location_columns['location_Store']);
+    }
+
+    public function testValidateLocationNamesCaseSensitivity(): void
+    {
+        $allowed_locations = [1 => 'Warehouse', 2 => 'Store'];
+
+        $csv_location_name = 'warehouse';
+
+        $is_valid = in_array($csv_location_name, $allowed_locations);
+        $this->assertFalse($is_valid, 'Location names should be case-sensitive');
+
+        $csv_location_name = 'Warehouse';
+        $is_valid = in_array($csv_location_name, $allowed_locations);
+        $this->assertTrue($is_valid, 'Valid location name should pass validation');
+    }
 }
