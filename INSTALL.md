@@ -104,3 +104,34 @@ Do **not** use below command on live deployments unless you want to tear everyth
 
 If you choose DigitalOcean:
 [Through this link](https://m.do.co/c/ac38c262507b), you will get a [**free $100, 60-day credit**](https://m.do.co/c/ac38c262507b). [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) for further instructions on how to install the necessary components.
+
+## One-line Ubuntu Installation
+
+For a fresh Ubuntu server (20.04 LTS or newer), you can install OSPOS directly with:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | sudo bash
+```
+
+This script will:
+- Install Apache, MariaDB, PHP 8.2 and required extensions
+- Create a MySQL database and user with a secure random password
+- Download and configure OSPOS
+- Set up Apache virtual host
+- Display login credentials after completion
+
+**Environment Variables (optional):**
+- `DB_NAME` - Database name (default: ospos)
+- `DB_USER` - Database user (default: ospos)
+- `DB_PASS` - Database password (default: auto-generated)
+- `OSPOS_DIR` - Installation directory (default: /var/www/ospos)
+- `OSPOS_BRANCH` - Git branch to install (default: master)
+- `PHP_VERSION` - PHP version (default: 8.2)
+- `APACHE_SERVER_NAME` - Server hostname (default: localhost)
+
+Example with custom settings:
+```bash
+curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | DB_PASS=mypassword APACHE_SERVER_NAME=pos.example.com sudo -E bash
+```
+
+**Note:** This script is designed for fresh servers. For production use, ensure you configure SSL/TLS certificates after installation.
