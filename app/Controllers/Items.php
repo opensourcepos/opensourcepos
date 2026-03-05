@@ -1011,10 +1011,9 @@ class Items extends Secure_Controller
                             $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
                         }
 
-                        if (!empty($row['Barcode']) && !$is_update) {
-                            $item_data['item_number'] = $row['Barcode'];
-                            $is_failed_row = $this->item->item_number_exists($item_data['item_number']);
                         if (!empty($row['Barcode'])) {
+                            $itemData['item_number'] = $row['Barcode'];
+                            $isFailedRow = $this->item->item_number_exists($itemData['item_number']);
                         }
 
                         if (!$is_failed_row) {
