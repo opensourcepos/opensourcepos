@@ -95,6 +95,11 @@ helper('url');
                         <span class="glyphicon glyphicon-align-justify">&nbsp;</span><?= lang(ucfirst($controller_name) . '.suspended_sales') ?>
                     </button>
                 </li>
+                <li class="pull-right">
+                    <button class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+                        <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
+                    </button>
+                </li>
 
                 <?php
                 $employee = model(Employee::class);
@@ -585,13 +590,17 @@ helper('url');
                 $('.avatar-column').toggle();
                 localStorage.setItem('avatarColumnVisible', !isVisible);
                 $(this).toggleClass('active');
+                var $toggleText = $('#avatar_toggle_text');
+                $toggleText.text(isVisible ? 'Show Avatar' : 'Hide Avatar');
             });
 
             const redirect = function() {
                 window.location.href = "<?= site_url('sales'); ?>";
-            };        $("#remove_customer_button").click(function() {
-            $.post("<?= site_url('sales/removeCustomer'); ?>", redirect);
-        });
+            };
+
+            $("#remove_customer_button").click(function() {
+                $.post("<?= site_url('sales/removeCustomer'); ?>", redirect);
+            });
 
         $(".delete_item_button").click(function() {
             const item_id = $(this).data('item-id');

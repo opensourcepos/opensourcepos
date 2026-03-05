@@ -96,6 +96,11 @@ if (isset($success)) {
                     <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang('Sales.new_item') ?>
                 </button>
             </li>
+            <li class="pull-right">
+                <button class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+                    <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
+                </button>
+            </li>
         </ul>
     </div>
 
@@ -122,7 +127,7 @@ if (isset($success)) {
         <tbody id="cart_contents">
             <?php if (count($cart) == 0) { ?>
                 <tr>
-                    <td colspan="9">
+                    <td colspan="10">
                         <div class="alert alert-dismissible alert-info"><?= lang('Sales.no_items_in_cart') ?></div>
                     </td>
                 </tr>
@@ -544,6 +549,21 @@ if (isset($success)) {
             var input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked')) ? 1 : 0);
             $('#cart_' + $(this).attr('data-line')).append($(input));
             $('#cart_' + $(this).attr('data-line')).submit();
+        });
+
+        // Avatar toggle functionality
+        const isAvatarVisible = localStorage.getItem('avatarColumnVisible') !== 'false';
+        if (!isAvatarVisible) {
+            $('.avatar-column').hide();
+        }
+
+        $('#toggle_avatar_button').click(function() {
+            const isVisible = $('.avatar-column').is(':visible');
+            $('.avatar-column').toggle();
+            localStorage.setItem('avatarColumnVisible', !isVisible);
+            $(this).toggleClass('active');
+            var $toggleText = $('#avatar_toggle_text');
+            $toggleText.text(isVisible ? 'Show Avatar' : 'Hide Avatar');
         });
 
     });
