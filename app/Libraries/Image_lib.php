@@ -2,9 +2,23 @@
 
 namespace App\Libraries;
 
+use lsolesen\pel\PelIfd;
+use lsolesen\pel\PelJpeg;
+use lsolesen\pel\PelTag;
+
 class Image_lib
 {
-    public function stripEXIF(string $filepath, array $fields_to_remove = []): bool
+    private array $exif_to_pel_tags = [
+        'Make' => PelTag::MAKE,
+        'Model' => PelTag::MODEL,
+        'Orientation' => PelTag::ORIENTATION,
+        'Copyright' => PelTag::COPYRIGHT,
+        'Software' => PelTag::SOFTWARE,
+        'DateTime' => PelTag::DATE_TIME,
+        'GPS' => PelTag::GPS_OFFSET,
+    ];
+
+    public function stripEXIF(string $filepath, array $fields_to_keep = []): bool
     {
         if (!file_exists($filepath)) {
             return false;
@@ -18,7 +32,7 @@ class Image_lib
         }
 
         if ($mimetype === 'image/jpeg' || $mimetype === 'image/jpg') {
-            return $this->stripExifJpeg($filepath, $fields_to_remove);
+            return $this->stripExifJpeg($filepath, $fields_to_keep);
         }
 
         if ($mimetype === 'image/png') {
@@ -36,26 +50,60 @@ class Image_lib
         return true;
     }
 
-    private function stripExifJpeg(string $filepath, array $fields_to_remove = []): bool
+    private function stripExifJpeg(string $filepath, array $fields_to_keep = []): bool
     {
-        if (!function_exists('exif_read_data')) {
+        try {
+            $data = file_get_contents($filepath);
+            if ($data === false) {
+                return false;
+            }
+
+            $jpeg = new PelJpeg($data);
+
+            $exif = $jpeg->getExif();
+            if ($exif === null) {
+                return true;
+            }
+
+            $tiff = $exif->getTiff();
+            if ($tiff === null) {
+                return true;
+            }
+
+            $ifd0 = $tiff->getIfd();
+            if ($ifd0 !== null) {
+                $this->removeExifFields($ifd0, $fields_to_keep);
+
+                $subIfd = $ifd0->getSubIfd(PelTag::EXIF_IFD_POINTER);
+                if ($subIfd !== null) {
+                    $this->removeExifFields($subIfd, $fields_to_keep);
+                }
+            }
+
+            $gpsIfd = $tiff->getIfd(PelTag::GPS_IFD_POINTER);
+            if ($gpsIfd !== null && !in_array('GPS', $fields_to_keep)) {
+                $tiff->setIfd(null, PelTag::GPS_IFD_POINTER);
+            }
+
+            $jpeg->saveFile($filepath);
+            return true;
+        } catch (\Exception $e) {
             return $this->stripExifFallback($filepath);
         }
+    }
 
-        $image_info = @getimagesize($filepath);
-        if ($image_info === false) {
-            return false;
+    private function removeExifFields(PelIfd $ifd, array $fields_to_keep): void
+    {
+        $tags_to_remove = array_diff(array_keys($this->exif_to_pel_tags), $fields_to_keep);
+
+        foreach ($tags_to_remove as $field_name) {
+            $pel_tag = $this->exif_to_pel_tags[$field_name];
+            $entry = $ifd->getEntry($pel_tag);
+
+            if ($entry !== null) {
+                $ifd->removeEntry($pel_tag);
+            }
         }
-
-        $image = @imagecreatefromjpeg($filepath);
-        if ($image === false) {
-            return false;
-        }
-
-        $result = imagejpeg($image, $filepath, 100);
-        imagedestroy($image);
-
-        return $result;
     }
 
     private function stripExifPng(string $filepath): bool
@@ -113,18 +161,18 @@ class Image_lib
 
         $markers = [];
         $offset = 0;
-        
+
         while ($offset < strlen($content)) {
             if ($offset + 4 > strlen($content)) {
                 break;
             }
-            
+
             $marker = ord($content[$offset + 1]);
-            
+
             if (ord($content[$offset]) !== 0xFF) {
                 break;
             }
-            
+
             if ($marker >= 0xE0 && $marker <= 0xEF) {
                 $marker_len = ord($content[$offset + 2]) * 256 + ord($content[$offset + 3]);
                 $markers[] = [$offset, $marker_len + 2];

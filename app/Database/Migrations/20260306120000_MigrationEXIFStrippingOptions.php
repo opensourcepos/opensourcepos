@@ -24,7 +24,7 @@ class MigrationEXIFStrippingOptions extends Migration
             ],
             [
                 'key' => 'exif_fields_to_keep',
-                'value' => 'Copyright,Orientation'
+                'value' => 'Copyright,Orientation,Software'
             ]
         ];
 
