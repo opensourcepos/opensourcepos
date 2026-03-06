@@ -39,12 +39,12 @@ class Home extends Secure_Controller
      * @return string
      * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employeeId = DEFAULT_EMPLOYEE_ID): string
+    public function getChangePassword(int $employeeId = NEW_ENTRY): string
     {
         $loggedInEmployee = $this->employee->get_logged_in_employee_info();
         $currentPersonId = $loggedInEmployee->person_id;
 
-        $employeeId = $employeeId === DEFAULT_EMPLOYEE_ID ? $currentPersonId : $employeeId;
+        $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
 
         if (!$this->employee->can_modify_employee($employeeId, $currentPersonId)) {
             header('Location: ' . base_url('no_access/home/home'));
@@ -65,11 +65,11 @@ class Home extends Secure_Controller
      *
      * @return ResponseInterface
      */
-    public function postSave(int $employeeId = DEFAULT_EMPLOYEE_ID): ResponseInterface
+    public function postSave(int $employeeId = NEW_ENTRY): ResponseInterface
     {
         $currentUser = $this->employee->get_logged_in_employee_info();
 
-        $employeeId = $employeeId === DEFAULT_EMPLOYEE_ID ? $currentUser->person_id : $employeeId;
+        $employeeId = $employeeId === NEW_ENTRY ? $currentUser->person_id : $employeeId;
 
         if (!$this->employee->can_modify_employee($employeeId, $currentUser->person_id)) {
             return $this->response->setStatusCode(403)->setJSON([
@@ -78,7 +78,7 @@ class Home extends Secure_Controller
             ]);
         }
 
-        if (!empty($this->request->getPost('current_password')) && $employeeId != DEFAULT_EMPLOYEE_ID) {
+        if (!empty($this->request->getPost('current_password')) && $employeeId != NEW_ENTRY) {
             if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
                 // Validate password length BEFORE hashing
                 $new_password = $this->request->getPost('password');
@@ -87,7 +87,7 @@ class Home extends Secure_Controller
                     return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.password_minlength'),
-                        'id'      => DEFAULT_EMPLOYEE_ID
+                        'id'      => NEW_ENTRY
                     ]);
                 }
                 
@@ -107,21 +107,21 @@ class Home extends Secure_Controller
                     return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.unsuccessful_change_password'),
-                        'id'      => DEFAULT_EMPLOYEE_ID
+                        'id'      => NEW_ENTRY
                     ]);
                 }
             } else {
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Employees.current_password_invalid'),
-                    'id'      => DEFAULT_EMPLOYEE_ID
+                    'id'      => NEW_ENTRY
                 ]);
             }
         } else {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.current_password_invalid'),
-                'id'      => DEFAULT_EMPLOYEE_ID
+                'id'      => NEW_ENTRY
             ]);
         }
     }

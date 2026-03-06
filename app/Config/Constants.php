@@ -85,7 +85,6 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest a
  * Global Constants.
  */
 const NEW_ENTRY = -1;
-const DEFAULT_EMPLOYEE_ID = -1;
 const ACTIVE = 0;
 const DELETED = 1;
 
