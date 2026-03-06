@@ -42,7 +42,7 @@ before_install:
   - chmod a+x ~/.docker/cli-plugins/docker-buildx
   - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   - docker run --rm --privileged tonistiigi/binfmt --install all
-  - docker buildx create --name multiarch --driver docker-container --use --driver-opt image=tonistiigi/buildx:latest
+  - docker buildx create --name multiarch --driver docker-container --use
   - docker buildx inspect --bootstrap
 
 deploy:
