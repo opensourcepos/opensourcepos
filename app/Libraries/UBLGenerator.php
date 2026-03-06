@@ -22,12 +22,11 @@ use NumNum\UBL\Contact;
 
 helper(['country']);
 
-class Ubl_generator
+class UBLGenerator
 {
     public function generateUblInvoice(array $saleData): string
     {
         $taxScheme = (new TaxScheme())->setId('VAT');
-        
         $supplierParty = $this->buildSupplierParty($saleData, $taxScheme);
         $customerParty = $this->buildCustomerParty($saleData['customer_info'], $taxScheme);
         $invoiceLines = $this->buildInvoiceLines($saleData['cart'], $taxScheme);
@@ -56,7 +55,7 @@ class Ubl_generator
         $config = $saleData['config'];
         
         $addressParts = $this->parseAddress($config['address'] ?? '');
-        $countryCode = 'BE'; // Default to Belgium for supplier
+        $countryCode = 'BE'; // Default
         
         $country = (new Country())->setIdentificationCode($countryCode);
         $address = (new Address())
@@ -84,7 +83,7 @@ class Ubl_generator
     
     protected function buildCustomerParty(object $customerInfo, TaxScheme $taxScheme): AccountingParty
     {
-        $countryCode = get_country_code($customerInfo->country ?? '');
+        $countryCode = getCountryCode($customerInfo->country ?? '');
         
         $country = (new Country())->setIdentificationCode($countryCode);
         $address = (new Address())

@@ -7,14 +7,14 @@ use Config\OSPOS;
 /**
  * Country code helper for mapping country names to ISO 3166-1 alpha-2 codes
  */
-if (!function_exists('get_country_code')) {
+if (!function_exists('getCountryCode')) {
     /**
      * Convert country name to ISO 3166-1 alpha-2 code
      * 
      * @param string $countryName Country name (full name in English)
      * @return string ISO 3166-1 alpha-2 code, or 'BE' as default for Belgium
      */
-    function get_country_code(string $countryName): string
+    function getCountryCode(string $countryName): string
     {
         if (empty($countryName)) {
             return 'BE'; // Default to Belgium
@@ -190,14 +190,14 @@ if (!function_exists('get_country_code')) {
     }
 }
 
-if (!function_exists('get_currency_code')) {
+if (!function_exists('getCurrencyCode')) {
     /**
      * Get ISO 4217 currency code for a country
      * 
      * @param string $countryCode ISO 3166-1 alpha-2 country code
      * @return string ISO 4217 currency code
      */
-    function get_currency_code(string $countryCode): string
+    function getCurrencyCode(string $countryCode): string
     {
         $currencyMap = [
             'BE' => 'EUR',
