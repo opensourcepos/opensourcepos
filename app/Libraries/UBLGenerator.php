@@ -34,7 +34,7 @@ class UBLGenerator
         $monetaryTotal = $this->buildMonetaryTotal($saleData);
         
         $invoice = (new Invoice())
-            ->setUBLVersionId('2.4')
+            ->setUBLVersionId('2.1')
             ->setCustomizationId('urn:cen.eu:en16931:2017')
             ->setProfileId('urn:fdc:peppol.eu:2017:poacc:billing:01:1.0')
             ->setId($saleData['invoice_number'])
@@ -63,6 +63,7 @@ class UBLGenerator
             ->setBuildingNumber($addressParts['number'] ?? '')
             ->setCityName($addressParts['city'] ?? '')
             ->setPostalZone($addressParts['zip'] ?? '')
+            ->setCountrySubentity($config['state'] ?? '')
             ->setCountry($country);
         
         $party = (new Party())
@@ -91,6 +92,7 @@ class UBLGenerator
             ->setAddressLine([$customerInfo->address_2 ?? ''])
             ->setCityName($customerInfo->city ?? '')
             ->setPostalZone($customerInfo->zip ?? '')
+            ->setCountrySubentity($customerInfo->state ?? '')
             ->setCountry($country);
         
         $partyName = !empty($customerInfo->company_name) 
