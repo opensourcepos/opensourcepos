@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
+use App\Libraries\Image_lib;
 use App\Libraries\Mailchimp_lib;
 use App\Libraries\Receiving_lib;
 use App\Libraries\Sale_lib;
@@ -353,6 +354,13 @@ class Config extends Secure_Controller
         ];
 
         $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+
+        $exif_stripping_enabled = $this->appconfig->get_value('exif_stripping_enabled', '0');
+        if ($exif_stripping_enabled == '1') {
+            $image_lib = new Image_lib();
+            $exif_fields_to_keep = array_filter(explode(',', $this->appconfig->get_value('exif_fields_to_keep', 'Copyright,Orientation')));
+            $image_lib->stripEXIF(FCPATH . 'uploads/' . $file_info['raw_name'] . '.' . $file_info['file_ext'], $exif_fields_to_keep);
+        }
 
         return ($file_info);
     }
