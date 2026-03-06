@@ -2,9 +2,10 @@
 /**
  * Table Filter Persistence
  * 
- * This partial adds URL query string support for table filters.
- * It restores filters from URL on page load and updates URL when filters change,
- * allowing users to navigate away and back without losing filter state.
+ * This partial updates the URL when filters change, allowing users to
+ * share/bookmark filtered views and maintain state on back navigation.
+ * 
+ * Filter restoration from URL is handled server-side in the controller.
  * 
  * @param array $options Additional filter options
  *   - 'additional_params': Array of additional parameter names to track (e.g., ['stock_location'])
@@ -17,33 +18,9 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var url_params = new URLSearchParams(window.location.search);
         var additional_params = <?= json_encode($additional_params) ?>;
         var filter_select_id = '<?= esc($filter_select_id) ?>';
         
-        // Restore start_date and end_date from URL
-        if (url_params.has('start_date')) {
-            start_date = url_params.get('start_date');
-        }
-        if (url_params.has('end_date')) {
-            end_date = url_params.get('end_date');
-        }
-        
-        // Restore additional params from URL
-        var restored_params = {};
-        additional_params.forEach(function(param) {
-            var values = url_params.getAll(param + '[]');
-            if (values.length > 0) {
-                restored_params[param] = values;
-            } else if (url_params.has(param)) {
-                restored_params[param] = url_params.get(param);
-            }
-        });
-        
-        // Restore filters[] from URL
-        var url_filters = url_params.getAll('filters[]');
-        
-        // Define update_url function first
         function update_url() {
             var params = new URLSearchParams();
             
@@ -90,60 +67,18 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
         // Update URL when filter dropdown changes
         $('#' + filter_select_id).on('hidden.bs.select', function(e) {
             update_url();
-            table_support.refresh();
         });
         
         // Update URL when stock location changes (if exists)
         if ($('#stock_location').length) {
             $("#stock_location").change(function() {
                 update_url();
-                table_support.refresh();
             });
         }
         
         // Update URL when daterangepicker changes
         $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
             update_url();
-            table_support.refresh();
         });
-        
-        // Initialize filters from URL after all components are loaded
-        setTimeout(function() {
-            // Restore daterangepicker dates
-            if (url_params.has('start_date') || url_params.has('end_date')) {
-                var daterangepicker = $('#daterangepicker').data('daterangepicker');
-                if (daterangepicker) {
-                    if (url_params.has('start_date')) {
-                        daterangepicker.setStartDate(moment(start_date));
-                    }
-                    if (url_params.has('end_date')) {
-                        daterangepicker.setEndDate(moment(end_date));
-                    }
-                }
-            }
-            
-            // Restore filter multiselect values
-            if (url_filters.length > 0) {
-                $('#' + filter_select_id).selectpicker('val', url_filters);
-            }
-            
-            // Restore additional params
-            additional_params.forEach(function(param) {
-                if (restored_params[param] !== undefined) {
-                    var element;
-                    if (Array.isArray(restored_params[param])) {
-                        element = $('#' + param).val(restored_params[param]);
-                    } else {
-                        element = $('#' + param).val(restored_params[param]);
-                    }
-                    if (element && element.data('selectpicker')) {
-                        element.selectpicker('refresh');
-                    }
-                }
-            });
-            
-            // Refresh table with restored filters
-            table_support.refresh();
-        }, 100);
     });
 </script>
