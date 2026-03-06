@@ -500,7 +500,7 @@ class Items extends Secure_Controller
         $data['definition_names'] = $this->attribute->get_definition_names();
 
         foreach ($data['definition_values'] as $definition_id => $definition_value) {
-            $attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
+            $attribute_value = $this->attribute->getAttributeValue($item_id, $definition_id);
             $attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
             $values = &$data['definition_values'][$definition_id];
             $values['attribute_id'] = $attribute_id;
@@ -536,7 +536,7 @@ class Items extends Secure_Controller
         $data['definition_names'] = $this->attribute->get_definition_names();
 
         foreach ($data['definition_values'] as $definition_id => $definition_value) {
-            $attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
+            $attribute_value = $this->attribute->getAttributeValue($item_id, $definition_id);
             $attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
             $values = &$data['definition_values'][$definition_id];
             $values['attribute_id'] = $attribute_id;
@@ -932,7 +932,7 @@ class Items extends Secure_Controller
      */
     public function getGenerateCsvFile(): DownloadResponse
     {
-        helper('importfile_helper');
+        helper('importfile');
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
         $allowed_attributes = $this->attribute->get_definition_names();
@@ -958,7 +958,7 @@ class Items extends Secure_Controller
      */
     public function postImportCsvFile(): ResponseInterface
     {
-        helper('importfile_helper');
+        helper('importfile');
         try {
             if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK) {
                 return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_failed')]);
@@ -967,31 +967,31 @@ class Items extends Secure_Controller
                     set_time_limit(240);
 
                     $failCodes = [];
-                    $csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
-                    $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-                    $allowed_stock_locations = $this->stock_location->get_allowed_locations();
-                    $attribute_definition_names    = $this->attribute->get_definition_names();
+                    $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
+                    $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+                    $allowedStockLocations = $this->stock_location->get_allowed_locations();
+                    $attributeDefinitionNames    = $this->attribute->get_definition_names();
 
-                    unset($attribute_definition_names[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
+                    unset($attributeDefinitionNames[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
 
-                    $attribute_data = [];
+                    $attributeData = [];
 
-                    foreach ($attribute_definition_names as $definition_name) {
-                        $attribute_data[$definition_name] = $this->attribute->get_definition_by_name($definition_name)[0];
+                    foreach ($attributeDefinitionNames as $definitionName) {
+                        $attributeData[$definitionName] = $this->attribute->get_definition_by_name($definitionName)[0];
 
-                        if ($attribute_data[$definition_name]['definition_type'] === DROPDOWN) {
-                            $attribute_data[$definition_name]['dropdown_values'] = $this->attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
+                        if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
+                            $attributeData[$definitionName]['dropdown_values'] = $this->attribute->get_definition_values($attributeData[$definitionName]['definition_id']);
                         }
                     }
                     $db = db_connect();
                     $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
 
-                    foreach ($csv_rows as $key => $row) {
-                        $is_failed_row = false;
-                        $item_id = (int)$row['Id'];
-                        $is_update = ($item_id > 0);
-                        $item_data = [
-                            'item_id'       => $item_id,
+                    foreach ($csvRows as $key => $row) {
+                        $isFailedRow = false;
+                        $itemId = (int)$row['Id'];
+                        $isUpdate = ($itemId > 0);
+                        $itemData = [
+                            'item_id'       => $itemId,
                             'name'          => $row['Item Name'],
                             'description'   => $row['Description'],
                             'category'      => $row['Category'],
@@ -1004,53 +1004,49 @@ class Items extends Secure_Controller
                         ];
 
                         if (!empty($row['supplier ID'])) {
-                            $item_data['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
+                            $itemData['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
                         }
 
-                        if ($is_update) {
-                            $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? null : $row['Allow Alt Description'];
-                            $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? null : $row['Item has Serial Number'];
+                        if ($isUpdate) {
+                            $itemData['allow_alt_description'] = empty($row['Allow Alt Description']) ? null : $row['Allow Alt Description'];
+                            $itemData['is_serialized'] = empty($row['Item has Serial Number']) ? null : $row['Item has Serial Number'];
                         } else {
-                            $item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? '0' : '1';
-                            $item_data['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
+                            $itemData['allow_alt_description'] = empty($row['Allow Alt Description']) ? '0' : '1';
+                            $itemData['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
                         }
 
-                        if (!empty($row['Barcode']) && !$is_update) {
-                            $item_data['item_number'] = $row['Barcode'];
-                            $is_failed_row = $this->item->item_number_exists($item_data['item_number']);
+                        if (!empty($row['Barcode'])) {
+                            $itemData['item_number'] = $row['Barcode'];
+                            $isFailedRow = $this->item->item_number_exists($itemData['item_number']);
                         }
 
-                        if (!$is_failed_row) {
-                            $invalidLocations = $this->validateCSVStockLocations($row, $allowedStockLocations);
-                            if (!empty($invalidLocations)) {
-                                $isFailedRow = true;
-                                log_message('error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations));
-                            }
+                        if (!$isFailedRow) {
+                            $isFailedRow = $this->validateCSVData($row, $itemData, $allowedStockLocations, $attributeDefinitionNames, $attributeData);
                         }
 
                         // Remove false, null, '' and empty strings but keep 0
-                        $item_data = array_filter($item_data, function ($value) {
+                        $itemData = array_filter($itemData, function ($value) {
                             return $value !== null && strlen($value);
                         });
 
-                        if (!$is_failed_row && $this->item->save_value($item_data, $item_id)) {
-                            $this->save_tax_data($row, $item_data);
-                            $this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
-                            $is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);    // TODO: $is_failed_row never gets used after this.
+                        if (!$isFailedRow && $this->item->save_value($itemData, $itemId)) {
+                            $this->save_tax_data($row, $itemData);
+                            $this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId);
+                            $isFailedRow = $this->saveAttributeData($row, $itemData, $attributeData);    // TODO: $is_failed_row never gets used after this.
 
-                            if ($is_update) {
-                                $item_data = array_merge($item_data, get_object_vars($this->item->get_info_by_id_or_number($item_id)));
+                            if ($isUpdate) {
+                                $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
                             }
                         } else {
-                            $failed_row = $key + 2;
-                            $failCodes[] = $failed_row;
-                            log_message('error', "CSV Item import failed on line $failed_row. This item was not imported.");
+                            $failedRow = $key + 2;
+                            $failCodes[] = $failedRow;
+                            log_message('error', "CSV Item import failed on line $failedRow. This item was not imported.");
                         }
 
-                        unset($csv_rows[$key]);
+                        unset($csvRows[$key]);
                     }
 
-                    $csv_rows = null;
+                    $csvRows = null;
 
                     if (count($failCodes) > 0) {
                         $message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
@@ -1058,6 +1054,7 @@ class Items extends Secure_Controller
                         return $this->response->setJSON(['success' => false, 'message' => $message]);
                     } else {
                         $db->transCommit();
+                        $this->attribute->deleteOrphanedValues();
 
                         return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }
@@ -1099,87 +1096,98 @@ class Items extends Secure_Controller
      * Checks the entire line of data in an import file for errors
      *
      * @param array $row
-     * @param array $item_data
-     * @param array $allowed_locations
-     * @param array $definition_names
-     * @param array $attribute_data
+     * @param array $itemData
+     * @param array $allowedStockLocations
+     * @param array $definitionNames
+     * @param array $attributeData
      * @return    bool    Returns false if all data checks out and true when there is an error in the data
      */
-    private function data_error_check(array $row, array $item_data, array $allowed_locations, array $definition_names, array $attribute_data): bool    // TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed
+    private function validateCSVData(array $row, array $itemData, array $allowedStockLocations, array $definitionNames, array $attributeData): bool    // TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed
     {
-        $item_id = $row['Id'];
-        $is_update = (bool)$item_id;
+        $itemId = $row['Id'];
+        $isUpdate = (bool)$itemId;
 
         // Check for empty required fields
-        $check_for_empty = [
-            'name'       => $item_data['name'],
-            'category'   => $item_data['category'],
-            'unit_price' => $item_data['unit_price']
+        $valuesToCheckForEmpty = [
+            'name'       => $itemData['name'],
+            'category'   => $itemData['category'],
+            'unit_price' => $itemData['unit_price']
         ];
 
-        foreach ($check_for_empty as $key => $val) {
-            if (empty($val) && !$is_update) {
+        foreach ($valuesToCheckForEmpty as $key => $val) {
+            if (empty($val) && !$isUpdate) {
                 log_message('error', "Empty required value in $key.");
                 return true;
             }
         }
 
-        if (!$is_update) {
-            $item_data['cost_price'] = empty($item_data['cost_price']) ? 0 : $item_data['cost_price'];    // Allow for zero wholesale price
+        if (!$isUpdate) {
+            $itemData['cost_price'] = empty($itemData['cost_price']) ? 0 : $itemData['cost_price'];    // Allow for zero wholesale price
         } else {
-            if (!$this->item->exists($item_id)) {
-                log_message('error', "non-existent item_id: '$item_id' when either existing item_id or no item_id is required.");
+            if (!$this->item->exists($itemId)) {
+                log_message('error', "non-existent item_id: '$itemId' when either existing item_id or no item_id is required.");
                 return true;
             }
         }
 
         // Build array of fields to check for numerics
-        $check_for_numeric_values = [
-            'cost_price'    => $item_data['cost_price'],
-            'unit_price'    => $item_data['unit_price'],
-            'reorder_level' => $item_data['reorder_level'],
+        $valuesToCheckForNumeric = [
+            'cost_price'    => $itemData['cost_price'],
+            'unit_price'    => $itemData['unit_price'],
+            'reorder_level' => $itemData['reorder_level'],
             'supplier_id'   => $row['Supplier ID'],
             'Tax 1 Percent' => $row['Tax 1 Percent'],
             'Tax 2 Percent' => $row['Tax 2 Percent']
         ];
 
-        foreach ($allowed_locations as $location_name) {
-            $check_for_numeric_values[] = $row["location_$location_name"];
+        foreach ($allowedStockLocations as $location_name) {
+            $valuesToCheckForNumeric[] = $row["location_$location_name"];
         }
 
         // Check for non-numeric values which require numeric
-        foreach ($check_for_numeric_values as $key => $value) {
+        foreach ($valuesToCheckForNumeric as $key => $value) {
             if (!is_numeric($value) && !empty($value)) {
                 log_message('error', "non-numeric: '$value' for '$key' when numeric is required");
                 return true;
             }
         }
 
+        // Check stock locations
+        $invalidLocations = $this->validateCSVStockLocations($row, $allowedStockLocations);
+        if (!empty($invalidLocations)) {
+            $isFailedRow = true;
+            log_message('error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations));
+        }
+
         // Check Attribute Data
-        foreach ($definition_names as $definition_name) {
-            if (!empty($row["attribute_$definition_name"])) {
-                $definition_type = $attribute_data[$definition_name]['definition_type'];
-                $attribute_value = $row["attribute_$definition_name"];
+        foreach ($definitionNames as $definitionName) {
+            if (!empty($row["attribute_$definitionName"])) {
+                $definitionType = $attributeData[$definitionName]['definition_type'];
+                $attributeValue = $row["attribute_$definitionName"];
 
-                switch ($definition_type) {
+                if (strcasecmp($attributeValue, '_DELETE_') === 0) {
+                    continue;
+                }
+
+                switch ($definitionType) {
                     case DROPDOWN:
-                        $dropdown_values = $attribute_data[$definition_name]['dropdown_values'];
-                        $dropdown_values[] = '';
+                        $dropdownValues = $attributeData[$definitionName]['dropdown_values'];
+                        $dropdownValues[] = '';
 
-                        if (!empty($attribute_value) && !in_array($attribute_value, $dropdown_values)) {
-                            log_message('error', "Value: '$attribute_value' is not an acceptable DROPDOWN value");
+                        if (!empty($attributeValue) && !in_array($attributeValue, $dropdownValues)) {
+                            log_message('error', "Value: '$attributeValue' is not an acceptable DROPDOWN value");
                             return true;
                         }
                         break;
                     case DECIMAL:
-                        if (!is_numeric($attribute_value) && !empty($attribute_value)) {
-                            log_message('error', "'$attribute_value' is not an acceptable DECIMAL value");
+                        if (!is_numeric($attributeValue) && !empty($attributeValue)) {
+                            log_message('error', "'$attributeValue' is not an acceptable DECIMAL value");
                             return true;
                         }
                         break;
                     case DATE:
-                        if (!valid_date($attribute_value) && !empty($attribute_value)) {
-                            log_message('error', "'$attribute_value' is not an acceptable DATE value. The value must match the set locale.");
+                        if (!valid_date($attributeValue) && !empty($attributeValue)) {
+                            log_message('error', "'$attributeValue' is not an acceptable DATE value. The value must match the set locale.");
                             return true;
                         }
                         break;
@@ -1191,28 +1199,36 @@ class Items extends Secure_Controller
     }
 
     /**
-     * Saves attribute data found in the CSV import.
+     * Saves attribute data found in one row of a CSV import file. Loops through all attribute definitions and checks
+     * if there is data for that attribute in the row. If there is, it saves the attribute value and link to the item.
      *
-     * @param array $row
-     * @param array $item_data
-     * @param array $definitions
-     * @return bool
+     * @param array $row Contains all parsed data from one row of the CSV import file
+     * @param array $itemData Contains data for the item being imported/updated from the CSV file.
+     * @param array $definitions Contains all attribute definitions in the system.
+     * @return bool Returns false if all attribute data saves correctly and true if there is an error saving any of
+     * the attribute data.
      */
-    private function save_attribute_data(array $row, array $item_data, array $definitions): bool
+    private function saveAttributeData(array $row, array $itemData, array $definitions): bool
     {
+        helper('attribute');
         foreach ($definitions as $definition) {
-            $attribute_name = $definition['definition_name'];
-            $attribute_value = $row["attribute_$attribute_name"];
+            $attributeName = $definition['definition_name'];
+            $attributeValue = $row["attribute_$attributeName"];
+
+            if (isset($attributeValue) && strcasecmp($attributeValue, '_DELETE_') === 0) {
+                $this->attribute->deleteAttributeLinks($itemData['item_id'], $definition['definition_id']);
+                continue;
+            }
 
             // Create attribute value
-            if (!empty($attribute_value) || $attribute_value === '0') {
+            if (!empty($attributeValue) || $attributeValue === '0') {
                 if ($definition['definition_type'] === CHECKBOX) {
-                    $checkbox_is_unchecked = (strcasecmp($attribute_value, 'false') === 0 || $attribute_value === '0');
-                    $attribute_value = $checkbox_is_unchecked ? '0' : '1';
+                    $checkbox_is_unchecked = (strcasecmp($attributeValue, 'false') === 0 || $attributeValue === '0');
+                    $attributeValue = $checkbox_is_unchecked ? '0' : '1';
 
-                    $attribute_id = $this->store_attribute_value($attribute_value, $definition, $item_data['item_id']);
-                } elseif (!empty($attribute_value)) {
-                    $attribute_id = $this->store_attribute_value($attribute_value, $definition, $item_data['item_id']);
+                    $attribute_id = $this->storeAttributeValue($attributeValue, $definition, $itemData['item_id']);
+                } elseif (!empty($attributeValue)) {
+                    $attribute_id = $this->storeAttributeValue($attributeValue, $definition, $itemData['item_id']);
                 } else {
                     return true;
                 }
@@ -1227,20 +1243,36 @@ class Items extends Secure_Controller
 
     /**
      * Saves the attribute_value and attribute_link if necessary
+     * @param string $value
+     * @param array $attributeData
+     * @param int $itemId
+     * @return bool|int
      */
-    private function store_attribute_value(string $value, array $attribute_data, int $item_id)
+    private function storeAttributeValue(string $value, array $attributeData, int $itemId): bool|int
     {
-        $attribute_id = $this->attribute->attributeValueExists($value, $attribute_data['definition_type']);
+        $attributeId = $this->attribute->attributeValueExists($value, $attributeData['definition_type']);
 
-        $this->attribute->deleteAttributeLinks($item_id, $attribute_data['definition_id']);
+        $this->attribute->deleteAttributeLinks($itemId, $attributeData['definition_id']);
 
-        if (!$attribute_id) {
-            $attribute_id = $this->attribute->saveAttributeValue($value, $attribute_data['definition_id'], $item_id, false, $attribute_data['definition_type']);
-        } elseif (!$this->attribute->saveAttributeLink($item_id, $attribute_data['definition_id'], $attribute_id)) {
-            return false;
+        if (!$attributeId) {
+            $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
+        } else {
+            helper('attribute');
+            $dataType = getAttributeDataType($attributeData['definition_type']);
+            $storedValue = $this->attribute->getAttributeValueByAttributeId($attributeId, $dataType);
+
+            // Update attribute value if only the case has changed and only for text values.
+            if ($dataType === 'attribute_value'
+                && is_string($storedValue)
+                && strcasecmp($storedValue, $value) === 0
+                && $storedValue !== $value) {
+                $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
+            } elseif (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
+                return false;
+            }
         }
 
-        return $attribute_id;
+        return $attributeId;
     }
 
     /**
@@ -1351,16 +1383,17 @@ class Items extends Secure_Controller
             switch ($definitionType) {
                 case DROPDOWN:
                     $attributeId = $attributeValue;
+                    $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
                     break;
                 case DECIMAL:
                     $attributeValue = parse_decimals($attributeValue);
-                // Fall through to save the attribute value
+                    // no break
                 default:
                     $attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);
                     break;
             }
-
-            $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
         }
+
+        $this->attribute->deleteOrphanedValues();
     }
 }
