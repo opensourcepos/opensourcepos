@@ -154,31 +154,36 @@ class UBLGenerator
     
     protected function buildTaxTotal(array $taxes, TaxScheme $taxScheme): TaxTotal
     {
-        $totalTax = 0;
+        $totalTax = '0';
         $taxSubTotals = [];
         
         foreach ($taxes as $tax) {
             if (isset($tax['tax_rate'])) {
-                $taxRate = (float)$tax['tax_rate'];
-                $taxAmount = (float)($tax['sale_tax_amount'] ?? 0);
+                $taxRate = (string)$tax['tax_rate'];
+                $taxAmount = (string)($tax['sale_tax_amount'] ?? 0);
                 
                 $taxCategory = (new TaxCategory())
                     ->setId('S')
-                    ->setPercent($taxRate)
+                    ->setPercent((float)$taxRate)
                     ->setTaxScheme($taxScheme);
                 
+                $taxableAmount = '0';
+                if (bccomp($taxRate, '0') > 0) {
+                    $taxableAmount = bcdiv($taxAmount, bcdiv($taxRate, '100'), 10);
+                }
+                
                 $taxSubTotal = (new TaxSubTotal())
-                    ->setTaxableAmount($taxRate > 0 ? $taxAmount / ($taxRate / 100) : $taxAmount)
-                    ->setTaxAmount($taxAmount)
+                    ->setTaxableAmount((float)$taxableAmount)
+                    ->setTaxAmount((float)$taxAmount)
                     ->setTaxCategory($taxCategory);
                 
                 $taxSubTotals[] = $taxSubTotal;
-                $totalTax += $taxAmount;
+                $totalTax = bcadd($totalTax, $taxAmount);
             }
         }
         
         $taxTotal = new TaxTotal();
-        $taxTotal->setTaxAmount($totalTax);
+        $taxTotal->setTaxAmount((float)$totalTax);
         foreach ($taxSubTotals as $subTotal) {
             $taxTotal->addTaxSubTotal($subTotal);
         }
@@ -188,15 +193,15 @@ class UBLGenerator
     
     protected function buildMonetaryTotal(array $saleData): LegalMonetaryTotal
     {
-        $subtotal = (float)($saleData['subtotal'] ?? 0);
-        $total = (float)($saleData['total'] ?? 0);
-        $amountDue = (float)($saleData['amount_due'] ?? 0);
+        $subtotal = (string)($saleData['subtotal'] ?? 0);
+        $total = (string)($saleData['total'] ?? 0);
+        $amountDue = (string)($saleData['amount_due'] ?? 0);
         
         return (new LegalMonetaryTotal())
-            ->setLineExtensionAmount($subtotal)
-            ->setTaxExclusiveAmount($subtotal)
-            ->setTaxInclusiveAmount($total)
-            ->setPayableAmount($amountDue);
+            ->setLineExtensionAmount((float)$subtotal)
+            ->setTaxExclusiveAmount((float)$subtotal)
+            ->setTaxInclusiveAmount((float)$total)
+            ->setPayableAmount((float)$amountDue);
     }
     
     protected function parseAddress(string $address): array
@@ -213,6 +218,9 @@ class UBLGenerator
         if (!empty($parts)) {
             $result['street'] = $parts[0];
             if (isset($parts[1])) {
+                // Match 4-5 digit postal codes (e.g., 1234, 12345) followed by city name
+                // Note: This handles common European formats. International formats
+                // like UK postcodes (e.g., "SW1A 2AA") may need additional handling.
                 if (preg_match('/(\d{4,5})\s*(.+)/', $parts[1], $matches)) {
                     $result['zip'] = $matches[1];
                     $result['city'] = $matches[2];

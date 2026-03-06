@@ -1312,6 +1312,12 @@ class Sales extends Secure_Controller
      */
     public function getUBLInvoice(int $sale_id): ResponseInterface
     {
+        $sale_info = $this->sale->get_info($sale_id)->getRowArray();
+        
+        if (empty($sale_info)) {
+            return $this->response->setStatusCode(404)->setBody(lang('Sales.sale_not_found'));
+        }
+
         $sale_data = $this->_load_sale_data($sale_id);
 
         helper(['file']);
