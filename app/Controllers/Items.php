@@ -1093,12 +1093,12 @@ class Items extends Secure_Controller
      *
      * @param array $row
      * @param array $itemData
-     * @param array $allowedLocations
+     * @param array $allowedStockLocations
      * @param array $definitionNames
      * @param array $attributeData
      * @return    bool    Returns false if all data checks out and true when there is an error in the data
      */
-    private function validateCSVData(array $row, array $itemData, array $allowedLocations, array $definitionNames, array $attributeData): bool    // TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed
+    private function validateCSVData(array $row, array $itemData, array $allowedStockLocations, array $definitionNames, array $attributeData): bool    // TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed
     {
         $itemId = $row['Id'];
         $isUpdate = (bool)$itemId;
@@ -1136,7 +1136,7 @@ class Items extends Secure_Controller
             'Tax 2 Percent' => $row['Tax 2 Percent']
         ];
 
-        foreach ($allowedLocations as $location_name) {
+        foreach ($allowedStockLocations as $location_name) {
             $valuesToCheckForNumeric[] = $row["location_$location_name"];
         }
 
