@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Migration_add_ubl_config extends Migration
+class MigrationAddUblConfig extends Migration
 {
     public function up(): void
     {

@@ -224,6 +224,6 @@ return [
     "work_order_sent"                  => "Work Order sent to",
     "work_order_unsent"                => "Work Order failed to be sent to",
     "ubl_invoice"                      => "UBL Invoice",
-    "download_ubl"                     => "Download UBL",
+    "download_ubl"                     => "Download UBL Invoice",
     "ubl_generation_failed"            => "Failed to generate UBL invoice",
 ];

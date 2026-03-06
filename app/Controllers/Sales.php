@@ -901,13 +901,13 @@ class Sales extends Secure_Controller
 
             if ($invoiceFormat === 'ubl_only' || $invoiceFormat === 'both') {
                 require(ROOTPATH . 'vendor/autoload.php');
-                $ubl_generator = new \App\Libraries\Ubl_generator();
+                $ublGenerator = new \App\Libraries\UBLGenerator();
 
                 try {
-                    $xml = $ubl_generator->generateUblInvoice($sale_data);
-                    $ubl_filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.xml';
-                    if (file_put_contents($ubl_filename, $xml) !== false) {
-                        $attachments[] = $ubl_filename;
+                    $xml = $ublGenerator->generateUblInvoice($sale_data);
+                    $ublFilename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.xml';
+                    if (file_put_contents($ublFilename, $xml) !== false) {
+                        $attachments[] = $ublFilename;
                     }
                 } catch (\Exception $e) {
                     log_message('error', 'UBL attachment generation failed: ' . $e->getMessage());
@@ -1275,25 +1275,23 @@ class Sales extends Secure_Controller
     }
 
     /**
-     * Edits an existing sale or work order. Used in app/Views/sales/form.php
-     *
      * Generate and download UBL invoice
      *
      * @param int $sale_id
      * @return ResponseInterface
      * @throws \Exception
      */
-    public function getUblInvoice(int $sale_id): ResponseInterface
+    public function getUBLInvoice(int $sale_id): ResponseInterface
     {
         $sale_data = $this->_load_sale_data($sale_id);
 
         helper(['file']);
         
         require(ROOTPATH . 'vendor/autoload.php');
-        $ubl_generator = new \App\Libraries\Ubl_generator();
+        $ublGenerator = new \App\Libraries\UBLGenerator();
 
         try {
-            $xml = $ubl_generator->generateUblInvoice($sale_data);
+            $xml = $ublGenerator->generateUblInvoice($sale_data);
 
             $filename = lang('Sales.invoice') . '-' . str_replace('/', '-', $sale_data['invoice_number']) . '.xml';
 

@@ -124,7 +124,7 @@ function get_sale_data_row(object $sale): array
         $row['ubl'] = empty($sale->invoice_number)
             ? '-'
             : anchor(
-                "$controller/getUblInvoice/$sale->sale_id",
+                "$controller/getUBLInvoice/$sale->sale_id",
                 '<span class="glyphicon glyphicon-download"></span>',
                 ['title' => lang('Sales.download_ubl'), 'target' => '_blank']
             );
