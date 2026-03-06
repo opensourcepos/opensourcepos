@@ -1,0 +1,2153 @@
+openapi: 3.1.0
+
+info:
+  title: OSPOS API
+  description: |
+    Open Source Point of Sale (OSPOS) RESTful API.
+    
+    This API provides programmatic access to customers, suppliers, items, inventory,
+    sales, and receivings data.
+    
+    ## Authentication
+    All endpoints require an API Key passed in the `X-API-Key` header.
+    
+    ## Pagination
+    List endpoints support pagination using `offset` and `limit` query parameters.
+    
+    ## Error Handling
+    Errors return a standard error object with `success: false` and a `message` field.
+  version: 1.0.0
+  contact:
+    name: OSPOS Development Team
+    url: https://github.com/opensourcepos/opensourcepos
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: /api/v1
+    description: Relative to server root
+
+tags:
+  - name: Customers
+    description: Customer management operations
+  - name: Suppliers
+    description: Supplier management operations
+  - name: Items
+    description: Item/product catalog operations
+  - name: Inventory
+    description: Inventory stock adjustment operations
+  - name: Sales
+    description: Sales transaction queries (read-only)
+  - name: Receivings
+    description: Receiving transaction queries (read-only)
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API Key for authentication
+
+  schemas:
+    # Base Person schema
+    Person:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 255
+          description: First name
+        last_name:
+          type: string
+          maxLength: 255
+          description: Last name
+        gender:
+          type: integer
+          enum: [0, 1]
+          nullable: true
+          description: Gender (0=male, 1=female)
+        phone_number:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Phone number
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          nullable: true
+          description: Email address
+        address_1:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Address line 1
+        address_2:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Address line 2
+        city:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: City
+        state:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: State/Province
+        zip:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Postal/ZIP code
+        country:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Country
+        comments:
+          type: string
+          nullable: true
+          description: Additional comments
+
+    Customer:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            person_id:
+              type: integer
+              readOnly: true
+              description: Unique identifier
+            account_number:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Customer account number
+            taxable:
+              type: integer
+              enum: [0, 1]
+              default: 1
+              description: Whether customer is taxable
+            tax_id:
+              type: string
+              maxLength: 32
+              nullable: true
+              description: Tax ID
+            sales_tax_code_id:
+              type: integer
+              nullable: true
+              description: Sales tax code ID
+            discount:
+              type: number
+              format: decimal
+              default: 0
+              description: Discount percentage or fixed amount
+            discount_type:
+              type: integer
+              enum: [0, 1]
+              default: 0
+              description: 'Discount type: 0=percent, 1=fixed'
+            company_name:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Company name
+            package_id:
+              type: integer
+              nullable: true
+              description: Rewards package ID
+            points:
+              type: integer
+              nullable: true
+              description: Rewards points balance
+            date:
+              type: string
+              format: date-time
+              description: Customer registration date
+            employee_id:
+              type: integer
+              description: Employee who created/modified the customer
+            consent:
+              type: integer
+              enum: [0, 1]
+              default: 0
+              description: Customer consent status
+            deleted:
+              type: integer
+              enum: [0, 1]
+              default: 0
+              description: Soft delete flag
+
+    CustomerInput:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            account_number:
+              type: string
+              maxLength: 255
+              nullable: true
+            taxable:
+              type: integer
+              enum: [0, 1]
+              default: 1
+            tax_id:
+              type: string
+              maxLength: 32
+              nullable: true
+            sales_tax_code_id:
+              type: integer
+              nullable: true
+            discount:
+              type: number
+              default: 0
+            discount_type:
+              type: integer
+              enum: [0, 1]
+              default: 0
+            company_name:
+              type: string
+              maxLength: 255
+              nullable: true
+            package_id:
+              type: integer
+              nullable: true
+            consent:
+              type: integer
+              enum: [0, 1]
+              default: 0
+
+    Supplier:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            person_id:
+              type: integer
+              readOnly: true
+              description: Unique identifier
+            company_name:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Company name
+            account_number:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Supplier account number
+            tax_id:
+              type: string
+              maxLength: 32
+              nullable: true
+              description: Tax ID
+            agency_name:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Agency name
+            category:
+              type: integer
+              description: 'Supplier category: 0=goods, 1=cost'
+            deleted:
+              type: integer
+              enum: [0, 1]
+              default: 0
+              description: Soft delete flag
+
+    SupplierInput:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            company_name:
+              type: string
+              maxLength: 255
+              nullable: true
+            account_number:
+              type: string
+              maxLength: 255
+              nullable: true
+            tax_id:
+              type: string
+              maxLength: 32
+              nullable: true
+            agency_name:
+              type: string
+              maxLength: 255
+              nullable: true
+            category:
+              type: integer
+              default: 0
+
+    Item:
+      type: object
+      properties:
+        item_id:
+          type: integer
+          readOnly: true
+          description: Unique identifier
+        name:
+          type: string
+          maxLength: 255
+          description: Item name
+        category:
+          type: string
+          maxLength: 255
+          description: Item category
+        supplier_id:
+          type: integer
+          nullable: true
+          description: Supplier ID
+        item_number:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Barcode/SKU
+        description:
+          type: string
+          nullable: true
+          description: Item description
+        cost_price:
+          type: number
+          format: decimal
+          description: Cost price
+        unit_price:
+          type: number
+          format: decimal
+          description: Selling price
+        reorder_level:
+          type: number
+          format: decimal
+          description: Stock level for reorder alert
+        receiving_quantity:
+          type: number
+          format: decimal
+          default: 1
+          description: Receiving quantity
+        allow_alt_description:
+          type: integer
+          enum: [0, 1]
+          default: 0
+          description: Allow alternate description
+        is_serialized:
+          type: integer
+          enum: [0, 1]
+          default: 0
+          description: Item has serial number
+        deleted:
+          type: integer
+          enum: [0, 1]
+          default: 0
+          description: Soft delete flag
+        stock_type:
+          type: integer
+          enum: [0, 1]
+          default: 0
+          description: 'Stock type: 0=has stock, 1=non-stocked'
+        item_type:
+          type: integer
+          enum: [0, 1, 2]
+          default: 0
+          description: 'Item type: 0=standard, 1=kit, 2=temp'
+        tax_category_id:
+          type: integer
+          nullable: true
+          description: Tax category ID
+        pic_filename:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Image filename
+        qty_per_pack:
+          type: number
+          format: decimal
+          default: 1
+          description: Quantity per pack (multi-pack)
+        pack_name:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Pack name (multi-pack)
+        low_sell_item_id:
+          type: integer
+          description: Low sell item ID for multi-pack
+        hsn_code:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: HSN code (Harmonized System)
+
+    ItemInput:
+      type: object
+      required:
+        - name
+        - category
+        - unit_price
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        category:
+          type: string
+          maxLength: 255
+        supplier_id:
+          type: integer
+          nullable: true
+        item_number:
+          type: string
+          maxLength: 255
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        cost_price:
+          type: number
+          default: 0
+        unit_price:
+          type: number
+        reorder_level:
+          type: number
+          default: 0
+        receiving_quantity:
+          type: number
+          default: 1
+        allow_alt_description:
+          type: integer
+          enum: [0, 1]
+          default: 0
+        is_serialized:
+          type: integer
+          enum: [0, 1]
+          default: 0
+        stock_type:
+          type: integer
+          enum: [0, 1]
+          default: 0
+        item_type:
+          type: integer
+          enum: [0, 1, 2]
+          default: 0
+        tax_category_id:
+          type: integer
+          nullable: true
+        qty_per_pack:
+          type: number
+          default: 1
+        pack_name:
+          type: string
+          maxLength: 255
+          nullable: true
+        low_sell_item_id:
+          type: integer
+          nullable: true
+        hsn_code:
+          type: string
+          maxLength: 255
+          nullable: true
+
+    ItemQuantity:
+      type: object
+      properties:
+        item_id:
+          type: integer
+          description: Item ID
+        location_id:
+          type: integer
+          description: Stock location ID
+        quantity:
+          type: number
+          format: decimal
+          description: Current quantity in stock
+
+    InventoryAdjustment:
+      type: object
+      required:
+        - item_id
+        - trans_inventory
+      properties:
+        item_id:
+          type: integer
+          description: Item ID to adjust
+        trans_inventory:
+          type: number
+          format: decimal
+          description: Quantity change (positive to add, negative to remove)
+        trans_location:
+          type: integer
+          description: Stock location ID
+        trans_comment:
+          type: string
+          maxLength: 255
+          description: Reason for adjustment
+
+    InventoryTransaction:
+      type: object
+      properties:
+        trans_id:
+          type: integer
+          readOnly: true
+          description: Transaction ID
+        trans_items:
+          type: integer
+          description: Item ID
+        trans_user:
+          type: integer
+          description: Employee ID who made the transaction
+        trans_date:
+          type: string
+          format: date-time
+          description: Transaction date/time
+        trans_comment:
+          type: string
+          description: Transaction comment
+        trans_inventory:
+          type: number
+          format: decimal
+          description: Quantity changed
+        trans_location:
+          type: integer
+          description: Stock location ID
+
+    Sale:
+      type: object
+      properties:
+        sale_id:
+          type: integer
+          readOnly: true
+          description: Unique identifier
+        sale_time:
+          type: string
+          format: date-time
+          description: Sale date/time
+        customer_id:
+          type: integer
+          nullable: true
+          description: Customer ID
+        employee_id:
+          type: integer
+          description: Employee ID who made the sale
+        comment:
+          type: string
+          nullable: true
+          description: Sale comment
+        quote_number:
+          type: string
+          maxLength: 32
+          nullable: true
+          description: Quote number (if quote)
+        sale_status:
+          type: integer
+          enum: [0, 1, 2]
+          description: 'Status: 0=completed, 1=suspended, 2=canceled'
+        invoice_number:
+          type: string
+          maxLength: 32
+          nullable: true
+          description: Invoice number
+        dinner_table_id:
+          type: integer
+          nullable: true
+          description: Table ID (restaurant mode)
+        work_order_number:
+          type: string
+          maxLength: 32
+          nullable: true
+          description: Work order number
+        sale_type:
+          type: integer
+          description: Sale type
+
+    SaleItem:
+      type: object
+      properties:
+        sale_id:
+          type: integer
+        item_id:
+          type: integer
+        line:
+          type: integer
+        description:
+          type: string
+          nullable: true
+        serialnumber:
+          type: string
+          nullable: true
+        quantity_purchased:
+          type: number
+          format: decimal
+        item_cost_price:
+          type: number
+          format: decimal
+        item_unit_price:
+          type: number
+          format: decimal
+        discount:
+          type: number
+          format: decimal
+        discount_type:
+          type: integer
+          enum: [0, 1]
+        item_location:
+          type: integer
+
+    SalePayment:
+      type: object
+      properties:
+        sale_id:
+          type: integer
+        payment_type:
+          type: string
+        payment_amount:
+          type: number
+          format: decimal
+        cash_refund:
+          type: number
+          format: decimal
+        cash_adjustment:
+          type: integer
+
+    SaleDetail:
+      allOf:
+        - $ref: '#/components/schemas/Sale'
+        - type: object
+          properties:
+            customer_name:
+              type: string
+              nullable: true
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/SaleItem'
+            payments:
+              type: array
+              items:
+                $ref: '#/components/schemas/SalePayment'
+
+    Receiving:
+      type: object
+      properties:
+        receiving_id:
+          type: integer
+          readOnly: true
+          description: Unique identifier
+        receiving_time:
+          type: string
+          format: date-time
+          description: Receiving date/time
+        supplier_id:
+          type: integer
+          nullable: true
+          description: Supplier ID
+        employee_id:
+          type: integer
+          description: Employee ID who created the receiving
+        comment:
+          type: string
+          nullable: true
+          description: Comment
+        payment_type:
+          type: string
+          maxLength: 20
+          nullable: true
+          description: Payment type
+        reference:
+          type: string
+          maxLength: 32
+          nullable: true
+          description: Reference number
+
+    ReceivingItem:
+      type: object
+      properties:
+        receiving_id:
+          type: integer
+        item_id:
+          type: integer
+        line:
+          type: integer
+        description:
+          type: string
+          nullable: true
+        serialnumber:
+          type: string
+          nullable: true
+        quantity_purchased:
+          type: number
+          format: decimal
+        receiving_quantity:
+          type: number
+          format: decimal
+        discount:
+          type: number
+          format: decimal
+        discount_type:
+          type: integer
+          enum: [0, 1]
+        item_cost_price:
+          type: number
+          format: decimal
+        item_unit_price:
+          type: number
+          format: decimal
+        item_location:
+          type: integer
+
+    ReceivingDetail:
+      allOf:
+        - $ref: '#/components/schemas/Receiving'
+        - type: object
+          properties:
+            supplier_name:
+              type: string
+              nullable: true
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReceivingItem'
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Error message
+
+    Success:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          description: Success message
+        id:
+          type: integer
+          description: ID of created/updated resource
+
+    PaginatedCustomers:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total number of records matching query
+        offset:
+          type: integer
+          description: Current offset
+        limit:
+          type: integer
+          description: Records per page
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+
+    PaginatedSuppliers:
+      type: object
+      properties:
+        total:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Supplier'
+
+    PaginatedItems:
+      type: object
+      properties:
+        total:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+
+    PaginatedSales:
+      type: object
+      properties:
+        total:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sale'
+
+    PaginatedReceivings:
+      type: object
+      properties:
+        total:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Receiving'
+
+    PaginatedInventoryTransactions:
+      type: object
+      properties:
+        total:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryTransaction'
+
+paths:
+  # ============================================
+  # CUSTOMERS
+  # ============================================
+  /customers:
+    get:
+      tags:
+        - Customers
+      summary: List customers
+      description: Retrieve a paginated list of customers
+      operationId: listCustomers
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term for name, email, phone, account number
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of records to skip
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Number of records to return
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [person_id, last_name, first_name, email, company_name]
+            default: last_name
+          description: Field to sort by
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+          description: Sort order
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCustomers'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Customers
+      summary: Create a customer
+      description: Create a new customer record
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                  id:
+                    type: integer
+                    description: New customer ID
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict (email or account number already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /customers/{customer_id}:
+    parameters:
+      - name: customer_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Customer ID
+
+    get:
+      tags:
+        - Customers
+      summary: Get a customer
+      description: Retrieve a single customer by ID
+      operationId: getCustomer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - Customers
+      summary: Update a customer
+      description: Update an existing customer
+      operationId: updateCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '200':
+          description: Customer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Customers
+      summary: Delete a customer
+      description: Soft delete a customer
+      operationId: deleteCustomer
+      responses:
+        '200':
+          description: Customer deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /customers/batch-delete:
+    post:
+      tags:
+        - Customers
+      summary: Delete multiple customers
+      description: Soft delete multiple customers at once
+      operationId: deleteCustomersBatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: Array of customer IDs to delete
+      responses:
+        '200':
+          description: Customers deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /customers/suggest:
+    get:
+      tags:
+        - Customers
+      summary: Search suggestions
+      description: Get customer search suggestions for autocomplete
+      operationId: suggestCustomers
+      parameters:
+        - name: term
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search term
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+          description: Maximum number of suggestions
+      responses:
+        '200':
+          description: List of suggestions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: integer
+                      description: Customer ID
+                    label:
+                      type: string
+                      description: Display label
+
+  # ============================================
+  # SUPPLIERS
+  # ============================================
+  /suppliers:
+    get:
+      tags:
+        - Suppliers
+      summary: List suppliers
+      description: Retrieve a paginated list of suppliers
+      operationId: listSuppliers
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term for name, company, email, account number
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of records to skip
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Number of records to return
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [person_id, last_name, company_name]
+            default: company_name
+          description: Field to sort by
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+          description: Sort order
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSuppliers'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Suppliers
+      summary: Create a supplier
+      description: Create a new supplier record
+      operationId: createSupplier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierInput'
+      responses:
+        '201':
+          description: Supplier created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                  id:
+                    type: integer
+                    description: New supplier ID
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /suppliers/{supplier_id}:
+    parameters:
+      - name: supplier_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Supplier ID
+
+    get:
+      tags:
+        - Suppliers
+      summary: Get a supplier
+      description: Retrieve a single supplier by ID
+      operationId: getSupplier
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+        '404':
+          description: Supplier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - Suppliers
+      summary: Update a supplier
+      description: Update an existing supplier
+      operationId: updateSupplier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierInput'
+      responses:
+        '200':
+          description: Supplier updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Supplier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Suppliers
+      summary: Delete a supplier
+      description: Soft delete a supplier
+      operationId: deleteSupplier
+      responses:
+        '200':
+          description: Supplier deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '404':
+          description: Supplier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /suppliers/batch-delete:
+    post:
+      tags:
+        - Suppliers
+      summary: Delete multiple suppliers
+      description: Soft delete multiple suppliers at once
+      operationId: deleteSuppliersBatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: Array of supplier IDs to delete
+      responses:
+        '200':
+          description: Suppliers deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+
+  /suppliers/suggest:
+    get:
+      tags:
+        - Suppliers
+      summary: Search suggestions
+      description: Get supplier search suggestions for autocomplete
+      operationId: suggestSuppliers
+      parameters:
+        - name: term
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search term
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+          description: Maximum number of suggestions
+      responses:
+        '200':
+          description: List of suggestions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: integer
+                      description: Supplier ID
+                    label:
+                      type: string
+                      description: Display label
+
+  # ============================================
+  # ITEMS
+  # ============================================
+  /items:
+    get:
+      tags:
+        - Items
+      summary: List items
+      description: Retrieve a paginated list of items
+      operationId: listItems
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term for name, barcode, category, supplier
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of records to skip
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Number of records to return
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [item_id, name, category, cost_price, unit_price]
+            default: name
+          description: Field to sort by
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+          description: Sort order
+        - name: stock_location
+          in: query
+          schema:
+            type: integer
+          description: Filter by stock location ID
+        - name: filters
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [empty_upc, low_inventory, is_serialized, no_description, is_deleted]
+          description: Additional filters
+          explode: false
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter from date
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter to date
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedItems'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Items
+      summary: Create an item
+      description: Create a new item
+      operationId: createItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInput'
+      responses:
+        '201':
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                  id:
+                    type: integer
+                    description: New item ID
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict (item number/barcode already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /items/{item_id}:
+    parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Item ID
+
+    get:
+      tags:
+        - Items
+      summary: Get an item
+      description: Retrieve a single item by ID
+      operationId: getItem
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - Items
+      summary: Update an item
+      description: Update an existing item
+      operationId: updateItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInput'
+      responses:
+        '200':
+          description: Item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Items
+      summary: Delete an item
+      description: Soft delete an item
+      operationId: deleteItem
+      responses:
+        '200':
+          description: Item deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /items/batch-delete:
+    post:
+      tags:
+        - Items
+      summary: Delete multiple items
+      description: Soft delete multiple items at once
+      operationId: deleteItemsBatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: Array of item IDs to delete
+      responses:
+        '200':
+          description: Items deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+
+  /items/batch-update:
+    post:
+      tags:
+        - Items
+      summary: Update multiple items
+      description: Update multiple items with the same values
+      operationId: updateItemsBatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_ids
+              properties:
+                item_ids:
+                  type: array
+                  items:
+                    type: integer
+                supplier_id:
+                  type: integer
+                  nullable: true
+                cost_price:
+                  type: number
+                unit_price:
+                  type: number
+                allow_alt_description:
+                  type: integer
+                  enum: [0, 1]
+                is_serialized:
+                  type: integer
+                  enum: [0, 1]
+      responses:
+        '200':
+          description: Items updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+
+  /items/suggest:
+    get:
+      tags:
+        - Items
+      summary: Search suggestions
+      description: Get item search suggestions for autocomplete
+      operationId: suggestItems
+      parameters:
+        - name: term
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search term
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+          description: Maximum number of suggestions
+      responses:
+        '200':
+          description: List of suggestions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: integer
+                      description: Item ID
+                    label:
+                      type: string
+                      description: Display label
+
+  /items/{item_id}/quantities:
+    parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Item ID
+    get:
+      tags:
+        - Items
+      summary: Get item quantities
+      description: Get stock quantities for an item across all locations
+      operationId: getItemQuantities
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item_id:
+                    type: integer
+                  quantities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ItemQuantity'
+
+  # ============================================
+  # INVENTORY
+  # ============================================
+  /inventory:
+    get:
+      tags:
+        - Inventory
+      summary: List inventory transactions
+      description: Retrieve a paginated list of inventory transactions
+      operationId: listInventoryTransactions
+      parameters:
+        - name: item_id
+          in: query
+          schema:
+            type: integer
+          description: Filter by item ID
+        - name: location_id
+          in: query
+          schema:
+            type: integer
+          description: Filter by stock location ID
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of records to skip
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Number of records to return
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [trans_id, trans_date, trans_items]
+            default: trans_date
+          description: Field to sort by
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+          description: Sort order
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInventoryTransactions'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Inventory
+      summary: Adjust inventory
+      description: Create an inventory adjustment transaction
+      operationId: adjustInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryAdjustment'
+      responses:
+        '200':
+          description: Inventory adjusted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /inventory/bulk:
+    post:
+      tags:
+        - Inventory
+      summary: Bulk inventory adjustment
+      description: Adjust inventory for multiple items at once
+      operationId: bulkAdjustInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - adjustments
+              properties:
+                adjustments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/InventoryAdjustment'
+                  description: Array of inventory adjustments
+      responses:
+        '200':
+          description: Inventory adjusted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                  processed:
+                    type: integer
+                    description: Number of adjustments processed
+
+  # ============================================
+  # SALES (Read-only)
+  # ============================================
+  /sales:
+    get:
+      tags:
+        - Sales
+      summary: List sales
+      description: Retrieve a paginated list of sales (read-only)
+      operationId: listSales
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by receipt number, invoice, customer name
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of records to skip
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Number of records to return
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [sale_id, sale_time, customer_id, total]
+            default: sale_time
+          description: Field to sort by
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+          description: Sort order
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter from date
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter to date
+        - name: customer_id
+          in: query
+          schema:
+            type: integer
+          description: Filter by customer ID
+        - name: sale_status
+          in: query
+          schema:
+            type: integer
+            enum: [0, 1, 2]
+          description: 'Filter by status: 0=completed, 1=suspended, 2=canceled'
+        - name: sale_type
+          in: query
+          schema:
+            type: string
+            enum: [all, sales, returns, quotes]
+          description: Filter by sale type
+        - name: only_invoices
+          in: query
+          schema:
+            type: boolean
+          description: Only show sales with invoices
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSales'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sales/{sale_id}:
+    parameters:
+      - name: sale_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Sale ID
+
+    get:
+      tags:
+        - Sales
+      summary: Get a sale
+      description: Retrieve details of a single sale including items and payments
+      operationId: getSale
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleDetail'
+        '404':
+          description: Sale not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sales/{sale_id}/items:
+    parameters:
+      - name: sale_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Sale ID
+
+    get:
+      tags:
+        - Sales
+      summary: Get sale items
+      description: Retrieve items from a sale
+      operationId: getSaleItems
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SaleItem'
+        '404':
+          description: Sale not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sales/{sale_id}/payments:
+    parameters:
+      - name: sale_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Sale ID
+
+    get:
+      tags:
+        - Sales
+      summary: Get sale payments
+      description: Retrieve payments for a sale
+      operationId: getSalePayments
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SalePayment'
+        '404':
+          description: Sale not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ============================================
+  # RECEIVINGS (Read-only)
+  # ============================================
+  /receivings:
+    get:
+      tags:
+        - Receivings
+      summary: List receivings
+      description: Retrieve a paginated list of receivings (read-only)
+      operationId: listReceivings
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by receiving number, reference, supplier name
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of records to skip
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Number of records to return
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [receiving_id, receiving_time, supplier_id]
+            default: receiving_time
+          description: Field to sort by
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+          description: Sort order
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter from date
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter to date
+        - name: supplier_id
+          in: query
+          schema:
+            type: integer
+          description: Filter by supplier ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReceivings'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /receivings/{receiving_id}:
+    parameters:
+      - name: receiving_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Receiving ID
+
+    get:
+      tags:
+        - Receivings
+      summary: Get a receiving
+      description: Retrieve details of a single receiving including items
+      operationId: getReceiving
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceivingDetail'
+        '404':
+          description: Receiving not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /receivings/{receiving_id}/items:
+    parameters:
+      - name: receiving_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Receiving ID
+
+    get:
+      tags:
+        - Receivings
+      summary: Get receiving items
+      description: Retrieve items from a receiving
+      operationId: getReceivingItems
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReceivingItem'
+        '404':
+          description: Receiving not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
