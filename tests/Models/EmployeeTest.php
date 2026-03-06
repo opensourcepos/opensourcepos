@@ -24,7 +24,7 @@ class EmployeeTest extends CIUnitTestCase
     {
         $employeeModel = model(Employee::class);
         
-        $result = $employeeModel->is_admin(1);
+        $result = $employeeModel->isAdmin(1);
         
         $this->assertTrue($result);
     }
@@ -38,7 +38,7 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel->method('has_grant')
             ->willReturn(true);
         
-        $result = $employeeModel->is_admin(2);
+        $result = $employeeModel->isAdmin(2);
         
         $this->assertTrue($result);
     }
@@ -54,7 +54,7 @@ class EmployeeTest extends CIUnitTestCase
                 return $permissionId !== 'config';
             });
         
-        $result = $employeeModel->is_admin(3);
+        $result = $employeeModel->isAdmin(3);
         
         $this->assertFalse($result);
     }
@@ -62,13 +62,13 @@ class EmployeeTest extends CIUnitTestCase
     public function testCanModifyEmployeeReturnsTrueForOwnAccount(): void
     {
         $employeeModel = $this->getMockBuilder(Employee::class)
-            ->onlyMethods(['is_admin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         
-        $employeeModel->method('is_admin')
+        $employeeModel->method('isAdmin')
             ->willReturn(false);
         
-        $result = $employeeModel->can_modify_employee(1, 1);
+        $result = $employeeModel->canModifyEmployee(1, 1);
         
         $this->assertTrue($result);
     }
@@ -76,13 +76,13 @@ class EmployeeTest extends CIUnitTestCase
     public function testCanModifyEmployeeReturnsTrueForOwnAdminAccount(): void
     {
         $employeeModel = $this->getMockBuilder(Employee::class)
-            ->onlyMethods(['is_admin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         
-        $employeeModel->method('is_admin')
+        $employeeModel->method('isAdmin')
             ->willReturn(true);
         
-        $result = $employeeModel->can_modify_employee(1, 1);
+        $result = $employeeModel->canModifyEmployee(1, 1);
         
         $this->assertTrue($result);
     }
@@ -90,15 +90,15 @@ class EmployeeTest extends CIUnitTestCase
     public function testCanModifyEmployeeReturnsFalseWhenNonAdminModifiesAdmin(): void
     {
         $employeeModel = $this->getMockBuilder(Employee::class)
-            ->onlyMethods(['is_admin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         
-        $employeeModel->method('is_admin')
+        $employeeModel->method('isAdmin')
             ->willReturnCallback(function($personId) {
                 return $personId === 1;
             });
         
-        $result = $employeeModel->can_modify_employee(1, 2);
+        $result = $employeeModel->canModifyEmployee(1, 2);
         
         $this->assertFalse($result);
     }
@@ -106,15 +106,15 @@ class EmployeeTest extends CIUnitTestCase
     public function testCanModifyEmployeeReturnsTrueWhenAdminModifiesNonAdmin(): void
     {
         $employeeModel = $this->getMockBuilder(Employee::class)
-            ->onlyMethods(['is_admin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         
-        $employeeModel->method('is_admin')
+        $employeeModel->method('isAdmin')
             ->willReturnCallback(function($personId) {
                 return $personId === 1;
             });
         
-        $result = $employeeModel->can_modify_employee(2, 1);
+        $result = $employeeModel->canModifyEmployee(2, 1);
         
         $this->assertTrue($result);
     }
@@ -122,13 +122,13 @@ class EmployeeTest extends CIUnitTestCase
     public function testCanModifyEmployeeReturnsTrueWhenNonAdminModifiesNonAdmin(): void
     {
         $employeeModel = $this->getMockBuilder(Employee::class)
-            ->onlyMethods(['is_admin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         
-        $employeeModel->method('is_admin')
+        $employeeModel->method('isAdmin')
             ->willReturn(false);
         
-        $result = $employeeModel->can_modify_employee(2, 3);
+        $result = $employeeModel->canModifyEmployee(2, 3);
         
         $this->assertTrue($result);
     }
@@ -136,15 +136,15 @@ class EmployeeTest extends CIUnitTestCase
     public function testCanModifyEmployeeReturnsFalseForNonAdminEditingAdmin(): void
     {
         $employeeModel = $this->getMockBuilder(Employee::class)
-            ->onlyMethods(['is_admin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         
-        $employeeModel->method('is_admin')
+        $employeeModel->method('isAdmin')
             ->willReturnCallback(function($personId) {
                 return $personId === 1;
             });
         
-        $result = $employeeModel->can_modify_employee(1, 2);
+        $result = $employeeModel->canModifyEmployee(1, 2);
         
         $this->assertFalse($result);
     }
