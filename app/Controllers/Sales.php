@@ -7,6 +7,7 @@ use App\Libraries\Email_lib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
 use App\Libraries\Token_lib;
+use App\Libraries\UBLGenerator;
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Dinner_table;
@@ -920,7 +921,7 @@ class Sales extends Secure_Controller
 
             if ($invoiceFormat === 'ubl_only' || $invoiceFormat === 'both') {
                 require(ROOTPATH . 'vendor/autoload.php');
-                $ublGenerator = new \App\Libraries\UBLGenerator();
+                $ublGenerator = new UBLGenerator();
 
                 try {
                     $xml = $ublGenerator->generateUblInvoice($sale_data);
@@ -1323,7 +1324,7 @@ class Sales extends Secure_Controller
         helper(['file']);
         
         require(ROOTPATH . 'vendor/autoload.php');
-        $ublGenerator = new \App\Libraries\UBLGenerator();
+        $ublGenerator = new UBLGenerator();
 
         try {
             $xml = $ublGenerator->generateUblInvoice($sale_data);
