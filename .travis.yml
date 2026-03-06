@@ -21,18 +21,17 @@ script:
   - npm version "$version-$branch-$rev" --force || true
   - sed -i 's/opensourcepos.tar.gz/opensourcepos.$version.tgz/g' package.json
   - npm ci && npm install -g gulp && npm run build
-  - docker buildx build --target ospos . --platform linux/arm64,linux/amd64 --provenance=false -t ospos
   - docker build --target ospos_test . -t ospos_test
   - docker run --rm ospos_test /app/vendor/bin/phpunit --testdox
-  - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
 env:
   global:
   - BRANCH=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
   - TAG=${TRAVIS_TAG:-$BRANCH}
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD`
 after_success:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
-    "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sql-$TAG"
+  - docker buildx build --target ospos . --platform linux/arm64,linux/amd64 --provenance=false -t "jekkos/opensourcepos:$TAG" --push
+  - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push "jekkos/opensourcepos:sql-$TAG"
   - gulp compress
   - mv dist/opensourcepos.tar.gz "dist/opensourcepos.$version.$rev.tgz"
   - mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
