@@ -17,24 +17,20 @@ class ApiKeys extends Migration
             ],
             'employee_id' => [
                 'type' => 'INT',
-                'constraint' => 11,
-                'unsigned' => true
+                'constraint' => 10
             ],
             'key_hash' => [
                 'type' => 'VARCHAR',
-                'constraint' => 64,
-                'comment' => 'SHA-256 hash of the API key'
+                'constraint' => 64
             ],
             'key_prefix' => [
                 'type' => 'VARCHAR',
-                'constraint' => 12,
-                'comment' => 'First 12 chars for UI identification'
+                'constraint' => 12
             ],
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-                'null' => true,
-                'comment' => 'User-friendly key name'
+                'null' => true
             ],
             'last_used' => [
                 'type' => 'DATETIME',
@@ -42,12 +38,11 @@ class ApiKeys extends Migration
             ],
             'created' => [
                 'type' => 'DATETIME',
-                'default' => new \CodeIgniter\Database\RawSql('CURRENT_TIMESTAMP')
+                'null' => true
             ],
             'expires_at' => [
                 'type' => 'DATETIME',
-                'null' => true,
-                'comment' => 'Optional key expiration'
+                'null' => true
             ],
             'disabled' => [
                 'type' => 'TINYINT',
@@ -59,16 +54,43 @@ class ApiKeys extends Migration
         $this->forge->addKey('api_key_id', true);
         $this->forge->addKey('employee_id');
         $this->forge->addKey('key_hash');
-        $this->forge->addForeignKey('employee_id', 'employees', 'person_id', 'CASCADE', 'CASCADE');
         
         $this->forge->createTable('api_keys', true);
         
-        $seeder = \Config\Database::seeder();
-        $seeder->call('ApiKeysSeeder');
+        $this->db->query(
+            'ALTER TABLE ' . $this->db->prefixTable('api_keys') . 
+            ' ADD CONSTRAINT ' . $this->db->prefixTable('api_keys') . '_employee_id_foreign' .
+            ' FOREIGN KEY (employee_id) REFERENCES ' . $this->db->prefixTable('employees') . 
+            ' (person_id) ON DELETE CASCADE ON UPDATE CASCADE'
+        );
+        
+        $this->db->query(
+            'INSERT INTO ' . $this->db->prefixTable('permissions') . ' (permission_id, module_id)' .
+            " VALUES ('api_keys', 'office') ON DUPLICATE KEY UPDATE permission_id = 'api_keys'"
+        );
+        
+        $this->db->query(
+            'INSERT INTO ' . $this->db->prefixTable('modules') . ' (module_id, name_lang_key, desc_lang_key, sort)' .
+            " VALUES ('api_keys', 'module_api_keys', 'module_desc_api_keys', 25)" .
+            " ON DUPLICATE KEY UPDATE module_id = 'module_id'"
+        );
     }
 
     public function down(): void
     {
+        $this->db->query(
+            'ALTER TABLE ' . $this->db->prefixTable('api_keys') . 
+            ' DROP FOREIGN KEY ' . $this->db->prefixTable('api_keys') . '_employee_id_foreign'
+        );
+        
+        $this->db->query(
+            'DELETE FROM ' . $this->db->prefixTable('permissions') . " WHERE permission_id = 'api_keys'"
+        );
+        
+        $this->db->query(
+            'DELETE FROM ' . $this->db->prefixTable('modules') . " WHERE module_id = 'api_keys'"
+        );
+        
         $this->forge->dropTable('api_keys', true);
     }
 }

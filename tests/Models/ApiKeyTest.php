@@ -13,7 +13,6 @@ class ApiKeyTest extends CIUnitTestCase
     protected $migrate = true;
     protected $migrateOnly = ['api_keys'];
     protected $refresh = true;
-    protected $seed = 'ApiKeysSeeder';
     
     protected ApiKey $apiKeyModel;
     
