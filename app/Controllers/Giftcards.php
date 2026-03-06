@@ -174,6 +174,12 @@ class Giftcards extends Secure_Controller
      */
     public function postDelete(): ResponseInterface
     {
+        $current_user = $this->employee->get_logged_in_employee_info();
+
+        if (!$this->employee->is_admin($current_user->person_id)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Giftcards.error_deleting_non_admin')]);
+        }
+
         $giftcards_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($this->giftcard->delete_list($giftcards_to_delete)) {

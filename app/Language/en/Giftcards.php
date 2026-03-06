@@ -5,6 +5,7 @@ return [
     "allow_alt_description"              => "Allow Alternate Description",
     "bulk_edit"                          => "Bulk Edit",
     "cannot_be_deleted"                  => "Could not delete selected Gift Card(s), one or more of the selected Gift Cards has sales.",
+    "error_deleting_non_admin"           => "Only admin users can delete gift cards.",
     "cannot_find_giftcard"               => "Gift Card not found.",
     "cannot_use"                         => "Gift Card {0} cannot be used for this sale: invalid Customer.",
     "card_value"                         => "Value",
