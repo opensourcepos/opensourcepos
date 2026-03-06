@@ -1017,7 +1017,11 @@ class Items extends Secure_Controller
                         }
 
                         if (!$is_failed_row) {
-                            $is_failed_row = $this->data_error_check($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
+                            $invalidLocations = $this->validateCSVStockLocations($row, $allowedStockLocations);
+                            if (!empty($invalidLocations)) {
+                                $isFailedRow = true;
+                                log_message('error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations));
+                            }
                         }
 
                         // Remove false, null, '' and empty strings but keep 0
@@ -1061,6 +1065,30 @@ class Items extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
 
+    }
+
+    /**
+     * Validates that stock location columns in CSV row are valid locations
+     *
+     * @param array $row
+     * @param array $allowedLocations
+     * @return array Returns array of invalid location names, empty if all valid
+     */
+    private function validateCSVStockLocations(array $row, array $allowedLocations): array
+    {
+        $invalidLocations = [];
+        $allowedLocationNames = array_values($allowedLocations);
+
+        foreach (array_keys($row) as $key) {
+            if (str_starts_with($key, 'location_')) {
+                $locationName = substr($key, 9);
+                if (!in_array($locationName, $allowedLocationNames)) {
+                    $invalidLocations[] = $locationName;
+                }
+            }
+        }
+
+        return $invalidLocations;
     }
 
     /**
