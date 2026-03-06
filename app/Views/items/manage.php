@@ -6,6 +6,9 @@
  * @var array $stock_locations
  * @var int $stock_location
  * @var array $config
+ * @var string|null $start_date
+ * @var string|null $end_date
+ * @var array $selected_filters
  */
 
 use App\Models\Employee;
@@ -28,6 +31,14 @@ use App\Models\Employee;
         $('#daterangepicker').data('daterangepicker').setStartDate("<?= date($config['dateformat'], mktime(0, 0, 0, 01, 01, 2010)) ?>");
         // Update the hidden inputs with the selected dates before submitting the search data
         var start_date = "<?= date('Y-m-d', mktime(0, 0, 0, 01, 01, 2010)) ?>";
+        
+        // Override dates from server if provided
+        <?php if (isset($start_date) && $start_date): ?>
+        start_date = "<?= esc($start_date) ?>";
+        <?php endif; ?>
+        <?php if (isset($end_date) && $end_date): ?>
+        end_date = "<?= esc($end_date) ?>";
+        <?php endif; ?>
 
         <?php
         echo view('partial/bootstrap_tables_locale');
@@ -87,7 +98,7 @@ use App\Models\Employee;
             <span class="glyphicon glyphicon-barcode">&nbsp;</span><?= lang('Items.generate_barcodes') ?>
         </button>
         <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-        <?= form_multiselect('filters[]', $filters, [''], [
+        <?= form_multiselect('filters[]', $filters, $selected_filters ?? [], [
             'id'                        => 'filters',
             'class'                     => 'selectpicker show-menu-arrow',
             'data-none-selected-text'   => lang('Common.none_selected_text'),
