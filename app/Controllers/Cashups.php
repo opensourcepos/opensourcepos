@@ -35,6 +35,23 @@ class Cashups extends Secure_Controller
 
         // filters that will be loaded in the multiselect dropdown
         $data['filters'] = ['is_deleted' => lang('Cashups.is_deleted')];
+        
+        // Restore filters from URL
+        $start_date = $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $end_date = $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $url_filters = $this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
+        
+        if ($start_date) {
+            $data['start_date'] = $start_date;
+        }
+        if ($end_date) {
+            $data['end_date'] = $end_date;
+        }
+        if (!empty($url_filters)) {
+            $data['selected_filters'] = $url_filters;
+        } else {
+            $data['selected_filters'] = [];
+        }
 
         return view('cashups/manage', $data);
     }
