@@ -2,7 +2,7 @@
 
 namespace App\Libraries\Plugins;
 
-use App\Models\PluginConfigModel;
+use App\Models\Plugin_config;
 use CodeIgniter\Events\Events;
 use DirectoryIterator;
 
@@ -14,32 +14,14 @@ use DirectoryIterator;
  */
 class PluginManager
 {
-    /**
-     * Array of discovered plugin instances.
-     */
     private array $plugins = [];
-
-    /**
-     * Array of enabled plugin instances.
-     */
     private array $enabledPlugins = [];
-
-    /**
-     * Plugin configuration model.
-     */
-    private PluginConfigModel $configModel;
-
-    /**
-     * Path to plugins directory.
-     */
+    private Plugin_config $configModel;
     private string $pluginsPath;
 
-    /**
-     * Initialize the plugin manager.
-     */
     public function __construct()
     {
-        $this->configModel = new PluginConfigModel();
+        $this->configModel = new Plugin_config();
         $this->pluginsPath = APPPATH . 'Plugins';
     }
 

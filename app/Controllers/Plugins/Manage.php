@@ -41,31 +41,25 @@ class Manage extends Secure_Controller
     public function postEnable(string $pluginId): ResponseInterface
     {
         if ($this->pluginManager->enablePlugin($pluginId)) {
-            echo json_encode(['success' => true, 'message' => lang('Plugins.plugin_enabled')]);
-        } else {
-            echo json_encode(['success' => false, 'message' => lang('Plugins.plugin_enable_failed')]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.plugin_enabled')]);
         }
-        return $this->response;
+        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_enable_failed')]);
     }
 
     public function postDisable(string $pluginId): ResponseInterface
     {
         if ($this->pluginManager->disablePlugin($pluginId)) {
-            echo json_encode(['success' => true, 'message' => lang('Plugins.plugin_disabled')]);
-        } else {
-            echo json_encode(['success' => false, 'message' => lang('Plugins.plugin_disable_failed')]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.plugin_disabled')]);
         }
-        return $this->response;
+        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_disable_failed')]);
     }
 
     public function postUninstall(string $pluginId): ResponseInterface
     {
         if ($this->pluginManager->uninstallPlugin($pluginId)) {
-            echo json_encode(['success' => true, 'message' => lang('Plugins.plugin_uninstalled')]);
-        } else {
-            echo json_encode(['success' => false, 'message' => lang('Plugins.plugin_uninstall_failed')]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.plugin_uninstalled')]);
         }
-        return $this->response;
+        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_uninstall_failed')]);
     }
 
     public function getConfig(string $pluginId): ResponseInterface
@@ -73,14 +67,12 @@ class Manage extends Secure_Controller
         $plugin = $this->pluginManager->getPlugin($pluginId);
         
         if (!$plugin) {
-            echo json_encode(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
-            return $this->response;
+            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
         }
 
         $configView = $plugin->getConfigView();
         if (!$configView) {
-            echo json_encode(['success' => false, 'message' => lang('Plugins.plugin_no_config')]);
-            return $this->response;
+            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_no_config')]);
         }
 
         $settings = $plugin->getSettings();
@@ -93,19 +85,15 @@ class Manage extends Secure_Controller
         $plugin = $this->pluginManager->getPlugin($pluginId);
         
         if (!$plugin) {
-            echo json_encode(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
-            return $this->response;
+            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
         }
 
         $settings = $this->request->getPost();
         unset($settings['_method'], $settings['csrf_token_name']);
 
         if ($plugin->saveSettings($settings)) {
-            echo json_encode(['success' => true, 'message' => lang('Plugins.settings_saved')]);
-        } else {
-            echo json_encode(['success' => false, 'message' => lang('Plugins.settings_save_failed')]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.settings_saved')]);
         }
-        
-        return $this->response;
+        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.settings_save_failed')]);
     }
 }

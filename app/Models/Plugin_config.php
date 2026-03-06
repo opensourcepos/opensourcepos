@@ -9,7 +9,7 @@ use CodeIgniter\Model;
  * 
  * Manages plugin configuration stored in ospos_plugin_config table.
  */
-class PluginConfigModel extends Model
+class Plugin_config extends Model
 {
     protected $table = 'plugin_config';
     protected $primaryKey = 'key';
