@@ -83,7 +83,7 @@ jobs:
         run: npx playwright install --with-deps chromium firefox
 
       - name: Start Docker Stack
-        run: docker compose up -d --wait
+        run: docker compose up -d
 
       - name: Wait for Application
         run: |

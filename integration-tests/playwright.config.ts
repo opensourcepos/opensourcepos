@@ -28,11 +28,4 @@ export default defineConfig({
       use: { ...devices['Desktop Firefox'] },
     },
   ],
-
-  webServer: {
-    command: 'docker compose up -d',
-    url: 'http://localhost',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
 });
