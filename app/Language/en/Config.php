@@ -329,4 +329,8 @@ return [
     "wholesale_markup"                          => "",
     "work_order_enable"                         => "Work Order Support",
     "work_order_format"                         => "Work Order Format",
+    "exif_stripping_enabled"                    => "Enable EXIF Stripping",
+    "exif_stripping_enabled_tooltip"            => "Remove EXIF metadata from uploaded images to protect privacy. Uses FileEye/pel library for selective field removal.",
+    "exif_fields_to_keep"                       => "EXIF Fields to Keep",
+    "exif_fields_to_keep_tooltip"               => "Comma-separated list of EXIF fields to preserve (e.g., Copyright, Orientation, Software). Keeps beneficial metadata while removing privacy-sensitive data like GPS location.",
 ];
