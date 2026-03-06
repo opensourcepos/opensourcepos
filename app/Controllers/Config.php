@@ -356,8 +356,12 @@ class Config extends Secure_Controller
 
         $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
 
-        $image_lib = new Image_lib();
-        $image_lib->strip_exif(FCPATH . 'uploads/' . $file_info['raw_name'] . '.' . $file_info['file_ext']);
+        $exif_stripping_enabled = $this->appconfig->get_value('exif_stripping_enabled', '0');
+        if ($exif_stripping_enabled == '1') {
+            $image_lib = new Image_lib();
+            $exif_fields_to_keep = array_filter(explode(',', $this->appconfig->get_value('exif_fields_to_keep', 'Copyright,Orientation')));
+            $image_lib->stripEXIF(FCPATH . 'uploads/' . $file_info['raw_name'] . '.' . $file_info['file_ext'], $exif_fields_to_keep);
+        }
 
         return ($file_info);
     }

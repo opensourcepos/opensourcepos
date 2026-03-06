@@ -6,6 +6,7 @@ use App\Libraries\Barcode_lib;
 use App\Libraries\Image_lib;
 use App\Libraries\Item_lib;
 
+use App\Models\Appconfig;
 use App\Models\Attribute;
 use App\Models\Inventory;
 use App\Models\Item;
@@ -40,6 +41,7 @@ class Items extends Secure_Controller
     private Stock_location $stock_location;
     private Supplier $supplier;
     private Tax_category $tax_category;
+    private Appconfig $appconfig;
     private array $config;
 
 
@@ -63,6 +65,7 @@ class Items extends Secure_Controller
         $this->stock_location = model(Stock_location::class);
         $this->supplier = model(Supplier::class);
         $this->tax_category = model(Tax_category::class);
+        $this->appconfig = model(Appconfig::class);
         $this->config = config(OSPOS::class)->settings;
     }
 
@@ -790,8 +793,12 @@ class Items extends Secure_Controller
 
         $file->move(FCPATH . 'uploads/item_pics/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
 
-        $image_lib = new Image_lib();
-        $image_lib->strip_exif(FCPATH . 'uploads/item_pics/' . $file_info['raw_name'] . '.' . $file_info['file_ext']);
+        $exif_stripping_enabled = $this->appconfig->get_value('exif_stripping_enabled', '0');
+        if ($exif_stripping_enabled == '1') {
+            $image_lib = new Image_lib();
+            $exif_fields_to_keep = array_filter(explode(',', $this->appconfig->get_value('exif_fields_to_keep', 'Copyright,Orientation')));
+            $image_lib->stripEXIF(FCPATH . 'uploads/item_pics/' . $file_info['raw_name'] . '.' . $file_info['file_ext'], $exif_fields_to_keep);
+        }
 
         return ($file_info);
     }
