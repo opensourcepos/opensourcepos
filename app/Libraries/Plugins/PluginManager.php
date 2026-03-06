@@ -4,13 +4,20 @@ namespace App\Libraries\Plugins;
 
 use App\Models\Plugin_config;
 use CodeIgniter\Events\Events;
-use DirectoryIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 /**
  * Plugin Manager
  * 
  * Discovers, loads, and manages plugins in the OSPOS system.
  * Plugins are discovered from app/Plugins directory and must implement PluginInterface.
+ * 
+ * Plugins can be organized in two ways:
+ * 1. Single file: app/Plugins/MyPlugin.php with namespace App\Plugins
+ * 2. Plugin directory: app/Plugins/MyPlugin/MyPlugin.php with namespace App\Plugins\MyPlugin
+ * 
+ * The directory structure allows plugins to contain their own Models, Controllers, Views, etc.
  */
 class PluginManager
 {
@@ -28,7 +35,8 @@ class PluginManager
     /**
      * Discover and load all available plugins.
      * 
-     * Scans the Plugins directory for classes implementing PluginInterface.
+     * Scans the Plugins directory recursively for classes implementing PluginInterface.
+     * Supports both single-file plugins and plugin directories.
      */
     public function discoverPlugins(): void
     {
@@ -37,15 +45,19 @@ class PluginManager
             return;
         }
 
-        $iterator = new DirectoryIterator($this->pluginsPath);
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($this->pluginsPath, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+
         foreach ($iterator as $file) {
             if ($file->isDir() || $file->getExtension() !== 'php') {
                 continue;
             }
 
-            $className = 'App\\Plugins\\' . $file->getBasename('.php');
+            $className = $this->getClassNameFromFile($file->getPathname());
             
-            if (!class_exists($className)) {
+            if (!$className || !class_exists($className)) {
                 continue;
             }
 
@@ -59,6 +71,21 @@ class PluginManager
             $this->plugins[$plugin->getPluginId()] = $plugin;
             log_message('debug', "Discovered plugin: {$plugin->getPluginName()}");
         }
+    }
+
+    /**
+     * Get the fully-qualified class name from a file path.
+     * 
+     * @param string $pathname The full path to the PHP file
+     * @return string|null The class name or null if unable to determine
+     */
+    private function getClassNameFromFile(string $pathname): ?string
+    {
+        $relativePath = str_replace($this->pluginsPath . DIRECTORY_SEPARATOR, '', $pathname);
+        $relativePath = str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
+        $className = 'App\\Plugins\\' . str_replace('.php', '', $relativePath);
+        
+        return $className;
     }
 
     /**
