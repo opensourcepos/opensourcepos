@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 class Image_lib
 {
-    public function strip_exif(string $filepath): bool
+    public function stripEXIF(string $filepath, array $fields_to_remove = []): bool
     {
         if (!file_exists($filepath)) {
             return false;
@@ -12,34 +12,34 @@ class Image_lib
 
         $mimetype = mime_content_type($filepath);
         $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/bmp', 'image/tiff'];
-        
+
         if (!in_array($mimetype, $allowed_types)) {
             return false;
         }
 
         if ($mimetype === 'image/jpeg' || $mimetype === 'image/jpg') {
-            return $this->strip_exif_jpeg($filepath);
+            return $this->stripExifJpeg($filepath, $fields_to_remove);
         }
-        
+
         if ($mimetype === 'image/png') {
-            return $this->strip_exif_png($filepath);
+            return $this->stripExifPng($filepath);
         }
-        
+
         if ($mimetype === 'image/gif') {
-            return $this->strip_exif_gif($filepath);
+            return $this->stripExifGif($filepath);
         }
-        
+
         if ($mimetype === 'image/webp') {
-            return $this->strip_exif_webp($filepath);
+            return $this->stripExifWebp($filepath);
         }
 
         return true;
     }
 
-    private function strip_exif_jpeg(string $filepath): bool
+    private function stripExifJpeg(string $filepath, array $fields_to_remove = []): bool
     {
         if (!function_exists('exif_read_data')) {
-            return $this->strip_exif_fallback($filepath);
+            return $this->stripExifFallback($filepath);
         }
 
         $image_info = @getimagesize($filepath);
@@ -54,11 +54,11 @@ class Image_lib
 
         $result = imagejpeg($image, $filepath, 100);
         imagedestroy($image);
-        
+
         return $result;
     }
 
-    private function strip_exif_png(string $filepath): bool
+    private function stripExifPng(string $filepath): bool
     {
         $image = @imagecreatefrompng($filepath);
         if ($image === false) {
@@ -67,14 +67,14 @@ class Image_lib
 
         imagealphablending($image, true);
         imagesavealpha($image, true);
-        
+
         $result = imagepng($image, $filepath, 9);
         imagedestroy($image);
-        
+
         return $result;
     }
 
-    private function strip_exif_gif(string $filepath): bool
+    private function stripExifGif(string $filepath): bool
     {
         $image = @imagecreatefromgif($filepath);
         if ($image === false) {
@@ -83,11 +83,11 @@ class Image_lib
 
         $result = imagegif($image, $filepath);
         imagedestroy($image);
-        
+
         return $result;
     }
 
-    private function strip_exif_webp(string $filepath): bool
+    private function stripExifWebp(string $filepath): bool
     {
         if (!function_exists('imagecreatefromwebp')) {
             return false;
@@ -100,11 +100,11 @@ class Image_lib
 
         $result = imagewebp($image, $filepath, 100);
         imagedestroy($image);
-        
+
         return $result;
     }
 
-    private function strip_exif_fallback(string $filepath): bool
+    private function stripExifFallback(string $filepath): bool
     {
         $content = file_get_contents($filepath);
         if ($content === false) {
