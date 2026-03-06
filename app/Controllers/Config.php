@@ -469,8 +469,9 @@ class Config extends Secure_Controller
     public function postSaveLocale(): ResponseInterface
     {
         $exploded = explode(":", $this->request->getPost('language'));
+        $currency_symbol = $this->request->getPost('currency_symbol');
         $batch_save_data = [
-            'currency_symbol'       => $this->request->getPost('currency_symbol'),
+            'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
             'currency_code'         => $this->request->getPost('currency_code'),
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
