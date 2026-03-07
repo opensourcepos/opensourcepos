@@ -618,7 +618,7 @@ class Items extends Secure_Controller
         // Save item data
         $item_data = [
             'name'                  => $this->request->getPost('name'),
-            'description'           => $this->request->getPost('description'),
+            'description'           => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category'              => $this->request->getPost('category'),
             'item_type'             => $item_type,
             'stock_type'            => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
