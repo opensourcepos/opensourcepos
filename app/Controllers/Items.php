@@ -876,12 +876,24 @@ class Items extends Secure_Controller
         $items_to_update = $this->request->getPost('item_ids');
         $item_data = [];
 
-        foreach ($_POST as $key => $value) {
-            // This field is nullable, so treat it differently
-            if ($key === 'supplier_id' && $value !== '') {
-                $item_data[$key] = $value;
-            } elseif ($value !== '' && !(in_array($key, ['item_ids', 'tax_names', 'tax_percents']))) {
-                $item_data[$key] = $value;
+        $allowed_fields = [
+            'name',
+            'category',
+            'supplier_id',
+            'cost_price',
+            'unit_price',
+            'reorder_level',
+            'description',
+            'allow_alt_description',
+            'is_serialized'
+        ];
+
+        foreach ($allowed_fields as $field) {
+            $value = $this->request->getPost($field);
+            if ($field === 'supplier_id' && $value !== '') {
+                $item_data[$field] = $value;
+            } elseif ($value !== null && $value !== '') {
+                $item_data[$field] = $value;
             }
         }
 
