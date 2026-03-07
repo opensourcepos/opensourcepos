@@ -58,6 +58,8 @@ jobs:
   playwright:
     name: Playwright E2E Tests
     runs-on: ubuntu-22.04
+    needs: integration
+    if: always()
 
     steps:
       - name: Checkout
@@ -92,7 +94,7 @@ jobs:
           echo "Application is ready!"
 
       - name: Run Playwright Tests
-        run: cd integration-tests && npm run test
+        run: npm run test
         env:
           BASE_URL: http://localhost
 

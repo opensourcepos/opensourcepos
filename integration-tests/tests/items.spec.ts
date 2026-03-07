@@ -31,7 +31,7 @@ test.describe('Open Source POS - Items', () => {
 
   test('should create an item and verify it appears in table', async ({ page }) => {
     // Navigate to items page
-    navigationOption = page.locator('a[href*="items"], a:has-text("Item"), a:has-text("Inventory")');
+    const navigationOption = page.locator('a[href*="items"], a:has-text("Item"), a:has-text("Inventory")');
     await navigationOption.first().click();
     await page.waitForLoadState('networkidle');
 
@@ -149,6 +149,3 @@ test.describe('Open Source POS - Items', () => {
     console.log('✓ Item updated successfully');
   });
 });
-
-// Fix syntax error
-const navigationOption = null;
