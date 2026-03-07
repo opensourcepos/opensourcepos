@@ -16,6 +16,18 @@ use stdClass;
  */
 class Item extends Model
 {
+    public const ALLOWED_BULK_EDIT_FIELDS = [
+        'name',
+        'category',
+        'supplier_id',
+        'cost_price',
+        'unit_price',
+        'reorder_level',
+        'description',
+        'allow_alt_description',
+        'is_serialized'
+    ];
+
     protected $table = 'items';
     protected $primaryKey = 'item_id';
     protected $useAutoIncrement = true;
