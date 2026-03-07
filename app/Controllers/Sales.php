@@ -1256,6 +1256,11 @@ class Sales extends Secure_Controller
     public function getInvoice(int $sale_id): string
     {
         $data = $this->_load_sale_data($sale_id);
+        if (!Sale_lib::isValidInvoiceType($invoice_view)) {
+            $invoice_view = 'invoice';
+        }
+
+        echo view('sales/' . $invoice_view, $data);
         $this->sale_lib->clear_all();
 
         return view('sales/' . $data['invoice_view'], $data);
