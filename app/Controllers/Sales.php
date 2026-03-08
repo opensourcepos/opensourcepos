@@ -97,28 +97,25 @@ class Sales extends Secure_Controller
             ];
 
             if ($this->sale_lib->get_customer() != -1) {
-                $selected_filters = ['selected_customer'];
+                $selectedFilters = ['selected_customer'];
                 $data['customer_selected'] = true;
             } else {
                 $data['customer_selected'] = false;
-                $selected_filters = [];
+                $selectedFilters = [];
             }
-            
+
             // Restore filters from URL query string
-            $start_date = $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $end_date = $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $url_filters = $this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
-            
-            if ($start_date) {
-                $data['start_date'] = $start_date;
+            $filters = restoreTableFilters($this->request);
+            if ($filters['startDate']) {
+                $data['start_date'] = $filters['startDate'];
             }
-            if ($end_date) {
-                $data['end_date'] = $end_date;
+            if ($filters['endDate']) {
+                $data['end_date'] = $filters['endDate'];
             }
-            if (!empty($url_filters)) {
-                $selected_filters = array_merge($selected_filters, $url_filters);
+            if (!empty($filters['selectedFilters'])) {
+                $selectedFilters = array_merge($selectedFilters, $filters['selectedFilters']);
             }
-            $data['selected_filters'] = $selected_filters;
+            $data['selected_filters'] = $selectedFilters;
 
             return view('sales/manage', $data);
         }

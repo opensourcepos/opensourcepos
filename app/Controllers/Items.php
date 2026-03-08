@@ -75,12 +75,10 @@ class Items extends Secure_Controller
         $data['table_headers'] = get_items_manage_table_headers();
         
         // Restore stock_location from URL or session
-        $stock_location = $this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT);
-        if ($stock_location) {
-            $data['stock_location'] = $stock_location;
-        } else {
-            $data['stock_location'] = $this->item_lib->get_item_location();
-        }
+        $stockLocation = $this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT);
+        $data['stock_location'] = $stockLocation
+            ? $stockLocation
+            : $this->item_lib->get_item_location();
         $data['stock_locations'] = $this->stock_location->get_allowed_locations();
 
         // Filters that will be loaded in the multiselect dropdown
@@ -93,23 +91,16 @@ class Items extends Secure_Controller
             'is_deleted'     => lang('Items.is_deleted'),
             'temporary'      => lang('Items.temp')
         ];
-        
+
         // Restore filters from URL
-        $start_date = $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $end_date = $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $url_filters = $this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
-        
-        if ($start_date) {
-            $data['start_date'] = $start_date;
+        $filters = restoreTableFilters($this->request);
+        if ($filters['startDate']) {
+            $data['start_date'] = $filters['startDate'];
         }
-        if ($end_date) {
-            $data['end_date'] = $end_date;
+        if ($filters['endDate']) {
+            $data['end_date'] = $filters['endDate'];
         }
-        if (!empty($url_filters)) {
-            $data['selected_filters'] = $url_filters;
-        } else {
-            $data['selected_filters'] = [];
-        }
+        $data['selected_filters'] = $filters['selectedFilters'];
 
         return view('items/manage', $data);
     }
