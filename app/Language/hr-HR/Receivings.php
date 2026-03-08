@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Počnite upisivati ime dobavljača ...",
     "stock"                        => "",
     "stock_destination"            => "Na skladište",
-    "stock_locaiton"               => "Mjesto skladišta",
+    "stock_location"               => "Mjesto skladišta",
     "stock_source"                 => "Iz skladišta",
     "successfully_deleted"         => "Uspješno ste obrisali primku",
     "successfully_updated"         => "Uspješno ste ažurirali primku",

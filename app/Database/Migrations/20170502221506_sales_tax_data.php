@@ -267,6 +267,8 @@ class Migration_Sales_Tax_Data extends Migration
      */
     public function round_number(int $rounding_mode, string $amount, int $decimals): float
     {
+        $amount = (float)$amount;
+
         if ($rounding_mode == Migration_Sales_Tax_Data::ROUND_UP) {
             $fig = pow(10, $decimals);
             $rounded_total = (ceil($fig * $amount) + ceil($fig * $amount - ceil($fig * $amount))) / $fig;
@@ -376,7 +378,7 @@ class Migration_Sales_Tax_Data extends Migration
         $decimals = totals_decimals();
 
         foreach ($sales_taxes as $row_number => $sales_tax) {
-            $sale_tax_amount = $sales_tax['sale_tax_amount'];
+            $sale_tax_amount = (float)$sales_tax['sale_tax_amount'];
             $rounding_code = $sales_tax['rounding_code'];
             $rounded_sale_tax_amount = $sale_tax_amount;
 

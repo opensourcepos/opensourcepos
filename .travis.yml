@@ -28,7 +28,7 @@ script:
 env:
   global:
   - BRANCH=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
-  - TAG=${TRAVIS_TAG:-$BRANCH}
+  - TAG=$(echo "${TRAVIS_TAG:-$BRANCH}" | tr '/' '-')
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD`
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"

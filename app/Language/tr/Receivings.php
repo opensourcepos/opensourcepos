@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Sağlayıcı Adı...",
     "stock"                        => "Stok",
     "stock_destination"            => "Stok hedefi",
-    "stock_locaiton"               => "Stok yeri",
+    "stock_location"               => "Stok yeri",
     "stock_source"                 => "Stok kaynağı",
     "successfully_deleted"         => "Başarıyla sildiniz",
     "successfully_updated"         => "Alım başarıyla güncellendi",

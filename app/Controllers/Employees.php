@@ -76,6 +76,13 @@ class Employees extends Persons
     public function getView(int $employee_id = NEW_ENTRY): string
     {
         $person_info = $this->employee->get_info($employee_id);
+        $current_user = $this->employee->get_logged_in_employee_info();
+
+        if ($employee_id != NEW_ENTRY && !$this->employee->canModifyEmployee($person_info->person_id, $current_user->person_id)) {
+            header('Location: ' . base_url('no_access/employees/employees'));
+            exit();
+        }
+
         foreach (get_object_vars($person_info) as $property => $value) {
             $person_info->$property = $value;
         }
@@ -109,6 +116,19 @@ class Employees extends Persons
      */
     public function postSave(int $employee_id = NEW_ENTRY): ResponseInterface
     {
+        $current_user = $this->employee->get_logged_in_employee_info();
+
+        if ($employee_id != NEW_ENTRY) {
+            $target_employee = $this->employee->get_info($employee_id);
+            if (!$this->employee->canModifyEmployee($target_employee->person_id, $current_user->person_id)) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Employees.error_updating_admin'),
+                    'id'      => NEW_ENTRY
+                ]);
+            }
+        }
+
         $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: duplicated code
         $last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
@@ -133,11 +153,16 @@ class Employees extends Persons
         ];
 
         $grants_array = [];
+        $isAdmin = $this->employee->isAdmin($current_user->person_id);
+
         foreach ($this->module->get_all_permissions()->getResult() as $permission) {
             $grants = [];
             $grant = $this->request->getPost('grant_' . $permission->permission_id) != null ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
 
             if ($grant == $permission->permission_id) {
+                if (!$isAdmin && !$this->employee->has_grant($permission->permission_id, $current_user->person_id)) {
+                    continue;
+                }
                 $grants['permission_id'] = $permission->permission_id;
                 $grants['menu_group'] = $this->request->getPost('menu_group_' . $permission->permission_id) != null ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '--';
                 $grants_array[] = $grants;
@@ -172,6 +197,11 @@ class Employees extends Persons
                     'id'      => $employee_data['person_id']
                 ]);
             } else { // Existing employee
+                $logged_in_employee_id = session()->get('person_id');
+                if ($employee_id == $logged_in_employee_id) {
+                    session()->set('language_code', $employee_data['language_code']);
+                    session()->set('language', $employee_data['language']);
+                }
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
@@ -194,6 +224,15 @@ class Employees extends Persons
     public function postDelete(): ResponseInterface
     {
         $employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $current_user = $this->employee->get_logged_in_employee_info();
+
+        if (!$this->employee->isAdmin($current_user->person_id)) {
+            foreach ($employees_to_delete as $emp_id) {
+                if ($this->employee->isAdmin((int)$emp_id)) {
+                    return $this->response->setJSON(['success' => false, 'message' => lang('Employees.error_deleting_admin')]);
+                }
+            }
+        }
 
         if ($this->employee->delete_list($employees_to_delete)) {    // TODO: this is passing a string, but delete_list expects an array
             return $this->response->setJSON([

@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Start Typing Supplier's name...",
     "stock"                        => "Stock",
     "stock_destination"            => "Stock Destination",
-    "stock_locaiton"               => "Stock Location",
+    "stock_location"               => "Stock Location",
     "stock_source"                 => "Stock Source",
     "successfully_deleted"         => "You have successfully deleted receiving",
     "successfully_updated"         => "Receiving successfully updated",

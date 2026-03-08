@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Ketik nama pemasok ...",
     "stock"                        => "Stok",
     "stock_destination"            => "Tujuan Stok",
-    "stock_locaiton"               => "Lokasi Stok",
+    "stock_location"               => "Lokasi Stok",
     "stock_source"                 => "Asal Stok",
     "successfully_deleted"         => "Berhasil Dihapus",
     "successfully_updated"         => "Berhasil Diperbaharui",

@@ -1,0 +1,25 @@
+<?php
+
+return [
+    "account_number"        => "Nambari ya Akaunti",
+    "agency_name"           => "Jina la Wakala",
+    "cannot_be_deleted"     => "Haiwezekani kufuta Wasambazaji waliochaguliwa. Mmoja au zaidi tayari ana mauzo.",
+    "category"              => "Kategoria",
+    "company_name"          => "Jina la Kampuni",
+    "company_name_required" => "Jina la Kampuni ni kiashiria kinachohitajika.",
+    "confirm_delete"        => "Una uhakika unataka kufuta Wasambazaji waliochaguliwa?",
+    "confirm_restore"       => "Una uhakika unataka kurejesha Wasambazaji waliochaguliwa?",
+    "cost"                  => "Wasambazaji wa Wazalishaji (Cost Supplier) ",
+    "error_adding_updating" => "Kusasisha au kuongeza Wasambazaji kimeshindikana.",
+    "goods"                 => "Wasambazaji wa Bidhaa (Goods Supplier)",
+    "new"                   => "Msambazaji Mpya",
+    "none_selected"         => "Hujachagua Wasambazaji wa kufuta.",
+    "one_or_multiple"       => "Wasambazaji",
+    "successful_adding"     => "Umefanikiwa kuongeza Msambazaji",
+    "successful_deleted"    => "Umefanikiwa kufuta",
+    "successful_updating"   => "Umefanikiwa kusasisha Msambazaji",
+    "supplier"              => "Msambazaji",
+    "supplier_id"           => "Id",
+    "tax_id"                => "Kitambulisho cha Kodi",
+    "update"                => "Sasisha Msambazaji",
+];

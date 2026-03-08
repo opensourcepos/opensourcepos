@@ -215,15 +215,15 @@ if (isset($success)) {
                                     'class' => 'form-control input-sm',
                                     'value' => $item['description']
                                 ]);
-                            } else {
-                                if ($item['description'] != '') {    // TODO: !==?
-                                    echo $item['description'];
-                                    echo form_hidden('description', $item['description']);
                                 } else {
-                                    echo '<i>' . lang('Sales.no_description') . '</i>';
-                                    echo form_hidden('description', '');
+                                    if ($item['description'] != '') {    // TODO: !==?
+                                        echo esc($item['description']);
+                                        echo form_hidden('description', $item['description']);
+                                    } else {
+                                        echo '<i>' . lang('Sales.no_description') . '</i>';
+                                        echo form_hidden('description', '');
+                                    }
                                 }
-                            }
                             ?>
                         </td>
                         <td colspan="7"></td>

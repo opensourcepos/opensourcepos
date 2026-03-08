@@ -43,7 +43,7 @@ return [
     "start_typing_supplier_name"   => "Digite o nome do fornecedor...",
     "stock"                        => "Estoque",
     "stock_destination"            => "Destinação do estoque",
-    "stock_locaiton"               => "Localização do estoque",
+    "stock_location"               => "Localização do estoque",
     "stock_source"                 => "Fonte do estoque",
     "successfully_deleted"         => "Você excluiu com sucesso",
     "successfully_updated"         => "Recebimento atualizado com sucesso",
