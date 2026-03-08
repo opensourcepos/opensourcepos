@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Kata kunci sekarang salah.",
     "employee"                     => "Karyawan",
     "error_adding_updating"        => "Kesalahan menambah / memperbarui karyawan.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Anda tidak dapat menghapus Demo admin user.",
     "error_updating_demo_admin"    => "Anda tidak dapat mengubah Demo admin user.",
     "language"                     => "Bahasa",

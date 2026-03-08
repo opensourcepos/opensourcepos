@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Password corrente non valida.",
     "employee"                     => "Impiegato",
     "error_adding_updating"        => "Aggiunta o aggiornamento di impiegati fallito.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Non puoi eliminare l'utente admin demo.",
     "error_updating_demo_admin"    => "Non puoi cambiare l'utente admin demo.",
     "language"                     => "Lingua",

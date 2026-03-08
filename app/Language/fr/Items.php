@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Le prix de gros est requis.",
     "count"                              => "Mise à jour de l'inventaire",
     "csv_import_failed"                  => "Échec d'import CSV",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Le CSV envoyé ne contient aucune donnée, ou elles sont dans un format erroné.",
     "csv_import_partially_failed"        => "Il y a eu {0} importation(s) d'articles échoué(s) au(x) ligne(s) : {1}. Aucune ligne n'a été importée.",
     "csv_import_success"                 => "Importation des articles réussie.",

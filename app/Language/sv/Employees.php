@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Nuvarande lösenord är fel.",
     "employee"                     => "Anställd",
     "error_adding_updating"        => "Anställd lägg till eller uppdatering misslyckades.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Du kan inte radera demo admin-användaren.",
     "error_updating_demo_admin"    => "Du kan inte ändra demo admin-användaren.",
     "language"                     => "Språk",

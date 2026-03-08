@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Le mot de passe actuel est invalide.",
     "employee"                     => "Employé",
     "error_adding_updating"        => "Erreur d'ajout/édition d'employé.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Vous ne pouvez pas supprimer l'utilisateur de démonstration admin.",
     "error_updating_demo_admin"    => "Vous ne pouvez pas modifier l'utilisateur de démonstration admin.",
     "language"                     => "Langue",

@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "قیمت عمده فروشی یک زمینه ضروری است.",
     "count"                              => "به روزرسانی موجودی",
     "csv_import_failed"                  => "واردات سی‌اس‌وی انجام نشد",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "پرونده سی‌اس‌وی آپلود شده داده ای ندارد یا به طور نادرست قالب بندی شده است.",
     "csv_import_partially_failed"        => "در خط (ها){0} شکست واردات کالا وجود دارد:{1}. هیچ سطر وارد نشده است.",
     "csv_import_success"                 => "وارد کردن سی‌اس‌وی مورد موفقیت آمیز است.",

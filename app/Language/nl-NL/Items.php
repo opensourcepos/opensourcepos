@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Inkoopprijs is een vereist veld.",
     "count"                              => "Voorraad bijwerken",
     "csv_import_failed"                  => "CSV importeren mislukt",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Het geüploade CSV-bestand bevat geen gegevens or heeft de verkeerde indeling.",
     "csv_import_partially_failed"        => "Er zijn {0} artikel import fout(en) in lijn(en): {1}. Geen rijen geïmporteerd.",
     "csv_import_success"                 => "Artikel CSV geïmporteerd.",

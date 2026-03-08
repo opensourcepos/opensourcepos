@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "گذرواژه فعلی نامعتبر است.",
     "employee"                     => "کارمند",
     "error_adding_updating"        => "افزودن یا به روزرسانی کارکنان انجام نشد.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "شما نمی توانید کاربر مدیر نسخه ی نمایشی را حذف کنید.",
     "error_updating_demo_admin"    => "شما نمی توانید کاربر مدیر نسخه ی نمایشی را تغییر دهید.",
     "language"                     => "زبان",

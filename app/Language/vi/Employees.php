@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Mật khẩu hiện tại không hợp lệ.",
     "employee"                     => "Nhân viên",
     "error_adding_updating"        => "Gặp lỗi khi cập nhật hay thêm nhân viên.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Bạn không thể xóa người dùng demo admin.",
     "error_updating_demo_admin"    => "Bạn không thể thay đổi người dùng demo admin.",
     "language"                     => "Ngôn ngữ",

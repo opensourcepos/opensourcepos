@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "",
     "employee"                     => "Mitarbeiter",
     "error_adding_updating"        => "Fehler beim Hinzufügen/Ändern",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Sie können den Admin nicht löschen",
     "error_updating_demo_admin"    => "Sie können den Admin nicht ändern",
     "language"                     => "",
