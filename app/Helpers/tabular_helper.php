@@ -930,17 +930,19 @@ function get_controller(): string
  * Restores filter values from URL query string.
  * 
  * @param CodeIgniter\HTTP\IncomingRequest $request The request object
- * @return array Array with 'startDate', 'endDate', and 'selectedFilters' keys
+ * @return array Array with 'start_date', 'end_date', and 'selected_filters' keys
  */
 function restoreTableFilters($request): array
 {
     $startDate = $request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $endDate = $request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $urlFilters = $request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
+    $urlFilters = $request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
-    return [
-        'startDate'       => $startDate ?: null,
-        'endDate'         => $endDate ?: null,
-        'selectedFilters' => !empty($urlFilters) ? $urlFilters : []
-    ];
+    return array_filter([
+        'start_date' => $startDate ?: null,
+        'end_date' => $endDate ?: null,
+        'selected_filters' => $urlFilters ?? []
+    ], function($value) {
+        return $value !== null && $value !== [];
+    });
 }

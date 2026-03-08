@@ -106,14 +106,14 @@ class Sales extends Secure_Controller
 
             // Restore filters from URL query string
             $filters = restoreTableFilters($this->request);
-            if ($filters['startDate']) {
-                $data['start_date'] = $filters['startDate'];
+            if (!empty($filters['selected_filters'])) {
+                $selectedFilters = array_merge($selectedFilters, $filters['selected_filters']);
             }
-            if ($filters['endDate']) {
-                $data['end_date'] = $filters['endDate'];
+            if (isset($filters['start_date'])) {
+                $data['start_date'] = $filters['start_date'];
             }
-            if (!empty($filters['selectedFilters'])) {
-                $selectedFilters = array_merge($selectedFilters, $filters['selectedFilters']);
+            if (isset($filters['end_date'])) {
+                $data['end_date'] = $filters['end_date'];
             }
             $data['selected_filters'] = $selectedFilters;
 

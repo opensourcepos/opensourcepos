@@ -37,14 +37,7 @@ class Cashups extends Secure_Controller
         $data['filters'] = ['is_deleted' => lang('Cashups.is_deleted')];
 
         // Restore filters from URL
-        $filters = restoreTableFilters($this->request);
-        if ($filters['startDate']) {
-            $data['start_date'] = $filters['startDate'];
-        }
-        if ($filters['endDate']) {
-            $data['end_date'] = $filters['endDate'];
-        }
-        $data['selected_filters'] = $filters['selectedFilters'];
+        $data = array_merge($data, restoreTableFilters($this->request));
 
         return view('cashups/manage', $data);
     }
