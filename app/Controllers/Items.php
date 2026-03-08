@@ -100,7 +100,7 @@ class Items extends Secure_Controller
      **/
     public function getSearch(): ResponseInterface
     {
-        $search = $this->request->getGet('search');
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
         $sort = $this->sanitizeSortColumn(item_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
@@ -152,6 +152,7 @@ class Items extends Secure_Controller
     {
         helper('file');
 
+        $pic_filename = rawurldecode($pic_filename);
         $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
         $images = glob("./uploads/item_pics/$pic_filename");
         $base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
@@ -381,7 +382,7 @@ class Items extends Secure_Controller
             } else {
                 $images = glob("./uploads/item_pics/$item_info->pic_filename");
             }
-            $data['image_path']    = sizeof($images) > 0 ? base_url($images[0]) : '';
+            $data['image_path']    = sizeof($images) > 0 ? base_url(implode('/', array_map('rawurlencode', explode('/', ltrim($images[0], './'))))) : '';
         } else {
             $data['image_path']    = '';
         }
@@ -621,7 +622,7 @@ class Items extends Secure_Controller
         // Save item data
         $item_data = [
             'name'                  => $this->request->getPost('name'),
-            'description'           => $this->request->getPost('description'),
+            'description'           => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category'              => $this->request->getPost('category'),
             'item_type'             => $item_type,
             'stock_type'            => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
@@ -772,10 +773,13 @@ class Items extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
+        
+        // Sanitize filename to remove problematic characters like spaces
+        $sanitized_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $info['filename']);
 
         $file_info = [
             'orig_name' => $filename,
-            'raw_name'  => $info['filename'],
+            'raw_name'  => $sanitized_name,
             'file_ext'  => $file->guessExtension()
         ];
 
