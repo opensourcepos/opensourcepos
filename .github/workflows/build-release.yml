@@ -129,12 +129,7 @@ jobs:
           docker stop mysql && docker rm mysql
 
       - name: Build Docker image
-        run: |
-          docker build . --target ospos -t ospos:latest
-          docker build . --target ospos_test -t ospos_test:latest
-
-      - name: Run Docker tests
-        run: docker run --rm ospos_test:latest /app/vendor/bin/phpunit --testdox || true
+        run: docker build . --target ospos -t ospos:latest
 
       - name: Create distribution archives
         run: |
