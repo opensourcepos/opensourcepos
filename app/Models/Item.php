@@ -199,9 +199,9 @@ class Item extends Model
 
         if (!empty($search)) {
             if ($attributes_enabled && $filters['search_custom']) {
-                $builder->having("attribute_values LIKE :search:", ['search' => "%$search%"]);
-                $builder->orHaving("attribute_dtvalues LIKE :search_dt:", ['search_dt' => "%$search%"]);
-                $builder->orHaving("attribute_dvalues LIKE :search_d:", ['search_d' => "%$search%"]);
+                $builder->havingLike('attribute_values', $search);
+                $builder->orHavingLike('attribute_dtvalues', $search);
+                $builder->orHavingLike('attribute_dvalues', $search);
             } else {
                 $builder->groupStart();
                 $builder->like('name', $search);
