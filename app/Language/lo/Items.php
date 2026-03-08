@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "ກະລຸນາກຳນົດລາຄາຕົ້ນທຶນ.",
     "count"                              => "ອັບເດດປະລິມານສິນຄ້າໃນສາງ",
     "csv_import_failed"                  => "CSV import failed",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "The uploaded file has no data or is formatted incorrectly.",
     "csv_import_partially_failed"        => "Item import successful with some failures:",
     "csv_import_success"                 => "Item import successful.",

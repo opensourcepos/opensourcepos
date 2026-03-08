@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Nenosiri la sasa si sahihi.",
     "employee"                     => "Mfanyakazi",
     "error_adding_updating"        => "Kuongeza au kusasisha mfanyakazi kumeshindikana.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Huwezi kufuta mtumiaji wa admin wa majaribio.",
     "error_updating_demo_admin"    => "Huwezi kubadilisha mtumiaji wa admin wa majaribio.",
     "language"                     => "Lugha",

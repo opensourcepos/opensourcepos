@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Der Großhandelspreis ist ein Pflichtfeld.",
     "count"                              => "Ändere Bestand",
     "csv_import_failed"                  => "CSV Import fehlgeschlagen",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Die hochgeladene Datei enthält keine Daten oder ist falsch formatiert.",
     "csv_import_partially_failed"        => "{0} Artikel-Import Fehler in Zeile: {1}. Keine Reihen wurden importiert.",
     "csv_import_success"                 => "Artikelimport erfolgreich.",

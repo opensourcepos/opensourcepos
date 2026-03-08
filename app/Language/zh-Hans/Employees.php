@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "",
     "employee"                     => "員工",
     "error_adding_updating"        => "添加/更新員工錯誤",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "您不能刪除admin用戶",
     "error_updating_demo_admin"    => "您不能更改admin用戶",
     "language"                     => "",

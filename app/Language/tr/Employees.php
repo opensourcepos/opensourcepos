@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Var Olan Parola geçersiz.",
     "employee"                     => "Personel",
     "error_adding_updating"        => "Personel ekleme/güncelleme hatası.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Admin güncellenemez.",
     "error_updating_demo_admin"    => "Admin silinemez.",
     "language"                     => "Dil",

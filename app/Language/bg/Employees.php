@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Текущата парола е невалидна.",
     "employee"                     => "Служител",
     "error_adding_updating"        => "Добавянето или актуализирането на служителите е неуспешно.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Не може да изтриете Пробният Администратор.",
     "error_updating_demo_admin"    => "Не може да промените Пробният Администратор.",
     "language"                     => "Език",
