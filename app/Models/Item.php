@@ -532,13 +532,18 @@ class Item extends Model
     public function get_search_suggestion_format(?string $seed = null): string
     {
         $config = config(OSPOS::class)->settings;
-        $seed .= ',' . $config['suggestions_first_column'];
+        $valid_columns = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
+        
+        $suggestions_first_column = in_array($config['suggestions_first_column'], $valid_columns, true) 
+            ? $config['suggestions_first_column'] 
+            : 'name';
+        $seed .= ',' . $suggestions_first_column;
 
-        if ($config['suggestions_second_column'] !== '') {
+        if ($config['suggestions_second_column'] !== '' && in_array($config['suggestions_second_column'], $valid_columns, true)) {
             $seed .= ',' . $config['suggestions_second_column'];
         }
 
-        if ($config['suggestions_third_column'] !== '') {
+        if ($config['suggestions_third_column'] !== '' && in_array($config['suggestions_third_column'], $valid_columns, true)) {
             $seed .= ',' . $config['suggestions_third_column'];
         }
 
@@ -552,11 +557,18 @@ class Item extends Model
     public function get_search_suggestion_label(object $result_row): string
     {
         $config = config(OSPOS::class)->settings;
+        $valid_columns = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
 
         $label = '';
-        $label1 = $config['suggestions_first_column'];
-        $label2 = $config['suggestions_second_column'];
-        $label3 = $config['suggestions_third_column'];
+        $label1 = in_array($config['suggestions_first_column'], $valid_columns, true) 
+            ? $config['suggestions_first_column'] 
+            : 'name';
+        $label2 = in_array($config['suggestions_second_column'], $valid_columns, true) 
+            ? $config['suggestions_second_column'] 
+            : '';
+        $label3 = in_array($config['suggestions_third_column'], $valid_columns, true) 
+            ? $config['suggestions_third_column'] 
+            : '';
 
         $this->format_result_numbers($result_row);
 

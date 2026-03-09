@@ -385,9 +385,9 @@ class Config extends Secure_Controller
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),
-            'suggestions_first_column'          => $this->request->getPost('suggestions_first_column'),
-            'suggestions_second_column'         => $this->request->getPost('suggestions_second_column'),
-            'suggestions_third_column'          => $this->request->getPost('suggestions_third_column'),
+            'suggestions_first_column'          => $this->_validate_suggestions_column($this->request->getPost('suggestions_first_column')),
+            'suggestions_second_column'         => $this->_validate_suggestions_column($this->request->getPost('suggestions_second_column')),
+            'suggestions_third_column'          => $this->_validate_suggestions_column($this->request->getPost('suggestions_third_column')),
             'giftcard_number'                   => $this->request->getPost('giftcard_number'),
             'derive_sale_quantity'              => $this->request->getPost('derive_sale_quantity') != null,
             'multi_pack_enabled'                => $this->request->getPost('multi_pack_enabled') != null,
@@ -975,5 +975,18 @@ class Config extends Secure_Controller
         $success = $this->appconfig->save(['company_logo' => '']);
 
         return $this->response->setJSON(['success' => $success]);
+    }
+
+    /**
+     * Validates suggestions column name to prevent SQL injection.
+     *
+     * @param string|null $column
+     * @return string
+     */
+    private function _validate_suggestions_column(?string $column): string
+    {
+        $valid_columns = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
+
+        return in_array($column, $valid_columns, true) ? $column : 'name';
     }
 }
