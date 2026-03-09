@@ -408,7 +408,7 @@ function get_items_manage_table_headers(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
-    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);    // TODO: this should be made into a constant in constants.php
+    $definitions_with_types = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
 
     $headers = item_headers();
 
@@ -420,8 +420,8 @@ function get_items_manage_table_headers(): string
 
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
-    foreach ($definition_names as $definition_id => $definition_name) {
-        $headers[] = [$definition_id => $definition_name, 'sortable' => false];
+    foreach ($definitions_with_types as $definition_id => $definition_info) {
+        $headers[] = [$definition_id => $definition_info['name'], 'sortable' => false];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];
@@ -479,7 +479,7 @@ function get_item_data_row(object $item): array
         $item->name .= NAME_SEPARATOR . $item->pack_name;
     }
 
-    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);
+    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
 
     $columns = [
         'items.item_id' => $item->item_id,
@@ -634,7 +634,7 @@ function parse_attribute_values(array $columns, array $row): array
 }
 
 /**
- * @param array $definition_names
+ * @param array $definition_names Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
  * @param array $row
  * @return array
  */
@@ -651,10 +651,16 @@ function expand_attribute_values(array $definition_names, array $row): array
     }
 
     $attribute_values = [];
-    foreach ($definition_names as $definition_id => $definition_name) {
+    foreach ($definition_names as $definition_id => $definition_info) {
         if (isset($indexed_values[$definition_id])) {
-            $attribute_value = $indexed_values[$definition_id];
-            $attribute_values["$definition_id"] = $attribute_value;
+            $raw_value = $indexed_values[$definition_id];
+            
+            // Format DECIMAL attributes according to locale
+            if (is_array($definition_info) && isset($definition_info['type']) && $definition_info['type'] === DECIMAL) {
+                $attribute_values["$definition_id"] = to_decimals($raw_value);
+            } else {
+                $attribute_values["$definition_id"] = $raw_value;
+            }
         } else {
             $attribute_values["$definition_id"] = "";
         }

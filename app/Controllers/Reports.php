@@ -1776,7 +1776,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_SALES);
+        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_SALES, true);
 
         $inputs = [
             'start_date'     => $start_date,
@@ -1789,7 +1789,12 @@ class Reports extends Secure_Controller
         $this->detailed_sales->create($inputs);
 
         $columns = $this->detailed_sales->getDataColumns();
-        $columns['details'] = array_merge($columns['details'], $definition_names);
+        // Extract just names for column headers
+        $definition_headers = [];
+        foreach ($definition_names as $definition_id => $definition_info) {
+            $definition_headers[$definition_id] = $definition_info['name'];
+        }
+        $columns['details'] = array_merge($columns['details'], $definition_headers);
 
         $headers = $columns;
 
@@ -1930,14 +1935,19 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_RECEIVINGS);
+        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_RECEIVINGS, true);
 
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
 
         $this->detailed_receivings->create($inputs);
 
         $columns = $this->detailed_receivings->getDataColumns();
-        $columns['details'] = array_merge($columns['details'], $definition_names);
+        // Extract just names for column headers
+        $definition_headers = [];
+        foreach ($definition_names as $definition_id => $definition_info) {
+            $definition_headers[$definition_id] = $definition_info['name'];
+        }
+        $columns['details'] = array_merge($columns['details'], $definition_headers);
 
         $headers = $columns;
         $report_data = $this->detailed_receivings->getData($inputs);
