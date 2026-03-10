@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../../app/Libraries/Token_lib.php';
+namespace Tests\Libraries;
 
 use App\Libraries\Token_lib;
-use PHPUnit\Framework\TestCase;
+use CodeIgniter\Test\CIUnitTestCase;
 
-class Token_libTest extends TestCase
+class Token_libTest extends CIUnitTestCase
 {
     private Token_lib $tokenLib;
 
