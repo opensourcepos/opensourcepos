@@ -16,6 +16,9 @@ use stdClass;
  */
 class Item extends Model
 {
+    public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
+    public const ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
+
     protected $table = 'items';
     protected $primaryKey = 'item_id';
     protected $useAutoIncrement = true;
@@ -532,18 +535,17 @@ class Item extends Model
     public function get_search_suggestion_format(?string $seed = null): string
     {
         $config = config(OSPOS::class)->settings;
-        $valid_columns = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
         
-        $suggestions_first_column = in_array($config['suggestions_first_column'], $valid_columns, true) 
+        $suggestions_first_column = in_array($config['suggestions_first_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
             ? $config['suggestions_first_column'] 
             : 'name';
         $seed .= ',' . $suggestions_first_column;
 
-        if ($config['suggestions_second_column'] !== '' && in_array($config['suggestions_second_column'], $valid_columns, true)) {
+        if ($config['suggestions_second_column'] !== '' && in_array($config['suggestions_second_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true)) {
             $seed .= ',' . $config['suggestions_second_column'];
         }
 
-        if ($config['suggestions_third_column'] !== '' && in_array($config['suggestions_third_column'], $valid_columns, true)) {
+        if ($config['suggestions_third_column'] !== '' && in_array($config['suggestions_third_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true)) {
             $seed .= ',' . $config['suggestions_third_column'];
         }
 
@@ -557,16 +559,15 @@ class Item extends Model
     public function get_search_suggestion_label(object $result_row): string
     {
         $config = config(OSPOS::class)->settings;
-        $valid_columns = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
 
         $label = '';
-        $label1 = in_array($config['suggestions_first_column'], $valid_columns, true) 
+        $label1 = in_array($config['suggestions_first_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
             ? $config['suggestions_first_column'] 
             : 'name';
-        $label2 = in_array($config['suggestions_second_column'], $valid_columns, true) 
+        $label2 = in_array($config['suggestions_second_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
             ? $config['suggestions_second_column'] 
             : '';
-        $label3 = in_array($config['suggestions_third_column'], $valid_columns, true) 
+        $label3 = in_array($config['suggestions_third_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
             ? $config['suggestions_third_column'] 
             : '';
 

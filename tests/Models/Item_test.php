@@ -17,24 +17,20 @@ class Item_test extends CIUnitTestCase
             'name--comment'
         ];
 
-        $valid_columns = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
-
         foreach ($malicious_columns as $malicious) {
-            $this->assertNotContains($malicious, $valid_columns, "Malicious input should be rejected: $malicious");
+            $this->assertNotContains($malicious, Item::ALLOWED_SUGGESTIONS_COLUMNS, "Malicious input should be rejected: $malicious");
         }
     }
 
     public function testSuggestionsColumnValidationAcceptsValidColumns(): void
     {
-        $valid_columns = ['name', 'item_number', 'description', 'cost_price', 'unit_price', ''];
-
-        foreach ($valid_columns as $column) {
+        foreach (Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY as $column) {
             $validated = $this->validateSuggestionsColumn($column);
             
             if ($column === '') {
                 $this->assertTrue($validated === '' || $validated === 'name', "Empty column should be valid or default to name");
             } else {
-                $this->assertContains($validated, ['name', 'item_number', 'description', 'cost_price', 'unit_price'], "Valid column should be preserved: $column");
+                $this->assertContains($validated, Item::ALLOWED_SUGGESTIONS_COLUMNS, "Valid column should be preserved: $column");
             }
         }
     }
@@ -57,8 +53,6 @@ class Item_test extends CIUnitTestCase
 
     private function validateSuggestionsColumn(?string $column): string
     {
-        $valid_columns = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
-
-        return in_array($column, $valid_columns, true) ? $column : 'name';
+        return in_array($column, Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY, true) ? $column : 'name';
     }
 }

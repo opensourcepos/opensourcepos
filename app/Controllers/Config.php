@@ -11,6 +11,7 @@ use App\Models\Appconfig;
 use App\Models\Attribute;
 use App\Models\Customer_rewards;
 use App\Models\Dinner_table;
+use App\Models\Item;
 use App\Models\Module;
 use App\Models\Enums\Rounding_mode;
 use App\Models\Stock_location;
@@ -985,8 +986,6 @@ class Config extends Secure_Controller
      */
     private function _validate_suggestions_column(?string $column): string
     {
-        $valid_columns = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
-
-        return in_array($column, $valid_columns, true) ? $column : 'name';
+        return in_array($column, Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY, true) ? $column : 'name';
     }
 }
