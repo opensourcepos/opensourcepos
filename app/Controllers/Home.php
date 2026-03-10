@@ -46,7 +46,7 @@ class Home extends Secure_Controller
 
         $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
 
-        if (!$this->employee->can_modify_employee($employeeId, $currentPersonId)) {
+        if (!$this->employee->isAdmin($currentPersonId) && $employeeId !== $currentPersonId) {
             header('Location: ' . base_url('no_access/home/home'));
             exit();
         }
@@ -71,7 +71,7 @@ class Home extends Secure_Controller
 
         $employeeId = $employeeId === NEW_ENTRY ? $currentUser->person_id : $employeeId;
 
-        if (!$this->employee->can_modify_employee($employeeId, $currentUser->person_id)) {
+        if (!$this->employee->isAdmin($currentUser->person_id) && $employeeId !== $currentUser->person_id) {
             return $this->response->setStatusCode(403)->setJSON([
                 'success' => false,
                 'message' => lang('Employees.unauthorized_modify')

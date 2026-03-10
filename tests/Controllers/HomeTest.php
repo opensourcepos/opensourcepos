@@ -423,4 +423,97 @@ class HomeTest extends CIUnitTestCase
         $response->assertStatus(200);
         $response->assertSee('nonadmin');
     }
+
+    /**
+     * Test non-admin cannot view another non-admin's password form
+     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * 
+     * @return void
+     */
+    public function testNonAdminCannotViewOtherNonAdminPasswordForm(): void
+    {
+        $nonAdminId1 = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId1);
+        
+        // Try to access another user's password form (user ID 1 is admin, which is already tested)
+        // Create a second non-admin by modifying the first approach
+        $personData = [
+            'first_name'   => 'Other',
+            'last_name'    => 'User',
+            'email'        => 'other@test.com',
+            'phone_number' => '555-5678'
+        ];
+        
+        $employeeData = [
+            'username'      => 'otheruser',
+            'password'      => password_hash('password456', PASSWORD_DEFAULT),
+            'hash_version'  => 2,
+            'language_code' => 'en',
+            'language'      => 'english'
+        ];
+        
+        $grantsData = [
+            ['permission_id' => 'customers', 'menu_group' => 'home'],
+        ];
+        
+        $employeeModel = model(Employee::class);
+        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        $otherUserId = $employeeModel->get_found_rows('');
+        
+        $response = $this->get('/home/changePassword/' . $otherUserId);
+        
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+    }
+
+    /**
+     * Test non-admin cannot change another non-admin's password
+     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * 
+     * @return void
+     */
+    public function testNonAdminCannotChangeOtherNonAdminPassword(): void
+    {
+        $nonAdminId1 = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId1);
+        
+        // Create a second user to target
+        $personData = [
+            'first_name'   => 'Victim',
+            'last_name'    => 'User',
+            'email'        => 'victim@test.com',
+            'phone_number' => '555-9999'
+        ];
+        
+        $employeeData = [
+            'username'      => 'victimuser',
+            'password'      => password_hash('victimpass123', PASSWORD_DEFAULT),
+            'hash_version'  => 2,
+            'language_code' => 'en',
+            'language'      => 'english'
+        ];
+        
+        $grantsData = [
+            ['permission_id' => 'customers', 'menu_group' => 'home'],
+        ];
+        
+        $employeeModel = model(Employee::class);
+        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        $victimId = $employeeModel->get_found_rows('');
+        
+        $response = $this->post('/home/save/' . $victimId, [
+            'username' => 'victimuser',
+            'current_password' => 'victimpass123',
+            'password' => 'hacked123456'
+        ]);
+        
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        
+        // Verify victim's password was NOT changed
+        $victim = $employeeModel->get_info($victimId);
+        $this->assertTrue(password_verify('victimpass123', $victim->password), 
+            'Non-admin should not be able to change another non-admin password');
+    }
 }
