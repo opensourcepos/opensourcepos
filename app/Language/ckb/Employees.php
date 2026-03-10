@@ -14,6 +14,8 @@ return [
     'current_password_invalid' => "وشەی نهێنی ئێستا نادروستە.",
     'employee' => "فەرمانبەر",
     'error_adding_updating' => "زیادکردن یان نوێکردنەوەی کارمەند سەرکەوتوو نەبوو.",
+    'error_deleting_admin' => "",
+    'error_updating_admin' => "",
     'error_deleting_demo_admin' => "ناتوانیت بەکارهێنەری ئەدمینی تاقیکردنەوەیی بسڕیتەوە.",
     'error_updating_demo_admin' => "ناتوانیت بەکارهێنەری ئەدمین تاقیکردنەوەیی بگۆڕیت.",
     'language' => "زمان",

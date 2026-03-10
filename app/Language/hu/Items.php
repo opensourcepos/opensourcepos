@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Bekerülési ár kötelező mező",
     "count"                              => "Raktárkészlet módosítása",
     "csv_import_failed"                  => "CSV import sikertelen",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "A feltöltött fájlban nincs adat, vagy rossz formátum.",
     "csv_import_partially_failed"        => "Most Items imported. But some were not, here is the list",
     "csv_import_success"                 => "Import of Items successful",

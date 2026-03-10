@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "รหัสผ่านปัจจุบันไม่ถูกต้อง",
     "employee"                     => "พนักงาน",
     "error_adding_updating"        => "การเพิ่มหรือปรับปรุงข้อมูลพนักงานผิดพลาด",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "คุณไม่สามารถลบผู้ใช้งานสำหรับการเดโม้ได้",
     "error_updating_demo_admin"    => "คุณไม่สามารถทำการเปลี่ยนข้อมูลผู้ใช้งานเดโม้ได้",
     "language"                     => "ภาษา",

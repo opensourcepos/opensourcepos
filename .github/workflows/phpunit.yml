@@ -111,7 +111,15 @@ jobs:
         env:
           CI_ENVIRONMENT: testing
           MYSQL_HOST_NAME: 127.0.0.1
-        run: composer test
+        run: composer test -- --log-junit test-results/junit.xml
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-php-${{ matrix.php-version }}
+          path: test-results/
+          retention-days: 30
 
       - name: Stop MariaDB
         if: always()

@@ -142,7 +142,7 @@
                                             <li>
                                                 <?= form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant == 1) ?>
                                                 <?= form_hidden("menu_group_$permission->permission_id", "--") ?>
-                                                <span class="medium"><?= $lang_line ?></span>
+                                                <span class="medium"><?= esc($lang_line) ?></span>
                                             </li>
                                         </ul>
                             <?php

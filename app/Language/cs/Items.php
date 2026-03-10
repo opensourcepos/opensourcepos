@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Musíte zadat nákupní cenu.",
     "count"                              => "Upravit množství",
     "csv_import_failed"                  => "Import z CSVu se nepovedl",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Nahraný soubor neobsahuje žádná data nebo má špatný formát.",
     "csv_import_partially_failed"        => "Při importu položek došlo k několika chybám:",
     "csv_import_success"                 => "Import položek proběhl bez chyby.",

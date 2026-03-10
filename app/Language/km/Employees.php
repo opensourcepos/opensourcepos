@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "ពាក្យសម្ងាត់បច្ចុប្បន្ន មិនត្រឹមត្រូវ។",
     "employee"                     => "បុគ្គលិក",
     "error_adding_updating"        => "បន្ថែម ឬកែប្រែបុគ្គលិកមិនបានសំរេច។",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "អ្នកមិនអាចលុប គណនីសាកល្បង បានទេ។",
     "error_updating_demo_admin"    => "អ្នកមិនអាចកែប្រែ គណនីសាកល្បងបានទេ។",
     "language"                     => "ភាសា",

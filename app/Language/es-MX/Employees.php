@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "La contraseña actual es inválida.",
     "employee"                     => "Empleado",
     "error_adding_updating"        => "Agregar ó Actualizar empleado ha fallado.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "No puede borrar el usuario demo de administrador.",
     "error_updating_demo_admin"    => "No puede cambiar el usuario demo de administrador.",
     "language"                     => "Idioma",

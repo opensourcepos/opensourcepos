@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Trenutna lozinka je nevažeća.",
     "employee"                     => "Zaposlenik",
     "error_adding_updating"        => "Dodavanje ili ažuriranje zaposlenika nije uspjelo.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Ne možete izbrisati demo korisnika administratora.",
     "error_updating_demo_admin"    => "Ne možete promijeniti korisnika demo administratora.",
     "language"                     => "Jezik",

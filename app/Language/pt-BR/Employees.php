@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Senha atual inválida.",
     "employee"                     => "Funcionário",
     "error_adding_updating"        => "Erro ao adicionar/atualizar funcionário.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Você não pode excluir o usuário administrador de demonstração.",
     "error_updating_demo_admin"    => "Você não pode alterar o usuário de demonstração de administração.",
     "language"                     => "Linguagem",

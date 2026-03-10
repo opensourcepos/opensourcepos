@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "ต้องกรอกราคาขายส่ง",
     "count"                              => "แก้ไขจำนวนสินค้าคงคลัง",
     "csv_import_failed"                  => "นำเข้าข้อมูล CSV ล้มเหลว",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Your uploaded file has no data or wrong format",
     "csv_import_partially_failed"        => "มีรายการ {0} รายการที่นำเข้าล้มเหลว : {1} รายการที่ยังไม่ได้นำเข้า",
     "csv_import_success"                 => "Import of Items successful",

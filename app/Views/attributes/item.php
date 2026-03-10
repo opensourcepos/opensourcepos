@@ -133,7 +133,20 @@
             var result = {};
             $("[name*='attribute_links'").each(function() {
                 var definition_id = $(this).data('definition-id');
-                result[definition_id] = $(this).val();
+                var element = $(this);
+                
+                // For checkboxes, use the visible checkbox, not the hidden input
+                if (element.attr('type') === 'hidden' && element.siblings('input[type="checkbox"]').length > 0) {
+                    // Skip hidden inputs that have a corresponding checkbox
+                    return;
+                }
+                
+                // For checkboxes, get the checked state
+                if (element.attr('type') === 'checkbox') {
+                    result[definition_id] = element.prop('checked') ? '1' : '0';
+                } else {
+                    result[definition_id] = element.val();
+                }
             });
             return result;
         };

@@ -539,15 +539,13 @@ class Employee extends Person
      * Checks if the employee has admin privileges (all module permissions).
      * The first employee (person_id = 1) is considered admin by default.
      */
-    public function is_admin(int $person_id): bool
+    public function isAdmin(int $person_id): bool
     {
         if ($person_id === 1) {
             return true;
         }
 
-        $modules = ['customers', 'employees', 'giftcards', 'items', 'item_kits', 'messages', 'receivings', 'reports', 'sales', 'config', 'suppliers'];
-
-        foreach ($modules as $module) {
+        foreach (ADMIN_MODULES as $module) {
             if (!$this->has_grant($module, $person_id)) {
                 return false;
             }
@@ -561,13 +559,13 @@ class Employee extends Person
      * Only admins can modify other admin accounts.
      * Users cannot modify their own grants unless they are admin.
      */
-    public function can_modify_employee(int $target_person_id, int $current_person_id): bool
+    public function canModifyEmployee(int $target_person_id, int $current_person_id): bool
     {
         if ($target_person_id === $current_person_id) {
-            return !$this->is_admin($target_person_id) || $this->is_admin($current_person_id);
+            return !$this->isAdmin($target_person_id) || $this->isAdmin($current_person_id);
         }
 
-        if ($this->is_admin($target_person_id) && !$this->is_admin($current_person_id)) {
+        if ($this->isAdmin($target_person_id) && !$this->isAdmin($current_person_id)) {
             return false;
         }
 

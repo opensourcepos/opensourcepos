@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "מחיר סיטונאי הינו שדה חובה.",
     "count"                              => "עדכן מלאי",
     "csv_import_failed"                  => "ייבוא אקסל נכשל",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "בקובץ שהועלה אין נתונים או פורמט שגוי.",
     "csv_import_partially_failed"        => "ייבוא פריט הצליח עם מספר שגיאות:",
     "csv_import_success"                 => "ייבוא הפריט הצליח.",

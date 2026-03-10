@@ -228,4 +228,199 @@ class HomeTest extends CIUnitTestCase
         $session->destroy();
         $session->set('person_id', 1); // Admin user
     }
+    
+    /**
+     * Create a non-admin employee for testing
+     * 
+     * @return int The person_id of the created employee
+     */
+    protected function createNonAdminEmployee(): int
+    {
+        $personData = [
+            'first_name'   => 'NonAdmin',
+            'last_name'    => 'User',
+            'email'        => 'nonadmin@test.com',
+            'phone_number' => '555-1234'
+        ];
+        
+        $employeeData = [
+            'username'      => 'nonadmin',
+            'password'      => password_hash('password123', PASSWORD_DEFAULT),
+            'hash_version'  => 2,
+            'language_code' => 'en',
+            'language'      => 'english'
+        ];
+        
+        $grantsData = [
+            ['permission_id' => 'customers', 'menu_group' => 'home'],
+            ['permission_id' => 'sales', 'menu_group' => 'home']
+        ];
+        
+        $employeeModel = model(Employee::class);
+        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        
+        return $employeeModel->get_found_rows('');
+    }
+    
+    /**
+     * Login as a specific user
+     * 
+     * @param int $personId
+     * @return void
+     */
+    protected function loginAs(int $personId): void
+    {
+        $session = Services::session();
+        $session->destroy();
+        $session->set('person_id', $personId);
+        $session->set('menu_group', 'home');
+    }
+    
+    // ========== BOLA Authorization Tests ==========
+    
+    /**
+     * Test non-admin cannot view admin password change form
+     * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
+     * 
+     * @return void
+     */
+    public function testNonAdminCannotViewAdminPasswordForm(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId);
+        
+        $response = $this->get('/home/changePassword/1');
+        
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+    }
+    
+    /**
+     * Test non-admin cannot change admin password
+     * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
+     * 
+     * @return void
+     */
+    public function testNonAdminCannotChangeAdminPassword(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId);
+        
+        $response = $this->post('/home/save/1', [
+            'username' => 'admin',
+            'current_password' => 'pointofsale',
+            'password' => 'hacked123'
+        ]);
+        
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        
+        // Verify admin password was NOT changed
+        $employee = model(Employee::class);
+        $admin = $employee->get_info(1);
+        $this->assertTrue(password_verify('pointofsale', $admin->password), 
+            'Admin password should not have been changed by non-admin');
+    }
+    
+    /**
+     * Test user can view their own password change form
+     * 
+     * @return void
+     */
+    public function testUserCanViewOwnPasswordForm(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId);
+        
+        $response = $this->get('/home/changePassword/' . $nonAdminId);
+        
+        $response->assertStatus(200);
+        $response->assertSee('nonadmin'); // Username should be visible
+    }
+    
+    /**
+     * Test user can change their own password
+     * 
+     * @return void
+     */
+    public function testUserCanChangeOwnPassword(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId);
+        
+        $response = $this->post('/home/save/' . $nonAdminId, [
+            'username' => 'nonadmin',
+            'current_password' => 'password123',
+            'password' => 'newpassword123'
+        ]);
+        
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+        
+        // Verify password was changed
+        $employee = model(Employee::class);
+        $user = $employee->get_info($nonAdminId);
+        $this->assertTrue(password_verify('newpassword123', $user->password));
+    }
+    
+    /**
+     * Test admin can view any user's password form
+     * 
+     * @return void
+     */
+    public function testAdminCanViewAnyPasswordForm(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->resetSession(); // Login as admin
+        
+        $response = $this->get('/home/changePassword/' . $nonAdminId);
+        
+        $response->assertStatus(200);
+        $response->assertSee('nonadmin');
+    }
+    
+    /**
+     * Test admin can change any user's password
+     * 
+     * @return void
+     */
+    public function testAdminCanChangeAnyPassword(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->resetSession(); // Login as admin
+        
+        $response = $this->post('/home/save/' . $nonAdminId, [
+            'username' => 'nonadmin',
+            'current_password' => 'password123',
+            'password' => 'adminset123'
+        ]);
+        
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+        
+        // Verify password was changed
+        $employee = model(Employee::class);
+        $user = $employee->get_info($nonAdminId);
+        $this->assertTrue(password_verify('adminset123', $user->password));
+    }
+    
+    /**
+     * Test default employee_id parameter uses current user
+     * 
+     * @return void
+     */
+    public function testDefaultEmployeeIdUsesCurrentUser(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId);
+        
+        // Calling without employee_id should use current user
+        $response = $this->get('/home/changePassword');
+        
+        $response->assertStatus(200);
+        $response->assertSee('nonadmin');
+    }
 }

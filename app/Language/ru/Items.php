@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Оптовая цена - обязательное поле.",
     "count"                              => "Обновление запасов",
     "csv_import_failed"                  => "Ошибка импорта CSV",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Загруженный файл CSV не содержит данных или имеет неправильный формат.",
     "csv_import_partially_failed"        => "В строке (строках) произошло {0} ошибок импорта: {1}. Ничего не было импортировано.",
     "csv_import_success"                 => "Товар успешно импортирован из CSV.",

@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Hazirki Şifrə düzgün deyil.",
     "employee"                     => "Əməkdaş",
     "error_adding_updating"        => "Əməkdaş əlavə etməsk və ya yeniləməsi baş vermədi.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Demo administrator istifadəçisini silə bilməzsiniz.",
     "error_updating_demo_admin"    => "Demo administrator istifadəçisini dəyişə bilməzsiniz.",
     "language"                     => "Dil",

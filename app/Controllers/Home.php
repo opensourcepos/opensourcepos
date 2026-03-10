@@ -39,9 +39,19 @@ class Home extends Secure_Controller
      * @return string
      * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employee_id = -1): string    // TODO: Replace -1 with a constant
+    public function getChangePassword(int $employeeId = NEW_ENTRY): string
     {
-        $person_info = $this->employee->get_info($employee_id);
+        $loggedInEmployee = $this->employee->get_logged_in_employee_info();
+        $currentPersonId = $loggedInEmployee->person_id;
+
+        $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
+
+        if (!$this->employee->can_modify_employee($employeeId, $currentPersonId)) {
+            header('Location: ' . base_url('no_access/home/home'));
+            exit();
+        }
+
+        $person_info = $this->employee->get_info($employeeId);
         foreach (get_object_vars($person_info) as $property => $value) {
             $person_info->$property = $value;
         }
@@ -55,9 +65,20 @@ class Home extends Secure_Controller
      *
      * @return ResponseInterface
      */
-    public function postSave(int $employee_id = -1): ResponseInterface    // TODO: Replace -1 with a constant
+    public function postSave(int $employeeId = NEW_ENTRY): ResponseInterface
     {
-        if (!empty($this->request->getPost('current_password')) && $employee_id != -1) {
+        $currentUser = $this->employee->get_logged_in_employee_info();
+
+        $employeeId = $employeeId === NEW_ENTRY ? $currentUser->person_id : $employeeId;
+
+        if (!$this->employee->can_modify_employee($employeeId, $currentUser->person_id)) {
+            return $this->response->setStatusCode(403)->setJSON([
+                'success' => false,
+                'message' => lang('Employees.unauthorized_modify')
+            ]);
+        }
+
+        if (!empty($this->request->getPost('current_password')) && $employeeId != NEW_ENTRY) {
             if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
                 // Validate password length BEFORE hashing
                 $new_password = $this->request->getPost('password');
@@ -66,7 +87,7 @@ class Home extends Secure_Controller
                     return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.password_minlength'),
-                        'id'      => -1
+                        'id'      => NEW_ENTRY
                     ]);
                 }
                 
@@ -76,31 +97,31 @@ class Home extends Secure_Controller
                     'hash_version' => 2
                 ];
 
-                if ($this->employee->change_password($employee_data, $employee_id)) {
+                if ($this->employee->change_password($employee_data, $employeeId)) {
                     return $this->response->setJSON([
                         'success' => true,
                         'message' => lang('Employees.successful_change_password'),
-                        'id'      => $employee_id
+                        'id'      => $employeeId
                     ]);
-                } else { // Failure    // TODO: Replace -1 with constant
+                } else {
                     return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.unsuccessful_change_password'),
-                        'id'      => -1
+                        'id'      => NEW_ENTRY
                     ]);
                 }
-            } else {    // TODO: Replace -1 with constant
+            } else {
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Employees.current_password_invalid'),
-                    'id'      => -1
+                    'id'      => NEW_ENTRY
                 ]);
             }
-        } else {    // TODO: Replace -1 with constant
+        } else {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.current_password_invalid'),
-                'id'      => -1
+                'id'      => NEW_ENTRY
             ]);
         }
     }

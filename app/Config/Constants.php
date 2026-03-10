@@ -170,3 +170,8 @@ const MAX_PRECISION = 1e14;
 const DEFAULT_PRECISION = 2;
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en';
+
+/**
+ * Admin modules - list of modules required for admin privileges
+ */
+const ADMIN_MODULES = ['customers', 'employees', 'giftcards', 'items', 'item_kits', 'messages', 'receivings', 'reports', 'sales', 'config', 'suppliers'];

@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Harga beli harus diisi.",
     "count"                              => "Mutasi Inventori",
     "csv_import_failed"                  => "Gagal impor CSV",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Berkas CSV terunggah tidak berisi data atau formatnya salah.",
     "csv_import_partially_failed"        => "Terdapat {0} item gagal impor pada baris: {1}. Tidak ada baris yang diimpor.",
     "csv_import_success"                 => "Impor item CSV berhasil.",

@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "ត្រូវការតម្លៃលក់ដុំជាចាំបាច់។",
     "count"                              => "កែប្រែ ទំនិញក្នុងស្តុក",
     "csv_import_failed"                  => "CSV បញ្ចូលមិនបានសំរេច",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "ដាក់បញ្ជុល CSV មិនមានទិន្នន័យ ឬទំរង់មិនត្រឹមត្រូវ។",
     "csv_import_partially_failed"        => "មានទំននិញ {0} បញ្ជូលមិនបានសំរេច នៅជួរ: {1}​ ។ គ្មានជួរណាមួយត្រូវបានបញ្ជូលនោះទេ។",
     "csv_import_success"                 => "ទំនិញក្នុង CSV បញ្ចូលបានសំរេច។",

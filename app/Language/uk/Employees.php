@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Поточний пароль невірний.",
     "employee"                     => "Працівник",
     "error_adding_updating"        => "Помилка при додаванні/оновлені працівника.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Ви не можете видалити аккаунт користувача.",
     "error_updating_demo_admin"    => "Ви не можете змінити аккаунт користувача.",
     "language"                     => "Мова",

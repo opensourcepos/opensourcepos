@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Groothandelsprijs is een verplicht veld.",
     "count"                              => "Update Stock",
     "csv_import_failed"                  => "CSV import mislukt",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Het geüploade CSV-bestand bevat geen gegevens of is onjuist geformatteerd.",
     "csv_import_partially_failed"        => "Er waren {0} artikel import fout(en) op regel(s): {1}. Er werden geen rijen geïmporteerd.",
     "csv_import_success"                 => "Artikel CSV import geslaagd.",
