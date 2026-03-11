@@ -31,7 +31,7 @@ use App\Models\Employee;
         $('#daterangepicker').data('daterangepicker').setStartDate("<?= date($config['dateformat'], mktime(0, 0, 0, 01, 01, 2010)) ?>");
         // Update the hidden inputs with the selected dates before submitting the search data
         var start_date = "<?= date('Y-m-d', mktime(0, 0, 0, 01, 01, 2010)) ?>";
-        
+
         // Override dates from server if provided
         <?php if (isset($start_date) && $start_date): ?>
         start_date = "<?= esc($start_date) ?>";
@@ -71,10 +71,10 @@ use App\Models\Employee;
                 })
             }
         });
-
-        <?= view('partial/table_filter_persistence', ['additional_params' => ['stock_location']]) ?>
     });
 </script>
+
+<?= view('partial/table_filter_persistence', ['additional_params' => ['stock_location']]) ?>
 
 <div id="title_bar" class="btn-toolbar print_hide">
     <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang('Items.import_items_csv') ?>">

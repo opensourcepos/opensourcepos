@@ -65,10 +65,10 @@
                 }
             }
         });
-
-        <?= view('partial/table_filter_persistence') ?>
-    });
+     });
 </script>
+
+<?= view('partial/table_filter_persistence') ?>
 
 <?= view('partial/print_receipt', ['print_after_sale' => false, 'selected_printer' => 'takings_printer']) ?>
 
