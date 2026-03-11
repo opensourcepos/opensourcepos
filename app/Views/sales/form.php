@@ -89,7 +89,7 @@
                         <?php if (!is_right_side_currency_symbol()): ?>
                             <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                         <?php endif; ?>
-                        <?= form_input(['name' => "payment_amount_$i", 'value' => $row->payment_amount, 'id' => "payment_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true'])    // TODO: add type attribute ?>
+                        <?= form_input(['name' => "payment_amount_$i", 'value' => to_currency_no_money($row->payment_amount), 'id' => "payment_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true'])    // TODO: add type attribute ?>
                         <?php if (is_right_side_currency_symbol()): ?>
                             <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                         <?php endif; ?>
@@ -112,7 +112,7 @@
                         <?php if (!is_right_side_currency_symbol()): ?>
                             <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                         <?php endif; ?>
-                        <?= form_input(['name' => "refund_amount_$i", 'value' => $row->cash_refund, 'id' => "refund_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
+                        <?= form_input(['name' => "refund_amount_$i", 'value' => to_currency_no_money($row->cash_refund), 'id' => "refund_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
                         <?php if (is_right_side_currency_symbol()): ?>
                             <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                         <?php endif; ?>

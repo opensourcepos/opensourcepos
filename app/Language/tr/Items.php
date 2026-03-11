@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Toptan Fiyatı zorunlu alandır.",
     "count"                              => "Stoğu Güncelle",
     "csv_import_failed"                  => "CSV aktarım hatası",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta.",
     "csv_import_partially_failed"        => "Bazı ürünler aktarılamadı. Aktarılamayanlar listesi.",
     "csv_import_success"                 => "Ürün aktarımı başarılı.",

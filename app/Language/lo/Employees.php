@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Password ປັດຈຸບັນບໍ່ຖືກຕ້ອງ.",
     "employee"                     => "ພະນັກງານ",
     "error_adding_updating"        => "ເພີ່ມ ຫຼື ແກ້ໄຂ ພະນັກງານ ບໍ່ສຳເລັດ.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "ທ່ານບໍ່ສາມາດລຶບບັນຊີທົດລອງຜູ້ດູແລລະບົບໄດ້.",
     "error_updating_demo_admin"    => "ທ່ານບໍ່ສາມາດປ່ຽນແປງບັນຊີທົດລອງຜູ້ດູແລລະບົບໄດ້.",
     "language"                     => "ພາສາ",

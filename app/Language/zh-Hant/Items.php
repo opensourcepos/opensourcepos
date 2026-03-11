@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "成本價為必填攔位.",
     "count"                              => "更新庫存",
     "csv_import_failed"                  => "CSV匯入失敗",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "上傳的 CSV 文件沒有數據或格式不正確。",
     "csv_import_partially_failed"        => "線上有 {0} 個項目導入失敗：{1}。未導入任何行。",
     "csv_import_success"                 => "項目 CSV 導入成功。",

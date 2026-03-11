@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Оптова ціна - обов'язкове поле.",
     "count"                              => "Оновити інвентар",
     "csv_import_failed"                  => "Помилка імпорту CSV",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Завандажений файл порожній або відформатований неправильно.",
     "csv_import_partially_failed"        => "У рядках виявлено {0} помилки імпортування елементів: {1}. Не було імпортовано жодних рядків.",
     "csv_import_success"                 => "Імпорт товару CSV успішний.",

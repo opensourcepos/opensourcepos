@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "كلمة المرور الحالية غير صحيحة.",
     "employee"                     => "موظف",
     "error_adding_updating"        => "خطاء فى إضافة/تعديل موظف.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "لايمكن حذف المستخدم admin الخاص بنسخة العرض.",
     "error_updating_demo_admin"    => "لايمكن تغيير بيانات المستخدم admin الخاص بنسخة العرض.",
     "language"                     => "اللغة",
