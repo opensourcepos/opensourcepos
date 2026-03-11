@@ -97,13 +97,25 @@ class Sales extends Secure_Controller
             ];
 
             if ($this->sale_lib->get_customer() != -1) {
-                $selected_filters = ['selected_customer'];
+                $selectedFilters = ['selected_customer'];
                 $data['customer_selected'] = true;
             } else {
                 $data['customer_selected'] = false;
-                $selected_filters = [];
+                $selectedFilters = [];
             }
-            $data['selected_filters'] = $selected_filters;
+
+            // Restore filters from URL query string
+            $filters = restoreTableFilters($this->request);
+            if (!empty($filters['selected_filters'])) {
+                $selectedFilters = array_merge($selectedFilters, $filters['selected_filters']);
+            }
+            if (isset($filters['start_date'])) {
+                $data['start_date'] = $filters['start_date'];
+            }
+            if (isset($filters['end_date'])) {
+                $data['end_date'] = $filters['end_date'];
+            }
+            $data['selected_filters'] = $selectedFilters;
 
             return view('sales/manage', $data);
         }

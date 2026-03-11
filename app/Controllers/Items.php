@@ -73,7 +73,12 @@ class Items extends Secure_Controller
         $this->session->set('allow_temp_items', 0);
 
         $data['table_headers'] = get_items_manage_table_headers();
-        $data['stock_location'] = $this->item_lib->get_item_location();
+        
+        // Restore stock_location from URL or session
+        $stockLocation = $this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT);
+        $data['stock_location'] = $stockLocation
+            ? $stockLocation
+            : $this->item_lib->get_item_location();
         $data['stock_locations'] = $this->stock_location->get_allowed_locations();
 
         // Filters that will be loaded in the multiselect dropdown
@@ -86,6 +91,9 @@ class Items extends Secure_Controller
             'is_deleted'     => lang('Items.is_deleted'),
             'temporary'      => lang('Items.temp')
         ];
+
+        // Restore filters from URL
+        $data = array_merge($data, restoreTableFilters($this->request));
 
         return view('items/manage', $data);
     }

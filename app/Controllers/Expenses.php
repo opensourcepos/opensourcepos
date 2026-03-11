@@ -38,6 +38,9 @@ class Expenses extends Secure_Controller
             'is_deleted'  => lang('Expenses.is_deleted')
         ];
 
+        // Restore filters from URL
+        $data = array_merge($data, restoreTableFilters($this->request));
+
         return view('expenses/manage', $data);
     }
 
