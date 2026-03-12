@@ -24,11 +24,12 @@ class MigrationEXIFStrippingOptions extends Migration
         ];
 
         foreach ($configs as $config) {
-            $exists = $db->table('app_config')
+            $existing = $db->table('app_config')
                 ->where('key', $config['key'])
-                ->countAllResults();
+                ->get()
+                ->getRow();
 
-            if ($exists == 0) {
+            if ($existing === null) {
                 $db->table('app_config')->insert($config);
             }
         }
