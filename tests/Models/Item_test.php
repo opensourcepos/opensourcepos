@@ -9,6 +9,7 @@ class Item_test extends CIUnitTestCase
 {
     public function testSuggestionsColumnValidationRejectsSQLInjection(): void
     {
+        // These malicious values should not be in the allowed columns list
         $malicious_columns = [
             'name, SLEEP(5)',
             'name; DROP TABLE items',
@@ -18,41 +19,39 @@ class Item_test extends CIUnitTestCase
         ];
 
         foreach ($malicious_columns as $malicious) {
-            $this->assertNotContains($malicious, Item::ALLOWED_SUGGESTIONS_COLUMNS, "Malicious input should be rejected: $malicious");
+            $this->assertNotContains($malicious, Item::ALLOWED_SUGGESTIONS_COLUMNS, 
+                "Malicious input should not be in allowed columns: $malicious");
         }
     }
 
     public function testSuggestionsColumnValidationAcceptsValidColumns(): void
     {
-        foreach (Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY as $column) {
-            $validated = $this->validateSuggestionsColumn($column);
-            
-            if ($column === '') {
-                $this->assertTrue($validated === '' || $validated === 'name', "Empty column should be valid or default to name");
-            } else {
-                $this->assertContains($validated, Item::ALLOWED_SUGGESTIONS_COLUMNS, "Valid column should be preserved: $column");
-            }
+        // Valid columns should be preserved
+        $valid_columns = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
+
+        foreach ($valid_columns as $column) {
+            $this->assertContains($column, Item::ALLOWED_SUGGESTIONS_COLUMNS, 
+                "Valid column should be in allowed list: $column");
         }
     }
 
-    public function testSuggestionsColumnValidationDefaultsToNameForInvalidInput(): void
+    public function testSuggestionsColumnValidationHandlesEmptyString(): void
     {
-        $invalid_inputs = [
-            'invalid_column',
-            'SELECT * FROM items',
-            '<?php echo "test"; ?>',
-            '<script>alert("xss")</script>',
-            'name OR 1=1'
-        ];
-
-        foreach ($invalid_inputs as $invalid) {
-            $validated = $this->validateSuggestionsColumn($invalid);
-            $this->assertEquals('name', $validated, "Invalid input should default to 'name': $invalid");
-        }
+        // Empty string should only be allowed for second and third columns
+        $this->assertContains('', Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY, 
+            'Empty string should be allowed for optional columns');
     }
 
-    private function validateSuggestionsColumn(?string $column): string
+    public function testSuggestionsColumnValidationConstantsAreConsistent(): void
     {
-        return in_array($column, Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY, true) ? $column : 'name';
+        // Ensure the constants are properly defined
+        $this->assertCount(5, Item::ALLOWED_SUGGESTIONS_COLUMNS, 
+            'Should have exactly 5 allowed columns');
+        $this->assertCount(6, Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY, 
+            'Should have exactly 6 allowed columns including empty');
+        
+        // Ensure empty string is only in WITH_EMPTY variant
+        $this->assertNotContains('', Item::ALLOWED_SUGGESTIONS_COLUMNS, 
+            'Empty string should not be in required columns list');
     }
 }

@@ -536,16 +536,16 @@ class Item extends Model
     {
         $config = config(OSPOS::class)->settings;
         
-        $suggestions_first_column = in_array($config['suggestions_first_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
+        $suggestionsFirstColumn = $this->suggestionColumnIsAllowed($config['suggestions_first_column'])
             ? $config['suggestions_first_column'] 
             : 'name';
-        $seed .= ',' . $suggestions_first_column;
+        $seed .= ',' . $suggestionsFirstColumn;
 
-        if ($config['suggestions_second_column'] !== '' && in_array($config['suggestions_second_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true)) {
+        if ($config['suggestions_second_column'] !== '' && $this->suggestionColumnIsAllowed($config['suggestions_second_column'])) {
             $seed .= ',' . $config['suggestions_second_column'];
         }
 
-        if ($config['suggestions_third_column'] !== '' && in_array($config['suggestions_third_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true)) {
+        if ($config['suggestions_third_column'] !== '' && $this->suggestionColumnIsAllowed($config['suggestions_third_column'])) {
             $seed .= ',' . $config['suggestions_third_column'];
         }
 
@@ -561,13 +561,13 @@ class Item extends Model
         $config = config(OSPOS::class)->settings;
 
         $label = '';
-        $label1 = in_array($config['suggestions_first_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
+        $label1 = $this->suggestionColumnIsAllowed($config['suggestions_first_column']) 
             ? $config['suggestions_first_column'] 
             : 'name';
-        $label2 = in_array($config['suggestions_second_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
+        $label2 = $this->suggestionColumnIsAllowed($config['suggestions_second_column']) 
             ? $config['suggestions_second_column'] 
             : '';
-        $label3 = in_array($config['suggestions_third_column'], self::ALLOWED_SUGGESTIONS_COLUMNS, true) 
+        $label3 = $this->suggestionColumnIsAllowed($config['suggestions_third_column']) 
             ? $config['suggestions_third_column'] 
             : '';
 
@@ -591,6 +591,17 @@ class Item extends Model
         }
 
         return $label;
+    }
+
+    /**
+     * Validates if a column name is in the allowed suggestions columns.
+     *
+     * @param string $columnName
+     * @return bool
+     */
+    private function suggestionColumnIsAllowed(string $columnName): bool
+    {
+        return in_array($columnName, self::ALLOWED_SUGGESTIONS_COLUMNS, true);
     }
 
     /**

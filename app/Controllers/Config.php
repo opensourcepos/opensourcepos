@@ -386,9 +386,9 @@ class Config extends Secure_Controller
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),
-            'suggestions_first_column'          => $this->_validate_suggestions_column($this->request->getPost('suggestions_first_column')),
-            'suggestions_second_column'         => $this->_validate_suggestions_column($this->request->getPost('suggestions_second_column')),
-            'suggestions_third_column'          => $this->_validate_suggestions_column($this->request->getPost('suggestions_third_column')),
+            'suggestions_first_column'          => $this->validateSuggestionsColumn($this->request->getPost('suggestions_first_column'), 'first'),
+            'suggestions_second_column'         => $this->validateSuggestionsColumn($this->request->getPost('suggestions_second_column'), 'other'),
+            'suggestions_third_column'          => $this->validateSuggestionsColumn($this->request->getPost('suggestions_third_column'), 'other'),
             'giftcard_number'                   => $this->request->getPost('giftcard_number'),
             'derive_sale_quantity'              => $this->request->getPost('derive_sale_quantity') != null,
             'multi_pack_enabled'                => $this->request->getPost('multi_pack_enabled') != null,
@@ -979,13 +979,24 @@ class Config extends Secure_Controller
     }
 
     /**
-     * Validates suggestions column name to prevent SQL injection.
+     * Validates suggestions column configuration to prevent SQL injection.
      *
-     * @param string|null $column
-     * @return string
+     * @param mixed $column The column value from POST
+     * @param string $fieldType Either 'first' or 'other' to determine default fallback
+     * @return string Validated column name
      */
-    private function _validate_suggestions_column(?string $column): string
+    private function validateSuggestionsColumn(mixed $column, string $fieldType): string
     {
-        return in_array($column, Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY, true) ? $column : 'name';
+        if (!is_string($column)) {
+            return $fieldType === 'first' ? 'name' : '';
+        }
+
+        $allowed = $fieldType === 'first' 
+            ? Item::ALLOWED_SUGGESTIONS_COLUMNS 
+            : Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY;
+
+        $fallback = $fieldType === 'first' ? 'name' : '';
+
+        return in_array($column, $allowed, true) ? $column : $fallback;
     }
 }
