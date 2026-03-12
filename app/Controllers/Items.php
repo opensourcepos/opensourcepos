@@ -167,48 +167,45 @@ class Items extends Secure_Controller
     {
         helper('file');
 
-        $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
-        $upload_path = FCPATH . 'uploads/item_pics/';
+        $fileExtension = pathinfo($pic_filename, PATHINFO_EXTENSION);
+        $uploadPath = FCPATH . 'uploads/item_pics/';
 
-        // Handle files with and without extensions
-        if (empty($file_extension)) {
-            $images = glob($upload_path . $pic_filename . '.*');
-        } else {
-            $images = glob($upload_path . $pic_filename);
-        }
+        $images = empty($fileExtension)
+            ? glob($uploadPath . $pic_filename . '.*')
+            : glob($uploadPath . $pic_filename);
 
         if (sizeof($images) > 0) {
-            $image_path = $images[0];
-            $actual_extension = pathinfo($image_path, PATHINFO_EXTENSION);
-            $base_path = $upload_path . pathinfo($pic_filename, PATHINFO_FILENAME);
-            $thumb_path = $base_path . "_thumb.$actual_extension";
+            $imagePath = $images[0];
+            $actualExtension = pathinfo($imagePath, PATHINFO_EXTENSION);
+            $basePath = $uploadPath . pathinfo($pic_filename, PATHINFO_FILENAME);
+            $thumbPath = $basePath . "_thumb.$actualExtension";
 
             // Try to create thumbnail if it doesn't exist
-            if (!file_exists($thumb_path)) {
+            if (!file_exists($thumbPath)) {
                 try {
                     $image = Services::image('gd2');
-                    $image->withFile($image_path)
+                    $image->withFile($imagePath)
                         ->resize(52, 32, true, 'height')
-                        ->save($thumb_path);
+                        ->save($thumbPath);
                 } catch (Exception $e) {
                     // If thumbnail creation fails, serve original image
                     log_message('error', 'Thumbnail creation failed: ' . $e->getMessage());
-                    $this->serveImage($image_path);
+                    $this->serveImage($imagePath);
                     return;
                 }
             }
 
             // Serve thumbnail if it exists, otherwise serve original
-            if (file_exists($thumb_path)) {
-                $this->serveImage($thumb_path);
+            if (file_exists($thumbPath)) {
+                $this->serveImage($thumbPath);
             } else {
-                $this->serveImage($image_path);
+                $this->serveImage($imagePath);
             }
         } else {
             // No image found, serve default
-            $default_image = FCPATH . 'public/images/no-img.png';
-            if (file_exists($default_image)) {
-                $this->serveImage($default_image);
+            $defaultImage = FCPATH . 'public/images/no-img.png';
+            if (file_exists($defaultImage)) {
+                $this->serveImage($defaultImage);
             } else {
                 // Return 404 if no default image
                 $this->response->setStatusCode(404);

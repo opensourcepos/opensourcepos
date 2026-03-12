@@ -464,24 +464,24 @@ function get_item_data_row(object $item): array
     
 $image = '';
 if (!empty($item->pic_filename)) {
-    $upload_path = FCPATH . 'uploads/item_pics/';
+    $uploadPath = FCPATH . 'uploads/item_pics/';
     $ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
     
     // If no extension in filename, search for any file with that name
     if (empty($ext)) {
-        $pattern = $upload_path . $item->pic_filename . '.*';
+        $pattern = $uploadPath . $item->pic_filename . '.*';
     } else {
-        $pattern = $upload_path . $item->pic_filename;
+        $pattern = $uploadPath . $item->pic_filename;
     }
     
     $images = glob($pattern);
     
     if (!empty($images)) {
-        $rel_path = 'uploads/item_pics/' . basename($images[0]);
+        $relPath = 'uploads/item_pics/' . basename($images[0]);
         
         // Use direct image path instead of getPicThumb
-        $image = '<a class="rollover" href="' . base_url($rel_path) . '">
-                <img src="' . base_url($rel_path) . '"
+        $image = '<a class="rollover" href="' . base_url($relPath) . '">
+                <img src="' . base_url($relPath) . '"
                      onerror="this.src=\''.base_url('public/images/no-img.png').'\';this.onerror=null;" 
                      style="max-width:40px;max-height:40px; object-fit: cover;">
                 </a>';
