@@ -36,10 +36,10 @@ class Home extends Secure_Controller
     /**
      * Load "change employee password" form
      *
-     * @return string
+     * @return ResponseInterface|string
      * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employeeId = NEW_ENTRY): string
+    public function getChangePassword(int $employeeId = NEW_ENTRY)
     {
         $loggedInEmployee = $this->employee->get_logged_in_employee_info();
         $currentPersonId = $loggedInEmployee->person_id;
@@ -47,8 +47,7 @@ class Home extends Secure_Controller
         $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
 
         if (!$this->employee->isAdmin($currentPersonId) && $employeeId !== $currentPersonId) {
-            header('Location: ' . base_url('no_access/home/home'));
-            exit();
+            return $this->response->setStatusCode(403)->setBody(lang('Employees.unauthorized_modify'));
         }
 
         $person_info = $this->employee->get_info($employeeId);

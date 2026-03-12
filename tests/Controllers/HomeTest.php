@@ -232,20 +232,21 @@ class HomeTest extends CIUnitTestCase
     /**
      * Create a non-admin employee for testing
      * 
+     * @param array $overrides Optional overrides for username, email, password, etc.
      * @return int The person_id of the created employee
      */
-    protected function createNonAdminEmployee(): int
+    protected function createNonAdminEmployee(array $overrides = []): int
     {
         $personData = [
-            'first_name'   => 'NonAdmin',
-            'last_name'    => 'User',
-            'email'        => 'nonadmin@test.com',
-            'phone_number' => '555-1234'
+            'first_name'   => $overrides['first_name'] ?? 'NonAdmin',
+            'last_name'    => $overrides['last_name'] ?? 'User',
+            'email'        => $overrides['email'] ?? 'nonadmin@test.com',
+            'phone_number' => $overrides['phone_number'] ?? '555-1234'
         ];
         
         $employeeData = [
-            'username'      => 'nonadmin',
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
+            'username'      => $overrides['username'] ?? 'nonadmin',
+            'password'      => password_hash($overrides['password'] ?? 'password123', PASSWORD_DEFAULT),
             'hash_version'  => 2,
             'language_code' => 'en',
             'language'      => 'english'
@@ -291,8 +292,7 @@ class HomeTest extends CIUnitTestCase
         
         $response = $this->get('/home/changePassword/1');
         
-        $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $response->assertStatus(403);
     }
     
     /**
@@ -435,35 +435,15 @@ class HomeTest extends CIUnitTestCase
         $nonAdminId1 = $this->createNonAdminEmployee();
         $this->loginAs($nonAdminId1);
         
-        // Try to access another user's password form (user ID 1 is admin, which is already tested)
-        // Create a second non-admin by modifying the first approach
-        $personData = [
-            'first_name'   => 'Other',
-            'last_name'    => 'User',
-            'email'        => 'other@test.com',
-            'phone_number' => '555-5678'
-        ];
-        
-        $employeeData = [
-            'username'      => 'otheruser',
-            'password'      => password_hash('password456', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-        
-        $grantsData = [
-            ['permission_id' => 'customers', 'menu_group' => 'home'],
-        ];
-        
-        $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
-        $otherUserId = $employeeModel->get_found_rows('');
+        $otherUserId = $this->createNonAdminEmployee([
+            'username' => 'otheruser',
+            'email' => 'other@test.com',
+            'password' => 'password456'
+        ]);
         
         $response = $this->get('/home/changePassword/' . $otherUserId);
         
-        $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $response->assertStatus(403);
     }
 
     /**
@@ -477,29 +457,11 @@ class HomeTest extends CIUnitTestCase
         $nonAdminId1 = $this->createNonAdminEmployee();
         $this->loginAs($nonAdminId1);
         
-        // Create a second user to target
-        $personData = [
-            'first_name'   => 'Victim',
-            'last_name'    => 'User',
-            'email'        => 'victim@test.com',
-            'phone_number' => '555-9999'
-        ];
-        
-        $employeeData = [
-            'username'      => 'victimuser',
-            'password'      => password_hash('victimpass123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-        
-        $grantsData = [
-            ['permission_id' => 'customers', 'menu_group' => 'home'],
-        ];
-        
-        $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
-        $victimId = $employeeModel->get_found_rows('');
+        $victimId = $this->createNonAdminEmployee([
+            'username' => 'victimuser',
+            'email' => 'victim@test.com',
+            'password' => 'victimpass123'
+        ]);
         
         $response = $this->post('/home/save/' . $victimId, [
             'username' => 'victimuser',
@@ -512,6 +474,7 @@ class HomeTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
         
         // Verify victim's password was NOT changed
+        $employeeModel = model(Employee::class);
         $victim = $employeeModel->get_info($victimId);
         $this->assertTrue(password_verify('victimpass123', $victim->password), 
             'Non-admin should not be able to change another non-admin password');
