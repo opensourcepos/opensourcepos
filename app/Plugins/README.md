@@ -100,6 +100,123 @@ OSPOS fires these events that plugins can listen to:
 | `items_csv_import` | `array $importData` | Fired after items CSV import |
 | `customers_csv_import` | `array $importData` | Fired after customers CSV import |
 
+## View Hooks (Injecting Plugin Content into Views)
+
+Plugins can inject UI elements into core views using the event-based view hook system. This allows plugins to add buttons, tabs, or other content without modifying core view files.
+
+### How It Works
+
+1. **Core views define hook points** using the `plugin_content()` helper
+2. **Plugins register listeners** for these view hooks in `registerEvents()`
+3. **Content is conditionally rendered** only if the plugin is enabled
+
+### Step 1: Adding Hook Points in Core Views
+
+In your core view files, use the `plugin_content()` helper to define injection points:
+
+```php
+// In app/Views/sales/receipt.php
+<div class="receipt-actions">
+    <!-- Existing buttons -->
+    <?= plugin_content('receipt_actions', ['sale' => $sale]) ?>
+</div>
+
+// In app/Views/customers/form.php
+<ul class="nav nav-tabs">
+    <!-- Existing tabs -->
+    <?= plugin_content('customer_tabs', ['customer' => $customer]) ?>
+</ul>
+```
+
+### Step 2: Plugin Registers View Hook
+
+In your plugin class, register a listener that returns HTML content:
+
+```php
+class CasposPlugin extends BasePlugin
+{
+    public function registerEvents(): void
+    {
+        Events::on('item_sale', [$this, 'onItemSale']);
+        
+        // View hooks - inject content into core views
+        Events::on('view:receipt_actions', [$this, 'injectReceiptButton']);
+        Events::on('view:customer_tabs', [$this, 'injectCustomerTab']);
+    }
+    
+    public function injectReceiptButton(array $data): string
+    {
+        if (!$this->isEnabled()) {
+            return '';
+        }
+        
+        // Return HTML from plugin's own view file
+        return view('Plugins/CasposPlugin/Views/receipt_button', $data);
+    }
+    
+    public function injectCustomerTab(array $data): string
+    {
+        if (!$this->isEnabled()) {
+            return '';
+        }
+        
+        return view('Plugins/CasposPlugin/Views/customer_tab', $data);
+    }
+}
+```
+
+### Plugin View Files
+
+The plugin's view files are self-contained within the plugin directory:
+
+```php
+// app/Plugins/CasposPlugin/Views/receipt_button.php
+<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="printCasposReceipt(<?= $sale['sale_id'] ?>)">
+    <span class="glyphicon glyphicon-print">&nbsp;</span>
+    Print Fiscal Receipt
+</a>
+
+// app/Plugins/CasposPlugin/Views/customer_tab.php
+<li>
+    <a href="#caspos_panel" data-toggle="tab">
+        <span class="glyphicon glyphicon-print">&nbsp;</span>
+        Fiscal Records
+    </a>
+</li>
+```
+
+### Helper Functions
+
+The `plugin_helper.php` provides two functions:
+
+```php
+// Render plugin content for a hook point
+plugin_content(string $section, array $data = []): string
+
+// Check if any plugin has registered for a hook (for conditional rendering)
+plugin_content_exists(string $section): bool
+```
+
+### Standard Hook Points
+
+Core views should define these standard hook points:
+
+| Hook Name | Location | Usage |
+|-----------|----------|-------|
+| `view:receipt_actions` | Receipt view action buttons | Add receipt-related buttons |
+| `view:customer_tabs` | Customer form tabs | Add customer-related tabs |
+| `view:item_form_buttons` | Item form action buttons | Add item-related buttons |
+| `view:sales_complete` | Sale complete screen | Post-sale integration UI |
+| `view:reports_menu` | Reports menu | Add custom report links |
+
+### Benefits
+
+- **Self-Contained**: Plugin UI stays in plugin directory
+- **Conditional**: Only renders when plugin is enabled
+- **Data Access**: Pass context (sale, customer, etc.) to plugin views
+- **Multiple Plugins**: Multiple plugins can hook the same location
+- **Clean Separation**: Core views remain unmodified
+
 ## Creating a Plugin
 
 ### Simple Plugin (Single File)
@@ -486,3 +603,71 @@ CasposPlugin-1.0.0.zip
 ```
 
 Users extract the zip to `app/Plugins/` and the plugin is ready to use.
+
+## Example: Plugin with View Hooks
+
+Here's a complete example of a plugin that injects UI elements into core views:
+
+```
+app/Plugins/CasposPlugin/
+├── CasposPlugin.php          # Main class with view hook registration
+└── Views/
+    ├── receipt_button.php    # Button for receipt view
+    ├── customer_tab.php      # Tab for customer form
+    └── config.php            # Plugin configuration
+```
+
+**Main Plugin Class:**
+
+```php
+<?php
+namespace App\Plugins\CasposPlugin;
+
+use App\Libraries\Plugins\BasePlugin;
+use CodeIgniter\Events\Events;
+
+class CasposPlugin extends BasePlugin
+{
+    public function getPluginId(): string { return 'caspos'; }
+    
+    public function getPluginName(): string { return 'CASPOS Integration'; }
+    
+    public function registerEvents(): void
+    {
+        // Data events
+        Events::on('item_sale', [$this, 'onItemSale']);
+        
+        // View hooks - inject content into core views
+        Events::on('view:receipt_actions', [$this, 'injectReceiptButton']);
+        Events::on('view:customer_tabs', [$this, 'injectCustomerTab']);
+    }
+    
+    public function injectReceiptButton(array $data): string
+    {
+        if (!$this->isEnabled()) {
+            return '';
+        }
+        return view('Plugins/CasposPlugin/Views/receipt_button', $data);
+    }
+    
+    public function injectCustomerTab(array $data): string
+    {
+        if (!$this->isEnabled()) {
+            return '';
+        }
+        return view('Plugins/CasposPlugin/Views/customer_tab', $data);
+    }
+    
+    // ... rest of implementation
+}
+```
+
+Core views that want to support plugin hooks:
+
+```php
+// app/Views/sales/receipt.php
+<div class="receipt-actions">
+    <?= anchor('sales/reprint/' . $sale_id, 'Reprint', 'class="btn btn-primary"') ?>
+    <?= plugin_content('view:receipt_actions', ['sale' => $sale]) ?>
+</div>
+```
