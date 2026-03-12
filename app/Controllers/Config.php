@@ -251,6 +251,10 @@ class Config extends Secure_Controller
         $data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
         $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 
+        $exif_fields = ['Make', 'Model', 'Orientation', 'Copyright', 'Software', 'DateTime', 'GPS'];
+        $data['exif_fields'] = array_combine($exif_fields, $exif_fields);
+        $data['selected_exif_fields'] = array_filter(explode(',', $this->config['exif_fields_to_keep'] ?? ''));
+
         // Integrations Related fields
         $data['mailchimp']    = [];
 
@@ -356,11 +360,13 @@ class Config extends Secure_Controller
 
         $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
 
-        $exif_stripping_enabled = $this->appconfig->get_value('exif_stripping_enabled', '0');
-        if ($exif_stripping_enabled == '1') {
+        $exif_fields_to_keep = array_filter(explode(',', $this->appconfig->get_value('exif_fields_to_keep', 'Copyright,Orientation,Software')));
+        if (!empty($exif_fields_to_keep)) {
             $image_lib = new Image_lib();
-            $exif_fields_to_keep = array_filter(explode(',', $this->appconfig->get_value('exif_fields_to_keep', 'Copyright,Orientation')));
-            $image_lib->stripEXIF(FCPATH . 'uploads/' . $file_info['raw_name'] . '.' . $file_info['file_ext'], $exif_fields_to_keep);
+            $filepath = FCPATH . 'uploads/' . $file_info['raw_name'] . '.' . $file_info['file_ext'];
+            if (!$image_lib->stripEXIF($filepath, $exif_fields_to_keep)) {
+                log_message('warning', 'EXIF stripping failed for: ' . $filepath);
+            }
         }
 
         return ($file_info);
@@ -390,7 +396,8 @@ class Config extends Secure_Controller
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
             'image_max_height'                  => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
             'image_max_size'                    => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
-            'image_allowed_types'               => implode(',', $this->request->getPost('image_allowed_types')),
+            'image_allowed_types'               => implode(',', $this->request->getPost('image_allowed_types') ?? []),
+            'exif_fields_to_keep'               => implode(',', $this->request->getPost('exif_fields_to_keep') ?? []),
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),

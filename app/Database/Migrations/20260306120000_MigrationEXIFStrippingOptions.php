@@ -14,14 +14,9 @@ class MigrationEXIFStrippingOptions extends Migration
     {
         log_message('info', 'Migrating EXIF Stripping Options');
 
-        $forge = Database::forge();
         $db = Database::connect();
 
         $configs = [
-            [
-                'key' => 'exif_stripping_enabled',
-                'value' => '0'
-            ],
             [
                 'key' => 'exif_fields_to_keep',
                 'value' => 'Copyright,Orientation,Software'
@@ -47,7 +42,7 @@ class MigrationEXIFStrippingOptions extends Migration
         $db = Database::connect();
 
         $db->table('app_config')
-            ->whereIn('key', ['exif_stripping_enabled', 'exif_fields_to_keep'])
+            ->where('key', 'exif_fields_to_keep')
             ->delete();
     }
 }
