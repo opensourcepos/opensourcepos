@@ -23,7 +23,7 @@
                     'name'  => 'definition_name',
                     'id'    => 'definition_name',
                     'class' => 'form-control input-sm',
-                    'value' => $definition_info->definition_name
+                    'value' => esc($definition_info->definition_name)
                 ]) ?>
             </div>
         </div>
