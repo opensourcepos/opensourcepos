@@ -785,11 +785,13 @@ class Items extends Secure_Controller
 
         $file->move(FCPATH . 'uploads/item_pics/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
 
-        $exif_stripping_enabled = $this->appconfig->get_value('exif_stripping_enabled', '0');
-        if ($exif_stripping_enabled == '1') {
+        $exif_fields_to_keep = array_filter(explode(',', $this->appconfig->get_value('exif_fields_to_keep', 'Copyright,Orientation,Software')));
+        if (!empty($exif_fields_to_keep)) {
             $image_lib = new Image_lib();
-            $exif_fields_to_keep = array_filter(explode(',', $this->appconfig->get_value('exif_fields_to_keep', 'Copyright,Orientation')));
-            $image_lib->stripEXIF(FCPATH . 'uploads/item_pics/' . $file_info['raw_name'] . '.' . $file_info['file_ext'], $exif_fields_to_keep);
+            $filepath = FCPATH . 'uploads/item_pics/' . $file_info['raw_name'] . '.' . $file_info['file_ext'];
+            if (!$image_lib->stripEXIF($filepath, $exif_fields_to_keep)) {
+                log_message('warning', 'EXIF stripping failed for: ' . $filepath);
+            }
         }
 
         return ($file_info);

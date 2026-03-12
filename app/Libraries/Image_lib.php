@@ -25,7 +25,7 @@ class Image_lib
         }
 
         $mimetype = mime_content_type($filepath);
-        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/bmp', 'image/tiff'];
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
         if (!in_array($mimetype, $allowed_types)) {
             return false;
@@ -47,7 +47,7 @@ class Image_lib
             return $this->stripExifWebp($filepath);
         }
 
-        return true;
+        return false;
     }
 
     private function stripExifJpeg(string $filepath, array $fields_to_keep = []): bool
@@ -78,11 +78,10 @@ class Image_lib
                 if ($subIfd !== null) {
                     $this->removeExifFields($subIfd, $fields_to_keep);
                 }
-            }
 
-            $gpsIfd = $tiff->getIfd(PelTag::GPS_IFD_POINTER);
-            if ($gpsIfd !== null && !in_array('GPS', $fields_to_keep)) {
-                $tiff->setIfd(null, PelTag::GPS_IFD_POINTER);
+                if (!in_array('GPS', $fields_to_keep)) {
+                    $ifd0->removeEntry(PelTag::GPS_INFO_IFD_POINTER);
+                }
             }
 
             $jpeg->saveFile($filepath);
