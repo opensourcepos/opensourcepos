@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-<a href="https://app.travis-ci.com/opensourcepos/opensourcepos" target="_blank"><img src="https://api.travis-ci.com/opensourcepos/opensourcepos.svg?branch=master" alt="Build Status"></a>
+<a href="https://github.com/opensourcepos/opensourcepos/actions/workflows/build-release.yml" target="_blank"><img src="https://github.com/opensourcepos/opensourcepos/actions/workflows/build-release.yml/badge.svg" alt="Build Status"></a>
 <a href="https://app.gitter.im/#/room/#opensourcepos_Lobby:gitter.im?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" target="_blank"><img src="https://badges.gitter.im/jekkos/opensourcepos.svg" alt="Join the chat at https://app.gitter.im"></a>
 <a href="https://badge.fury.io/gh/opensourcepos%2Fopensourcepos" target="_blank"><img src="https://badge.fury.io/gh/opensourcepos%2Fopensourcepos.svg" alt="Project Version"></a>
 <a href="https://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget" target="_blank"><img src="https://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg" alt="Translation Status"></a>
@@ -137,7 +137,7 @@ Any person or company found breaching the license agreement might find a bunch o
 
 ## 🙏 Credits
 
-| <div align="center">DigitalOcean</div> | <div align="center">JetBrains</div> | <div align="center">Travis CI</div> |
+| <div align="center">DigitalOcean</div> | <div align="center">JetBrains</div> | <div align="center">GitHub</div> |
 | --- | --- | --- |
-| <div align="center"><a href="https://www.digitalocean.com?utm_medium=opensource&utm_source=opensourcepos" target="_blank"><img src="https://github.com/user-attachments/assets/fbbf7433-ed35-407d-8946-fd03d236d350" alt="DigitalOcean Logo" height="50"></a></div> | <div align="center"><a href="https://www.jetbrains.com/idea/" target="_blank"><img src="https://github.com/opensourcepos/opensourcepos/assets/12870258/187f9bbe-4484-475c-9b58-5e5d5f931f09" alt="IntelliJ IDEA Logo" height="50"></a></div> | <div align="center"><a href="https://www.travis-ci.com/" target="_blank"><img src="https://github.com/opensourcepos/opensourcepos/assets/12870258/71cc2b44-83af-4510-a543-6358285f43c6" alt="Travis CI Logo" height="50"></a></div> |
-| Many thanks to [DigitalOcean](https://www.digitalocean.com) for providing the project with hosting credits. | Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of OSPOS. | Many thanks to [Travis CI](https://www.travis-ci.com/) for providing a free continuous integration service for open source projects. |
+| <div align="center"><a href="https://www.digitalocean.com?utm_medium=opensource&utm_source=opensourcepos" target="_blank"><img src="https://github.com/user-attachments/assets/fbbf7433-ed35-407d-8946-fd03d236d350" alt="DigitalOcean Logo" height="50"></a></div> | <div align="center"><a href="https://www.jetbrains.com/idea/" target="_blank"><img src="https://github.com/opensourcepos/opensourcepos/assets/12870258/187f9bbe-4484-475c-9b58-5e5d5f931f09" alt="IntelliJ IDEA Logo" height="50"></a></div> | <div align="center"><a href="https://github.com/features/actions" target="_blank"><img src="https://github.githubassets.com/images/modules/site/icons/eyebrow-panel/actions-icon.svg" alt="GitHub Actions Logo" height="50"></a></div> |
+| Many thanks to [DigitalOcean](https://www.digitalocean.com) for providing the project with hosting credits. | Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of OSPOS. | Many thanks to [GitHub](https://github.com) for providing free continuous integration via GitHub Actions for open source projects. |

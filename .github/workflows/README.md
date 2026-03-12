@@ -1,32 +1,26 @@
-# GitHub Actions Migration
+# GitHub Actions
 
-This document describes the migration from Travis CI to GitHub Actions.
+This document describes the CI/CD workflows for OSPOS.
 
-## What was migrated
+## Build and Release Workflow (`.github/workflows/build-release.yml`)
 
-The following Travis CI functionality has been converted to GitHub Actions:
+### Build Process
+- Setup PHP 8.2 with required extensions
+- Setup Node.js 20
+- Install composer dependencies
+- Install npm dependencies
+- Build frontend assets with Gulp
 
-### Build and Test Workflow (`.github/workflows/build-release.yml`)
+### Testing
+- Run PHPUnit tests with MariaDB service container
 
-1. **Build Process**
-   - Setup PHP 8.2 with required extensions
-   - Setup Node.js 20
-   - Install composer dependencies
-   - Install npm dependencies
-   - Build frontend assets with Gulp
+### Docker Images
+- Build `ospos:latest` Docker image for multiple architectures (linux/amd64, linux/arm64)
+- Push to Docker Hub on master branch
 
-2. **Testing**
-   - Run PHPUnit tests with MariaDB container
-   - Run Docker container tests
-
-3. **Docker Images**
-   - Build `ospos:latest` Docker image
-   - Build `ospos_test:latest` Docker image
-   - Push to Docker Hub on master branch
-
-4. **Releases**
-   - Create distribution archives (tar.gz, zip)
-   - Create/update GitHub "unstable" release on master
+### Releases
+- Create distribution archives (tar.gz, zip)
+- Create/update GitHub "unstable" release on master
 
 ## Required Secrets
 
@@ -50,19 +44,11 @@ The `GITHUB_TOKEN` is automatically provided by GitHub Actions.
 - **Push tags** - Runs build and test
 - **Pull requests** - Runs build and test only
 
-## Differences from Travis CI
-
-1. **No SQL Docker image** - The Travis build created a `jekkos/opensourcepos:sql-$TAG` image. This workflow focuses on the main application image. If needed, a separate job can be added.
-
-2. **Branch filtering** - GitHub Actions uses workflow triggers instead of Travis's `branches.except`
-
-3. **Concurrency** - Added concurrency group to cancel in-progress runs on the same branch
-
 ## Existing Workflows
 
 This repository also has these workflows:
 - `.github/workflows/main.yml` - PHP linting with PHP-CS-Fixer
-- `.github/workflows/phpunit.yml` - PHPUnit tests (already existed)
+- `.github/workflows/phpunit.yml` - PHPUnit tests
 - `.github/workflows/php-linter.yml` - PHP linting
 - `.github/workflows/codeql-analysis.yml` - Security analysis
 
