@@ -15,7 +15,6 @@ class Image_lib
         'Copyright' => PelTag::COPYRIGHT,
         'Software' => PelTag::SOFTWARE,
         'DateTime' => PelTag::DATE_TIME,
-        'GPS' => PelTag::GPS_OFFSET,
     ];
 
     public function stripEXIF(string $filepath, array $fields_to_keep = []): bool
@@ -112,7 +111,7 @@ class Image_lib
             return false;
         }
 
-        imagealphablending($image, true);
+        imagealphablending($image, false);
         imagesavealpha($image, true);
 
         $result = imagepng($image, $filepath, 9);
@@ -123,6 +122,15 @@ class Image_lib
 
     private function stripExifGif(string $filepath): bool
     {
+        $content = file_get_contents($filepath);
+        if ($content === false) {
+            return false;
+        }
+
+        if (strpos($content, "\x21\xF9\x04") !== false || strpos($content, 'NETSCAPE2.0') !== false) {
+            return true;
+        }
+
         $image = @imagecreatefromgif($filepath);
         if ($image === false) {
             return false;
@@ -194,6 +202,13 @@ class Image_lib
         if (empty($markers)) {
             return true;
         }
+
+        $marker_names = [];
+        foreach ($markers as $marker_info) {
+            $marker_byte = ord($content[$marker_info[0] + 1]);
+            $marker_names[] = 'APP' . ($marker_byte - 0xE0);
+        }
+        log_message('warning', "stripExifFallback: Removing all APP markers from {$filepath}: " . implode(', ', $marker_names));
 
         $new_content = $content;
         foreach (array_reverse($markers) as $marker_info) {
