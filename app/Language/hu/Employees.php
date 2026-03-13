@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "",
     "employee"                     => "Munkavállaló",
     "error_adding_updating"        => "Hiba a munkavállaló módosításánál/hozzáadásánál",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Nem tudja törölni a demo admin felhasználót",
     "error_updating_demo_admin"    => "Nem tudja módosítani a demo admin felhasználót",
     "language"                     => "",

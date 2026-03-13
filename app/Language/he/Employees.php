@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "הסיסמה הנוכחית אינה חוקית.",
     "employee"                     => "עובד",
     "error_adding_updating"        => "הוספה או עדכון של עובד נכשלה.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "לא ניתן למחוק את משתמש המנהל ההדגמה.",
     "error_updating_demo_admin"    => "לא ניתן לשנות את משתמש המנהל ההדגמה.",
     "language"                     => "שפה",

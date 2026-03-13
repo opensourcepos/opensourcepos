@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Wholesale Price is a required field.",
     "count"                              => "Update Inventory",
     "csv_import_failed"                  => "CSV import failed",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "The uploaded CSV file has no data or is formatted incorrectly.",
     "csv_import_partially_failed"        => "There were {0} item import failure(s) on line(s): {1}. No rows were imported.",
     "csv_import_success"                 => "Item CSV import successful.",

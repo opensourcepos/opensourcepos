@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "成本價為必填攔位",
     "count"                              => "更新庫存",
     "csv_import_failed"                  => "CSV匯入失敗",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Your uploaded file has no data or wrong format",
     "csv_import_partially_failed"        => "Most Items imported. But some were not, here is the list",
     "csv_import_success"                 => "Import of Items successful",

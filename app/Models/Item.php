@@ -16,9 +16,21 @@ use stdClass;
  */
 class Item extends Model
 {
+
     public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
     public const ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
 
+    public const ALLOWED_BULK_EDIT_FIELDS = [
+        'name',
+        'category',
+        'supplier_id',
+        'cost_price',
+        'unit_price',
+        'reorder_level',
+        'description',
+        'allow_alt_description',
+        'is_serialized'
+    ];
     protected $table = 'items';
     protected $primaryKey = 'item_id';
     protected $useAutoIncrement = true;
@@ -202,9 +214,9 @@ class Item extends Model
 
         if (!empty($search)) {
             if ($attributes_enabled && $filters['search_custom']) {
-                $builder->having("attribute_values LIKE '%$search%'");
-                $builder->orHaving("attribute_dtvalues LIKE '%$search%'");
-                $builder->orHaving("attribute_dvalues LIKE '%$search%'");
+                $builder->havingLike('attribute_values', $search);
+                $builder->orHavingLike('attribute_dtvalues', $search);
+                $builder->orHavingLike('attribute_dvalues', $search);
             } else {
                 $builder->groupStart();
                 $builder->like('name', $search);

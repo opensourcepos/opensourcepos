@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Текущий пароль введен неверно.",
     "employee"                     => "Сотрудник",
     "error_adding_updating"        => "Ошибка при добавлении/обновлении сотрудника.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Вы не можете удалить демо-администратора.",
     "error_updating_demo_admin"    => "Вы не можете изменить демо-администратора.",
     "language"                     => "Язык",

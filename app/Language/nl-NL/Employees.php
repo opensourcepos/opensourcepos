@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Huidige wachtwoord is ongeldig.",
     "employee"                     => "Werknemer",
     "error_adding_updating"        => "Werknemer toevoegen of bijwerken mislukt.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Kan de demo admin gebruiker niet verwijderen.",
     "error_updating_demo_admin"    => "Kan de demo admin gebruiker niet wijzigen.",
     "language"                     => "Taal",

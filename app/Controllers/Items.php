@@ -73,7 +73,12 @@ class Items extends Secure_Controller
         $this->session->set('allow_temp_items', 0);
 
         $data['table_headers'] = get_items_manage_table_headers();
-        $data['stock_location'] = $this->item_lib->get_item_location();
+        
+        // Restore stock_location from URL or session
+        $stockLocation = $this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT);
+        $data['stock_location'] = $stockLocation
+            ? $stockLocation
+            : $this->item_lib->get_item_location();
         $data['stock_locations'] = $this->stock_location->get_allowed_locations();
 
         // Filters that will be loaded in the multiselect dropdown
@@ -87,6 +92,9 @@ class Items extends Secure_Controller
             'temporary'      => lang('Items.temp')
         ];
 
+        // Restore filters from URL
+        $data = array_merge($data, restoreTableFilters($this->request));
+
         return view('items/manage', $data);
     }
 
@@ -96,7 +104,7 @@ class Items extends Secure_Controller
      **/
     public function getSearch(): ResponseInterface
     {
-        $search = $this->request->getGet('search');
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
         $sort = $this->sanitizeSortColumn(item_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
@@ -618,7 +626,7 @@ class Items extends Secure_Controller
         // Save item data
         $item_data = [
             'name'                  => $this->request->getPost('name'),
-            'description'           => $this->request->getPost('description'),
+            'description'           => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category'              => $this->request->getPost('category'),
             'item_type'             => $item_type,
             'stock_type'            => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
@@ -876,12 +884,12 @@ class Items extends Secure_Controller
         $items_to_update = $this->request->getPost('item_ids');
         $item_data = [];
 
-        foreach ($_POST as $key => $value) {
-            // This field is nullable, so treat it differently
-            if ($key === 'supplier_id' && $value !== '') {
-                $item_data[$key] = $value;
-            } elseif ($value !== '' && !(in_array($key, ['item_ids', 'tax_names', 'tax_percents']))) {
-                $item_data[$key] = $value;
+        foreach (Item::ALLOWED_BULK_EDIT_FIELDS as $field) {
+            $value = $this->request->getPost($field);
+            if ($field === 'supplier_id' && $value !== '') {
+                $item_data[$field] = $value;
+            } elseif ($value !== null && $value !== '') {
+                $item_data[$field] = $value;
             }
         }
 

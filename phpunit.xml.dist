@@ -50,14 +50,16 @@
         <const name="CONFIGPATH" value="./app/Config/"/>
         <!-- Directory containing the front controller (index.php) -->
         <const name="PUBLICPATH" value="./public/"/>
-        <!-- Database configuration -->
-        <!-- Uncomment to provide your own database for testing
-            <env name="database.tests.hostname" value="localhost"/>
-            <env name="database.tests.database" value="tests"/>
-            <env name="database.tests.username" value="tests_user"/>
-            <env name="database.tests.password" value=""/>
-            <env name="database.tests.DBDriver" value="MySQLi"/>
-            <env name="database.tests.DBPrefix" value="tests_"/>
-            -->
+        <!-- Database configuration for testing -->
+        <env name="database.tests.hostname" value="127.0.0.1"/>
+        <env name="database.tests.database" value="ospos"/>
+        <env name="database.tests.username" value="admin"/>
+        <env name="database.tests.password" value="pointofsale"/>
+        <env name="database.tests.DBDriver" value="MySQLi"/>
+        <env name="database.tests.DBPrefix" value="ospos_"/>
+        <env name="MYSQL_HOST_NAME" value="127.0.0.1"/>
+        <env name="MYSQL_USERNAME" value="admin"/>
+        <env name="MYSQL_PASSWORD" value="pointofsale"/>
+        <env name="MYSQL_DB_NAME" value="ospos"/>
     </php>
 </phpunit>

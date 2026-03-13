@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "",
     "employee"                     => "",
     "error_adding_updating"        => "",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "",
     "error_updating_demo_admin"    => "",
     "language"                     => "",

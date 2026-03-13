@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "Current Password is invalid.",
     "employee"                     => "Employee",
     "error_adding_updating"        => "Employee add or update failed.",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "You can not delete the demo admin user.",
     "error_updating_demo_admin"    => "You can not change the demo admin user.",
     "language"                     => "Language",

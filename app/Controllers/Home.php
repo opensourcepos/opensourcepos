@@ -36,19 +36,18 @@ class Home extends Secure_Controller
     /**
      * Load "change employee password" form
      *
-     * @return string
+     * @return ResponseInterface|string
      * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employeeId = NEW_ENTRY): string
+    public function getChangePassword(int $employeeId = NEW_ENTRY)
     {
         $loggedInEmployee = $this->employee->get_logged_in_employee_info();
         $currentPersonId = $loggedInEmployee->person_id;
 
         $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
 
-        if (!$this->employee->can_modify_employee($employeeId, $currentPersonId)) {
-            header('Location: ' . base_url('no_access/home/home'));
-            exit();
+        if (!$this->employee->isAdmin($currentPersonId) && $employeeId !== $currentPersonId) {
+            return $this->response->setStatusCode(403)->setBody(lang('Employees.unauthorized_modify'));
         }
 
         $person_info = $this->employee->get_info($employeeId);
@@ -71,7 +70,7 @@ class Home extends Secure_Controller
 
         $employeeId = $employeeId === NEW_ENTRY ? $currentUser->person_id : $employeeId;
 
-        if (!$this->employee->can_modify_employee($employeeId, $currentUser->person_id)) {
+        if (!$this->employee->isAdmin($currentUser->person_id) && $employeeId !== $currentUser->person_id) {
             return $this->response->setStatusCode(403)->setJSON([
                 'success' => false,
                 'message' => lang('Employees.unauthorized_modify')

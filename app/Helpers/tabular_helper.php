@@ -48,7 +48,7 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
             'field'      => key($element),
             'title'      => current($element),
             'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
-            'escape'     => !preg_match("/(edit|email|messages|item_pic|customer_name|note)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
+            'escape'     => !preg_match("/(edit|email|messages|item_pic)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
             'sortable'   => $element['sortable'] ?? current($element) != '',
             'checkbox'   => $element['checkbox'] ?? false,
             'class'      => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
@@ -924,4 +924,25 @@ function get_controller(): string
     $controller_name = strtolower($router->controllerName());
     $controller_name_parts = explode('\\', $controller_name);
     return end($controller_name_parts);
+}
+
+/**
+ * Restores filter values from URL query string.
+ * 
+ * @param CodeIgniter\HTTP\IncomingRequest $request The request object
+ * @return array Array with 'start_date', 'end_date', and 'selected_filters' keys
+ */
+function restoreTableFilters($request): array
+{
+    $startDate = $request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $endDate = $request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $urlFilters = $request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+    return array_filter([
+        'start_date' => $startDate ?: null,
+        'end_date' => $endDate ?: null,
+        'selected_filters' => $urlFilters ?? []
+    ], function($value) {
+        return $value !== null && $value !== [];
+    });
 }

@@ -26,6 +26,7 @@ return [
     "cost_price_required"                => "Bei ya Jumla ni kiashiria kinachohitajika.",
     "count"                              => "Sasisha Hisa",
     "csv_import_failed"                  => "Uingizaji wa CSV umeshindikana",
+    "csv_import_invalid_location"        => "",
     "csv_import_nodata_wrongformat"      => "Faili ya CSV iliyopakiwa haina data au imepangwa vibaya.",
     "csv_import_partially_failed"        => "Kumekuwa na makosa {0} ya uingizaji wa bidhaa kwenye mstari: {1}. Hakuna safu zilizoingizwa.",
     "csv_import_success"                 => "Uingizaji wa Bidhaa kutoka CSV umefanikiwa.",

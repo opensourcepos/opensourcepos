@@ -14,6 +14,8 @@ return [
     "current_password_invalid"     => "",
     "employee"                     => "Radnik",
     "error_adding_updating"        => "Greška kod dodavanja/ažuriranja radnika",
+    "error_deleting_admin"         => "",
+    "error_updating_admin"         => "",
     "error_deleting_demo_admin"    => "Ne možete obrisati demo admin korisnika",
     "error_updating_demo_admin"    => "Ne možete promijeniti demo admin korisnika",
     "language"                     => "",
