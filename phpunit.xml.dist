@@ -51,15 +51,15 @@
         <!-- Directory containing the front controller (index.php) -->
         <const name="PUBLICPATH" value="./public/"/>
         <!-- Database configuration for testing -->
-        <env name="database.tests.hostname" value="127.0.0.1"/>
-        <env name="database.tests.database" value="ospos"/>
-        <env name="database.tests.username" value="admin"/>
-        <env name="database.tests.password" value="pointofsale"/>
-        <env name="database.tests.DBDriver" value="MySQLi"/>
-        <env name="database.tests.DBPrefix" value="ospos_"/>
-        <env name="MYSQL_HOST_NAME" value="127.0.0.1"/>
-        <env name="MYSQL_USERNAME" value="admin"/>
-        <env name="MYSQL_PASSWORD" value="pointofsale"/>
-        <env name="MYSQL_DB_NAME" value="ospos"/>
+        <env name="database.tests.hostname" value="127.0.0.1" force="true"/>
+        <env name="database.tests.database" value="ospos" force="true"/>
+        <env name="database.tests.username" value="admin" force="true"/>
+        <env name="database.tests.password" value="pointofsale" force="true"/>
+        <env name="database.tests.DBDriver" value="MySQLi" force="true"/>
+        <env name="database.tests.DBPrefix" value="ospos_" force="true"/>
+        <env name="MYSQL_HOST_NAME" value="127.0.0.1" force="true"/>
+        <env name="MYSQL_USERNAME" value="admin" force="true"/>
+        <env name="MYSQL_PASSWORD" value="pointofsale" force="true"/>
+        <env name="MYSQL_DB_NAME" value="ospos" force="true"/>
     </php>
 </phpunit>
