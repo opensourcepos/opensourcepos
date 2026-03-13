@@ -55,7 +55,7 @@
                         $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
                         echo form_input([
                             'name'               => "attribute_links[$definition_id]",
-                            'value'              => $value,
+                            'value'              => esc($value),
                             'class'              => 'form-control valid_chars',
                             'data-definition-id' => $definition_id
                         ]);

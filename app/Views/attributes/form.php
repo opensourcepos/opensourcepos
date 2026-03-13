@@ -69,7 +69,7 @@
                 <div class="input-group">
                     <?= form_input([
                         'name'  => 'definition_unit',
-                        'value' => $definition_info->definition_unit,
+                        'value' => esc($definition_info->definition_unit),
                         'class' => 'form-control input-sm',
                         'id'    => 'definition_unit'
                     ]) ?>
