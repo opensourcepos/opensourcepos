@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Seçili niteliği ya da nitelikleri silmek istediğinize emin misiniz?",
     "confirm_restore"                  => "Seçili nitelik ya da nitelikleri kurtarmak istediğinize emin misiniz?",
     "definition_cannot_be_deleted"     => "Seçili nitelik ya da nitelikler silinemedi",
+    "definition_invalid_group" => "The selected group does not exist or is invalid.",
     "definition_error_adding_updating" => "Nitelik {0} eklenemedi ya da güncellenemedi. Lütfen hata kaydını gözden geçirin.",
     "definition_flags"                 => "Nitelik Görünebilirliği",
     "definition_group"                 => "Küme",

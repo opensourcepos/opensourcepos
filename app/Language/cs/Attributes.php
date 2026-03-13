@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "",
     "confirm_restore"                  => "",
     "definition_cannot_be_deleted"     => "",
+    "definition_invalid_group" => "The selected group does not exist or is invalid.",
     "definition_error_adding_updating" => "",
     "definition_flags"                 => "",
     "definition_group"                 => "",

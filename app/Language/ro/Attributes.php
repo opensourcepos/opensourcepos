@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Sigur doriti stergerea atributului/atributelor selectat(e)?",
     "confirm_restore"                  => "",
     "definition_cannot_be_deleted"     => "Nu se poate sterge atributul/atributele selectat(e)",
+    "definition_invalid_group" => "The selected group does not exist or is invalid.",
     "definition_error_adding_updating" => "",
     "definition_flags"                 => "Vizibilitate atribut",
     "definition_group"                 => "Grup",

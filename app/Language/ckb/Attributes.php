@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "ئایا دڵنیای کە دەتەوێت تایبەتمەندییە هەڵبژێردراوەکە(کان) بسڕیتەوە؟",
     "confirm_restore"                  => "ئایا دڵنیای کە دەتەوێت تایبەتمەندییە هەڵبژێردراوەکە(کان) بگەڕێنیتەوە؟",
     "definition_cannot_be_deleted"     => "نەتوانرا تایبەتمەندی هەڵبژێردراو بسڕدرێتەوە",
+    "definition_invalid_group" => "The selected group does not exist or is invalid.",
     "definition_error_adding_updating" => "تایبەتمەندی {0} نەتوانرا زیاد بکرێت یان نوێ بکرێتەوە. تکایە لیستی هەڵەکان بپشکنە.",
     "definition_flags"                 => "توانای بینراویی تایبەتمەندی",
     "definition_group"                 => "گروپ",

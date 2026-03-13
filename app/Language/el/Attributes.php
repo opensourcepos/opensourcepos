@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Είστε βέβαιοι ότι θέλετε να διαγράψετε τα επιλεγμένα χαρακτηριστικά;",
     "confirm_restore"                  => "Είστε βέβαιοι ότι θέλετε να επαναφέρετε τα επιλεγμένα χαρακτηριστικά;",
     "definition_cannot_be_deleted"     => "Δεν ήταν δυνατή η διαγραφή των επιλεγμένων χαρακτηριστικών",
+    "definition_invalid_group" => "The selected group does not exist or is invalid.",
     "definition_error_adding_updating" => "Το χαρακτηριστικό {0} δεν ήταν δυνατό να προστεθεί ή να ενημερωθεί. Ελέγξτε το αρχείο καταγραφής σφαλμάτων.",
     "definition_flags"                 => "Ορατότητα χαρακτηριστικών",
     "definition_group"                 => "Ομάδα",
