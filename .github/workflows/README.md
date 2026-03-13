@@ -12,7 +12,7 @@ This document describes the CI/CD workflows for OSPOS.
 - Build frontend assets with Gulp
 
 ### Testing
-- Run PHPUnit tests with MariaDB service container
+- Run PHPUnit tests with MariaDB started via Docker
 
 ### Docker Images
 - Build `ospos:latest` Docker image for multiple architectures (linux/amd64, linux/arm64)
