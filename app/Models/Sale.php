@@ -447,15 +447,15 @@ class Sale extends Model
             'Sale::update start sale_id=' . $sale_id . ' previous_customer_id=' . ($previousCustomerId ?? 'null')
         );
 
-        $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
         $updateData = $sale_data;
         unset($updateData['payments']);
-        $success = $builder->update($updateData);
+
+        $newCustomerId = array_key_exists('customer_id', $updateData)
+            ? $updateData['customer_id']
+            : $previousCustomerId;
 
         $customer = model(Customer::class);
 
-        // Get current reward used
         $currentPayments = $this->get_sale_payments($sale_id)->getResultArray();
         $currentRewardUsed = 0;
         foreach ($currentPayments as $payment) {
@@ -467,61 +467,9 @@ class Sale extends Model
             'debug',
             'Sale::update current rewards sale_id=' . $sale_id
             . ' current_reward_used=' . $currentRewardUsed
-            . ' reward_labels=' . json_encode($this->get_reward_payment_labels())
-            . ' payments=' . json_encode($currentPayments)
+            . ' payment_count=' . count($currentPayments)
         );
 
-        // Touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
-        if ($success && !empty($sale_data['payments'])) {
-            // Run these queries as a transaction, we want to make sure we do all or nothing
-            $this->db->transStart();
-
-            $builder = $this->db->table('sales_payments');
-
-            // Add new payments
-            foreach ($sale_data['payments'] as $payment) {
-                $payment_id = $payment['payment_id'];
-                $payment_type = $payment['payment_type'];
-                $payment_amount = $payment['payment_amount'];
-                $cash_refund = $payment['cash_refund'];
-                $cash_adjustment = $payment['cash_adjustment'];
-                $employee_id = $payment['employee_id'];
-
-                if ($payment_id == NEW_ENTRY && $payment_amount != 0) {
-                    // Add a new payment transaction
-                    $sales_payments_data = [
-                        'sale_id'         => $sale_id,
-                        'payment_type'    => $payment_type,
-                        'payment_amount'  => $payment_amount,
-                        'cash_refund'     => $cash_refund,
-                        'cash_adjustment' => $cash_adjustment,
-                        'employee_id'     => $employee_id
-                    ];
-                    $success = $builder->insert($sales_payments_data);
-                } elseif ($payment_id != NEW_ENTRY) {
-                    if ($payment_amount != 0) {
-                        // Update existing payment transactions (payment_type only)
-                        $sales_payments_data = [
-                            'payment_type'    => $payment_type,
-                            'payment_amount'  => $payment_amount,
-                            'cash_refund'     => $cash_refund,
-                            'cash_adjustment' => $cash_adjustment
-                        ];
-
-                        $builder->where('payment_id', $payment_id);
-                        $success = $builder->update($sales_payments_data);
-                    } else {
-                        // Remove existing payment transactions with a payment amount of zero
-                        $success = $builder->delete(['payment_id' => $payment_id]);
-                    }
-                }
-            }
-
-            $this->db->transComplete();
-            $success &= $this->db->transStatus();
-        }
-
-        // Calculate new reward used
         $newRewardUsed = 0;
         if (!empty($sale_data['payments'])) {
             foreach ($sale_data['payments'] as $payment) {
@@ -536,12 +484,55 @@ class Sale extends Model
             'debug',
             'Sale::update new rewards sale_id=' . $sale_id
             . ' new_reward_used=' . $newRewardUsed
-            . ' payments=' . json_encode($sale_data['payments'] ?? [])
+            . ' payment_count=' . count($sale_data['payments'] ?? [])
         );
 
-        // Adjust reward points
+        $this->db->transStart();
+
+        $builder = $this->db->table('sales');
+        $builder->where('sale_id', $sale_id);
+        $success = $builder->update($updateData);
+
+        if ($success && !empty($sale_data['payments'])) {
+            $builder = $this->db->table('sales_payments');
+
+            foreach ($sale_data['payments'] as $payment) {
+                $payment_id = $payment['payment_id'];
+                $payment_type = $payment['payment_type'];
+                $payment_amount = $payment['payment_amount'];
+                $cash_refund = $payment['cash_refund'];
+                $cash_adjustment = $payment['cash_adjustment'];
+                $employee_id = $payment['employee_id'];
+
+                if ($payment_id == NEW_ENTRY && $payment_amount != 0) {
+                    $sales_payments_data = [
+                        'sale_id'         => $sale_id,
+                        'payment_type'    => $payment_type,
+                        'payment_amount'  => $payment_amount,
+                        'cash_refund'     => $cash_refund,
+                        'cash_adjustment' => $cash_adjustment,
+                        'employee_id'     => $employee_id
+                    ];
+                    $success = $builder->insert($sales_payments_data);
+                } elseif ($payment_id != NEW_ENTRY) {
+                    if ($payment_amount != 0) {
+                        $sales_payments_data = [
+                            'payment_type'    => $payment_type,
+                            'payment_amount'  => $payment_amount,
+                            'cash_refund'     => $cash_refund,
+                            'cash_adjustment' => $cash_adjustment
+                        ];
+
+                        $builder->where('payment_id', $payment_id);
+                        $success = $builder->update($sales_payments_data);
+                    } else {
+                        $success = $builder->delete(['payment_id' => $payment_id]);
+                    }
+                }
+            }
+        }
+
         if ($success) {
-            $newCustomerId = $updateData['customer_id'] ?? null;
             log_message(
                 'debug',
                 'Sale::update reward adjust sale_id=' . $sale_id
@@ -587,7 +578,9 @@ class Sale extends Model
             }
         }
 
-        return $success;
+        $this->db->transComplete();
+
+        return $success && $this->db->transStatus();
     }
 
     /**
@@ -910,32 +903,33 @@ class Sale extends Model
             }
         }
 
-        // Restore reward points if used
-        $payments = $this->get_sale_payments($sale_id)->getResultArray();
-        $rewardUsed = 0;
-        foreach ($payments as $payment) {
-            if ($this->is_reward_payment($payment['payment_type'])) {
-                $rewardUsed += $payment['payment_amount'];
+        // Restore reward points if used (only on first cancellation to prevent double-credit)
+        if ($sale_status !== CANCELED) {
+            $payments = $this->get_sale_payments($sale_id)->getResultArray();
+            $rewardUsed = 0;
+            foreach ($payments as $payment) {
+                if ($this->is_reward_payment($payment['payment_type'])) {
+                    $rewardUsed += $payment['payment_amount'];
+                }
             }
-        }
-        log_message(
-            'debug',
-            'Sale::delete reward usage sale_id=' . $sale_id
-            . ' reward_used=' . $rewardUsed
-            . ' reward_labels=' . json_encode($this->get_reward_payment_labels())
-            . ' payments=' . json_encode($payments)
-        );
-        if ($rewardUsed > 0) {
-            $customerId = $this->get_customer($sale_id)->person_id;
-            $customer = model(Customer::class);
-            $currentPoints = $customer->get_info($customerId)->points ?? 0;
-            $customer->update_reward_points_value($customerId, $currentPoints + $rewardUsed);
             log_message(
                 'debug',
-                'Sale::delete reward restore customer_id=' . $customerId
-                . ' current_points=' . $currentPoints
-                . ' restored=' . $rewardUsed
+                'Sale::delete reward usage sale_id=' . $sale_id
+                . ' reward_used=' . $rewardUsed
+                . ' payment_count=' . count($payments)
             );
+            if ($rewardUsed > 0) {
+                $customerId = $this->get_customer($sale_id)->person_id;
+                $customer = model(Customer::class);
+                $currentPoints = $customer->get_info($customerId)->points ?? 0;
+                $customer->update_reward_points_value($customerId, $currentPoints + $rewardUsed);
+                log_message(
+                    'debug',
+                    'Sale::delete reward restore customer_id=' . $customerId
+                    . ' current_points=' . $currentPoints
+                    . ' restored=' . $rewardUsed
+                );
+            }
         }
 
         $this->update_sale_status($sale_id, CANCELED);
