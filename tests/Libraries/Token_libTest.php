@@ -228,4 +228,40 @@ class Token_libTest extends CIUnitTestCase
         $this->assertArrayHasKey('token1', $result);
         $this->assertArrayHasKey('token2', $result);
     }
+
+    public function testRenderReplacesCompositeDirectivePercentF(): void
+    {
+        $input = 'Date: %F';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%F', $result);
+        $this->assertMatchesRegularExpression('/Date: \d{4}-\d{2}-\d{2}/', $result);
+    }
+
+    public function testRenderReplacesCompositeDirectivePercentD(): void
+    {
+        $input = 'Date: %D';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%D', $result);
+        $this->assertMatchesRegularExpression('/Date: \d{2}\/\d{2}\/\d{2}/', $result);
+    }
+
+    public function testRenderHandlesPercentT(): void
+    {
+        $input = 'Time: %T';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%T', $result);
+        $this->assertMatchesRegularExpression('/Time: \d{2}:\d{2}:\d{2}/', $result);
+    }
+
+    public function testRenderHandlesPercentR(): void
+    {
+        $input = 'Time: %R';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%R', $result);
+        $this->assertMatchesRegularExpression('/Time: \d{2}:\d{2}/', $result);
+    }
 }

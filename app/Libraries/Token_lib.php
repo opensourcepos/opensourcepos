@@ -20,7 +20,9 @@ class Token_lib
         '%b' => 'MMM',
         '%B' => 'MMMM',
         '%d' => 'dd',
+        '%D' => 'MM/dd/yy',
         '%e' => 'd',
+        '%F' => 'yyyy-MM-dd',
         '%j' => 'D',
         '%m' => 'MM',
         '%U' => 'w',
@@ -71,7 +73,7 @@ class Token_lib
 
         $token_values = [];
         $tokens_to_replace = [];
-        $this->generate($token_tree, $tokens_to_replace, $token_values, $save);
+        $this->generate($token_tree, $tokens, $tokens_to_replace, $token_values, $save);
 
         return str_replace($tokens_to_replace, $token_values, $tokened_text);
     }
@@ -192,10 +194,10 @@ class Token_lib
         return $results;
     }
 
-    private function generate(array $used_tokens, array &$tokens_to_replace, array &$token_values, bool $save = true): void
+    private function generate(array $used_tokens, array $tokens, array &$tokens_to_replace, array &$token_values, bool $save = true): void
     {
         foreach ($used_tokens as $token_code => $token_info) {
-            $token_value = $this->resolve_token($token_code, [], $save);
+            $token_value = $this->resolve_token($token_code, $tokens, $save);
 
             foreach ($token_info as $length => $token_spec) {
                 $tokens_to_replace[] = $token_spec;
