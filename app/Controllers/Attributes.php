@@ -65,7 +65,7 @@ class Attributes extends Secure_Controller
     public function postSaveAttributeValue(): ResponseInterface
     {
         $success = $this->attribute->saveAttributeValue(
-            htmlspecialchars(html_entity_decode($this->request->getPost('attribute_value')), ENT_QUOTES, 'UTF-8'),
+            html_entity_decode($this->request->getPost('attribute_value')),
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
             $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT) ?? false,
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
@@ -108,8 +108,8 @@ class Attributes extends Secure_Controller
 
         // Save definition data
         $definition_data = [
-            'definition_name'  => $this->request->getPost('definition_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'definition_unit'  => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null,
+            'definition_name'  => $this->request->getPost('definition_name'),
+            'definition_unit'  => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : null,
             'definition_flags' => $definition_flags,
             'definition_fk'    => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group', FILTER_SANITIZE_NUMBER_INT) : null
         ];
@@ -126,7 +126,7 @@ class Attributes extends Secure_Controller
                 $definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
 
                 foreach ($definition_values as $definition_value) {
-                    $this->attribute->saveAttributeValue(htmlspecialchars($definition_value, ENT_QUOTES, 'UTF-8'), $definition_data['definition_id']);
+                    $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
                 }
 
                 return $this->response->setJSON([
