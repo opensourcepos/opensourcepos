@@ -113,27 +113,11 @@ class Attributes extends Secure_Controller
         if ($definition_group_input !== '' && $definition_group_input !== null) {
             $definition_group_id = (int) $definition_group_input;
 
-            // Must be a positive integer
-            if ($definition_group_id <= 0) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => lang('Attributes.definition_invalid_group'),
-                    'id'      => NEW_ENTRY
-                ]);
-            }
-
-            // Must exist in attribute_definitions
-            if (!$this->attribute->exists($definition_group_id)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => lang('Attributes.definition_invalid_group'),
-                    'id'      => NEW_ENTRY
-                ]);
-            }
-
-            // Must be of type GROUP
-            $group_info = $this->attribute->getAttributeInfo($definition_group_id);
-            if ($group_info->definition_type !== GROUP) {
+            // Must be a positive integer, exist in attribute_definitions, and be of type GROUP
+            if ($definition_group_id <= 0
+                || !$this->attribute->exists($definition_group_id)
+                || $this->attribute->getAttributeInfo($definition_group_id)->definition_type !== GROUP
+            ) {
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Attributes.definition_invalid_group'),
