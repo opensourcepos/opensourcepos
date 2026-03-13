@@ -75,15 +75,15 @@ class Sales extends Secure_Controller
     /**
      * Load the sale edit modal. Used in app/Views/sales/register.php.
      *
-     * @return string
+     * @return ResponseInterface|string
      * @noinspection PhpUnused
      */
-    public function getManage(): string
+    public function getManage(): ResponseInterface|string
     {
-        $person_id = $this->session->get('person_id');
+        $personId = $this->session->get('person_id');
 
-        if (!$this->employee->has_grant('reports_sales', $person_id)) {
-            redirect('no_access/sales/reports_sales');
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return redirect()->to('no_access/sales/reports_sales');
         } else {
             $data['table_headers'] = get_sales_manage_table_headers();
 
