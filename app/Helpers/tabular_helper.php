@@ -408,7 +408,7 @@ function get_items_manage_table_headers(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
-    $definitions_with_types = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
+    $definitionsWithTypes = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
 
     $headers = item_headers();
 
@@ -420,8 +420,8 @@ function get_items_manage_table_headers(): string
 
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
-    foreach ($definitions_with_types as $definition_id => $definition_info) {
-        $headers[] = [$definition_id => $definition_info['name'], 'sortable' => false];
+    foreach ($definitionsWithTypes as $definition_id => $definitionInfo) {
+        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => false];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];
@@ -651,12 +651,12 @@ function expand_attribute_values(array $definition_names, array $row): array
     }
 
     $attribute_values = [];
-    foreach ($definition_names as $definition_id => $definition_info) {
+    foreach ($definition_names as $definition_id => $definitionInfo) {
         if (isset($indexed_values[$definition_id])) {
             $raw_value = $indexed_values[$definition_id];
             
             // Format DECIMAL attributes according to locale
-            if (is_array($definition_info) && isset($definition_info['type']) && $definition_info['type'] === DECIMAL) {
+            if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
                 $attribute_values["$definition_id"] = to_decimals($raw_value);
             } else {
                 $attribute_values["$definition_id"] = $raw_value;

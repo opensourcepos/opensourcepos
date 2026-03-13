@@ -1790,11 +1790,11 @@ class Reports extends Secure_Controller
 
         $columns = $this->detailed_sales->getDataColumns();
         // Extract just names for column headers
-        $definition_headers = [];
-        foreach ($definition_names as $definition_id => $definition_info) {
-            $definition_headers[$definition_id] = $definition_info['name'];
+        $definitionHeaders = [];
+        foreach ($definition_names as $definition_id => $definitionInfo) {
+            $definitionHeaders[$definition_id] = $definitionInfo['name'];
         }
-        $columns['details'] = array_merge($columns['details'], $definition_headers);
+        $columns['details'] = array_merge($columns['details'], $definitionHeaders);
 
         $headers = $columns;
 
@@ -1943,11 +1943,11 @@ class Reports extends Secure_Controller
 
         $columns = $this->detailed_receivings->getDataColumns();
         // Extract just names for column headers
-        $definition_headers = [];
-        foreach ($definition_names as $definition_id => $definition_info) {
-            $definition_headers[$definition_id] = $definition_info['name'];
+        $definitionHeaders = [];
+        foreach ($definition_names as $definition_id => $definitionInfo) {
+            $definitionHeaders[$definition_id] = $definitionInfo['name'];
         }
-        $columns['details'] = array_merge($columns['details'], $definition_headers);
+        $columns['details'] = array_merge($columns['details'], $definitionHeaders);
 
         $headers = $columns;
         $report_data = $this->detailed_receivings->getData($inputs);
