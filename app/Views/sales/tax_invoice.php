@@ -139,7 +139,7 @@ if (isset($error_message)) {
             if ($item['print_option'] == PRINT_YES) {    // TODO: === ?
         ?>
                 <tr class="item-row">
-                    <td><?= $item['item_number'] ?></td>
+                    <td><?= esc($item['item_number']) ?></td>
                     <?php if ($include_hsn): ?>
                         <td style="text-align: center;"><?= esc($item['hsn_code']) ?></td>
                     <?php endif; ?>
