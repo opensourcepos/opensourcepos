@@ -4,245 +4,180 @@ declare(strict_types=1);
 
 namespace Tests\Models\Reports;
 
+use App\Models\Reports\Summary_taxes;
 use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
 
 class Summary_taxes_test extends CIUnitTestCase
 {
-    public function testRowTotalsAddUp(): void
-    {
-        $rows = [
-            ['subtotal' => 100.00, 'tax' => 10.00, 'total' => 110.00],
-            ['subtotal' => 200.00, 'tax' => 20.00, 'total' => 220.00],
-            ['subtotal' => 50.00, 'tax' => 5.00, 'total' => 55.00],
-        ];
+    use DatabaseTestTrait;
 
-        foreach ($rows as $row) {
-            $calculatedTotal = round((float) $row['subtotal'] + (float) $row['tax'], 2);
-            $this->assertEqualsWithDelta(
-                (float) $row['total'],
-                $calculatedTotal,
-                0.001,
-                "Row subtotal + tax should equal total: {$row['subtotal']} + {$row['tax']} = {$row['total']}"
-            );
+    protected $migrate = true;
+    protected $migrateOnce = true;
+    protected $refresh = true;
+    protected $namespace = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    public function testGetDataReturnsArray(): void
+    {
+        $model = model(Summary_taxes::class);
+        $inputs = $this->getTestInputs();
+
+        $result = $model->getData($inputs);
+
+        $this->assertIsArray($result);
+    }
+
+    public function testGetDataHasExpectedColumns(): void
+    {
+        $model = model(Summary_taxes::class);
+        $inputs = $this->getTestInputs();
+
+        $result = $model->getData($inputs);
+
+        if (count($result) > 0) {
+            $row = $result[0];
+            $this->assertArrayHasKey('name', $row);
+            $this->assertArrayHasKey('percent', $row);
+            $this->assertArrayHasKey('count', $row);
+            $this->assertArrayHasKey('subtotal', $row);
+            $this->assertArrayHasKey('tax', $row);
+            $this->assertArrayHasKey('total', $row);
+        } else {
+            $this->markTestSkipped('No sales tax data in test database');
         }
     }
 
-    public function testSummaryTotalsMatchRowSums(): void
+    public function testGetSummaryDataReturnsArray(): void
     {
-        $rows = [
-            ['subtotal' => 100.00, 'tax' => 10.00, 'total' => 110.00, 'count' => 5],
-            ['subtotal' => 200.00, 'tax' => 20.00, 'total' => 220.00, 'count' => 10],
-            ['subtotal' => 50.00, 'tax' => 5.00, 'total' => 55.00, 'count' => 3],
-        ];
+        $model = model(Summary_taxes::class);
+        $inputs = $this->getTestInputs();
 
-        $summary = $this->calculateSummary($rows, 2);
+        $result = $model->getSummaryData($inputs);
 
-        $expectedSubtotal = 0;
-        $expectedTax = 0;
-        $expectedTotal = 0;
-        $expectedCount = 0;
+        $this->assertIsArray($result);
+    }
 
-        foreach ($rows as $row) {
-            $expectedSubtotal += (float) $row['subtotal'];
-            $expectedTax += (float) $row['tax'];
-            $expectedTotal += (float) $row['total'];
-            $expectedCount += (int) $row['count'];
+    public function testGetSummaryDataHasExpectedKeys(): void
+    {
+        $model = model(Summary_taxes::class);
+        $inputs = $this->getTestInputs();
+
+        $result = $model->getSummaryData($inputs);
+
+        $this->assertArrayHasKey('subtotal', $result);
+        $this->assertArrayHasKey('tax', $result);
+        $this->assertArrayHasKey('total', $result);
+        $this->assertArrayHasKey('count', $result);
+    }
+
+    public function testSummaryDataMatchesSumOfDataRows(): void
+    {
+        $model = model(Summary_taxes::class);
+        $inputs = $this->getTestInputs();
+
+        $data = $model->getData($inputs);
+        $summary = $model->getSummaryData($inputs);
+
+        if (count($data) === 0) {
+            $this->markTestSkipped('No sales tax data in test database');
         }
 
+        $subtotalSum = 0;
+        $taxSum = 0;
+        $totalSum = 0;
+        $countSum = 0;
+
+        foreach ($data as $row) {
+            $subtotalSum += (float) $row['subtotal'];
+            $taxSum += (float) $row['tax'];
+            $totalSum += (float) $row['total'];
+            $countSum += (int) $row['count'];
+        }
+
+        $decimals = 2;
+
         $this->assertEqualsWithDelta(
-            round($expectedSubtotal, 2),
+            round($subtotalSum, $decimals),
             $summary['subtotal'],
-            0.001,
+            0.01,
             'Summary subtotal should equal sum of row subtotals'
         );
+
         $this->assertEqualsWithDelta(
-            round($expectedTax, 2),
+            round($taxSum, $decimals),
             $summary['tax'],
-            0.001,
+            0.01,
             'Summary tax should equal sum of row taxes'
         );
+
         $this->assertEqualsWithDelta(
-            round($expectedTotal, 2),
+            round($totalSum, $decimals),
             $summary['total'],
-            0.001,
+            0.01,
             'Summary total should equal sum of row totals'
         );
+
         $this->assertEquals(
-            $expectedCount,
+            $countSum,
             $summary['count'],
             'Summary count should equal sum of row counts'
         );
     }
 
-    public function testSubtotalPlusTaxEqualsTotalInSummary(): void
+    public function testRowSubtotalPlusTaxEqualsTotal(): void
     {
-        $rows = [
-            ['subtotal' => 100.00, 'tax' => 10.00, 'total' => 110.00, 'count' => 5],
-            ['subtotal' => 200.00, 'tax' => 20.00, 'total' => 220.00, 'count' => 10],
-        ];
+        $model = model(Summary_taxes::class);
+        $inputs = $this->getTestInputs();
 
-        $summary = $this->calculateSummary($rows, 2);
+        $data = $model->getData($inputs);
 
-        $calculatedTotal = round($summary['subtotal'] + $summary['tax'], 2);
-        $this->assertEqualsWithDelta(
-            $summary['total'],
-            $calculatedTotal,
-            0.001,
-            'Summary subtotal + tax should equal summary total'
-        );
-    }
-
-    public function testRoundingConsistency(): void
-    {
-        $rows = [
-            ['subtotal' => 99.99, 'tax' => 9.999, 'total' => 109.989, 'count' => 1],
-            ['subtotal' => 33.33, 'tax' => 3.333, 'total' => 36.663, 'count' => 1],
-        ];
-
-        $summary = $this->calculateSummary($rows, 2);
-
-        $sumOfRoundedSubtotals = 0;
-        $sumOfRoundedTaxes = 0;
-
-        foreach ($rows as $row) {
-            $sumOfRoundedSubtotals += round((float) $row['subtotal'], 2);
-            $sumOfRoundedTaxes += round((float) $row['tax'], 2);
+        if (count($data) === 0) {
+            $this->markTestSkipped('No sales tax data in test database');
         }
 
-        $expectedTotal = round($sumOfRoundedSubtotals + $sumOfRoundedTaxes, 2);
+        foreach ($data as $row) {
+            $subtotal = (float) $row['subtotal'];
+            $tax = (float) $row['tax'];
+            $total = (float) $row['total'];
+            $calculatedTotal = round($subtotal + $tax, 2);
 
-        $this->assertEqualsWithDelta(
-            $expectedTotal,
-            $summary['total'],
-            0.001,
-            'Total should be sum of rounded subtotals + sum of rounded taxes'
-        );
-    }
-
-    public function testTaxIncludedModeCalculation(): void
-    {
-        $saleAmount = 110.00;
-        $taxAmount = 10.00;
-
-        $subtotal = round($saleAmount - $taxAmount, 2);
-        $total = round($saleAmount, 2);
-
-        $this->assertEquals(100.00, $subtotal, 'Tax-included: subtotal should be sale_amount - tax');
-        $this->assertEquals(110.00, $total, 'Tax-included: total should be sale_amount');
-        $this->assertEquals(
-            $total,
-            round($subtotal + $taxAmount, 2),
-            'Tax-included: total should equal subtotal + tax'
-        );
-    }
-
-    public function testTaxNotIncludedModeCalculation(): void
-    {
-        $saleAmount = 100.00;
-        $taxAmount = 10.00;
-
-        $subtotal = round($saleAmount, 2);
-        $total = round($saleAmount + $taxAmount, 2);
-
-        $this->assertEquals(100.00, $subtotal, 'Tax-not-included: subtotal should be sale_amount');
-        $this->assertEquals(110.00, $total, 'Tax-not-included: total should be sale_amount + tax');
-        $this->assertEquals(
-            $total,
-            round($subtotal + $taxAmount, 2),
-            'Tax-not-included: total should equal subtotal + tax'
-        );
-    }
-
-    public function testNegativeValuesForReturns(): void
-    {
-        $rows = [
-            ['subtotal' => -100.00, 'tax' => -10.00, 'total' => -110.00, 'count' => 1],
-            ['subtotal' => 200.00, 'tax' => 20.00, 'total' => 220.00, 'count' => 2],
-        ];
-
-        foreach ($rows as $row) {
-            $calculatedTotal = round((float) $row['subtotal'] + (float) $row['tax'], 2);
             $this->assertEqualsWithDelta(
-                (float) $row['total'],
+                $total,
                 $calculatedTotal,
-                0.001,
-                "Negative row: subtotal + tax should equal total"
-            );
-        }
-
-        $summary = $this->calculateSummary($rows, 2);
-
-        $this->assertEqualsWithDelta(100.00, $summary['subtotal'], 0.001, 'Summary should handle negative values');
-        $this->assertEqualsWithDelta(10.00, $summary['tax'], 0.001, 'Summary tax should handle negative values');
-        $this->assertEqualsWithDelta(110.00, $summary['total'], 0.001, 'Summary total should handle negative values');
-    }
-
-    public function testZeroTaxRows(): void
-    {
-        $rows = [
-            ['subtotal' => 100.00, 'tax' => 0.00, 'total' => 100.00, 'count' => 1],
-            ['subtotal' => 200.00, 'tax' => 0.00, 'total' => 200.00, 'count' => 2],
-        ];
-
-        foreach ($rows as $row) {
-            $this->assertEqualsWithDelta(
-                (float) $row['subtotal'],
-                (float) $row['total'],
-                0.001,
-                'Zero tax: subtotal should equal total'
-            );
-        }
-
-        $summary = $this->calculateSummary($rows, 2);
-
-        $this->assertEqualsWithDelta(
-            $summary['subtotal'],
-            $summary['total'],
-            0.001,
-            'Zero tax summary: subtotal should equal total'
-        );
-    }
-
-    public function testRoundingAtBoundary(): void
-    {
-        $rows = [
-            ['subtotal' => 10.005, 'tax' => 0.003, 'total' => 10.008, 'count' => 1],
-            ['subtotal' => 5.004, 'tax' => 0.002, 'total' => 5.006, 'count' => 1],
-        ];
-
-        foreach ($rows as $row) {
-            $roundedSubtotal = round((float) $row['subtotal'], 2);
-            $roundedTax = round((float) $row['tax'], 2);
-            $expectedTotal = round($roundedSubtotal + $roundedTax, 2);
-
-            $this->assertEqualsWithDelta(
-                $expectedTotal,
-                round((float) $row['total'], 2),
-                0.001,
-                'Rounded subtotal + rounded tax should equal rounded total'
+                0.01,
+                "Row subtotal + tax should equal total: {$subtotal} + {$tax} should equal {$total}"
             );
         }
     }
 
-    private function calculateSummary(array $rows, int $decimals = 2): array
+    public function testGetDataColumnsReturnsExpectedStructure(): void
     {
-        $subtotal = 0;
-        $tax = 0;
-        $total = 0;
-        $count = 0;
+        $model = model(Summary_taxes::class);
 
-        foreach ($rows as $row) {
-            $subtotal += (float) ($row['subtotal'] ?? 0);
-            $tax += (float) ($row['tax'] ?? 0);
-            $total += (float) ($row['total'] ?? 0);
-            $count += (int) ($row['count'] ?? 0);
+        $columns = $model->getDataColumns();
+
+        $this->assertIsArray($columns);
+        $this->assertCount(6, $columns);
+
+        $expectedKeys = ['tax_name', 'tax_percent', 'report_count', 'subtotal', 'tax', 'total'];
+        foreach ($columns as $index => $column) {
+            $key = array_key_first($column);
+            $this->assertEquals($expectedKeys[$index], $key);
         }
+    }
 
+    private function getTestInputs(): array
+    {
         return [
-            'subtotal' => round($subtotal, $decimals),
-            'tax'      => round($tax, $decimals),
-            'total'    => round($total, $decimals),
-            'count'    => $count,
+            'start_date' => date('Y-m-d', strtotime('-1 year')),
+            'end_date' => date('Y-m-d', strtotime('+1 day')),
+            'sale_type' => 'complete',
+            'location_id' => 'all'
         ];
     }
 }
