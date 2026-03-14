@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Helpers;
-
 use Config\OSPOS;
 
 /**
@@ -203,7 +201,7 @@ if (!function_exists('getCurrencyCode')) {
             'BE' => 'EUR',
             'FR' => 'EUR',
             'DE' => 'EUR',
-            'NL' => 'NL',
+            'NL' => 'EUR',
             'IT' => 'EUR',
             'ES' => 'EUR',
             'PT' => 'EUR',

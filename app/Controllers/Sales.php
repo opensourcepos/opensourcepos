@@ -907,27 +907,37 @@ class Sales extends Secure_Controller
 
             $attachments = [];
             $invoiceFormat = $this->config['invoice_format'] ?? 'pdf_only';
+            $canGenerateUbl = in_array($type, ['invoice', 'tax_invoice'], true)
+                && !empty($sale_data['invoice_number']);
 
             if ($invoiceFormat === 'pdf_only' || $invoiceFormat === 'both') {
                 $view = Services::renderer();
                 $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
 
                 helper(['dompdf', 'file']);
-                $filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
-                if (file_put_contents($filename, create_pdf($html)) !== false) {
-                    $attachments[] = $filename;
+                $pdfPath = tempnam(sys_get_temp_dir(), 'ospos_pdf_');
+                if ($pdfPath !== false) {
+                    $filename = $pdfPath . '.pdf';
+                    rename($pdfPath, $filename);
+                    if (file_put_contents($filename, create_pdf($html)) !== false) {
+                        $attachments[] = $filename;
+                    }
                 }
             }
 
-            if ($invoiceFormat === 'ubl_only' || $invoiceFormat === 'both') {
+            if ($canGenerateUbl && ($invoiceFormat === 'ubl_only' || $invoiceFormat === 'both')) {
                 require(ROOTPATH . 'vendor/autoload.php');
                 $ublGenerator = new UBLGenerator();
 
                 try {
                     $xml = $ublGenerator->generateUblInvoice($sale_data);
-                    $ublFilename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.xml';
-                    if (file_put_contents($ublFilename, $xml) !== false) {
-                        $attachments[] = $ublFilename;
+                    $ublPath = tempnam(sys_get_temp_dir(), 'ospos_ubl_');
+                    if ($ublPath !== false) {
+                        $ublFilename = $ublPath . '.xml';
+                        rename($ublPath, $ublFilename);
+                        if (file_put_contents($ublFilename, $xml) !== false) {
+                            $attachments[] = $ublFilename;
+                        }
                     }
                 } catch (\Exception $e) {
                     log_message('error', 'UBL attachment generation failed: ' . $e->getMessage());
@@ -1315,18 +1325,13 @@ class Sales extends Secure_Controller
     {
         $sale_info = $this->sale->get_info($sale_id)->getRowArray();
         
-        if (empty($sale_info)) {
+        if (empty($sale_info) || empty($sale_info['invoice_number'])) {
             return $this->response->setStatusCode(404)->setBody(lang('Sales.sale_not_found'));
         }
 
-        $sale_data = $this->_load_sale_data($sale_id);
-
-        helper(['file']);
-        
-        require(ROOTPATH . 'vendor/autoload.php');
-        $ublGenerator = new UBLGenerator();
-
         try {
+            $sale_data = $this->_load_sale_data($sale_id);
+            $ublGenerator = new UBLGenerator();
             $xml = $ublGenerator->generateUblInvoice($sale_data);
 
             $filename = lang('Sales.invoice') . '-' . str_replace('/', '-', $sale_data['invoice_number']) . '.xml';
@@ -1337,7 +1342,9 @@ class Sales extends Secure_Controller
                 ->setBody($xml);
         } catch (\Exception $e) {
             log_message('error', 'UBL generation failed: ' . $e->getMessage());
-            return $this->response->setStatusCode(500)->setBody($e->getMessage());
+            return $this->response->setStatusCode(500)->setBody(lang('Sales.ubl_generation_failed'));
+        } finally {
+            $this->sale_lib->clear_all();
         }
     }
 

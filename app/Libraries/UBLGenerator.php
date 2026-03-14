@@ -137,9 +137,15 @@ class UBLGenerator
                 ->setUnitCode(UnitCode::UNIT)
                 ->setPriceAmount($item['price'] ?? 0);
             
+            $taxCategory = (new TaxCategory())
+                ->setId('S')
+                ->setPercent((float)($item['tax_rate'] ?? 0))
+                ->setTaxScheme($taxScheme);
+            
             $itemObj = (new Item())
                 ->setName($item['name'] ?? '')
-                ->setDescription($item['description'] ?? '');
+                ->setDescription($item['description'] ?? '')
+                ->setClassifiedTaxCategory($taxCategory);
             
             $line = (new InvoiceLine())
                 ->setId(isset($item['line']) ? (string)$item['line'] : '1')

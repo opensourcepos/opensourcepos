@@ -226,4 +226,5 @@ return [
     "ubl_invoice"                      => "UBL Invoice",
     "download_ubl"                     => "Download UBL Invoice",
     "ubl_generation_failed"            => "Failed to generate UBL invoice",
+    "sale_not_found"                   => "Sale not found",
 ];
