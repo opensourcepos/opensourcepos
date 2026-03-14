@@ -459,7 +459,7 @@ class Sale extends Model
         $currentPayments = $this->get_sale_payments($sale_id)->getResultArray();
         $currentRewardUsed = 0;
         foreach ($currentPayments as $payment) {
-            if ($this->is_reward_payment($payment['payment_type'])) {
+            if ($this->isRewardPayment($payment['payment_type'])) {
                 $currentRewardUsed += $payment['payment_amount'];
             }
         }
@@ -473,7 +473,7 @@ class Sale extends Model
         $newRewardUsed = 0;
         if (!empty($sale_data['payments'])) {
             foreach ($sale_data['payments'] as $payment) {
-                if ($this->is_reward_payment($payment['payment_type'])) {
+                if ($this->isRewardPayment($payment['payment_type'])) {
                     $newRewardUsed += $payment['payment_amount'];
                 }
             }
@@ -655,7 +655,7 @@ class Sale extends Model
                 $splitpayment = explode(':', $payment['payment_type']);    // TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
                 $cur_giftcard_value = $giftcard->get_giftcard_value($splitpayment[1]);    // TODO: this should be refactored to $current_giftcard_value
                 $giftcard->update_giftcard_value($splitpayment[1], $cur_giftcard_value - $payment['payment_amount']);
-            } elseif ($this->is_reward_payment($payment['payment_type'])) {
+            } elseif ($this->isRewardPayment($payment['payment_type'])) {
                 $cur_rewards_value = $customer->get_info($customer_id)->points;
                 $customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount']);
                 $total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
@@ -908,7 +908,7 @@ class Sale extends Model
             $payments = $this->get_sale_payments($sale_id)->getResultArray();
             $rewardUsed = 0;
             foreach ($payments as $payment) {
-                if ($this->is_reward_payment($payment['payment_type'])) {
+                if ($this->isRewardPayment($payment['payment_type'])) {
                     $rewardUsed += $payment['payment_amount'];
                 }
             }
@@ -1507,13 +1507,13 @@ class Sale extends Model
     /**
      * Determines if the payment type represents a rewards payment across locales.
      */
-    private function is_reward_payment(string $payment_type): bool
+    private function isRewardPayment(string $payment_type): bool
     {
         if ($payment_type === '') {
             return false;
         }
 
-        foreach ($this->get_reward_payment_labels() as $label) {
+        foreach ($this->getRewardPaymentLabels() as $label) {
             if ($payment_type === $label) {
                 return true;
             }
@@ -1525,7 +1525,7 @@ class Sale extends Model
     /**
      * Returns unique localized labels for the rewards payment type.
      */
-    private function get_reward_payment_labels(): array
+    private function getRewardPaymentLabels(): array
     {
         static $labels = null;
 
@@ -1534,14 +1534,14 @@ class Sale extends Model
         }
 
         $labels = [lang('Sales.rewards')];
-        $language_paths = glob(APPPATH . 'Language/*/Sales.php');
-        if (!empty($language_paths)) {
-            foreach ($language_paths as $sales_file) {
-                if (!is_file($sales_file)) {
+        $languagePaths = glob(APPPATH . 'Language/*/Sales.php');
+        if (!empty($languagePaths)) {
+            foreach ($languagePaths as $salesFile) {
+                if (!is_file($salesFile)) {
                     continue;
                 }
 
-                $translations = require $sales_file;
+                $translations = require $salesFile;
                 if (is_array($translations) && !empty($translations['rewards'])) {
                     $labels[] = $translations['rewards'];
                 }
