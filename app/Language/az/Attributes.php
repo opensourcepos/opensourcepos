@@ -5,7 +5,7 @@ return [
     "confirm_delete"                   => "Seçilmiş Atributları silmək istədiyinizdən əminsinizmi?",
     "confirm_restore"                  => "Seçilmiş atributları bərpa etmək istədiyinizə əminsinizmi?",
     "definition_cannot_be_deleted"     => "Seçilmiş xüsusiyyətləri silmək olmadı",
-    "definition_invalid_group" => "The selected group does not exist or is invalid.",
+    "definition_invalid_group" => "",
     "definition_error_adding_updating" => "{0} -in atributları əlavə oluna və yenilənə bilmədi. Lütfən XƏTA loq faylını yoxlayın.",
     "definition_flags"                 => "Atribut görünüşü",
     "definition_group"                 => "Qrup",

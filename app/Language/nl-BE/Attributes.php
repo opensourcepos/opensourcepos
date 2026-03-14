@@ -5,7 +5,7 @@ return [
     "confirm_delete"                   => "Bent u zeker dat u de geselecteerde attributen wil verwijderen?",
     "confirm_restore"                  => "Bent u zeker dat u de geselecteerde attributen wil herstellen?",
     "definition_cannot_be_deleted"     => "De geselecteerde attributen konden niet verwijderd worden",
-    "definition_invalid_group" => "The selected group does not exist or is invalid.",
+    "definition_invalid_group" => "De geselecteerde groep bestaat niet of is ongeldig.",
     "definition_error_adding_updating" => "Attribuut {0} kon niet toegevoegd of gewijzigd worden. Kijk de error logs na.",
     "definition_flags"                 => "Zichtbaarheid",
     "definition_group"                 => "Groep",

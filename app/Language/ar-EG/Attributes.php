@@ -5,7 +5,7 @@ return [
     "confirm_delete"                   => "هل أنت متأكد من أنك تريد حذف الميزات المحددة ؟",
     "confirm_restore"                  => "هل أنت متأكد من أنك تريد استعادة السمة (السمات) المحددة؟",
     "definition_cannot_be_deleted"     => "لا يمكن حذف السمات المحددة",
-    "definition_invalid_group" => "The selected group does not exist or is invalid.",
+    "definition_invalid_group" => "المجموعة المحددة غير موجودة أو غير صالحة.",
     "definition_error_adding_updating" => "لا يمكن إضافة السمة {0} أو تحديثها. يرجى التحقق من سجل الخطأ.",
     "definition_flags"                 => "رؤية الميزات",
     "definition_group"                 => "المجموعة",

@@ -5,7 +5,7 @@ return [
     "confirm_delete"                   => "ต้องการลบคุณลักษณะที่เลือกหรือไม่ ?",
     "confirm_restore"                  => "ต้องการคืนค่าคุณลักษณะที่เลือกหรือไม่ ?",
     "definition_cannot_be_deleted"     => "ไม่สามารถลบคุณลักษณะที่เลือก",
-    "definition_invalid_group" => "The selected group does not exist or is invalid.",
+    "definition_invalid_group" => "กลุ่มที่เลือกไม่มีอยู่หรือไม่ถูกต้อง",
     "definition_error_adding_updating" => "ไม่สามารถเพิ่มหรือแก้ไขคุณลักษณะ {0}, โปรดตรวจสอบความผิดพลาดในบันทึก",
     "definition_flags"                 => "การมองเห็นคุณลักษณะ",
     "definition_group"                 => "กลุ่ม",

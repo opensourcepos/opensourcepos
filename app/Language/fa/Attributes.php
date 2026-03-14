@@ -5,7 +5,7 @@ return [
     "confirm_delete"                   => "آیا مطمئن هستید که می خواهید ویژگی (های) انتخاب شده را حذف کنید؟",
     "confirm_restore"                  => "آیا مطمئن هستید که می خواهید ویژگی (های) انتخاب شده را بازیابی کنید؟",
     "definition_cannot_be_deleted"     => "نمی توان ویژگی (های) انتخابی را حذف کرد",
-    "definition_invalid_group" => "The selected group does not exist or is invalid.",
+    "definition_invalid_group" => "گروه انتخاب شده وجود ندارد یا نامعتبر است.",
     "definition_error_adding_updating" => "ویژگی{0} اضافه نشد یا به روز نمی شود. لطفا گزارش خطا را بررسی کنید.",
     "definition_flags"                 => "قابلیت مشاهده ویژگی",
     "definition_group"                 => "گروه",

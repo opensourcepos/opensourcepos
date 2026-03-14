@@ -5,7 +5,7 @@ return [
     "confirm_delete"                   => "Weet u zeker dat u de geselecteerde kenmerken wilt verwijderen?",
     "confirm_restore"                  => "Weet u zeker dat u de geselecteerde kenmerken wilt herstellen?",
     "definition_cannot_be_deleted"     => "Kan geselecteerde kenmerk(en) niet verwijderen",
-    "definition_invalid_group" => "The selected group does not exist or is invalid.",
+    "definition_invalid_group" => "De geselecteerde groep bestaat niet of is ongeldig.",
     "definition_error_adding_updating" => "Kenmerk {0} kan niet worden toegevoegd of bijgewerkt. Bekijk het foutenlogboek.",
     "definition_flags"                 => "Kenmerk zichtbaarheid",
     "definition_group"                 => "Groep",

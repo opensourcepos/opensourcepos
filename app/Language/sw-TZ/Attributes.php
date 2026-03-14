@@ -5,7 +5,7 @@ return [
     "confirm_delete"                   => "Una uhakika unataka kufuta sifa iliyochaguliwa/zilizochaguliwa?",
     "confirm_restore"                  => "Una uhakika unataka kurejesha sifa iliyochaguliwa/zilizochaguliwa?",
     "definition_cannot_be_deleted"     => "Haiwezekani kufuta sifa iliyochaguliwa/zilizochaguliwa",
-    "definition_invalid_group" => "The selected group does not exist or is invalid.",
+    "definition_invalid_group" => "Kikundi ulichochagua hakipo au hakitoshi.",
     "definition_error_adding_updating" => "Sifa {0} haiwezekani kuongezwa au kusasishwa. Tafadhali angalia logi ya makosa.",
     "definition_flags"                 => "Uonekano wa Sifa",
     "definition_group"                 => "Kundi",
