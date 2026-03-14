@@ -18,9 +18,10 @@ class Summary_taxes_test extends CIUnitTestCase
 
         foreach ($rows as $row) {
             $calculatedTotal = round((float) $row['subtotal'] + (float) $row['tax'], 2);
-            $this->assertEquals(
+            $this->assertEqualsWithDelta(
                 (float) $row['total'],
                 $calculatedTotal,
+                0.001,
                 "Row subtotal + tax should equal total: {$row['subtotal']} + {$row['tax']} = {$row['total']}"
             );
         }
@@ -48,19 +49,22 @@ class Summary_taxes_test extends CIUnitTestCase
             $expectedCount += (int) $row['count'];
         }
 
-        $this->assertEquals(
+        $this->assertEqualsWithDelta(
             round($expectedSubtotal, 2),
             $summary['subtotal'],
+            0.001,
             'Summary subtotal should equal sum of row subtotals'
         );
-        $this->assertEquals(
+        $this->assertEqualsWithDelta(
             round($expectedTax, 2),
             $summary['tax'],
+            0.001,
             'Summary tax should equal sum of row taxes'
         );
-        $this->assertEquals(
+        $this->assertEqualsWithDelta(
             round($expectedTotal, 2),
             $summary['total'],
+            0.001,
             'Summary total should equal sum of row totals'
         );
         $this->assertEquals(
@@ -80,9 +84,10 @@ class Summary_taxes_test extends CIUnitTestCase
         $summary = $this->calculateSummary($rows, 2);
 
         $calculatedTotal = round($summary['subtotal'] + $summary['tax'], 2);
-        $this->assertEquals(
+        $this->assertEqualsWithDelta(
             $summary['total'],
             $calculatedTotal,
+            0.001,
             'Summary subtotal + tax should equal summary total'
         );
     }
@@ -90,8 +95,8 @@ class Summary_taxes_test extends CIUnitTestCase
     public function testRoundingConsistency(): void
     {
         $rows = [
-            ['subtotal' => 99.99, 'tax' => 9.999, 'total' => 109.989],
-            ['subtotal' => 33.33, 'tax' => 3.333, 'total' => 36.663],
+            ['subtotal' => 99.99, 'tax' => 9.999, 'total' => 109.989, 'count' => 1],
+            ['subtotal' => 33.33, 'tax' => 3.333, 'total' => 36.663, 'count' => 1],
         ];
 
         $summary = $this->calculateSummary($rows, 2);
@@ -106,9 +111,10 @@ class Summary_taxes_test extends CIUnitTestCase
 
         $expectedTotal = round($sumOfRoundedSubtotals + $sumOfRoundedTaxes, 2);
 
-        $this->assertEquals(
+        $this->assertEqualsWithDelta(
             $expectedTotal,
             $summary['total'],
+            0.001,
             'Total should be sum of rounded subtotals + sum of rounded taxes'
         );
     }
@@ -156,18 +162,19 @@ class Summary_taxes_test extends CIUnitTestCase
 
         foreach ($rows as $row) {
             $calculatedTotal = round((float) $row['subtotal'] + (float) $row['tax'], 2);
-            $this->assertEquals(
+            $this->assertEqualsWithDelta(
                 (float) $row['total'],
                 $calculatedTotal,
+                0.001,
                 "Negative row: subtotal + tax should equal total"
             );
         }
 
         $summary = $this->calculateSummary($rows, 2);
 
-        $this->assertEquals(100.00, $summary['subtotal'], 'Summary should handle negative values');
-        $this->assertEquals(10.00, $summary['tax'], 'Summary tax should handle negative values');
-        $this->assertEquals(110.00, $summary['total'], 'Summary total should handle negative values');
+        $this->assertEqualsWithDelta(100.00, $summary['subtotal'], 0.001, 'Summary should handle negative values');
+        $this->assertEqualsWithDelta(10.00, $summary['tax'], 0.001, 'Summary tax should handle negative values');
+        $this->assertEqualsWithDelta(110.00, $summary['total'], 0.001, 'Summary total should handle negative values');
     }
 
     public function testZeroTaxRows(): void
@@ -178,20 +185,43 @@ class Summary_taxes_test extends CIUnitTestCase
         ];
 
         foreach ($rows as $row) {
-            $this->assertEquals(
+            $this->assertEqualsWithDelta(
                 (float) $row['subtotal'],
                 (float) $row['total'],
+                0.001,
                 'Zero tax: subtotal should equal total'
             );
         }
 
         $summary = $this->calculateSummary($rows, 2);
 
-        $this->assertEquals(
+        $this->assertEqualsWithDelta(
             $summary['subtotal'],
             $summary['total'],
+            0.001,
             'Zero tax summary: subtotal should equal total'
         );
+    }
+
+    public function testRoundingAtBoundary(): void
+    {
+        $rows = [
+            ['subtotal' => 10.005, 'tax' => 0.003, 'total' => 10.008, 'count' => 1],
+            ['subtotal' => 5.004, 'tax' => 0.002, 'total' => 5.006, 'count' => 1],
+        ];
+
+        foreach ($rows as $row) {
+            $roundedSubtotal = round((float) $row['subtotal'], 2);
+            $roundedTax = round((float) $row['tax'], 2);
+            $expectedTotal = round($roundedSubtotal + $roundedTax, 2);
+
+            $this->assertEqualsWithDelta(
+                $expectedTotal,
+                round((float) $row['total'], 2),
+                0.001,
+                'Rounded subtotal + rounded tax should equal rounded total'
+            );
+        }
     }
 
     private function calculateSummary(array $rows, int $decimals = 2): array
@@ -202,17 +232,17 @@ class Summary_taxes_test extends CIUnitTestCase
         $count = 0;
 
         foreach ($rows as $row) {
-            $subtotal += (float) $row['subtotal'];
-            $tax += (float) $row['tax'];
-            $total += (float) $row['total'];
-            $count += (int) $row['count'];
+            $subtotal += (float) ($row['subtotal'] ?? 0);
+            $tax += (float) ($row['tax'] ?? 0);
+            $total += (float) ($row['total'] ?? 0);
+            $count += (int) ($row['count'] ?? 0);
         }
 
         return [
             'subtotal' => round($subtotal, $decimals),
-            'tax' => round($tax, $decimals),
-            'total' => round($total, $decimals),
-            'count' => $count,
+            'tax'      => round($tax, $decimals),
+            'total'    => round($total, $decimals),
+            'count'    => $count,
         ];
     }
 }

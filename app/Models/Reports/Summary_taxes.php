@@ -50,11 +50,11 @@ class Summary_taxes extends Summary_report
 
         if ($this->config['tax_included']) {
             $sale_subtotal = "ROUND($sale_amount - $sale_tax, $decimals)";
-            $sale_total = "ROUND($sale_amount, $decimals)";
         } else {
             $sale_subtotal = "ROUND($sale_amount, $decimals)";
-            $sale_total = "ROUND($sale_amount + $sale_tax, $decimals)";
         }
+        $sale_tax_rounded = "ROUND($sale_tax, $decimals)";
+        $sale_total = "($sale_subtotal + $sale_tax_rounded)";
 
         $subquery_builder = $this->db->table('sales_items');
         $subquery_builder->select(
@@ -62,7 +62,7 @@ class Summary_taxes extends Summary_report
             . "CONCAT(IFNULL(ROUND(percent, $decimals), 0), '%') AS percent, "
             . "sales.sale_id AS sale_id, "
             . "$sale_subtotal AS subtotal, "
-            . "ROUND($sale_tax, $decimals) AS tax, "
+            . "$sale_tax_rounded AS tax, "
             . "$sale_total AS total"
         );
 
