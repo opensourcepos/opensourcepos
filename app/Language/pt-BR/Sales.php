@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "O número da ordem de serviço deve ser exclusivo.",
     "work_order_sent"                  => "Ordem de trabalho enviada para",
     "work_order_unsent"                => "A ordem de serviço não foi enviada para",
+    "sale_not_found"                   => "Venda não encontrada",
 ];

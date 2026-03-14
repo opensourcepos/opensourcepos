@@ -84,6 +84,7 @@ function get_sales_manage_table_headers(): string
     if ($config['invoice_enable']) {
         $headers[] = ['invoice_number' => lang('Sales.invoice_number')];
         $headers[] = ['invoice' => '', 'sortable' => false, 'escape' => false];
+        $headers[] = ['ubl' => '', 'sortable' => false, 'escape' => false];
     }
 
     $headers[] = ['receipt' => '', 'sortable' => false, 'escape' => false];
@@ -119,6 +120,13 @@ function get_sale_data_row(object $sale): array
                 "$controller/invoice/$sale->sale_id",
                 '<span class="glyphicon glyphicon-list-alt"></span>',
                 ['title' => lang('Sales.show_invoice')]
+            );
+        $row['ubl'] = empty($sale->invoice_number)
+            ? '-'
+            : anchor(
+                "$controller/getUBLInvoice/$sale->sale_id",
+                '<span class="glyphicon glyphicon-download"></span>',
+                ['title' => lang('Sales.download_ubl'), 'target' => '_blank']
             );
     }
 

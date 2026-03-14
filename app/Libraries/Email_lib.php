@@ -82,4 +82,37 @@ class Email_lib
 
         return $result;
     }
+
+    /**
+     * Send email with multiple attachments
+     *
+     * @param string $to
+     * @param string $subject
+     * @param string $message
+     * @param array $attachments
+     * @return bool
+     */
+    public function sendMultipleAttachments(string $to, string $subject, string $message, array $attachments): bool
+    {
+        $email = $this->email;
+
+        $email->setFrom($this->config['email'], $this->config['company']);
+        $email->setTo($to);
+        $email->setSubject($subject);
+        $email->setMessage($message);
+
+        foreach ($attachments as $attachment) {
+            if (!empty($attachment) && file_exists($attachment)) {
+                $email->attach($attachment);
+            }
+        }
+
+        $result = $email->send();
+
+        if (!$result) {
+            log_message('error', $email->printDebugger());
+        }
+
+        return $result;
+    }
 }

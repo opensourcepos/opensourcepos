@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "Broj radnog naloga mora biti jedinstven.",
     "work_order_sent"                  => "Radni nalog poslat na",
     "work_order_unsent"                => "Slanje radnog naloga nije uspjelo",
+    "sale_not_found"                   => "Prodaja nije pronađena",
 ];
