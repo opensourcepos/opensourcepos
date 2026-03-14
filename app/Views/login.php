@@ -92,7 +92,7 @@
                 <?php
                 if ($gcaptcha_enabled) {
                     echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-                    echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . $config['gcaptcha_site_key'] . '"></div>';
+                    echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . esc($config['gcaptcha_site_key']) . '"></div>';
                 }
                 ?>
                 <div class="d-grid">
