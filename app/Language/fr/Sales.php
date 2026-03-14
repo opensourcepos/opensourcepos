@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "Le numéro de bon de travail doit être unique.",
     "work_order_sent"                  => "Ordre de travail envoyé à",
     "work_order_unsent"                => "L'ordre de travail n'a pas pu être envoyé à",
+    "sale_not_found"                   => "Vente introuvable",
 ];

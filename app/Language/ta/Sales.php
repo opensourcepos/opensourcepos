@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "Work Order Number must be unique.",
     "work_order_sent"                  => "Work Order sent to",
     "work_order_unsent"                => "Work Order failed to be sent to",
+    "sale_not_found"                   => "Sale not found",
 ];

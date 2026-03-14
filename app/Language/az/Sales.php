@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "İş sifarişinin nömrəsi unikal olmalıdır.",
     "work_order_sent"                  => "İş sifarişi göndərildi",
     "work_order_unsent"                => "İş Sifarişi göndərilməmişdi",
+    "sale_not_found"                   => "Prodaja nije pronađena",
 ];
