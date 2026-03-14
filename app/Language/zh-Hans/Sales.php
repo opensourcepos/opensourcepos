@@ -222,5 +222,5 @@ return [
     "work_order_number_duplicate"      => "",
     "work_order_sent"                  => "",
     "work_order_unsent"                => "",
-    "sale_not_found"                   => "Sale not found",
+    "sale_not_found"                   => "找不到销售",
 ];

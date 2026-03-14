@@ -28,7 +28,7 @@ class UBLGenerator
     {
         $taxScheme = (new TaxScheme())->setId('VAT');
         $supplierParty = $this->buildSupplierParty($saleData, $taxScheme);
-        $customerParty = $this->buildCustomerParty($saleData['customer_info'], $taxScheme);
+        $customerParty = $this->buildCustomerParty($saleData['customer_object'] ?? null, $taxScheme);
         $invoiceLines = $this->buildInvoiceLines($saleData['cart'], $taxScheme);
         $taxTotal = $this->buildTaxTotal($saleData['taxes'], $taxScheme);
         $monetaryTotal = $this->buildMonetaryTotal($saleData);
@@ -82,8 +82,12 @@ class UBLGenerator
         return $accountingParty;
     }
     
-    protected function buildCustomerParty(object $customerInfo, TaxScheme $taxScheme): AccountingParty
+    protected function buildCustomerParty(?object $customerInfo, TaxScheme $taxScheme): AccountingParty
     {
+        if ($customerInfo === null) {
+            return (new AccountingParty())->setParty(new Party());
+        }
+        
         $countryCode = getCountryCode($customerInfo->country ?? '');
         
         $country = (new Country())->setIdentificationCode($countryCode);

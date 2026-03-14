@@ -1331,6 +1331,11 @@ class Sales extends Secure_Controller
 
         try {
             $sale_data = $this->_load_sale_data($sale_id);
+            $sale_data['config'] = $this->config;
+            $customer_id = $this->sale_lib->get_customer();
+            if ($customer_id && $customer_id != NEW_ENTRY) {
+                $sale_data['customer_object'] = $this->customer->get_info($customer_id);
+            }
             $ublGenerator = new UBLGenerator();
             $xml = $ublGenerator->generateUblInvoice($sale_data);
 
