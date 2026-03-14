@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Êtes-vous certain de vouloir supprimer le(s) attribut(s) sélectionné(s) ?",
     "confirm_restore"                  => "Êtes-vous certain de vouloir restaurer le(s) attribut(s) sélectionné(s) ?",
     "definition_cannot_be_deleted"     => "Le(s) attribut(s) sélectionné(s) n'ont pas pu être supprimé(s)",
+    "definition_invalid_group" => "Le groupe sélectionné n'existe pas ou est invalide.",
     "definition_error_adding_updating" => "L'attribut {0} n'a pas pu être ajouté ou mis à jour. Veuillez vérifier le journal d'erreurs.",
     "definition_flags"                 => "Visibilité de l'attribut",
     "definition_group"                 => "Groupe",

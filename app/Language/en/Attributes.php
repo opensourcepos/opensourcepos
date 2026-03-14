@@ -6,6 +6,7 @@ return [
     "confirm_restore"                  => "Are you sure you want to restore the selected attribute(s)?",
     "definition_cannot_be_deleted"     => "Could not delete selected attribute(s)",
     "definition_error_adding_updating" => "Attribute {0} could not be added or updated. Please check the error log.",
+    "definition_invalid_group" => "The selected group does not exist or is invalid.",
     "definition_flags"                 => "Attribute Visibility",
     "definition_group"                 => "Group",
     "definition_id"                    => "Id",

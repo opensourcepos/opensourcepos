@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "¿Está seguro de que desea borrar los atributos seleccionados?",
     "confirm_restore"                  => "¿Está seguro de que desea restaurar los atributos seleccionados?",
     "definition_cannot_be_deleted"     => "No se han podido borrar los atributos seleccionados",
+    "definition_invalid_group" => "El grupo seleccionado no existe o no es válido.",
     "definition_error_adding_updating" => "El atributo {0} no pudo ser agregado o actulizado. Por favor compruebe el registro de errores.",
     "definition_flags"                 => "Visibilidad del atributo",
     "definition_group"                 => "Grupo",
