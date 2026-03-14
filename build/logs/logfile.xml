@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/app/phpunit.xml.dist" tests="29" assertions="44" errors="0" failures="0" skipped="0" time="0.029097">
+    <testsuite name="App" tests="29" assertions="44" errors="0" failures="0" skipped="0" time="0.029097">
+      <testsuite name="Tests\Libraries\Token_libTest" file="/app/tests/Libraries/Token_libTest.php" tests="29" assertions="44" errors="0" failures="0" skipped="0" time="0.029097">
+        <testcase name="testRenderReturnsInputStringWhenNoTokens" file="/app/tests/Libraries/Token_libTest.php" line="18" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.007667"/>
+        <testcase name="testRenderHandlesStringWithPercentNotInDateFormat" file="/app/tests/Libraries/Token_libTest.php" line="25" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.004001"/>
+        <testcase name="testRenderHandlesInvalidDateFormatPercentDashPercent" file="/app/tests/Libraries/Token_libTest.php" line="33" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.001162"/>
+        <testcase name="testRenderHandlesInvalidDateFormatPercentYPercentQPercentBad" file="/app/tests/Libraries/Token_libTest.php" line="41" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000766"/>
+        <testcase name="testRenderHandlesStringWithPercentAPercent" file="/app/tests/Libraries/Token_libTest.php" line="48" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000613"/>
+        <testcase name="testRenderHandlesExtremelyLongString" file="/app/tests/Libraries/Token_libTest.php" line="55" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000513"/>
+        <testcase name="testRenderHandlesStringWithMultiplePercentSymbols" file="/app/tests/Libraries/Token_libTest.php" line="62" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000589"/>
+        <testcase name="testRenderHandlesStringWithOnlyPercentSymbol" file="/app/tests/Libraries/Token_libTest.php" line="70" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000578"/>
+        <testcase name="testRenderPreservesTextWithValidDateTokensAndNoOtherTokens" file="/app/tests/Libraries/Token_libTest.php" line="77" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000612"/>
+        <testcase name="testRenderHandlesEmptyString" file="/app/tests/Libraries/Token_libTest.php" line="84" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000503"/>
+        <testcase name="testScanExtractsTokens" file="/app/tests/Libraries/Token_libTest.php" line="91" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000578"/>
+        <testcase name="testScanExtractsTokensWithLength" file="/app/tests/Libraries/Token_libTest.php" line="98" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000501"/>
+        <testcase name="testScanReturnsEmptyArrayForNoTokens" file="/app/tests/Libraries/Token_libTest.php" line="105" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000513"/>
+        <testcase name="testRenderHandlesConsecutivePercentSigns" file="/app/tests/Libraries/Token_libTest.php" line="111" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000628"/>
+        <testcase name="testRenderHandlesEscapedPercentSigns" file="/app/tests/Libraries/Token_libTest.php" line="119" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000626"/>
+        <testcase name="testRenderHandlesUnclosedBraces" file="/app/tests/Libraries/Token_libTest.php" line="126" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000617"/>
+        <testcase name="testRenderHandlesUnopenedBraces" file="/app/tests/Libraries/Token_libTest.php" line="133" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000620"/>
+        <testcase name="testRenderHandlesVeryLongStringWithDate" file="/app/tests/Libraries/Token_libTest.php" line="140" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000599"/>
+        <testcase name="testRenderHandlesMultipleDates" file="/app/tests/Libraries/Token_libTest.php" line="148" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000593"/>
+        <testcase name="testRenderHandlesValidYearFormat" file="/app/tests/Libraries/Token_libTest.php" line="155" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000688"/>
+        <testcase name="testRenderHandlesValidMonthFormat" file="/app/tests/Libraries/Token_libTest.php" line="162" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000611"/>
+        <testcase name="testRenderHandlesValidDayFormat" file="/app/tests/Libraries/Token_libTest.php" line="169" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000627"/>
+        <testcase name="testRenderHandlesFullDateFormat" file="/app/tests/Libraries/Token_libTest.php" line="176" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="1" time="0.000757"/>
+        <testcase name="testRenderHandlesPercentB" file="/app/tests/Libraries/Token_libTest.php" line="183" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="3" time="0.000766"/>
+        <testcase name="testRenderHandlesPercentA" file="/app/tests/Libraries/Token_libTest.php" line="192" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="3" time="0.000703"/>
+        <testcase name="testRenderHandlesComplexPercentFormat" file="/app/tests/Libraries/Token_libTest.php" line="201" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000669"/>
+        <testcase name="testRenderDoesNotReplaceInvalidFormatSpecifiers" file="/app/tests/Libraries/Token_libTest.php" line="209" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000646"/>
+        <testcase name="testRenderReplacesTimezoneFormat" file="/app/tests/Libraries/Token_libTest.php" line="217" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000811"/>
+        <testcase name="testScanWorksWithMixedContent" file="/app/tests/Libraries/Token_libTest.php" line="225" class="Tests\Libraries\Token_libTest" classname="Tests.Libraries.Token_libTest" assertions="2" time="0.000540"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

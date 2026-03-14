@@ -23,6 +23,7 @@ class Token_lib
         '%D' => 'MM/dd/yy',
         '%e' => 'd',
         '%F' => 'yyyy-MM-dd',
+        '%h' => 'MMM',
         '%j' => 'D',
         '%m' => 'MM',
         '%U' => 'w',
@@ -43,7 +44,6 @@ class Token_lib
         '%X' => 'HH:mm:ss',
         '%z' => 'ZZZZZ',
         '%Z' => 'z',
-        '%C' => 'yyyy',
         '%g' => 'yy',
         '%G' => 'yyyy',
         '%u' => 'e',
@@ -51,7 +51,7 @@ class Token_lib
     ];
 
     private array $validStrftimeFormats = [
-        'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'F', 'g', 'G',
+        'a', 'A', 'b', 'B', 'c', 'd', 'D', 'e', 'F', 'g', 'G',
         'h', 'H', 'I', 'j', 'm', 'M', 'n', 'p', 'P', 'r', 'R',
         'S', 't', 'T', 'u', 'U', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z'
     ];
@@ -92,19 +92,39 @@ class Token_lib
         $dateTime = new DateTime();
 
         return preg_replace_callback(
-            '/%([a-zA-Z%]|%%)?/',
+            '/%([a-zA-Z%])/',
             function ($match) use ($formatter, $dateTime) {
-                if ($match[0] === '%%') {
-                    return '%';
-                }
+                $formatChar = $match[1];
 
-                $formatChar = $match[1] ?? '';
-                
                 if ($formatChar === '%') {
                     return '%';
                 }
 
-                if ($formatChar === '' || !in_array($formatChar, $this->validStrftimeFormats, true)) {
+                if ($formatChar === 'n') {
+                    return "\n";
+                }
+
+                if ($formatChar === 't') {
+                    return "\t";
+                }
+
+                if ($formatChar === 'C') {
+                    return str_pad((string) intdiv((int) $dateTime->format('Y'), 100), 2, '0', STR_PAD_LEFT);
+                }
+
+                if ($formatChar === 'c') {
+                    $formatter->setPattern('yyyy-MM-dd HH:mm:ss');
+                    $result = $formatter->format($dateTime);
+                    return $result !== false ? $result : $match[0];
+                }
+
+                if ($formatChar === 'x') {
+                    $formatter->setPattern('yyyy-MM-dd');
+                    $result = $formatter->format($dateTime);
+                    return $result !== false ? $result : $match[0];
+                }
+
+                if (!in_array($formatChar, $this->validStrftimeFormats, true)) {
                     return $match[0];
                 }
 

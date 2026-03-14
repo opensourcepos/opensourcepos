@@ -34,22 +34,21 @@ class Token_libTest extends CIUnitTestCase
     {
         $input = '%-%-%';
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
-        $this->assertNotEquals('', $result);
+        $this->assertSame('%-%-%', $result);
     }
 
     public function testRenderHandlesInvalidDateFormatPercentYPercentQPercentBad(): void
     {
         $input = '%Y-%q-%bad';
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
+        $this->assertMatchesRegularExpression('/\d{4}-%q-%bad/', $result);
     }
 
     public function testRenderHandlesStringWithPercentAPercent(): void
     {
         $input = '%a%';
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
+        $this->assertMatchesRegularExpression('/^[A-Za-z]{3}%$/', $result);
     }
 
     public function testRenderHandlesExtremelyLongString(): void
@@ -112,44 +111,42 @@ class Token_libTest extends CIUnitTestCase
     {
         $input = 'Progress: 100%% complete';
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
-        $this->assertStringContainsString('complete', $result);
+        $this->assertSame('Progress: 100% complete', $result);
     }
 
     public function testRenderHandlesEscapedPercentSigns(): void
     {
         $input = 'Value: %%';
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
+        $this->assertSame('Value: %', $result);
     }
 
     public function testRenderHandlesUnclosedBraces(): void
     {
         $input = "Invoice {CO Date: %Y-%m-%d";
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
+        $this->assertMatchesRegularExpression('/Invoice \{CO Date: \d{4}-\d{2}-\d{2}/', $result);
     }
 
     public function testRenderHandlesUnopenedBraces(): void
     {
         $input = "Invoice CO} Date: %Y-%m-%d";
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
+        $this->assertMatchesRegularExpression('/Invoice CO\} Date: \d{4}-\d{2}-\d{2}/', $result);
     }
 
     public function testRenderHandlesVeryLongStringWithDate(): void
     {
         $input = str_repeat('buffer ', 500) . '%Y-%m-%d Invoice' . str_repeat('buffer ', 500);
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
-        $this->assertStringContainsString('buffer', $result);
+        $this->assertMatchesRegularExpression('/buffer.*\d{4}-\d{2}-\d{2} Invoice.*buffer/', $result);
     }
 
     public function testRenderHandlesMultipleDates(): void
     {
         $input = '%Y-%m-%d Invoice - %Y-%m-%d';
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertNotEmpty($result);
+        $this->assertMatchesRegularExpression('/\d{4}-\d{2}-\d{2} Invoice - \d{4}-\d{2}-\d{2}/', $result);
     }
 
     public function testRenderHandlesValidYearFormat(): void
@@ -263,5 +260,55 @@ class Token_libTest extends CIUnitTestCase
         $this->assertNotEmpty($result);
         $this->assertStringNotContainsString('%R', $result);
         $this->assertMatchesRegularExpression('/Time: \d{2}:\d{2}/', $result);
+    }
+
+    public function testRenderHandlesPercentC(): void
+    {
+        $input = 'Century: %C';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%C', $result);
+        $this->assertMatchesRegularExpression('/Century: \d{2}/', $result);
+    }
+
+    public function testRenderHandlesLowercasePercentC(): void
+    {
+        $input = 'DateTime: %c';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%c', $result);
+        $this->assertMatchesRegularExpression('/DateTime: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $result);
+    }
+
+    public function testRenderHandlesPercentN(): void
+    {
+        $input = "Line1%nLine2";
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertSame("Line1\nLine2", $result);
+    }
+
+    public function testRenderHandlesLowercasePercentT(): void
+    {
+        $input = "Col1%tCol2";
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertSame("Col1\tCol2", $result);
+    }
+
+    public function testRenderHandlesPercentX(): void
+    {
+        $input = 'Date: %x';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%x', $result);
+        $this->assertMatchesRegularExpression('/Date: \d{4}-\d{2}-\d{2}/', $result);
+    }
+
+    public function testRenderHandlesPercentH(): void
+    {
+        $input = 'Month: %h';
+        $result = $this->tokenLib->render($input, [], false);
+        $this->assertNotEmpty($result);
+        $this->assertStringNotContainsString('%h', $result);
+        $this->assertMatchesRegularExpression('/Month: [A-Za-z]{3}/', $result);
     }
 }
