@@ -241,15 +241,26 @@ class Receivings extends Secure_Controller
             $data['suppliers'][$supplier->person_id] = $supplier->first_name . ' ' . $supplier->last_name;
         }
 
+        $receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
+        
+        $current_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $can_assign_employee = $this->employee->has_grant('employees', $current_employee_id);
+
         $data['employees'] = [];
-        foreach ($this->employee->get_all()->getResult() as $employee) {
-            $data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
+        if ($can_assign_employee) {
+            foreach ($this->employee->get_all()->getResult() as $employee) {
+                $data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
+            }
+        } else {
+            $stored_employee_id = $receiving_info['employee_id'];
+            $stored_employee = $this->employee->get_info($stored_employee_id);
+            $data['employees'][$stored_employee_id] = $stored_employee->first_name . ' ' . $stored_employee->last_name;
         }
 
-        $receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
         $data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $receiving_info['company_name'] : '';
         $data['selected_supplier_id'] = $receiving_info['supplier_id'];
         $data['receiving_info'] = $receiving_info;
+        $data['can_assign_employee'] = $can_assign_employee;
 
         return view('receivings/form', $data);
     }
@@ -491,10 +502,20 @@ class Receivings extends Secure_Controller
         $date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
         $receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
+        $current_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $submitted_employee_id = $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT);
+
+        if (!$this->employee->has_grant('employees', $current_employee_id)) {
+            $existing_receiving = $this->receiving->get_info($receiving_id)->getRowArray();
+            $employee_id = $existing_receiving['employee_id'];
+        } else {
+            $employee_id = $submitted_employee_id;
+        }
+
         $receiving_data = [
             'receiving_time' => $receiving_time,
             'supplier_id'    => $this->request->getPost('supplier_id') ? $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT) : null,
-            'employee_id'    => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'employee_id'    => $employee_id,
             'comment'        => $this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'reference'      => $this->request->getPost('reference') != '' ? $this->request->getPost('reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null
         ];

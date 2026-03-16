@@ -93,16 +93,27 @@ class Expenses extends Secure_Controller
     {
         $data = [];    // TODO: Duplicated code
 
-        $data['employees'] = [];
-        foreach ($this->employee->get_all()->getResult() as $employee) {
-            foreach (get_object_vars($employee) as $property => $value) {
-                $employee->$property = $value;
-            }
-
-            $data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
-        }
-
         $data['expenses_info'] = $this->expense->get_info($expense_id);
+        $expense_id = $data['expenses_info']->expense_id;
+
+        $current_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $can_assign_employee = $this->employee->has_grant('employees', $current_employee_id);
+
+        $data['employees'] = [];
+        if ($can_assign_employee) {
+            foreach ($this->employee->get_all()->getResult() as $employee) {
+                foreach (get_object_vars($employee) as $property => $value) {
+                    $employee->$property = $value;
+                }
+
+                $data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
+            }
+        } else {
+            $stored_employee_id = $expense_id == NEW_ENTRY ? $current_employee_id : $data['expenses_info']->employee_id;
+            $stored_employee = $this->employee->get_info($stored_employee_id);
+            $data['employees'][$stored_employee_id] = $stored_employee->first_name . ' ' . $stored_employee->last_name;
+        }
+        $data['can_assign_employee'] = $can_assign_employee;
 
         $expense_categories = [];
         foreach ($this->expense_category->get_all(0, 0, true)->getResultArray() as $row) {
@@ -110,11 +121,9 @@ class Expenses extends Secure_Controller
         }
         $data['expense_categories'] = $expense_categories;
 
-        $expense_id = $data['expenses_info']->expense_id;
-
         if ($expense_id == NEW_ENTRY) {
             $data['expenses_info']->date = date('Y-m-d H:i:s');
-            $data['expenses_info']->employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+            $data['expenses_info']->employee_id = $current_employee_id;
         }
 
         $data['payments'] = [];
@@ -155,6 +164,20 @@ class Expenses extends Secure_Controller
 
         $date_formatter = date_create_from_format($config['dateformat'] . ' ' . $config['timeformat'], $newdate);
 
+        $current_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $submitted_employee_id = $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT);
+
+        if (!$this->employee->has_grant('employees', $current_employee_id)) {
+            if ($expense_id == NEW_ENTRY) {
+                $employee_id = $current_employee_id;
+            } else {
+                $existing_expense = $this->expense->get_info($expense_id);
+                $employee_id = $existing_expense->employee_id;
+            }
+        } else {
+            $employee_id = $submitted_employee_id;
+        }
+
         $expense_data = [
             'date'                => $date_formatter->format('Y-m-d H:i:s'),
             'supplier_id'         => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
@@ -164,7 +187,7 @@ class Expenses extends Secure_Controller
             'payment_type'        => $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'expense_category_id' => $this->request->getPost('expense_category_id', FILTER_SANITIZE_NUMBER_INT),
             'description'         => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'employee_id'         => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'employee_id'         => $employee_id,
             'deleted'             => $this->request->getPost('deleted') != null
         ];
 
