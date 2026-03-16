@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Item_lib;
-
 use App\Models\Attribute;
 use App\Models\Inventory;
 use App\Models\Item;
@@ -14,7 +13,6 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
-
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
@@ -769,7 +767,7 @@ class Items extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
-        
+
         // Sanitize filename to remove problematic characters like spaces
         $sanitized_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $info['filename']);
 
@@ -951,9 +949,8 @@ class Items extends Secure_Controller
     }
 
     /**
-     * Imports items from CSV formatted file.
+     * Imports items from a CSV formatted file.
      * @return ResponseInterface
-     * @throws ReflectionException
      * @noinspection PhpUnused
      */
     public function postImportCsvFile(): ResponseInterface
@@ -1032,7 +1029,8 @@ class Items extends Secure_Controller
                         if (!$isFailedRow && $this->item->save_value($itemData, $itemId)) {
                             $this->save_tax_data($row, $itemData);
                             $this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId);
-                            $isFailedRow = $this->saveAttributeData($row, $itemData, $attributeData);    // TODO: $is_failed_row never gets used after this.
+                            $csvAttributeValues = $this->extractAttributeData($row);
+                            $isFailedRow = $this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData);    // TODO: $is_failed_row never gets used after this.
 
                             if ($isUpdate) {
                                 $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
@@ -1066,6 +1064,20 @@ class Items extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
 
+    }
+
+    private function extractAttributeData(array $row): array
+    {
+        $attributeData = [];
+
+        foreach ($row as $key => $value) {
+            if (str_starts_with($key, 'attribute_')) {
+                $definitionName = substr($key, 10);
+                $attributeData[$definitionName] = $value;
+            }
+        }
+
+        return $attributeData;
     }
 
     /**
@@ -1196,83 +1208,6 @@ class Items extends Secure_Controller
         }
 
         return false;
-    }
-
-    /**
-     * Saves attribute data found in one row of a CSV import file. Loops through all attribute definitions and checks
-     * if there is data for that attribute in the row. If there is, it saves the attribute value and link to the item.
-     *
-     * @param array $row Contains all parsed data from one row of the CSV import file
-     * @param array $itemData Contains data for the item being imported/updated from the CSV file.
-     * @param array $definitions Contains all attribute definitions in the system.
-     * @return bool Returns false if all attribute data saves correctly and true if there is an error saving any of
-     * the attribute data.
-     */
-    private function saveAttributeData(array $row, array $itemData, array $definitions): bool
-    {
-        helper('attribute');
-        foreach ($definitions as $definition) {
-            $attributeName = $definition['definition_name'];
-            $attributeValue = $row["attribute_$attributeName"];
-
-            if (isset($attributeValue) && strcasecmp($attributeValue, '_DELETE_') === 0) {
-                $this->attribute->deleteAttributeLinks($itemData['item_id'], $definition['definition_id']);
-                continue;
-            }
-
-            // Create attribute value
-            if (!empty($attributeValue) || $attributeValue === '0') {
-                if ($definition['definition_type'] === CHECKBOX) {
-                    $checkbox_is_unchecked = (strcasecmp($attributeValue, 'false') === 0 || $attributeValue === '0');
-                    $attributeValue = $checkbox_is_unchecked ? '0' : '1';
-
-                    $attribute_id = $this->storeAttributeValue($attributeValue, $definition, $itemData['item_id']);
-                } elseif (!empty($attributeValue)) {
-                    $attribute_id = $this->storeAttributeValue($attributeValue, $definition, $itemData['item_id']);
-                } else {
-                    return true;
-                }
-
-                if (!$attribute_id) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Saves the attribute_value and attribute_link if necessary
-     * @param string $value
-     * @param array $attributeData
-     * @param int $itemId
-     * @return bool|int
-     */
-    private function storeAttributeValue(string $value, array $attributeData, int $itemId): bool|int
-    {
-        $attributeId = $this->attribute->attributeValueExists($value, $attributeData['definition_type']);
-
-        $this->attribute->deleteAttributeLinks($itemId, $attributeData['definition_id']);
-
-        if (!$attributeId) {
-            $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
-        } else {
-            helper('attribute');
-            $dataType = getAttributeDataType($attributeData['definition_type']);
-            $storedValue = $this->attribute->getAttributeValueByAttributeId($attributeId, $dataType);
-
-            // Update attribute value if only the case has changed and only for text values.
-            if ($dataType === 'attribute_value'
-                && is_string($storedValue)
-                && strcasecmp($storedValue, $value) === 0
-                && $storedValue !== $value) {
-                $attributeId = $this->attribute->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
-            } elseif (!$this->attribute->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
-                return false;
-            }
-        }
-
-        return $attributeId;
     }
 
     /**

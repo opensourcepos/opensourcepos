@@ -884,6 +884,84 @@ class Attribute extends Model
     }
 
     /**
+     * Saves attribute data found in one row of a CSV import file. Loops through all attribute definitions and checks
+     * if there is data for that attribute in the row. If there is, it saves the attribute value and link to the item.
+     *
+     * @param array $attributeValues Attribute name/value pairs from one row of the CSV import file
+     * @param array $itemData Contains data for the item being imported/updated from the CSV file.
+     * @param array $definitions Contains all attribute definitions in the system.
+     * @return bool Returns false if all attribute data saves correctly and true if there is an error saving any of
+     * the attribute data.
+     */
+    public function saveCSVRowAttributeData(array $attributeValues, array $itemData, array $definitions): bool
+    {
+        helper('attribute');
+        foreach ($definitions as $definition) {
+            $attributeName = $definition['definition_name'];
+            $attributeValue = $attributeValues[$attributeName] ?? null;
+
+            if (isset($attributeValue) && strcasecmp($attributeValue, '_DELETE_') === 0) {
+                $this->deleteAttributeLinks($itemData['item_id'], $definition['definition_id']);
+                continue;
+            }
+
+            // Create attribute value
+            if (!empty($attributeValue) || $attributeValue === '0') {
+                if ($definition['definition_type'] === CHECKBOX) {
+                    $checkbox_is_unchecked = (strcasecmp($attributeValue, 'false') === 0 || $attributeValue === '0');
+                    $attributeValue = $checkbox_is_unchecked ? '0' : '1';
+
+                    $attribute_id = $this->storeCSVAttributeValue($attributeValue, $definition, $itemData['item_id']);
+                } elseif (!empty($attributeValue)) {
+                    $attribute_id = $this->storeCSVAttributeValue($attributeValue, $definition, $itemData['item_id']);
+                } else {
+                    return true;
+                }
+
+                if (!$attribute_id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Saves the attribute_value and attribute_link in a CSV file if necessary
+     *
+     * @param string $value
+     * @param array $attributeData
+     * @param int $itemId
+     * @return bool|int
+     */
+    private function storeCSVAttributeValue(string $value, array $attributeData, int $itemId): bool|int
+    {
+        $attributeId = $this->attributeValueExists($value, $attributeData['definition_type']);
+
+        $this->deleteAttributeLinks($itemId, $attributeData['definition_id']);
+
+        if (!$attributeId) {
+            $attributeId = $this->saveAttributeValue($value, $attributeData['definition_id'], $itemId, false, $attributeData['definition_type']);
+        } else {
+            helper('attribute');
+            $dataType = getAttributeDataType($attributeData['definition_type']);
+            $storedValue = $this->getAttributeValueByAttributeId($attributeId, $dataType);
+
+            // Update the attribute value if only the case has changed and only for text values.
+            if ($dataType === 'attribute_value'
+                && is_string($storedValue)
+                && strcasecmp($storedValue, $value) === 0
+                && $storedValue !== $value) {
+                $attributeId = $this->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
+            } elseif (!$this->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
+                return false;
+            }
+        }
+
+        return $attributeId;
+    }
+
+    /**
      * Deletes an Attribute definition from the database and associated column in the items_import.csv
      *
      * @param    int        $definition_id    Attribute definition ID to remove.
