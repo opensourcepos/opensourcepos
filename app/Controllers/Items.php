@@ -79,9 +79,7 @@ class Items extends Secure_Controller
             return $default;
         }
 
-        $allowed_columns = ['items.item_id', 'item_number', 'name', 'category', 'company_name', 'cost_price', 'unit_price', 'quantity'];
-
-        if (in_array($field, $allowed_columns)) {
+        if (in_array($field, Item::ALLOWED_SORT_COLUMNS, true)) {
             return $field;
         }
 
