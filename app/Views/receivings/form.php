@@ -5,6 +5,7 @@
  * @var int $selected_supplier_id
  * @var array $employees
  * @var string $controller_name
+ * @var bool $can_assign_employee
  */
 ?>
 
@@ -50,7 +51,12 @@
         <div class="form-group form-group-sm">
             <?= form_label(lang('Receivings.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
-                <?= form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
+                <?php if ($can_assign_employee): ?>
+                    <?= form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
+                <?php else: ?>
+                    <?= form_hidden('employee_id', $receiving_info['employee_id']) ?>
+                    <?= form_input(['name' => 'employee_name', 'value' => $employees[$receiving_info['employee_id']] ?? '', 'class' => 'form-control input-sm', 'readonly' => 'readonly']) ?>
+                <?php endif; ?>
             </div>
         </div>
 
