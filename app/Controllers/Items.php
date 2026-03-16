@@ -66,31 +66,6 @@ class Items extends Secure_Controller
     }
 
     /**
-     * Sanitize sort column allowing standard columns and attribute definition IDs
-     *
-     * @param string|null $field The requested sort field
-     * @param string $default The default sort field
-     * @param array $attribute_ids Allowed attribute definition IDs
-     * @return string The validated sort field
-     */
-    private function sanitizeSortColumnAttribute(?string $field, string $default, array $attribute_ids): string
-    {
-        if ($field === null) {
-            return $default;
-        }
-
-        if (in_array($field, Item::ALLOWED_SORT_COLUMNS, true)) {
-            return $field;
-        }
-
-        if (ctype_digit($field) && in_array((int) $field, $attribute_ids, true)) {
-            return $field;
-        }
-
-        return $default;
-    }
-
-    /**
      * @return string
      */
     public function getIndex(): string
@@ -136,7 +111,7 @@ class Items extends Secure_Controller
         $definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
         $attribute_column_ids = array_keys($definition_names);
 
-        $sort = $this->sanitizeSortColumnAttribute($this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id', $attribute_column_ids);
+        $sort = $this->sanitizeSortColumn(item_sort_columns(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
