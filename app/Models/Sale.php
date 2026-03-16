@@ -273,6 +273,10 @@ class Sale extends Model
             $builder->like('payment_type', lang('Sales.credit'));
         }
 
+        if ($filters['only_debit']) {
+            $builder->like('payment_type', lang('Sales.debit'));
+        }
+
         $builder->groupBy('payment_type');
 
         $payments = $builder->get()->getResultArray();
@@ -1492,6 +1496,10 @@ class Sale extends Model
 
         if ($filters['only_creditcard']) {
             $builder->like('payments.payment_type', lang('Sales.credit'));
+        }
+
+        if ($filters['only_debit']) {
+            $builder->like('payments.payment_type', lang('Sales.debit'));
         }
 
         if ($filters['only_due']) {
