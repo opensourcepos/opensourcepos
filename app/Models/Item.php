@@ -31,6 +31,8 @@ class Item extends Model
         'allow_alt_description',
         'is_serialized'
     ];
+
+    public const ALLOWED_SORT_COLUMNS = ['items.item_id', 'item_number', 'name', 'category', 'company_name', 'cost_price', 'unit_price', 'quantity'];
     protected $table = 'items';
     protected $primaryKey = 'item_id';
     protected $useAutoIncrement = true;
