@@ -402,6 +402,24 @@ function item_headers(): array
 }
 
 /**
+ * Get all sortable column keys for items table, including dynamic attribute columns
+ * @return array Array of column keys that are valid for sorting
+ */
+function item_sort_columns(): array
+{
+    $attribute = model(Attribute::class);
+    $definitionIds = array_keys($attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS));
+
+    $columns = ['items.item_id', 'item_number', 'name', 'category', 'company_name', 'cost_price', 'unit_price', 'quantity'];
+
+    foreach ($definitionIds as $definitionId) {
+        $columns[] = (string) $definitionId;
+    }
+
+    return $columns;
+}
+
+/**
  * Get the header for the items tabular view
  */
 function get_items_manage_table_headers(): string
