@@ -131,6 +131,13 @@ class Items extends Secure_Controller
         // Check if any filter is set in the multiselect dropdown
         $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
         $filters = array_merge($filters, $request_filters);
+
+        // When search_custom is enabled, include attributes that are searchable but may not be visible in table
+        if (!empty($filters['search_custom'])) {
+            $searchable_definitions = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH);
+            $filters['definition_ids'] = array_keys($searchable_definitions);
+        }
+
         $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
         $total_rows = $this->item->get_found_rows($search, $filters);
         $data_rows = [];
