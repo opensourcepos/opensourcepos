@@ -17,9 +17,97 @@ class Summary_taxes_test extends CIUnitTestCase
     protected $refresh = true;
     protected $namespace = null;
 
+    private array $seededSaleIds = [];
+    private array $seededItemIds = [];
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->seedTestData();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->cleanupTestData();
+        parent::tearDown();
+    }
+
+    private function seedTestData(): void
+    {
+        $db = \Config\Database::connect();
+        $prefix = $db->DBPrefix;
+
+        $now = date('Y-m-d H:i:s');
+
+        $itemData = [
+            ['name' => 'Test Item Tax Test 1', 'category' => 'Test', 'supplier_id' => 1, 'item_number' => 'TEST001', 'description' => 'Test item for tax report', 'cost_price' => 10.00, 'unit_price' => 100.00, 'reorder_level' => 0, 'receiving_quantity' => 1, 'stock_type' => 0, 'item_type' => 0, 'tax_category_id' => 1, 'deleted' => 0],
+            ['name' => 'Test Item Tax Test 2', 'category' => 'Test', 'supplier_id' => 1, 'item_number' => 'TEST002', 'description' => 'Test item for tax report', 'cost_price' => 20.00, 'unit_price' => 200.00, 'reorder_level' => 0, 'receiving_quantity' => 1, 'stock_type' => 0, 'item_type' => 0, 'tax_category_id' => 1, 'deleted' => 0],
+        ];
+
+        foreach ($itemData as $item) {
+            $db->table($prefix . 'items')->insert($item);
+            $this->seededItemIds[] = $db->insertID();
+        }
+
+        $saleData = [
+            ['sale_time' => $now, 'customer_id' => 1, 'employee_id' => 1, 'comment' => 'Test sale 1', 'sale_status' => 1, 'invoice_number' => 'TEST-INV-001', 'sale_type' => 0],
+            ['sale_time' => $now, 'customer_id' => 1, 'employee_id' => 1, 'comment' => 'Test sale 2', 'sale_status' => 1, 'invoice_number' => 'TEST-INV-002', 'sale_type' => 0],
+            ['sale_time' => $now, 'customer_id' => 1, 'employee_id' => 1, 'comment' => 'Test sale 3', 'sale_status' => 1, 'invoice_number' => 'TEST-INV-003', 'sale_type' => 0],
+        ];
+
+        foreach ($saleData as $sale) {
+            $db->table($prefix . 'sales')->insert($sale);
+            $this->seededSaleIds[] = $db->insertID();
+        }
+
+        $salesItemsData = [
+            ['sale_id' => $this->seededSaleIds[0], 'item_id' => $this->seededItemIds[0], 'line' => 1, 'description' => 'Item 1', 'quantity_purchased' => 1, 'item_unit_price' => 100.00, 'discount' => 0, 'discount_type' => 0, 'item_cost_price' => 50.00],
+            ['sale_id' => $this->seededSaleIds[0], 'item_id' => $this->seededItemIds[1], 'line' => 2, 'description' => 'Item 2', 'quantity_purchased' => 2, 'item_unit_price' => 50.00, 'discount' => 0, 'discount_type' => 0, 'item_cost_price' => 25.00],
+            ['sale_id' => $this->seededSaleIds[1], 'item_id' => $this->seededItemIds[0], 'line' => 1, 'description' => 'Item 1', 'quantity_purchased' => 1, 'item_unit_price' => 110.00, 'discount' => 10, 'discount_type' => 0, 'item_cost_price' => 55.00],
+            ['sale_id' => $this->seededSaleIds[2], 'item_id' => $this->seededItemIds[1], 'line' => 1, 'description' => 'Item 2', 'quantity_purchased' => 1, 'item_unit_price' => 200.00, 'discount' => 0, 'discount_type' => 0, 'item_cost_price' => 100.00],
+        ];
+
+        foreach ($salesItemsData as $item) {
+            $db->table($prefix . 'sales_items')->insert($item);
+        }
+
+        $salesItemsTaxesData = [
+            ['sale_id' => $this->seededSaleIds[0], 'item_id' => $this->seededItemIds[0], 'line' => 1, 'name' => 'VAT', 'percent' => 10.00, 'item_tax_amount' => 10.00],
+            ['sale_id' => $this->seededSaleIds[0], 'item_id' => $this->seededItemIds[1], 'line' => 2, 'name' => 'VAT', 'percent' => 10.00, 'item_tax_amount' => 10.00],
+            ['sale_id' => $this->seededSaleIds[1], 'item_id' => $this->seededItemIds[0], 'line' => 1, 'name' => 'VAT', 'percent' => 10.00, 'item_tax_amount' => 11.00],
+            ['sale_id' => $this->seededSaleIds[2], 'item_id' => $this->seededItemIds[1], 'line' => 1, 'name' => 'Sales Tax', 'percent' => 8.00, 'item_tax_amount' => 16.00],
+        ];
+
+        foreach ($salesItemsTaxesData as $tax) {
+            $db->table($prefix . 'sales_items_taxes')->insert($tax);
+        }
+    }
+
+    private function cleanupTestData(): void
+    {
+        $db = \Config\Database::connect();
+        $prefix = $db->DBPrefix;
+
+        if (!empty($this->seededSaleIds)) {
+            $db->table($prefix . 'sales_items_taxes')
+                ->whereIn('sale_id', $this->seededSaleIds)
+                ->delete();
+            $db->table($prefix . 'sales_items')
+                ->whereIn('sale_id', $this->seededSaleIds)
+                ->delete();
+            $db->table($prefix . 'sales')
+                ->whereIn('sale_id', $this->seededSaleIds)
+                ->delete();
+        }
+
+        if (!empty($this->seededItemIds)) {
+            $db->table($prefix . 'items')
+                ->whereIn('item_id', $this->seededItemIds)
+                ->delete();
+        }
+
+        $this->seededSaleIds = [];
+        $this->seededItemIds = [];
     }
 
     public function testGetDataReturnsArray(): void
@@ -39,17 +127,15 @@ class Summary_taxes_test extends CIUnitTestCase
 
         $result = $model->getData($inputs);
 
-        if (count($result) > 0) {
-            $row = $result[0];
-            $this->assertArrayHasKey('name', $row);
-            $this->assertArrayHasKey('percent', $row);
-            $this->assertArrayHasKey('count', $row);
-            $this->assertArrayHasKey('subtotal', $row);
-            $this->assertArrayHasKey('tax', $row);
-            $this->assertArrayHasKey('total', $row);
-        } else {
-            $this->markTestSkipped('No sales tax data in test database');
-        }
+        $this->assertGreaterThan(0, count($result), 'Should have tax data from seeded sales');
+
+        $row = $result[0];
+        $this->assertArrayHasKey('name', $row);
+        $this->assertArrayHasKey('percent', $row);
+        $this->assertArrayHasKey('count', $row);
+        $this->assertArrayHasKey('subtotal', $row);
+        $this->assertArrayHasKey('tax', $row);
+        $this->assertArrayHasKey('total', $row);
     }
 
     public function testGetSummaryDataReturnsArray(): void
@@ -83,9 +169,7 @@ class Summary_taxes_test extends CIUnitTestCase
         $data = $model->getData($inputs);
         $summary = $model->getSummaryData($inputs);
 
-        if (count($data) === 0) {
-            $this->markTestSkipped('No sales tax data in test database');
-        }
+        $this->assertGreaterThan(0, count($data), 'Should have tax data from seeded sales');
 
         $subtotalSum = 0;
         $taxSum = 0;
@@ -136,9 +220,7 @@ class Summary_taxes_test extends CIUnitTestCase
 
         $data = $model->getData($inputs);
 
-        if (count($data) === 0) {
-            $this->markTestSkipped('No sales tax data in test database');
-        }
+        $this->assertGreaterThan(0, count($data), 'Should have tax data from seeded sales');
 
         foreach ($data as $row) {
             $subtotal = (float) $row['subtotal'];
@@ -150,7 +232,7 @@ class Summary_taxes_test extends CIUnitTestCase
                 $total,
                 $calculatedTotal,
                 0.01,
-                "Row subtotal + tax should equal total: {$subtotal} + {$tax} should equal {$total}"
+                "Row subtotal + tax should equal total for tax {$row['name']} ({$row['percent']}): subtotal={$subtotal}, tax={$tax}, total={$total}"
             );
         }
     }
@@ -171,10 +253,27 @@ class Summary_taxes_test extends CIUnitTestCase
         }
     }
 
+    public function testTaxDataIsGroupedByTaxNameAndPercent(): void
+    {
+        $model = model(Summary_taxes::class);
+        $inputs = $this->getTestInputs();
+
+        $data = $model->getData($inputs);
+
+        $this->assertGreaterThan(0, count($data), 'Should have tax data from seeded sales');
+
+        $taxGroups = [];
+        foreach ($data as $row) {
+            $key = $row['name'] . '|' . $row['percent'];
+            $this->assertArrayNotHasKey($key, $taxGroups, "Each tax name+percent combination should appear only once in results");
+            $taxGroups[$key] = true;
+        }
+    }
+
     private function getTestInputs(): array
     {
         return [
-            'start_date' => date('Y-m-d', strtotime('-1 year')),
+            'start_date' => date('Y-m-d', strtotime('-1 day')),
             'end_date' => date('Y-m-d', strtotime('+1 day')),
             'sale_type' => 'complete',
             'location_id' => 'all'
