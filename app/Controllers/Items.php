@@ -137,6 +137,12 @@ class Items extends Secure_Controller
         $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
         $filters = array_merge($filters, $requestFilters);
 
+        // When search_custom is enabled, include attributes that are searchable but may not be visible in table
+        if (!empty($filters['search_custom'])) {
+            $searchableDefinitions = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH);
+            $filters['definition_ids'] = array_keys($searchableDefinitions);
+        }
+
         $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
         $itemResults = $items->getResult();
         $totalRows = $this->item->get_found_rows($search, $filters);
