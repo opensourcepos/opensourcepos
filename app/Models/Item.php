@@ -131,31 +131,50 @@ class Item extends Model
     }
 
     /**
+     * Search for items by attribute values
+     * Returns an array of item_ids matching the attribute search criteria
+     *
+     * @param string $search Search term
+     * @param array $definition_ids Attribute definition IDs to search within
+     * @param bool $include_deleted Whether to include deleted items
+     * @return array Array of matching item_ids
+     */
+    public function search_by_attributes(string $search, array $definition_ids, bool $include_deleted = false): array
+    {
+        if (empty($definition_ids) || empty($search)) {
+            return [];
+        }
+
+        $builder = $this->db->table('attribute_links');
+        $builder->select('DISTINCT attribute_links.item_id');
+        $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
+        $builder->join('items', 'items.item_id = attribute_links.item_id');
+        $builder->groupStart();
+        $builder->like('attribute_values.attribute_value', $search);
+        $builder->orWhere('attribute_values.attribute_decimal', $search);
+        $builder->groupEnd();
+        $builder->whereIn('attribute_links.definition_id', $definition_ids);
+        $builder->where('attribute_links.sale_id', null);
+        $builder->where('attribute_links.receiving_id', null);
+        $builder->where('items.deleted', $include_deleted);
+
+        return array_column($builder->get()->getResultArray(), 'item_id');
+    }
+
+    /**
      * Perform a search on items
      */
     public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = false)
     {
-        // Set default values
-        if ($rows == null) {
-            $rows = 0;
-        }
-        if ($limit_from == null) {
-            $limit_from = 0;
-        }
-        if ($sort == null) {
-            $sort = 'items.name';
-        }
-        if ($order == null) {
-            $order = 'asc';
-        }
-        if ($count_only == null) {
-            $count_only = false;
-        }
+        $rows = $rows ?? 0;
+        $limit_from = $limit_from ?? 0;
+        $sort = $sort ?? 'items.name';
+        $order = $order ?? 'asc';
+        $count_only = $count_only ?? false;
 
         $config = config(OSPOS::class)->settings;
-        $builder = $this->db->table('items AS items');    // TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
+        $builder = $this->db->table('items AS items');
 
-        // get_found_rows case
         if ($count_only) {
             $builder->select('COUNT(DISTINCT items.item_id) AS count');
         } else {
@@ -211,12 +230,32 @@ class Item extends Model
         $builder->where($where);
 
         $attributes_enabled = count($filters['definition_ids']) > 0;
+        $matching_item_ids = [];
+
+        if (!empty($search) && $attributes_enabled && $filters['search_custom']) {
+            $matching_item_ids = $this->search_by_attributes($search, $filters['definition_ids'], $filters['is_deleted']);
+        }
 
         if (!empty($search)) {
             if ($attributes_enabled && $filters['search_custom']) {
-                $builder->havingLike('attribute_values', $search);
-                $builder->orHavingLike('attribute_dtvalues', $search);
-                $builder->orHavingLike('attribute_dvalues', $search);
+                if (empty($matching_item_ids)) {
+                    $builder->groupStart();
+                    $builder->like('name', $search);
+                    $builder->orLike('item_number', $search);
+                    $builder->orLike('items.item_id', $search);
+                    $builder->orLike('company_name', $search);
+                    $builder->orLike('items.category', $search);
+                    $builder->groupEnd();
+                } else {
+                    $builder->groupStart();
+                    $builder->whereIn('items.item_id', $matching_item_ids);
+                    $builder->orLike('name', $search);
+                    $builder->orLike('item_number', $search);
+                    $builder->orLike('items.item_id', $search);
+                    $builder->orLike('company_name', $search);
+                    $builder->orLike('items.category', $search);
+                    $builder->groupEnd();
+                }
             } else {
                 $builder->groupStart();
                 $builder->like('name', $search);
@@ -228,7 +267,7 @@ class Item extends Model
             }
         }
 
-        if ($attributes_enabled) {
+        if ($attributes_enabled && !$count_only) {
             $format = $this->db->escape(dateformat_mysql());
             $this->db->simpleQuery('SET SESSION group_concat_max_len=49152');
             $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
@@ -259,15 +298,11 @@ class Item extends Model
             $builder->whereIn('items.item_type', $non_temp);
         }
 
-        // get_found_rows case
         if ($count_only) {
             return $builder->get()->getRow()->count;
         }
 
-        // Avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
         $builder->groupBy('items.item_id');
-
-        // Order by name of item by default
         $builder->orderBy($sort, $order);
 
         if ($rows > 0) {
