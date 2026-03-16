@@ -497,36 +497,36 @@ class Sale extends Model
             $builder = $this->db->table('sales_payments');
 
             foreach ($sale_data['payments'] as $payment) {
-                $payment_id = $payment['payment_id'];
-                $payment_type = $payment['payment_type'];
-                $payment_amount = $payment['payment_amount'];
-                $cash_refund = $payment['cash_refund'];
-                $cash_adjustment = $payment['cash_adjustment'];
-                $employee_id = $payment['employee_id'];
+                $paymentId = $payment['payment_id'];
+                $paymentType = $payment['payment_type'];
+                $paymentAmount = $payment['payment_amount'];
+                $cashRefund = $payment['cash_refund'];
+                $cashAdjustment = $payment['cash_adjustment'];
+                $employeeId = $payment['employee_id'];
 
-                if ($payment_id == NEW_ENTRY && $payment_amount != 0) {
-                    $sales_payments_data = [
+                if ($paymentId == NEW_ENTRY && $paymentAmount != 0) {
+                    $salesPaymentsData = [
                         'sale_id'         => $sale_id,
-                        'payment_type'    => $payment_type,
-                        'payment_amount'  => $payment_amount,
-                        'cash_refund'     => $cash_refund,
-                        'cash_adjustment' => $cash_adjustment,
-                        'employee_id'     => $employee_id
+                        'payment_type'    => $paymentType,
+                        'payment_amount'  => $paymentAmount,
+                        'cash_refund'     => $cashRefund,
+                        'cash_adjustment' => $cashAdjustment,
+                        'employee_id'     => $employeeId
                     ];
-                    $success = $builder->insert($sales_payments_data);
-                } elseif ($payment_id != NEW_ENTRY) {
-                    if ($payment_amount != 0) {
-                        $sales_payments_data = [
-                            'payment_type'    => $payment_type,
-                            'payment_amount'  => $payment_amount,
-                            'cash_refund'     => $cash_refund,
-                            'cash_adjustment' => $cash_adjustment
+                    $success = $builder->insert($salesPaymentsData);
+                } elseif ($paymentId != NEW_ENTRY) {
+                    if ($paymentAmount != 0) {
+                        $salesPaymentsData = [
+                            'payment_type'    => $paymentType,
+                            'payment_amount'  => $paymentAmount,
+                            'cash_refund'     => $cashRefund,
+                            'cash_adjustment' => $cashAdjustment
                         ];
 
-                        $builder->where('payment_id', $payment_id);
-                        $success = $builder->update($sales_payments_data);
+                        $builder->where('payment_id', $paymentId);
+                        $success = $builder->update($salesPaymentsData);
                     } else {
-                        $success = $builder->delete(['payment_id' => $payment_id]);
+                        $success = $builder->delete(['payment_id' => $paymentId]);
                     }
                 }
             }
@@ -620,7 +620,7 @@ class Sale extends Model
             return -1;    // TODO: Replace -1 with a constant
         }
 
-        $sales_data = [
+        $salesData = [
             'sale_time'         => date('Y-m-d H:i:s'),
             'customer_id'       => $customer->exists($customer_id) ? $customer_id : null,
             'employee_id'       => $employee_id,
@@ -633,35 +633,30 @@ class Sale extends Model
             'sale_type'         => $sale_type
         ];
 
-        // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
         if ($sale_id == NEW_ENTRY) {
             $builder = $this->db->table('sales');
-            $builder->insert($sales_data);
+            $builder->insert($salesData);
             $sale_id = $this->db->insertID();
         } else {
             $builder = $this->db->table('sales');
             $builder->where('sale_id', $sale_id);
-            $builder->update($sales_data);
+            $builder->update($salesData);
         }
 
-        $total_amount = 0;
-        $total_amount_used = 0;
+        $totalAmount = 0;
+        $totalAmountUsed = 0;
 
-        foreach ($payments as $payment_id => $payment) {
-            if (!empty(strstr($payment['payment_type'], lang('Sales.giftcard')))) {
-                // We have a gift card, and we have to deduct the used value from the total value of the card.
-                $splitpayment = explode(':', $payment['payment_type']);    // TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
-                $cur_giftcard_value = $giftcard->get_giftcard_value($splitpayment[1]);    // TODO: this should be refactored to $current_giftcard_value
-                $giftcard->update_giftcard_value($splitpayment[1], $cur_giftcard_value - $payment['payment_amount']);
-            } elseif ($this->isRewardPayment($payment['payment_type'])) {
-                $cur_rewards_value = $customer->get_info($customer_id)->points;
-                $customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount']);
-                $total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
-            }
+        foreach ($payments as $paymentId => $payment) {
+            $totalAmountUsed += $this->processPaymentType(
+                $payment,
+                $customer_id,
+                $customer,
+                $giftcard
+            );
 
-            $sales_payments_data = [
+            $salesPaymentsData = [
                 'sale_id'         => $sale_id,
                 'payment_type'    => $payment['payment_type'],
                 'payment_amount'  => $payment['payment_amount'],
@@ -671,74 +666,71 @@ class Sale extends Model
             ];
 
             $builder = $this->db->table('sales_payments');
-            $builder->insert($sales_payments_data);
+            $builder->insert($salesPaymentsData);
 
-            $total_amount = floatval($total_amount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
+            $totalAmount = floatval($totalAmount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
         }
 
-        $this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
+        $this->save_customer_rewards($customer_id, $sale_id, $totalAmount, $totalAmountUsed);
 
         $customer = $customer->get_info($customer_id);
 
-        foreach ($items as $line => $item_data) {
-            $cur_item_info = $item->get_info($item_data['item_id']);
+        foreach ($items as $line => $itemData) {
+            $currentItemInfo = $item->get_info($itemData['item_id']);
 
-            if ($item_data['price'] == 0.00) {
-                $item_data['discount'] = 0.00;
+            if ($itemData['price'] == 0.00) {
+                $itemData['discount'] = 0.00;
             }
 
-            $sales_items_data = [
+            $salesItemsData = [
                 'sale_id'            => $sale_id,
-                'item_id'            => $item_data['item_id'],
-                'line'               => $item_data['line'],
-                'description'        => character_limiter($item_data['description'], 255),
-                'serialnumber'       => character_limiter($item_data['serialnumber'], 30),
-                'quantity_purchased' => $item_data['quantity'],
-                'discount'           => $item_data['discount'],
-                'discount_type'      => $item_data['discount_type'],
-                'item_cost_price'    => $item_data['cost_price'],
-                'item_unit_price'    => $item_data['price'],
-                'item_location'      => $item_data['item_location'],
-                'print_option'       => $item_data['print_option']
+                'item_id'            => $itemData['item_id'],
+                'line'               => $itemData['line'],
+                'description'        => character_limiter($itemData['description'], 255),
+                'serialnumber'       => character_limiter($itemData['serialnumber'], 30),
+                'quantity_purchased' => $itemData['quantity'],
+                'discount'           => $itemData['discount'],
+                'discount_type'      => $itemData['discount_type'],
+                'item_cost_price'    => $itemData['cost_price'],
+                'item_unit_price'    => $itemData['price'],
+                'item_location'      => $itemData['item_location'],
+                'print_option'       => $itemData['print_option']
             ];
 
             $builder = $this->db->table('sales_items');
-            $builder->insert($sales_items_data);
+            $builder->insert($salesItemsData);
 
-            if ($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED) {    // TODO: === ?
-                // Update stock quantity if item type is a standard stock item and the sale is a standard sale
-                $item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
+            if ($currentItemInfo->stock_type == HAS_STOCK && $sale_status == COMPLETED) {
+                $itemQuantityData = $item_quantity->get_item_quantity($itemData['item_id'], $itemData['item_location']);
 
                 $item_quantity->save_value(
                     [
-                        'quantity'    => $item_quantity_data->quantity - $item_data['quantity'],
-                        'item_id'     => $item_data['item_id'],
-                        'location_id' => $item_data['item_location']
+                        'quantity'    => $itemQuantityData->quantity - $itemData['quantity'],
+                        'item_id'     => $itemData['item_id'],
+                        'location_id' => $itemData['item_location']
                     ],
-                    $item_data['item_id'],
-                    $item_data['item_location']
+                    $itemData['item_id'],
+                    $itemData['item_location']
                 );
 
-                // If an items was deleted but later returned it's restored with this rule
-                if ($item_data['quantity'] < 0) {
-                    $item->undelete($item_data['item_id']);
+                if ($itemData['quantity'] < 0) {
+                    $item->undelete($itemData['item_id']);
                 }
 
-                // Inventory Count Details
-                $sale_remarks = 'POS ' . $sale_id;    // TODO: Use string interpolation here.
-                $inv_data = [
+                $saleRemarks = 'POS ' . $sale_id;
+                $inventoryData = [
                     'trans_date'      => date('Y-m-d H:i:s'),
-                    'trans_items'     => $item_data['item_id'],
+                    'trans_items'     => $itemData['item_id'],
                     'trans_user'      => $employee_id,
-                    'trans_location'  => $item_data['item_location'],
-                    'trans_comment'   => $sale_remarks,
-                    'trans_inventory' => -$item_data['quantity']
+                    'trans_location'  => $itemData['item_location'],
+                    'trans_comment'   => $saleRemarks,
+                    'trans_inventory' => -$itemData['quantity']
                 ];
 
-                $inventory->insert($inv_data, false);
+                $inventory->insert($inventoryData, false);
             }
 
-            $attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $sale_id);
+            $attribute->copy_attribute_links($itemData['item_id'], 'sale_id', $sale_id);
         }
 
         if ($customer_id == NEW_ENTRY || $customer->taxable) {
@@ -867,43 +859,36 @@ class Sale extends Model
      */
     public function delete($sale_id = null, bool $purge = false, bool $update_inventory = true, $employee_id = null): bool
     {
-        // Start a transaction to assure data integrity
         $this->db->transStart();
 
         $sale_status = $this->get_sale_status($sale_id);
 
         if ($update_inventory && $sale_status == COMPLETED) {
-            // Defect, not all item deletions will be undone?
-            // Get array with all the items involved in the sale to update the inventory tracking
             $inventory = model('Inventory');
             $item = model(Item::class);
-            $item_quantity = model(Item_quantity::class);
+            $itemQuantity = model(Item_quantity::class);
 
             $items = $this->get_sale_items($sale_id)->getResultArray();
 
-            foreach ($items as $item_data) {
-                $cur_item_info = $item->get_info($item_data['item_id']);
+            foreach ($items as $itemData) {
+                $currentItemInfo = $item->get_info($itemData['item_id']);
 
-                if ($cur_item_info->stock_type == HAS_STOCK) {
-                    // Create query to update inventory tracking
-                    $inv_data = [
+                if ($currentItemInfo->stock_type == HAS_STOCK) {
+                    $inventoryData = [
                         'trans_date'      => date('Y-m-d H:i:s'),
-                        'trans_items'     => $item_data['item_id'],
+                        'trans_items'     => $itemData['item_id'],
                         'trans_user'      => $employee_id,
                         'trans_comment'   => 'Deleting sale ' . $sale_id,
-                        'trans_location'  => $item_data['item_location'],
-                        'trans_inventory' => $item_data['quantity_purchased']
+                        'trans_location'  => $itemData['item_location'],
+                        'trans_inventory' => $itemData['quantity_purchased']
                     ];
-                    // Update inventory
-                    $inventory->insert($inv_data, false);
+                    $inventory->insert($inventoryData, false);
 
-                    // Update quantities
-                    $item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
+                    $itemQuantity->change_quantity($itemData['item_id'], $itemData['item_location'], $itemData['quantity_purchased']);
                 }
             }
         }
 
-        // Restore reward points if used (only on first cancellation to prevent double-credit)
         if ($sale_status !== CANCELED) {
             $payments = $this->get_sale_payments($sale_id)->getResultArray();
             $rewardUsed = 0;
@@ -934,7 +919,6 @@ class Sale extends Model
 
         $this->update_sale_status($sale_id, CANCELED);
 
-        // Execute transaction
         $this->db->transComplete();
 
         return $this->db->transStatus();
@@ -1553,6 +1537,31 @@ class Sale extends Model
         $labels = array_values(array_unique($labels));
 
         return $labels;
+    }
+
+    /**
+     * Processes payment type for giftcard and reward deductions during sale creation.
+     * Returns the amount used for rewards (0 for giftcards).
+     */
+    private function processPaymentType(array $payment, int $customerId, object $customer, object $giftcard): float
+    {
+        $paymentType = $payment['payment_type'];
+        $paymentAmount = $payment['payment_amount'];
+
+        if (!empty(strstr($paymentType, lang('Sales.giftcard')))) {
+            $splitPayment = explode(':', $paymentType);
+            $currentGiftcardValue = $giftcard->get_giftcard_value($splitPayment[1]);
+            $giftcard->update_giftcard_value($splitPayment[1], $currentGiftcardValue - $paymentAmount);
+            return 0;
+        }
+
+        if ($this->isRewardPayment($paymentType)) {
+            $currentRewardsValue = $customer->get_info($customerId)->points;
+            $customer->update_reward_points_value($customerId, $currentRewardsValue - $paymentAmount);
+            return floatval($paymentAmount);
+        }
+
+        return 0;
     }
 
     /**
