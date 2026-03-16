@@ -131,20 +131,121 @@ class Item extends Model
     }
 
     /**
+     * Parse search string for attribute-specific queries
+     * Supports syntax like "color: blue size: large" or "color:blue AND size:large"
+     *
+     * @param string $search The raw search string
+     * @return array{terms: array, attributes: array} Parsed terms and attribute queries
+     */
+    public function parse_attribute_search(string $search): array
+    {
+        $result = [
+            'terms' => [],
+            'attributes' => []
+        ];
+
+        if (empty($search)) {
+            return $result;
+        }
+
+        $pattern = '/(\w+)\s*:\s*([^\s,]+)(?:\s+(?:AND|OR)\s+)?/i';
+        $remaining = preg_replace($pattern, '', $search);
+
+        if (preg_match_all($pattern, $search, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                $attrName = strtolower(trim($match[1]));
+                $attrValue = trim($match[2]);
+                $result['attributes'][$attrName][] = $attrValue;
+            }
+        }
+
+        $remaining = trim(preg_replace('/\s+/', ' ', $remaining));
+        if (!empty($remaining)) {
+            $result['terms'][] = $remaining;
+        }
+
+        return $result;
+    }
+
+    /**
      * Search for items by attribute values
      * Returns an array of item_ids matching the attribute search criteria
      *
      * @param string $search Search term
      * @param array $definition_ids Attribute definition IDs to search within
      * @param bool $include_deleted Whether to include deleted items
+     * @param string $logic 'AND' or 'OR' for multiple attribute matching
      * @return array Array of matching item_ids
      */
-    public function search_by_attributes(string $search, array $definition_ids, bool $include_deleted = false): array
+    public function search_by_attributes(string $search, array $definition_ids, bool $include_deleted = false, string $logic = 'OR'): array
     {
         if (empty($definition_ids) || empty($search)) {
             return [];
         }
 
+        $parsed = $this->parse_attribute_search($search);
+        $matching_item_ids = [];
+
+        if (!empty($parsed['attributes'])) {
+            $attribute = model(Attribute::class);
+            $all_definitions = $attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH);
+            $definition_name_to_id = [];
+
+            foreach ($all_definitions as $id => $def_info) {
+                $definition_name_to_id[strtolower($def_info['name'])] = $id;
+            }
+
+            foreach ($parsed['attributes'] as $attr_name => $values) {
+                if (!isset($definition_name_to_id[$attr_name])) {
+                    continue;
+                }
+
+                $definition_id = $definition_name_to_id[$attr_name];
+
+                foreach ($values as $value) {
+                    $builder = $this->db->table('attribute_links');
+                    $builder->select('DISTINCT attribute_links.item_id');
+                    $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
+                    $builder->join('items', 'items.item_id = attribute_links.item_id');
+                    $builder->like('attribute_values.attribute_value', $value);
+                    $builder->where('attribute_links.definition_id', $definition_id);
+                    $builder->where('attribute_links.sale_id', null);
+                    $builder->where('attribute_links.receiving_id', null);
+                    $builder->where('items.deleted', $include_deleted);
+
+                    $found_ids = array_column($builder->get()->getResultArray(), 'item_id');
+
+                    if ($logic === 'AND') {
+                        if (empty($matching_item_ids)) {
+                            $matching_item_ids = $found_ids;
+                        } else {
+                            $matching_item_ids = array_intersect($matching_item_ids, $found_ids);
+                        }
+                    } else {
+                        $matching_item_ids = array_unique(array_merge($matching_item_ids, $found_ids));
+                    }
+                }
+            }
+        }
+
+        if (!empty($parsed['terms'])) {
+            $term = implode(' ', $parsed['terms']);
+            return $this->search_by_attribute_value($term, $definition_ids, $include_deleted);
+        }
+
+        return $matching_item_ids;
+    }
+
+    /**
+     * Search for items by a single attribute value
+     *
+     * @param string $search Search term
+     * @param array $definition_ids Attribute definition IDs to search within
+     * @param bool $include_deleted Whether to include deleted items
+     * @return array Array of matching item_ids
+     */
+    private function search_by_attribute_value(string $search, array $definition_ids, bool $include_deleted = false): array
+    {
         $builder = $this->db->table('attribute_links');
         $builder->select('DISTINCT attribute_links.item_id');
         $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
@@ -159,6 +260,21 @@ class Item extends Model
         $builder->where('items.deleted', $include_deleted);
 
         return array_column($builder->get()->getResultArray(), 'item_id');
+    }
+
+    /**
+     * Get attribute definition ID from column name for sorting
+     *
+     * @param string $sort_column The sort column name
+     * @return int|null The definition ID or null if not an attribute column
+     */
+    private function get_attribute_sort_definition_id(string $sort_column): ?int
+    {
+        if (!ctype_digit($sort_column)) {
+            return null;
+        }
+
+        return (int) $sort_column;
     }
 
     /**
@@ -277,6 +393,17 @@ class Item extends Model
             $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
         }
 
+        // Handle attribute column sorting
+        $sort_definition_id = $this->get_attribute_sort_definition_id($sort);
+        if ($sort_definition_id !== null && $attributes_enabled && !$count_only) {
+            $sort_alias = "sort_attr_{$sort_definition_id}";
+            $builder->join("attribute_links AS {$sort_alias}", "{$sort_alias}.item_id = items.item_id AND {$sort_alias}.definition_id = {$sort_definition_id} AND {$sort_alias}.sale_id IS NULL AND {$sort_alias}.receiving_id IS NULL", 'left');
+            $builder->join("attribute_values AS {$sort_alias}_val", "{$sort_alias}_val.attribute_id = {$sort_alias}.attribute_id", 'left');
+            $builder->orderBy("{$sort_alias}_val.attribute_value", $order);
+        } else {
+            $builder->orderBy($sort, $order);
+        }
+
         $builder->where('items.deleted', $filters['is_deleted']);
 
         if ($filters['empty_upc']) {
@@ -303,7 +430,6 @@ class Item extends Model
         }
 
         $builder->groupBy('items.item_id');
-        $builder->orderBy($sort, $order);
 
         if ($rows > 0) {
             $builder->limit($rows, $limit_from);
