@@ -402,7 +402,8 @@ function item_headers(): array
 }
 
 /**
- * Get all sortable column keys for items table, including dynamic attribute columns
+ * Get all sortable column keys for items table, including dynamic attribute columns.
+ *
  * @return array Array of column keys that are valid for sorting
  */
 function item_sort_columns(): array
