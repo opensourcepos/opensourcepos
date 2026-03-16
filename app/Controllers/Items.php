@@ -109,14 +109,11 @@ class Items extends Secure_Controller
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 
         $definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
-        $attribute_column_ids = array_keys($definition_names);
 
         $sort = $this->sanitizeSortColumn(item_sort_columns(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
-
-        $definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
