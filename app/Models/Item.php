@@ -141,6 +141,84 @@ class Item extends Model
     }
 
     /**
+     * Parse search string for attribute-specific queries
+     * Supports syntax like "color: blue size: large" or "color:blue AND size:large"
+     *
+     * @param string $search The raw search string
+     * @return array{terms: array, attributes: array} Parsed terms and attribute queries
+     */
+    public function parseAttributeSearch(string $search): array
+    {
+        $result = [
+            'terms' => [],
+            'attributes' => []
+        ];
+
+        if ($search === '') {
+            return $result;
+        }
+
+        $pattern = '/([[:alpha:]][[:alnum:] _-]*?)\s*:\s*([^\s,]+)(?:\s+(?:AND|OR)\s+)?/iu';
+        $remaining = preg_replace($pattern, '', $search);
+
+        if (preg_match_all($pattern, $search, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                $attrName = strtolower(trim($match[1]));
+                $attrValue = trim($match[2]);
+                $result['attributes'][$attrName][] = $attrValue;
+            }
+        }
+
+        $remaining = trim(preg_replace('/\s+/', ' ', $remaining));
+        if ($remaining !== '') {
+            $result['terms'][] = $remaining;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get attribute definition ID from column name for sorting
+     *
+     * @param string $sortColumn The sort column name
+     * @return int|null The definition ID or null if not an attribute column
+     */
+    private function getAttributeSortDefinitionId(string $sortColumn): ?int
+    {
+        if (!ctype_digit($sortColumn)) {
+            return null;
+        }
+
+        return (int) $sortColumn;
+    }
+
+    /**
+     * Left-joins the attribute tables needed to sort by a given attribute definition,
+     * and applies the order-by using the type-appropriate value column.
+     */
+    private function applyAttributeSort($builder, int $sortDefinitionId, string $order): void
+    {
+        $sortAlias = "sort_attr_{$sortDefinitionId}";
+        $builder->join("attribute_links AS {$sortAlias}", "{$sortAlias}.item_id = items.item_id AND {$sortAlias}.definition_id = {$sortDefinitionId} AND {$sortAlias}.sale_id IS NULL AND {$sortAlias}.receiving_id IS NULL", 'left');
+        $builder->join("attribute_values AS {$sortAlias}_val", "{$sortAlias}_val.attribute_id = {$sortAlias}.attribute_id", 'left');
+
+        $attribute = model(Attribute::class);
+        $definitionInfo = $attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
+        $sortColumn = "{$sortAlias}_val.attribute_value";
+
+        if (isset($definitionInfo[$sortDefinitionId])) {
+            $defType = is_array($definitionInfo[$sortDefinitionId]) ? ($definitionInfo[$sortDefinitionId]['type'] ?? TEXT) : TEXT;
+            if ($defType === DECIMAL) {
+                $sortColumn = "{$sortAlias}_val.attribute_decimal";
+            } elseif ($defType === DATE) {
+                $sortColumn = "{$sortAlias}_val.attribute_date";
+            }
+        }
+
+        $builder->orderBy($sortColumn, $order);
+    }
+
+    /**
      * Perform a search on items
      *
      * Resolves qualifying item_ids first (Phase A), then joins the expensive display-only
@@ -261,6 +339,7 @@ class Item extends Model
         }
 
         // Order by name of item by default
+        $sortDefinitionId = $this->getAttributeSortDefinitionId($sort);
         if ($sort === 'quantity' && $filters['stock_location_id'] <= -1) {
             $itemQuantitiesTable = $this->db->prefixTable('item_quantities');
             $idBuilder->join(
@@ -269,6 +348,8 @@ class Item extends Model
                 'left'
             );
             $idBuilder->orderBy('item_quantity_totals.total_quantity', $order);
+        } elseif ($sortDefinitionId !== null) {
+            $this->applyAttributeSort($idBuilder, $sortDefinitionId, $order);
         } else {
             $idBuilder->orderBy($sort, $order);
         }
@@ -359,6 +440,8 @@ class Item extends Model
         // Re-apply order: WHERE...IN + GROUP BY do not preserve Phase A's row order
         if ($sortByQuantityAllLocations) {
             $builder->orderBy('item_quantity_totals.total_quantity', $order);
+        } elseif ($sortDefinitionId !== null) {
+            $this->applyAttributeSort($builder, $sortDefinitionId, $order);
         } else {
             $builder->orderBy($sort, $order);
         }
