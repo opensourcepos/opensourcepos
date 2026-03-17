@@ -15,8 +15,8 @@ This document describes the CI/CD workflows for OSPOS.
 - Run PHPUnit tests with MariaDB started via Docker
 
 ### Docker Images
-- Build `ospos:latest` Docker image for multiple architectures (linux/amd64, linux/arm64)
-- Push to Docker Hub on master branch
+- Build and push `opensourcepos` Docker image for multiple architectures (linux/amd64, linux/arm64)
+- Image tagged with version and `latest`, pushed to Docker Hub on master branch
 
 ### Releases
 - Create distribution archives (tar.gz, zip)
@@ -50,7 +50,6 @@ This repository also has these workflows:
 - `.github/workflows/main.yml` - PHP linting with PHP-CS-Fixer
 - `.github/workflows/phpunit.yml` - PHPUnit tests
 - `.github/workflows/php-linter.yml` - PHP linting
-- `.github/workflows/codeql-analysis.yml` - Security analysis
 
 ## Testing
 

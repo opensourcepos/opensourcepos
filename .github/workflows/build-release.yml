@@ -11,12 +11,11 @@ on:
       - master
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
 jobs:
   build:
@@ -162,10 +161,20 @@ jobs:
             -p 3306:3306 \
             mariadb:10.5
           
-          until docker exec mysql mysqladmin ping -h 127.0.0.1 -u root -proot --silent; do
-            echo "Waiting for MariaDB..."
+          for i in {1..30}; do
+            if docker exec mysql mysqladmin ping -h 127.0.0.1 -u root -proot --silent; then
+              echo "MariaDB is ready"
+              break
+            fi
+            echo "Waiting for MariaDB... ($i/30)"
             sleep 2
           done
+          
+          docker exec mysql mysqladmin ping -h 127.0.0.1 -u root -proot --silent || {
+            echo "MariaDB failed to become ready"
+            docker logs mysql || true
+            exit 1
+          }
 
       - name: Initialize database
         run: docker exec -i mysql mysql -u root -proot ospos < app/Database/database.sql
@@ -204,20 +213,24 @@ jobs:
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5
+        env:
+          IMAGE_REPO: ${{ secrets.DOCKER_USERNAME }}/opensourcepos
         with:
           context: .
           target: ospos
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            jekkos/opensourcepos:${{ needs.build.outputs.version-tag }}
-            jekkos/opensourcepos:latest
+            ${{ env.IMAGE_REPO }}:${{ needs.build.outputs.version-tag }}
+            ${{ env.IMAGE_REPO }}:latest
 
   release:
     name: Create Release
     needs: [build, test]
     runs-on: ubuntu-22.04
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
