@@ -102,10 +102,6 @@ class Expenses extends Secure_Controller
         $data['employees'] = [];
         if ($can_assign_employee) {
             foreach ($this->employee->get_all()->getResult() as $employee) {
-                foreach (get_object_vars($employee) as $property => $value) {
-                    $employee->$property = $value;
-                }
-
                 $data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
             }
         } else {
