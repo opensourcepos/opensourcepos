@@ -109,7 +109,7 @@ jobs:
           gulp compress
           VERSION="${{ steps.version.outputs.version }}"
           SHORT_SHA="${{ steps.version.outputs.short-sha }}"
-          mv dist/opensourcepos.tar.gz "dist/opensourcepos.$VERSION.$SHORT_SHA.tgz"
+          mv dist/opensourcepos.tar "dist/opensourcepos.$VERSION.$SHORT_SHA.tar"
           mv dist/opensourcepos.zip "dist/opensourcepos.$VERSION.$SHORT_SHA.zip"
 
       - name: Upload build artifacts
