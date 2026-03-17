@@ -6,6 +6,7 @@ use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use App\Libraries\Sale_lib;
+use App\Libraries\Reward_lib;
 use Config\OSPOS;
 use ReflectionException;
 
