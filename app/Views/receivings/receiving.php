@@ -97,7 +97,7 @@ if (isset($success)) {
                 </button>
             </li>
             <li class="pull-right">
-                <button class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+                <button type="button" class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
                     <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
                 </button>
             </li>
@@ -111,7 +111,7 @@ if (isset($success)) {
     <table class="sales_table_100" id="register">
         <thead>
             <tr>
-                <th style="width: 6%;"><?= lang('Items.image') ?></th>
+                <th style="width: 6%;" class="avatar-header"><?= lang('Items.image') ?></th>
                 <th style="width: 5%;"><?= lang('Common.delete') ?></th>
                 <th style="width: 12%;"><?= lang('Sales.item_number') ?></th>
                 <th style="width: 20%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
@@ -220,7 +220,7 @@ if (isset($success)) {
                         ?>
                             <td style="color: #2F4F4F;"><?= lang('Sales.description_abbrv') . ':' ?></td>
                         <?php } ?>
-                        <td colspan="2" style="text-align: left;">
+                        <td colspan="3" style="text-align: left;">
                             <?php
                             if ($item['allow_alt_description'] == 1) {    // TODO: ===?
                                 echo form_input([
@@ -555,11 +555,15 @@ if (isset($success)) {
         const isAvatarVisible = localStorage.getItem('avatarColumnVisible') !== 'false';
         if (!isAvatarVisible) {
             $('.avatar-column').hide();
+            $('.avatar-header').hide();
+            $('#avatar_toggle_text').text('Show Avatar');
         }
 
-        $('#toggle_avatar_button').click(function() {
+        $('#toggle_avatar_button').click(function(e) {
+            e.preventDefault();
             const isVisible = $('.avatar-column').is(':visible');
             $('.avatar-column').toggle();
+            $('.avatar-header').toggle();
             localStorage.setItem('avatarColumnVisible', !isVisible);
             $(this).toggleClass('active');
             var $toggleText = $('#avatar_toggle_text');

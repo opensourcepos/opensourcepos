@@ -27,11 +27,9 @@ if (isset($error_message)) {
 echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align: right;">
-    <a href="javascript:void(0);">
-        <div class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
-            <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
-        </div>
-    </a>
+    <button type="button" class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+        <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
+    </button>
     <a href="javascript:printdoc();">
         <div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print') ?></div>
     </a>
@@ -70,9 +68,9 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
     <table id="receipt_items">
         <tr>
             <th class="receipt-avatar-column" style="width: 15%;"><?= lang('Items.image') ?></th>
-            <th style="width: 40%;"><?= lang('Items.item') ?></th>
+            <th style="width: 35%;"><?= lang('Items.item') ?></th>
             <th style="width: 20%;"><?= lang('Common.price') ?></th>
-            <th style="width: 20%;"><?= lang('Sales.quantity') ?></th>
+            <th style="width: 15%;"><?= lang('Sales.quantity') ?></th>
             <th style="width: 15%; text-align: right;"><?= lang('Sales.total') ?></th>
         </tr>
 
@@ -91,27 +89,27 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
                 <td><div class="total-value"><?= to_currency($item['total']) ?></div></td>
             </tr>
             <tr>
-                <td><?= esc($item['serialnumber']) ?></td>
+                <td colspan="2"><?= esc($item['serialnumber']) ?></td>
             </tr>
             <?php if ($item['discount'] > 0) { ?>
                 <tr>
                     <?php if ($item['discount_type'] == FIXED) { ?>
-                        <td colspan="3" class="discount"><?= to_currency($item['discount']) . ' ' . lang('Sales.discount') ?></td>
+                        <td colspan="4" class="discount"><?= to_currency($item['discount']) . ' ' . lang('Sales.discount') ?></td>
                     <?php } elseif ($item['discount_type'] == PERCENT) { ?>
-                        <td colspan="3" class="discount"><?= to_decimals($item['discount']) . ' ' . lang('Sales.discount_included') ?></td>
+                        <td colspan="4" class="discount"><?= to_decimals($item['discount']) . ' ' . lang('Sales.discount_included') ?></td>
                     <?php } ?>
                 </tr>
             <?php } ?>
         <?php } ?>
         <tr>
-            <td colspan="3" style="text-align: right; border-top: 2px solid #000000;"><?= lang('Sales.total') ?></td>
+            <td colspan="4" style="text-align: right; border-top: 2px solid #000000;"><?= lang('Sales.total') ?></td>
             <td style="border-top: 2px solid #000000;">
                 <div class="total-value"><?= to_currency($total) ?></div>
             </td>
         </tr>
         <?php if ($mode != 'requisition') { ?>
             <tr>
-                <td colspan="3" style="text-align: right;"><?= lang('Sales.payment') ?></td>
+                <td colspan="4" style="text-align: right;"><?= lang('Sales.payment') ?></td>
                 <td>
                     <div class="total-value"><?= esc($payment_type) ?></div>
                 </td>
@@ -119,14 +117,14 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
 
             <?php if (isset($amount_change)) { ?>
                 <tr>
-                    <td colspan="3" style="text-align: right;"><?= lang('Sales.amount_tendered') ?></td>
+                    <td colspan="4" style="text-align: right;"><?= lang('Sales.amount_tendered') ?></td>
                     <td>
                         <div class="total-value"><?= to_currency($amount_tendered) ?></div>
                     </td>
                 </tr>
 
                 <tr>
-                    <td colspan="3" style="text-align: right;"><?= lang('Sales.change_due') ?></td>
+                    <td colspan="4" style="text-align: right;"><?= lang('Sales.change_due') ?></td>
                     <td>
                         <div class="total-value"><?= $amount_change ?></div>
                     </td>
@@ -148,16 +146,17 @@ echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'sele
 <script type="text/javascript">
     $(document).ready(function() {
         // Avatar toggle functionality
-        const STORAGE_KEY = 'receipt_avatar_visible';
+        const STORAGE_KEY = 'avatarColumnVisible';
         
         // Get saved state from localStorage, default to visible (true)
         let isAvatarVisible = localStorage.getItem(STORAGE_KEY) !== 'false';
         
-        // Apply initial state
+        // Apply initial state (also handle header visibility)
         updateAvatarVisibility(isAvatarVisible);
         
         // Handle toggle button click
-        $('#toggle_avatar_button').click(function() {
+        $('#toggle_avatar_button').click(function(e) {
+            e.preventDefault();
             isAvatarVisible = !isAvatarVisible;
             updateAvatarVisibility(isAvatarVisible);
             localStorage.setItem(STORAGE_KEY, isAvatarVisible);

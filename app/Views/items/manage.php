@@ -125,7 +125,7 @@ use App\Models\Employee;
 </div>
 
 <div id="table_holder">
-    <table id="table" style="padding:10px; !important"></table>
+    <table id="table" style="padding:10px;"></table>
 </div>
 
 <?= view('partial/footer') ?>

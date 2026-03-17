@@ -45,16 +45,17 @@ if (isset($error_message)) {
 <script type="text/javascript">
     $(document).ready(function() {
         // Avatar toggle functionality
-        const STORAGE_KEY = 'receipt_avatar_visible';
+        const STORAGE_KEY = 'avatarColumnVisible';
         
         // Get saved state from localStorage, default to visible (true)
         let isAvatarVisible = localStorage.getItem(STORAGE_KEY) !== 'false';
         
-        // Apply initial state
+        // Apply initial state (also handle header visibility)
         updateAvatarVisibility(isAvatarVisible);
         
         // Handle toggle button click
-        $('#toggle_avatar_button').click(function() {
+        $('#toggle_avatar_button').click(function(e) {
+            e.preventDefault();
             isAvatarVisible = !isAvatarVisible;
             updateAvatarVisibility(isAvatarVisible);
             localStorage.setItem(STORAGE_KEY, isAvatarVisible);
@@ -81,11 +82,9 @@ if (isset($error_message)) {
 <?= view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align: right;">
-    <a href="javascript:void(0);">
-        <div class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
-            <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
-        </div>
-    </a>
+    <button type="button" class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+        <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
+    </button>
     <a href="javascript:printdoc();">
         <div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print') ?></div>
     </a>

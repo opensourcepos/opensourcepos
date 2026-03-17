@@ -96,7 +96,7 @@ helper('url');
                     </button>
                 </li>
                 <li class="pull-right">
-                    <button class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
+                    <button type="button" class="btn btn-warning btn-sm receipt-avatar-toggle-btn" id="toggle_avatar_button">
                         <span class="glyphicon glyphicon-picture">&nbsp;</span><span id="avatar_toggle_text">Hide Avatar</span>
                     </button>
                 </li>
@@ -144,13 +144,13 @@ helper('url');
     <table class="sales_table_100" id="register">
         <thead>
             <tr>
-                 <th style="width: 15%;" ><?= lang('Items.image') ?></th>
+                 <th class="avatar-header" style="width: 8%;" ><?= lang('Items.image') ?></th>
                 <th style="width: 5%;"><?= lang('Common.delete') ?></th>
-                <th style="width: 15%;"><?= lang(ucfirst($controller_name) . '.item_number') ?></th>
-                <th style="width: 30%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
+                <th style="width: 12%;"><?= lang(ucfirst($controller_name) . '.item_number') ?></th>
+                <th style="width: 27%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
                 <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.price') ?></th>
                 <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.quantity') ?></th>
-                <th style="width: 15%;"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
+                <th style="width: 13%;"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
                 <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.total') ?></th>
                 <th style="width: 5%;"><?= lang(ucfirst($controller_name) . '.update') ?></th>
             </tr>
@@ -159,7 +159,7 @@ helper('url');
         <tbody id="cart_contents">
             <?php if (count($cart) == 0) { ?>
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="alert alert-dismissible alert-info"><?= lang(ucfirst($controller_name) . '.no_items_in_cart') ?></div>
                     </td>
                 </tr>
@@ -169,12 +169,10 @@ helper('url');
             ?>
                     <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
                         <tr>
-                             <td class="avatar-column">
-
-                                 <?php if (!empty($item['pic_filename'])): ?>
-                                       <img src="<?= base_url('uploads/item_pics/' . esc($item['pic_filename'], 'url')) ?>" alt="avatar" style="height:40px;max-width:40px;">
-                       
-                                  <?php endif; ?>
+                            <td class="avatar-column">
+                                <?php if (!empty($item['pic_filename'])): ?>
+                                    <img src="<?= base_url('uploads/item_pics/' . esc($item['pic_filename'], 'url')) ?>" alt="avatar" style="height:40px;max-width:40px;">
+                                <?php endif; ?>
                             </td>
                             <td>
                                 <?php
@@ -582,12 +580,16 @@ helper('url');
             const isAvatarVisible = localStorage.getItem('avatarColumnVisible') !== 'false';
             if (!isAvatarVisible) {
                 $('.avatar-column').hide();
+                $('.avatar-header').hide();
+                $('#avatar_toggle_text').text('Show Avatar');
             }
 
             // Handle avatar toggle button click
-            $('#toggle_avatar_button').click(function() {
+            $('#toggle_avatar_button').click(function(e) {
+                e.preventDefault();
                 const isVisible = $('.avatar-column').is(':visible');
                 $('.avatar-column').toggle();
+                $('.avatar-header').toggle();
                 localStorage.setItem('avatarColumnVisible', !isVisible);
                 $(this).toggleClass('active');
                 var $toggleText = $('#avatar_toggle_text');
