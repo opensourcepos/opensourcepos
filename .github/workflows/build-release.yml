@@ -151,6 +151,9 @@ jobs:
       - name: Install dev dependencies
         run: composer install --no-interaction --optimize-autoloader
 
+      - name: Ensure Seeds directory exists
+        run: mkdir -p app/Database/Seeds && touch app/Database/Seeds/.gitkeep
+
       - name: Start MariaDB
         run: |
           docker run -d --name mysql \
@@ -180,6 +183,8 @@ jobs:
         run: docker exec -i mysql mysql -u root -proot ospos < app/Database/database.sql
 
       - name: Run PHPUnit tests
+        env:
+          CI_ENVIRONMENT: testing
         run: vendor/bin/phpunit --testdox
 
       - name: Stop MariaDB
