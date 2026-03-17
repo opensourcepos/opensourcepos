@@ -151,9 +151,6 @@ jobs:
       - name: Install dev dependencies
         run: composer install --no-interaction --optimize-autoloader
 
-      - name: Ensure Seeds directory exists
-        run: mkdir -p app/Database/Seeds && touch app/Database/Seeds/.gitkeep
-
       - name: Start MariaDB
         run: |
           docker run -d --name mysql \
@@ -178,6 +175,67 @@ jobs:
             docker logs mysql || true
             exit 1
           }
+
+      - name: Initialize database
+        run: |
+          docker exec -i mysql mysql -u root -proot ospos < app/Database/database.sql
+          
+          # Mark all migrations as already run (database.sql includes all schema changes)
+          docker exec -i mysql mysql -u root -proot ospos -e "
+            CREATE TABLE IF NOT EXISTS ospos_migrations (
+              id INT AUTO_INCREMENT PRIMARY KEY,
+              version VARCHAR(255) NOT NULL,
+              class VARCHAR(255) NOT NULL,
+              \`group\` VARCHAR(255) NOT NULL,
+              hostname VARCHAR(255),
+              time INT UNSIGNED,
+              batch INT UNSIGNED
+            );
+            INSERT INTO ospos_migrations (version, class, \`group\`, hostname, time, batch) VALUES
+              ('20170501150000', 'App\\Database\\Migrations\\Migration_Upgrade_To_3_1_1', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20170502221506', 'App\\Database\\Migrations\\Migration_sales_tax_data', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20180225100000', 'App\\Database\\Migrations\\Migration_Upgrade_To_3_2_0', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20180501100000', 'App\\Database\\Migrations\\Migration_Upgrade_To_3_2_1', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20181015100000', 'App\\Database\\Migrations\\Migration_attributes', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190111270000', 'App\\Database\\Migrations\\Migration_Upgrade_To_3_3_0', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190129212600', 'App\\Database\\Migrations\\Migration_indiagst', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190213210000', 'App\\Database\\Migrations\\Migration_indiagst1', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190220210000', 'App\\Database\\Migrations\\Migration_indiagst2', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190301124900', 'App\\Database\\Migrations\\Migration_decimal_attribute_type', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190317102600', 'App\\Database\\Migrations\\Migration_add_iso_4217', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190427100000', 'App\\Database\\Migrations\\Migration_paymenttracking', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190502100000', 'App\\Database\\Migrations\\Migration_refundtracking', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190612100000', 'App\\Database\\Migrations\\Migration_dbfix', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190615100000', 'App\\Database\\Migrations\\Migration_fix_attribute_datetime', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20190712150200', 'App\\Database\\Migrations\\Migration_fix_empty_reports', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20191008100000', 'App\\Database\\Migrations\\Migration_receipttaxindicator', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20191231100000', 'App\\Database\\Migrations\\Migration_paymentdatefix', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20200125100000', 'App\\Database\\Migrations\\Migration_saleschangeprice', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20200202000000', 'App\\Database\\Migrations\\Migration_taxamount', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20200215100000', 'App\\Database\\Migrations\\Migration_taxgroupconstraint', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20200508000000', 'App\\Database\\Migrations\\Migration_image_upload_defaults', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20200819000000', 'App\\Database\\Migrations\\Migration_modify_attr_links_constraint', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20201108100000', 'App\\Database\\Migrations\\Migration_cashrounding', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20201110000000', 'App\\Database\\Migrations\\Migration_add_item_kit_number', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20210103000000', 'App\\Database\\Migrations\\Migration_modify_session_datatype', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20210422000000', 'App\\Database\\Migrations\\Migration_database_optimizations', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20210422000001', 'App\\Database\\Migrations\\Migration_remove_duplicate_links', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20210714140000', 'App\\Database\\Migrations\\Migration_move_expenses_categories', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20220127000000', 'App\\Database\\Migrations\\Migration_Convert_To_Ci4', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20230307000000', 'App\\Database\\Migrations\\Migration_int_to_tinyint', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20230412000000', 'App\\Database\\Migrations\\Migration_add_missing_config', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20230412000001', 'App\\Database\\Migrations\\Migration_drop_account_number_index', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20240319000000', 'App\\Database\\Migrations\\Migration_Convert_Barcode_Types', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20240630000001', 'App\\Database\\Migrations\\Migration_fix_keys_for_db_upgrade', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20240826000000', 'App\\Database\\Migrations\\Migration_fix_duplicate_attributes', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20250213000000', 'App\\Database\\Migrations\\Migration_Attributes_fix_cascading_delete', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20250425000000', 'App\\Database\\Migrations\\Migration_sessions_migration', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20250519000000', 'App\\Database\\Migrations\\MigrationOptimizationIndices', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20250521000000', 'App\\Database\\Migrations\\MigrationFixImageFilenameSpaces', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20250522000000', 'App\\Database\\Migrations\\MigrationAttributeLinksUniqueConstraint', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20250716170000', 'App\\Database\\Migrations\\MigrationMissingConfigKeys', 'App', 'localhost', UNIX_TIMESTAMP(), 1),
+              ('20250729170000', 'App\\Database\\Migrations\\MigrationNullableTaxCategoryId', 'App', 'localhost', UNIX_TIMESTAMP(), 1);
+          "
 
       - name: Run PHPUnit tests
         env:
