@@ -130,7 +130,7 @@
                     <?= form_dropdown('employee_id', $employees, $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
                 <?php else: ?>
                     <?= form_hidden('employee_id', $expenses_info->employee_id) ?>
-                    <?= form_input(['name' => 'employee_name', 'value' => $employees[$expenses_info->employee_id] ?? '', 'class' => 'form-control', 'readonly' => 'readonly']) ?>
+                    <?= form_input(['name' => 'employee_name', 'value' => esc($employees[$expenses_info->employee_id] ?? ''), 'class' => 'form-control', 'readonly' => 'readonly']) ?>
                 <?php endif; ?>
             </div>
         </div>
