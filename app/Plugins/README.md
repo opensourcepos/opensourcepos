@@ -511,6 +511,7 @@ Settings are prefixed with the plugin ID (e.g., `caspos_api_key`) and stored in 
 | `app/Plugins/CasposPlugin/Models/Caspos_data.php` | `App\Plugins\CasposPlugin\Models\Caspos_data` |
 | `app/Plugins/CasposPlugin/Controllers/Dashboard.php` | `App\Plugins\CasposPlugin\Controllers\Dashboard` |
 | `app/Plugins/CasposPlugin/Libraries/Api_client.php` | `App\Plugins\CasposPlugin\Libraries\Api_client` |
+| `app/Plugins/CasposPlugin/Language/en/CasposPlugin.php` | *(Language file - returns array, no namespace)* |
 
 ## Database
 
@@ -571,6 +572,13 @@ app/Plugins/
     │   ├── config.php            # Configuration form
     │   ├── dashboard.php         # Dashboard view
     │   └── transaction_list.php
+    ├── Language/                 # Self-contained translations
+    │   ├── en/
+    │   │   └── CasposPlugin.php  # English translations
+    │   ├── es-ES/
+    │   │   └── CasposPlugin.php  # Spanish translations
+    │   └── de-DE/
+    │       └── CasposPlugin.php  # German translations
     ├── Libraries/
     │   └── Api_client.php        # Government API client
     ├── Helpers/
@@ -599,10 +607,239 @@ CasposPlugin-1.0.0.zip
     ├── Models/
     ├── Controllers/
     ├── Views/
+    ├── Language/
+    │   ├── en/
+    │   │   └── CasposPlugin.php
+    │   └── es-ES/
+    │       └── CasposPlugin.php
     └── README.md                 # Plugin documentation
 ```
 
 Users extract the zip to `app/Plugins/` and the plugin is ready to use.
+
+## Internationalization (Language Files)
+
+Plugins can include their own language files, making them completely self-contained. This allows plugins to provide translations without modifying core language files.
+
+### Plugin Language Directory Structure
+
+```
+app/Plugins/
+└── CasposPlugin/
+    ├── CasposPlugin.php
+    ├── Language/
+    │   ├── en/
+    │   │   └── CasposPlugin.php      # English translations
+    │   ├── es-ES/
+    │   │   └── CasposPlugin.php      # Spanish translations
+    │   └── de-DE/
+    │       └── CasposPlugin.php      # German translations
+    └── Views/
+        └── config.php
+```
+
+### Language File Format
+
+Each language file returns an array of translation strings:
+
+```php
+<?php
+// app/Plugins/CasposPlugin/Language/en/CasposPlugin.php
+
+return [
+    'caspos_plugin_name' => 'CASPOS Integration',
+    'caspos_plugin_desc' => 'Azerbaijan government cash register integration',
+    'caspos_print_receipt' => 'Print Fiscal Receipt',
+    'caspos_fiscal_number' => 'Fiscal Number',
+    'caspos_api_url' => 'API URL',
+    'caspos_api_key' => 'API Key',
+    'caspos_configuration' => 'CASPOS Configuration',
+    'caspos_sync_success' => 'Sale synchronized successfully',
+    'caspos_sync_failed' => 'Failed to synchronize sale',
+];
+```
+
+```php
+<?php
+// app/Plugins/CasposPlugin/Language/es-ES/CasposPlugin.php
+
+return [
+    'caspos_plugin_name' => 'Integración CASPOS',
+    'caspos_plugin_desc' => 'Integración del registro de efectivo del gobierno de Azerbaiyán',
+    'caspos_print_receipt' => 'Imprimir Recibo Fiscal',
+    'caspos_fiscal_number' => 'Número Fiscal',
+    'caspos_api_url' => 'URL de API',
+    'caspos_api_key' => 'Clave de API',
+    'caspos_configuration' => 'Configuración CASPOS',
+    'caspos_sync_success' => 'Venta sincronizada exitosamente',
+    'caspos_sync_failed' => 'Error al sincronizar la venta',
+];
+```
+
+### Loading Language Strings in Plugins
+
+The `BasePlugin` class provides a helper method to load plugin-specific language strings:
+
+```php
+<?php
+namespace App\Plugins\CasposPlugin;
+
+use App\Libraries\Plugins\BasePlugin;
+use CodeIgniter\Events\Events;
+
+class CasposPlugin extends BasePlugin
+{
+    public function getPluginName(): string
+    {
+        return $this->lang('caspos_plugin_name');
+    }
+    
+    public function getPluginDescription(): string
+    {
+        return $this->lang('caspos_plugin_desc');
+    }
+    
+    public function onItemSale(array $saleData): void
+    {
+        if (!$this->isEnabled()) {
+            return;
+        }
+        
+        $result = $this->sendToApi($saleData);
+        
+        if ($result['success']) {
+            $this->log('info', $this->lang('caspos_sync_success'));
+        } else {
+            $this->log('error', $this->lang('caspos_sync_failed') . ': ' . $result['error']);
+        }
+    }
+    
+    protected function lang(string $key, array $data = []): string
+    {
+        $language = \Config\Services::language();
+        $language->addLanguagePath(APPPATH . 'Plugins/CasposPlugin/Language/');
+        return $language->getLine($key, $data);
+    }
+}
+```
+
+### Using Language Strings in Plugin Views
+
+```php
+<?php
+// app/Plugins/CasposPlugin/Views/config.php
+
+$language = \Config\Services::language();
+$language->addLanguagePath(APPPATH . 'Plugins/CasposPlugin/Language/');
+?>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3><?= esc(lang('caspos_configuration')) ?></h3>
+    </div>
+    <div class="panel-body">
+        <?= form_open('plugins/caspos/save') ?>
+        
+        <div class="form-group">
+            <label for="api_url"><?= esc(lang('caspos_api_url')) ?></label>
+            <?= form_input('api_url', $settings['api_url'] ?? '', 'class="form-control"') ?>
+        </div>
+        
+        <div class="form-group">
+            <label for="api_key"><?= esc(lang('caspos_api_key')) ?></label>
+            <?= form_input('api_key', $settings['api_key'] ?? '', 'class="form-control"') ?>
+        </div>
+        
+        <?= form_submit('submit', lang('caspos_save'), 'class="btn btn-primary"') ?>
+        <?= form_close() ?>
+    </div>
+</div>
+```
+
+### Using Language Strings in View Hooks
+
+```php
+<?php
+// app/Plugins/CasposPlugin/Views/receipt_button.php
+
+$language = \Config\Services::language();
+$language->addLanguagePath(APPPATH . 'Plugins/CasposPlugin/Language/');
+?>
+
+<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="printCasposReceipt(<?= $sale['sale_id'] ?>)">
+    <span class="glyphicon glyphicon-print">&nbsp;</span>
+    <?= esc(lang('caspos_print_receipt')) ?>
+</a>
+```
+
+### BasePlugin Language Helper
+
+Add this method to `BasePlugin` to simplify language loading:
+
+```php
+<?php
+// app/Libraries/Plugins/BasePlugin.php
+
+abstract class BasePlugin implements PluginInterface
+{
+    protected function lang(string $key, array $data = []): string
+    {
+        $language = \Config\Services::language();
+        $pluginLangPath = APPPATH . 'Plugins/' . $this->getPluginDir() . '/Language/';
+        
+        if (is_dir($pluginLangPath)) {
+            $language->addLanguagePath($pluginLangPath);
+        }
+        
+        return $language->getLine($key, $data);
+    }
+    
+    abstract protected function getPluginDir(): string;
+}
+```
+
+### Benefits of Self-Contained Language Files
+
+1. **Plugin Independence**: No need to modify core language files
+2. **Easy Distribution**: Plugin zip includes all translations
+3. **Fallback Support**: Missing translations fall back to English
+4. **User Contributions**: Users can add translations to `Language/{locale}/` in the plugin directory
+
+### Example: Complete Self-Contained Plugin with Languages
+
+```
+app/Plugins/CasposPlugin/
+├── CasposPlugin.php               # Main plugin class
+├── Language/
+│   ├── en/
+│   │   └── CasposPlugin.php      # English (default)
+│   ├── es-ES/
+│   │   └── CasposPlugin.php      # Spanish
+│   ├── de-DE/
+│   │   └── CasposPlugin.php      # German
+│   └── az/
+│       └── CasposPlugin.php      # Azerbaijani
+├── Models/
+│   └── Caspos_data.php
+├── Controllers/
+│   └── Dashboard.php
+├── Views/
+│   ├── config.php
+│   ├── dashboard.php
+│   └── receipt_button.php
+└── Libraries/
+    └── Api_client.php
+```
+
+### Language File Naming Convention
+
+Language files should be named after the plugin class (e.g., `CasposPlugin.php`) to avoid conflicts with core language files and other plugins.
+
+```
+Language/{locale}/{PluginClass}.php
+```
+
+This ensures language strings are loaded from the correct plugin's Language directory.
 
 ## Example: Plugin with View Hooks
 
