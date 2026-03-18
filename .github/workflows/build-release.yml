@@ -151,8 +151,8 @@ jobs:
       - name: Install dev dependencies
         run: composer install --no-interaction --optimize-autoloader
 
-      - name: Ensure Seeds directory exists
-        run: mkdir -p app/Database/Seeds && touch app/Database/Seeds/.gitkeep
+      - name: Create .env file
+        run: cp .env.example .env
 
       - name: Start MariaDB
         run: |
