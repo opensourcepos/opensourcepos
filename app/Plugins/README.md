@@ -15,11 +15,16 @@ app/Plugins/
 ├── CasposPlugin/              # Plugin directory (self-contained)
 │   ├── CasposPlugin.php       # Main plugin class (required - must match directory name)
 │   ├── Models/                # Plugin-specific models
-│   │   └── Caspos_data.php
+│   │   └── CasposData.php
 │   ├── Controllers/           # Plugin-specific controllers
 │   │   └── Dashboard.php
 │   ├── Views/                 # Plugin-specific views
 │   │   └── config.php
+│   ├── Language/              # Plugin-specific translations (self-contained)
+│   │   ├── en/
+│   │   │   └── CasposPlugin.php
+│   │   └── es-ES/
+│   │       └── CasposPlugin.php
 │   ├── Libraries/            # Plugin-specific libraries
 │   ├── Helpers/              # Plugin-specific helpers
 │   └── config/               # Configuration files
@@ -301,14 +306,19 @@ app/Plugins/
 └── CasposPlugin/                    # Plugin directory
     ├── CasposPlugin.php             # Main class - namespace: App\Plugins\CasposPlugin
     ├── Models/                      # Plugin models - namespace: App\Plugins\CasposPlugin\Models
-    │   └── Caspos_data.php
+    │   └── CasposData.php
     ├── Controllers/                 # Plugin controllers - namespace: App\Plugins\CasposPlugin\Controllers
     │   └── Dashboard.php
     ├── Views/                       # Plugin views
     │   ├── config.php
     │   └── dashboard.php
+    ├── Language/                    # Plugin translations (self-contained)
+    │   ├── en/
+    │   │   └── CasposPlugin.php
+    │   └── es-ES/
+    │       └── CasposPlugin.php
     └── Libraries/                   # Plugin libraries - namespace: App\Plugins\CasposPlugin\Libraries
-        └── Api_client.php
+        └── ApiClient.php
 ```
 
 **Main Plugin Class:**
@@ -320,12 +330,12 @@ app/Plugins/
 namespace App\Plugins\CasposPlugin;
 
 use App\Libraries\Plugins\BasePlugin;
-use App\Plugins\CasposPlugin\Models\Caspos_data;
+use App\Plugins\CasposPlugin\Models\CasposData;
 use CodeIgniter\Events\Events;
 
 class CasposPlugin extends BasePlugin
 {
-    private ?Caspos_data $dataModel = null;
+    private ?CasposData $dataModel = null;
     
     public function getPluginId(): string
     {
@@ -352,10 +362,10 @@ class CasposPlugin extends BasePlugin
         Events::on('item_sale', [$this, 'onItemSale']);
     }
 
-    private function getDataModel(): Caspos_data
+    private function getDataModel(): CasposData
     {
         if ($this->dataModel === null) {
-            $this->dataModel = new Caspos_data();
+            $this->dataModel = new CasposData();
         }
         return $this->dataModel;
     }
@@ -370,7 +380,7 @@ class CasposPlugin extends BasePlugin
         $this->getDataModel()->saveSaleRecord($saleData);
         
         // Use internal library
-        $apiClient = new \App\Plugins\CasposPlugin\Libraries\Api_client();
+        $apiClient = new \App\Plugins\CasposPlugin\Libraries\ApiClient();
         $apiClient->sendToGovernment($saleData);
     }
 
@@ -403,13 +413,13 @@ class CasposPlugin extends BasePlugin
 
 ```php
 <?php
-// app/Plugins/CasposPlugin/Models/Caspos_data.php
+// app/Plugins/CasposPlugin/Models/CasposData.php
 
 namespace App\Plugins\CasposPlugin\Models;
 
 use CodeIgniter\Model;
 
-class Caspos_data extends Model
+class CasposData extends Model
 {
     protected $table = 'caspos_records';
     protected $primaryKey = 'id';
@@ -449,16 +459,16 @@ class Caspos_data extends Model
 namespace App\Plugins\CasposPlugin\Controllers;
 
 use App\Controllers\Secure_Controller;
-use App\Plugins\CasposPlugin\Models\Caspos_data;
+use App\Plugins\CasposPlugin\Models\CasposData;
 
 class Dashboard extends Secure_Controller
 {
-    private Caspos_data $dataModel;
+    private CasposData $dataModel;
     
     public function __construct()
     {
         parent::__construct('plugins');
-        $this->dataModel = new Caspos_data();
+        $this->dataModel = new CasposData();
     }
     
     public function getIndex(): void
@@ -508,9 +518,9 @@ Settings are prefixed with the plugin ID (e.g., `caspos_api_key`) and stored in 
 |--------------|-----------|
 | `app/Plugins/MyPlugin.php` | `App\Plugins\MyPlugin` |
 | `app/Plugins/CasposPlugin/CasposPlugin.php` | `App\Plugins\CasposPlugin\CasposPlugin` |
-| `app/Plugins/CasposPlugin/Models/Caspos_data.php` | `App\Plugins\CasposPlugin\Models\Caspos_data` |
+| `app/Plugins/CasposPlugin/Models/CasposData.php` | `App\Plugins\CasposPlugin\Models\CasposData` |
 | `app/Plugins/CasposPlugin/Controllers/Dashboard.php` | `App\Plugins\CasposPlugin\Controllers\Dashboard` |
-| `app/Plugins/CasposPlugin/Libraries/Api_client.php` | `App\Plugins\CasposPlugin\Libraries\Api_client` |
+| `app/Plugins/CasposPlugin/Libraries/ApiClient.php` | `App\Plugins\CasposPlugin\Libraries\ApiClient` |
 | `app/Plugins/CasposPlugin/Language/en/CasposPlugin.php` | *(Language file - returns array, no namespace)* |
 
 ## Database
@@ -563,8 +573,8 @@ app/Plugins/
 └── CasposPlugin/
     ├── CasposPlugin.php          # Main class, event handling
     ├── Models/
-    │   ├── Caspos_data.php       # Database model
-    │   └── Caspos_transaction.php
+    │   ├── CasposData.php        # Database model
+    │   └── CasposTransaction.php
     ├── Controllers/
     │   ├── Dashboard.php         # Admin dashboard
     │   └── Settings.php          # Settings page
@@ -580,7 +590,7 @@ app/Plugins/
     │   └── de-DE/
     │       └── CasposPlugin.php  # German translations
     ├── Libraries/
-    │   └── Api_client.php        # Government API client
+    │   └── ApiClient.php         # Government API client
     ├── Helpers/
     │   └── caspos_helper.php     # Helper functions
     └── config/
@@ -820,7 +830,7 @@ app/Plugins/CasposPlugin/
 │   └── az/
 │       └── CasposPlugin.php      # Azerbaijani
 ├── Models/
-│   └── Caspos_data.php
+│   └── CasposData.php
 ├── Controllers/
 │   └── Dashboard.php
 ├── Views/
@@ -828,7 +838,7 @@ app/Plugins/CasposPlugin/
 │   ├── dashboard.php
 │   └── receipt_button.php
 └── Libraries/
-    └── Api_client.php
+    └── ApiClient.php
 ```
 
 ### Language File Naming Convention
