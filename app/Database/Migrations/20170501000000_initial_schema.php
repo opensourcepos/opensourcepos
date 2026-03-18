@@ -17,13 +17,19 @@ class Migration_Initial_Schema extends Migration
      */
     public function up(): void
     {
-        // Check if database already has tables (existing install)
+        // Check if core application tables exist (existing install)
+        // Note: migrations table may exist even on fresh DB due to migration tracking
         $tables = $this->db->listTables();
         
-        if (!empty($tables)) {
-            // Database already populated - skip initial schema
-            // This is an existing installation upgrading from older version
-            return;
+        // Check for a core application table, not just migrations table
+        foreach ($tables as $table) {
+            // Strip prefix if present for comparison
+            $tableName = str_replace($this->db->getPrefix(), '', $table);
+            if (in_array($tableName, ['app_config', 'items', 'employees', 'people'])) {
+                // Database already populated - skip initial schema
+                // This is an existing installation upgrading from older version
+                return;
+            }
         }
         
         // Fresh install - load initial schema
