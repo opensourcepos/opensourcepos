@@ -28,40 +28,7 @@ class Migration_Initial_Schema extends Migration
         
         // Fresh install - load initial schema
         helper('migration');
-        $schemaPath = APPPATH . 'Database/database.sql';
-        
-        if (file_exists($schemaPath)) {
-            $sql = file_get_contents($schemaPath);
-            
-            // Split by semicolons and execute each statement
-            // Handle multi-line statements and DELIMITER changes
-            $this->executeSqlScript($sql);
-        }
-    }
-
-    /**
-     * Execute SQL script handling multi-line statements
-     */
-    private function executeSqlScript(string $sql): void
-    {
-        // Remove comments
-        $sql = preg_replace('/--.*$/m', '', $sql);
-        $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
-        
-        // Split by semicolons at end of lines
-        $statements = preg_split('/;\s*\n/', $sql);
-        
-        foreach ($statements as $statement) {
-            $statement = trim($statement);
-            if (!empty($statement)) {
-                try {
-                    $this->db->query($statement);
-                } catch (\Exception $e) {
-                    // Log but continue - some statements may fail on duplicate indexes etc.
-                    log_message('debug', 'Migration statement warning: ' . $e->getMessage());
-                }
-            }
-        }
+        execute_script(APPPATH . 'Database/Migrations/sqlscripts/initial_schema.sql');
     }
 
     /**
