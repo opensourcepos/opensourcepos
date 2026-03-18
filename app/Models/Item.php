@@ -148,7 +148,7 @@ class Item extends Model
             return $result;
         }
 
-        $pattern = '/(\w+)\s*:\s*([^\s,]+)(?:\s+(?:AND|OR)\s+)?/i';
+        $pattern = '/([[:alpha:]][[:alnum:] _-]*?)\s*:\s*([^\s,]+)(?:\s+(?:AND|OR)\s+)?/iu';
         $remaining = preg_replace($pattern, '', $search);
 
         if (preg_match_all($pattern, $search, $matches, PREG_SET_ORDER)) {
@@ -173,11 +173,11 @@ class Item extends Model
      *
      * @param string $search Search term
      * @param array $definitionIds Attribute definition IDs to search within
-     * @param bool $includeDeleted Whether to include deleted items
+     * @param bool $matchDeleted Whether to match items where deleted flag equals this value
      * @param string $logic 'AND' or 'OR' for multiple attribute matching
      * @return array Array of matching item_ids
      */
-    public function searchByAttributes(string $search, array $definitionIds, bool $includeDeleted = false, string $logic = 'OR'): array
+    public function searchByAttributes(string $search, array $definitionIds, bool $matchDeleted = false, string $logic = 'OR'): array
     {
         if ($definitionIds === [] || $search === '') {
             return [];
@@ -203,6 +203,11 @@ class Item extends Model
 
                 $definitionId = $definitionNameToId[$attrName];
 
+                // Skip if this attribute is not in the caller-provided definitionIds filter
+                if (!in_array($definitionId, $definitionIds, true)) {
+                    continue;
+                }
+
                 foreach ($values as $value) {
                     $builder = $this->db->table('attribute_links');
                     $builder->select('DISTINCT attribute_links.item_id');
@@ -216,7 +221,7 @@ class Item extends Model
                     $builder->where('attribute_links.definition_id', $definitionId);
                     $builder->where('attribute_links.sale_id', null);
                     $builder->where('attribute_links.receiving_id', null);
-                    $builder->where('items.deleted', $includeDeleted);
+                    $builder->where('items.deleted', $matchDeleted);
 
                     $foundIds = array_column($builder->get()->getResultArray(), 'item_id');
 
@@ -235,7 +240,7 @@ class Item extends Model
 
         if (!empty($parsed['terms'])) {
             $term = implode(' ', $parsed['terms']);
-            $termIds = $this->searchByAttributeValue($term, $definitionIds, $includeDeleted);
+            $termIds = $this->searchByAttributeValue($term, $definitionIds, $matchDeleted);
 
             if (empty($matchingItemIds)) {
                 return $termIds;
@@ -254,10 +259,10 @@ class Item extends Model
      *
      * @param string $search Search term
      * @param array $definitionIds Attribute definition IDs to search within
-     * @param bool $includeDeleted Whether to include deleted items
+     * @param bool $matchDeleted Whether to match items where deleted flag equals this value
      * @return array Array of matching item_ids
      */
-    private function searchByAttributeValue(string $search, array $definitionIds, bool $includeDeleted = false): array
+    private function searchByAttributeValue(string $search, array $definitionIds, bool $matchDeleted = false): array
     {
         $builder = $this->db->table('attribute_links');
         $builder->select('DISTINCT attribute_links.item_id');
@@ -271,7 +276,7 @@ class Item extends Model
         $builder->whereIn('attribute_links.definition_id', $definitionIds);
         $builder->where('attribute_links.sale_id', null);
         $builder->where('attribute_links.receiving_id', null);
-        $builder->where('items.deleted', $includeDeleted);
+        $builder->where('items.deleted', $matchDeleted);
 
         return array_column($builder->get()->getResultArray(), 'item_id');
     }
