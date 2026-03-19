@@ -108,4 +108,3 @@ function remove_backup(): void
     }
     log_message('info', "File $backup_path has been removed");
 }
-

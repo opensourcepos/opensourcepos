@@ -11,13 +11,16 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use Config\Database;
 
 class ItemsCsvImportTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
 
     protected $migrate = true;
-    protected $migrateOnce = false;
+    protected $migrateOnce = true;
+    protected $seed = '';
+    protected $seedOnce = true;
     protected $refresh = true;
     protected $namespace = null;
 
@@ -29,12 +32,20 @@ class ItemsCsvImportTest extends CIUnitTestCase
     protected $stock_location;
     protected $supplier;
 
+    public static function setUpBeforeClass(): void
+    {
+        $seeder = \Config\Database::seeder('tests');
+        $seeder->call('TestDatabaseBootstrapSeeder');
+    }
+
+
     protected function setUp(): void
     {
         parent::setUp();
+
         helper('importfile');
         helper('attribute');
-        
+
         $this->item = model(Item::class);
         $this->item_quantity = model(Item_quantity::class);
         $this->inventory = model(Inventory::class);
@@ -321,7 +332,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertTrue($result);
 
         $saved_taxes = $this->item_taxes->get_info($item_id);
-        
+
         $tax_names = array_column($saved_taxes, 'name');
         $this->assertContains('VAT', $tax_names);
         $this->assertContains('GST', $tax_names);
@@ -435,6 +446,52 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertEquals('Updated Category', $updated_item->category);
         $this->assertEquals(15.00, (float)$updated_item->cost_price);
         $this->assertEquals(30.00, (float)$updated_item->unit_price);
+    }
+
+    public function testImportDeleteAttributeFromExistingItem(): void
+    {
+        //Mock base item
+        $originalData = [
+            'item_id' => null,
+            'name' => 'Original Name',
+            'category' => 'Original Category',
+            'cost_price' => '10.00',
+            'unit_price' => '20.00',
+            'deleted' => 0
+        ];
+
+        $itemId = $this->item->save_value($originalData);
+
+        //Mock attribute
+        $definitionData = [
+            'definition_name' => 'Color',
+            'definition_type' => TEXT,
+            'definition_flags' => 0,
+            'deleted' => 0
+        ];
+        $definitionId = $this->attribute->saveDefinition($definitionData);
+
+        //Assign attribute to item
+        $attributeValue = 'Red';
+        $attributeId = $this->attribute->saveAttributeValue(
+            $attributeValue,
+            $definitionId,
+            $itemId,
+            false,
+            TEXT
+        );
+
+        //Mock CSV import
+        $updatedItemData = ['item_id' => $itemId];
+        $definitionData['definition_id'] = $definitionId;
+        $attributeDefinitionData = [$definitionData];
+        $updatedValues = ['Color' => '_DELETE_'];
+
+        $saveSuccess = $this->attribute->saveCSVRowAttributeData($updatedValues, $updatedItemData, $attributeDefinitionData);
+        $this->assertTrue($saveSuccess);
+
+        $resultingAttribute = $this->attribute->getAttributeValue($itemId, $definitionId);
+        $this->assertNull($resultingAttribute);
     }
 
     public function testImportItemWithAttributeText(): void
