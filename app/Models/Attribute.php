@@ -37,9 +37,10 @@ class Attribute extends Model
         'attribute_decimal'
     ];
 
-    public const SHOW_IN_ITEMS = 1;    // TODO: These need to be moved to constants.php
+    public const SHOW_IN_ITEMS = 1;
     public const SHOW_IN_SALES = 2;
     public const SHOW_IN_RECEIVINGS = 4;
+    public const SHOW_IN_SEARCH = 8;
     public function deleteDropdownAttributeValue(string $attribute_value, int $definition_id): bool
     {
         $attribute_id = $this->getAttributeIdByValue($attribute_value);

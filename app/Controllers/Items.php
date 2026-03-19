@@ -107,12 +107,13 @@ class Items extends Secure_Controller
         $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-        $sort = $this->sanitizeSortColumn(item_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
+
+        $definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+
+        $sort = $this->sanitizeSortColumn(item_sort_columns(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
-
-        $definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
@@ -131,6 +132,13 @@ class Items extends Secure_Controller
         // Check if any filter is set in the multiselect dropdown
         $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
         $filters = array_merge($filters, $request_filters);
+
+        // When search_custom is enabled, include attributes that are searchable but may not be visible in table
+        if (!empty($filters['search_custom'])) {
+            $searchable_definitions = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH);
+            $filters['definition_ids'] = array_keys($searchable_definitions);
+        }
+
         $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
         $total_rows = $this->item->get_found_rows($search, $filters);
         $data_rows = [];
