@@ -419,7 +419,22 @@ class Item extends Model
             $sortAlias = "sort_attr_{$sortDefinitionId}";
             $builder->join("attribute_links AS {$sortAlias}", "{$sortAlias}.item_id = items.item_id AND {$sortAlias}.definition_id = {$sortDefinitionId} AND {$sortAlias}.sale_id IS NULL AND {$sortAlias}.receiving_id IS NULL", 'left');
             $builder->join("attribute_values AS {$sortAlias}_val", "{$sortAlias}_val.attribute_id = {$sortAlias}.attribute_id", 'left');
-            $builder->orderBy("{$sortAlias}_val.attribute_value", $order);
+            
+            // Determine the correct column to sort by based on attribute type
+            $attribute = model(Attribute::class);
+            $definitionInfo = $attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS, true);
+            $sortColumn = "{$sortAlias}_val.attribute_value"; // default to text
+            
+            if (isset($definitionInfo[$sortDefinitionId])) {
+                $defType = is_array($definitionInfo[$sortDefinitionId]) ? ($definitionInfo[$sortDefinitionId]['type'] ?? TEXT) : TEXT;
+                if ($defType === DECIMAL) {
+                    $sortColumn = "{$sortAlias}_val.attribute_decimal";
+                } elseif ($defType === DATE) {
+                    $sortColumn = "{$sortAlias}_val.attribute_date";
+                }
+            }
+            
+            $builder->orderBy($sortColumn, $order);
         } else {
             $builder->orderBy($sort, $order);
         }
