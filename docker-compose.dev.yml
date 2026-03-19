@@ -20,7 +20,6 @@ services:
         networks:
             - app_net
         volumes:
-            - ./app/Database/database.sql:/docker-entrypoint-initdb.d/database.sql
             - mysql:/var/lib/mysql:rw
         environment:
             - MYSQL_ROOT_PASSWORD=pointofsale
