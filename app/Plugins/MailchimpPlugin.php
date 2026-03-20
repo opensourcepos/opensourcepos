@@ -7,10 +7,7 @@ use App\Libraries\Mailchimp_lib;
 use CodeIgniter\Events\Events;
 
 /**
- * Mailchimp Integration Plugin
- * 
- * Example plugin that integrates OSPOS with Mailchimp for customer newsletter subscriptions.
- * This demonstrates the plugin system architecture.
+ * Plugin that integrates OSPOS with Mailchimp for customer newsletter subscriptions.
  */
 class MailchimpPlugin extends BasePlugin
 {
@@ -23,12 +20,12 @@ class MailchimpPlugin extends BasePlugin
 
     public function getPluginName(): string
     {
-        return 'Mailchimp Integration';
+        return 'Mailchimp';
     }
 
     public function getPluginDescription(): string
     {
-        return 'Integrate with Mailchimp to sync customers to mailing lists when they are created or updated.';
+        return $this->lang('mailchimp_description');
     }
 
     public function getVersion(): string
@@ -41,12 +38,12 @@ class MailchimpPlugin extends BasePlugin
         Events::on('customer_saved', [$this, 'onCustomerSaved']);
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
         
-        $this->log('debug', 'Mailchimp plugin events registered');
+        log_message('debug', 'Mailchimp plugin events registered');
     }
 
     public function install(): bool
     {
-        $this->log('info', 'Installing Mailchimp plugin');
+        log_message('info', 'Installing Mailchimp plugin');
         
         $this->setSetting('api_key', '');
         $this->setSetting('list_id', '');
@@ -58,7 +55,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function uninstall(): bool
     {
-        $this->log('info', 'Uninstalling Mailchimp plugin');
+        log_message('info', 'Uninstalling Mailchimp plugin');
         return true;
     }
 
@@ -94,55 +91,42 @@ class MailchimpPlugin extends BasePlugin
         return true;
     }
 
-    /**
-     * Handle customer saved event.
-     * 
-     * @param array $customerData Customer information
-     */
     public function onCustomerSaved(array $customerData): void
     {
         if (!$this->isEnabled() || !$this->shouldSyncOnSave()) {
             return;
         }
 
-        $this->log('debug', "Customer saved event received for ID: {$customerData['person_id']}");
+        log_message('debug', "Customer saved event received for ID: {$customerData['person_id']}");
 
         try {
             $this->subscribeCustomer($customerData);
         } catch (\Exception $e) {
-            $this->log('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
+            log_message('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
         }
     }
 
-    /**
-     * Handle customer deleted event.
-     * 
-     * @param int $customerId Customer ID
-     */
     public function onCustomerDeleted(int $customerId): void
     {
         if (!$this->isEnabled()) {
             return;
         }
 
-        $this->log('debug', "Customer deleted event received for ID: {$customerId}");
+        log_message('debug', "Customer deleted event received for ID: {$customerId}");
     }
 
-    /**
-     * Subscribe customer to Mailchimp list.
-     */
     private function subscribeCustomer(array $customerData): bool
     {
         $apiKey = $this->getSetting('api_key');
         $listId = $this->getSetting('list_id');
 
         if (empty($apiKey) || empty($listId)) {
-            $this->log('warning', 'Mailchimp API key or List ID not configured');
+            log_message('warning', 'Mailchimp API key or List ID not configured');
             return false;
         }
 
         if (empty($customerData['email'])) {
-            $this->log('debug', 'Customer has no email, skipping Mailchimp sync');
+            log_message('debug', 'Customer has no email, skipping Mailchimp sync');
             return false;
         }
 
@@ -157,24 +141,18 @@ class MailchimpPlugin extends BasePlugin
         );
 
         if ($result) {
-            $this->log('info', "Successfully subscribed customer {$customerData['email']} to Mailchimp");
+            log_message('info', "Successfully subscribed customer {$customerData['email']} to Mailchimp");
             return true;
         }
 
         return false;
     }
 
-    /**
-     * Check if sync on save is enabled.
-     */
     private function shouldSyncOnSave(): bool
     {
         return $this->getSetting('sync_on_save', '1') === '1';
     }
 
-    /**
-     * Get Mailchimp library instance.
-     */
     private function getMailchimpLib(array $params = []): Mailchimp_lib
     {
         if ($this->mailchimpLib === null) {
@@ -183,15 +161,12 @@ class MailchimpPlugin extends BasePlugin
         return $this->mailchimpLib;
     }
 
-    /**
-     * Test the Mailchimp API connection.
-     */
     public function testConnection(): array
     {
         $apiKey = $this->getSetting('api_key');
         
         if (empty($apiKey)) {
-            return ['success' => false, 'message' => 'API key not configured'];
+            return ['success' => false, 'message' => $this->lang('mailchimp_api_key_required')];
         }
 
         $mailchimp = $this->getMailchimpLib(['api_key' => $apiKey]);
@@ -200,11 +175,23 @@ class MailchimpPlugin extends BasePlugin
         if ($result && isset($result['lists'])) {
             return [
                 'success' => true, 
-                'message' => 'API key is valid',
+                'message' => $this->lang('mailchimp_key_successfully'),
                 'lists' => $result['lists']
             ];
         }
 
-        return ['success' => false, 'message' => 'API key is invalid'];
+        return ['success' => false, 'message' => $this->lang('mailchimp_key_unsuccessfully')];
+    }
+
+    protected function lang(string $key, array $data = []): string
+    {
+        $language = \Config\Services::language();
+        $language->addLanguagePath(APPPATH . 'Plugins/MailchimpPlugin/Language/');
+        return $language->getLine($key, $data);
+    }
+
+    protected function getPluginDir(): string
+    {
+        return 'MailchimpPlugin';
     }
 }
