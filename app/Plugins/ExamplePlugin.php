@@ -38,12 +38,12 @@ class ExamplePlugin extends BasePlugin
         Events::on('item_change', [$this, 'onItemChange']);
         Events::on('item_sale', [$this, 'onItemSale']);
         
-        $this->log('debug', 'Example plugin events registered');
+        log_message('debug', 'Example plugin events registered');
     }
 
     public function install(): bool
     {
-        $this->log('info', 'Installing Example Plugin');
+        log_message('info', 'Installing Example Plugin');
         
         $this->setSetting('log_changes', '1');
         $this->setSetting('log_sales', '1');
@@ -53,7 +53,7 @@ class ExamplePlugin extends BasePlugin
 
     public function uninstall(): bool
     {
-        $this->log('info', 'Uninstalling Example Plugin');
+        log_message('info', 'Uninstalling Example Plugin');
         return true;
     }
 
@@ -83,28 +83,22 @@ class ExamplePlugin extends BasePlugin
         return true;
     }
 
-    /**
-     * Handle item change event.
-     */
     public function onItemChange(int $itemId): void
     {
-        if (!$this->isEnabled() || $this->getSetting('log_changes', '1') !== '1') {
+        if ($this->getSetting('log_changes', '1') !== '1') {
             return;
         }
         
-        $this->log('info', "Item changed: ID {$itemId}");
+        log_message('info', "Item changed: ID {$itemId}");
     }
 
-    /**
-     * Handle item sale event.
-     */
     public function onItemSale(array $saleData): void
     {
-        if (!$this->isEnabled() || $this->getSetting('log_sales', '1') !== '1') {
+        if ($this->getSetting('log_sales', '1') !== '1') {
             return;
         }
         
         $saleId = $saleData['sale_id_num'] ?? 'unknown';
-        $this->log('info', "Item sale: ID {$saleId}");
+        log_message('info', "Item sale: ID {$saleId}");
     }
 }

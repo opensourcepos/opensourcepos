@@ -93,7 +93,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function onCustomerSaved(array $customerData): void
     {
-        if (!$this->isEnabled() || !$this->shouldSyncOnSave()) {
+        if (!$this->shouldSyncOnSave()) {
             return;
         }
 
@@ -108,10 +108,6 @@ class MailchimpPlugin extends BasePlugin
 
     public function onCustomerDeleted(int $customerId): void
     {
-        if (!$this->isEnabled()) {
-            return;
-        }
-
         log_message('debug', "Customer deleted event received for ID: {$customerId}");
     }
 

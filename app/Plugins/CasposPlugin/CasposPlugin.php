@@ -34,12 +34,12 @@ class CasposPlugin extends BasePlugin
         Events::on('view:receipt_actions', [$this, 'injectReceiptButton']);
         Events::on('view:customer_tabs', [$this, 'injectCustomerTab']);
         
-        $this->log('debug', 'CASPOS plugin events registered');
+        log_message('debug', 'CASPOS plugin events registered');
     }
 
     public function install(): bool
     {
-        $this->log('info', 'Installing CASPOS plugin');
+        log_message('info', 'Installing CASPOS plugin');
         
         $this->setSetting('api_url', '');
         $this->setSetting('api_key', '');
@@ -51,7 +51,7 @@ class CasposPlugin extends BasePlugin
 
     public function uninstall(): bool
     {
-        $this->log('info', 'Uninstalling CASPOS plugin');
+        log_message('info', 'Uninstalling CASPOS plugin');
         return true;
     }
 
@@ -72,23 +72,19 @@ class CasposPlugin extends BasePlugin
 
     public function saveSettings(array $settings): bool
     {
-        if (isset($settings['api_url']))
-        {
+        if (isset($settings['api_url'])) {
             $this->setSetting('api_url', $settings['api_url']);
         }
         
-        if (isset($settings['api_key']))
-        {
+        if (isset($settings['api_key'])) {
             $this->setSetting('api_key', $settings['api_key']);
         }
         
-        if (isset($settings['merchant_id']))
-        {
+        if (isset($settings['merchant_id'])) {
             $this->setSetting('merchant_id', $settings['merchant_id']);
         }
         
-        if (isset($settings['show_receipt_button']))
-        {
+        if (isset($settings['show_receipt_button'])) {
             $this->setSetting('show_receipt_button', $settings['show_receipt_button'] ? '1' : '0');
         }
         
@@ -97,18 +93,12 @@ class CasposPlugin extends BasePlugin
 
     public function onItemSale(array $saleData): void
     {
-        if (!$this->isEnabled())
-        {
-            return;
-        }
-        
-        $this->log('info', "CASPOS: Processing sale {$saleData['sale_id_num']}");
+        log_message('info', "CASPOS: Processing sale {$saleData['sale_id_num']}");
     }
 
     public function injectReceiptButton(array $data): string
     {
-        if (!$this->isEnabled() || $this->getSetting('show_receipt_button', '1') !== '1')
-        {
+        if ($this->getSetting('show_receipt_button', '1') !== '1') {
             return '';
         }
         
@@ -117,11 +107,6 @@ class CasposPlugin extends BasePlugin
 
     public function injectCustomerTab(array $data): string
     {
-        if (!$this->isEnabled())
-        {
-            return '';
-        }
-        
         return view('Plugins/CasposPlugin/Views/customer_tab', $data);
     }
 }

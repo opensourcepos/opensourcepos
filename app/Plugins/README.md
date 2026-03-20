@@ -92,6 +92,8 @@ The `PluginManager` class handles:
 - Loading and registering enabled plugins
 - Managing plugin settings
 
+**Important:** The PluginManager only calls `registerEvents()` for enabled plugins. Disabled plugins never have their event callbacks registered with `Events::on()`. This means **you do not need to check `$this->isEnabled()` in your callback methods** - if the callback is registered, the plugin is enabled.
+
 ## Available Events
 
 OSPOS fires these events that plugins can listen to:
@@ -151,23 +153,16 @@ class CasposPlugin extends BasePlugin
     
     public function injectReceiptButton(array $data): string
     {
-        if (!$this->isEnabled()) {
-            return '';
-        }
-        
         // Return HTML from plugin's own view file
         return view('Plugins/CasposPlugin/Views/receipt_button', $data);
     }
     
     public function injectCustomerTab(array $data): string
     {
-        if (!$this->isEnabled()) {
-            return '';
-        }
-        
         return view('Plugins/CasposPlugin/Views/customer_tab', $data);
     }
 }
+```
 ```
 
 ### Plugin View Files
@@ -267,19 +262,11 @@ class MyPlugin extends BasePlugin
 
     public function onItemSale(array $saleData): void
     {
-        if (!$this->isEnabled()) {
-            return;
-        }
-        
         $this->log('info', "Processing sale: {$saleData['sale_id_num']}");
     }
 
     public function onItemChange(int $itemId): void
     {
-        if (!$this->isEnabled()) {
-            return;
-        }
-        
         $this->log('info', "Item changed: {$itemId}");
     }
 
@@ -372,10 +359,6 @@ class CasposPlugin extends BasePlugin
 
     public function onItemSale(array $saleData): void
     {
-        if (!$this->isEnabled()) {
-            return;
-        }
-        
         // Use internal model
         $this->getDataModel()->saveSaleRecord($saleData);
         
@@ -559,16 +542,12 @@ class CasposPlugin extends BasePlugin
     
     public function onItemSale(array $saleData): void
     {
-        if (!$this->isEnabled()) {
-            return;
-        }
-        
         $result = $this->sendToApi($saleData);
         
         if ($result['success']) {
-            $this->log('info', $this->lang('caspos_sync_success'));
+            log_message('info', $this->lang('caspos_sync_success'));
         } else {
-            $this->log('error', $this->lang('caspos_sync_failed') . ': ' . $result['error']);
+            log_message('error', $this->lang('caspos_sync_failed') . ': ' . $result['error']);
         }
     }
     
