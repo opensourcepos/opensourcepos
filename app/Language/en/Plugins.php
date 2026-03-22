@@ -1,0 +1,27 @@
+<?php
+return [
+    // Plugin Management
+    "plugins"                                   => "Plugins",
+    "plugin_management"                         => "Plugin Management",
+    "plugin_name"                               => "Plugin Name",
+    "plugin_description"                        => "Description",
+    "plugin_version"                            => "Version",
+    "plugin_status"                             => "Status",
+    "plugin_enabled"                            => "Plugin enabled successfully",
+    "plugin_enable_failed"                      => "Failed to enable plugin",
+    "plugin_disabled"                           => "Plugin disabled successfully",
+    "plugin_disable_failed"                     => "Failed to disable plugin",
+    "plugin_uninstalled"                        => "Plugin uninstalled successfully",
+    "plugin_uninstall_failed"                   => "Failed to uninstall plugin",
+    "plugin_not_found"                          => "Plugin not found",
+    "plugin_no_config"                          => "This plugin has no configuration options",
+    "settings_saved"                            => "Plugin settings saved successfully",
+    "settings_save_failed"                      => "Failed to save plugin settings",
+    "enable"                                    => "Enable",
+    "disable"                                   => "Disable",
+    "configure"                                 => "Configure",
+    "uninstall"                                 => "Uninstall",
+    "no_plugins_found"                          => "No plugins found",
+    "active"                                    => "Active",
+    "inactive"                                  => "Inactive",
+];
