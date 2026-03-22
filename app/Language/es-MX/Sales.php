@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "El número de orden de trabajo debe ser único.",
     "work_order_sent"                  => "Orden de trabajo enviada a",
     "work_order_unsent"                => "Falló la Orden de Trabajo al enviar a",
+    "sale_not_found"                   => "Venta no encontrada",
 ];

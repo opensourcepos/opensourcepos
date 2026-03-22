@@ -222,5 +222,6 @@ return [
     "work_order_number_duplicate"      => "หมายเลขคำสั่งงานต้องไม่ซ้ำกัน",
     "work_order_sent"                  => "คำสั่งงานส่งถึง",
     "work_order_unsent"                => "ส่งคำสั่งงานล้มเหลว",
+    "sale_not_found"                   => "ไม่พบการขาย",
     "selected_customer"                => "ลูกค้าที่เลือก",
 ];

@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "Arbeitsauftragsnummer muss eindeutig sein.",
     "work_order_sent"                  => "Arbeitsauftrag gesendet an",
     "work_order_unsent"                => "Der Arbeitsauftrag konnte nicht gesendet werden an",
+    "sale_not_found"                   => "Verkauf nicht gefunden",
 ];

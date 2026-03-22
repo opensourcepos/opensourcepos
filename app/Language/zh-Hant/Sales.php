@@ -222,4 +222,5 @@ return [
     "work_order_number_duplicate"      => "工作編號重複.",
     "work_order_sent"                  => "發送工作指示",
     "work_order_unsent"                => "工作指示發送失敗",
+    "sale_not_found"                   => "找不到銷售",
 ];
