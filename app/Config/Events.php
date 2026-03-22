@@ -32,6 +32,10 @@ Events::on('pre_system', static function (): void {
             });
         }
     }
+    
+    $pluginManager = new PluginManager();
+    $pluginManager->discoverPlugins();
+    $pluginManager->registerPluginEvents();
 });
 
 $config = new Load_config();
@@ -42,9 +46,3 @@ Events::on('DBQuery', [$db_log, 'db_log_queries']);
 
 $method = new Method();
 Events::on('pre_controller', [$method, 'validate_method']);
-
-Events::on('post_system', static function (): void {
-    $pluginManager = new PluginManager();
-    $pluginManager->discoverPlugins();
-    $pluginManager->registerPluginEvents();
-});

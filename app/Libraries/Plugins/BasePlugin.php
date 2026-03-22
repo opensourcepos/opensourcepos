@@ -53,7 +53,11 @@ abstract class BasePlugin implements PluginInterface
     {
         $prefixedSettings = [];
         foreach ($settings as $key => $value) {
-            $prefixedSettings["{$this->getPluginId()}_{$key}"] = (string)$value;
+            if (is_array($value) || is_object($value)) {
+                $prefixedSettings["{$this->getPluginId()}_{$key}"] = json_encode($value);
+            } else {
+                $prefixedSettings["{$this->getPluginId()}_{$key}"] = (string)$value;
+            }
         }
         
         return $this->configModel->batchSave($prefixedSettings);

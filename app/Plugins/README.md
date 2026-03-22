@@ -12,25 +12,15 @@ Plugins are self-contained packages that can be installed by simply dropping the
 
 ```
 app/Plugins/
-├── CasposPlugin/              # Plugin directory (self-contained)
-│   ├── CasposPlugin.php       # Main plugin class (required - must match directory name)
-│   ├── Models/                # Plugin-specific models
-│   │   └── CasposData.php
-│   ├── Controllers/           # Plugin-specific controllers
-│   │   └── Dashboard.php
-│   ├── Views/                 # Plugin-specific views
-│   │   └── config.php
-│   ├── Language/              # Plugin-specific translations (self-contained)
+├── MailchimpPlugin/              # Plugin directory (self-contained)
+│   ├── MailchimpPlugin.php       # Main plugin class (required - must match directory name)
+│   ├── Language/                # Plugin-specific translations (self-contained)
 │   │   ├── en/
-│   │   │   └── CasposPlugin.php
+│   │   │   └── MailchimpPlugin.php
 │   │   └── es-ES/
-│   │       └── CasposPlugin.php
-│   ├── Libraries/            # Plugin-specific libraries
-│   ├── Helpers/              # Plugin-specific helpers
-│   └── config/               # Configuration files
-│
-├── MailchimpPlugin.php        # Or single-file plugins (simple plugins)
-└── ExamplePlugin.php
+│   │       └── MailchimpPlugin.php
+│   └── Views/                   # Plugin-specific views
+│       └── config.php
 ```
 
 ### Installation Steps
@@ -47,7 +37,7 @@ The PluginManager recursively scans `app/Plugins/` directory:
 - **Single-file plugins**: `app/Plugins/MyPlugin.php` with namespace `App\Plugins\MyPlugin`
 - **Directory plugins**: `app/Plugins/MyPlugin/MyPlugin.php` with namespace `App\Plugins\MyPlugin\MyPlugin`
 
-Both formats are supported, but directory plugins allow for self-contained packages with their own MVC components.
+Both formats are supported, but directory plugins allow for self-contained packages with their own components.
 
 ## Architecture
 
@@ -115,7 +105,7 @@ Plugins can inject UI elements into core views using the event-based view hook s
 
 1. **Core views define hook points** using the `plugin_content()` helper
 2. **Plugins register listeners** for these view hooks in `registerEvents()`
-3. **Content is conditionally rendered** only if the plugin is enabled
+3. **Content is rendered** only when the plugin is enabled
 
 ### Step 1: Adding Hook Points in Core Views
 
@@ -140,29 +130,21 @@ In your core view files, use the `plugin_content()` helper to define injection p
 In your plugin class, register a listener that returns HTML content:
 
 ```php
-class CasposPlugin extends BasePlugin
+class MailchimpPlugin extends BasePlugin
 {
     public function registerEvents(): void
     {
-        Events::on('item_sale', [$this, 'onItemSale']);
+        Events::on('customer_saved', [$this, 'onCustomerSaved']);
         
         // View hooks - inject content into core views
-        Events::on('view:receipt_actions', [$this, 'injectReceiptButton']);
         Events::on('view:customer_tabs', [$this, 'injectCustomerTab']);
-    }
-    
-    public function injectReceiptButton(array $data): string
-    {
-        // Return HTML from plugin's own view file
-        return view('Plugins/CasposPlugin/Views/receipt_button', $data);
     }
     
     public function injectCustomerTab(array $data): string
     {
-        return view('Plugins/CasposPlugin/Views/customer_tab', $data);
+        return view('Plugins/MailchimpPlugin/Views/customer_tab', $data);
     }
 }
-```
 ```
 
 ### Plugin View Files
@@ -170,17 +152,11 @@ class CasposPlugin extends BasePlugin
 The plugin's view files are self-contained within the plugin directory:
 
 ```php
-// app/Plugins/CasposPlugin/Views/receipt_button.php
-<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="printCasposReceipt(<?= $sale['sale_id'] ?>)">
-    <span class="glyphicon glyphicon-print">&nbsp;</span>
-    Print Fiscal Receipt
-</a>
-
-// app/Plugins/CasposPlugin/Views/customer_tab.php
+// app/Plugins/MailchimpPlugin/Views/customer_tab.php
 <li>
-    <a href="#caspos_panel" data-toggle="tab">
-        <span class="glyphicon glyphicon-print">&nbsp;</span>
-        Fiscal Records
+    <a href="#mailchimp_panel" data-toggle="tab">
+        <span class="glyphicon glyphicon-envelope">&nbsp;</span>
+        Mailchimp
     </a>
 </li>
 ```
@@ -262,12 +238,12 @@ class MyPlugin extends BasePlugin
 
     public function onItemSale(array $saleData): void
     {
-        $this->log('info', "Processing sale: {$saleData['sale_id_num']}");
+        log_message('info', "Processing sale: {$saleData['sale_id_num']}");
     }
 
     public function onItemChange(int $itemId): void
     {
-        $this->log('info', "Item changed: {$itemId}");
+        log_message('info', "Item changed: {$itemId}");
     }
 
     public function install(): bool
@@ -290,21 +266,21 @@ For plugins that need database tables, controllers, models, and views:
 
 ```
 app/Plugins/
-└── CasposPlugin/                    # Plugin directory
-    ├── CasposPlugin.php             # Main class - namespace: App\Plugins\CasposPlugin
-    ├── Models/                      # Plugin models - namespace: App\Plugins\CasposPlugin\Models
-    │   └── CasposData.php
-    ├── Controllers/                 # Plugin controllers - namespace: App\Plugins\CasposPlugin\Controllers
+└── MailchimpPlugin/                    # Plugin directory
+    ├── MailchimpPlugin.php             # Main class - namespace: App\Plugins\MailchimpPlugin\MailchimpPlugin
+    ├── Models/                         # Plugin models
+    │   └── MailchimpData.php
+    ├── Controllers/                    # Plugin controllers
     │   └── Dashboard.php
-    ├── Views/                       # Plugin views
+    ├── Views/                          # Plugin views
     │   ├── config.php
     │   └── dashboard.php
-    ├── Language/                    # Plugin translations (self-contained)
+    ├── Language/                       # Plugin translations (self-contained)
     │   ├── en/
-    │   │   └── CasposPlugin.php
+    │   │   └── MailchimpPlugin.php
     │   └── es-ES/
-    │       └── CasposPlugin.php
-    └── Libraries/                   # Plugin libraries - namespace: App\Plugins\CasposPlugin\Libraries
+    │       └── MailchimpPlugin.php
+    └── Libraries/                      # Plugin libraries
         └── ApiClient.php
 ```
 
@@ -312,31 +288,31 @@ app/Plugins/
 
 ```php
 <?php
-// app/Plugins/CasposPlugin/CasposPlugin.php
+// app/Plugins/MailchimpPlugin/MailchimpPlugin.php
 
-namespace App\Plugins\CasposPlugin;
+namespace App\Plugins\MailchimpPlugin;
 
 use App\Libraries\Plugins\BasePlugin;
-use App\Plugins\CasposPlugin\Models\CasposData;
+use App\Plugins\MailchimpPlugin\Models\MailchimpData;
 use CodeIgniter\Events\Events;
 
-class CasposPlugin extends BasePlugin
+class MailchimpPlugin extends BasePlugin
 {
-    private ?CasposData $dataModel = null;
+    private ?MailchimpData $dataModel = null;
     
     public function getPluginId(): string
     {
-        return 'caspos';
+        return 'mailchimp';
     }
 
     public function getPluginName(): string
     {
-        return 'CASPOS Integration';
+        return 'Mailchimp';
     }
 
     public function getPluginDescription(): string
     {
-        return 'Azerbaijan government cash register integration';
+        return 'Integrate with Mailchimp to sync customers to mailing lists.';
     }
 
     public function getVersion(): string
@@ -346,133 +322,58 @@ class CasposPlugin extends BasePlugin
 
     public function registerEvents(): void
     {
-        Events::on('item_sale', [$this, 'onItemSale']);
+        Events::on('customer_saved', [$this, 'onCustomerSaved']);
+        Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
     }
 
-    private function getDataModel(): CasposData
+    private function getDataModel(): MailchimpData
     {
         if ($this->dataModel === null) {
-            $this->dataModel = new CasposData();
+            $this->dataModel = new MailchimpData();
         }
         return $this->dataModel;
     }
 
-    public function onItemSale(array $saleData): void
+    public function onCustomerSaved(array $customerData): void
     {
-        // Use internal model
-        $this->getDataModel()->saveSaleRecord($saleData);
+        if (!$this->shouldSyncOnSave()) {
+            return;
+        }
         
-        // Use internal library
-        $apiClient = new \App\Plugins\CasposPlugin\Libraries\ApiClient();
-        $apiClient->sendToGovernment($saleData);
+        $this->getDataModel()->syncCustomer($customerData);
     }
 
     public function install(): bool
     {
-        // Create plugin-specific database table
-        $this->getDataModel()->createTable();
-        
-        // Set default settings
-        $this->setSetting('api_url', '');
         $this->setSetting('api_key', '');
+        $this->setSetting('list_id', '');
+        $this->setSetting('sync_on_save', '1');
         return true;
     }
 
     public function uninstall(): bool
     {
-        // Drop plugin table
         $this->getDataModel()->dropTable();
         return true;
     }
 
     public function getConfigView(): ?string
     {
-        return 'Plugins/CasposPlugin/Views/config';
+        return 'Plugins/MailchimpPlugin/Views/config';
+    }
+    
+    protected function lang(string $key, array $data = []): string
+    {
+        $language = \Config\Services::language();
+        $language->addLanguagePath(APPPATH . 'Plugins/MailchimpPlugin/Language/');
+        return $language->getLine($key, $data);
+    }
+    
+    protected function getPluginDir(): string
+    {
+        return 'MailchimpPlugin';
     }
 }
-```
-
-**Plugin Model:**
-
-```php
-<?php
-// app/Plugins/CasposPlugin/Models/CasposData.php
-
-namespace App\Plugins\CasposPlugin\Models;
-
-use CodeIgniter\Model;
-
-class CasposData extends Model
-{
-    protected $table = 'caspos_records';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['sale_id', 'fiscal_number', 'api_response', 'created_at'];
-    
-    public function createTable(): void
-    {
-        $forge = \Config\Database::forge();
-        
-        $fields = [
-            'id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'sale_id' => ['type' => 'INT', 'constraint' => 11],
-            'fiscal_number' => ['type' => 'VARCHAR', 'constraint' => 100],
-            'api_response' => ['type' => 'TEXT'],
-            'created_at' => ['type' => 'TIMESTAMP']
-        ];
-        
-        $forge->addField($fields);
-        $forge->addKey('id', true);
-        $forge->createTable($this->table, true);
-    }
-    
-    public function dropTable(): void
-    {
-        $forge = \Config\Database::forge();
-        $forge->dropTable($this->table, true);
-    }
-}
-```
-
-**Plugin Controller:**
-
-```php
-<?php
-// app/Plugins/CasposPlugin/Controllers/Dashboard.php
-
-namespace App\Plugins\CasposPlugin\Controllers;
-
-use App\Controllers\Secure_Controller;
-use App\Plugins\CasposPlugin\Models\CasposData;
-
-class Dashboard extends Secure_Controller
-{
-    private CasposData $dataModel;
-    
-    public function __construct()
-    {
-        parent::__construct('plugins');
-        $this->dataModel = new CasposData();
-    }
-    
-    public function getIndex(): void
-    {
-        $data = ['records' => $this->dataModel->orderBy('created_at', 'DESC')->findAll(50)];
-        echo view('Plugins/CasposPlugin/Views/dashboard', $data);
-    }
-}
-```
-
-**Plugin View:**
-
-```php
-<?php
-// app/Plugins/CasposPlugin/Views/config.php
-
-echo form_open('plugins/caspos/save');
-echo form_label('API URL', 'api_url');
-echo form_input('api_url', $settings['api_url'] ?? '');
-echo form_submit('submit', 'Save');
-echo form_close();
 ```
 
 ## Internationalization (Language Files)
@@ -483,15 +384,15 @@ Plugins can include their own language files, making them completely self-contai
 
 ```
 app/Plugins/
-└── CasposPlugin/
-    ├── CasposPlugin.php
+└── MailchimpPlugin/
+    ├── MailchimpPlugin.php
     ├── Language/
     │   ├── en/
-    │   │   └── CasposPlugin.php      # English translations
+    │   │   └── MailchimpPlugin.php      # English translations
     │   ├── es-ES/
-    │   │   └── CasposPlugin.php      # Spanish translations
+    │   │   └── MailchimpPlugin.php      # Spanish translations
     │   └── de-DE/
-    │       └── CasposPlugin.php      # German translations
+    │       └── MailchimpPlugin.php      # German translations
     └── Views/
         └── config.php
 ```
@@ -502,18 +403,15 @@ Each language file returns an array of translation strings:
 
 ```php
 <?php
-// app/Plugins/CasposPlugin/Language/en/CasposPlugin.php
+// app/Plugins/MailchimpPlugin/Language/en/MailchimpPlugin.php
 
 return [
-    'caspos_plugin_name' => 'CASPOS Integration',
-    'caspos_plugin_desc' => 'Azerbaijan government cash register integration',
-    'caspos_print_receipt' => 'Print Fiscal Receipt',
-    'caspos_fiscal_number' => 'Fiscal Number',
-    'caspos_api_url' => 'API URL',
-    'caspos_api_key' => 'API Key',
-    'caspos_configuration' => 'CASPOS Configuration',
-    'caspos_sync_success' => 'Sale synchronized successfully',
-    'caspos_sync_failed' => 'Failed to synchronize sale',
+    'mailchimp'                     => 'Mailchimp',
+    'mailchimp_description'         => 'Integrate with Mailchimp to sync customers to mailing lists.',
+    'mailchimp_api_key'             => 'Mailchimp API Key',
+    'mailchimp_configuration'       => 'Mailchimp Configuration',
+    'mailchimp_key_successfully'    => 'API Key is valid.',
+    'mailchimp_key_unsuccessfully'  => 'API Key is invalid.',
 ];
 ```
 
@@ -522,116 +420,16 @@ return [
 The `BasePlugin` class can provide a helper method to load plugin-specific language strings:
 
 ```php
-<?php
-namespace App\Plugins\CasposPlugin;
-
-use App\Libraries\Plugins\BasePlugin;
-use CodeIgniter\Events\Events;
-
-class CasposPlugin extends BasePlugin
+protected function lang(string $key, array $data = []): string
 {
-    public function getPluginName(): string
-    {
-        return $this->lang('caspos_plugin_name');
-    }
-    
-    public function getPluginDescription(): string
-    {
-        return $this->lang('caspos_plugin_desc');
-    }
-    
-    public function onItemSale(array $saleData): void
-    {
-        $result = $this->sendToApi($saleData);
-        
-        if ($result['success']) {
-            log_message('info', $this->lang('caspos_sync_success'));
-        } else {
-            log_message('error', $this->lang('caspos_sync_failed') . ': ' . $result['error']);
-        }
-    }
-    
-    protected function lang(string $key, array $data = []): string
-    {
-        $language = \Config\Services::language();
-        $language->addLanguagePath(APPPATH . 'Plugins/CasposPlugin/Language/');
-        return $language->getLine($key, $data);
-    }
+    $language = \Config\Services::language();
+    $language->addLanguagePath(APPPATH . 'Plugins/' . $this->getPluginDir() . '/Language/');
+    return $language->getLine($key, $data);
 }
-```
 
-### Using Language Strings in Plugin Views
-
-```php
-<?php
-// app/Plugins/CasposPlugin/Views/config.php
-
-$language = \Config\Services::language();
-$language->addLanguagePath(APPPATH . 'Plugins/CasposPlugin/Language/');
-?>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3><?= esc(lang('caspos_configuration')) ?></h3>
-    </div>
-    <div class="panel-body">
-        <?= form_open('plugins/caspos/save') ?>
-        
-        <div class="form-group">
-            <label for="apiUrl"><?= esc(lang('caspos_api_url')) ?></label>
-            <?= form_input('api_url', $settings['api_url'] ?? '', 'class="form-control"') ?>
-        </div>
-        
-        <div class="form-group">
-            <label for="apiKey"><?= esc(lang('caspos_api_key')) ?></label>
-            <?= form_input('api_key', $settings['api_key'] ?? '', 'class="form-control"') ?>
-        </div>
-        
-        <?= form_submit('submit', lang('caspos_save'), 'class="btn btn-primary"') ?>
-        <?= form_close() ?>
-    </div>
-</div>
-```
-
-### Using Language Strings in View Hooks
-
-```php
-<?php
-// app/Plugins/CasposPlugin/Views/receipt_button.php
-
-$language = \Config\Services::language();
-$language->addLanguagePath(APPPATH . 'Plugins/CasposPlugin/Language/');
-?>
-
-<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="printCasposReceipt(<?= $sale['sale_id'] ?>)">
-    <span class="glyphicon glyphicon-print">&nbsp;</span>
-    <?= esc(lang('caspos_print_receipt')) ?>
-</a>
-```
-
-### BasePlugin Language Helper
-
-Add this method to `BasePlugin` to simplify language loading:
-
-```php
-<?php
-// app/Libraries/Plugins/BasePlugin.php
-
-abstract class BasePlugin implements PluginInterface
+protected function getPluginDir(): string
 {
-    protected function lang(string $key, array $data = []): string
-    {
-        $language = \Config\Services::language();
-        $pluginLangPath = APPPATH . 'Plugins/' . $this->getPluginDir() . '/Language/';
-        
-        if (is_dir($pluginLangPath)) {
-            $language->addLanguagePath($pluginLangPath);
-        }
-        
-        return $language->getLine($key, $data);
-    }
-    
-    abstract protected function getPluginDir(): string;
+    return 'MailchimpPlugin';
 }
 ```
 
@@ -641,16 +439,6 @@ abstract class BasePlugin implements PluginInterface
 2. **Easy Distribution**: Plugin zip includes all translations
 3. **Fallback Support**: Missing translations fall back to English
 4. **User Contributions**: Users can add translations to `Language/{locale}/` in the plugin directory
-
-### Language File Naming Convention
-
-Language files should be named after the plugin class (e.g., `CasposPlugin.php`) to avoid conflicts with core language files and other plugins.
-
-```
-Language/{locale}/{PluginClass}.php
-```
-
-This ensures language strings are loaded from the correct plugin's Language directory.
 
 ## Plugin Settings
 
@@ -670,30 +458,31 @@ $settings = $this->getSettings();
 $this->saveSettings(['key1' => 'value1', 'key2' => 'value2']);
 ```
 
-Settings are prefixed with the plugin ID (e.g., `caspos_api_key`) and stored in `ospos_plugin_config` table.
+Settings are prefixed with the plugin ID (e.g., `mailchimp_api_key`) and stored in `ospos_plugin_config` table.
 
 ## Namespace Reference
 
 | File Location | Namespace |
 |--------------|-----------|
 | `app/Plugins/MyPlugin.php` | `App\Plugins\MyPlugin` |
-| `app/Plugins/CasposPlugin/CasposPlugin.php` | `App\Plugins\CasposPlugin\CasposPlugin` |
-| `app/Plugins/CasposPlugin/Models/CasposData.php` | `App\Plugins\CasposPlugin\Models\CasposData` |
-| `app/Plugins/CasposPlugin/Controllers/Dashboard.php` | `App\Plugins\CasposPlugin\Controllers\Dashboard` |
-| `app/Plugins/CasposPlugin/Libraries/ApiClient.php` | `App\Plugins\CasposPlugin\Libraries\ApiClient` |
-| `app/Plugins/CasposPlugin/Language/en/CasposPlugin.php` | *(Language file - returns array, no namespace)* |
+| `app/Plugins/MailchimpPlugin/MailchimpPlugin.php` | `App\Plugins\MailchimpPlugin\MailchimpPlugin` |
+| `app/Plugins/MailchimpPlugin/Models/MailchimpData.php` | `App\Plugins\MailchimpPlugin\Models\MailchimpData` |
+| `app/Plugins/MailchimpPlugin/Controllers/Dashboard.php` | `App\Plugins\MailchimpPlugin\Controllers\Dashboard` |
+| `app/Plugins/MailchimpPlugin/Libraries/ApiClient.php` | `App\Plugins\MailchimpPlugin\Libraries\ApiClient` |
+| `app/Plugins/MailchimpPlugin/Language/en/MailchimpPlugin.php` | *(Language file - returns array, no namespace)* |
 
 ## Database
 
 Plugin settings are stored in the `ospos_plugin_config` table:
 
 ```sql
-CREATE TABLE ospos_plugin_config (
-    `key` varchar(100) NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS `ospos_plugin_config` (
+    `key` varchar(100) NOT NULL,
     `value` text NOT NULL,
-    created_at timestamp DEFAULT current_timestamp(),
-    updated_at timestamp DEFAULT current_timestamp() ON UPDATE current_timestamp()
-);
+    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
 For custom tables, plugins can create them during `install()` and drop them during `uninstall()`.
@@ -710,9 +499,9 @@ For custom tables, plugins can create them during `install()` and drop them duri
 Enable plugin logging to debug:
 
 ```php
-$this->log('debug', 'Debug message');
-$this->log('info', 'Info message');
-$this->log('error', 'Error message');
+log_message('debug', 'Debug message');
+log_message('info', 'Info message');
+log_message('error', 'Error message');
 ```
 
 Check logs in `writable/logs/`.
@@ -722,17 +511,17 @@ Check logs in `writable/logs/`.
 Plugin developers can package their plugins as zip files:
 
 ```
-CasposPlugin-1.0.0.zip
-└── CasposPlugin/
-    ├── CasposPlugin.php
+MailchimpPlugin-1.0.0.zip
+└── MailchimpPlugin/
+    ├── MailchimpPlugin.php
     ├── Models/
     ├── Controllers/
     ├── Views/
     ├── Language/
     │   ├── en/
-    │   │   └── CasposPlugin.php
+    │   │   └── MailchimpPlugin.php
     │   └── es-ES/
-    │       └── CasposPlugin.php
+    │       └── MailchimpPlugin.php
     └── README.md                 # Plugin documentation
 ```
 

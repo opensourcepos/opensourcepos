@@ -39,16 +39,19 @@ class PluginManager
 
             $className = $this->getClassNameFromFile($file->getPathname());
             
-            if (!$className || !class_exists($className)) {
+            if (!$className) {
+                continue;
+            }
+            
+            if (!class_exists($className)) {
+                continue;
+            }
+            
+            if (!is_subclass_of($className, PluginInterface::class)) {
                 continue;
             }
 
             $plugin = new $className();
-
-            if (!$plugin instanceof PluginInterface) {
-                log_message('warning', "Plugin {$className} does not implement PluginInterface");
-                continue;
-            }
 
             $this->plugins[$plugin->getPluginId()] = $plugin;
             log_message('debug', "Discovered plugin: {$plugin->getPluginName()}");
@@ -120,6 +123,11 @@ class PluginManager
 
     public function disablePlugin(string $pluginId): bool
     {
+        if (!$this->getPlugin($pluginId)) {
+            log_message('error', "Plugin not found: {$pluginId}");
+            return false;
+        }
+        
         $this->configModel->set($this->getEnabledKey($pluginId), '0');
         log_message('info', "Plugin disabled: {$pluginId}");
         

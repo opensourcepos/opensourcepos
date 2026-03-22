@@ -15,5 +15,6 @@ class PluginConfigTableCreate extends Migration
 
     public function down(): void
     {
+        $this->forge->dropTable('plugin_config', true);
     }
 }

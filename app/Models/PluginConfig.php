@@ -53,8 +53,11 @@ class PluginConfig extends Model
         $query = $builder->get();
         
         $settings = [];
+        $prefix = $pluginId . '_';
         foreach ($query->getResult() as $row) {
-            $key = str_replace($pluginId . '_', '', $row->key);
+            $key = str_starts_with($row->key, $prefix) 
+                ? substr($row->key, strlen($prefix)) 
+                : $row->key;
             $settings[$key] = $row->value;
         }
         
