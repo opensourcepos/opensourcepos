@@ -3,6 +3,7 @@
 namespace Tests\Libraries;
 
 use CodeIgniter\Test\CIUnitTestCase;
+use App\Enums\RewardOperation;
 use App\Libraries\Reward_lib;
 use App\Models\Customer;
 
@@ -167,7 +168,7 @@ class Reward_libTest extends CIUnitTestCase
      */
     public function testAdjustRewardPointsReturnsFalseForNullCustomer(): void
     {
-        $result = $this->rewardLib->adjustRewardPoints(null, 50, 'deduct');
+        $result = $this->rewardLib->adjustRewardPoints(null, 50, RewardOperation::Deduct);
         $this->assertFalse($result);
     }
 
@@ -176,7 +177,7 @@ class Reward_libTest extends CIUnitTestCase
      */
     public function testAdjustRewardPointsReturnsFalseForZeroAmount(): void
     {
-        $result = $this->rewardLib->adjustRewardPoints(1, 0, 'deduct');
+        $result = $this->rewardLib->adjustRewardPoints(1, 0, RewardOperation::Deduct);
         $this->assertFalse($result);
     }
 
@@ -263,7 +264,7 @@ class Reward_libTest extends CIUnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->rewardLib, $customerModel);
 
-        $this->rewardLib->adjustRewardPoints(1, 50, 'deduct');
+        $this->rewardLib->adjustRewardPoints(1, 50, RewardOperation::Deduct);
     }
 
     /**
@@ -287,7 +288,7 @@ class Reward_libTest extends CIUnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->rewardLib, $customerModel);
 
-        $this->rewardLib->adjustRewardPoints(1, 50, 'restore');
+        $this->rewardLib->adjustRewardPoints(1, 50, RewardOperation::Restore);
     }
 
     /**
@@ -330,7 +331,7 @@ class Reward_libTest extends CIUnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->rewardLib, $customerModel);
 
-        $result = $this->rewardLib->adjustRewardPoints(1, 50, 'deduct');
+        $result = $this->rewardLib->adjustRewardPoints(1, 50, RewardOperation::Deduct);
         $this->assertFalse($result);
     }
 

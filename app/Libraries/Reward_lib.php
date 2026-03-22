@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use App\Enums\RewardOperation;
 use App\Models\Customer;
 
 /**
@@ -38,10 +39,10 @@ class Reward_lib
      *
      * @param int|null $customerId Customer ID (null for walk-in customers)
      * @param float $rewardAmount Amount to deduct from points (for new/updated sales)
-     * @param string $operation Operation type: 'deduct', 'restore', 'adjust'
+     * @param RewardOperation $operation Operation type (Deduct, Restore, or Adjust)
      * @return bool Success status (false if insufficient points for deduct/adjust)
      */
-    public function adjustRewardPoints(?int $customerId, float $rewardAmount, string $operation): bool
+    public function adjustRewardPoints(?int $customerId, float $rewardAmount, RewardOperation $operation): bool
     {
         if (empty($customerId) || $rewardAmount == 0) {
             return false;
@@ -50,8 +51,8 @@ class Reward_lib
         $currentPoints = $this->customer->get_info($customerId)->points ?? 0;
 
         switch ($operation) {
-            case 'deduct':
-            case 'adjust':
+            case RewardOperation::Deduct:
+            case RewardOperation::Adjust:
                 if ($currentPoints < $rewardAmount) {
                     log_message(
                         'warning',
@@ -62,7 +63,7 @@ class Reward_lib
                 }
                 $this->customer->update_reward_points_value($customerId, $currentPoints - $rewardAmount);
                 return true;
-            case 'restore':
+            case RewardOperation::Restore:
                 $this->customer->update_reward_points_value($customerId, $currentPoints + $rewardAmount);
                 return true;
             default:
