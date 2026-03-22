@@ -137,7 +137,7 @@ class MailchimpPlugin extends BasePlugin
         );
 
         if ($result) {
-            log_message('info', "Successfully subscribed customer {$customerData['email']} to Mailchimp");
+            log_message('info', "Successfully subscribed customer ID {$customerData['person_id']} to Mailchimp");
             return true;
         }
 

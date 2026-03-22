@@ -2,15 +2,15 @@
 
 namespace App\Libraries\Plugins;
 
-use App\Models\Plugin_config;
+use App\Models\PluginConfig;
 
 abstract class BasePlugin implements PluginInterface
 {
-    protected Plugin_config $configModel;
+    protected PluginConfig $configModel;
 
     public function __construct()
     {
-        $this->configModel = new Plugin_config();
+        $this->configModel = new PluginConfig();
     }
 
     public function install(): bool

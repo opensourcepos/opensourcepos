@@ -4,12 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-/**
- * Plugin Configuration Model
- * 
- * Manages plugin configuration stored in ospos_plugin_config table.
- */
-class Plugin_config extends Model
+class PluginConfig extends Model
 {
     protected $table = 'plugin_config';
     protected $primaryKey = 'key';
@@ -20,9 +15,6 @@ class Plugin_config extends Model
         'value'
     ];
 
-    /**
-     * Check if a configuration key exists.
-     */
     public function exists(string $key): bool
     {
         $builder = $this->db->table('plugin_config');
@@ -31,9 +23,6 @@ class Plugin_config extends Model
         return ($builder->get()->getNumRows() === 1);
     }
 
-    /**
-     * Get a configuration value by key.
-     */
     public function get(string $key): ?string
     {
         $builder = $this->db->table('plugin_config');
@@ -46,9 +35,6 @@ class Plugin_config extends Model
         return null;
     }
 
-    /**
-     * Set a configuration value.
-     */
     public function set(string $key, string $value): bool
     {
         $builder = $this->db->table('plugin_config');
@@ -60,11 +46,6 @@ class Plugin_config extends Model
         return $builder->insert(['key' => $key, 'value' => $value]);
     }
 
-    /**
-     * Get all configuration values for a specific plugin.
-     * 
-     * @return array<string, string>
-     */
     public function getPluginSettings(string $pluginId): array
     {
         $builder = $this->db->table('plugin_config');
@@ -80,18 +61,12 @@ class Plugin_config extends Model
         return $settings;
     }
 
-    /**
-     * Delete a configuration key.
-     */
     public function deleteKey(string $key): bool
     {
         $builder = $this->db->table('plugin_config');
         return $builder->delete(['key' => $key]);
     }
 
-    /**
-     * Delete all configuration keys starting with a prefix.
-     */
     public function deleteAllStartingWith(string $prefix): bool
     {
         $builder = $this->db->table('plugin_config');
@@ -99,9 +74,6 @@ class Plugin_config extends Model
         return $builder->delete();
     }
 
-    /**
-     * Batch save configuration values.
-     */
     public function batchSave(array $data): bool
     {
         $success = true;
@@ -117,9 +89,6 @@ class Plugin_config extends Model
         return $success && $this->db->transStatus();
     }
 
-    /**
-     * Get all plugin configurations.
-     */
     public function getAll(): array
     {
         $builder = $this->db->table('plugin_config');
