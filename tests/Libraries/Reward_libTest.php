@@ -204,7 +204,7 @@ class Reward_libTest extends CIUnitTestCase
     public function testHandleCustomerChangeWithSameCustomerReturnsEmpty(): void
     {
         $result = $this->rewardLib->handleCustomerChange(1, 1, 50.0, 75.0);
-        $this->assertEquals(['restored' => 0.0, 'charged' => 0.0], $result);
+        $this->assertEquals(['restored' => 0.0, 'charged' => 0.0, 'insufficient' => false], $result);
     }
 
     /**
@@ -213,7 +213,7 @@ class Reward_libTest extends CIUnitTestCase
     public function testHandleCustomerChangeWithNullCustomers(): void
     {
         $result = $this->rewardLib->handleCustomerChange(null, null, 50.0, 75.0);
-        $this->assertEquals(['restored' => 0.0, 'charged' => 0.0], $result);
+        $this->assertEquals(['restored' => 0.0, 'charged' => 0.0, 'insufficient' => false], $result);
     }
 
     /**
@@ -288,5 +288,152 @@ class Reward_libTest extends CIUnitTestCase
         $property->setValue($this->rewardLib, $customerModel);
 
         $this->rewardLib->adjustRewardPoints(1, 50, 'restore');
+    }
+
+    /**
+     * Test hasSufficientPoints returns true when points exactly match required
+     */
+    public function testHasSufficientPointsReturnsTrueWhenExactMatch(): void
+    {
+        $customerModel = $this->getMockBuilder(Customer::class)
+            ->onlyMethods(['get_info'])
+            ->getMock();
+
+        $customerModel->method('get_info')
+            ->willReturn((object)['points' => 50]);
+
+        $reflection = new \ReflectionClass($this->rewardLib);
+        $property = $reflection->getProperty('customer');
+        $property->setAccessible(true);
+        $property->setValue($this->rewardLib, $customerModel);
+
+        $this->assertTrue($this->rewardLib->hasSufficientPoints(1, 50));
+    }
+
+    /**
+     * Test adjustRewardPoints returns false when insufficient points for deduct
+     */
+    public function testAdjustRewardPointsReturnsFalseWhenInsufficientPointsForDeduct(): void
+    {
+        $customerModel = $this->getMockBuilder(Customer::class)
+            ->onlyMethods(['get_info', 'update_reward_points_value'])
+            ->getMock();
+
+        $customerModel->method('get_info')
+            ->willReturn((object)['points' => 30]);
+
+        $customerModel->expects($this->never())
+            ->method('update_reward_points_value');
+
+        $reflection = new \ReflectionClass($this->rewardLib);
+        $property = $reflection->getProperty('customer');
+        $property->setAccessible(true);
+        $property->setValue($this->rewardLib, $customerModel);
+
+        $result = $this->rewardLib->adjustRewardPoints(1, 50, 'deduct');
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test adjustRewardDelta returns false when insufficient points for positive adjustment
+     */
+    public function testAdjustRewardDeltaReturnsFalseWhenInsufficientPoints(): void
+    {
+        $customerModel = $this->getMockBuilder(Customer::class)
+            ->onlyMethods(['get_info', 'update_reward_points_value'])
+            ->getMock();
+
+        $customerModel->method('get_info')
+            ->willReturn((object)['points' => 20]);
+
+        $customerModel->expects($this->never())
+            ->method('update_reward_points_value');
+
+        $reflection = new \ReflectionClass($this->rewardLib);
+        $property = $reflection->getProperty('customer');
+        $property->setAccessible(true);
+        $property->setValue($this->rewardLib, $customerModel);
+
+        $result = $this->rewardLib->adjustRewardDelta(1, 50);
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test adjustRewardDelta succeeds for negative adjustment (refund)
+     */
+    public function testAdjustRewardDeltaSucceedsForNegativeAdjustment(): void
+    {
+        $customerModel = $this->getMockBuilder(Customer::class)
+            ->onlyMethods(['get_info', 'update_reward_points_value'])
+            ->getMock();
+
+        $customerModel->method('get_info')
+            ->willReturn((object)['points' => 100]);
+
+        $customerModel->expects($this->once())
+            ->method('update_reward_points_value')
+            ->with(1, 150);
+
+        $reflection = new \ReflectionClass($this->rewardLib);
+        $property = $reflection->getProperty('customer');
+        $property->setAccessible(true);
+        $property->setValue($this->rewardLib, $customerModel);
+
+        $result = $this->rewardLib->adjustRewardDelta(1, -50);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test handleCustomerChange caps charge at available points when insufficient
+     */
+    public function testHandleCustomerChangeCapsChargeWhenInsufficient(): void
+    {
+        $customerModel = $this->getMockBuilder(Customer::class)
+            ->onlyMethods(['get_info', 'update_reward_points_value'])
+            ->getMock();
+
+        $customerModel->method('get_info')
+            ->willReturn((object)['points' => 30]);
+
+        $customerModel->expects($this->once())
+            ->method('update_reward_points_value')
+            ->with(2, 0);
+
+        $reflection = new \ReflectionClass($this->rewardLib);
+        $property = $reflection->getProperty('customer');
+        $property->setAccessible(true);
+        $property->setValue($this->rewardLib, $customerModel);
+
+        $result = $this->rewardLib->handleCustomerChange(null, 2, 0, 50.0);
+
+        $this->assertEquals(30.0, $result['charged']);
+        $this->assertTrue($result['insufficient']);
+    }
+
+    /**
+     * Test handleCustomerChange does not charge when new customer has zero points
+     */
+    public function testHandleCustomerChangeCapsChargeAtZero(): void
+    {
+        $customerModel = $this->getMockBuilder(Customer::class)
+            ->onlyMethods(['get_info', 'update_reward_points_value'])
+            ->getMock();
+
+        $customerModel->method('get_info')
+            ->willReturn((object)['points' => 0]);
+
+        $customerModel->expects($this->once())
+            ->method('update_reward_points_value')
+            ->with(2, 0);
+
+        $reflection = new \ReflectionClass($this->rewardLib);
+        $property = $reflection->getProperty('customer');
+        $property->setAccessible(true);
+        $property->setValue($this->rewardLib, $customerModel);
+
+        $result = $this->rewardLib->handleCustomerChange(null, 2, 0, 50.0);
+
+        $this->assertEquals(0.0, $result['charged']);
+        $this->assertTrue($result['insufficient']);
     }
 }

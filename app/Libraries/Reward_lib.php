@@ -34,11 +34,12 @@ class Reward_lib
     /**
      * Adjusts customer reward points for a sale transaction.
      * Handles new sales, sale updates, and sale cancellations.
+     * Prevents negative balances by validating sufficient points before deduction.
      *
      * @param int|null $customerId Customer ID (null for walk-in customers)
      * @param float $rewardAmount Amount to deduct from points (for new/updated sales)
      * @param string $operation Operation type: 'deduct', 'restore', 'adjust'
-     * @return bool Success status
+     * @return bool Success status (false if insufficient points for deduct/adjust)
      */
     public function adjustRewardPoints(?int $customerId, float $rewardAmount, string $operation): bool
     {
@@ -51,6 +52,14 @@ class Reward_lib
         switch ($operation) {
             case 'deduct':
             case 'adjust':
+                if ($currentPoints < $rewardAmount) {
+                    log_message(
+                        'warning',
+                        'Reward_lib::adjustRewardPoints insufficient points customer_id=' . $customerId
+                        . ' current=' . $currentPoints . ' requested=' . $rewardAmount
+                    );
+                    return false;
+                }
                 $this->customer->update_reward_points_value($customerId, $currentPoints - $rewardAmount);
                 return true;
             case 'restore':
@@ -64,16 +73,17 @@ class Reward_lib
     /**
      * Handles reward point adjustment when customer changes on a sale.
      * Restores points to previous customer, deducts from new customer.
+     * Prevents negative balances by capping deduction at available points.
      *
      * @param int|null $previousCustomerId Previous customer ID
      * @param int|null $newCustomerId New customer ID
      * @param float $previousRewardUsed Reward points used by previous customer
      * @param float $newRewardUsed Reward points to be used by new customer
-     * @return array ['restored' => float, 'charged' => float] Amounts restored/charged
+     * @return array ['restored' => float, 'charged' => float, 'insufficient' => bool] Amounts restored/charged
      */
     public function handleCustomerChange(?int $previousCustomerId, ?int $newCustomerId, float $previousRewardUsed, float $newRewardUsed): array
     {
-        $result = ['restored' => 0.0, 'charged' => 0.0];
+        $result = ['restored' => 0.0, 'charged' => 0.0, 'insufficient' => false];
 
         if ($previousCustomerId === $newCustomerId) {
             return $result;
@@ -87,8 +97,19 @@ class Reward_lib
 
         if (!empty($newCustomerId) && $newRewardUsed != 0) {
             $newPoints = $this->customer->get_info($newCustomerId)->points ?? 0;
-            $this->customer->update_reward_points_value($newCustomerId, $newPoints - $newRewardUsed);
-            $result['charged'] = $newRewardUsed;
+            
+            if ($newPoints < $newRewardUsed) {
+                log_message(
+                    'warning',
+                    'Reward_lib::handleCustomerChange insufficient points new_customer_id=' . $newCustomerId
+                    . ' available=' . $newPoints . ' requested=' . $newRewardUsed
+                );
+                $result['insufficient'] = true;
+            }
+            
+            $actualCharged = min($newPoints, $newRewardUsed);
+            $this->customer->update_reward_points_value($newCustomerId, max(0, $newPoints - $newRewardUsed));
+            $result['charged'] = $actualCharged;
         }
 
         return $result;
@@ -96,10 +117,11 @@ class Reward_lib
 
     /**
      * Adjusts reward points delta for same customer (e.g., payment amount changed).
+     * Prevents negative balances by validating sufficient points before adjustment.
      *
      * @param int|null $customerId Customer ID
-     * @param float $rewardAdjustment Difference between new and previous reward usage
-     * @return bool Success status
+     * @param float $rewardAdjustment Difference between new and previous reward usage (positive = more used)
+     * @return bool Success status (false if insufficient points)
      */
     public function adjustRewardDelta(?int $customerId, float $rewardAdjustment): bool
     {
@@ -108,6 +130,16 @@ class Reward_lib
         }
 
         $currentPoints = $this->customer->get_info($customerId)->points ?? 0;
+        
+        if ($rewardAdjustment > 0 && $currentPoints < $rewardAdjustment) {
+            log_message(
+                'warning',
+                'Reward_lib::adjustRewardDelta insufficient points customer_id=' . $customerId
+                . ' current=' . $currentPoints . ' adjustment=' . $rewardAdjustment
+            );
+            return false;
+        }
+        
         $this->customer->update_reward_points_value($customerId, $currentPoints - $rewardAdjustment);
         return true;
     }

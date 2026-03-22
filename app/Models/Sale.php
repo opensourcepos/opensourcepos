@@ -556,7 +556,14 @@ class Sale extends Model
 
                 if (!empty($newCustomerId) && $newRewardUsed != 0) {
                     $newPoints = $customer->get_info($newCustomerId)->points ?? 0;
-                    $customer->update_reward_points_value($newCustomerId, $newPoints - $newRewardUsed);
+                    if ($newPoints < $newRewardUsed) {
+                        log_message(
+                            'warning',
+                            'Sale::update insufficient points new_customer_id=' . $newCustomerId
+                            . ' available=' . $newPoints . ' requested=' . $newRewardUsed
+                        );
+                    }
+                    $customer->update_reward_points_value($newCustomerId, max(0, $newPoints - $newRewardUsed));
                     log_message(
                         'debug',
                         'Sale::update reward charge new_customer_id=' . $newCustomerId
@@ -568,6 +575,13 @@ class Sale extends Model
                 $rewardAdjustment = $newRewardUsed - $currentRewardUsed;
                 if ($rewardAdjustment != 0 && !empty($newCustomerId)) {
                     $currentPoints = $customer->get_info($newCustomerId)->points ?? 0;
+                    if ($rewardAdjustment > 0 && $currentPoints < $rewardAdjustment) {
+                        log_message(
+                            'warning',
+                            'Sale::update insufficient points customer_id=' . $newCustomerId
+                            . ' current=' . $currentPoints . ' adjustment=' . $rewardAdjustment
+                        );
+                    }
                     $customer->update_reward_points_value($newCustomerId, $currentPoints - $rewardAdjustment);
                     log_message(
                         'debug',
@@ -649,7 +663,7 @@ class Sale extends Model
         $totalAmount = 0;
         $totalAmountUsed = 0;
 
-        foreach ($payments as $paymentId => $payment) {
+        foreach ($payments as $payment) {
             $totalAmountUsed += $this->processPaymentType(
                 $payment,
                 $customer_id,
@@ -676,7 +690,7 @@ class Sale extends Model
 
         $customer = $customer->get_info($customer_id);
 
-        foreach ($items as $line => $itemData) {
+        foreach ($items as $itemData) {
             $currentItemInfo = $item->get_info($itemData['item_id']);
 
             if ($itemData['price'] == 0.00) {
@@ -905,16 +919,21 @@ class Sale extends Model
                 . ' payment_count=' . count($payments)
             );
             if ($rewardUsed > 0) {
-                $customerId = $this->get_customer($sale_id)->person_id;
-                $customer = model(Customer::class);
-                $currentPoints = $customer->get_info($customerId)->points ?? 0;
-                $customer->update_reward_points_value($customerId, $currentPoints + $rewardUsed);
-                log_message(
-                    'debug',
-                    'Sale::delete reward restore customer_id=' . $customerId
-                    . ' current_points=' . $currentPoints
-                    . ' restored=' . $rewardUsed
-                );
+                $customerObj = $this->get_customer($sale_id);
+                if (empty($customerObj) || empty($customerObj->person_id)) {
+                    log_message('error', 'Sale::delete cannot restore rewards - no customer for sale_id=' . $sale_id);
+                } else {
+                    $customerId = $customerObj->person_id;
+                    $customer = model(Customer::class);
+                    $currentPoints = $customer->get_info($customerId)->points ?? 0;
+                    $customer->update_reward_points_value($customerId, $currentPoints + $rewardUsed);
+                    log_message(
+                        'debug',
+                        'Sale::delete reward restore customer_id=' . $customerId
+                        . ' current_points=' . $currentPoints
+                        . ' restored=' . $rewardUsed
+                    );
+                }
             }
         }
 
@@ -1551,14 +1570,26 @@ class Sale extends Model
 
         if (!empty(strstr($paymentType, lang('Sales.giftcard')))) {
             $splitPayment = explode(':', $paymentType);
-            $currentGiftcardValue = $giftcard->get_giftcard_value($splitPayment[1]);
-            $giftcard->update_giftcard_value($splitPayment[1], $currentGiftcardValue - $paymentAmount);
+            if (count($splitPayment) < 2 || empty($splitPayment[1])) {
+                log_message('error', 'Sale::processPaymentType invalid giftcard format: ' . $paymentType);
+                return 0;
+            }
+            $giftcardNumber = $splitPayment[1];
+            $currentGiftcardValue = $giftcard->get_giftcard_value($giftcardNumber);
+            $giftcard->update_giftcard_value($giftcardNumber, $currentGiftcardValue - $paymentAmount);
             return 0;
         }
 
         if ($this->isRewardPayment($paymentType)) {
-            $currentRewardsValue = $customer->get_info($customerId)->points;
-            $customer->update_reward_points_value($customerId, $currentRewardsValue - $paymentAmount);
+            $currentRewardsValue = $customer->get_info($customerId)->points ?? 0;
+            if ($currentRewardsValue < $paymentAmount) {
+                log_message(
+                    'warning',
+                    'Sale::processPaymentType insufficient points customer_id=' . $customerId
+                    . ' available=' . $currentRewardsValue . ' requested=' . $paymentAmount
+                );
+            }
+            $customer->update_reward_points_value($customerId, max(0, $currentRewardsValue - $paymentAmount));
             return floatval($paymentAmount);
         }
 
