@@ -121,7 +121,7 @@
     $('#daterangepicker').daterangepicker({
         "ranges": {
             "<?= lang('Datepicker.today') ?>": [
-            "<?= date($config['dateformat'] . ' ' . $config['dateformat'], mktime(0, 0, 0, date("m"), date("d"), date("Y"))) ?>",
+            "<?= date($config['dateformat'] . ' ' . $config['timeformat'], mktime(0, 0, 0, date("m"), date("d"), date("Y"))) ?>",
             "<?= date($config['dateformat'] . ' ' . $config['timeformat'], mktime(23, 59, 59, date("m"), date("d"), date("Y"))) ?>"
         ],
         "<?= lang('Datepicker.today_last_year') ?>": [

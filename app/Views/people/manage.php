@@ -38,11 +38,11 @@ echo view('configs/config_header', $title_info);
 </script>
 
 <div class="d-flex gap-2 justify-content-end">
-    <button type="button" class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= '$controller_name/view' ?>" title="<?= lang(ucfirst($controller_name). '.new') ?>">
+    <button type="button" class="btn btn-primary modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc("$controller_name/view") ?>" title="<?= lang(ucfirst($controller_name). '.new') ?>">
         <i class="bi bi-person-add me-2"></i><?= lang(ucfirst($controller_name) .".new") ?>
     </button>
     <?php if ($controller_name == 'customers') { ?>
-    <button type="button" class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= '$controller_name/csvImport' ?>" title="<?= lang(ucfirst($controller_name) .'.import_items_csv') ?>">
+    <button type="button" class="btn btn-primary modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc("$controller_name/csvImport") ?>" title="<?= lang(ucfirst($controller_name) .'.import_items_csv') ?>">
         <i class="bi bi-file-earmark-arrow-down me-2"></i><?= lang('Common.import_csv') ?>
     </button>
     <?php } ?>

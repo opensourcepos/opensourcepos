@@ -15,26 +15,26 @@
 
     <div class="row">
         <div class="col-12 col-lg-6 mb-3">
-            <label for="msg-uid" class="form-label"><?= lang('Config.msg_uid'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <label for="msg_uid" class="form-label"><?= lang('Config.msg_uid'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
             <div class="input-group">
-                <span class="input-group-text" id="msg-uid-icon"><i class="bi bi-person"></i></span>
-                <input type="text" class="form-control" id="msg-uid" aria-describedby="msg-uid-icon" required value="<?= $config['msg_uid']; ?>">
+                <span class="input-group-text" id="msg_uid_icon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" name="msg_uid" id="msg_uid" aria-describedby="msg_uid_icon" required value="<?= esc($config['msg_uid']); ?>">
             </div>
         </div>
 
         <div class="col-12 col-lg-6 mb-3">
-            <label for="msg-pwd" class="form-label"><?= lang('Config.msg_pwd'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <label for="msg_pwd" class="form-label"><?= lang('Config.msg_pwd'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
             <div class="input-group">
-                <span class="input-group-text" id="msg-pwd-icon"><i class="bi bi-lock"></i></span>
-                <input type="password" class="form-control" id="msg-pwd" aria-describedby="msg-pwd-icon" required value="<?= $config['msg_pwd']; ?>">
+                <span class="input-group-text" id="msg_pwd_icon"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control" name="msg_pwd" id="msg_pwd" aria-describedby="msg_pwd_icon" required value="<?= esc($config['msg_pwd']); ?>">
             </div>
         </div>
 
         <div class="col-12 col-lg-6 mb-3">
-            <label for="msg-src" class="form-label"><?= lang('Config.msg_src'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <label for="msg_src" class="form-label"><?= lang('Config.msg_src'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
             <div class="input-group">
-                <span class="input-group-text" id="msg-src-icon"><i class="bi bi-megaphone"></i></span>
-                <input type="text" class="form-control" id="msg-src" aria-describedby="msg-src-icon" required value="<?= $config['msg_src'] == null ? $config['company'] : $config['msg_src']; ?>">
+                <span class="input-group-text" id="msg_src_icon"><i class="bi bi-megaphone"></i></span>
+                <input type="text" class="form-control" name="msg_src" id="msg_src" aria-describedby="msg_src_icon" required value="<?= esc($config['msg_src'] == null ? $config['company'] : $config['msg_src']); ?>">
             </div>
         </div>
     </div>

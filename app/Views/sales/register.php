@@ -163,10 +163,10 @@ helper('url');
                         <input type="text" name="customer" id="customer" class="form-control" value="<?= lang(ucfirst($controller_name) . '.start_typing_customer_name') ?>">
                     </div>
                     <div class="d-flex gap-2 justify-content-center mb-3">
-                        <button class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= 'customers/view' ?>" title="<?= lang(ucfirst($controller_name) .'.new_customer') ?>">
+                        <button class="btn btn-primary modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= 'customers/view' ?>" title="<?= lang(ucfirst($controller_name) .'.new_customer') ?>">
                             <i class="bi bi-person-add me-2"></i><?= lang(ucfirst($controller_name) .'.new_customer') ?>
                         </button>
-                        <button class="btn btn-secondary" id="show_keyboard_help" data-href="<?= esc('$controller_name/salesKeyboardHelp') ?>" title="<?= lang(ucfirst($controller_name) .'.key_title') ?>">
+                        <button class="btn btn-secondary modal-dlg" id="show_keyboard_help" data-href="<?= esc("$controller_name/salesKeyboardHelp") ?>" title="<?= lang(ucfirst($controller_name) .'.key_title') ?>">
                             <i class="bi bi-keyboard me-2"></i><?= lang(ucfirst($controller_name) .'.key_help') ?>
                         </button>
                     </div>

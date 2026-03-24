@@ -52,8 +52,8 @@ echo view('configs/config_header', $title_info);
 <?= view('partial/print_receipt', ['print_after_sale' => false, 'selected_printer' => 'takings_printer']) ?>
 
 <div class="d-flex gap-2 justify-content-end d-print-none">
-    <button type="button" class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= '$controller_name/view' ?>" title="<?= lang(esc(ucfirst($controller_name)) . '.new') //TODO: String Interpolation ?>">
-        <i class="bi bi-journal-check me-2"></i><?= lang(esc(ucfirst($controller_name)) . '.new') //TODO: String Interpolation ?>
+    <button type="button" class="btn btn-primary modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
+        <i class="bi bi-journal-check me-2"></i><?= lang(ucfirst($controller_name) . '.new') ?>
     </button>
     <button type="button" class="btn btn-primary" onclick="window.print()" title="<?= lang('Common.print') ?>">
         <i class="bi bi-printer me-2"></i><?= lang('Common.print') ?>

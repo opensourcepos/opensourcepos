@@ -33,7 +33,7 @@ echo view('configs/config_header', $title_info);
 </script>
 
 <div class="d-flex gap-2 justify-content-end">
-    <button type="button" class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc('$controller_name/view') ?>" title="<?= lang(ucfirst($controller_name). ".new") ?>">
+    <button type="button" class="btn btn-primary modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc("$controller_name/view") ?>" title="<?= lang(ucfirst($controller_name). ".new") ?>">
         <i class="bi bi-bookmark-plus me-2"></i><?= lang(ucfirst($controller_name). ".new") ?>
     </button>
 </div>

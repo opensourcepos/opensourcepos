@@ -82,10 +82,10 @@ echo view('configs/config_header', $title_info);
 <?= view('partial/table_filter_persistence', ['additional_params' => ['stock_location']]) ?>
 
 <div class="d-flex gap-2 justify-content-end">
-    <button type="button" class="btn btn-primary" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= '$controller_name/view' ?>" title="<?= lang(ucfirst($controller_name) .".new") ?>">
+    <button type="button" class="btn btn-primary modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) .".new") ?>">
         <i class="bi bi-tag me-2"></i><?= lang(ucfirst($controller_name) .".new") ?>
     </button>
-    <button type="button" class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= '$controller_name/csvImport' ?>" title="<?= lang('Items.import_items_csv') ?>">
+    <button type="button" class="btn btn-primary modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang('Items.import_items_csv') ?>">
         <i class="bi bi-file-earmark-arrow-down me-2"></i><?= lang('Common.import_csv') ?>
     </button>
 </div>
@@ -98,7 +98,7 @@ echo view('configs/config_header', $title_info);
         <button type="button" class="btn btn-secondary d-print-none" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= 'items/bulkEdit' ?>" title="<?= lang('Items.edit_multiple_items') ?>">
             <i class="bi bi-pencil-square"></i><span class="d-none d-md-inline ms-2"><?= lang('Items.bulk_edit') ?></span>
         </button>
-        <button type="button" class="btn btn-secondary d-print-none" data-href="<?= '$controller_name/generateBarcodes' ?>" title="<?= lang('Items.generate_barcodes') ?>">
+        <button type="button" class="btn btn-secondary d-print-none" data-href="<?= "$controller_name/generateBarcodes" ?>" title="<?= lang('Items.generate_barcodes') ?>">
             <i class="bi bi-upc-scan"></i><span class="d-none d-md-inline ms-2"><?= lang('Items.generate_barcodes') ?></span>
         </button>
         <input type="text" class="form-control" name="daterangepicker" id="daterangepicker">

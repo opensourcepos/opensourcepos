@@ -14,7 +14,7 @@ $grav_url = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($email))) .
                         <button type="button" id="modal-button-profile" onclick="modalSwitchProfile()" class="nav-link active">Profile</button>
                     </li>
                     <li class="nav-item" title="<?= lang('Employees.change_password'); ?>">
-                        <button type="button" id="modal-button-password" onclick="modalSwitchPassword()" class="nav-link"><?= lang('Employees.change_password'); ?></a>
+                        <button type="button" id="modal-button-password" onclick="modalSwitchPassword()" class="nav-link"><?= lang('Employees.change_password'); ?></button>
                     </li>
                 </ul>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
