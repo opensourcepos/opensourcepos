@@ -95,7 +95,7 @@ class PluginManager
 
     public function isPluginEnabled(string $pluginId): bool
     {
-        $enabled = $this->configModel->get($this->getEnabledKey($pluginId));
+        $enabled = $this->configModel->getValue($this->getEnabledKey($pluginId));
         return $enabled === '1' || $enabled === 'true';
     }
 
@@ -112,10 +112,10 @@ class PluginManager
                 log_message('error', "Failed to install plugin: {$pluginId}");
                 return false;
             }
-            $this->configModel->set($this->getInstalledKey($pluginId), '1');
+            $this->configModel->setValue($this->getInstalledKey($pluginId), '1');
         }
 
-        $this->configModel->set($this->getEnabledKey($pluginId), '1');
+        $this->configModel->setValue($this->getEnabledKey($pluginId), '1');
         log_message('info', "Plugin enabled: {$pluginId}");
         
         return true;
@@ -128,7 +128,7 @@ class PluginManager
             return false;
         }
         
-        $this->configModel->set($this->getEnabledKey($pluginId), '0');
+        $this->configModel->setValue($this->getEnabledKey($pluginId), '0');
         log_message('info', "Plugin disabled: {$pluginId}");
         
         return true;
@@ -154,12 +154,12 @@ class PluginManager
 
     public function getSetting(string $pluginId, string $key, mixed $default = null): mixed
     {
-        return $this->configModel->get("{$pluginId}_{$key}") ?? $default;
+        return $this->configModel->getValue("{$pluginId}_{$key}") ?? $default;
     }
 
     public function setSetting(string $pluginId, string $key, mixed $value): bool
     {
-        return $this->configModel->set("{$pluginId}_{$key}", $value);
+        return $this->configModel->setValue("{$pluginId}_{$key}", $value);
     }
 
     private function getEnabledKey(string $pluginId): string

@@ -23,7 +23,7 @@ class PluginConfig extends Model
         return ($builder->get()->getNumRows() === 1);
     }
 
-    public function get(string $key): ?string
+    public function getValue(string $key): ?string
     {
         $builder = $this->db->table('plugin_config');
         $query = $builder->getWhere(['key' => $key], 1);
@@ -35,7 +35,7 @@ class PluginConfig extends Model
         return null;
     }
 
-    public function set(string $key, string $value): bool
+    public function setValue(string $key, string $value): bool
     {
         $builder = $this->db->table('plugin_config');
         
@@ -84,7 +84,7 @@ class PluginConfig extends Model
         $this->db->transStart();
 
         foreach ($data as $key => $value) {
-            $success &= $this->set($key, $value);
+            $success &= $this->setValue($key, $value);
         }
 
         $this->db->transComplete();

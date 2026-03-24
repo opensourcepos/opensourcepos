@@ -25,13 +25,13 @@ abstract class BasePlugin implements PluginInterface
 
     public function isEnabled(): bool
     {
-        $enabled = $this->configModel->get("{$this->getPluginId()}_enabled");
+        $enabled = $this->configModel->getValue("{$this->getPluginId()}_enabled");
         return $enabled === '1' || $enabled === 'true';
     }
 
     protected function getSetting(string $key, mixed $default = null): mixed
     {
-        $value = $this->configModel->get("{$this->getPluginId()}_{$key}");
+        $value = $this->configModel->getValue("{$this->getPluginId()}_{$key}");
         return $value ?? $default;
     }
 
@@ -41,7 +41,7 @@ abstract class BasePlugin implements PluginInterface
             ? json_encode($value) 
             : (string)$value;
             
-        return $this->configModel->set("{$this->getPluginId()}_{$key}", $stringValue);
+        return $this->configModel->setValue("{$this->getPluginId()}_{$key}", $stringValue);
     }
 
     public function getSettings(): array
