@@ -597,6 +597,34 @@ class Sales extends Secure_Controller
                 ? parse_quantity($this->request->getPost('discount'))
                 : parse_decimals($this->request->getPost('discount'));
 
+            if ($price < 0) {
+                $data['error'] = lang('Sales.negative_price_invalid');
+                return $this->_reload($data);
+            }
+
+            if ($quantity < 0) {
+                $data['error'] = lang('Sales.negative_quantity_invalid');
+                return $this->_reload($data);
+            }
+
+            if ($discount < 0) {
+                $data['error'] = lang('Sales.negative_discount_invalid');
+                return $this->_reload($data);
+            }
+
+            if ($discount_type == PERCENT && $discount > 100) {
+                $data['error'] = lang('Sales.discount_percent_exceeds_100');
+                return $this->_reload($data);
+            }
+
+            if ($discount_type == FIXED) {
+                $item_total = bcmul($quantity, $price);
+                if ($discount > $item_total) {
+                    $data['error'] = lang('Sales.discount_exceeds_item_total');
+                    return $this->_reload($data);
+                }
+            }
+
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
             $discounted_total = $this->request->getPost('discounted_total') != ''
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
@@ -722,6 +750,12 @@ class Sales extends Secure_Controller
         $data['non_cash_total'] = $totals['total'];
         $data['cash_amount_due'] = $totals['cash_amount_due'];
         $data['non_cash_amount_due'] = $totals['amount_due'];
+
+        // Prevent negative total sales (fraud/theft vector) - returns can have negative totals for legitimate refunds
+        if ($this->sale_lib->get_mode() != 'return' && bccomp($totals['total'], '0') < 0) {
+            $data['error'] = lang('Sales.negative_total_invalid');
+            return $this->_reload($data);
+        }
 
         if ($data['cash_mode']) {    // TODO: Convert this to ternary notation
             $data['amount_due'] = $totals['cash_amount_due'];
