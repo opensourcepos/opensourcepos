@@ -598,12 +598,15 @@ class Sales extends Secure_Controller
                 : parse_decimals($this->request->getPost('discount'));
 
             // Validate non-negative values to prevent fraudulent negative-total sales
+            // Return mode legitimately uses negative quantities, so exempt quantity check
+            $is_return_mode = $this->sale_lib->get_mode() == 'return';
+
             if ($price < 0) {
                 $data['error'] = lang('Sales.negative_price_invalid');
                 return $this->_reload($data);
             }
 
-            if ($quantity < 0) {
+            if (!$is_return_mode && $quantity < 0) {
                 $data['error'] = lang('Sales.negative_quantity_invalid');
                 return $this->_reload($data);
             }
@@ -619,7 +622,7 @@ class Sales extends Secure_Controller
             }
 
             if ($discount_type == FIXED) {
-                $item_total = bcmul($quantity, $price);
+                $item_total = bcmul(abs($quantity), $price);
                 if ($discount > $item_total) {
                     $data['error'] = lang('Sales.discount_exceeds_item_total');
                     return $this->_reload($data);
