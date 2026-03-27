@@ -22,7 +22,7 @@ return [
     'date_required' => "",
     'debit' => "",
     'debit_filter' => "",
-    'description' => "",
+    'description' => "Opis",
     'due' => "",
     'due_filter' => "",
     'employee' => "",
