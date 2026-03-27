@@ -19,5 +19,5 @@ return [
     'successful_adding' => "Kategoria Wydatków została dodana",
     'successful_deleted' => "Kategoria Wydatków została usunięta",
     'successful_updating' => "Kategoria Wydatków została zaktualizowana",
-    'update' => "",
+    'update' => "Aktualizacja Kategorii",
 ];
