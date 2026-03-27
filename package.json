@@ -26,7 +26,12 @@
     },
     "scripts": {
         "build": "gulp default",
-        "gulp": "gulp"
+        "gulp": "gulp",
+        "test": "cd integration-tests && playwright test",
+        "test:headed": "cd integration-tests && playwright test --headed",
+        "test:ui": "cd integration-tests && playwright test --ui",
+        "test:debug": "cd integration-tests && playwright test --debug",
+        "test:install": "cd integration-tests && playwright install --with-deps"
     },
     "type": "module",
     "dependencies": {
@@ -64,6 +69,8 @@
         "tableexport.jquery.plugin": "^1.30.0"
     },
     "devDependencies": {
+        "@playwright/test": "^1.44.0",
+        "@types/node": "^20.11.0",
         "gulp": "^5.0.0",
         "gulp-clean": "^0.4.0",
         "gulp-clean-css": "^4.3.0",

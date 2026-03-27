@@ -1,0 +1,144 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'app/**'
+      - 'public/**'
+      - 'docker/**'
+      - 'docker-compose*.yml'
+      - 'tests/**'
+      - 'integration-tests/**'
+      - '.github/workflows/integration-tests.yml'
+  pull_request:
+    branches: [ master, main ]
+    paths:
+      - 'app/**'
+      - 'public/**'
+      - 'docker/**'
+      - 'docker-compose*.yml'
+      - 'tests/**'
+      - 'integration-tests/**'
+      - '.github/workflows/integration-tests.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    name: Docker Integration Tests
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Basic Integration Tests
+        run: chmod +x integration-tests/run-integration-tests.sh && cd integration-tests && ./run-integration-tests.sh
+
+      - name: View Logs on Failure
+        if: failure()
+        run: |
+          echo "=== Application Logs ==="
+          docker logs opensourcepos-integration-tests-ospos-1
+          echo ""
+          echo "=== Database Logs ==="
+          docker logs mysql || docker logs opensourcepos-mysql || echo "No database logs found"
+
+      - name: Stop Docker Stack
+        if: always()
+        run: docker compose down -v || true
+
+  playwright:
+    name: Playwright E2E Tests
+    runs-on: ubuntu-22.04
+    needs: integration
+    if: always()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium firefox
+
+      - name: Start Docker Stack
+        run: docker compose up -d
+
+      - name: Wait for Application
+        run: |
+          echo "Waiting for application to be ready..."
+          timeout 90 bash -c 'until curl -s -f http://localhost/ > /dev/null; do sleep 2; done'
+          echo "Application is ready!"
+
+      - name: Run Playwright Tests
+        run: npm run test
+        env:
+          BASE_URL: http://localhost
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: integration-tests/playwright-report/
+          retention-days: 7
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: integration-tests/test-results/
+          retention-days: 7
+
+      - name: Upload Screenshots on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-screenshots
+          path: integration-tests/test-results/**/*.png
+          retention-days: 7
+
+      - name: Upload Trace Files on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: integration-tests/test-results/**/*.zip
+          retention-days: 7
+
+      - name: View Logs on Failure
+        if: failure()
+        run: |
+          echo "=== Application Logs ==="
+          docker logs opensourcepos-integration-tests-ospos-1
+          echo ""
+          echo "=== Database Logs ==="
+          docker logs mysql || docker logs opensourcepos-mysql || echo "No database logs found"
+
+      - name: Stop Docker Stack
+        if: always()
+        run: docker compose down -v || true
