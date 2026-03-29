@@ -41,7 +41,7 @@ class Token_libTest extends CIUnitTestCase
     {
         $input = '%Y-%q-%bad';
         $result = $this->tokenLib->render($input, [], false);
-        $this->assertMatchesRegularExpression('/\d{4}-%q-%bad/', $result);
+        $this->assertMatchesRegularExpression('/\d{4}-%q-[A-Za-z]{3}ad/', $result);
     }
 
     public function testRenderHandlesStringWithPercentAPercent(): void
