@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Email_lib;
+use App\Libraries\InvoiceAttachment\InvoiceAttachmentGenerator;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
 use App\Libraries\Token_lib;
@@ -905,44 +906,17 @@ class Sales extends Secure_Controller
             $text = $this->token_lib->render($text, $tokens);
             $sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
 
-            $attachments = [];
+            // Add config and customer object for attachment generation
+            $sale_data['config'] = $this->config;
+            $customer_id = $this->sale_lib->get_customer();
+            if ($customer_id && $customer_id != NEW_ENTRY) {
+                $sale_data['customer_object'] = $this->customer->get_info($customer_id);
+            }
+
+            // Generate attachments based on config
             $invoiceFormat = $this->config['invoice_format'] ?? 'pdf_only';
-            $canGenerateUbl = in_array($type, ['invoice', 'tax_invoice'], true)
-                && !empty($sale_data['invoice_number']);
-
-            if ($invoiceFormat === 'pdf_only' || $invoiceFormat === 'both') {
-                $view = Services::renderer();
-                $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
-
-                helper(['dompdf', 'file']);
-                $pdfPath = tempnam(sys_get_temp_dir(), 'ospos_pdf_');
-                if ($pdfPath !== false) {
-                    $filename = $pdfPath . '.pdf';
-                    rename($pdfPath, $filename);
-                    if (file_put_contents($filename, create_pdf($html)) !== false) {
-                        $attachments[] = $filename;
-                    }
-                }
-            }
-
-            if ($canGenerateUbl && ($invoiceFormat === 'ubl_only' || $invoiceFormat === 'both')) {
-                require(ROOTPATH . 'vendor/autoload.php');
-                $ublGenerator = new UBLGenerator();
-
-                try {
-                    $xml = $ublGenerator->generateUblInvoice($sale_data);
-                    $ublPath = tempnam(sys_get_temp_dir(), 'ospos_ubl_');
-                    if ($ublPath !== false) {
-                        $ublFilename = $ublPath . '.xml';
-                        rename($ublPath, $ublFilename);
-                        if (file_put_contents($ublFilename, $xml) !== false) {
-                            $attachments[] = $ublFilename;
-                        }
-                    }
-                } catch (\Exception $e) {
-                    log_message('error', 'UBL attachment generation failed: ' . $e->getMessage());
-                }
-            }
+            $attachmentGenerator = InvoiceAttachmentGenerator::createFromConfig($invoiceFormat);
+            $attachments = $attachmentGenerator->generateAttachments($sale_data, $type);
 
             if (!empty($attachments)) {
                 if (count($attachments) === 1) {
@@ -951,9 +925,7 @@ class Sales extends Secure_Controller
                     $result = $this->email_lib->sendMultipleAttachments($to, $subject, $text, $attachments);
                 }
 
-                foreach ($attachments as $attachment) {
-                    @unlink($attachment);
-                }
+                InvoiceAttachmentGenerator::cleanup($attachments);
             }
 
             $message = lang($result ? "Sales." . $type . "_sent" : "Sales." . $type . "_unsent") . ' ' . $to;
