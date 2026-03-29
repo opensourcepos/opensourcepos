@@ -44,7 +44,7 @@ return [
     'employee' => "พนักงาน",
     'employees' => "พนักงาน",
     'employees_summary_report' => "รายงานสรุปพนักงาน",
-    'expenses' => "รายจ่าย",
+    'expenses' => "ค่าใช้จ่าย",
     'expenses_amount' => "ยอดรวม",
     'expenses_categories' => "สรุปค่าใช้จ่าย",
     'expenses_categories_summary_report' => "รายงานสรุปหมวดหมู่ค่าใช้จ่าย",
