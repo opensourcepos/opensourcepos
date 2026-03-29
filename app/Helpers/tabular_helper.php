@@ -404,20 +404,20 @@ function item_headers(): array
 /**
  * Get all sortable column keys for items table, including dynamic attribute columns.
  *
- * @return array Array of column keys that are valid for sorting
+ * @return array Array of column headers in format expected by sanitizeSortColumn
  */
 function item_sort_columns(): array
 {
     $attribute = model(Attribute::class);
     $definitionIds = array_keys($attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS));
 
-    $columns = ['items.item_id', 'item_number', 'name', 'category', 'company_name', 'cost_price', 'unit_price', 'quantity'];
+    $headers = item_headers();
 
     foreach ($definitionIds as $definitionId) {
-        $columns[] = (string) $definitionId;
+        $headers[] = [(string) $definitionId => ''];
     }
 
-    return $columns;
+    return $headers;
 }
 
 /**
