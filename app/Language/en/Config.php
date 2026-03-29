@@ -328,4 +328,6 @@ return [
     "wholesale_markup"                          => "",
     "work_order_enable"                         => "Work Order Support",
     "work_order_format"                         => "Work Order Format",
+    "exif_fields_to_keep"                       => "EXIF Fields to Keep",
+    "exif_fields_to_keep_tooltip"               => "Select EXIF fields to preserve in uploaded images. Fields not selected will be removed. Leave empty to disable EXIF stripping. Keeps beneficial metadata while removing privacy-sensitive data like GPS location.",
 ];

@@ -3,6 +3,8 @@
  * @var array $themes
  * @var array $image_allowed_types
  * @var array $selected_image_allowed_types
+ * @var array $exif_fields
+ * @var array $selected_exif_fields
  * @var bool $show_office_group
  * @var string $controller_name
  * @var array $config
@@ -265,6 +267,26 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.exif_fields_to_keep'), 'exif_fields_to_keep', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-4">
+                    <?= form_multiselect([
+                        'name'                      => 'exif_fields_to_keep[]',
+                        'options'                   => $exif_fields,
+                        'selected'                  => $selected_exif_fields,
+                        'id'                        => 'exif_fields_to_keep',
+                        'class'                     => 'selectpicker show-menu-arrow',
+                        'data-none-selected-text'   => lang('Common.none_selected_text'),
+                        'data-selected-text-format' => 'count > 1',
+                        'data-style'                => 'btn-default btn-sm',
+                        'data-width'                => '100%'
+                    ]) ?>
+                    <label class="control-label">
+                        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.exif_fields_to_keep_tooltip') ?>"></span>
+                    </label>
                 </div>
             </div>
 
