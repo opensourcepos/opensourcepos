@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "دریافت",
     "show_in_sales"                    => "نمایش در فروش",
     "show_in_sales_visibility"         => "حراجی",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "به روز کردن ویژگی",
 ];
