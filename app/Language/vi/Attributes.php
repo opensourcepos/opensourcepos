@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Nhập hàng",
     "show_in_sales"                    => "Hiển thị trong bán hàng",
     "show_in_sales_visibility"         => "Bán hàng",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Cập nhật thuộc tính",
 ];

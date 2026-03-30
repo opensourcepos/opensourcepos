@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Penerimaan",
     "show_in_sales"                    => "Tampilkan dalam penjualan",
     "show_in_sales_visibility"         => "Penjualan",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Perbarui Atribut",
 ];
