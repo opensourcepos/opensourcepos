@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Надходження",
     "show_in_sales"                    => "Показати в продажах",
     "show_in_sales_visibility"         => "Продажі",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Оновити атрибут",
 ];
