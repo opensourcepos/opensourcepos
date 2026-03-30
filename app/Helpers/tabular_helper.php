@@ -408,7 +408,7 @@ function get_items_manage_table_headers(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
-    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);    // TODO: this should be made into a constant in constants.php
+    $definitionsWithTypes = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
 
     $headers = item_headers();
 
@@ -420,8 +420,8 @@ function get_items_manage_table_headers(): string
 
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
-    foreach ($definition_names as $definition_id => $definition_name) {
-        $headers[] = [$definition_id => $definition_name, 'sortable' => false];
+    foreach ($definitionsWithTypes as $definition_id => $definitionInfo) {
+        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => false];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];
@@ -479,7 +479,7 @@ function get_item_data_row(object $item): array
         $item->name .= NAME_SEPARATOR . $item->pack_name;
     }
 
-    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);
+    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
 
     $columns = [
         'items.item_id' => $item->item_id,
@@ -634,7 +634,7 @@ function parse_attribute_values(array $columns, array $row): array
 }
 
 /**
- * @param array $definition_names
+ * @param array $definition_names Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
  * @param array $row
  * @return array
  */
@@ -651,10 +651,16 @@ function expand_attribute_values(array $definition_names, array $row): array
     }
 
     $attribute_values = [];
-    foreach ($definition_names as $definition_id => $definition_name) {
+    foreach ($definition_names as $definition_id => $definitionInfo) {
         if (isset($indexed_values[$definition_id])) {
-            $attribute_value = $indexed_values[$definition_id];
-            $attribute_values["$definition_id"] = $attribute_value;
+            $raw_value = $indexed_values[$definition_id];
+            
+            // Format DECIMAL attributes according to locale
+            if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
+                $attribute_values["$definition_id"] = to_decimals($raw_value);
+            } else {
+                $attribute_values["$definition_id"] = $raw_value;
+            }
         } else {
             $attribute_values["$definition_id"] = "";
         }
@@ -924,4 +930,25 @@ function get_controller(): string
     $controller_name = strtolower($router->controllerName());
     $controller_name_parts = explode('\\', $controller_name);
     return end($controller_name_parts);
+}
+
+/**
+ * Restores filter values from URL query string.
+ * 
+ * @param CodeIgniter\HTTP\IncomingRequest $request The request object
+ * @return array Array with 'start_date', 'end_date', and 'selected_filters' keys
+ */
+function restoreTableFilters($request): array
+{
+    $startDate = $request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $endDate = $request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $urlFilters = $request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+    return array_filter([
+        'start_date' => $startDate ?: null,
+        'end_date' => $endDate ?: null,
+        'selected_filters' => $urlFilters ?? []
+    ], function($value) {
+        return $value !== null && $value !== [];
+    });
 }

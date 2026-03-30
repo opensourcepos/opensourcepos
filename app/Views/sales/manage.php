@@ -5,6 +5,8 @@
  * @var array $filters
  * @var array $selected_filters
  * @var array $config
+ * @var string|null $start_date
+ * @var string|null $end_date
  */
 ?>
 
@@ -25,6 +27,14 @@
         });
 
         <?= view('partial/bootstrap_tables_locale') ?>
+
+        // Override dates from server if provided
+        <?php if (isset($start_date) && $start_date): ?>
+        start_date = "<?= esc($start_date) ?>";
+        <?php endif; ?>
+        <?php if (isset($end_date) && $end_date): ?>
+        end_date = "<?= esc($end_date) ?>";
+        <?php endif; ?>
 
         table_support.query_params = function() {
             return {
@@ -55,8 +65,10 @@
                 }
             }
         });
-    });
+     });
 </script>
+
+<?= view('partial/table_filter_persistence') ?>
 
 <?= view('partial/print_receipt', ['print_after_sale' => false, 'selected_printer' => 'takings_printer']) ?>
 

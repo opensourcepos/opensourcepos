@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Are you sure you want to delete the selected attribute(s)?",
     "confirm_restore"                  => "",
     "definition_cannot_be_deleted"     => "Could not delete selected attribute(s)",
+    "definition_invalid_group" => "",
     "definition_error_adding_updating" => "",
     "definition_flags"                 => "Attribute Visibility",
     "definition_group"                 => "Group",

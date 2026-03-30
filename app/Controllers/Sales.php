@@ -75,15 +75,15 @@ class Sales extends Secure_Controller
     /**
      * Load the sale edit modal. Used in app/Views/sales/register.php.
      *
-     * @return string
+     * @return ResponseInterface|string
      * @noinspection PhpUnused
      */
-    public function getManage(): string
+    public function getManage(): ResponseInterface|string
     {
-        $person_id = $this->session->get('person_id');
+        $personId = $this->session->get('person_id');
 
-        if (!$this->employee->has_grant('reports_sales', $person_id)) {
-            redirect('no_access/sales/reports_sales');
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return redirect()->to('no_access/sales/reports_sales');
         } else {
             $data['table_headers'] = get_sales_manage_table_headers();
 
@@ -92,18 +92,31 @@ class Sales extends Secure_Controller
                 'only_due'          => lang('Sales.due_filter'),
                 'only_check'        => lang('Sales.check_filter'),
                 'only_creditcard'   => lang('Sales.credit_filter'),
+                'only_debit'        => lang('Sales.debit'),
                 'only_invoices'     => lang('Sales.invoice_filter'),
                 'selected_customer' => lang('Sales.selected_customer')
             ];
 
             if ($this->sale_lib->get_customer() != -1) {
-                $selected_filters = ['selected_customer'];
+                $selectedFilters = ['selected_customer'];
                 $data['customer_selected'] = true;
             } else {
                 $data['customer_selected'] = false;
-                $selected_filters = [];
+                $selectedFilters = [];
             }
-            $data['selected_filters'] = $selected_filters;
+
+            // Restore filters from URL query string
+            $filters = restoreTableFilters($this->request);
+            if (!empty($filters['selected_filters'])) {
+                $selectedFilters = array_merge($selectedFilters, $filters['selected_filters']);
+            }
+            if (isset($filters['start_date'])) {
+                $data['start_date'] = $filters['start_date'];
+            }
+            if (isset($filters['end_date'])) {
+                $data['end_date'] = $filters['end_date'];
+            }
+            $data['selected_filters'] = $selectedFilters;
 
             return view('sales/manage', $data);
         }
@@ -142,6 +155,7 @@ class Sales extends Secure_Controller
             'only_check'        => false,
             'selected_customer' => false,
             'only_creditcard'   => false,
+            'only_debit'        => false,
             'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
             'is_valid_receipt'  => $this->sale->is_valid_receipt($search)
         ];

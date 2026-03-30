@@ -36,6 +36,9 @@ class Cashups extends Secure_Controller
         // filters that will be loaded in the multiselect dropdown
         $data['filters'] = ['is_deleted' => lang('Cashups.is_deleted')];
 
+        // Restore filters from URL
+        $data = array_merge($data, restoreTableFilters($this->request));
+
         return view('cashups/manage', $data);
     }
 

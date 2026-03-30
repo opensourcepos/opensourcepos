@@ -263,9 +263,10 @@ class Attribute extends Model
 
     /**
      * @param int $definition_flags
+     * @param bool $include_types If true, returns array with definition_id => ['name' => name, 'type' => type]
      * @return array
      */
-    public function get_definitions_by_flags(int $definition_flags): array
+    public function get_definitions_by_flags(int $definition_flags, bool $include_types = false): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where(new RawSql("definition_flags & $definition_flags"));    // TODO: we need to heed CI warnings to escape properly
@@ -274,6 +275,17 @@ class Attribute extends Model
         $builder->orderBy('definition_id');
 
         $results = $builder->get()->getResultArray();
+
+        if ($include_types) {
+            $definitions = [];
+            foreach ($results as $result) {
+                $definitions[$result['definition_id']] = [
+                    'name' => $result['definition_name'],
+                    'type' => $result['definition_type']
+                ];
+            }
+            return $definitions;
+        }
 
         return $this->to_array($results, 'definition_id', 'definition_name');
     }

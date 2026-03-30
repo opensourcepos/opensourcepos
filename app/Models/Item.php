@@ -16,6 +16,10 @@ use stdClass;
  */
 class Item extends Model
 {
+
+    public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
+    public const ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
+
     public const ALLOWED_BULK_EDIT_FIELDS = [
         'name',
         'category',
@@ -27,7 +31,6 @@ class Item extends Model
         'allow_alt_description',
         'is_serialized'
     ];
-
     protected $table = 'items';
     protected $primaryKey = 'item_id';
     protected $useAutoIncrement = true;
@@ -544,13 +547,17 @@ class Item extends Model
     public function get_search_suggestion_format(?string $seed = null): string
     {
         $config = config(OSPOS::class)->settings;
-        $seed .= ',' . $config['suggestions_first_column'];
+        
+        $suggestionsFirstColumn = $this->suggestionColumnIsAllowed($config['suggestions_first_column'])
+            ? $config['suggestions_first_column'] 
+            : 'name';
+        $seed .= ',' . $suggestionsFirstColumn;
 
-        if ($config['suggestions_second_column'] !== '') {
+        if ($config['suggestions_second_column'] !== '' && $this->suggestionColumnIsAllowed($config['suggestions_second_column'])) {
             $seed .= ',' . $config['suggestions_second_column'];
         }
 
-        if ($config['suggestions_third_column'] !== '') {
+        if ($config['suggestions_third_column'] !== '' && $this->suggestionColumnIsAllowed($config['suggestions_third_column'])) {
             $seed .= ',' . $config['suggestions_third_column'];
         }
 
@@ -566,9 +573,15 @@ class Item extends Model
         $config = config(OSPOS::class)->settings;
 
         $label = '';
-        $label1 = $config['suggestions_first_column'];
-        $label2 = $config['suggestions_second_column'];
-        $label3 = $config['suggestions_third_column'];
+        $label1 = $this->suggestionColumnIsAllowed($config['suggestions_first_column']) 
+            ? $config['suggestions_first_column'] 
+            : 'name';
+        $label2 = $this->suggestionColumnIsAllowed($config['suggestions_second_column']) 
+            ? $config['suggestions_second_column'] 
+            : '';
+        $label3 = $this->suggestionColumnIsAllowed($config['suggestions_third_column']) 
+            ? $config['suggestions_third_column'] 
+            : '';
 
         $this->format_result_numbers($result_row);
 
@@ -590,6 +603,17 @@ class Item extends Model
         }
 
         return $label;
+    }
+
+    /**
+     * Validates if a column name is in the allowed suggestions columns.
+     *
+     * @param string $columnName
+     * @return bool
+     */
+    private function suggestionColumnIsAllowed(string $columnName): bool
+    {
+        return in_array($columnName, self::ALLOWED_SUGGESTIONS_COLUMNS, true);
     }
 
     /**
