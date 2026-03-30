@@ -9,9 +9,18 @@ class TestDatabaseBootstrapSeeder extends Seeder
 {
     public function run(): void
     {
+        if (ENVIRONMENT !== 'testing') {
+            throw new \RuntimeException('TestDatabaseBootstrapSeeder can only run in the testing environment.');
+        }
+
         $config = config('Database');
         $group  = $config->tests;
         $dbName = $group['database'];
+
+        if ($dbName === '' || !str_contains(strtolower($dbName), 'test')) {
+            throw new \RuntimeException("Refusing to reset non-test database: {$dbName}");
+        }
+
         $serverConn = Database::connect([
             'hostname' => $group['hostname'],
             'username' => $group['username'],
