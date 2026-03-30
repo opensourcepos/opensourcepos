@@ -12,7 +12,7 @@ class PdfAttachment implements InvoiceAttachment
     public function generate(array $saleData, string $type): ?string
     {
         $view = Services::renderer();
-        $html = $view->setData($saleData)->render("sales/{$type}_email", $saleData);
+        $html = $view->setData($saleData)->render("sales/{$type}_email");
 
         helper(['dompdf', 'file']);
 
@@ -28,6 +28,7 @@ class PdfAttachment implements InvoiceAttachment
         $pdfContent = create_pdf($html);
         if (file_put_contents($filename, $pdfContent) === false) {
             log_message('error', 'PDF attachment: failed to write content');
+            @unlink($filename);
             return null;
         }
 

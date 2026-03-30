@@ -919,13 +919,15 @@ class Sales extends Secure_Controller
             $attachments = $attachmentGenerator->generateAttachments($sale_data, $type);
 
             if (!empty($attachments)) {
-                if (count($attachments) === 1) {
-                    $result = $this->email_lib->sendEmail($to, $subject, $text, $attachments[0]);
-                } else {
-                    $result = $this->email_lib->sendMultipleAttachments($to, $subject, $text, $attachments);
+                try {
+                    if (count($attachments) === 1) {
+                        $result = $this->email_lib->sendEmail($to, $subject, $text, $attachments[0]);
+                    } else {
+                        $result = $this->email_lib->sendMultipleAttachments($to, $subject, $text, $attachments);
+                    }
+                } finally {
+                    InvoiceAttachmentGenerator::cleanup($attachments);
                 }
-
-                InvoiceAttachmentGenerator::cleanup($attachments);
             }
 
             $message = lang($result ? "Sales." . $type . "_sent" : "Sales." . $type . "_unsent") . ' ' . $to;
@@ -1291,7 +1293,6 @@ class Sales extends Secure_Controller
      *
      * @param int $sale_id
      * @return ResponseInterface
-     * @throws \Exception
      */
     public function getUBLInvoice(int $sale_id): ResponseInterface
     {
@@ -1311,11 +1312,14 @@ class Sales extends Secure_Controller
             $ublGenerator = new UBLGenerator();
             $xml = $ublGenerator->generateUblInvoice($sale_data);
 
-            $filename = lang('Sales.invoice') . '-' . str_replace('/', '-', $sale_data['invoice_number']) . '.xml';
+            $rawFilename = lang('Sales.invoice') . '-' . str_replace('/', '-', $sale_data['invoice_number']) . '.xml';
+            $rawFilename = str_replace(["\r", "\n"], '', $rawFilename);
+            $safeFilename = preg_replace('/[^A-Za-z0-9._-]/', '_', $rawFilename);
+            $contentDisposition = 'attachment; filename="' . $safeFilename . '"; filename*=UTF-8\'\'' . rawurlencode($rawFilename);
 
             return $this->response
                 ->setHeader('Content-Type', 'application/xml')
-                ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->setHeader('Content-Disposition', $contentDisposition)
                 ->setBody($xml);
         } catch (\Exception $e) {
             log_message('error', 'UBL generation failed: ' . $e->getMessage());

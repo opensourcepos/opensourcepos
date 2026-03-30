@@ -6,13 +6,16 @@ use App\Libraries\UBLGenerator;
 
 class UblAttachment implements InvoiceAttachment
 {
+    public function __construct()
+    {
+        require_once ROOTPATH . 'vendor/autoload.php';
+    }
+
     /**
      * @inheritDoc
      */
     public function generate(array $saleData, string $type): ?string
     {
-        require_once ROOTPATH . 'vendor/autoload.php';
-
         try {
             $generator = new UBLGenerator();
             $xml = $generator->generateUblInvoice($saleData);
@@ -28,6 +31,7 @@ class UblAttachment implements InvoiceAttachment
 
             if (file_put_contents($filename, $xml) === false) {
                 log_message('error', 'UBL attachment: failed to write content');
+                @unlink($filename);
                 return null;
             }
 
