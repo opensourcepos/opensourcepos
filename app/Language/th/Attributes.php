@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "สินค้าขาเข้า",
     "show_in_sales"                    => "แสดงใน การขาย",
     "show_in_sales_visibility"         => "การขาย",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "ปรับปรุงแอตทริบิวต์",
 ];

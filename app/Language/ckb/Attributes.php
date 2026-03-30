@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "بەدەستگەیشتووکان",
     "show_in_sales"                    => "لە فرۆشتندا نیشانی بدە",
     "show_in_sales_visibility"         => "فرۆشتن",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "تایبەتمەندی نوێ بکەرەوە",
 ];

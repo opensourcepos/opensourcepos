@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Orders",
     "show_in_sales"                    => "Toon in verkoop",
     "show_in_sales_visibility"         => "Verkoop",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Wijzig Attribuut",
 ];

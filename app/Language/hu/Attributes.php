@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Áruátvételek",
     "show_in_sales"                    => "Megjelenítés az értékesítésekben",
     "show_in_sales_visibility"         => "Értékesítések",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Tulajdonság frissítése",
 ];
