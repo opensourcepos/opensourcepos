@@ -62,10 +62,10 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public function testGenerateCsvHeaderBasic(): void
     {
-        $stock_locations = ['Warehouse'];
+        $stockLocations = ['Warehouse'];
         $attributes = [];
 
-        $csv = generate_import_items_csv($stock_locations, $attributes);
+        $csv = generate_import_items_csv($stockLocations, $attributes);
 
         $this->assertStringContainsString('Id,Barcode,"Item Name"', $csv);
         $this->assertStringContainsString('Category,"Supplier ID"', $csv);
@@ -82,10 +82,10 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public function testGenerateCsvHeaderMultipleLocations(): void
     {
-        $stock_locations = ['Warehouse', 'Store', 'Backroom'];
+        $stockLocations = ['Warehouse', 'Store', 'Backroom'];
         $attributes = [];
 
-        $csv = generate_import_items_csv($stock_locations, $attributes);
+        $csv = generate_import_items_csv($stockLocations, $attributes);
 
         $this->assertStringContainsString('"location_Warehouse"', $csv);
         $this->assertStringContainsString('"location_Store"', $csv);
@@ -94,10 +94,10 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public function testGenerateCsvHeaderWithAttributes(): void
     {
-        $stock_locations = ['Warehouse'];
+        $stockLocations = ['Warehouse'];
         $attributes = ['Color', 'Size', 'Weight'];
 
-        $csv = generate_import_items_csv($stock_locations, $attributes);
+        $csv = generate_import_items_csv($stockLocations, $attributes);
 
         $this->assertStringContainsString('"attribute_Color"', $csv);
         $this->assertStringContainsString('"attribute_Size"', $csv);
@@ -134,13 +134,13 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public function testGetCsvFileBasic(): void
     {
-        $csv_content = "Id,Barcode,\"Item Name\",Category,\"Supplier ID\",\"Cost Price\",\"Unit Price\",\"Tax 1 Name\",\"Tax 1 Percent\",\"Tax 2 Name\",\"Tax 2 Percent\",\"Reorder Level\",Description,\"Allow Alt Description\",\"Item has Serial Number\",Image,HSN\n";
-        $csv_content .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001\n";
+        $csvContent = "Id,Barcode,\"Item Name\",Category,\"Supplier ID\",\"Cost Price\",\"Unit Price\",\"Tax 1 Name\",\"Tax 1 Percent\",\"Tax 2 Name\",\"Tax 2 Percent\",\"Reorder Level\",Description,\"Allow Alt Description\",\"Item has Serial Number\",Image,HSN\n";
+        $csvContent .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001\n";
 
-        $temp_file = tempnam(sys_get_temp_dir(), 'csv_test_');
-        file_put_contents($temp_file, $csv_content);
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_');
+        file_put_contents($tempFile, $csvContent);
 
-        $rows = get_csv_file($temp_file);
+        $rows = get_csv_file($tempFile);
 
         $this->assertCount(1, $rows);
         $this->assertEquals('', $rows[0]['Id']);
@@ -148,81 +148,81 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertEquals('Test Item', $rows[0]['Item Name']);
         $this->assertEquals('Electronics', $rows[0]['Category']);
 
-        unlink($temp_file);
+        unlink($tempFile);
     }
 
     public function testGetCsvFileWithBom(): void
     {
         $bom = pack('CCC', 0xef, 0xbb, 0xbf);
-        $csv_content = $bom . "Id,\"Item Name\",Category\n";
-        $csv_content .= "1,Test Item,Electronics\n";
+        $csvContent = $bom . "Id,\"Item Name\",Category\n";
+        $csvContent .= "1,Test Item,Electronics\n";
 
-        $temp_file = tempnam(sys_get_temp_dir(), 'csv_test_bom_');
-        file_put_contents($temp_file, $csv_content);
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_bom_');
+        file_put_contents($tempFile, $csvContent);
 
-        $rows = get_csv_file($temp_file);
+        $rows = get_csv_file($tempFile);
 
         $this->assertCount(1, $rows);
         $this->assertEquals('1', $rows[0]['Id']);
         $this->assertEquals('Test Item', $rows[0]['Item Name']);
 
-        unlink($temp_file);
+        unlink($tempFile);
     }
 
     public function testGetCsvFileMultipleRows(): void
     {
-        $csv_content = "Id,\"Item Name\",Category\n";
-        $csv_content .= "1,Item One,Cat A\n";
-        $csv_content .= "2,Item Two,Cat B\n";
-        $csv_content .= "3,Item Three,Cat C\n";
+        $csvContent = "Id,\"Item Name\",Category\n";
+        $csvContent .= "1,Item One,Cat A\n";
+        $csvContent .= "2,Item Two,Cat B\n";
+        $csvContent .= "3,Item Three,Cat C\n";
 
-        $temp_file = tempnam(sys_get_temp_dir(), 'csv_test_multi_');
-        file_put_contents($temp_file, $csv_content);
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_multi_');
+        file_put_contents($tempFile, $csvContent);
 
-        $rows = get_csv_file($temp_file);
+        $rows = get_csv_file($tempFile);
 
         $this->assertCount(3, $rows);
         $this->assertEquals('Item One', $rows[0]['Item Name']);
         $this->assertEquals('Item Two', $rows[1]['Item Name']);
         $this->assertEquals('Item Three', $rows[2]['Item Name']);
 
-        unlink($temp_file);
+        unlink($tempFile);
     }
 
     public function testBomExists(): void
     {
         $bom = pack('CCC', 0xef, 0xbb, 0xbf);
-        $content_with_bom = $bom . "test content";
+        $contentWithBom = $bom . "test content";
 
-        $temp_file = tempnam(sys_get_temp_dir(), 'bom_test_');
-        file_put_contents($temp_file, $content_with_bom);
+        $tempFile = tempnam(sys_get_temp_dir(), 'bom_test_');
+        file_put_contents($tempFile, $contentWithBom);
 
-        $handle = fopen($temp_file, 'r');
+        $handle = fopen($tempFile, 'r');
         $result = bom_exists($handle);
         fclose($handle);
 
         $this->assertTrue($result);
-        unlink($temp_file);
+        unlink($tempFile);
     }
 
     public function testBomNotExists(): void
     {
-        $content_without_bom = "test content without BOM";
+        $contentWithoutBom = "test content without BOM";
 
-        $temp_file = tempnam(sys_get_temp_dir(), 'no_bom_test_');
-        file_put_contents($temp_file, $content_without_bom);
+        $tempFile = tempnam(sys_get_temp_dir(), 'no_bom_test_');
+        file_put_contents($tempFile, $contentWithoutBom);
 
-        $handle = fopen($temp_file, 'r');
+        $handle = fopen($tempFile, 'r');
         $result = bom_exists($handle);
         fclose($handle);
 
         $this->assertFalse($result);
-        unlink($temp_file);
+        unlink($tempFile);
     }
 
     public function testImportItemBasicFields(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'CSV Imported Item',
             'description' => 'Description from CSV',
@@ -237,23 +237,30 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $this->assertTrue($this->item->save_value($itemData));
 
-        $this->assertIsInt($item_id);
-        $this->assertGreaterThan(0, $item_id);
+        $row = $this->db->table('items')
+            ->where('item_number', $itemData['item_number'])
+            ->get()
+            ->getRow();
 
-        $saved_item = $this->item->get_info($item_id);
-        $this->assertEquals('CSV Imported Item', $saved_item->name);
-        $this->assertEquals('Description from CSV', $saved_item->description);
-        $this->assertEquals('Electronics', $saved_item->category);
-        $this->assertEquals(10.50, (float)$saved_item->cost_price);
-        $this->assertEquals(25.99, (float)$saved_item->unit_price);
+        $this->assertNotNull($row);
+        $this->assertIsInt((int) $row->item_id);
+        $this->assertGreaterThan(0, (int) $row->item_id);
+
+        $savedItem = $this->item->get_info((int) $row->item_id);
+        $this->assertEquals('CSV Imported Item', $savedItem->name);
+        $this->assertEquals('Description from CSV', $savedItem->description);
+        $this->assertEquals('Electronics', $savedItem->category);
+        $this->assertEquals(10.50, (float) $savedItem->cost_price);
+        $this->assertEquals(25.99, (float) $savedItem->unit_price);
     }
 
     public function testImportItemWithQuantity(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
+            'item_number' => '1234567890',
             'name' => 'Item With Quantity',
             'category' => 'Test Category',
             'cost_price' => 5.00,
@@ -262,28 +269,30 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $this->assertTrue($this->item->save_value($itemData));
 
-        $location_id = 1;
+        $itemId = $this->item->get_info_by_id_or_number('1234567890')->item_id;
+        $locationId = 1;
         $quantity = 100;
 
-        $item_quantity_data = [
-            'item_id' => $item_id,
-            'location_id' => $location_id,
+        $itemQuantityData = [
+            'item_id' => $itemId,
+            'location_id' => $locationId,
             'quantity' => $quantity
         ];
 
-        $result = $this->item_quantity->save_value($item_quantity_data, $item_id, $location_id);
+        $result = $this->item_quantity->save_value($itemQuantityData, $itemId, $locationId);
         $this->assertTrue($result);
 
-        $saved_quantity = $this->item_quantity->get_item_quantity($item_id, $location_id);
-        $this->assertEquals($quantity, $saved_quantity->quantity);
+        $savedQuantity = $this->item_quantity->get_item_quantity($itemId, $locationId);
+        $this->assertEquals($quantity, $savedQuantity->quantity);
     }
 
     public function testImportItemCreatesInventoryRecord(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
+            'item_number' => '1234567890',
             'name' => 'Item With Inventory',
             'category' => 'Test',
             'cost_price' => 5.00,
@@ -291,29 +300,31 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $this->assertTrue($this->item->save_value($itemData));
+        $itemId = $this->item->get_info_by_id_or_number('1234567890')->item_id;
 
-        $inventory_data = [
+        $inventoryData = [
             'trans_inventory' => 50,
-            'trans_items' => $item_id,
+            'trans_items' => $itemId,
             'trans_location' => 1,
             'trans_comment' => 'CSV Import',
             'trans_user' => 1
         ];
 
-        $trans_id = $this->inventory->insert($inventory_data);
+        $transId = $this->inventory->insert($inventoryData);
 
-        $this->assertIsInt($trans_id);
-        $this->assertGreaterThan(0, $trans_id);
+        $this->assertIsInt($transId);
+        $this->assertGreaterThan(0, $transId);
 
-        $inventory_records = $this->inventory->get_inventory_data_for_item($item_id, 1);
-        $this->assertGreaterThanOrEqual(1, $inventory_records->getNumRows());
+        $inventoryRecords = $this->inventory->get_inventory_data_for_item($itemId, 1);
+        $this->assertGreaterThanOrEqual(1, $inventoryRecords->getNumRows());
     }
 
     public function testImportItemWithTaxes(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
+            'item_number' => '1234567890',
             'name' => 'Taxable Item',
             'category' => 'Test',
             'cost_price' => 100.00,
@@ -321,26 +332,27 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $this->assertTrue($this->item->save_value($itemData));
 
-        $taxes_data = [
+        $itemId = $this->item->get_info_by_id_or_number('1234567890')->item_id;
+        $taxesData = [
             ['name' => 'VAT', 'percent' => 20],
             ['name' => 'GST', 'percent' => 10]
         ];
 
-        $result = $this->item_taxes->save_value($taxes_data, $item_id);
+        $result = $this->item_taxes->save_value($taxesData, $itemId);
         $this->assertTrue($result);
 
-        $saved_taxes = $this->item_taxes->get_info($item_id);
+        $savedTaxes = $this->item_taxes->get_info($itemId);
 
-        $tax_names = array_column($saved_taxes, 'name');
-        $this->assertContains('VAT', $tax_names);
-        $this->assertContains('GST', $tax_names);
+        $taxNames = array_column($savedTaxes, 'name');
+        $this->assertContains('VAT', $taxNames);
+        $this->assertContains('GST', $taxNames);
     }
 
     public function testImportMultipleItemsFromSimulatedCsv(): void
     {
-        $csv_data = [
+        $csvData = [
             [
                 'Id' => '',
                 'Barcode' => 'ITEM-A',
@@ -383,10 +395,8 @@ class ItemsCsvImportTest extends CIUnitTestCase
             ]
         ];
 
-        $imported_item_ids = [];
-
-        foreach ($csv_data as $row) {
-            $item_data = [
+        foreach ($csvData as $row) {
+            $itemData = [
                 'item_id' => (int)$row['Id'] ?: null,
                 'name' => $row['Item Name'],
                 'description' => $row['Description'],
@@ -400,25 +410,24 @@ class ItemsCsvImportTest extends CIUnitTestCase
                 'deleted' => false
             ];
 
-            $item_id = $this->item->save_value($item_data);
-            $imported_item_ids[] = $item_id;
+            $saveResult = $this->item->save_value($itemData);
+            $this->assertTrue($saveResult);
         }
 
-        $this->assertCount(2, $imported_item_ids);
-
-        $item1 = $this->item->get_info($imported_item_ids[0]);
+        $item1 = $this->item->get_info_by_id_or_number('ITEM-A');
         $this->assertEquals('First Item', $item1->name);
-        $this->assertEquals(10.00, (float)$item1->cost_price);
+        $this->assertEquals(10.00, (float) $item1->cost_price);
 
-        $item2 = $this->item->get_info($imported_item_ids[1]);
+        $item2 = $this->item->get_info_by_id_or_number('ITEM-B');
         $this->assertEquals('Second Item', $item2->name);
-        $this->assertEquals(15.00, (float)$item2->cost_price);
+        $this->assertEquals(15.00, (float) $item2->cost_price);
     }
 
     public function testImportUpdateExistingItem(): void
     {
-        $original_data = [
+        $originalData = [
             'item_id' => null,
+            'item_number' => '1234567890',
             'name' => 'Original Name',
             'category' => 'Original Category',
             'cost_price' => 10.00,
@@ -426,10 +435,11 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($original_data);
+        $this->assertTrue($this->item->save_value($originalData));
 
-        $updated_data = [
-            'item_id' => $item_id,
+        $itemId = $this->item->get_info_by_id_or_number('1234567890')->item_id;
+        $updatedData = [
+            'item_id' => $itemId,
             'name' => 'Updated Name',
             'category' => 'Updated Category',
             'cost_price' => 15.00,
@@ -439,13 +449,13 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->item->save_value($updated_data);
+        $this->assertTrue($this->item->save_value($updatedData));
 
-        $updated_item = $this->item->get_info($item_id);
-        $this->assertEquals('Updated Name', $updated_item->name);
-        $this->assertEquals('Updated Category', $updated_item->category);
-        $this->assertEquals(15.00, (float)$updated_item->cost_price);
-        $this->assertEquals(30.00, (float)$updated_item->unit_price);
+        $updatedItem = $this->item->get_info($itemId);
+        $this->assertEquals('Updated Name', $updatedItem->name);
+        $this->assertEquals('Updated Category', $updatedItem->category);
+        $this->assertEquals(15.00, (float)$updatedItem->cost_price);
+        $this->assertEquals(30.00, (float)$updatedItem->unit_price);
     }
 
     public function testImportDeleteAttributeFromExistingItem(): void
@@ -469,7 +479,10 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'definition_flags' => 0,
             'deleted' => 0
         ];
-        $definitionId = $this->attribute->saveDefinition($definitionData);
+
+        $this->assertTrue($this->attribute->saveDefinition($definitionData));
+        $definition = $this->attribute->get_definition_by_name('Color');
+        $definitionId = !empty($definition) ? $definition['definition_id'] : null;
 
         //Assign attribute to item
         $attributeValue = 'Red';
@@ -496,7 +509,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public function testImportItemWithAttributeText(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item With Attribute',
             'category' => 'Test',
@@ -505,34 +518,34 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $definition_data = [
+        $definitionData = [
             'definition_name' => 'Color',
             'definition_type' => TEXT,
             'definition_flags' => 0,
             'deleted' => 0
         ];
-        $definition_id = $this->attribute->saveDefinition($definition_data);
+        $definitionId = $this->attribute->saveDefinition($definitionData);
 
-        $attribute_value = 'Red';
-        $attribute_id = $this->attribute->saveAttributeValue(
-            $attribute_value,
-            $definition_id,
-            $item_id,
+        $attributeValue = 'Red';
+        $attributeId = $this->attribute->saveAttributeValue(
+            $attributeValue,
+            $definitionId,
+            $itemId,
             false,
             TEXT
         );
 
-        $this->assertNotFalse($attribute_id);
+        $this->assertNotFalse($attributeId);
 
-        $saved_value = $this->attribute->getAttributeValue($item_id, $definition_id);
-        $this->assertEquals('Red', $saved_value->attribute_value);
+        $savedValue = $this->attribute->getAttributeValue($itemId, $definitionId);
+        $this->assertEquals('Red', $savedValue->attribute_value);
     }
 
     public function testImportItemWithAttributeDropdown(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item With Dropdown',
             'category' => 'Test',
@@ -541,45 +554,45 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $definition_data = [
+        $definitionData = [
             'definition_name' => 'Size',
             'definition_type' => DROPDOWN,
             'definition_flags' => 0,
             'deleted' => 0
         ];
-        $definition_id = $this->attribute->saveDefinition($definition_data);
+        $definitionId = $this->attribute->saveDefinition($definitionData);
 
-        $dropdown_values = ['Small', 'Medium', 'Large'];
-        foreach ($dropdown_values as $i => $value) {
+        $dropdownValues = ['Small', 'Medium', 'Large'];
+        foreach ($dropdownValues as $i => $value) {
             $this->db->table('attribute_values')->insert([
                 'attribute_value' => $value,
-                'definition_id' => $definition_id,
+                'definition_id' => $definitionId,
                 'definition_type' => DROPDOWN,
                 'attribute_group' => $i,
                 'deleted' => 0
             ]);
         }
 
-        $attribute_value = 'Medium';
-        $attribute_id = $this->attribute->saveAttributeValue(
-            $attribute_value,
-            $definition_id,
-            $item_id,
+        $attributeValue = 'Medium';
+        $attributeId = $this->attribute->saveAttributeValue(
+            $attributeValue,
+            $definitionId,
+            $itemId,
             false,
             DROPDOWN
         );
 
-        $this->assertNotFalse($attribute_id);
+        $this->assertNotFalse($attributeId);
 
-        $saved_value = $this->attribute->getAttributeValue($item_id, $definition_id);
-        $this->assertEquals('Medium', $saved_value->attribute_value);
+        $savedValue = $this->attribute->getAttributeValue($itemId, $definitionId);
+        $this->assertEquals('Medium', $savedValue->attribute_value);
     }
 
     public function testImportItemQuantityZero(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item Zero Quantity',
             'category' => 'Test',
@@ -588,26 +601,26 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $location_id = 1;
+        $locationId = 1;
 
-        $item_quantity_data = [
-            'item_id' => $item_id,
-            'location_id' => $location_id,
+        $itemQuantityData = [
+            'item_id' => $itemId,
+            'location_id' => $locationId,
             'quantity' => 0
         ];
 
-        $result = $this->item_quantity->save_value($item_quantity_data, $item_id, $location_id);
+        $result = $this->item_quantity->save_value($itemQuantityData, $itemId, $locationId);
         $this->assertTrue($result);
 
-        $saved_quantity = $this->item_quantity->get_item_quantity($item_id, $location_id);
-        $this->assertEquals(0, (int)$saved_quantity->quantity);
+        $savedQuantity = $this->item_quantity->get_item_quantity($itemId, $locationId);
+        $this->assertEquals(0, (int)$savedQuantity->quantity);
     }
 
     public function testImportItemWithNegativeReorderLevel(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item Negative Reorder',
             'category' => 'Test',
@@ -617,15 +630,15 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $saved_item = $this->item->get_info($item_id);
-        $this->assertEquals(-1, (int)$saved_item->reorder_level);
+        $savedItem = $this->item->get_info($itemId);
+        $this->assertEquals(-1, (int)$savedItem->reorder_level);
     }
 
     public function testImportItemWithHighPrecisionPrices(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'High Precision Item',
             'category' => 'Test',
@@ -634,19 +647,19 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $saved_item = $this->item->get_info($item_id);
-        $cost_diff = abs(10.123456 - (float)$saved_item->cost_price);
-        $price_diff = abs(25.876543 - (float)$saved_item->unit_price);
+        $savedItem = $this->item->get_info($itemId);
+        $costDifference = abs(10.123456 - (float)$savedItem->cost_price);
+        $priceDifference = abs(25.876543 - (float)$savedItem->unit_price);
 
-        $this->assertLessThan(0.001, $cost_diff, 'Cost price should maintain precision');
-        $this->assertLessThan(0.001, $price_diff, 'Unit price should maintain precision');
+        $this->assertLessThan(0.001, $costDifference, 'Cost price should maintain precision');
+        $this->assertLessThan(0.001, $priceDifference, 'Unit price should maintain precision');
     }
 
     public function testImportItemWithHsnCode(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item With HSN',
             'category' => 'Test',
@@ -656,15 +669,15 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $saved_item = $this->item->get_info($item_id);
-        $this->assertEquals('8471', $saved_item->hsn_code);
+        $savedItem = $this->item->get_info($itemId);
+        $this->assertEquals('8471', $savedItem->hsn_code);
     }
 
     public function testImportItemQuantityMultipleLocations(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item Multi Location',
             'category' => 'Test',
@@ -673,7 +686,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
         $quantities = [
             ['location_id' => 1, 'quantity' => 100],
@@ -683,22 +696,22 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         foreach ($quantities as $q) {
             $result = $this->item_quantity->save_value(
-                ['item_id' => $item_id, 'location_id' => $q['location_id'], 'quantity' => $q['quantity']],
-                $item_id,
+                ['item_id' => $itemId, 'location_id' => $q['location_id'], 'quantity' => $q['quantity']],
+                $itemId,
                 $q['location_id']
             );
             $this->assertTrue($result);
         }
 
         foreach ($quantities as $q) {
-            $saved = $this->item_quantity->get_item_quantity($item_id, $q['location_id']);
+            $saved = $this->item_quantity->get_item_quantity($itemId, $q['location_id']);
             $this->assertEquals($q['quantity'], (int)$saved->quantity, "Quantity at location {$q['location_id']} should match");
         }
     }
 
     public function testCsvImportQuantityValidationNumeric(): void
     {
-        $csv_data = [
+        $csvData = [
             'Id' => '',
             'Barcode' => 'VALID-ITEM',
             'Item Name' => 'Valid Item',
@@ -708,14 +721,14 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'location_Warehouse' => '100'
         ];
 
-        $this->assertTrue(is_numeric($csv_data['location_Warehouse']));
-        $this->assertTrue(is_numeric($csv_data['Cost Price']));
-        $this->assertTrue(is_numeric($csv_data['Unit Price']));
+        $this->assertTrue(is_numeric($csvData['location_Warehouse']));
+        $this->assertTrue(is_numeric($csvData['Cost Price']));
+        $this->assertTrue(is_numeric($csvData['Unit Price']));
     }
 
     public function testCsvImportEmptyBarcodeAllowed(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item Without Barcode',
             'category' => 'Test',
@@ -725,18 +738,18 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $this->assertIsInt($item_id);
-        $this->assertGreaterThan(0, $item_id);
+        $this->assertIsInt($itemId);
+        $this->assertGreaterThan(0, $itemId);
 
-        $saved_item = $this->item->get_info($item_id);
-        $this->assertEquals('Item Without Barcode', $saved_item->name);
+        $savedItem = $this->item->get_info($itemId);
+        $this->assertEquals('Item Without Barcode', $savedItem->name);
     }
 
     public function testCsvImportItemExistsCheck(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Existing Item',
             'category' => 'Test',
@@ -745,18 +758,18 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $exists = $this->item->exists($item_id);
+        $exists = $this->item->exists($itemId);
         $this->assertTrue($exists);
 
-        $not_exists = $this->item->exists(999999);
-        $this->assertFalse($not_exists);
+        $notExists = $this->item->exists(999999);
+        $this->assertFalse($notExists);
     }
 
     public function testFullCsvImportFlowSimulated(): void
     {
-        $csv_row = [
+        $csvRow = [
             'Id' => '',
             'Barcode' => 'FULL-TEST-001',
             'Item Name' => 'Complete Test Item',
@@ -776,77 +789,77 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'HSN' => '84713020'
         ];
 
-        $item_data = [
-            'item_id' => (int)$csv_row['Id'] ?: null,
-            'name' => $csv_row['Item Name'],
-            'description' => $csv_row['Description'],
-            'category' => $csv_row['Category'],
-            'cost_price' => (float)$csv_row['Cost Price'],
-            'unit_price' => (float)$csv_row['Unit Price'],
-            'reorder_level' => (int)$csv_row['Reorder Level'],
-            'item_number' => $csv_row['Barcode'] ?: null,
-            'allow_alt_description' => empty($csv_row['Allow Alt Description']) ? '0' : '1',
-            'is_serialized' => empty($csv_row['Item has Serial Number']) ? '0' : '1',
-            'hsn_code' => $csv_row['HSN'],
+        $itemData = [
+            'item_id' => (int)$csvRow['Id'] ?: null,
+            'name' => $csvRow['Item Name'],
+            'description' => $csvRow['Description'],
+            'category' => $csvRow['Category'],
+            'cost_price' => (float)$csvRow['Cost Price'],
+            'unit_price' => (float)$csvRow['Unit Price'],
+            'reorder_level' => (int)$csvRow['Reorder Level'],
+            'item_number' => $csvRow['Barcode'] ?: null,
+            'allow_alt_description' => empty($csvRow['Allow Alt Description']) ? '0' : '1',
+            'is_serialized' => empty($csvRow['Item has Serial Number']) ? '0' : '1',
+            'hsn_code' => $csvRow['HSN'],
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $taxes_data = [];
-        if (is_numeric($csv_row['Tax 1 Percent']) && $csv_row['Tax 1 Name'] !== '') {
-            $taxes_data[] = ['name' => $csv_row['Tax 1 Name'], 'percent' => $csv_row['Tax 1 Percent']];
+        $taxesData = [];
+        if (is_numeric($csvRow['Tax 1 Percent']) && $csvRow['Tax 1 Name'] !== '') {
+            $taxesData[] = ['name' => $csvRow['Tax 1 Name'], 'percent' => $csvRow['Tax 1 Percent']];
         }
-        if (is_numeric($csv_row['Tax 2 Percent']) && $csv_row['Tax 2 Name'] !== '') {
-            $taxes_data[] = ['name' => $csv_row['Tax 2 Name'], 'percent' => $csv_row['Tax 2 Percent']];
-        }
-
-        if (!empty($taxes_data)) {
-            $this->item_taxes->save_value($taxes_data, $item_id);
+        if (is_numeric($csvRow['Tax 2 Percent']) && $csvRow['Tax 2 Name'] !== '') {
+            $taxesData[] = ['name' => $csvRow['Tax 2 Name'], 'percent' => $csvRow['Tax 2 Percent']];
         }
 
-        $location_id = 1;
+        if (!empty($taxesData)) {
+            $this->item_taxes->save_value($taxesData, $itemId);
+        }
+
+        $locationId = 1;
         $quantity = 75;
 
-        $quantity_data = [
-            'item_id' => $item_id,
-            'location_id' => $location_id,
+        $quantityData = [
+            'item_id' => $itemId,
+            'location_id' => $locationId,
             'quantity' => $quantity
         ];
-        $this->item_quantity->save_value($quantity_data, $item_id, $location_id);
+        $this->item_quantity->save_value($quantityData, $itemId, $locationId);
 
-        $inventory_data = [
+        $inventoryData = [
             'trans_inventory' => $quantity,
-            'trans_items' => $item_id,
-            'trans_location' => $location_id,
+            'trans_items' => $itemId,
+            'trans_location' => $locationId,
             'trans_comment' => 'CSV import quantity',
             'trans_user' => 1
         ];
-        $this->inventory->insert($inventory_data);
+        $this->inventory->insert($inventoryData);
 
-        $saved_item = $this->item->get_info($item_id);
-        $this->assertEquals('Complete Test Item', $saved_item->name);
-        $this->assertEquals('Electronics', $saved_item->category);
-        $this->assertEquals(50.00, (float)$saved_item->cost_price);
-        $this->assertEquals(100.00, (float)$saved_item->unit_price);
-        $this->assertEquals('84713020', $saved_item->hsn_code);
+        $savedItem = $this->item->get_info($itemId);
+        $this->assertEquals('Complete Test Item', $savedItem->name);
+        $this->assertEquals('Electronics', $savedItem->category);
+        $this->assertEquals(50.00, (float)$savedItem->cost_price);
+        $this->assertEquals(100.00, (float)$savedItem->unit_price);
+        $this->assertEquals('84713020', $savedItem->hsn_code);
 
-        $saved_quantity = $this->item_quantity->get_item_quantity($item_id, $location_id);
-        $this->assertEquals($quantity, (int)$saved_quantity->quantity);
+        $savedQuantity = $this->item_quantity->get_item_quantity($itemId, $locationId);
+        $this->assertEquals($quantity, (int)$savedQuantity->quantity);
 
-        $saved_taxes = $this->item_taxes->get_info($item_id);
-        $this->assertCount(1, $saved_taxes);
-        $this->assertEquals('VAT', $saved_taxes[0]['name']);
-        $this->assertEquals(20, (float)$saved_taxes[0]['percent']);
+        $savedTaxes = $this->item_taxes->get_info($itemId);
+        $this->assertCount(1, $savedTaxes);
+        $this->assertEquals('VAT', $savedTaxes[0]['name']);
+        $this->assertEquals(20, (float)$savedTaxes[0]['percent']);
 
-        $inventory_records = $this->inventory->get_inventory_data_for_item($item_id, $location_id);
-        $this->assertGreaterThanOrEqual(1, $inventory_records->getNumRows());
+        $inventoryRecords = $this->inventory->get_inventory_data_for_item($itemId, $locationId);
+        $this->assertGreaterThanOrEqual(1, $inventoryRecords->getNumRows());
     }
 
     public function testImportCsvInvalidStockLocationColumn(): void
     {
-        $csv_headers = ['Id', 'Item Name', 'Category', 'Cost Price', 'Unit Price', 'location_NonExistentLocation'];
-        $csv_row = [
+        $csvHeaders = ['Id', 'Item Name', 'Category', 'Cost Price', 'Unit Price', 'location_NonExistentLocation'];
+        $csvRow = [
             'Id' => '',
             'Item Name' => 'Test Item Invalid Location',
             'Category' => 'Test',
@@ -855,29 +868,29 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'location_NonExistentLocation' => '100'
         ];
 
-        $allowed_locations = [1 => 'Warehouse'];
+        $allowedLocations = [1 => 'Warehouse'];
 
-        $location_columns_in_csv = [];
-        foreach (array_keys($csv_row) as $key) {
+        $locationColumnsInCsv = [];
+        foreach (array_keys($csvRow) as $key) {
             if (str_starts_with($key, 'location_')) {
-                $location_columns_in_csv[$key] = substr($key, 9);
+                $locationColumnsInCsv[$key] = substr($key, 9);
             }
         }
 
-        $invalid_locations = [];
-        foreach ($location_columns_in_csv as $column => $location_name) {
-            if (!in_array($location_name, $allowed_locations)) {
-                $invalid_locations[] = $location_name;
+        $invalidLocations = [];
+        foreach ($locationColumnsInCsv as $column => $locationName) {
+            if (!in_array($locationName, $allowedLocations)) {
+                $invalidLocations[] = $locationName;
             }
         }
 
-        $this->assertNotEmpty($invalid_locations, 'Should detect invalid location in CSV');
-        $this->assertContains('NonExistentLocation', $invalid_locations);
+        $this->assertNotEmpty($invalidLocations, 'Should detect invalid location in CSV');
+        $this->assertContains('NonExistentLocation', $invalidLocations);
     }
 
     public function testImportCsvValidStockLocationColumn(): void
     {
-        $csv_row = [
+        $csvRow = [
             'Id' => '',
             'Item Name' => 'Test Item Valid Location',
             'Category' => 'Test',
@@ -886,28 +899,28 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'location_Warehouse' => '100'
         ];
 
-        $allowed_locations = [1 => 'Warehouse'];
+        $allowedLocations = [1 => 'Warehouse'];
 
-        $location_columns_in_csv = [];
-        foreach (array_keys($csv_row) as $key) {
+        $locationColumnsInCsv = [];
+        foreach (array_keys($csvRow) as $key) {
             if (str_starts_with($key, 'location_')) {
-                $location_columns_in_csv[$key] = substr($key, 9);
+                $locationColumnsInCsv[$key] = substr($key, 9);
             }
         }
 
-        $invalid_locations = [];
-        foreach ($location_columns_in_csv as $column => $location_name) {
-            if (!in_array($location_name, $allowed_locations)) {
-                $invalid_locations[] = $location_name;
+        $invalidLocations = [];
+        foreach ($locationColumnsInCsv as $column => $locationName) {
+            if (!in_array($locationName, $allowedLocations)) {
+                $invalidLocations[] = $locationName;
             }
         }
 
-        $this->assertEmpty($invalid_locations, 'Should have no invalid locations');
+        $this->assertEmpty($invalidLocations, 'Should have no invalid locations');
     }
 
     public function testImportCsvMixedValidAndInvalidLocations(): void
     {
-        $csv_row = [
+        $csvRow = [
             'Id' => '',
             'Item Name' => 'Test Item Mixed Locations',
             'Category' => 'Test',
@@ -917,47 +930,47 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'location_InvalidLocation' => '50'
         ];
 
-        $allowed_locations = [1 => 'Warehouse', 2 => 'Store'];
+        $allowedLocations = [1 => 'Warehouse', 2 => 'Store'];
 
-        $location_columns_in_csv = [];
-        foreach (array_keys($csv_row) as $key) {
+        $locationColumnsInCsv = [];
+        foreach (array_keys($csvRow) as $key) {
             if (str_starts_with($key, 'location_')) {
-                $location_columns_in_csv[$key] = substr($key, 9);
+                $locationColumnsInCsv[$key] = substr($key, 9);
             }
         }
 
-        $invalid_locations = [];
-        foreach ($location_columns_in_csv as $column => $location_name) {
-            if (!in_array($location_name, $allowed_locations)) {
-                $invalid_locations[] = $location_name;
+        $invalidLocations = [];
+        foreach ($locationColumnsInCsv as $column => $locationName) {
+            if (!in_array($locationName, $allowedLocations)) {
+                $invalidLocations[] = $locationName;
             }
         }
 
-        $this->assertCount(1, $invalid_locations, 'Should have exactly one invalid location');
-        $this->assertContains('InvalidLocation', $invalid_locations);
+        $this->assertCount(1, $invalidLocations, 'Should have exactly one invalid location');
+        $this->assertContains('InvalidLocation', $invalidLocations);
     }
 
     public function testValidateCsvStockLocations(): void
     {
-        $csv_content = "Id,\"Item Name\",Category,\"Cost Price\",\"Unit Price\",\"location_Warehouse\",\"location_FakeLocation\"\n";
-        $csv_content .= ",Test Item,Test,10.00,20.00,100,50\n";
+        $csvContent = "Id,\"Item Name\",Category,\"Cost Price\",\"Unit Price\",\"location_Warehouse\",\"location_FakeLocation\"\n";
+        $csvContent .= ",Test Item,Test,10.00,20.00,100,50\n";
 
-        $temp_file = tempnam(sys_get_temp_dir(), 'csv_location_test_');
-        file_put_contents($temp_file, $csv_content);
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_location_test_');
+        file_put_contents($tempFile, $csvContent);
 
-        $rows = get_csv_file($temp_file);
+        $rows = get_csv_file($tempFile);
         $this->assertCount(1, $rows);
 
         $row = $rows[0];
         $this->assertArrayHasKey('location_Warehouse', $row);
         $this->assertArrayHasKey('location_FakeLocation', $row);
 
-        unlink($temp_file);
+        unlink($tempFile);
     }
 
     public function testImportItemQuantityOnlyForValidLocations(): void
     {
-        $item_data = [
+        $itemData = [
             'item_id' => null,
             'name' => 'Item Location Test',
             'category' => 'Test',
@@ -966,35 +979,35 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $item_id = $this->item->save_value($item_data);
+        $itemId = $this->item->save_value($itemData);
 
-        $allowed_locations = [1 => 'Warehouse', 2 => 'Store'];
+        $allowedLocations = [1 => 'Warehouse', 2 => 'Store'];
 
-        $csv_row_simulated = [
+        $csvRowSimulated = [
             'location_Warehouse' => '100',
             'location_Store' => '50',
             'location_NonExistent' => '25'
         ];
 
-        foreach ($allowed_locations as $location_id => $location_name) {
-            $column_name = "location_$location_name";
-            if (isset($csv_row_simulated[$column_name]) || $csv_row_simulated[$column_name] === '0') {
-                $quantity_data = [
-                    'item_id' => $item_id,
-                    'location_id' => $location_id,
-                    'quantity' => (int)$csv_row_simulated[$column_name]
+        foreach ($allowedLocations as $locationId => $locationName) {
+            $columnName = "location_$locationName";
+            if (isset($csvRowSimulated[$columnName]) || $csvRowSimulated[$columnName] === '0') {
+                $quantityData = [
+                    'item_id' => $itemId,
+                    'location_id' => $locationId,
+                    'quantity' => (int)$csvRowSimulated[$columnName]
                 ];
-                $this->item_quantity->save_value($quantity_data, $item_id, $location_id);
+                $this->item_quantity->save_value($quantityData, $itemId, $locationId);
             }
         }
 
-        $warehouse_qty = $this->item_quantity->get_item_quantity($item_id, 1);
-        $this->assertEquals(100, (int)$warehouse_qty->quantity);
+        $warehouseQuantity = $this->item_quantity->get_item_quantity($itemId, 1);
+        $this->assertEquals(100, (int)$warehouseQuantity->quantity);
 
-        $store_qty = $this->item_quantity->get_item_quantity($item_id, 2);
-        $this->assertEquals(50, (int)$store_qty->quantity);
+        $storeQuantity = $this->item_quantity->get_item_quantity($itemId, 2);
+        $this->assertEquals(50, (int)$storeQuantity->quantity);
 
-        $result = $this->item_quantity->exists($item_id, 999);
+        $result = $this->item_quantity->exists($itemId, 999);
         $this->assertFalse($result, 'Should not have quantity for non-existent location');
     }
 
@@ -1008,31 +1021,31 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'attribute_Color' => 'Red'
         ];
 
-        $location_columns = [];
+        $locationColumns = [];
         foreach (array_keys($row) as $key) {
             if (str_starts_with($key, 'location_')) {
-                $location_columns[$key] = substr($key, 9);
+                $locationColumns[$key] = substr($key, 9);
             }
         }
 
-        $this->assertCount(2, $location_columns);
-        $this->assertArrayHasKey('location_Warehouse', $location_columns);
-        $this->assertArrayHasKey('location_Store', $location_columns);
-        $this->assertEquals('Warehouse', $location_columns['location_Warehouse']);
-        $this->assertEquals('Store', $location_columns['location_Store']);
+        $this->assertCount(2, $locationColumns);
+        $this->assertArrayHasKey('location_Warehouse', $locationColumns);
+        $this->assertArrayHasKey('location_Store', $locationColumns);
+        $this->assertEquals('Warehouse', $locationColumns['location_Warehouse']);
+        $this->assertEquals('Store', $locationColumns['location_Store']);
     }
 
     public function testValidateLocationNamesCaseSensitivity(): void
     {
-        $allowed_locations = [1 => 'Warehouse', 2 => 'Store'];
+        $allowedLocations = [1 => 'Warehouse', 2 => 'Store'];
 
-        $csv_location_name = 'warehouse';
+        $csvLocationName = 'warehouse';
 
-        $is_valid = in_array($csv_location_name, $allowed_locations);
-        $this->assertFalse($is_valid, 'Location names should be case-sensitive');
+        $isValid = in_array($csvLocationName, $allowedLocations);
+        $this->assertFalse($isValid, 'Location names should be case-sensitive');
 
-        $csv_location_name = 'Warehouse';
-        $is_valid = in_array($csv_location_name, $allowed_locations);
-        $this->assertTrue($is_valid, 'Valid location name should pass validation');
+        $csvLocationName = 'Warehouse';
+        $isValid = in_array($csvLocationName, $allowedLocations);
+        $this->assertTrue($isValid, 'Valid location name should pass validation');
     }
 }
