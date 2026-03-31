@@ -479,7 +479,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $attributeValue = 'Red';
         $attributeId = $this->attribute->saveAttributeValue(//need to properly assign an attribute link before this is going to work
             $attributeValue,
-            $definitionData['definitionId'],
+            $definitionData['definition_id'],
             $originalData['item_id'],
             false,
             TEXT
@@ -487,7 +487,6 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         //Mock CSV import
         $updatedItemData = ['item_id' => $originalData['item_id']];
-        $definitionData['definition_id'] = $definitionData['definitionId'];
         $attributeDefinitionData = [$definitionData];
         $updatedValues = ['Color' => '_DELETE_'];
 
