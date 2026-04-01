@@ -582,12 +582,21 @@ class Sales extends Secure_Controller
         $data = [];
 
         $rules = [
-            'price'    => 'trim|required|decimal_locale',
+            'price'    => 'trim|required|decimal_locale|non_negative_decimal',
             'quantity' => 'trim|required|decimal_locale',
-            'discount' => 'trim|permit_empty|decimal_locale',
+            'discount' => 'trim|permit_empty|decimal_locale|non_negative_decimal',
         ];
 
-        if ($this->validate($rules)) {
+        $messages = [
+            'price' => [
+                'non_negative_decimal' => lang('Sales.negative_price_invalid'),
+            ],
+            'discount' => [
+                'non_negative_decimal' => lang('Sales.negative_discount_invalid'),
+            ],
+        ];
+
+        if ($this->validate($rules, $messages)) {
             $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $price = parse_decimals($this->request->getPost('price'));
@@ -596,37 +605,23 @@ class Sales extends Secure_Controller
             $discount = $discount_type
                 ? parse_quantity($this->request->getPost('discount'))
                 : parse_decimals($this->request->getPost('discount'));
+            $discount = $discount ?: 0;
 
-            // Validate non-negative values to prevent fraudulent negative-total sales
-            // Return mode legitimately uses negative quantities, so exempt quantity check
-            $is_return_mode = $this->sale_lib->get_mode() == 'return';
-
-            if ($price < 0) {
-                $data['error'] = lang('Sales.negative_price_invalid');
-                return $this->_reload($data);
-            }
-
-            if (!$is_return_mode && $quantity < 0) {
+            // Return mode legitimately uses negative quantities for refunds
+            if ($this->sale_lib->get_mode() != 'return' && $quantity < 0) {
                 $data['error'] = lang('Sales.negative_quantity_invalid');
                 return $this->_reload($data);
             }
 
-            if ($discount < 0) {
-                $data['error'] = lang('Sales.negative_discount_invalid');
-                return $this->_reload($data);
-            }
-
+            // Business logic: discount bounds depend on discount_type and item values
             if ($discount_type == PERCENT && $discount > 100) {
                 $data['error'] = lang('Sales.discount_percent_exceeds_100');
                 return $this->_reload($data);
             }
 
-            if ($discount_type == FIXED) {
-                $item_total = bcmul(abs($quantity), $price);
-                if ($discount > $item_total) {
-                    $data['error'] = lang('Sales.discount_exceeds_item_total');
-                    return $this->_reload($data);
-                }
+            if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, 2), 2) > 0) {
+                $data['error'] = lang('Sales.discount_exceeds_item_total');
+                return $this->_reload($data);
             }
 
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
@@ -634,14 +629,14 @@ class Sales extends Secure_Controller
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
                 : null;
 
-
             $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 
             $this->sale_lib->empty_payments();
 
             $data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
         } else {
-            $data['error'] = lang('Sales.error_editing_item');
+            $errors = $this->validator->getErrors();
+            $data['error'] = $errors ? reset($errors) : lang('Sales.error_editing_item');
         }
 
         return $this->_reload($data);
