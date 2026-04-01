@@ -465,6 +465,12 @@ helper('url');
                     <div class="btn btn-sm btn-success pull-right" id="add_payment_button" tabindex="<?= ++$tabindex ?>">
                         <span class="glyphicon glyphicon-credit-card">&nbsp;</span><?= lang(ucfirst($controller_name) . '.add_payment') ?>
                     </div>
+                    
+                    <?php if (function_exists('payment_provider_content')): ?>
+                        <div id="payment_provider_actions">
+                            <?= payment_provider_content('register_payment_actions', ['amount_due' => $amount_due ?? 0, 'payments' => $payments ?? []]) ?>
+                        </div>
+                    <?php endif; ?>
                 <?php } ?>
 
                 <?php if (count($payments) > 0) { // Only show this part if there is at least one payment entered. ?>

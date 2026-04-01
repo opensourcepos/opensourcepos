@@ -20,6 +20,7 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Config\OSPOS;
@@ -471,6 +472,13 @@ class Sales extends Secure_Controller
             }
         }
 
+        Events::trigger('payment_initiated', [
+            'payment_type' => $payment_type,
+            'amount' => $amount_tendered ?? 0,
+            'sale_id' => $this->sale_lib->get_sale_id(),
+            'customer_id' => $this->sale_lib->get_customer(),
+        ]);
+
         return $this->_reload($data);
     }
 
@@ -786,6 +794,16 @@ class Sales extends Secure_Controller
                     $data['error_message'] = lang('Sales.transaction_failed');
                 } else {
                     $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
+                    
+                    Events::trigger('sale_completed', [
+                        'sale_id' => $data['sale_id_num'],
+                        'customer_id' => $customer_id,
+                        'employee_id' => $employee_id,
+                        'total' => $data['total'],
+                        'payments' => $data['payments'],
+                        'sale_type' => $sale_type,
+                    ]);
+                    
                     $this->sale_lib->clear_all();
                     return view('sales/' . $invoice_view, $data);
                 }
@@ -869,6 +887,16 @@ class Sales extends Secure_Controller
                 $data['error_message'] = lang('Sales.transaction_failed');
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
+                
+                Events::trigger('sale_completed', [
+                    'sale_id' => $data['sale_id_num'],
+                    'customer_id' => $customer_id,
+                    'employee_id' => $employee_id,
+                    'total' => $data['total'],
+                    'payments' => $data['payments'],
+                    'sale_type' => $sale_type,
+                ]);
+                
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);
             }
