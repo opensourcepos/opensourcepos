@@ -820,7 +820,6 @@ class Sales extends Secure_Controller
 
                 $data['barcode'] = null;
 
-                $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
                 return view('sales/work_order', $data);
             }
@@ -848,7 +847,6 @@ class Sales extends Secure_Controller
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
                 $data['barcode'] = null;
 
-                $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
                 return view('sales/quote', $data);
             }
