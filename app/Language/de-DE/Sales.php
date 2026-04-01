@@ -222,4 +222,8 @@ return [
     "work_order_number_duplicate"      => "Arbeitsauftragsnummer muss eindeutig sein.",
     "work_order_sent"                  => "Arbeitsauftrag gesendet an",
     "work_order_unsent"                => "Der Arbeitsauftrag konnte nicht gesendet werden an",
+    "sale_not_found"                   => "Verkauf nicht gefunden",
+    "ubl_invoice"                      => "UBL-Rechnung",
+    "download_ubl"                     => "UBL-Rechnung herunterladen",
+    "ubl_generation_failed"            => "UBL-Rechnung konnte nicht erstellt werden",
 ];

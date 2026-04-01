@@ -222,4 +222,8 @@ return [
     "work_order_number_duplicate"      => "Numero Ordine di Lavoro deve essere unico.",
     "work_order_sent"                  => "Ordine di lavoro inviato",
     "work_order_unsent"                => "Ordine di Lavoro fallito da inviare a",
+    "sale_not_found"                   => "Vendita non trovata",
+    "ubl_invoice"                      => "Fattura UBL",
+    "download_ubl"                     => "Scarica fattura UBL",
+    "ubl_generation_failed"            => "Impossibile generare la fattura UBL",
 ];
