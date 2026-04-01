@@ -222,4 +222,8 @@ return [
     "work_order_number_duplicate"      => "O número da ordem de serviço deve ser exclusivo.",
     "work_order_sent"                  => "Ordem de trabalho enviada para",
     "work_order_unsent"                => "A ordem de serviço não foi enviada para",
+    "sale_not_found"                   => "Venda não encontrada",
+    "ubl_invoice"                      => "Fatura UBL",
+    "download_ubl"                     => "Baixar Fatura UBL",
+    "ubl_generation_failed"            => "Falha ao gerar fatura UBL",
 ];

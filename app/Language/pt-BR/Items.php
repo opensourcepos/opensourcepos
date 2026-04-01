@@ -26,7 +26,7 @@ return [
     "cost_price_required"                => "Preço de custo é um campo obrigatório.",
     "count"                              => "Acrescentar ao Inventário",
     "csv_import_failed"                  => "Importação do CSV falhou",
-    "csv_import_invalid_location"        => "",
+    "csv_import_invalid_location"        => "Local(is) de estoque inválido(s) encontrado(s): {0}. Apenas locais de estoque válidos são permitidos.",
     "csv_import_nodata_wrongformat"      => "Seu arquivo enviado não contém dados ou formato errado.",
     "csv_import_partially_failed"        => "Houve {0} falha na importação de itens na(s) linha(s): {1}. Nenhuma linha foi importada.",
     "csv_import_success"                 => "Importação de Itens com sucesso.",
