@@ -786,8 +786,8 @@ class Sales extends Secure_Controller
                     $data['error_message'] = lang('Sales.transaction_failed');
                 } else {
                     $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-                    return view('sales/' . $invoice_view, $data);
                     $this->sale_lib->clear_all();
+                    return view('sales/' . $invoice_view, $data);
                 }
             }
         } elseif ($this->sale_lib->is_work_order_mode()) {
@@ -820,9 +820,9 @@ class Sales extends Secure_Controller
 
                 $data['barcode'] = null;
 
-                return view('sales/work_order', $data);
                 $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
+                return view('sales/work_order', $data);
             }
         } elseif ($this->sale_lib->is_quote_mode()) {
             $data['sales_quote'] = lang('Sales.quote');
@@ -848,9 +848,9 @@ class Sales extends Secure_Controller
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
                 $data['barcode'] = null;
 
-                return view('sales/quote', $data);
                 $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
+                return view('sales/quote', $data);
             }
         } else {
             // Save the data to the sales table
@@ -871,8 +871,8 @@ class Sales extends Secure_Controller
                 $data['error_message'] = lang('Sales.transaction_failed');
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-                return view('sales/receipt', $data);
                 $this->sale_lib->clear_all();
+                return view('sales/receipt', $data);
             }
         }
     }
