@@ -2,9 +2,6 @@ include:
     - docker/docker-mysql.yml
 
 services:
-    sqlscript:
-        image: jekkos/opensourcepos:sql-master
-        command: /bin/sh -c 'exit 0'
     ospos:
         image: jekkos/opensourcepos:master
         restart: always
