@@ -443,7 +443,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($updatedData));
+        $this->assertTrue($this->item->save_value($updatedData, $updatedData['item_id']));
 
         $updatedItem = $this->item->get_info($updatedData['item_id']);
         $this->assertEquals('Updated Name', $updatedItem->name);
@@ -686,25 +686,46 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $this->assertTrue($this->item->save_value($itemData));
 
-        $quantities = [
-            ['location_id' => 1, 'quantity' => 100],
-            ['location_id' => 2, 'quantity' => 50],
-            ['location_id' => 3, 'quantity' => 25]
+        $locations = [
+            'Warehouse' => 100,
+            'Store' => 50,
+            'Backroom' => 25,
         ];
 
-        foreach ($quantities as $quantity) {
+        $locationIds = [];
+
+        foreach ($locations as $locationName => $quantity) {
+            $locationData = [
+                'location_name' => $locationName,
+                'deleted' => 0
+            ];
+
+            $this->assertTrue($this->stock_location->save_value($locationData, NEW_ENTRY));
+            $this->assertNotEmpty($locationData['location_id']);
+
+            $locationIds[$locationName] = $locationData['location_id'];
+
             $result = $this->item_quantity->save_value(
-                ['item_id' => $itemData['item_id'], 'location_id' => $quantity['location_id'], 'quantity' => $quantity['quantity']],
+                [
+                    'item_id' => $itemData['item_id'],
+                    'location_id' => $locationData['location_id'],
+                    'quantity' => $quantity
+                ],
                 $itemData['item_id'],
-                $quantity['location_id']
+                $locationData['location_id']
             );
+
             $this->assertTrue($result);
         }
 
-        foreach ($quantities as $quantity) {
-            $saved = $this->item_quantity->get_item_quantity($itemData['item_id'], $quantity['location_id']);
-            $this->assertEquals($quantity['quantity'], (int)$saved->quantity, "Quantity at location {$quantity['location_id']} should match");
-        }
+        $warehouseQuantity = $this->item_quantity->get_item_quantity($itemData['item_id'], $locationIds['Warehouse']);
+        $this->assertEquals(100, (int) $warehouseQuantity->quantity);
+
+        $storeQuantity = $this->item_quantity->get_item_quantity($itemData['item_id'], $locationIds['Store']);
+        $this->assertEquals(50, (int) $storeQuantity->quantity);
+
+        $backroomQuantity = $this->item_quantity->get_item_quantity($itemData['item_id'], $locationIds['Backroom']);
+        $this->assertEquals(25, (int) $backroomQuantity->quantity);
     }
 
     public function testCsvImportQuantityValidationNumeric(): void
@@ -979,11 +1000,19 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $this->assertTrue($this->item->save_value($itemData));
 
-        $allowedLocations = [1 => 'Warehouse', 2 => 'Store'];
+        $uniqueId = uniqid();
+        $locations = ['Warehouse' . $uniqueId, 'Store' . $uniqueId];
+
+        $allowedLocations = [];
+        foreach ($locations as $index => $locationName) {
+            $currentLocation = ['location_name' => $locationName, 'deleted' => 0];
+            $this->assertTrue($this->stock_location->save_value($currentLocation, NEW_ENTRY));
+            $allowedLocations[$currentLocation['location_id']] = $locationName;
+        }
 
         $csvRowSimulated = [
-            'location_Warehouse' => '100',
-            'location_Store' => '50',
+            'location_Warehouse' . $uniqueId => '100',
+            'location_Store' . $uniqueId => '50',
             'location_NonExistent' => '25'
         ];
 
@@ -999,10 +1028,12 @@ class ItemsCsvImportTest extends CIUnitTestCase
             }
         }
 
-        $warehouseQuantity = $this->item_quantity->get_item_quantity($itemData['item_id'], 1);
+        $warehouseId = array_search('Warehouse' . $uniqueId, $allowedLocations, true);
+        $warehouseQuantity = $this->item_quantity->get_item_quantity($itemData['item_id'], $warehouseId);
         $this->assertEquals(100, (int)$warehouseQuantity->quantity);
 
-        $storeQuantity = $this->item_quantity->get_item_quantity($itemData['item_id'], 2);
+        $storeId = array_search('Store'. $uniqueId, $allowedLocations, true);
+        $storeQuantity = $this->item_quantity->get_item_quantity($itemData['item_id'], $storeId);
         $this->assertEquals(50, (int)$storeQuantity->quantity);
 
         $result = $this->item_quantity->exists($itemData['item_id'], 999);

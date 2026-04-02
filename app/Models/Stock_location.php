@@ -185,6 +185,7 @@ class Stock_location extends Model
             $builder = $this->db->table('stock_locations');
             $builder->insert($location_data_to_save);
             $location_id = $this->db->insertID();
+            $location_data['location_id'] = $location_id;
 
             $this->_insert_new_permission('items', $location_id, $location_name);    // TODO: need to refactor out the hungarian notation.
             $this->_insert_new_permission('sales', $location_id, $location_name);
