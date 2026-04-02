@@ -71,7 +71,7 @@ class Items extends Secure_Controller
         $this->session->set('allow_temp_items', 0);
 
         $data['table_headers'] = get_items_manage_table_headers();
-        
+
         // Restore stock_location from URL or session
         $stockLocation = $this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT);
         $data['stock_location'] = $stockLocation
@@ -1038,7 +1038,7 @@ class Items extends Secure_Controller
                             $this->save_tax_data($row, $itemData);
                             $this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId);
                             $csvAttributeValues = $this->extractAttributeData($row);
-                            $isFailedRow = $this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData);    // TODO: $is_failed_row never gets used after this.
+                            $isFailedRow = !$this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData);    // TODO: $is_failed_row never gets used after this.
 
                             if ($isUpdate) {
                                 $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));

@@ -902,7 +902,7 @@ class Attribute extends Model
      * @param array $attributeValues Attribute name/value pairs from one row of the CSV import file
      * @param array $itemData Contains data for the item being imported/updated from the CSV file.
      * @param array $definitions Contains all attribute definitions in the system.
-     * @return bool Returns false if all attribute data saves correctly and true if there is an error saving any of
+     * @return bool Returns true if all attribute data saves correctly and false if there is an error saving any of
      * the attribute data.
      */
     public function saveCSVRowAttributeData(array $attributeValues, array $itemData, array $definitions): bool
@@ -927,15 +927,15 @@ class Attribute extends Model
                 } elseif (!empty($attributeValue)) {
                     $attribute_id = $this->storeCSVAttributeValue($attributeValue, $definition, $itemData['item_id']);
                 } else {
-                    return true;
+                    return false;
                 }
 
                 if (!$attribute_id) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     /**
