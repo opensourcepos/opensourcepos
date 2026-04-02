@@ -159,7 +159,6 @@ class Autoload extends AutoloadConfig
         'Barcode_lib'   => '/App/Libraries/Barcode_lib.php',
         'Email_lib'     => '/App/Libraries/Email_lib.php',
         'Item_lib'      => '/App/Libraries/Item_lib.php',
-        'Mailchimp_lib' => '/App/Libraries/Mailchimp_lib.php',
         'MY_Email'      => '/App/Libraries/MY_Email.php',
         'MY_Migration'  => '/App/Libraries/MY_Migration.php',
         'Receving_lib'  => '/App/Libraries/Receiving_lib.php',
