@@ -5,6 +5,7 @@ namespace App\Plugins;
 use App\Libraries\Plugins\BasePlugin;
 use App\Libraries\Mailchimp_lib;
 use CodeIgniter\Events\Events;
+use Config\Services;
 
 /**
  * Plugin that integrates OSPOS with Mailchimp for customer newsletter subscriptions.
@@ -183,8 +184,7 @@ class MailchimpPlugin extends BasePlugin
 
     protected function lang(string $key, array $data = []): string
     {
-        $language = \Config\Services::language();
-        $language->addLanguagePath(APPPATH . 'Plugins/MailchimpPlugin/Language/');
+        $language = Services::language();
         return $language->getLine($key, $data);
     }
 

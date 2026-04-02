@@ -4,6 +4,7 @@ namespace App\Libraries\Plugins;
 
 use App\Models\PluginConfig;
 use CodeIgniter\Events\Events;
+use Config\Services;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -54,6 +55,15 @@ class PluginManager
             $plugin = new $className();
 
             $this->plugins[$plugin->getPluginId()] = $plugin;
+
+            if ($this->isPluginEnabled($plugin->getPluginId())) {
+                $loader = Services::autoloader();
+                $loader->addNamespace(
+                    "App\\Plugins\\{$plugin->getPluginId()}",
+                    APPPATH . "Plugins/{$plugin->getPluginId()}"
+                );
+            }
+
             log_message('debug', "Discovered plugin: {$plugin->getPluginName()}");
         }
     }
@@ -116,6 +126,13 @@ class PluginManager
         }
 
         $this->configModel->setValue($this->getEnabledKey($pluginId), '1');
+
+        $loader = Services::autoloader();
+        $loader->addNamespace(
+            "App\\Plugins\\{$pluginId}",
+            APPPATH . "Plugins/{$pluginId}"
+        );
+
         log_message('info', "Plugin enabled: {$pluginId}");
 
         return true;
