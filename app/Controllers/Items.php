@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Item_lib;
+
 use App\Models\Attribute;
 use App\Models\Inventory;
 use App\Models\Item;
@@ -13,6 +14,7 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
+
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
@@ -767,7 +769,7 @@ class Items extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
-
+        
         // Sanitize filename to remove problematic characters like spaces
         $sanitized_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $info['filename']);
 
@@ -1001,7 +1003,7 @@ class Items extends Secure_Controller
                             'pic_filename'  => $row['Image']
                         ];
 
-                        if (!empty($row['Supplier ID'])) {
+                        if (!empty($row['supplier ID'])) {
                             $item_data['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
                         }
 
@@ -1019,7 +1021,6 @@ class Items extends Secure_Controller
                         }
 
                         if (!$is_failed_row) {
-                            $allowedStockLocations = $this->stock_location->get_allowed_locations();
                             $invalidLocations = $this->validateCSVStockLocations($row, $allowedStockLocations);
                             if (!empty($invalidLocations)) {
                                 $isFailedRow = true;
@@ -1353,8 +1354,7 @@ class Items extends Secure_Controller
                     break;
                 case DECIMAL:
                     $attributeValue = parse_decimals($attributeValue);
-                    // Fall through to save the attribute value
-                    // no break
+                // Fall through to save the attribute value
                 default:
                     $attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);
                     break;
