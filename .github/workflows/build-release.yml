@@ -1,0 +1,218 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version-tag: ${{ steps.version.outputs.version-tag }}
+      short-sha: ${{ steps.version.outputs.short-sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, mbstring, mysqli, gd, bcmath, zip
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get composer cache directory
+        run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.COMPOSER_CACHE_FILES_DIR }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Get npm cache directory
+        run: echo "NPM_CACHE_DIR=$(npm config get cache)" >> $GITHUB_ENV
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NPM_CACHE_DIR }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install gulp globally
+        run: npm install -g gulp-cli
+
+      - name: Get version info
+        id: version
+        run: |
+          VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
+          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/feature\///')
+          TAG=$(echo "${GITHUB_TAG:-$BRANCH}" | tr '/' '-')
+          SHORT_SHA=$(git rev-parse --short=6 HEAD)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version-tag=$VERSION-$BRANCH-$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TAG: ${{ github.ref_name }}
+
+      - name: Create .env file
+        run: |
+          cp .env.example .env
+          sed -i 's/production/development/g' .env
+
+      - name: Update commit hash
+        run: |
+          SHORT_SHA="${{ steps.version.outputs.short-sha }}"
+          sed -i "s/commit_sha1 = 'dev'/commit_sha1 = '$SHORT_SHA'/g" app/Config/OSPOS.php
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Create distribution archives
+        run: |
+          set -euo pipefail
+          gulp compress
+          VERSION="${{ steps.version.outputs.version }}"
+          SHORT_SHA="${{ steps.version.outputs.short-sha }}"
+          mv dist/opensourcepos.tar "dist/opensourcepos.$VERSION.$SHORT_SHA.tar"
+          mv dist/opensourcepos.zip "dist/opensourcepos.$VERSION.$SHORT_SHA.zip"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ steps.version.outputs.short-sha }}
+          path: dist/
+          retention-days: 7
+
+      - name: Upload build context for Docker
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-context-${{ steps.version.outputs.short-sha }}
+          path: |
+            .
+            !.git
+            !node_modules
+          retention-days: 1
+
+  docker:
+    name: Build Docker Image
+    runs-on: ubuntu-22.04
+    needs: build
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Download build context
+        uses: actions/download-artifact@v4
+        with:
+          name: build-context-${{ needs.build.outputs.short-sha }}
+          path: .
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Determine Docker tags
+        id: tags
+        run: |
+          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '-')
+          if [ "$BRANCH" = "master" ]; then
+            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }},${{ secrets.DOCKER_USERNAME }}/opensourcepos:latest" >> $GITHUB_OUTPUT
+          else
+            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }}" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_REF: ${{ github.ref }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: ospos
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ needs.build.outputs.short-sha }}
+          path: dist/
+
+      - name: Get version info
+        id: version
+        run: |
+          VERSION="${{ needs.build.outputs.version }}"
+          SHORT_SHA=$(git rev-parse --short=6 HEAD)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+
+      - name: Create/Update unstable release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: unstable
+          name: Unstable OpenSourcePOS
+          body: |
+            This is a build of the latest master which might contain bugs. Use at your own risk.
+            
+            Check the releases section for the latest official release.
+          files: |
+            dist/opensourcepos.${{ steps.version.outputs.version }}.${{ steps.version.outputs.short-sha }}.zip
+          prerelease: true
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

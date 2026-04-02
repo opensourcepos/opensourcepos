@@ -47,18 +47,20 @@
             </div>
             <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
                 <?= form_open('login') ?>
-                <h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
+                <?php if (!$is_latest): ?>
+                    <h3 class="text-center m-0"><?= lang('Login.migration_required') ?></h3>
+                    <div class="alert alert-warning mt-3">
+                        <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
+                    </div>
+                <?php else: ?>
+                    <h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
+                <?php endif; ?>
                 <?php if ($has_errors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
                         <div class="alert alert-danger mt-3">
                             <?= $error ?>
                         </div>
                     <?php endforeach; ?>
-                <?php endif; ?>
-                <?php if (!$is_latest): ?>
-                    <div class="alert alert-info mt-3">
-                        <?= lang('Login.migration_needed', [$latest_version]) ?>
-                    </div>
                 <?php endif; ?>
                 <?php if (empty($config['login_form']) || 'floating_labels' == ($config['login_form'])): ?>
                     <div class="form-floating mt-3">
@@ -96,7 +98,9 @@
                 }
                 ?>
                 <div class="d-grid">
-                    <button class="btn btn-lg btn-primary" name="login-button" type="submit"><?= lang('Login.go') ?></button>
+                    <button class="btn btn-lg btn-primary" name="login-button" type="submit">
+                        <?= $is_latest ? lang('Login.go') : lang('Module.migrate') ?>
+                    </button>
                 </div>
                 <?= form_close() ?>
             </section>

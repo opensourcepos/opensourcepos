@@ -146,4 +146,5 @@ return [
     "used"                                    => "Punten gebruikt",
     "work_orders"                             => "Werkorders",
     "zero_and_less"                           => "Nul en minder",
+    "toggle_cost_and_profit"                  => "Kosten en winst wisselen",
 ];

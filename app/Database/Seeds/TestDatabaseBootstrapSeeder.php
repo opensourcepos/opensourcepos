@@ -42,6 +42,9 @@ class TestDatabaseBootstrapSeeder extends Seeder
         }
 
         $sql = file_get_contents($sqlFile);
+        if ($sql === false) {
+            throw new \RuntimeException("Unable to read SQL file: {$sqlFile}");
+        }
 
         foreach (explode(";", $sql) as $statement) {
             $trim = trim($statement);
