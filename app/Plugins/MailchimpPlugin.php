@@ -37,19 +37,19 @@ class MailchimpPlugin extends BasePlugin
     {
         Events::on('customer_saved', [$this, 'onCustomerSaved']);
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
-        
+
         log_message('debug', 'Mailchimp plugin events registered');
     }
 
     public function install(): bool
     {
         log_message('info', 'Installing Mailchimp plugin');
-        
+
         $this->setSetting('api_key', '');
         $this->setSetting('list_id', '');
         $this->setSetting('sync_on_save', '1');
         $this->setSetting('enabled', '0');
-        
+
         return true;
     }
 
@@ -76,19 +76,21 @@ class MailchimpPlugin extends BasePlugin
 
     public function saveSettings(array $settings): bool
     {
-        if (isset($settings['api_key'])) {
-            $this->setSetting('api_key', $settings['api_key']);
+        $normalized = [];
+
+        if (array_key_exists('api_key', $settings)) {
+            $normalized['api_key'] = (string)$settings['api_key'];
         }
-        
-        if (isset($settings['list_id'])) {
-            $this->setSetting('list_id', $settings['list_id']);
+
+        if (array_key_exists('list_id', $settings)) {
+            $normalized['list_id'] = (string)$settings['list_id'];
         }
-        
-        if (isset($settings['sync_on_save'])) {
-            $this->setSetting('sync_on_save', $settings['sync_on_save'] ? '1' : '0');
+
+        if (array_key_exists('sync_on_save', $settings)) {
+            $normalized['sync_on_save'] = !empty($settings['sync_on_save']) ? '1' : '0';
         }
-        
-        return true;
+
+        return parent::saveSettings($normalized);
     }
 
     public function onCustomerSaved(array $customerData): void
@@ -127,7 +129,7 @@ class MailchimpPlugin extends BasePlugin
         }
 
         $mailchimp = $this->getMailchimpLib(['api_key' => $apiKey]);
-        
+
         $result = $mailchimp->addOrUpdateMember(
             $listId,
             $customerData['email'],
@@ -160,7 +162,7 @@ class MailchimpPlugin extends BasePlugin
     public function testConnection(): array
     {
         $apiKey = $this->getSetting('api_key');
-        
+
         if (empty($apiKey)) {
             return ['success' => false, 'message' => $this->lang('mailchimp_api_key_required')];
         }
@@ -170,7 +172,7 @@ class MailchimpPlugin extends BasePlugin
 
         if ($result && isset($result['lists'])) {
             return [
-                'success' => true, 
+                'success' => true,
                 'message' => $this->lang('mailchimp_key_successfully'),
                 'lists' => $result['lists']
             ];
