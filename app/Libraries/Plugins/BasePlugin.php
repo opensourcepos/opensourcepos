@@ -37,10 +37,10 @@ abstract class BasePlugin implements PluginInterface
 
     protected function setSetting(string $key, mixed $value): bool
     {
-        $stringValue = is_array($value) || is_object($value) 
-            ? json_encode($value) 
+        $stringValue = is_array($value) || is_object($value)
+            ? json_encode($value)
             : (string)$value;
-            
+
         return $this->configModel->setValue("{$this->getPluginId()}_{$key}", $stringValue);
     }
 
@@ -59,7 +59,7 @@ abstract class BasePlugin implements PluginInterface
                 $prefixedSettings["{$this->getPluginId()}_{$key}"] = (string)$value;
             }
         }
-        
+
         return $this->configModel->batchSave($prefixedSettings);
     }
 
