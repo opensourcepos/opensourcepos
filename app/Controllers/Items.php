@@ -1008,7 +1008,7 @@ class Items extends Secure_Controller
                             'pic_filename'  => $row['Image']
                         ];
 
-                        if (!empty($row['supplier ID'])) {
+                        if (!empty($row['Supplier ID'])) {
                             $itemData['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
                         }
 
@@ -1026,7 +1026,12 @@ class Items extends Secure_Controller
                         }
 
                         if (!$isFailedRow) {
+                            $allowedStockLocations = $this->stock_location->get_allowed_locations();
                             $isFailedRow = $this->validateCSVData($row, $itemData, $allowedStockLocations, $attributeDefinitionNames, $attributeData);
+                            if (!empty($invalidLocations)) {
+                                $isFailedRow = true;
+                                log_message('error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations));
+                            }
                         }
 
                         // Remove false, null, '' and empty strings but keep 0
