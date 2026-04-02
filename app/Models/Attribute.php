@@ -562,6 +562,7 @@ class Attribute extends Model
 
             if ($from_definition_type !== $to_definition_type
                 && !$this->convert_definition_data($definitionId, $from_definition_type, $to_definition_type)) {
+                $this->db->transRollback();
                 return false;
             }
         }
@@ -887,7 +888,11 @@ class Attribute extends Model
         }
 
         if (!empty($definitionId)) {
-            $this->saveAttributeLink($itemId, $definitionId, $attributeId);
+            $success = $this->saveAttributeLink($itemId, $definitionId, $attributeId);
+            if (!$success) {
+                $this->db->transRollback();
+                return 0;
+            }
         }
 
         $this->db->transComplete();
@@ -924,7 +929,7 @@ class Attribute extends Model
                     $attributeValue = $checkbox_is_unchecked ? '0' : '1';
 
                     $attribute_id = $this->storeCSVAttributeValue($attributeValue, $definition, $itemData['item_id']);
-                } elseif (!empty($attributeValue)) {
+                } elseif (!empty($attributeValue) || $attributeValue === '0') {
                     $attribute_id = $this->storeCSVAttributeValue($attributeValue, $definition, $itemData['item_id']);
                 } else {
                     return false;
@@ -948,6 +953,7 @@ class Attribute extends Model
      */
     private function storeCSVAttributeValue(string $value, array $attributeData, int $itemId): bool|int
     {
+        $this->db->transStart();
         $attributeId = $this->attributeValueExists($value, $attributeData['definition_type']);
 
         $this->deleteAttributeLinks($itemId, $attributeData['definition_id']);
@@ -968,6 +974,12 @@ class Attribute extends Model
             } elseif (!$this->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
                 return false;
             }
+        }
+
+        $this->db->transComplete();
+
+        if (!$this->db->transStatus()) {
+            return false;
         }
 
         return $attributeId;

@@ -711,7 +711,7 @@ class Items extends Secure_Controller
                 $item_quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id']);
 
                 if ($item_quantity->quantity != $updated_quantity || $new_item) {
-                    $success &= $this->item_quantity->save_value($location_detail, $item_id, $location['location_id']);
+                    $success = $success &&  $this->item_quantity->save_value($location_detail, $item_id, $location['location_id']);
 
                     $inv_data = [
                         'trans_date'      => date('Y-m-d H:i:s'),
@@ -722,10 +722,10 @@ class Items extends Secure_Controller
                         'trans_inventory' => $updated_quantity - $item_quantity->quantity
                     ];
 
-                    $success &= $this->inventory->insert($inv_data, false);
+                    $success = $success && $this->inventory->insert($inv_data, false);
                 }
             }
-            $this->saveItemAttributes($item_id);
+            $success = $success && $this->saveItemAttributes($item_id);
 
             if ($success && $upload_success) {
                 $message = lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name'];
@@ -1022,7 +1022,7 @@ class Items extends Secure_Controller
 
                         if (!empty($row['Barcode'])) {
                             $itemData['item_number'] = $row['Barcode'];
-                            $isFailedRow = $this->item->item_number_exists($itemData['item_number']);
+                            $isFailedRow = $this->item->item_number_exists($itemData['item_number'], $itemId);
                         }
 
                         if (!$isFailedRow) {
@@ -1038,7 +1038,13 @@ class Items extends Secure_Controller
                             $this->save_tax_data($row, $itemData);
                             $this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId);
                             $csvAttributeValues = $this->extractAttributeData($row);
-                            $isFailedRow = !$this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData);    // TODO: $is_failed_row never gets used after this.
+                            $isFailedRow = !$this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData);
+                            if ($isFailedRow) {
+                                $failedRow = $key + 2;
+                                $failCodes[] = $failedRow;
+                                log_message('error', "CSV Item import failed on line $failedRow while saving attributes.");
+                                continue;
+                            }
 
                             if ($isUpdate) {
                                 $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
@@ -1175,8 +1181,8 @@ class Items extends Secure_Controller
         // Check stock locations
         $invalidLocations = $this->validateCSVStockLocations($row, $allowedStockLocations);
         if (!empty($invalidLocations)) {
-            $isFailedRow = true;
             log_message('error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations));
+            return true;
         }
 
         // Check Attribute Data
@@ -1311,10 +1317,11 @@ class Items extends Secure_Controller
      * Saves item attributes for a given item.
      *
      * @param int $itemId The item for which attributes need to be saved to.
-     * @return void
+     * @return bool Returns true when item attributes are successfully saved and false on error.
      */
-    public function saveItemAttributes(int $itemId): void
+    public function saveItemAttributes(int $itemId): bool
     {
+        $success = true;
         $attributeLinks = $this->request->getPost('attribute_links') ?? [];
         $attributeIds = $this->request->getPost('attribute_ids');
 
@@ -1326,7 +1333,7 @@ class Items extends Secure_Controller
             switch ($definitionType) {
                 case DROPDOWN:
                     $attributeId = $attributeValue;
-                    $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
+                    $success = $success && $this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
                     break;
                 case DECIMAL:
                     $attributeValue = parse_decimals($attributeValue);
@@ -1337,6 +1344,6 @@ class Items extends Secure_Controller
             }
         }
 
-        $this->attribute->deleteOrphanedValues();
+        return $success && $this->attribute->deleteOrphanedValues();
     }
 }

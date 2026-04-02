@@ -566,7 +566,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         // Mock Attribute DROPDOWN Values
         $dropdownValues = ['Small', 'Medium', 'Large'];
-        foreach ($dropdownValues as $i => $value) {//the ospos_attribute_values table does not have a definition_id field.  it has an attribute_id, so this test should be creating the attribute values then assigning the attribute_id in rows in the ospos_attribute_links table
+        foreach ($dropdownValues as $i => $value) {
             $this->attribute->saveAttributeValue(
                 $value,
                 $definitionId,
