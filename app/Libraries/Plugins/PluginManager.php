@@ -38,15 +38,15 @@ class PluginManager
             }
 
             $className = $this->getClassNameFromFile($file->getPathname());
-            
+
             if (!$className) {
                 continue;
             }
-            
+
             if (!class_exists($className)) {
                 continue;
             }
-            
+
             if (!is_subclass_of($className, PluginInterface::class)) {
                 continue;
             }
@@ -63,7 +63,7 @@ class PluginManager
         $relativePath = str_replace($this->pluginsPath . DIRECTORY_SEPARATOR, '', $pathname);
         $relativePath = str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
         $className = 'App\\Plugins\\' . str_replace('.php', '', $relativePath);
-        
+
         return $className;
     }
 
@@ -117,7 +117,7 @@ class PluginManager
 
         $this->configModel->setValue($this->getEnabledKey($pluginId), '1');
         log_message('info', "Plugin enabled: {$pluginId}");
-        
+
         return true;
     }
 
@@ -127,10 +127,10 @@ class PluginManager
             log_message('error', "Plugin not found: {$pluginId}");
             return false;
         }
-        
+
         $this->configModel->setValue($this->getEnabledKey($pluginId), '0');
         log_message('info', "Plugin disabled: {$pluginId}");
-        
+
         return true;
     }
 
@@ -148,7 +148,7 @@ class PluginManager
         }
 
         $this->configModel->deleteAllStartingWith($pluginId . '_');
-        
+
         return true;
     }
 
