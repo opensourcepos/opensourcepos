@@ -70,7 +70,8 @@ class Load_config
         
         // If database is not migrated and we're configured to use database sessions,
         // temporarily fall back to file-based sessions to allow migrations to complete.
-        // Once migrations run, subsequent requests will use database sessions.
+        // Once migrations run, the user must re-authenticate (session is destroyed in
+        // load_config() when migrations are pending).
         if (!$isDbMigrated && $sessionConfig->driver === DatabaseHandler::class) {
             $sessionConfig = clone $sessionConfig;
             $sessionConfig->driver = FileHandler::class;
