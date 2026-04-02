@@ -634,25 +634,55 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertEquals(-1, (int)$savedItem->reorder_level);
     }
 
-    public function testImportItemWithHighPrecisionPrices(): void
+    public function testImportItemPriceRoundingBoundaries(): void
     {
-        $itemData = [
-            'item_id' => null,
-            'name' => 'High Precision Item',
-            'category' => 'Test',
-            'cost_price' => 10.123456,
-            'unit_price' => 25.876543,
-            'deleted' => 0
+        $cases = [
+            [
+                'cost_price' => 10.004,
+                'unit_price' => 25.004,
+                'expected_cost_price' => '10.00',
+                'expected_unit_price' => '25.00',
+            ],
+            [
+                'cost_price' => 10.005,
+                'unit_price' => 25.005,
+                'expected_cost_price' => '10.01',
+                'expected_unit_price' => '25.01',
+            ],
+            [
+                'cost_price' => 10.006,
+                'unit_price' => 25.006,
+                'expected_cost_price' => '10.01',
+                'expected_unit_price' => '25.01',
+            ],
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        foreach ($cases as $case) {
+            $itemData = [
+                'item_id' => null,
+                'name' => 'Rounding Boundary Item ' . $case['cost_price'],
+                'category' => 'Test',
+                'cost_price' => $case['cost_price'],
+                'unit_price' => $case['unit_price'],
+                'deleted' => 0
+            ];
 
-        $savedItem = $this->item->get_info($itemData['item_id']);
-        $costDifference = abs(10.123456 - (float)$savedItem->cost_price);
-        $priceDifference = abs(25.876543 - (float)$savedItem->unit_price);
+            $this->assertTrue($this->item->save_value($itemData));
 
-        $this->assertLessThan(0.001, $costDifference, 'Cost price should maintain precision');
-        $this->assertLessThan(0.001, $priceDifference, 'Unit price should maintain precision');
+            $savedItem = $this->item->get_info($itemData['item_id']);
+
+            $this->assertSame(
+                $case['expected_cost_price'],
+                number_format((float) $savedItem->cost_price, 2, '.', ''),
+                'Cost price should be rounded correctly at the 3rd decimal boundary'
+            );
+
+            $this->assertSame(
+                $case['expected_unit_price'],
+                number_format((float) $savedItem->unit_price, 2, '.', ''),
+                'Unit price should be rounded correctly at the 3rd decimal boundary'
+            );
+        }
     }
 
     public function testImportItemWithHsnCode(): void
