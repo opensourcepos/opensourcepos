@@ -1,23 +1,56 @@
-node_modules
-tmp
+# Version control
+.git
+.gitignore
+
+# Sensitive config (user may mount their own)
 app/Config/Email.php
+
+# Build artifacts
+node_modules/
+dist/
+tmp/
 *.patch
 patches/
+
+# IDE and editor files
 .idea/
-git-svn-diff.py
-*.bash
+.vscode/
 .swp
+*.swp
 .buildpath
 .project
-.settings/*
-.git
-dist/
-node_modules/
-*.swp
+.settings/
+
+# Development tools and configs
+tests/
+phpunit.xml
+.php-cs-fixer.*
+phpstan.neon
+*.bash
+git-svn-diff.py
+
+# Documentation
+*.md
+!LICENSE
+branding/
+
+# Build configs (not needed at runtime)
+composer.json
+composer.lock
+package.json
+package-lock.json
+gulpfile.js
+.env.example
+.dockerignore
+
+# Temporary and backup files
 *.rej
 *.orig
 *~
 *.~
 *.log
-app/writable/session/*
-!app/writable/session/index.html
+
+# CI
+.github/
+.github/workflows/
+build/
