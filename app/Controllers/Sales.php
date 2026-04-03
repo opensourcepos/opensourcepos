@@ -582,17 +582,17 @@ class Sales extends Secure_Controller
         $data = [];
 
         $rules = [
-            'price'    => 'trim|required|decimal_locale|non_negative_decimal',
+            'price'    => 'trim|required|decimal_locale|nonNegativeDecimal',
             'quantity' => 'trim|required|decimal_locale',
-            'discount' => 'trim|permit_empty|decimal_locale|non_negative_decimal',
+            'discount' => 'trim|permit_empty|decimal_locale|nonNegativeDecimal',
         ];
 
         $messages = [
             'price' => [
-                'non_negative_decimal' => lang('Sales.negative_price_invalid'),
+                'nonNegativeDecimal' => lang('Sales.negative_price_invalid'),
             ],
             'discount' => [
-                'non_negative_decimal' => lang('Sales.negative_discount_invalid'),
+                'nonNegativeDecimal' => lang('Sales.negative_discount_invalid'),
             ],
         ];
 

@@ -144,7 +144,7 @@ class OSPOSRules
      * @return bool
      * @noinspection PhpUnused
      */
-    public function non_negative_decimal(string $candidate, ?string &$error = null): bool
+    public function nonNegativeDecimal(string $candidate, ?string &$error = null): bool
     {
         $value = parse_decimals($candidate);
 
