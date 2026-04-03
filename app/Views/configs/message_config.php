@@ -42,7 +42,7 @@
     <label for="msg-msg" class="form-label"><?= lang('Config.msg_msg'); ?></label>
     <div class="input-group mb-3">
         <span class="input-group-text"><i class="bi bi-chat-quote"></i></span>
-        <textarea class="form-control" name="msg_msg" id="msg-msg" rows="10" placeholder="<?= lang('Config.msg_msg_placeholder'); ?>" value="<?= $config['msg_msg']; ?>"></textarea>
+        <textarea class="form-control" name="msg_msg" id="msg-msg" rows="10" placeholder="<?= lang('Config.msg_msg_placeholder'); ?>"><?= esc($config['msg_msg']); ?></textarea>
     </div>
 
     <div class="d-flex justify-content-end">
