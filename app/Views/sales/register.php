@@ -140,7 +140,7 @@ helper('url');
                                 </tr>
                             </thead>
 
-                            <tbody id="cart_contents">
+                            <tbody id="cart_contents_card">
                                 <?php if (count($cart) == 0) { ?>
                                     <tr>
                                         <td colspan="8">
@@ -201,7 +201,6 @@ helper('url');
 
 
 <div id="register_wrapper">
-<br><br><br><br><br>
     <!-- Sale Items List -->
 
     <table class="sales_table_100" id="register">

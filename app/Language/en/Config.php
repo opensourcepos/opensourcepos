@@ -103,6 +103,7 @@ return [
     "derive_sale_quantity"                      => "Allow Derived Sale Quantity",
     "derive_sale_quantity_tooltip"              => "If checked then a new item type will be provided for items ordered by extended amount",
     "dinner_table"                              => "Table",
+    "dinner_table_add"                          => "Add Table",
     "dinner_table_duplicate"                    => "Table must be unique.",
     "dinner_table_enable"                       => "Enable Dinner Tables",
     "dinner_table_invalid_chars"                => "Table Name can not contain '_'.",
