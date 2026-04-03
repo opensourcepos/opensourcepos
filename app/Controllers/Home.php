@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Libraries\MY_Migration;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -81,7 +82,7 @@ class Home extends Secure_Controller
             if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
                 // Validate password length BEFORE hashing
                 $new_password = $this->request->getPost('password');
-                
+
                 if (strlen($new_password) < 8) {
                     return $this->response->setJSON([
                         'success' => false,
@@ -89,7 +90,7 @@ class Home extends Secure_Controller
                         'id'      => NEW_ENTRY
                     ]);
                 }
-                
+
                 $employee_data = [
                     'username'     => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                     'password'     => password_hash($new_password, PASSWORD_DEFAULT),

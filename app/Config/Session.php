@@ -5,6 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\BaseHandler;
 use CodeIgniter\Session\Handlers\DatabaseHandler;
+use CodeIgniter\Session\Handlers\FileHandler;
 
 class Session extends BaseConfig
 {
@@ -124,4 +125,35 @@ class Session extends BaseConfig
      * seconds.
      */
     public int $lockMaxRetries = 300;
+
+    /**
+     * Constructor
+     * 
+     * Switches to file-based session handler if database is not ready.
+     * This prevents circular dependency where session needs database but
+     * migrations haven't run yet (sessions table doesn't exist).
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        
+        // Only switch to file handler if database is configured but not migrated
+        if ($this->driver === DatabaseHandler::class) {
+            try {
+                $db = \Config\Database::connect();
+                
+                // Check if database connection works and migrations have run
+                // If migrations table doesn't exist, database hasn't been initialized
+                if (!$db->tableExists('migrations')) {
+                    // Database not migrated yet, use file sessions temporarily
+                    $this->driver = FileHandler::class;
+                    $this->savePath = WRITEPATH . 'session';
+                }
+            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+                // Database connection failed, fall back to file sessions
+                $this->driver = FileHandler::class;
+                $this->savePath = WRITEPATH . 'session';
+            }
+        }
+    }
 }

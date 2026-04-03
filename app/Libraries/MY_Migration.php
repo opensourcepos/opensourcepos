@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\MigrationRunner;
 use Config\Database;
 use stdClass;
@@ -35,11 +36,18 @@ class MY_Migration extends MigrationRunner
      */
     public static function get_current_version(): int
     {
-        $db = Database::connect();
-        if ($db->tableExists('migrations')) {
-            $builder = $db->table('migrations');
-            $builder->select('version')->orderBy('version', 'DESC')->limit(1);
-            return $builder->get()->getRow()->version;
+        try {
+            $db = Database::connect();
+            if ($db->tableExists('migrations')) {
+                $builder = $db->table('migrations');
+                $builder->select('version')->orderBy('version', 'DESC')->limit(1);
+                $result = $builder->get()->getRow();
+                return $result ? $result->version : 0;
+            }
+        } catch (DatabaseException $e) {
+            // Database doesn't exist yet or connection failed
+            // Return 0 to indicate no migrations have run
+            return 0;
         }
 
         return 0;
@@ -63,10 +71,15 @@ class MY_Migration extends MigrationRunner
      */
     private function ci3_migrations_exists(): bool|string
     {
-        if ($this->db->tableExists('migrations') && !$this->db->fieldExists('id', 'migrations')) {
-            $builder = $this->db->table('migrations');
-            $builder->select('version');
-            return $builder->get()->getRow()->version;
+        try {
+            if ($this->db->tableExists('migrations') && !$this->db->fieldExists('id', 'migrations')) {
+                $builder = $this->db->table('migrations');
+                $builder->select('version');
+                $result = $builder->get()->getRow();
+                return $result ? $result->version : false;
+            }
+        } catch (DatabaseException $e) {
+            // Database doesn't exist yet or connection failed
         }
 
         return false;
@@ -143,4 +156,5 @@ class MY_Migration extends MigrationRunner
 
         $this->ensureTable();
     }
+
 }
