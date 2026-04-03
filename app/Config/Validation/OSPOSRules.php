@@ -135,4 +135,19 @@ class OSPOSRules
     {
         return parse_decimals($candidate) !== false;
     }
+
+    /**
+     * Validates that a locale-aware decimal value is non-negative (>= 0).
+     *
+     * @param string $candidate
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function nonNegativeDecimal(string $candidate, ?string &$error = null): bool
+    {
+        $value = parse_decimals($candidate);
+
+        return $value !== false && $value >= 0;
+    }
 }
