@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
 use CodeIgniter\HTTP\RedirectResponse;
-use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
 use Config\OSPOS;
 use Config\Services;
@@ -37,7 +36,6 @@ class Login extends BaseController
 
             $data = [
                 'has_errors'       => false,
-                'is_new_install'   => !(MY_Migration::get_current_version()),
                 'is_latest'        => $migration->is_latest(),
                 'latest_version'   => $migration->get_latest_migration(),
                 'gcaptcha_enabled' => $gcaptcha_enabled,
@@ -72,29 +70,5 @@ class Login extends BaseController
         }
 
         return redirect()->to('home');
-    }
-
-    public function migrate(): ResponseInterface
-    {
-        try {
-            $migration = new MY_Migration(config('Migrations'));
-            $migration->migrate_to_ci4();
-            
-            set_time_limit(3600);
-            $migration->setNamespace('App')->latest();
-            
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Migration completed successfully'
-            ]);
-            
-        } catch (\Exception $e) {
-            log_message('error', 'Migration failed: ' . $e->getMessage());
-            
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Migration failed: ' . $e->getMessage()
-            ])->setStatusCode(500);
-        }
     }
 }
