@@ -282,6 +282,7 @@ return [
     "right"                                     => "Desno",
     "sales_invoice_format"                      => "Format fakture",
     "sales_quote_format"                        => "Format navedene prodaje",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "Konfiguracija je uspješno snimljena.",
     "saved_unsuccessfully"                      => "Konfiguracija nije uspješno snimljena.",
     "security_issue"                            => "Upozorenje o sigurnosnoj ranjivosti",
