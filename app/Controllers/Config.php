@@ -504,9 +504,24 @@ class Config extends Secure_Controller
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
+        $protocol = $this->request->getPost('protocol');
+        $mailpath = $this->request->getPost('mailpath');
+
+        // Validate mailpath: required for sendmail, optional for others but must be safe if provided
+        $isMailpathRequired = ($protocol === 'sendmail');
+        $isMailpathProvided = !empty($mailpath);
+        $isMailpathValid = $isMailpathProvided && preg_match('/^[a-zA-Z0-9_\-\/.]+$/', $mailpath);
+
+        if (($isMailpathRequired && !$isMailpathProvided) || ($isMailpathProvided && !$isMailpathValid)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Config.mailpath_invalid')
+            ]);
+        }
+
         $batch_save_data = [
-            'protocol'     => $this->request->getPost('protocol'),
-            'mailpath'     => $this->request->getPost('mailpath'),
+            'protocol'     => $protocol,
+            'mailpath'     => $mailpath,
             'smtp_host'    => $this->request->getPost('smtp_host'),
             'smtp_user'    => $this->request->getPost('smtp_user'),
             'smtp_pass'    => $password,

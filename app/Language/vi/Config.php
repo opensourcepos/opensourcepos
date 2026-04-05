@@ -282,6 +282,7 @@ return [
     "right"                                     => "Phải",
     "sales_invoice_format"                      => "Định dạng Hóa đơn bán hàng",
     "sales_quote_format"                        => "Định dạng Báo giá bán hàng",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "Cấu hình được lưu thành công.",
     "saved_unsuccessfully"                      => "Gặp lỗi khi lưu cấu hình.",
     "security_issue"                            => "Cảnh báo về  lỗ hổng bảo mật",

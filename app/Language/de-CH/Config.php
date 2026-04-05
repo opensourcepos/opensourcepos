@@ -282,6 +282,7 @@ return [
     "right"                                     => "Right",
     "sales_invoice_format"                      => "Format Verkaufsrechnung",
     "sales_quote_format"                        => "",
+    "mailpath_invalid"                          => "Ungültiger Sendmail-Pfad. Nur Buchstaben, Zahlen, Bindestriche, Unterstriche, Schrägstriche und Punkte sind erlaubt.",
     "saved_successfully"                        => "Einstellungen erfolgreich gesichert",
     "saved_unsuccessfully"                      => "Einstellungen konnten nicht gesichert werden",
     "security_issue"                            => "Security Vulnerability Warning",

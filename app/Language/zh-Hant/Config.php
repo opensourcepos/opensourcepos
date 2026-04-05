@@ -282,6 +282,7 @@ return [
     "right"                                     => "Right",
     "sales_invoice_format"                      => "銷售發票格式",
     "sales_quote_format"                        => "銷售報價格式",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "組態設置儲存成功.",
     "saved_unsuccessfully"                      => "組態設置儲存失敗.",
     "security_issue"                            => "安全漏洞警告",

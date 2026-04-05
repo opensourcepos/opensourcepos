@@ -282,6 +282,7 @@ return [
     "right"                                     => "Right",
     "sales_invoice_format"                      => "Sales Invoice Format",
     "sales_quote_format"                        => "Sales Quote Format",
+    "mailpath_invalid"                          => "Ruta de sendmail inválida. Solo se permiten letras, números, guiones, guiones bajos, barras y puntos.",
     "saved_successfully"                        => "Configuration save successful.",
     "saved_unsuccessfully"                      => "Configuration save failed.",
     "security_issue"                            => "Security Vulnerability Warning",
