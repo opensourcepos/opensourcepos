@@ -47,15 +47,20 @@
                 <?php endif; ?>
             </div>
             <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
-                <?= form_open($is_new_install ? 'migrate': 'login', ['id' => 'migration-form']) ?>
-                <?php if (!$is_latest || $is_new_install): ?>
-                    <h3 class="text-center m-0"><?= lang('Login.migration_required') ?></h3>
-                    <div class="alert alert-warning mt-3">
-                        <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
-                    </div>
-                <?php else: ?>
-                    <h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
-                <?php endif; ?>
+                <?= form_open('login', ['id' => 'login-form']) ?>
+                
+                <h3 id="form-heading" class="text-center m-0">
+                    <?php if (!$is_latest || $is_new_install): ?>
+                        <?= lang('Login.migration_required') ?>
+                    <?php else: ?>
+                        <?= lang('Login.welcome', [lang('Common.software_short')]) ?>
+                    <?php endif; ?>
+                </h3>
+                
+                <div id="migration-warning" class="alert alert-warning mt-3<?= $is_new_install ? '' : ' d-none' ?>">
+                    <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
+                </div>
+                
                 <?php if ($has_errors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
                         <div class="alert alert-danger mt-3">
@@ -64,7 +69,10 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
                 
-                <!-- Migration Progress Section -->
+                <div id="migration-success" class="alert alert-success d-none mt-3">
+                    <strong>Database initialized successfully!</strong> You can now log in.
+                </div>
+                
                 <div id="migration-progress" class="d-none mt-4">
                     <h3 class="text-center mb-4">Initializing Database</h3>
                     <div class="progress mb-3" style="height: 30px;">
@@ -78,12 +86,11 @@
                     </p>
                 </div>
                 
-                <!-- Migration Error Alert -->
                 <div id="migration-error" class="alert alert-danger d-none mt-3" role="alert">
                     <strong>Error:</strong> <span id="migration-error-message"></span>
                 </div>
                 
-                <?php if (!$is_new_install): ?>
+                <div id="login-fields" class="w-100<?= $is_new_install ? ' d-none' : '' ?>">
                     <?php if (empty($config['login_form']) || 'floating_labels' == ($config['login_form'])): ?>
                         <div class="form-floating mt-3">
                             <input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
@@ -113,16 +120,20 @@
                             <input class="form-control" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                         </div>
                     <?php endif; ?>
-                <?php endif; ?>
-                <?php
-                if ($gcaptcha_enabled) {
-                    echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-                    echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . esc($config['gcaptcha_site_key']) . '"></div>';
-                }
-                ?>
+                    
+                    <?php if ($gcaptcha_enabled): ?>
+                        <script src="https://www.google.com/recaptcha/api.js"></script>
+                        <div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="<?= esc($config['gcaptcha_site_key']) ?>"></div>
+                    <?php endif; ?>
+                </div>
+                
                 <div class="d-grid">
-                    <button class="btn btn-lg btn-primary" name="login-button" type="submit">
-                        <?= $is_latest && !$is_new_install ? lang('Login.go') : lang('Module.migrate') ?>
+                    <button id="submit-button" class="btn btn-lg btn-primary" name="login-button" type="submit">
+                        <?php if ($is_new_install): ?>
+                            <?= lang('Module.migrate') ?>
+                        <?php else: ?>
+                            <?= lang('Login.go') ?>
+                        <?php endif; ?>
                     </button>
                 </div>
                 <?= form_close() ?>
@@ -145,58 +156,122 @@
     
     <script src="resources/jquery.min.js"></script>
     <script>
-        <?php if ($is_new_install): ?>
-        $(document).ready(function() {
-            $('#migration-form').on('submit', function(e) {
-                e.preventDefault();
-                
-                // Hide form, show progress bar
-                $('#migration-form').addClass('d-none');
-                $('#migration-progress').removeClass('d-none');
-                $('#migration-error').addClass('d-none');
-                
-                // Update status message
-                $('#migration-status').text('Initializing database...');
-                
-                // Call migration endpoint via AJAX
-                $.ajax({
-                    url: '<?= site_url('migrate') ?>',
-                    type: 'POST',
-                    dataType: 'json',
-                    timeout: 3600000, // 1 hour timeout (matches PHP set_time_limit)
-                    data: {
-                        <?= csrf_token() ?>: '<?= csrf_hash() ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            // Success - update message and redirect
-                            $('#migration-status').text('Migration complete! Redirecting...');
-                            setTimeout(function() {
-                                window.location.href = '<?= site_url('login') ?>';
-                            }, 1000);
-                        } else {
-                            // Error - show error message
-                            showError(response.message || 'Migration failed');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        var message = 'Connection error. Please try again.';
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            message = xhr.responseJSON.message;
-                        }
-                        showError(message);
-                    }
-                });
-            });
-            
-            function showError(message) {
-                $('#migration-progress').addClass('d-none');
-                $('#migration-form').removeClass('d-none');
-                $('#migration-error-message').text(message);
-                $('#migration-error').removeClass('d-none');
+        const APP_STATE = {
+            isNewInstall: <?= $is_new_install ? 'true' : 'false' ?>,
+            isLatest: <?= $is_latest ? 'true' : 'false' ?>,
+            csrfToken: '<?= csrf_token() ?>',
+            csrfHash: '<?= csrf_hash() ?>',
+            migrateUrl: '<?= site_url('migrate') ?>',
+            loginUrl: '<?= site_url('login') ?>',
+            i18n: {
+                welcome: <?= json_encode(lang('Login.welcome', [lang('Common.software_short')])) ?>,
+                migrate: <?= json_encode(lang('Module.migrate')) ?>,
+                go: <?= json_encode(lang('Login.go')) ?>,
+                migrationRequired: <?= json_encode(lang('Login.migration_required')) ?>
             }
+        };
+
+        $(document).ready(function() {
+            const $form = $('#login-form');
+            const $heading = $('#form-heading');
+            const $warning = $('#migration-warning');
+            const $success = $('#migration-success');
+            const $progress = $('#migration-progress');
+            const $error = $('#migration-error');
+            const $errorMessage = $('#migration-error-message');
+            const $loginFields = $('#login-fields');
+            const $submitButton = $('#submit-button');
+            const $statusText = $('#migration-status');
+
+            function showMigrationRequired() {
+                $heading.text(APP_STATE.i18n.migrationRequired);
+                $warning.removeClass('d-none');
+                $success.addClass('d-none');
+                $progress.addClass('d-none');
+                $error.addClass('d-none');
+                $loginFields.addClass('d-none');
+                $submitButton.text(APP_STATE.i18n.migrate);
+            }
+
+            function showMigrationProgress() {
+                $warning.addClass('d-none');
+                $success.addClass('d-none');
+                $error.addClass('d-none');
+                $loginFields.addClass('d-none');
+                $progress.removeClass('d-none');
+                $submitButton.prop('disabled', true);
+            }
+
+            function showMigrationSuccess() {
+                $progress.addClass('d-none');
+                $error.addClass('d-none');
+                $warning.addClass('d-none');
+                $success.removeClass('d-none');
+                $heading.text(APP_STATE.i18n.welcome);
+                $loginFields.removeClass('d-none');
+                $submitButton.text(APP_STATE.i18n.go);
+                $submitButton.prop('disabled', false);
+            }
+
+            function showMigrationError(message) {
+                $progress.addClass('d-none');
+                $success.addClass('d-none');
+                $loginFields.addClass('d-none');
+                $errorMessage.text(message);
+                $error.removeClass('d-none');
+                $warning.addClass('d-none');
+                $submitButton.text(APP_STATE.i18n.migrate);
+                $submitButton.prop('disabled', false);
+            }
+
+            function showLoginForm() {
+                $heading.text(APP_STATE.i18n.welcome);
+                $warning.addClass('d-none');
+                $progress.addClass('d-none');
+                $error.addClass('d-none');
+                $success.addClass('d-none');
+                $loginFields.removeClass('d-none');
+                $submitButton.text(APP_STATE.i18n.go);
+            }
+
+            if (!APP_STATE.isNewInstall) {
+                showLoginForm();
+            }
+
+            $form.on('submit', function(e) {
+                if (APP_STATE.isNewInstall) {
+                    e.preventDefault();
+                    
+                    showMigrationProgress();
+                    $statusText.text('Initializing database...');
+                    
+                    $.ajax({
+                        url: APP_STATE.migrateUrl,
+                        type: 'POST',
+                        dataType: 'json',
+                        timeout: 3600000,
+                        data: {
+                            [APP_STATE.csrfToken]: APP_STATE.csrfHash
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                APP_STATE.isNewInstall = false;
+                                showMigrationSuccess();
+                            } else {
+                                showMigrationError(response.message || 'Migration failed');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            let message = 'Connection error. Please try again.';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                message = xhr.responseJSON.message;
+                            }
+                            showMigrationError(message);
+                        }
+                    });
+                }
+            });
         });
-        <?php endif; ?>
     </script>
 </body>
 
