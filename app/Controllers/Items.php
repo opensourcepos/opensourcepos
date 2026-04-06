@@ -1192,9 +1192,10 @@ class Items extends Secure_Controller
 
         // Check Attribute Data
         foreach ($definitionNames as $definitionName) {
-            if (!empty($row["attribute_$definitionName"])) {
+            $attributeColumn = "attribute_$definitionName";
+            if (array_key_exists($attributeColumn, $row) && $row[$attributeColumn] != '') {
                 $definitionType = $attributeData[$definitionName]['definition_type'];
-                $attributeValue = $row["attribute_$definitionName"];
+                $attributeValue = $row[$attributeColumn];
 
                 if (strcasecmp($attributeValue, '_DELETE_') === 0) {
                     continue;
