@@ -1013,11 +1013,11 @@ class Items extends Secure_Controller
                         }
 
                         if ($isUpdate) {
-                            $itemData['allow_alt_description'] = empty($row['Allow Alt Description']) ? null : $row['Allow Alt Description'];
-                            $itemData['is_serialized'] = empty($row['Item has Serial Number']) ? null : $row['Item has Serial Number'];
+                            $itemData['allow_alt_description'] = $row['Allow Alt Description'] === '' ? null : $row['Allow Alt Description'];
+                            $itemData['is_serialized'] = $row['Item has Serial Number'] === '' ? null : $row['Item has Serial Number'];
                         } else {
-                            $itemData['allow_alt_description'] = empty($row['Allow Alt Description']) ? '0' : '1';
-                            $itemData['is_serialized'] = empty($row['Item has Serial Number']) ? '0' : '1';
+                            $itemData['allow_alt_description'] = $row['Allow Alt Description'] === '' ? '0' : '1';
+                            $itemData['is_serialized'] = $row['Item has Serial Number'] === '' ? '0' : '1';
                         }
 
                         if (!empty($row['Barcode'])) {
