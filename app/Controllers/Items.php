@@ -1346,6 +1346,7 @@ class Items extends Secure_Controller
                     // no break
                 default:
                     $attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);
+                    $success = $success && ($attributeId > 0);
                     break;
             }
         }
