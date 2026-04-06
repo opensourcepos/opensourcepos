@@ -484,6 +484,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             false,
             TEXT
         );
+        $this->assertGreaterThan(0, $attributeId, 'Attribute fixture must exist before testing _DELETE_');
 
         //Mock CSV import
         $updatedItemData = ['item_id' => $originalData['item_id']];
