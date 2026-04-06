@@ -34,7 +34,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public static function setUpBeforeClass(): void
     {
-        $seeder = \Config\Database::seeder('tests');
+        $seeder = Database::seeder('tests');
         $seeder->call('TestDatabaseBootstrapSeeder');
     }
 
@@ -911,7 +911,6 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public function testImportCsvInvalidStockLocationColumn(): void
     {
-        $csvHeaders = ['Id', 'Item Name', 'Category', 'Cost Price', 'Unit Price', 'location_NonExistentLocation'];
         $csvRow = [
             'Id' => '',
             'Item Name' => 'Test Item Invalid Location',
