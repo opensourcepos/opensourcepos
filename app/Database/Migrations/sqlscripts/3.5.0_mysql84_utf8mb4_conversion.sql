@@ -33,3 +33,7 @@ ALTER TABLE ospos_cash_up CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_gener
 ALTER TABLE ospos_attribute_definitions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ALTER TABLE ospos_attribute_links CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ALTER TABLE ospos_attribute_values CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- Rebuild composite index on ospos_people with utf8mb4-safe prefix lengths
+ALTER TABLE ospos_people DROP INDEX first_name;
+ALTER TABLE ospos_people ADD INDEX(`first_name`(191), `last_name`(191), `email`(191), `phone_number`(191));

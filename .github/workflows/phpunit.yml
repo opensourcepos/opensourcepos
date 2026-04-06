@@ -40,6 +40,7 @@ jobs:
           - '8.4'
         db-image:
           - 'mariadb:10.5'
+          - 'mysql:8.0'
           - 'mysql:8.4'
 
     steps:
@@ -112,11 +113,15 @@ jobs:
           MYSQL_HOST_NAME: 127.0.0.1
         run: composer test -- --log-junit test-results/junit.xml
 
+      - name: Set artifact name
+        if: always()
+        run: echo "DB_LABEL=$(echo '${{ matrix.db-image }}' | tr ':' '-')" >> $GITHUB_ENV
+
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-results-php-${{ matrix.php-version }}-${{ matrix.db-image == 'mysql:8.4' && 'mysql-8.4' || 'mariadb-10.5' }}
+          name: test-results-php-${{ matrix.php-version }}-${{ env.DB_LABEL }}
           path: test-results/
           retention-days: 30
 

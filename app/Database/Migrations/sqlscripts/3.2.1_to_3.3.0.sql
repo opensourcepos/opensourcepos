@@ -93,7 +93,6 @@ ALTER TABLE `ospos_cash_up`
 
 -- Change collation on columns to be utf8mb4_general_ci
 
-ALTER TABLE ospos_cash_up CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ALTER TABLE ospos_expense_categories CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ALTER TABLE ospos_expenses CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 

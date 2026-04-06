@@ -12,7 +12,7 @@ networks:
 
 services:
     mysql:
-        image: ${OSPOS_DB_IMAGE:-mysql:8.4}
+        image: ${OSPOS_DB_IMAGE:-mariadb:10.5}
         container_name: mysql
         restart: always
         expose:
