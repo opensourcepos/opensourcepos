@@ -518,7 +518,6 @@ class Attribute extends Model
 
         if (!$one_attribute_id) {
             $one_attribute_id = $this->saveAttributeValue('1', $definition_id, false, false, CHECKBOX);
-            $one_attribute_id = $this->saveAttributeValue('1', $definition_id, false, false, CHECKBOX);
         }
 
         return [$zero_attribute_id, $one_attribute_id];
