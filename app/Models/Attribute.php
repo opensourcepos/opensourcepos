@@ -601,21 +601,22 @@ class Attribute extends Model
      */
     public function saveAttributeLink(int $itemId, int $definitionId, int $attributeId): bool
     {
+        $normalizedItemId = empty($itemId) ? null : $itemId;
         $this->db->transStart();
 
         $builder = $this->db->table('attribute_links');
 
-        if ($this->attributeLinkExists($itemId, $definitionId)) {
+        if ($this->attributeLinkExists($normalizedItemId, $definitionId)) {
             $builder->set(['attribute_id' => $attributeId]);
             $builder->where('definition_id', $definitionId);
-            $builder->where('item_id', $itemId);
+            $builder->where('item_id', $normalizedItemId);
             $builder->where('sale_id', null);
             $builder->where('receiving_id', null);
             $builder->update();
         } else {
             $data = [
                 'attribute_id'  => empty($attributeId) ? null : $attributeId,
-                'item_id'       => empty($itemId) ? null : $itemId,
+                'item_id'       => $normalizedItemId,
                 'definition_id' => $definitionId
             ];
             $builder->insert($data);
