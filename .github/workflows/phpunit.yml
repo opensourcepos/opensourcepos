@@ -82,9 +82,15 @@ jobs:
             -e MYSQL_PASSWORD=pointofsale \
             -p 3306:3306 \
             ${{ matrix.db-image }}
-          # Wait for database to be ready
+          # Wait for database to be ready (max 60 attempts)
+          retries=0
           until docker exec mysql mysqladmin ping -h 127.0.0.1 -u root -proot --silent; do
-            echo "Waiting for database..."
+            retries=$((retries + 1))
+            if [ $retries -ge 60 ]; then
+              echo "Database failed to start after 60 attempts"
+              exit 1
+            fi
+            echo "Waiting for database... (attempt $retries/60)"
             sleep 2
           done
           echo "Database is ready!"
@@ -127,4 +133,4 @@ jobs:
 
       - name: Stop database
         if: always()
-        run: docker stop mysql && docker rm mysql
+        run: docker rm -f mysql || true

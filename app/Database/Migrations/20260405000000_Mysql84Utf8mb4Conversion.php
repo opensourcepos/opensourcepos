@@ -14,6 +14,12 @@ class Migration_Mysql84Utf8mb4Conversion extends Migration
         if (!execute_script($script)) {
             throw new RuntimeException('Failed to execute utf8mb4 conversion migration: ' . $script);
         }
+
+        // Rebuild composite index on ospos_people with utf8mb4-safe prefix lengths
+        if (indexExists('people', 'first_name')) {
+            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people') . ' DROP INDEX first_name');
+        }
+        $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people') . ' ADD INDEX(`first_name`(191), `last_name`(191), `email`(191), `phone_number`(191))');
     }
 
     // Intentionally irreversible: converting back to utf8 could cause data loss for utf8mb4 characters.
