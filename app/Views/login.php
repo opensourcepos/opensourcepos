@@ -70,11 +70,11 @@
                 <?php endif; ?>
                 
                 <div id="migration-success" class="alert alert-success d-none mt-3">
-                    <strong>Database initialized successfully!</strong> You can now log in.
+                    <strong><?= lang('Login.migration_complete') ?></strong> <?= lang('Login.migration_complete_login') ?>
                 </div>
                 
                 <div id="migration-progress" class="d-none mt-4">
-                    <h3 class="text-center mb-4">Initializing Database</h3>
+                    <h3 class="text-center mb-4"><?= lang('Login.migration_initializing') ?></h3>
                     <div class="progress mb-3" style="height: 30px;">
                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
                              role="progressbar" 
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <p class="text-center text-muted" id="migration-status">
-                        Running database migrations...
+                        <?= lang('Login.migration_running') ?>
                     </p>
                 </div>
                 
@@ -167,7 +167,13 @@
                 welcome: <?= json_encode(lang('Login.welcome', [lang('Common.software_short')])) ?>,
                 migrate: <?= json_encode(lang('Module.migrate')) ?>,
                 go: <?= json_encode(lang('Login.go')) ?>,
-                migrationRequired: <?= json_encode(lang('Login.migration_required')) ?>
+                migrationRequired: <?= json_encode(lang('Login.migration_required')) ?>,
+                migrationInitializing: <?= json_encode(lang('Login.migration_initializing')) ?>,
+                migrationRunning: <?= json_encode(lang('Login.migration_running')) ?>,
+                migrationComplete: <?= json_encode(lang('Login.migration_complete')) ?>,
+                migrationCompleteLogin: <?= json_encode(lang('Login.migration_complete_login')) ?>,
+                migrationFailed: <?= json_encode(lang('Login.migration_failed')) ?>,
+                migrationErrorConnection: <?= json_encode(lang('Login.migration_error_connection')) ?>
             }
         };
 
@@ -181,7 +187,6 @@
             const $errorMessage = $('#migration-error-message');
             const $loginFields = $('#login-fields');
             const $submitButton = $('#submit-button');
-            const $statusText = $('#migration-status');
 
             function showMigrationRequired() {
                 $heading.text(APP_STATE.i18n.migrationRequired);
@@ -243,7 +248,6 @@
                     e.preventDefault();
                     
                     showMigrationProgress();
-                    $statusText.text('Initializing database...');
                     
                     $.ajax({
                         url: APP_STATE.migrateUrl,
@@ -258,11 +262,11 @@
                                 APP_STATE.isNewInstall = false;
                                 showMigrationSuccess();
                             } else {
-                                showMigrationError(response.message || 'Migration failed');
+                                showMigrationError(response.message || APP_STATE.i18n.migrationFailed);
                             }
                         },
                         error: function(xhr, status, error) {
-                            let message = 'Connection error. Please try again.';
+                            let message = APP_STATE.i18n.migrationErrorConnection;
                             if (xhr.responseJSON && xhr.responseJSON.message) {
                                 message = xhr.responseJSON.message;
                             }
