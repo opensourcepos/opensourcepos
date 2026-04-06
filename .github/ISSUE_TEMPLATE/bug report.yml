@@ -1,76 +1,107 @@
-name: Bug Report
-description: File a bug report
+name: 🐛 Bug Report
+description: File a bug report to help us improve
 title: "[Bug]: "
 labels: ["bug", "triage"]
 projects: ["ospos/3", "ospos/4"]
-assignees:
-  - none
+assignees: []
 body:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # INTRODUCTION
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: markdown
     attributes:
       value: |
-        Bug reports indicate that something is not working as intended. 
-        Please include as much detail as possible and submit a separate bug report for each problem.
-        Do not include personal identifying information such as email addresses or encryption keys.           
+        ## Thanks for taking the time to fill out this bug report! 🐜
+        
+        Bug reports help us identify and fix issues. Please provide as much detail as possible.
+        
+        > ⚠️ **Important:** Submit a separate bug report for each problem you encounter.
+        > 
+        > 🚫 Do not include personal identifying information such as email addresses or encryption keys.
+        
+        ---
+        
+        > 📝 **Note:** The version list is automatically updated when a new release is created.
+        > See [`.github/workflows/release.yml`](../.github/workflows/release.yml) for details.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PROBLEM DESCRIPTION
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: textarea
     id: bug-description
     attributes:
-      label: Bug Description?
-      description: Describe the problem that you are seeing
-      placeholder: "Describe the problem that you are seeing"
+      label: 🐛 Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: |
+        Example: When I try to print a receipt, the application crashes 
+        with an error message saying "Unable to connect to printer".
     validations:
-      required: true 
+      required: true
+
   - type: textarea
     id: steps-reproduce
     attributes:
-      label: Steps to Reproduce?
-      description: List the steps to reproduce this issue
-      placeholder: "Steps to Reproduce"
+      label: 📋 Steps to Reproduce
+      description: Detailed steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
     validations:
       required: true
+
   - type: textarea
     id: expected-behavior
     attributes:
-      label: Expected Behavior?
-      description: Tell us what did you expect to happen?
-      placeholder: "Expected Behavior"
+      label: ✅ Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: |
+        Example: The receipt should print successfully without any errors.
     validations:
-      required: true    
+      required: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ENVIRONMENT DETAILS
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: dropdown
     id: ospos-version
     attributes:
-      label: OpensourcePOS Version
+      label: 📦 OpenSourcePOS Version
       description: What version of our software are you running?
       options:
         - development (unreleased)
-        - opensourcepos 3.4.1
-        - opensourcepos 3.4.0
-        - opensourcepos 3.3.9
-        - opensourcepos 3.3.8
-        - opensourcepos 3.3.7
+        - OpenSourcePOS 3.4.2
+        - OpenSourcePOS 3.4.1
+        - OpenSourcePOS 3.4.0
+        - OpenSourcePOS 3.3.9
+        - OpenSourcePOS 3.3.8
       default: 0
     validations:
       required: true
+
   - type: dropdown
     id: php-version
     attributes:
-      label: Php version
-      description: What version of Php?
+      label: 🔧 PHP Version
+      description: What version of PHP are you running?
       options:
-        - Php 7.2
-        - Php 7.3
-        - Php 7.4
-        - Php 8.1 
-        - Php 8.2
-        - Php 8.3
-        - Php 8.4
+        - PHP 8.4
+        - PHP 8.3
+        - PHP 8.2
+        - PHP 8.1
+        - PHP 7.4
+        - PHP 7.3
+        - PHP 7.2
       default: 0
     validations:
-      required: true 
+      required: true
+
   - type: dropdown
     id: browsers
     attributes:
-      label: What browsers are you seeing the problem on?
+      label: 🌐 Browser(s)
+      description: What browser(s) are you seeing the problem on?
       multiple: true
       options:
         - Firefox
@@ -78,44 +109,85 @@ body:
         - Safari
         - Microsoft Edge
         - Other
+
   - type: input
     id: server
     attributes:
-      label: Server Operating System and version
-      description: "Server Operating System "
-      placeholder: "Server Operating System "
+      label: 🖥️ Server Operating System
+      description: What server OS and version are you running?
+      placeholder: "e.g., Ubuntu 22.04, CentOS 7, Windows Server 2022"
     validations:
-      required: true  
+      required: true
+
   - type: input
     id: database
     attributes:
-      label: Database Management System and version
-      description: "Database Management System"
-      placeholder: "Database Management"
+      label: 🗄️ Database
+      description: What database management system and version are you using?
+      placeholder: "e.g., MySQL 8.0, MariaDB 10.11, Percona 8.0"
     validations:
-      required: true   
+      required: true
+
   - type: input
     id: webserver
     attributes:
-      label: Web Server and version
-      description: "Web Server and version "
-      placeholder: "Web Server and version "
+      label: 🌍 Web Server
+      description: What web server and version are you using?
+      placeholder: "e.g., Apache 2.4, Nginx 1.24, Caddy 2.7"
     validations:
-      required: true    
+      required: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ADDITIONAL INFORMATION
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: textarea
-    id: servers
+    id: system-info
     attributes:
-      label: System Information Report (optional)
-      description: Copy and paste from OSPOS > Configuration > Setup & Conf > Setup & Conf?
-      placeholder: System Information Report
-      value: "System Information Report"
+      label: 📊 System Information Report
+      description: |
+        Copy and paste the system information from OSPOS:
+        
+        **Navigation:** Configuration → Setup & Conf → System Info
+      placeholder: |
+        Paste the System Information Report here...
+      render: text
     validations:
-      required: true  
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📜 Relevant Log Output
+      description: |
+        Please copy and paste any relevant log output.
+        
+        **Log locations:**
+        - OSPOS logs: `writable/logs/`
+        - Web server logs: `/var/log/apache2/` or `/var/log/nginx/`
+        - PHP logs: Check your `php.ini` for `error_log` location
+      placeholder: |
+        Paste log output here...
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+      placeholder: Drag and drop images here...
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CONFIRMATION
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: checkboxes
     id: terms
     attributes:
-      label: Unmodified copy of OpensourcePOS
-      description: By submitting this issue you agree this copy has not been modified
+      label: ✓ Confirmation
+      description: Please confirm the following before submitting
       options:
-        - label: I agree this copy has not been modified
+        - label: I certify that this is an unmodified copy of OpenSourcePOS
+          required: true
+        - label: I have searched existing issues to ensure this bug has not already been reported
+          required: true
+        - label: I have provided all the information requested above
           required: true
