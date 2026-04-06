@@ -998,7 +998,7 @@ class Items extends Secure_Controller
                         $itemData = [
                             'item_id'       => $itemId,
                             'name'          => $row['Item Name'],
-                            'description'   => $row['Description'],
+                            'description'   => filter_var($row['Description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                             'category'      => $row['Category'],
                             'cost_price'    => $row['Cost Price'],
                             'unit_price'    => $row['Unit Price'],
