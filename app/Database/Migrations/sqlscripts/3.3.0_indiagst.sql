@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_codes` (
     `state` varchar(255) NOT NULL DEFAULT '',
     `deleted` int(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`tax_code_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `ospos_customers`
     ADD COLUMN `tax_id` varchar(32) NOT NULL DEFAULT '' AFTER `taxable`,
@@ -59,7 +59,7 @@ CREATE TABLE `ospos_sales_taxes` (
     `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
     PRIMARY KEY (`sales_taxes_id`),
     KEY `print_sequence` (`sale_id`,`print_sequence`,`tax_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS `ospos_tax_jurisdictions` (
     `jurisdiction_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_jurisdictions` (
     `cascade_sequence` tinyint(2) NOT NULL DEFAULT 0,
     `deleted` int(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`jurisdiction_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1;
 
 ALTER TABLE `ospos_suppliers`
     ADD COLUMN `tax_id` varchar(32) DEFAULT NULL AFTER `account_number`;
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_rates` (
     `tax_rate` decimal(15,4) NOT NULL DEFAULT 0.0000,
     `tax_rounding_code` tinyint(2) NOT NULL DEFAULT 0,
     PRIMARY KEY (`tax_rate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Add support for sales tax report
 

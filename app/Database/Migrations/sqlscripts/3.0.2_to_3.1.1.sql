@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `ospos_dinner_tables` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`dinner_table_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted`) VALUES
 (1, 'Delivery', 0, 0),
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `ospos_customers_packages` (
   `points_percent` float NOT NULL DEFAULT '0',
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`package_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1;
 
 INSERT INTO `ospos_customers_packages` (`package_id`, `package_name`, `points_percent`, `deleted`) VALUES
 (1, 'Default', 0, 0),
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `ospos_customers_points` (
   `sale_id` int(11) NOT NULL,
   `points_earned` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1;
 
 --
 -- Table structure for table `ospos_sales_reward_points`
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `ospos_sales_reward_points` (
   `earned` float NOT NULL,
   `used` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1;
 
 -- alter ospos_customers table
 
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_codes` (
   `city` varchar(255) NOT NULL DEFAULT '',
   `state` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`tax_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS `ospos_tax_code_rates` (
   `rate_tax_code` varchar(32) NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_code_rates` (
   `tax_rate` decimal(15,4) NOT NULL DEFAULT 0.0000,
   `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`rate_tax_code`,`rate_tax_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `ospos_sales_taxes` (
   `sale_id` int(10) NOT NULL,
@@ -161,14 +161,14 @@ CREATE TABLE `ospos_sales_taxes` (
   `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sale_id`,`tax_type`,`tax_group`),
   KEY `print_sequence` (`sale_id`,`print_sequence`,`tax_type`,`tax_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
   `tax_category_id` int(10) NOT NULL,
   `tax_category` varchar(32) NOT NULL,
   `tax_group_sequence` tinyint(2) NOT NULL,
   PRIMARY KEY (`tax_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `ospos_items`
   ADD COLUMN `tax_category_id` int(10) NOT NULL DEFAULT 0;
@@ -356,39 +356,39 @@ ALTER TABLE ospos_receivings_items MODIFY item_unit_price decimal(15,2) NOT NULL
 ALTER TABLE ospos_sales_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE ospos_sales_items MODIFY item_unit_price decimal(15,2) NOT NULL;
 
--- Change collation on columns to be utf8_general_ci
+-- Change collation on columns to be utf8mb4_general_ci
 
-ALTER TABLE ospos_app_config CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_customers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_customers_packages CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_customers_points CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_dinner_tables CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_employees CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_giftcards CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_grants CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_inventory CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_item_kit_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_item_kits CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_item_quantities CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_items_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_modules CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_people CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_permissions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_receivings CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_receivings_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_sales CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_sales_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_sales_items_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_sales_payments CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_sales_reward_points CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_sales_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_sessions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_stock_locations CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_suppliers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_tax_categories CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_tax_code_rates CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_tax_codes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_app_config CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_customers CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_customers_packages CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_customers_points CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_dinner_tables CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_employees CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_giftcards CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_grants CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_inventory CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_item_kit_items CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_item_kits CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_item_quantities CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_items CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_items_taxes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_modules CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_people CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_permissions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_receivings CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_receivings_items CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_sales CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_sales_items CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_sales_items_taxes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_sales_payments CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_sales_reward_points CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_sales_taxes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_sessions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_stock_locations CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_suppliers CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_tax_categories CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_tax_code_rates CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_tax_codes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 --
 -- Increase acceptable length of custom fields and allow null values

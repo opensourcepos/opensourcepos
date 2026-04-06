@@ -7,7 +7,7 @@ CREATE TABLE `ospos_permissions` (
   `location_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`permission_id`),
   KEY `module_id` (`module_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `ospos_permissions`
   ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`module_id`) REFERENCES `ospos_modules` (`module_id`) ON DELETE CASCADE,
@@ -46,7 +46,7 @@ CREATE TABLE `ospos_grants` (
   `permission_id` varchar(255) NOT NULL,
   `person_id` int(10) NOT NULL,
   PRIMARY KEY (`permission_id`,`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `ospos_grants`
   ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`) ON DELETE CASCADE,

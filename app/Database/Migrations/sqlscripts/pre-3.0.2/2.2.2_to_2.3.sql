@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `ospos_stock_locations` (
   `location_id` int(11) NOT NULL AUTO_INCREMENT,
-  `location_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `location_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
