@@ -12,11 +12,6 @@ on:
           - major
           - patch
         default: 'minor'
-      draft_only:
-        description: 'Create draft release only (do not push changes)'
-        required: true
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -25,9 +20,6 @@ jobs:
   prepare-release:
     name: Prepare Release
     runs-on: ubuntu-22.04
-    outputs:
-      new_version: ${{ steps.version.outputs.new_version }}
-      previous_version: ${{ steps.version.outputs.previous_version }}
 
     steps:
       - name: Checkout
@@ -101,46 +93,15 @@ jobs:
           sed -i "s/The latest \`[0-9]*\.[0-9]*\` version/The latest \`${MAJOR_MINOR}\` version/" README.md
           echo "Updated README.md with version ${MAJOR_MINOR}"
 
-      - name: Update version in SECURITY.md
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          # Update the supported versions table
-          sed -i "s/| >= [0-9]*\.[0-9]*\.[0-9]*  |/| >= ${NEW_VERSION}  |/" SECURITY.md
-          sed -i "s/| < [0-9]*\.[0-9]*\.[0-9]*   |/| < ${NEW_VERSION}   |/" SECURITY.md
-          echo "Updated SECURITY.md with version ${NEW_VERSION}"
-
-      - name: Update version in issue templates
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          
-          # Update bug report template
-          BUG_TEMPLATE=".github/ISSUE_TEMPLATE/bug report.yml"
-          # Insert new version after "development (unreleased)" option
-          sed -i "/- development (unreleased)/a\\        - opensourcepos ${NEW_VERSION}" "$BUG_TEMPLATE"
-          # Remove duplicate if already exists (keep only 5 recent versions)
-          sed -i '/opensourcepos 3\.3\.7/d' "$BUG_TEMPLATE"
-          echo "Updated $BUG_TEMPLATE"
-          
-          # Update feature request template
-          FEATURE_TEMPLATE=".github/ISSUE_TEMPLATE/feature_request.yml"
-          # Insert new version at the top of version options
-          sed -i "/options:/,/default:/{/opensourcepos/s/^/        - opensourcepos ${NEW_VERSION}\n/}" "$FEATURE_TEMPLATE"
-          # Cleanup: remove duplicate new version if already at top, and remove oldest
-          sed -i '/opensourcepos 3\.3\.8/d' "$FEATURE_TEMPLATE"
-          echo "Updated $FEATURE_TEMPLATE"
-
       - name: Generate changelog
         id: changelog
         run: |
           PREVIOUS_VERSION="${{ steps.version.outputs.previous_version }}"
           NEW_VERSION="${{ steps.version.outputs.new_version }}"
           
-          # Get the previous tag
-          PREVIOUS_TAG="${PREVIOUS_VERSION}"
-          
           # Get commits since last version
-          if git rev-parse "$PREVIOUS_TAG" >/dev/null 2>&1; then
-            COMMITS=$(git log "$PREVIOUS_TAG"..HEAD --pretty=format:"- %s" --no-merges)
+          if git rev-parse "$PREVIOUS_VERSION" >/dev/null 2>&1; then
+            COMMITS=$(git log "$PREVIOUS_VERSION"..HEAD --pretty=format:"- %s" --no-merges)
           else
             COMMITS=$(git log --pretty=format:"- %s" --no-merges -50)
           fi
@@ -165,121 +126,13 @@ jobs:
           echo "Changelog entries:"
           echo "$COMMITS"
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: intl, mbstring, mysqli, gd, bcmath, zip
-          coverage: none
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Get composer cache directory
-        run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.COMPOSER_CACHE_FILES_DIR }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Get npm cache directory
-        run: echo "NPM_CACHE_DIR=$(npm config get cache)" >> $GITHUB_ENV
-
-      - name: Cache npm dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.NPM_CACHE_DIR }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install composer dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Install gulp globally
-        run: npm install -g gulp-cli
-
-      - name: Get version info for build
-        id: build_version
-        run: |
-          VERSION="${{ steps.version.outputs.new_version }}"
-          SHORT_SHA=$(git rev-parse --short=6 HEAD)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "version-tag=$VERSION" >> $GITHUB_OUTPUT
-          echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
-
-      - name: Create .env file
-        run: |
-          cp .env.example .env
-          sed -i 's/production/development/g' .env
-
-      - name: Update commit hash
-        run: |
-          SHORT_SHA="${{ steps.build_version.outputs.short-sha }}"
-          sed -i "s/commit_sha1 = 'dev'/commit_sha1 = '$SHORT_SHA'/g" app/Config/OSPOS.php
-
-      - name: Build frontend assets
-        run: npm run build
-
-      - name: Create distribution archives
-        run: |
-          set -euo pipefail
-          gulp compress
-          VERSION="${{ steps.build_version.outputs.version }}"
-          mv dist/opensourcepos.tar "dist/opensourcepos.$VERSION.tar"
-          mv dist/opensourcepos.zip "dist/opensourcepos.$VERSION.zip"
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-release-${{ steps.build_version.outputs.version }}
-          path: dist/
-          retention-days: 7
-
       - name: Commit version bump
-        if: github.event.inputs.draft_only != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
           NEW_VERSION="${{ steps.version.outputs.new_version }}"
           
-          git add app/Config/App.php package.json docker-compose.nginx.yml CHANGELOG.md README.md SECURITY.md .github/ISSUE_TEMPLATE/
+          git add app/Config/App.php package.json docker-compose.nginx.yml CHANGELOG.md README.md
           git commit -m "chore: release version $NEW_VERSION"
           git push origin HEAD
-
-      - name: Create release tag
-        if: github.event.inputs.draft_only != 'true'
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          git tag "$NEW_VERSION"
-          git push origin "$NEW_VERSION"
-
-      - name: Create draft release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.new_version }}
-          name: OpenSourcePOS ${{ steps.version.outputs.new_version }}
-          body: |
-            ## OpenSourcePOS ${{ steps.version.outputs.new_version }}
-            
-            ### Changes
-            See [CHANGELOG.md](https://github.com/opensourcepos/opensourcepos/blob/master/CHANGELOG.md) for details.
-            
-            ### Downloads
-            - `opensourcepos.${{ steps.version.outputs.new_version }}.zip` - Full release package
-          files: |
-            dist/opensourcepos.${{ steps.version.outputs.new_version }}.zip
-          draft: true
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
