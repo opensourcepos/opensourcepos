@@ -4,7 +4,7 @@
 
     RewriteCond %{REQUEST_URI} !^public$
     RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge [NC]
-     RewriteRule "^(.*)$" "/public/" [R=301,L]
+    RewriteRule "^(.*)$" "/public/" [R=301,L]
 
     # If you installed CodeIgniter in a subfolder, you will need to
     # change the following line to match the subfolder you need. Uncomment
