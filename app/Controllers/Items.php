@@ -1145,8 +1145,8 @@ class Items extends Secure_Controller
             'unit_price' => $itemData['unit_price']
         ];
 
-        foreach ($valuesToCheckForEmpty as $key => $val) {
-            if (empty($val) && !$isUpdate) {
+        foreach ($valuesToCheckForEmpty as $key => $value) {
+            if (($value === null || $value === '') && !$isUpdate) {
                 log_message('error', "Empty required value in $key.");
                 return true;
             }
