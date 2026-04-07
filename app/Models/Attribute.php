@@ -920,7 +920,9 @@ class Attribute extends Model
             $attributeValue = $attributeValues[$attributeName] ?? null;
 
             if (isset($attributeValue) && strcasecmp($attributeValue, '_DELETE_') === 0) {
-                $this->deleteAttributeLinks($itemData['item_id'], $definition['definition_id']);
+                if (!$this->deleteAttributeLinks($itemData['item_id'], $definition['definition_id'])) {
+                    return false;
+                }
                 continue;
             }
 
