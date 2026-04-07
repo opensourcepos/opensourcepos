@@ -567,7 +567,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         // Mock Attribute DROPDOWN Values
         $dropdownValues = ['Small', 'Medium', 'Large'];
-        foreach ($dropdownValues as $i => $value) {
+        foreach ($dropdownValues as $value) {
             $this->attribute->saveAttributeValue(
                 $value,
                 $definitionId,
@@ -1038,7 +1038,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $locations = ['Warehouse' . $uniqueId, 'Store' . $uniqueId];
 
         $allowedLocations = [];
-        foreach ($locations as $index => $locationName) {
+        foreach ($locations as $locationName) {
             $currentLocation = ['location_name' => $locationName, 'deleted' => 0];
             $this->assertTrue($this->stock_location->save_value($currentLocation, NEW_ENTRY));
             $allowedLocations[$currentLocation['location_id']] = $locationName;
