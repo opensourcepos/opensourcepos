@@ -41,9 +41,20 @@ class Load_config
         }
 
         // Check if configured language is valid
-        $language_exists = file_exists('../app/Language/' . current_language_code());
+        // Set defaults if settings is empty (migrations not run) or language not set
+        $language_code = $config->settings['language_code'] ?? null;
+        $language = $config->settings['language'] ?? null;
+        
+        if (empty($config->settings) || $language_code === null) {
+            $config->settings['language'] = 'english';
+            $config->settings['language_code'] = 'en';
+            $language_code = 'en';
+            $language = 'english';
+        }
+        
+        $language_exists = file_exists('../app/Language/' . $language_code);
 
-        if (!$language_exists && $config->settings) {
+        if (!$language_exists) {
             $config->settings['language'] = 'english';
             $config->settings['language_code'] = 'en';
         }

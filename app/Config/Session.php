@@ -142,10 +142,10 @@ class Session extends BaseConfig
             try {
                 $db = \Config\Database::connect();
                 
-                // Check if database connection works and migrations have run
-                // If migrations table doesn't exist, database hasn't been initialized
-                if (!$db->tableExists('migrations')) {
-                    // Database not migrated yet, use file sessions temporarily
+                // Check if the sessions table exists (the actual table we need)
+                // If it doesn't exist, database hasn't been initialized for sessions yet
+                if (!$db->tableExists($this->savePath)) {
+                    // Database not ready for sessions, use file sessions temporarily
                     $this->driver = FileHandler::class;
                     $this->savePath = WRITEPATH . 'session';
                 }
