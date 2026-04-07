@@ -282,6 +282,7 @@ return [
     "right"                                     => "Destra",
     "sales_invoice_format"                      => "Formato Fattura di Vendita",
     "sales_quote_format"                        => "Formato Preventivo",
+    "mailpath_invalid"                          => "Percorso sendmail non valido. Sono ammessi solo lettere, numeri, trattini, trattini bassi, barre e punti.",
     "saved_successfully"                        => "Configurazione salvata correttamente.",
     "saved_unsuccessfully"                      => "Salvataggio Configurazione Fallito.",
     "security_issue"                            => "Security Vulnerability Warning",

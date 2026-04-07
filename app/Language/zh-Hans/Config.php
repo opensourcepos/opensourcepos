@@ -282,6 +282,7 @@ return [
     "right"                                     => "Right",
     "sales_invoice_format"                      => "Sales Invoice Format",
     "sales_quote_format"                        => "",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "組態設置儲存成功",
     "saved_unsuccessfully"                      => "組態設置儲存失敗",
     "security_issue"                            => "Security Vulnerability Warning",

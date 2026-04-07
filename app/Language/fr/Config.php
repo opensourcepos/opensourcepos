@@ -282,6 +282,7 @@ return [
     "right"                                     => "Droite",
     "sales_invoice_format"                      => "Format de la facture de vente",
     "sales_quote_format"                        => "Format de devis de vente",
+    "mailpath_invalid"                          => "Chemin sendmail invalide. Seuls les lettres, chiffres, tirets, underscores, barres obliques et points sont autorisés.",
     "saved_successfully"                        => "Configuration enregistrer avec succès.",
     "saved_unsuccessfully"                      => "L'enregistrement de configuration a échoué.",
     "security_issue"                            => "Avertissement de faille de sécurité",
