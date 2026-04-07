@@ -33,24 +33,5 @@ class TestDatabaseBootstrapSeeder extends Seeder
 
         $serverConn->query("DROP DATABASE IF EXISTS `{$dbName}`");
         $serverConn->query("CREATE DATABASE IF NOT EXISTS `{$dbName}`");
-
-        $db = Database::connect($group, false);
-
-        $sqlFile = APPPATH . 'Database/database.sql';
-        if (! file_exists($sqlFile)) {
-            throw new \RuntimeException("SQL file not found: {$sqlFile}");
-        }
-
-        $sql = file_get_contents($sqlFile);
-        if ($sql === false) {
-            throw new \RuntimeException("Unable to read SQL file: {$sqlFile}");
-        }
-
-        foreach (explode(";", $sql) as $statement) {
-            $trim = trim($statement);
-            if ($trim !== '') {
-                $db->query($trim);
-            }
-        }
     }
 }
