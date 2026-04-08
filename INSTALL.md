@@ -6,22 +6,63 @@
 - Raspberry PI based installations proved to work, see [wiki page here](<https://github.com/opensourcepos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS)>).
 - For Windows based installations please read [the wiki](https://github.com/opensourcepos/opensourcepos/wiki). There are closed issues about this subject, as this topic has been covered a lot.
 
+## Security Configuration
+
+### Allowed Hostnames (REQUIRED for Production)
+
+⚠️ **CRITICAL**: OpenSourcePOS validates the Host header to prevent Host Header Injection attacks (GHSA-jchf-7hr6-h4f3). **You MUST configure `app.allowedHostnames` for production deployments. If not configured, the application will fail to start.**
+
+**Add to your `.env` file:**
+
+```bash
+# Comma-separated list of allowed hostnames (no protocols or ports)
+app.allowedHostnames = 'yourdomain.com,www.yourdomain.com'
+```
+
+**For local development:**
+
+```bash
+app.allowedHostnames = 'localhost'
+```
+
+**If you see this error at startup:**
+
+```
+RuntimeException: Security: allowedHostnames is not configured.
+```
+
+**Solution**: Add `app.allowedHostnames` to your `.env` file with your domain(s).
+
+**Why this matters:**
+- Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
+- Ensures URLs are generated with the correct domain
+- Security advisory: https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-jchf-7hr6-h4f3
+- Fixes issue #4480: .env configuration now works via comma-separated values
+
+### HTTPS Behind Proxy
+
+If your installation is behind a proxy with SSL offloading, set:
+```
+FORCE_HTTPS = true
+```
+
 ## Local install
 
-First of all, if you're seeing the message `system folder missing` after launching your browser, or cannot find `database.sql`, that most likely means you have cloned the repository and have not built the project.  To build the project from a source commit point instead of from an official release check out [Building OSPOS](BUILD.md). Otherwise, continue with the following steps.
+First of all, if you're seeing the message `system folder missing` after launching your browser, that most likely means you have cloned the repository and have not built the project. To build the project from a source commit point instead of from an official release check out [Building OSPOS](BUILD.md). Otherwise, continue with the following steps.
 
 1. Download the a [pre-release for a specific branch](https://github.com/opensourcepos/opensourcepos/releases) or the latest stable [from GitHub here](https://github.com/opensourcepos/opensourcepos/releases). A repository clone will not work unless know how to build the project.
 2. Create/locate a new MySQL database to install Open Source Point of Sale into.
-3. Execute the file `app/Database/database.sql` to create the tables needed.
-4. Unzip and upload Open Source Point of Sale files to the web-server.
-5. Open `.env` file and modify credentials to connect to your database if needed. (First copy .env.example to .env and update)
+3. Unzip and upload Open Source Point of Sale files to the web-server.
+4. If `.env` does not exist, copy `.env.example` to `.env`.
+5. Open `.env` and modify credentials to connect to your database if needed.
+6. The database schema will be automatically created when you first access the application. Migrations run automatically on fresh installs.
 7. Go to your install `public` dir via the browser.
 8. Log in using
    - Username: admin
    - Password: pointofsale
 9. If everything works, then set the `CI_ENVIRONMENT` variable to `production` in the .env file
-9. Enjoy!
-10. Oops, an issue? Please make sure you read the FAQ, wiki page, and you checked open and closed issues on GitHub. PHP `display_errors` is disabled by default. Create an` app/Config/.env` file from the `.env.example` to enable it in a development environment.
+10. Enjoy!
+11. Oops, an issue? Please make sure you read the FAQ, wiki page, and you checked open and closed issues on GitHub. PHP `display_errors` is disabled by default. Create an` app/Config/.env` file from the `.env.example` to enable it in a development environment.
 
 ## Local install using Docker
 

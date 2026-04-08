@@ -55,13 +55,21 @@ class App extends BaseConfig
     public string $baseURL;    // Defined in the constructor
 
     /**
-     * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
-     * If you want to accept multiple Hostnames, set this.
-     *
-     * E.g.,
-     * When your site URL ($baseURL) is 'http://example.com/', and your site
-     * also accepts 'http://media.example.com/' and 'http://accounts.example.com/':
-     *     ['media.example.com', 'accounts.example.com']
+     * Allowed Hostnames for the Site URL.
+     * 
+     * Security: This is used to validate the HTTP Host header to prevent
+     * Host Header Injection attacks. If the Host header doesn't match
+     * an entry in this list, the request will use the first allowed hostname.
+     * 
+     * IMPORTANT: This MUST be configured for production deployments.
+     * If empty in production, the application will fail to start.
+     * In development, it will fall back to 'localhost' with a warning.
+     * 
+     * Configure via .env file (comma-separated list):
+     *   app.allowedHostnames = 'example.com,www.example.com'
+     * 
+     * For local development:
+     *   app.allowedHostnames = 'localhost'
      *
      * @var list<string>
      */
@@ -283,9 +291,68 @@ class App extends BaseConfig
     public function __construct()
     {
         parent::__construct();
+        
+        // Support comma-separated .env configuration for allowedHostnames
+        // Workaround for CodeIgniter 4 limitation: arrays cannot be set from .env
+        // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
+        $envAllowedHostnames = getenv('app.allowedHostnames');
+        if ($envAllowedHostnames !== false && !empty($envAllowedHostnames)) {
+            $this->allowedHostnames = array_map('trim', explode(',', $envAllowedHostnames));
+        }
+        
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
+        
+        $host = $this->getValidHost();
         $this->baseURL = $this->https_on ? 'https' : 'http';
-        $this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
+        $this->baseURL .= '://' . $host . '/';
         $this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+    }
+
+    /**
+     * Validates and returns a trusted hostname.
+     * 
+     * Security: Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
+     * by validating the HTTP_HOST against a whitelist of allowed hostnames.
+     * 
+     * In production: Fails fast if allowedHostnames is not configured.
+     * In development: Allows localhost fallback with an error log.
+     * 
+     * @return string A validated hostname
+     * @throws \RuntimeException If allowedHostnames is not configured in production
+     */
+    private function getValidHost(): string
+    {
+        $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $environment = getenv('CI_ENVIRONMENT') ?: 'production';
+
+        if (empty($this->allowedHostnames)) {
+            $errorMessage = 
+                'Security: allowedHostnames is not configured. ' .
+                'Host header injection protection is disabled. ' .
+                'Set app.allowedHostnames in your .env file. ' .
+                'Example: app.allowedHostnames = "example.com,www.example.com" ' .
+                'Received Host: ' . $httpHost;
+            
+            // Production: Fail explicitly to prevent silent security vulnerabilities
+            if ($environment === 'production') {
+                throw new \RuntimeException($errorMessage);
+            }
+            
+            // Development: Allow localhost fallback but log prominently
+            log_message('error', $errorMessage . ' Using localhost fallback (development only).');
+            return 'localhost';
+        }
+
+        if (in_array($httpHost, $this->allowedHostnames, true)) {
+            return $httpHost;
+        }
+
+        // Host not in whitelist - use first configured hostname as fallback
+        log_message('warning', 
+            'Security: Rejected HTTP_HOST "' . $httpHost . '" - not in allowedHostnames whitelist. ' .
+            'Using fallback: ' . $this->allowedHostnames[0]
+        );
+
+        return $this->allowedHostnames[0];
     }
 }
