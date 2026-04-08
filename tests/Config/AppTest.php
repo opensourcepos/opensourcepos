@@ -15,6 +15,10 @@ class AppTest extends CIUnitTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+        // Clean up environment
+        putenv('CI_ENVIRONMENT');
+        putenv('app.allowedHostnames');
+        unset($_SERVER['HTTP_HOST']);
     }
 
     public function testGetValidHostReturnsHostWhenValid(): void
@@ -59,8 +63,11 @@ class AppTest extends CIUnitTestCase
         $this->assertEquals('example.com', $host);
     }
 
-    public function testGetValidHostReturnsLocalhostWhenNoWhitelist(): void
+    public function testGetValidHostReturnsLocalhostInDevelopmentWhenNoWhitelist(): void
     {
+        // Set development environment
+        putenv('CI_ENVIRONMENT=development');
+
         $app = new class extends App {
             public array $allowedHostnames = [];
             
@@ -78,6 +85,28 @@ class AppTest extends CIUnitTestCase
         $_SERVER['HTTP_HOST'] = 'example.com';
         $host = $method->invoke($app);
         $this->assertEquals('localhost', $host);
+    }
+
+    public function testGetValidHostThrowsExceptionInProductionWhenNoWhitelist(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('allowedHostnames is not configured');
+
+        // Set production environment
+        putenv('CI_ENVIRONMENT=production');
+
+        $app = new class extends App {
+            public array $allowedHostnames = [];
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        $_SERVER['HTTP_HOST'] = 'malicious.com';
+        $method->invoke($app);
     }
 
     public function testGetValidHostHandlesMissingHttpHost(): void
@@ -122,5 +151,86 @@ class AppTest extends CIUnitTestCase
 
         $this->assertStringContainsString('example.com', $app->baseURL);
         $this->assertStringNotContainsString('malicious.com', $app->baseURL);
+    }
+
+    public function testEnvAllowedHostnamesParsedAsCommaSeparated(): void
+    {
+        // Set environment variable
+        putenv('app.allowedHostnames=example.com,www.example.com,demo.example.com');
+
+        $_SERVER['HTTP_HOST'] = 'www.example.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Constructor should parse comma-separated values
+        $this->assertEquals(['example.com', 'www.example.com', 'demo.example.com'], $app->allowedHostnames);
+        $this->assertStringContainsString('www.example.com', $app->baseURL);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+    }
+
+    public function testEnvAllowedHostnamesTrimmedWhitespace(): void
+    {
+        // Set environment variable with whitespace
+        putenv('app.allowedHostnames= example.com , www.example.com , demo.example.com ');
+
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Values should be trimmed
+        $this->assertEquals(['example.com', 'www.example.com', 'demo.example.com'], $app->allowedHostnames);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+    }
+
+    public function testEnvAllowedHostnamesSingleValue(): void
+    {
+        // Set environment variable with single value
+        putenv('app.allowedHostnames=localhost');
+
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Single value should work
+        $this->assertEquals(['localhost'], $app->allowedHostnames);
+        $this->assertStringContainsString('localhost', $app->baseURL);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+    }
+
+    public function testEnvAllowedHostnamesEmptyStringNotConfigured(): void
+    {
+        // Set environment variable to empty string
+        putenv('app.allowedHostnames=');
+
+        // Set development environment
+        putenv('CI_ENVIRONMENT=development');
+
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Empty string should be treated as not configured
+        $this->assertEquals([], $app->allowedHostnames);
+
+        // In development, should fall back to localhost
+        $this->assertStringContainsString('localhost', $app->baseURL);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+        putenv('CI_ENVIRONMENT');
     }
 }
