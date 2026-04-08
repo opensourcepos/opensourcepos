@@ -118,16 +118,47 @@ jobs:
           # Update [unreleased] link to start from new version
           sed -i "s|^\[unreleased\]: .*|\[unreleased\]: https://github.com/opensourcepos/opensourcepos/compare/${NEW_VERSION}...HEAD|" "$CHANGELOG_FILE"
           
-          # Create version header and content
+          # Create version header and content using temp file to avoid sed issues with special characters
           VERSION_DATE=$(date +%Y-%m-%d)
           VERSION_HEADER="## [$NEW_VERSION] - $VERSION_DATE"
           
-          # Insert new version section after unreleased header
-          sed -i "/^## \[Unreleased\]/a \\\n$VERSION_HEADER\n\n$COMMITS" "$CHANGELOG_FILE"
+          # Create temp file with changelog entry
+          TMP_FILE=$(mktemp)
+          {
+            echo ""
+            echo "$VERSION_HEADER"
+            echo ""
+            echo "$COMMITS"
+          } > "$TMP_FILE"
+          
+          # Insert after Unreleased header
+          sed -i "/^## \[Unreleased\]/r $TMP_FILE" "$CHANGELOG_FILE"
+          rm "$TMP_FILE"
           
           echo "Updated CHANGELOG.md"
           echo "Changelog entries:"
           echo "$COMMITS"
+
+      - name: Update version in issue templates
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          # Calculate version to remove (keep 5 versions)
+          PREVIOUS_VERSION="${{ steps.version.outputs.previous_version }}"
+          
+          # Bug report template - insert new version after development (unreleased)
+          BUG_TEMPLATE=".github/ISSUE_TEMPLATE/bug report.yml"
+          sed -i "/- development (unreleased)/a\\        - OpenSourcePOS ${NEW_VERSION}" "$BUG_TEMPLATE"
+          # Remove the oldest version (5th version from the end)
+          sed -i "/OpenSourcePOS 3\\.3\\.7/d" "$BUG_TEMPLATE"
+          echo "Updated $BUG_TEMPLATE"
+          
+          # Feature request template - insert new version after development (unreleased)
+          FEATURE_TEMPLATE=".github/ISSUE_TEMPLATE/feature_request.yml"
+          sed -i "/- development (unreleased)/a\\        - OpenSourcePOS ${NEW_VERSION}" "$FEATURE_TEMPLATE"
+          # Remove the oldest version (5th version from the end)
+          sed -i "/OpenSourcePOS 3\\.3\\.7/d" "$FEATURE_TEMPLATE"
+          echo "Updated $FEATURE_TEMPLATE"
 
       - name: Commit version bump
         run: |
@@ -136,6 +167,6 @@ jobs:
           
           NEW_VERSION="${{ steps.version.outputs.new_version }}"
           
-          git add app/Config/App.php package.json docker-compose.nginx.yml CHANGELOG.md README.md
+          git add app/Config/App.php package.json docker-compose.nginx.yml CHANGELOG.md README.md .github/ISSUE_TEMPLATE/
           git commit -m "chore: release version $NEW_VERSION"
           git push origin HEAD

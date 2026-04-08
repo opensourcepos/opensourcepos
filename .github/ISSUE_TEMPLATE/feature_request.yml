@@ -42,11 +42,12 @@ body:
       label: 📦 OpenSourcePOS Version
       description: What version are you currently running?
       options:
+        - development (unreleased)
         - OpenSourcePOS 3.4.2
         - OpenSourcePOS 3.4.1
         - OpenSourcePOS 3.4.0
         - OpenSourcePOS 3.3.9
-        - development (unreleased)
+        - OpenSourcePOS 3.3.8
       default: 0
     validations:
       required: true
