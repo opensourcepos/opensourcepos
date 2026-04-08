@@ -29,7 +29,7 @@
             <?= form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm">
+                    <span class="input-group-text input-sm">
                         <i class="bi bi-tag"></i>
                     </span>
                     <?= form_input([
@@ -53,7 +53,7 @@
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
                         'name'  => 'cost_price',
@@ -61,7 +61,7 @@
                         'class' => 'form-control input-sm'
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -72,7 +72,7 @@
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
                         'name'  => 'unit_price',
@@ -80,7 +80,7 @@
                         'class' => 'form-control input-sm'
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                         'class' => 'form-control input-sm',
                         'value' => to_tax_decimals($config['default_tax_1_rate'])
                     ]) ?>
-                    <span class="input-group input-group-addon"><b>%</b></span>
+                    <span class="input-group input-group-text"><b>%</b></span>
                 </div>
             </div>
         </div>
@@ -127,7 +127,7 @@
                         'class' => 'form-control input-sm',
                         'value' => to_tax_decimals($config['default_tax_2_rate'])
                     ]) ?>
-                    <span class="input-group input-group-addon"><b>%</b></span>
+                    <span class="input-group input-group-text"><b>%</b></span>
                 </div>
             </div>
         </div>

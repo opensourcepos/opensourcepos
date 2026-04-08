@@ -277,7 +277,7 @@ helper('url');
                             <td>
                                 <div class="input-group">
                                     <?= form_input(['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
-                                    <span class="input-group-btn">
+                                    <span class="input-group-text">
                                         <?= form_checkbox(['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle", 'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . $config['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => $line, 'checked' => $item['discount_type'] == 1]) ?>
                                     </span>
                                 </div>
@@ -357,8 +357,8 @@ helper('url');
 
 <!-- Overall Sale -->
 
-<div id="overall_sale" class="panel panel-default">
-    <div class="panel-body">
+<div id="overall_sale" class="card">
+    <div class="card-body">
         <?= form_open("$controller_name/selectCustomer", ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
             <?php if (isset($customer)) { ?>
                 <table class="sales_table_100">
@@ -622,7 +622,7 @@ helper('url');
 
                                 <div class="col-xs-6">
                                     <div class="input-group input-group-sm">
-                                        <span class="input-group-addon input-sm">#</span>
+                                        <span class="input-group-text input-sm">#</span>
                                         <?= form_input(['name' => 'sales_invoice_number', 'id' => 'sales_invoice_number', 'class' => 'form-control input-sm', 'value' => $invoice_number]) ?>
                                     </div>
                                 </div>

@@ -38,9 +38,9 @@ if (isset($success)) {
 
     <!-- Top register controls -->
 
-    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal card']) ?>
 
-    <div class="panel-body form-group">
+    <div class="card-body form-group">
         <ul>
             <li class="pull-left first_li">
                 <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
@@ -73,9 +73,9 @@ if (isset($success)) {
 
     <?= form_close() ?>
 
-    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal card']) ?>
 
-    <div class="panel-body form-group">
+    <div class="card-body form-group">
         <ul>
             <li class="pull-left first_li">
                 <label for="item" class="control-label">
@@ -173,7 +173,7 @@ if (isset($success)) {
                             <td>
                                 <div class="input-group">
                                     <?= form_input(['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
-                                    <span class="input-group-btn">
+                                    <span class="input-group-text">
                                         <?= form_checkbox([
                                             'id'           => 'discount_toggle',
                                             'name'         => 'discount_toggle',
@@ -241,8 +241,8 @@ if (isset($success)) {
 
 <!-- Overall Receiving -->
 
-<div id="overall_sale" class="panel panel-default">
-    <div class="panel-body">
+<div id="overall_sale" class="card">
+    <div class="card-body">
         <?php if (isset($supplier)) { ?>
 
             <table class="sales_table_100">

@@ -18,16 +18,16 @@
 
     <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
         <li class="active" role="presentation">
-            <a data-toggle="tab" href="#customer_basic_info"><?= lang('Customers.basic_information') ?></a>
+            <a data-bs-toggle="tab" href="#customer_basic_info"><?= lang('Customers.basic_information') ?></a>
         </li>
         <?php if (!empty($stats)) { ?>
             <li role="presentation">
-                <a data-toggle="tab" href="#customer_stats_info"><?= lang('Customers.stats_info') ?></a>
+                <a data-bs-toggle="tab" href="#customer_stats_info"><?= lang('Customers.stats_info') ?></a>
             </li>
         <?php } ?>
         <?php if (!empty($mailchimp_info) && !empty($mailchimp_activity)) { ?>
             <li role="presentation">
-                <a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
+                <a data-bs-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
             </li>
         <?php } ?>
     </ul>
@@ -175,7 +175,7 @@
                     <?= form_label(lang('Customers.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
                     <div class="col-xs-8">
                         <div class="input-group">
-                            <span class="input-group-addon input-sm"><i class="bi bi-calendar2"></i></span>
+                            <span class="input-group-text input-sm"><i class="bi bi-calendar2"></i></span>
                             <?= form_input([
                                 'name'     => 'date',
                                 'id'       => 'datetime',
@@ -213,7 +213,7 @@
                         <div class="col-xs-4">
                             <div class="input-group input-group-sm">
                                 <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                                 <?= form_input([
                                     'name'     => 'total',
@@ -223,7 +223,7 @@
                                     'disabled' => ''
                                 ]) ?>
                                 <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -234,7 +234,7 @@
                         <div class="col-xs-4">
                             <div class="input-group input-group-sm">
                                 <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                                 <?= form_input([
                                     'name'     => 'max',
@@ -244,7 +244,7 @@
                                     'disabled' => ''
                                 ]) ?>
                                 <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -255,7 +255,7 @@
                         <div class="col-xs-4">
                             <div class="input-group input-group-sm">
                                 <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                                 <?= form_input([
                                     'name'     => 'min',
@@ -265,7 +265,7 @@
                                     'disabled' => ''
                                 ]) ?>
                                 <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -276,7 +276,7 @@
                         <div class="col-xs-4">
                             <div class="input-group input-group-sm">
                                 <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                                 <?= form_input([
                                     'name'     => 'average',
@@ -286,7 +286,7 @@
                                     'disabled' => ''
                                 ]) ?>
                                 <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                                    <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -296,7 +296,7 @@
                         <?= form_label(lang('Customers.quantity'), 'quantity', ['class' => 'control-label col-xs-5']) ?>
                         <div class="col-xs-4">
                             <div class="input-group input-group-sm">
-                                <span class="input-group-addon input-sm"><b><?= '>' ?></b></span>
+                                <span class="input-group-text input-sm"><b><?= '>' ?></b></span>
                                 <?= form_input([
                                     'name'     => 'quantity',
                                     'id'       => 'quantity',
@@ -319,7 +319,7 @@
                                     'value'    => to_decimals($stats->avg_discount),
                                     'disabled' => ''
                                 ]) ?>
-                                <span class="input-group-addon input-sm"><b>%</b></span>
+                                <span class="input-group-text input-sm"><b>%</b></span>
                             </div>
                         </div>
                     </div>

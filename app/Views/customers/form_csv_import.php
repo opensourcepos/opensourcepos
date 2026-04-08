@@ -15,10 +15,10 @@
                     <div class="form-control" data-trigger="fileinput">
                         <i class="bi bi-filetype-csv me-2 fileinput-exists"></i><span class="fileinput-filename"></span>
                     </div>
-                    <span class="input-group-addon input-sm btn btn-default btn-file">
+                    <span class="input-group-text input-sm btn btn-default btn-file">
                         <span class="fileinput-new"><?= lang('Common.import_select_file') ?></span><span class="fileinput-exists"><?= lang('Common.import_change_file') ?></span><input type="file" id="file_path" name="file_path" accept=".csv">
                     </span>
-                    <a href="#" class="input-group-addon input-sm btn btn-default fileinput-exists" data-dismiss="fileinput"><?= lang('Common.import_remove_file') ?></a>
+                    <a href="#" class="input-group-text input-sm btn btn-default fileinput-exists" data-dismiss="fileinput"><?= lang('Common.import_remove_file') ?></a>
                 </div>
             </div>
         </div>

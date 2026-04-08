@@ -24,7 +24,7 @@
             <?= form_label(lang('Expenses.date'), 'date', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-6">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm"><i class="bi bi-calendar2"></i></span>
+                    <span class="input-group-text input-sm"><i class="bi bi-calendar2"></i></span>
                     <?= form_input([
                         'name'     => 'date',
                         'class'    => 'form-control input-sm datetime',
@@ -74,7 +74,7 @@
             <div class="col-xs-6">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
                         'name'  => 'amount',
@@ -83,7 +83,7 @@
                         'value' => to_currency_no_money($expenses_info->amount)
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -94,7 +94,7 @@
             <div class="col-xs-6">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
                         'name'  => 'tax_amount',
@@ -103,7 +103,7 @@
                         'value' => to_currency_no_money($expenses_info->tax_amount)
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                 </div>
             </div>

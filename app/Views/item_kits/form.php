@@ -18,7 +18,7 @@
             <?= form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm"><i class="bi bi-upc-scan"></i></span>
+                    <span class="input-group-text input-sm"><i class="bi bi-upc-scan"></i></span>
                     <?= form_input([
                         'name'  => 'item_kit_number',
                         'id'    => 'item_kit_number',

@@ -91,7 +91,7 @@
                         break;
                 }
                 ?>
-                <span class="input-group-addon input-sm btn btn-default remove_attribute_btn">
+                <span class="input-group-text input-sm btn btn-default remove_attribute_btn">
                     <i class="bi bi-trash"></i>
                 </span>
             </div>

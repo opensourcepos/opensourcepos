@@ -48,7 +48,7 @@
                     'class' => 'form-control input-sm text-uppercase',
                     'value' => $tax_rate
                 ]) ?>
-                <span class="input-group-addon input-sm">%</span>
+                <span class="input-group-text input-sm">%</span>
             </div>
 
         </div>

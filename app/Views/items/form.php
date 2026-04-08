@@ -35,7 +35,7 @@
             <?= form_label(lang('Items.item_number'), 'item_number', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm">
+                    <span class="input-group-text input-sm">
                         <i class="bi bi-upc-scan"></i>
                     </span>
                     <?= form_input([
@@ -64,7 +64,7 @@
             <?= form_label(lang('Items.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm">
+                    <span class="input-group-text input-sm">
                         <i class="bi bi-bookmark"></i>
                     </span>
                     <?php
@@ -183,7 +183,7 @@
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
                         'name'    => 'cost_price',
@@ -193,7 +193,7 @@
                         'value'   => to_currency_no_money($item_info->cost_price)
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -204,7 +204,7 @@
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
                         'name'    => 'unit_price',
@@ -214,7 +214,7 @@
                         'value'   => to_currency_no_money($item_info->unit_price)
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
+                        <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -239,7 +239,7 @@
                             'class' => 'form-control input-sm',
                             'value' => isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate)
                         ]) ?>
-                        <span class="input-group-addon input-sm"><b>%</b></span>
+                        <span class="input-group-text input-sm"><b>%</b></span>
                     </div>
                 </div>
             </div>
@@ -262,7 +262,7 @@
                             'id'    => 'tax_percent_name_2',
                             'value' => isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate)
                         ]) ?>
-                        <span class="input-group-addon input-sm"><b>%</b></span>
+                        <span class="input-group-text input-sm"><b>%</b></span>
                     </div>
                 </div>
             </div>

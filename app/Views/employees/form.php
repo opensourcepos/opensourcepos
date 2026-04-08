@@ -15,13 +15,13 @@
 
     <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
         <li class="active" role="presentation">
-            <a data-toggle="tab" href="#employee_basic_info"><?= lang('Employees.basic_information') ?></a>
+            <a data-bs-toggle="tab" href="#employee_basic_info"><?= lang('Employees.basic_information') ?></a>
         </li>
         <li role="presentation">
-            <a data-toggle="tab" href="#employee_login_info"><?= lang('Employees.login_info') ?></a>
+            <a data-bs-toggle="tab" href="#employee_login_info"><?= lang('Employees.login_info') ?></a>
         </li>
         <li role="presentation">
-            <a data-toggle="tab" href="#employee_permission_info"><?= lang('Employees.permission_info') ?></a>
+            <a data-bs-toggle="tab" href="#employee_permission_info"><?= lang('Employees.permission_info') ?></a>
         </li>
     </ul>
 
@@ -38,7 +38,7 @@
                     <?= form_label(lang('Employees.username'), 'username', ['class' => 'required control-label col-xs-3']) ?>
                     <div class="col-xs-8">
                         <div class="input-group">
-                            <span class="input-group-addon input-sm"><i class="bi bi-person"></i></span>
+                            <span class="input-group-text input-sm"><i class="bi bi-person"></i></span>
                             <?= form_input([
                                 'name'  => 'username',
                                 'id'    => 'username',
@@ -55,7 +55,7 @@
                     <?= form_label(lang('Employees.password'), 'password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
                     <div class="col-xs-8">
                         <div class="input-group">
-                            <span class="input-group-addon input-sm"><i class="bi bi-lock"></i></span>
+                            <span class="input-group-text input-sm"><i class="bi bi-lock"></i></span>
                             <?= form_password([
                                 'name'  => 'password',
                                 'id'    => 'password',
@@ -69,7 +69,7 @@
                     <?= form_label(lang('Employees.repeat_password'), 'repeat_password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
                     <div class="col-xs-8">
                         <div class="input-group">
-                            <span class="input-group-addon input-sm"><i class="bi bi-lock"></i></span>
+                            <span class="input-group-text input-sm"><i class="bi bi-lock"></i></span>
                             <?= form_password([
                                 'name'  => 'repeat_password',
                                 'id'    => 'repeat_password',
