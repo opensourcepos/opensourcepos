@@ -115,6 +115,9 @@ jobs:
           # Insert new link after [unreleased] line
           sed -i "/^\[unreleased\]/a $NEW_LINK" "$CHANGELOG_FILE"
           
+          # Update [unreleased] link to start from new version
+          sed -i "s|^\[unreleased\]: .*|\[unreleased\]: https://github.com/opensourcepos/opensourcepos/compare/${NEW_VERSION}...HEAD|" "$CHANGELOG_FILE"
+          
           # Create version header and content
           VERSION_DATE=$(date +%Y-%m-%d)
           VERSION_HEADER="## [$NEW_VERSION] - $VERSION_DATE"
