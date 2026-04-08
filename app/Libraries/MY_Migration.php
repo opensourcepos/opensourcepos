@@ -45,8 +45,6 @@ class MY_Migration extends MigrationRunner
                 return $result ? $result->version : 0;
             }
         } catch (DatabaseException $e) {
-            // Database doesn't exist yet or connection failed
-            // Return 0 to indicate no migrations have run
             return 0;
         }
 
