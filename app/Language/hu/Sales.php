@@ -228,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "",
     "work_order_sent"                  => "",
     "work_order_unsent"                => "",
+    "sale_not_found"                   => "Értékesítés nem található",
 ];

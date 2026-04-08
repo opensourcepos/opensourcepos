@@ -229,4 +229,8 @@ return [
     "work_order_number_duplicate"      => "Work Order Number must be unique.",
     "work_order_sent"                  => "Work Order sent to",
     "work_order_unsent"                => "Work Order failed to be sent to",
+    "ubl_invoice"                      => "UBL Invoice",
+    "download_ubl"                     => "Download UBL Invoice",
+    "ubl_generation_failed"            => "Failed to generate UBL invoice",
+    "sale_not_found"                   => "Sale not found",
 ];

@@ -228,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "رقم طلب العمل يجب ان يكون فريد.",
     "work_order_sent"                  => "تم ارسال طلب العمل الى",
     "work_order_unsent"                => "فشل في ارسال طلب العمل الى",
+    "sale_not_found"                   => "البيع غير موجود",
 ];

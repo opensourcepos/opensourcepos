@@ -229,4 +229,5 @@ return [
     'work_order_number_duplicate' => "ژمارەی داواکاری کار دەبێت تایبەت بێت.",
     'work_order_sent' => "داواکاری کار نێردرا بۆ",
     'work_order_unsent' => "داواکاری کار شکستی هێنا لە ناردنی بۆ",
+    'sale_not_found' => "فرۆش نەدۆزرایەوە",
 ];

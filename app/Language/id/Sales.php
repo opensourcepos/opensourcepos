@@ -228,5 +228,6 @@ return [
     "work_order_number_duplicate"      => "Nomor Perintah Kerja tidak boleh sama.",
     "work_order_sent"                  => "Perintah Kerja dikirim ke",
     "work_order_unsent"                => "Perintah Kerja gagal dikirim ke",
+    "sale_not_found"                   => "Penjualan tidak ditemukan",
     "selected_customer"                => "Pelanggan Terpilih",
 ];

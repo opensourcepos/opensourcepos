@@ -228,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "شماره سفارش کار باید منحصر به فرد باشد.",
     "work_order_sent"                  => "دستور کار ارسال شده به",
     "work_order_unsent"                => "دستور کار نتوانست به ارسال شود",
+    "sale_not_found"                   => "فروش یافت نشد",
 ];

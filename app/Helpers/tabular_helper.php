@@ -84,6 +84,7 @@ function get_sales_manage_table_headers(): string
     if ($config['invoice_enable']) {
         $headers[] = ['invoice_number' => lang('Sales.invoice_number')];
         $headers[] = ['invoice' => '', 'sortable' => false, 'escape' => false];
+        $headers[] = ['ubl' => '', 'sortable' => false, 'escape' => false];
     }
 
     $headers[] = ['receipt' => '', 'sortable' => false, 'escape' => false];
@@ -119,6 +120,13 @@ function get_sale_data_row(object $sale): array
                 "$controller/invoice/$sale->sale_id",
                 '<span class="glyphicon glyphicon-list-alt"></span>',
                 ['title' => lang('Sales.show_invoice')]
+            );
+        $row['ubl'] = empty($sale->invoice_number)
+            ? '-'
+            : anchor(
+                "$controller/ublInvoice/$sale->sale_id",
+                '<span class="glyphicon glyphicon-download"></span>',
+                ['title' => lang('Sales.download_ubl'), 'target' => '_blank']
             );
     }
 
@@ -654,7 +662,7 @@ function expand_attribute_values(array $definition_names, array $row): array
     foreach ($definition_names as $definition_id => $definitionInfo) {
         if (isset($indexed_values[$definition_id])) {
             $raw_value = $indexed_values[$definition_id];
-            
+
             // Format DECIMAL attributes according to locale
             if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
                 $attribute_values["$definition_id"] = to_decimals($raw_value);
@@ -934,7 +942,7 @@ function get_controller(): string
 
 /**
  * Restores filter values from URL query string.
- * 
+ *
  * @param CodeIgniter\HTTP\IncomingRequest $request The request object
  * @return array Array with 'start_date', 'end_date', and 'selected_filters' keys
  */
@@ -943,7 +951,7 @@ function restoreTableFilters($request): array
     $startDate = $request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $endDate = $request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $urlFilters = $request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    
+
     return array_filter([
         'start_date' => $startDate ?: null,
         'end_date' => $endDate ?: null,
