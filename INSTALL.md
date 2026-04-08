@@ -102,30 +102,30 @@ Do **not** use below command on live deployments unless you want to tear everyth
 
 ## Cloud install
 
-If you choose DigitalOcean:
-[Through this link](https://m.do.co/c/ac38c262507b), you will get a [**free $100, 60-day credit**](https://m.do.co/c/ac38c262507b). [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) for further instructions on how to install the necessary components.
+### Recommended: DigitalOcean
 
-## One-line Ubuntu Installation
+Sign up through [our referral link](https://m.do.co/c/ac38c262507b) to get a [**$100, 60-day credit**](https://m.do.co/c/ac38c262507b).
 
-For a fresh Ubuntu server (20.04 LTS or newer), you can install OSPOS directly with:
+1. Create an Ubuntu 20.04+ or 22.04+ droplet
+2. SSH into your server: `ssh root@<your-droplet-ip>`
+3. Run the one-line installer:
+   ```bash
+   curl -sSL https://opensourcepos.org/install | sudo bash
+   ```
 
-```bash
-curl -sSL https://opensourcepos.org/install | sudo bash
-```
-
-> **Note:** This URL redirects to the latest installation script from the official repository. If the redirect is unavailable, use the direct GitHub URL:
-> ```bash
-> curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | sudo bash
-> ```
-
-This script will:
+The installer will:
 - Install Apache, MariaDB, PHP 8.2 and required extensions
-- Create a MySQL database and user with a secure random password
+- Create a database with secure random password
 - Download and configure OSPOS
-- Set up Apache virtual host with proper permissions
 - Display login credentials after completion
 
-**Environment Variables (optional):**
+**Customization (optional):**
+```bash
+# Set custom database password and server name
+curl -sSL https://opensourcepos.org/install | DB_PASS=mypassword APACHE_SERVER_NAME=pos.example.com sudo -E bash
+```
+
+**Environment variables:**
 - `DB_NAME` - Database name (default: ospos)
 - `DB_USER` - Database user (default: ospos)
 - `DB_PASS` - Database password (default: auto-generated)
@@ -134,9 +134,11 @@ This script will:
 - `PHP_VERSION` - PHP version (default: 8.2)
 - `APACHE_SERVER_NAME` - Server hostname (default: localhost)
 
-Example with custom settings:
-```bash
-curl -sSL https://opensourcepos.org/install | DB_PASS=mypassword APACHE_SERVER_NAME=pos.example.com sudo -E bash
-```
+> **Note:** If the short URL is unavailable, use the direct GitHub URL:
+> ```bash
+> curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | sudo bash
+> ```
 
-**Note:** This script is designed for fresh servers. For production use, ensure you configure SSL/TLS certificates after installation.
+For other cloud providers or manual installation, see the [detailed installation guide](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) in the wiki.
+
+**Important:** After installation, change the default password and configure SSL/TLS certificates for production use.
