@@ -292,12 +292,14 @@ class App extends BaseConfig
     {
         parent::__construct();
         
-        // Support comma-separated .env configuration for allowedHostnames
-        // Workaround for CodeIgniter 4 limitation: arrays cannot be set from .env
+        // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
         // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
         $envAllowedHostnames = getenv('app.allowedHostnames');
-        if ($envAllowedHostnames !== false && !empty($envAllowedHostnames)) {
-            $this->allowedHostnames = array_map('trim', explode(',', $envAllowedHostnames));
+        if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
+            $this->allowedHostnames = array_values(array_filter(
+                array_map('trim', explode(',', $envAllowedHostnames)),
+                static fn (string $hostname): bool => $hostname !== ''
+            ));
         }
         
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');

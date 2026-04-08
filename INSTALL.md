@@ -27,7 +27,7 @@ app.allowedHostnames = 'localhost'
 
 **If you see this error at startup:**
 
-```
+```text
 RuntimeException: Security: allowedHostnames is not configured.
 ```
 

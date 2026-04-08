@@ -233,4 +233,52 @@ class AppTest extends CIUnitTestCase
         putenv('app.allowedHostnames');
         putenv('CI_ENVIRONMENT');
     }
+
+    public function testEnvAllowedHostnamesFiltersEmptyEntries(): void
+    {
+        // Trailing comma should not produce empty entry
+        putenv('app.allowedHostnames=example.com,');
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+        $this->assertEquals(['example.com'], $app->allowedHostnames);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+
+        // Leading comma should not produce empty entry
+        putenv('app.allowedHostnames=,example.com');
+        $_SERVER['HTTP_HOST'] = 'example.com';
+
+        $app = new App();
+        $this->assertEquals(['example.com'], $app->allowedHostnames);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+
+        // Whitespace-only entry should be filtered
+        putenv('app.allowedHostnames=example.com, ,www.example.com');
+        $_SERVER['HTTP_HOST'] = 'example.com';
+
+        $app = new App();
+        $this->assertEquals(['example.com', 'www.example.com'], $app->allowedHostnames);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+
+        // All-whitespace value should be treated as not configured
+        putenv('CI_ENVIRONMENT=development');
+        putenv('app.allowedHostnames= , , ');
+        $_SERVER['HTTP_HOST'] = 'example.com';
+
+        $app = new App();
+        $this->assertEquals([], $app->allowedHostnames);
+        $this->assertStringContainsString('localhost', $app->baseURL);
+
+        // Clean up
+        putenv('app.allowedHostnames');
+        putenv('CI_ENVIRONMENT');
+    }
 }
