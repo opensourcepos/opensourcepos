@@ -56,8 +56,13 @@ Events::on('pre_system', static function (): void {
     }
 
     $pluginManager = new PluginManager();
-    $pluginManager->discoverPlugins();
-    $pluginManager->registerPluginEvents();
+
+    if ($pluginManager->canLoadPlugins()) {
+        $pluginManager->discoverPlugins();
+        $pluginManager->registerPluginEvents();
+    } else {
+        log_message('debug', 'Plugin loading is disabled until after migration has been run.');
+    }
 });
 
 $config = new Load_config();

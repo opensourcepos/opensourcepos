@@ -4,6 +4,7 @@ namespace App\Libraries\Plugins;
 
 use App\Models\PluginConfig;
 use CodeIgniter\Events\Events;
+use Config\Database;
 use Config\Services;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -107,6 +108,12 @@ class PluginManager
     {
         $enabled = $this->configModel->getValue($this->getEnabledKey($pluginId));
         return $enabled === '1' || $enabled === 'true';
+    }
+
+    public function canLoadPlugins(): bool
+    {
+        $db = Database::connect();
+        return $db->tableExists('plugin_config');
     }
 
     public function enablePlugin(string $pluginId): bool
