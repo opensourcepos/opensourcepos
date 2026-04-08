@@ -4,7 +4,7 @@
  */
 ?>
 
-<?= form_open('config/saveMessage/', ['id' => 'message_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('config/saveMessage/', ['id' => 'message_config_form', 'enctype' => 'multipart/form-data', 'class' => '']) ?>
 
     <?php
     $title_info['config_title'] = lang('Config.message_configuration');

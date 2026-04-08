@@ -13,12 +13,12 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("giftcards/save/$giftcard_id", ['id' => 'giftcard_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("giftcards/save/$giftcard_id", ['id' => 'giftcard_form', 'class' => '']) ?>
     <fieldset id="giftcard_basic_info">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.person_id'), 'person_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Giftcards.person_id'), 'person_name', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'person_name',
                     'id'    => 'person_name',
@@ -35,9 +35,9 @@
             $class = ' required';
         }
         ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class' => "control-label col-xs-3$class"]) ?>
-            <div class="col-xs-4">
+        <div class="row mb-3">
+            <?= form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class' => "col-form-label col-3$class"]) ?>
+            <div class="col-4">
                 <?= form_input([
                     'name'  => 'giftcard_number',
                     'id'    => 'giftcard_number',
@@ -48,9 +48,9 @@
         </div>
 
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="row mb-3">
+            <?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
                         <span class="input-group-text input-sm"><?= esc($config['currency_symbol']) ?></span>

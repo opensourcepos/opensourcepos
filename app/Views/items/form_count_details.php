@@ -9,12 +9,12 @@ use App\Models\Employee;
 use App\Models\Inventory;
 ?>
 
-<?= form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('items', ['id' => 'item_form', 'class' => '']) ?>
     <fieldset id="count_item_basic_info">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.item_number'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.item_number'), 'name', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <div class="input-group">
                     <span class="input-group-text input-sm">
                         <i class="bi bi-upc-scan"></i>
@@ -30,9 +30,9 @@ use App\Models\Inventory;
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.name'), 'name', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'     => 'name',
                     'id'       => 'name',
@@ -43,9 +43,9 @@ use App\Models\Inventory;
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.category'), 'category', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <div class="input-group">
                     <span class="input-group-text input-sm">
                         <i class="bi bi-tag"></i>
@@ -61,16 +61,16 @@ use App\Models\Inventory;
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange' => 'display_stock(this.value);', 'class' => 'form-control']) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-4">
                 <?= form_input([
                     'name'     => 'quantity',
                     'id'       => 'quantity',

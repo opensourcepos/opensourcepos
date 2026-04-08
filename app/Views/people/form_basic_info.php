@@ -5,9 +5,9 @@
  */
 ?>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.first_name'), 'first_name', ['class' => 'required control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.first_name'), 'first_name', ['class' => 'required col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'first_name',
             'id'    => 'first_name',
@@ -17,9 +17,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.last_name'), 'last_name', ['class' => 'required control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.last_name'), 'last_name', ['class' => 'required col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'last_name',
             'id'    => 'last_name',
@@ -29,9 +29,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.gender'), 'gender', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-4">
+<div class="row mb-3">
+    <?= form_label(lang('Common.gender'), 'gender', !empty($basic_version) ? ['class' => 'required col-form-label col-3'] : ['class' => 'col-form-label col-3']) ?>
+    <div class="col-4">
         <label class="radio-inline">
             <?= form_radio([
                 'name'    => 'gender',
@@ -54,9 +54,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.email'), 'email', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.email'), 'email', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <div class="input-group">
             <span class="input-group-text input-sm">
                 <i class="bi bi-envelope"></i>
@@ -71,9 +71,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.phone_number'), 'phone_number', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.phone_number'), 'phone_number', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <div class="input-group">
             <span class="input-group-text input-sm">
                 <i class="bi bi-telephone"></i>
@@ -88,9 +88,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.address_1'), 'address_1', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.address_1'), 'address_1', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'address_1',
             'id'    => 'address_1',
@@ -100,9 +100,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.address_2'), 'address_2', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.address_2'), 'address_2', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'address_2',
             'id'    => 'address_2',
@@ -112,9 +112,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.city'), 'city', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.city'), 'city', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'city',
             'id'    => 'city',
@@ -124,9 +124,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.state'), 'state', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.state'), 'state', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'state',
             'id'    => 'state',
@@ -136,9 +136,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.zip'), 'zip', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.zip'), 'zip', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'zip',
             'id'    => 'postcode',
@@ -148,9 +148,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.country'), 'country', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.country'), 'country', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_input([
             'name'  => 'country',
             'id'    => 'country',
@@ -160,9 +160,9 @@
     </div>
 </div>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Common.comments'), 'comments', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
+<div class="row mb-3">
+    <?= form_label(lang('Common.comments'), 'comments', ['class' => 'col-form-label col-3']) ?>
+    <div class="col-8">
         <?= form_textarea([
             'name'  => 'comments',
             'id'    => 'comments',

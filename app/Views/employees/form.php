@@ -11,7 +11,7 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'employee_form', 'class' => '']) ?>
 
     <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
         <li class="active" role="presentation">
@@ -34,9 +34,9 @@
 
         <div class="tab-pane" id="employee_login_info">
             <fieldset>
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Employees.username'), 'username', ['class' => 'required control-label col-xs-3']) ?>
-                    <div class="col-xs-8">
+                <div class="row mb-3">
+                    <?= form_label(lang('Employees.username'), 'username', ['class' => 'required col-form-label col-3']) ?>
+                    <div class="col-8">
                         <div class="input-group">
                             <span class="input-group-text input-sm"><i class="bi bi-person"></i></span>
                             <?= form_input([
@@ -51,9 +51,9 @@
 
                 <?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
 
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Employees.password'), 'password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
-                    <div class="col-xs-8">
+                <div class="row mb-3">
+                    <?= form_label(lang('Employees.password'), 'password', array_merge($password_label_attributes, ['class' => 'col-form-label col-3'])) ?>
+                    <div class="col-8">
                         <div class="input-group">
                             <span class="input-group-text input-sm"><i class="bi bi-lock"></i></span>
                             <?= form_password([
@@ -65,9 +65,9 @@
                     </div>
                 </div>
 
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Employees.repeat_password'), 'repeat_password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
-                    <div class="col-xs-8">
+                <div class="row mb-3">
+                    <?= form_label(lang('Employees.repeat_password'), 'repeat_password', array_merge($password_label_attributes, ['class' => 'col-form-label col-3'])) ?>
+                    <div class="col-8">
                         <div class="input-group">
                             <span class="input-group-text input-sm"><i class="bi bi-lock"></i></span>
                             <?= form_password([
@@ -79,9 +79,9 @@
                     </div>
                 </div>
 
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Employees.language'), 'language', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-8">
+                <div class="row mb-3">
+                    <?= form_label(lang('Employees.language'), 'language', ['class' => 'col-form-label col-3']) ?>
+                    <div class="col-8">
                         <div class="input-group">
                             <?php
                             $languages = get_languages();

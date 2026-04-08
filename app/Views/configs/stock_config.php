@@ -39,7 +39,7 @@
             var block = $(this).parent().clone(true);
             var new_block = block.insertAfter($(this).parent());
             var new_block_id = 'stock_location[]';
-            $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+            $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'col-form-label col-2');
             $(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
             hide_show_remove();
         };

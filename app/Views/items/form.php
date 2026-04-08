@@ -28,12 +28,12 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("items/save/$item_info->item_id", ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open("items/save/$item_info->item_id", ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => '']) ?>
     <fieldset id="item_basic_info">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.item_number'), 'item_number', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.item_number'), 'item_number', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <div class="input-group">
                     <span class="input-group-text input-sm">
                         <i class="bi bi-upc-scan"></i>
@@ -48,9 +48,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.name'), 'name', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'name',
                     'id'    => 'name',
@@ -60,9 +60,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.category'), 'category', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-8">
                 <div class="input-group">
                     <span class="input-group-text input-sm">
                         <i class="bi bi-bookmark"></i>
@@ -89,9 +89,9 @@
             </script>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'required col-form-label col-3'] : ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <label class="radio-inline">
                     <?= form_radio([
                         'name'    => 'stock_type',
@@ -113,9 +113,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'required col-form-label col-3'] : ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <label class="radio-inline">
                     <?php
                     $radio_button = [
@@ -171,16 +171,16 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class' => 'form-control']) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
                         <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -199,9 +199,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
                         <span class="input-group-text input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -221,9 +221,9 @@
         </div>
 
         <?php if (!$use_destination_based_tax) { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="row mb-3">
+                <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'col-form-label col-3']) ?>
+                <div class="col-4">
                     <?= form_input([
                         'name'  => 'tax_names[]',
                         'id'    => 'tax_name_1',
@@ -231,7 +231,7 @@
                         'value' => $item_tax_info[0]['name'] ?? $config['default_tax_1_name']
                     ]) ?>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-4">
                     <div class="input-group input-group-sm">
                         <?= form_input([
                             'name'  => 'tax_percents[]',
@@ -244,9 +244,9 @@
                 </div>
             </div>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="row mb-3">
+                <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'col-form-label col-3']) ?>
+                <div class="col-4">
                     <?= form_input([
                         'name'  => 'tax_names[]',
                         'id'    => 'tax_name_2',
@@ -254,7 +254,7 @@
                         'value' => $item_tax_info[1]['name'] ?? $config['default_tax_2_name']
                     ]) ?>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-4">
                     <div class="input-group input-group-sm">
                         <?= form_input([
                             'name'  => 'tax_percents[]',
@@ -269,9 +269,9 @@
         <?php } ?>
 
         <?php if ($use_destination_based_tax): ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
+            <div class="row mb-3">
+                <?= form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'col-form-label col-3']) ?>
+                <div class="col-8">
                     <div class="input-group input-group-sm">
                         <?= form_input([
                             'name'  => 'tax_category',
@@ -287,9 +287,9 @@
         <?php endif; ?>
 
         <?php if ($include_hsn): ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.hsn_code'), 'category', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
+            <div class="row mb-3">
+                <?= form_label(lang('Items.hsn_code'), 'category', ['class' => 'col-form-label col-3']) ?>
+                <div class="col-8">
                     <div class="input-group">
                         <?= form_input([
                             'name'  => 'hsn_code',
@@ -303,9 +303,9 @@
         <?php endif; ?>
 
         <?php foreach ($stock_locations as $key => $location_detail) { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="row mb-3">
+                <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required col-form-label col-3']) ?>
+                <div class="col-4">
                     <?= form_input([
                         'name'    => "quantity_$key",
                         'id'      => "quantity_$key",
@@ -317,9 +317,9 @@
             </div>
         <?php } ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-4">
                 <?= form_input([
                     'name'    => 'receiving_quantity',
                     'id'      => 'receiving_quantity',
@@ -330,9 +330,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-4">
                 <?= form_input([
                     'name'    => 'reorder_level',
                     'id'      => 'reorder_level',
@@ -343,9 +343,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.description'), 'description', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_textarea([
                     'name'  => 'description',
                     'id'    => 'description',
@@ -355,9 +355,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.image'), 'items_image', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.image'), 'items_image', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <div class="fileinput <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
                     <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
                     <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;">
@@ -377,9 +377,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-1">
                 <?= form_checkbox([
                     'name'    => 'allow_alt_description',
                     'id'      => 'allow_alt_description',
@@ -389,9 +389,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-1">
                 <?= form_checkbox([
                     'name'    => 'is_serialized',
                     'id'      => 'is_serialized',
@@ -402,9 +402,9 @@
         </div>
 
         <?php if ($config['multi_pack_enabled'] == '1') { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="row mb-3">
+                <?= form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'col-form-label col-3']) ?>
+                <div class="col-4">
                     <?= form_input([
                         'name'  => 'qty_per_pack',
                         'id'    => 'qty_per_pack',
@@ -413,9 +413,9 @@
                     ]) ?>
                 </div>
             </div>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.pack_name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
+            <div class="row mb-3">
+                <?= form_label(lang('Items.pack_name'), 'name', ['class' => 'col-form-label col-3']) ?>
+                <div class="col-8">
                     <?= form_input([
                         'name'  => 'pack_name',
                         'id'    => 'pack_name',
@@ -424,9 +424,9 @@
                     ]) ?>
                 </div>
             </div>
-            <div class="form-group  form-group-sm">
-                <?= form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
+            <div class="row mb-3">
+                <?= form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'col-form-label col-3']) ?>
+                <div class="col-8">
                     <div class="input-group input-group-sm">
                         <?= form_input([
                             'name'  => 'low_sell_item_name',
@@ -440,9 +440,9 @@
             </div>
         <?php } ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
+        <div class="row mb-3">
+            <?= form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-1">
                 <?= form_checkbox([
                     'name'    => 'is_deleted',
                     'id'      => 'is_deleted',

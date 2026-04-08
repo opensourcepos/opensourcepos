@@ -38,12 +38,12 @@ if (isset($success)) {
 
     <!-- Top register controls -->
 
-    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal card']) ?>
+    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => ' card']) ?>
 
-    <div class="card-body form-group">
+    <div class="card-body">
         <ul>
             <li class="pull-left first_li">
-                <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
+                <label class="form-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
             </li>
             <li class="pull-left">
                 <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -51,7 +51,7 @@ if (isset($success)) {
 
             <?php if ($show_stock_locations) { ?>
                 <li class="pull-left">
-                    <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_source') ?></label>
+                    <label class="form-label"><?= lang(ucfirst($controller_name) . '.stock_source') ?></label>
                 </li>
                 <li class="pull-left">
                     <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -59,7 +59,7 @@ if (isset($success)) {
 
                 <?php if ($mode == 'requisition') { ?>
                     <li class="pull-left">
-                        <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></label>
+                        <label class="form-label"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></label>
                     </li>
                     <li class="pull-left">
                         <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -73,12 +73,12 @@ if (isset($success)) {
 
     <?= form_close() ?>
 
-    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal card']) ?>
+    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => ' card']) ?>
 
-    <div class="card-body form-group">
+    <div class="card-body">
         <ul>
             <li class="pull-left first_li">
-                <label for="item" class="control-label">
+                <label for="item" class="form-label">
                     <?php if ($mode == 'receive' or $mode == 'requisition') { ?>
                         <?= lang(ucfirst($controller_name) . '.find_or_scan_item') ?>
                     <?php } else { ?>
@@ -130,7 +130,7 @@ if (isset($success)) {
                 foreach (array_reverse($cart, true) as $line => $item) {
                 ?>
 
-                    <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+                    <?= form_open("$controller_name/editItem/$line", ['class' => '', 'id' => "cart_$line"]) ?>
 
                     <tr>
                         <td><?= anchor("$controller_name/deleteItem/$line", '<i class="bi bi-trash"></i>') ?></td>
@@ -282,10 +282,10 @@ if (isset($success)) {
 
         <?php } else { ?>
 
-            <?= form_open("$controller_name/selectSupplier", ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
+            <?= form_open("$controller_name/selectSupplier", ['id' => 'select_supplier_form', 'class' => '']) ?>
 
-            <div class="form-group" id="select_customer">
-                <label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;">
+            <div class="row mb-3" id="select_customer">
+                <label id="supplier_label" for="supplier" class="form-label" style="margin-bottom: 1em; margin-top: -1em;">
                     <?= lang(ucfirst($controller_name) . '.select_supplier') ?>
                 </label>
                 <?= form_input([
@@ -321,9 +321,9 @@ if (isset($success)) {
             <div id="finish_sale">
                 <?php if ($mode == 'requisition') { ?>
 
-                    <?= form_open("$controller_name/requisitionComplete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+                    <?= form_open("$controller_name/requisitionComplete", ['id' => 'finish_receiving_form', 'class' => '']) ?>
 
-                    <div class="form-group form-group-sm">
+                    <div class="row mb-3">
                         <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
                         <?= form_textarea([
                             'name'  => 'comment',
@@ -345,9 +345,9 @@ if (isset($success)) {
 
                 <?php } else { ?>
 
-                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form', 'class' => '']) ?>
 
-                    <div class="form-group form-group-sm">
+                    <div class="row mb-3">
                         <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
                         <?= form_textarea([
                             'name'  => 'comment',

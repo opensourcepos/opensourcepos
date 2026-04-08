@@ -4,7 +4,7 @@
  */
 ?>
 
-<?= form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => '']) ?>
 
     <ul id="tax_codes_error_message_box" class="error_message_box"></ul>
 
@@ -43,7 +43,7 @@
             ++tax_code_count;
             var new_tax_code_id = 'tax_code_' + tax_code_count;
 
-            $(new_block).find('label').html("<?= lang('Taxes.tax_code') ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
+            $(new_block).find('label').html("<?= lang('Taxes.tax_code') ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'col-form-label col-2');
             $(new_block).find("input[name='tax_code[]']").attr('id', new_tax_code_id).removeAttr('disabled').attr('class', 'form-control text-uppercase required input-sm').val('');
             $(new_block).find("input[name='tax_code_name[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
             $(new_block).find("input[name='city[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');

@@ -228,7 +228,7 @@ helper('url');
             } else {
                 foreach (array_reverse($cart, true) as $line => $item) {
             ?>
-                    <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+                    <?= form_open("$controller_name/editItem/$line", ['class' => '', 'id' => "cart_$line"]) ?>
                         <tr>
                             <td>
                                 <?php
@@ -359,7 +359,7 @@ helper('url');
 
 <div id="overall_sale" class="card">
     <div class="card-body">
-        <?= form_open("$controller_name/selectCustomer", ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
+        <?= form_open("$controller_name/selectCustomer", ['id' => 'select_customer_form', 'class' => '']) ?>
             <?php if (isset($customer)) { ?>
                 <table class="sales_table_100">
                     <tr>
@@ -419,8 +419,8 @@ helper('url');
                 )
                 ?>
             <?php } else { ?>
-                <div class="form-group" id="select_customer">
-                    <label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;">
+                <div class="row mb-3" id="select_customer">
+                    <label id="customer_label" for="customer" class="form-label" style="margin-bottom: 1em; margin-top: -1em;">
                         <?= lang(ucfirst($controller_name) . '.select_customer') . esc(" $customer_required") ?>
                     </label>
                     <?= form_input(['name' => 'customer', 'id' => 'customer', 'class' => 'form-control input-sm', 'value' => lang(ucfirst($controller_name) . '.start_typing_customer_name')]) ?>
@@ -470,7 +470,7 @@ helper('url');
 
             <div id="payment_details">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
-                    <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+                    <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => '']) ?>
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -510,7 +510,7 @@ helper('url');
                     }
                     ?>
                 <?php } else { ?>
-                    <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+                    <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => '']) ?>
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -558,7 +558,7 @@ helper('url');
             </div>
 
             <?= form_open("$controller_name/cancel", ['id' => 'buttons_form']) ?>
-            <div class="form-group" id="buttons_sale">
+            <div class="row mb-3" id="buttons_sale">
                 <div class="btn btn-sm btn-default pull-left" id="suspend_sale_button">
                     <i class="bi bi-pause-circle me-2"></i><?= lang(ucfirst($controller_name) . '.suspend_sale') ?>
                 </div>
@@ -577,54 +577,60 @@ helper('url');
             <?php if ($payments_cover_total || !$pos_mode) { // Only show this part if the payment cover the total ?>
                 <div class="container-fluid">
                     <div class="no-gutter row">
-                        <div class="form-group form-group-sm">
-                            <div class="col-xs-12">
-                                <?= form_label(lang('Common.comments'), 'comments', ['class' => 'control-label', 'id' => 'comment_label', 'for' => 'comment']) ?>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <?= form_label(lang('Common.comments'), 'comments', ['class' => 'form-label', 'id' => 'comment_label', 'for' => 'comment']) ?>
                                 <?= form_textarea(['name' => 'comment', 'id' => 'comment', 'class' => 'form-control input-sm', 'value' => $comment, 'rows' => '2']) ?>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group form-group-sm">
-                            <div class="col-xs-6">
-                                <label for="sales_print_after_sale" class="control-label checkbox">
-                                    <?= form_checkbox(['name' => 'sales_print_after_sale', 'id' => 'sales_print_after_sale', 'value' => 1, 'checked' => $print_after_sale]) ?>
-                                    <?= lang(ucfirst($controller_name) . '.print_after_sale') ?>
-                                </label>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <label for="sales_print_after_sale" class="form-check-label">
+                                        <?= form_checkbox(['name' => 'sales_print_after_sale', 'id' => 'sales_print_after_sale', 'value' => 1, 'checked' => $print_after_sale, 'class' => 'form-check-input']) ?>
+                                        <?= lang(ucfirst($controller_name) . '.print_after_sale') ?>
+                                    </label>
+                                </div>
                             </div>
 
                             <?php if (!empty($customer_email)) { ?>
-                                <div class="col-xs-6">
-                                    <label for="email_receipt" class="control-label checkbox">
-                                        <?= form_checkbox(['name' => 'email_receipt', 'id' => 'email_receipt', 'value' => 1, 'checked' => $email_receipt]) ?>
-                                        <?= lang(ucfirst($controller_name) . '.email_receipt') ?>
-                                    </label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <label for="email_receipt" class="form-check-label">
+                                            <?= form_checkbox(['name' => 'email_receipt', 'id' => 'email_receipt', 'value' => 1, 'checked' => $email_receipt, 'class' => 'form-check-input']) ?>
+                                            <?= lang(ucfirst($controller_name) . '.email_receipt') ?>
+                                        </label>
+                                    </div>
                                 </div>
                             <?php } ?>
                             <?php if ($mode == 'sale_work_order') { ?>
-                                <div class="col-xs-6">
-                                    <label for="price_work_orders" class="control-label checkbox">
-                                        <?= form_checkbox(['name' => 'price_work_orders', 'id' => 'price_work_orders', 'value' => 1, 'checked' => $price_work_orders]) ?>
-                                        <?= lang(ucfirst($controller_name) . '.include_prices') ?>
-                                    </label>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <label for="price_work_orders" class="form-check-label">
+                                            <?= form_checkbox(['name' => 'price_work_orders', 'id' => 'price_work_orders', 'value' => 1, 'checked' => $price_work_orders, 'class' => 'form-check-input']) ?>
+                                            <?= lang(ucfirst($controller_name) . '.include_prices') ?>
+                                        </label>
+                                    </div>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
                     <?php if (($mode == 'sale_invoice') && $config['invoice_enable']) { ?>
-                        <div class="row">
-                            <div class="form-group form-group-sm">
-                                <div class="col-xs-6">
-                                    <label for="sales_invoice_number" class="control-label checkbox">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <label for="sales_invoice_number" class="form-check-label">
                                         <?= lang(ucfirst($controller_name) . '.invoice_enable') ?>
                                     </label>
                                 </div>
+                            </div>
 
-                                <div class="col-xs-6">
-                                    <div class="input-group input-group-sm">
-                                        <span class="input-group-text input-sm">#</span>
-                                        <?= form_input(['name' => 'sales_invoice_number', 'id' => 'sales_invoice_number', 'class' => 'form-control input-sm', 'value' => $invoice_number]) ?>
-                                    </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text input-sm">#</span>
+                                    <?= form_input(['name' => 'sales_invoice_number', 'id' => 'sales_invoice_number', 'class' => 'form-control input-sm', 'value' => $invoice_number]) ?>
                                 </div>
                             </div>
                         </div>

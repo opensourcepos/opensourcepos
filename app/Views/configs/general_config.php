@@ -172,7 +172,7 @@
     </div>
 
     <label for="giftcard_number" class="form-label"><?= lang('Config.giftcard_number'); ?></label>
-    <div class="form-group form-group-sm mb-3">
+    <div class="row mb-3 mb-3">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="giftcard_number" id="giftcard_series" value="series" <?= $config['giftcard_number'] == 'series' ? 'checked' : '' ?>>
             <label class="form-check-label" for="giftcard_series"><?= lang('Config.giftcard_series') ?></label>

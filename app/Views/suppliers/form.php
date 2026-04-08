@@ -9,12 +9,12 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'supplier_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'supplier_form', 'class' => '']) ?>
     <fieldset id="supplier_basic_info">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.company_name'), 'company_name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Suppliers.company_name'), 'company_name', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'company_name',
                     'id'    => 'company_name_input',
@@ -24,16 +24,16 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-6">
+        <div class="row mb-3">
+            <?= form_label(lang('Suppliers.category'), 'category', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-6">
                 <?= form_dropdown('category', $categories, $person_info->category, ['class' => 'form-control', 'id' => 'category']) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.agency_name'), 'agency_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Suppliers.agency_name'), 'agency_name', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'agency_name',
                     'id'    => 'agency_name_input',
@@ -45,9 +45,9 @@
 
         <?= view('people/form_basic_info') ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Suppliers.account_number'), 'account_number', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'account_number',
                     'id'    => 'account_number',
@@ -57,9 +57,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Suppliers.tax_id'), 'tax_id', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'tax_id',
                     'id'    => 'tax_id',
