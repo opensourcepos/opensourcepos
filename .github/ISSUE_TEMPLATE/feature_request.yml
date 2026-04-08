@@ -15,11 +15,6 @@ body:
         We appreciate you taking the time to help improve OpenSourcePOS.
         
         > 📋 **Before submitting:** Please search [existing feature requests](https://github.com/opensourcepos/opensourcepos/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) to ensure your idea hasn't already been suggested.
-        
-        ---
-        
-        > 📝 **Note:** The version list is automatically updated when a new release is created.
-        > See [`.github/workflows/release.yml`](../.github/workflows/release.yml) for details.
 
   # ─────────────────────────────────────────────────────────────────────────────
   # FEATURE DETAILS

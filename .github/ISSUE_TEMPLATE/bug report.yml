@@ -18,11 +18,6 @@ body:
         > ⚠️ **Important:** Submit a separate bug report for each problem you encounter.
         > 
         > 🚫 Do not include personal identifying information such as email addresses or encryption keys.
-        
-        ---
-        
-        > 📝 **Note:** The version list is automatically updated when a new release is created.
-        > See [`.github/workflows/release.yml`](../.github/workflows/release.yml) for details.
 
   # ─────────────────────────────────────────────────────────────────────────────
   # PROBLEM DESCRIPTION
