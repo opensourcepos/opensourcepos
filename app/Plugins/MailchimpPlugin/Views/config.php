@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array $mailchimp
+ * @var array $settings
  * @var string $controller_name
  */
 ?>
@@ -24,7 +24,7 @@
                         'name'  => 'mailchimp_api_key',
                         'id'    => 'mailchimp_api_key',
                         'class' => 'form-control input-sm',
-                        'value' => $mailchimp['api_key']
+                        'value' => esc($settings['api_key'] ?? '')
                     ]) ?>
                 </div>
             </div>
@@ -46,8 +46,8 @@
                         </span>
                     <?= form_dropdown(
                         'mailchimp_list_id',
-                        $mailchimp['lists'],
-                        $mailchimp['list_id'],
+                        esc($settings['lists'] ?? ''),
+                        esc($settings['list_id'] ?? ''),
                         'id="mailchimp_list_id" class="form-control input-sm"'
                     ) ?>
                 </div>

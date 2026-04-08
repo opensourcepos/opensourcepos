@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
-use App\Libraries\Mailchimp_lib;
 use App\Libraries\Receiving_lib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
@@ -287,7 +286,6 @@ class Config extends Secure_Controller
         return $this->response->setJSON(['success' => $success, 'message' => $message]);
     }
 
-
     /**
      * @return array
      */
@@ -534,45 +532,6 @@ class Config extends Secure_Controller
         $success = $this->appconfig->batch_save($batch_save_data);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
-    }
-
-    /**
-     * This function fetches all the available lists from Mailchimp for the given API key
-     */
-    private function _mailchimp(string $api_key = ''): array    // TODO: Hungarian notation
-    {
-        $mailchimp_lib = new Mailchimp_lib(['api_key' => $api_key]);
-
-        $result = [];
-
-        $lists = $mailchimp_lib->getLists();
-        if ($lists !== false) {
-            if (is_array($lists) && !empty($lists['lists']) && is_array($lists['lists'])) {
-                foreach ($lists['lists'] as $list) {
-                    $result[$list['id']] = $list['name'] . ' [' . $list['stats']['member_count'] . ']';
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/integrations_config.php
-     *
-     * @return ResponseInterface
-     * @noinspection PhpUnused
-     */
-    public function postCheckMailchimpApiKey(): ResponseInterface
-    {
-        $lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
-        $success = count($lists) > 0;
-
-        return $this->response->setJSON([
-            'success'         => $success,
-            'message'         => lang('Config.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
-            'mailchimp_lists' => $lists
-        ]);
     }
 
     /**
