@@ -2,6 +2,11 @@
 
 return [
     "gcaptcha"                      => "",
+    "go"                            => "Start",
+    "invalid_gcaptcha"              => "",
+    "invalid_installation"          => "",
+    "invalid_username_and_password" => "Ungültiger Benutzername/Passwort",
+    "login"                         => "Login",
     "logout"                        => "Abmelden",
     "migration_needed"              => "Eine Datenbank-Migration auf {0} wird nach der Anmeldung gestartet.",
     "migration_required"            => "Datenbank-Migration erforderlich",
