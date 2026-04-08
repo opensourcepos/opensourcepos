@@ -190,6 +190,22 @@ gulp.task('prod-js', function() {
 });
 
 
+// Inject jQuery into login.php (debug mode) - reuse the jQuery file already created by debug-js
+gulp.task('debug-login-js', function() {
+    // Match only core jQuery (jquery-HASH.js), exclude jquery plugins (jquery-HASH.form.js, etc) and jquery-ui (jquery-ui-HASH.js)
+    // Pattern: jquery-[hash].js where hash is alphanumeric - core jQuery only
+    var loginDebugJs = gulp.src(['./public/resources/js/jquery-*.js', '!./public/resources/js/jquery-*.form.js', '!./public/resources/js/jquery-*.validate.js', '!./public/resources/js/jquery-ui-*.js']);
+    return gulp.src('./app/Views/login.php').pipe(inject(loginDebugJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:debug:js -->'})).pipe(gulp.dest('./app/Views'));
+});
+
+// Inject jQuery into login.php (production mode) - reuse the jQuery file already created by prod-js
+gulp.task('prod-login-js', function() {
+    // jQuery prod file is already in resources/jquery-*.min.js from prod-js task
+    var loginProdJs = gulp.src('./public/resources/jquery-*.min.js');
+    return gulp.src('./app/Views/login.php').pipe(inject(loginProdJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:prod:js -->'})).pipe(gulp.dest('./app/Views'));
+});
+
+
 
 gulp.task('debug-css', function() {
     var debugcss = gulp.src(['./node_modules/jquery-ui-dist/jquery-ui.css',
@@ -289,6 +305,8 @@ gulp.task('default',
         'copy-bootstrap',
         'debug-js',
         'prod-js',
+        'debug-login-js',
+        'prod-login-js',
         'debug-css',
         'prod-css',
         'copy-fonts',
