@@ -153,8 +153,19 @@
             <span><?= lang('Common.software_title') ?></span>
         </div>
     </footer>
-    
-    <script src="resources/jquery.min.js"></script>
+
+    <?php
+    use Config\Services;
+    $request = Services::request();
+    ?>
+
+    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+        <!-- inject:login:debug:js -->
+        <!-- endinject -->
+    <?php else : ?>
+        <!-- inject:login:prod:js -->
+        <!-- endinject -->
+    <?php endif; ?>
     <script>
         const APP_STATE = {
             isNewInstall: <?= $is_new_install ? 'true' : 'false' ?>,
