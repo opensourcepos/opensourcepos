@@ -38,11 +38,11 @@ class PluginConfig extends Model
     public function setValue(string $key, string $value): bool
     {
         $builder = $this->db->table('plugin_config');
-        
+
         if ($this->exists($key)) {
             return $builder->update(['value' => $value], ['key' => $key]);
         }
-        
+
         return $builder->insert(['key' => $key, 'value' => $value]);
     }
 
@@ -51,16 +51,16 @@ class PluginConfig extends Model
         $builder = $this->db->table('plugin_config');
         $builder->like('key', $pluginId . '_', 'after');
         $query = $builder->get();
-        
+
         $settings = [];
         $prefix = $pluginId . '_';
         foreach ($query->getResult() as $row) {
-            $key = str_starts_with($row->key, $prefix) 
-                ? substr($row->key, strlen($prefix)) 
+            $key = str_starts_with($row->key, $prefix)
+                ? substr($row->key, strlen($prefix))
                 : $row->key;
             $settings[$key] = $row->value;
         }
-        
+
         return $settings;
     }
 
@@ -96,12 +96,12 @@ class PluginConfig extends Model
     {
         $builder = $this->db->table('plugin_config');
         $query = $builder->get();
-        
+
         $configs = [];
         foreach ($query->getResult() as $row) {
             $configs[$row->key] = $row->value;
         }
-        
+
         return $configs;
     }
 }

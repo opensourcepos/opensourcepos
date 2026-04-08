@@ -103,25 +103,25 @@ Plugins can inject UI elements into core views using the event-based view hook s
 
 ### How It Works
 
-1. **Core views define hook points** using the `plugin_content()` helper
+1. **Core views define hook points** using the `pluginContent()` helper
 2. **Plugins register listeners** for these view hooks in `registerEvents()`
 3. **Content is rendered** only when the plugin is enabled
 
 ### Step 1: Adding Hook Points in Core Views
 
-In your core view files, use the `plugin_content()` helper to define injection points:
+In your core view files, use the `pluginContent()` helper to define injection points:
 
 ```php
 // In app/Views/sales/receipt.php
 <div class="receipt-actions">
     <!-- Existing buttons -->
-    <?= plugin_content('receipt_actions', ['sale' => $sale]) ?>
+    <?= pluginContent('receipt_actions', ['sale' => $sale]) ?>
 </div>
 
 // In app/Views/customers/form.php
 <ul class="nav nav-tabs">
     <!-- Existing tabs -->
-    <?= plugin_content('customer_tabs', ['customer' => $customer]) ?>
+    <?= pluginContent('customer_tabs', ['customer' => $customer]) ?>
 </ul>
 ```
 
@@ -167,10 +167,10 @@ The `plugin_helper.php` provides two functions:
 
 ```php
 // Render plugin content for a hook point
-plugin_content(string $section, array $data = []): string
+pluginContent(string $section, array $data = []): string
 
 // Check if any plugin has registered for a hook (for conditional rendering)
-plugin_content_exists(string $section): bool
+pluginContentExists(string $section): bool
 ```
 
 ### Standard Hook Points
