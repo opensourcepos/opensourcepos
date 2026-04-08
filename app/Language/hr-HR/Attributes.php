@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "",
     "confirm_restore"                  => "",
     "definition_cannot_be_deleted"     => "",
+    "definition_invalid_group" => "",
     "definition_error_adding_updating" => "",
     "definition_flags"                 => "",
     "definition_group"                 => "",

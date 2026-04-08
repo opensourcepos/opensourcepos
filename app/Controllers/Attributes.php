@@ -106,12 +106,24 @@ class Attributes extends Secure_Controller
             $definition_flags |= $flag;
         }
 
+        // Validate definition_group (definition_fk) foreign key
+        $definition_group_input = $this->request->getPost('definition_group');
+        $definition_fk = $this->validateDefinitionGroup($definition_group_input);
+
+        if ($definition_fk === false) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Attributes.definition_invalid_group'),
+                'id'      => NEW_ENTRY
+            ]);
+        }
+
         // Save definition data
         $definition_data = [
             'definition_name'  => $this->request->getPost('definition_name'),
             'definition_unit'  => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : null,
             'definition_flags' => $definition_flags,
-            'definition_fk'    => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : null
+            'definition_fk'    => $definition_fk
         ];
 
         if ($this->request->getPost('definition_type') != null) {
@@ -148,6 +160,32 @@ class Attributes extends Secure_Controller
                 'id'      => NEW_ENTRY
             ]);
         }
+    }
+
+    /**
+     * Validates a definition_group foreign key.
+     * Returns the validated integer ID, null if empty, or false if invalid.
+     *
+     * @param mixed $definition_group_input
+     * @return int|null|false
+     */
+    private function validateDefinitionGroup(mixed $definition_group_input): int|null|false
+    {
+        if ($definition_group_input === '' || $definition_group_input === null) {
+            return null;
+        }
+
+        $definition_group_id = (int) $definition_group_input;
+
+        // Must be a positive integer, exist in attribute_definitions, and be of type GROUP
+        if ($definition_group_id <= 0
+            || !$this->attribute->exists($definition_group_id)
+            || $this->attribute->getAttributeInfo($definition_group_id)->definition_type !== GROUP
+        ) {
+            return false;
+        }
+
+        return $definition_group_id;
     }
 
     /**

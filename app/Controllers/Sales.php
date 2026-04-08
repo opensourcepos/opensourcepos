@@ -75,15 +75,15 @@ class Sales extends Secure_Controller
     /**
      * Load the sale edit modal. Used in app/Views/sales/register.php.
      *
-     * @return string
+     * @return ResponseInterface|string
      * @noinspection PhpUnused
      */
-    public function getManage(): string
+    public function getManage(): ResponseInterface|string
     {
-        $person_id = $this->session->get('person_id');
+        $personId = $this->session->get('person_id');
 
-        if (!$this->employee->has_grant('reports_sales', $person_id)) {
-            redirect('no_access/sales/reports_sales');
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return redirect()->to('no_access/sales/reports_sales');
         } else {
             $data['table_headers'] = get_sales_manage_table_headers();
 
@@ -92,18 +92,31 @@ class Sales extends Secure_Controller
                 'only_due'          => lang('Sales.due_filter'),
                 'only_check'        => lang('Sales.check_filter'),
                 'only_creditcard'   => lang('Sales.credit_filter'),
+                'only_debit'        => lang('Sales.debit'),
                 'only_invoices'     => lang('Sales.invoice_filter'),
                 'selected_customer' => lang('Sales.selected_customer')
             ];
 
             if ($this->sale_lib->get_customer() != -1) {
-                $selected_filters = ['selected_customer'];
+                $selectedFilters = ['selected_customer'];
                 $data['customer_selected'] = true;
             } else {
                 $data['customer_selected'] = false;
-                $selected_filters = [];
+                $selectedFilters = [];
             }
-            $data['selected_filters'] = $selected_filters;
+
+            // Restore filters from URL query string
+            $filters = restoreTableFilters($this->request);
+            if (!empty($filters['selected_filters'])) {
+                $selectedFilters = array_merge($selectedFilters, $filters['selected_filters']);
+            }
+            if (isset($filters['start_date'])) {
+                $data['start_date'] = $filters['start_date'];
+            }
+            if (isset($filters['end_date'])) {
+                $data['end_date'] = $filters['end_date'];
+            }
+            $data['selected_filters'] = $selectedFilters;
 
             return view('sales/manage', $data);
         }
@@ -142,6 +155,7 @@ class Sales extends Secure_Controller
             'only_check'        => false,
             'selected_customer' => false,
             'only_creditcard'   => false,
+            'only_debit'        => false,
             'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
             'is_valid_receipt'  => $this->sale->is_valid_receipt($search)
         ];
@@ -568,12 +582,21 @@ class Sales extends Secure_Controller
         $data = [];
 
         $rules = [
-            'price'    => 'trim|required|decimal_locale',
+            'price'    => 'trim|required|decimal_locale|nonNegativeDecimal',
             'quantity' => 'trim|required|decimal_locale',
-            'discount' => 'trim|permit_empty|decimal_locale',
+            'discount' => 'trim|permit_empty|decimal_locale|nonNegativeDecimal',
         ];
 
-        if ($this->validate($rules)) {
+        $messages = [
+            'price' => [
+                'nonNegativeDecimal' => lang('Sales.negative_price_invalid'),
+            ],
+            'discount' => [
+                'nonNegativeDecimal' => lang('Sales.negative_discount_invalid'),
+            ],
+        ];
+
+        if ($this->validate($rules, $messages)) {
             $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $price = parse_decimals($this->request->getPost('price'));
@@ -582,12 +605,29 @@ class Sales extends Secure_Controller
             $discount = $discount_type
                 ? parse_quantity($this->request->getPost('discount'))
                 : parse_decimals($this->request->getPost('discount'));
+            $discount = $discount ?: 0;
+
+            // Return mode legitimately uses negative quantities for refunds
+            if ($this->sale_lib->get_mode() != 'return' && $quantity < 0) {
+                $data['error'] = lang('Sales.negative_quantity_invalid');
+                return $this->_reload($data);
+            }
+
+            // Business logic: discount bounds depend on discount_type and item values
+            if ($discount_type == PERCENT && $discount > 100) {
+                $data['error'] = lang('Sales.discount_percent_exceeds_100');
+                return $this->_reload($data);
+            }
+
+            if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, 2), 2) > 0) {
+                $data['error'] = lang('Sales.discount_exceeds_item_total');
+                return $this->_reload($data);
+            }
 
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
             $discounted_total = $this->request->getPost('discounted_total') != ''
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
                 : null;
-
 
             $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 
@@ -595,7 +635,8 @@ class Sales extends Secure_Controller
 
             $data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
         } else {
-            $data['error'] = lang('Sales.error_editing_item');
+            $errors = $this->validator->getErrors();
+            $data['error'] = $errors ? reset($errors) : lang('Sales.error_editing_item');
         }
 
         return $this->_reload($data);
@@ -709,6 +750,12 @@ class Sales extends Secure_Controller
         $data['cash_amount_due'] = $totals['cash_amount_due'];
         $data['non_cash_amount_due'] = $totals['amount_due'];
 
+        // Prevent negative total sales (fraud/theft vector) - returns can have negative totals for legitimate refunds
+        if ($this->sale_lib->get_mode() != 'return' && bccomp($totals['total'], '0') < 0) {
+            $data['error'] = lang('Sales.negative_total_invalid');
+            return $this->_reload($data);
+        }
+
         if ($data['cash_mode']) {    // TODO: Convert this to ternary notation
             $data['amount_due'] = $totals['cash_amount_due'];
         } else {
@@ -772,8 +819,8 @@ class Sales extends Secure_Controller
                     $data['error_message'] = lang('Sales.transaction_failed');
                 } else {
                     $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-                    return view('sales/' . $invoice_view, $data);
                     $this->sale_lib->clear_all();
+                    return view('sales/' . $invoice_view, $data);
                 }
             }
         } elseif ($this->sale_lib->is_work_order_mode()) {
@@ -806,9 +853,8 @@ class Sales extends Secure_Controller
 
                 $data['barcode'] = null;
 
-                return view('sales/work_order', $data);
-                $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
+                return view('sales/work_order', $data);
             }
         } elseif ($this->sale_lib->is_quote_mode()) {
             $data['sales_quote'] = lang('Sales.quote');
@@ -834,9 +880,8 @@ class Sales extends Secure_Controller
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
                 $data['barcode'] = null;
 
-                return view('sales/quote', $data);
-                $this->sale_lib->clear_mode();
                 $this->sale_lib->clear_all();
+                return view('sales/quote', $data);
             }
         } else {
             // Save the data to the sales table
@@ -857,8 +902,8 @@ class Sales extends Secure_Controller
                 $data['error_message'] = lang('Sales.transaction_failed');
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-                return view('sales/receipt', $data);
                 $this->sale_lib->clear_all();
+                return view('sales/receipt', $data);
             }
         }
     }

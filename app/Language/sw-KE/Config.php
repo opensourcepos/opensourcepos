@@ -282,6 +282,7 @@ return [
     "right"                                     => "Kulia",
     "sales_invoice_format"                      => "Muundo wa Ankara ya Mauzo",
     "sales_quote_format"                        => "Muundo wa Nukuu ya Mauzo",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "Mpangilio umehifadhiwa kwa mafanikio.",
     "saved_unsuccessfully"                      => "Mpangilio umeshindwa kuhifadhiwa.",
     "security_issue"                            => "Onyo la Udhaifu wa Usalama",

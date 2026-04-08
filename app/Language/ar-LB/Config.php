@@ -282,6 +282,7 @@ return [
     "right"                                     => "يمين",
     "sales_invoice_format"                      => "شكل فاتورة البيع",
     "sales_quote_format"                        => "شكل فاتورة عرض الاسعار",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "تم حفظ التهيئة بنجاح.",
     "saved_unsuccessfully"                      => "لم يتم حفظ التهيئة بنجاح.",
     "security_issue"                            => "تحذير من ثغرة أمنية",

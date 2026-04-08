@@ -55,13 +55,21 @@ class App extends BaseConfig
     public string $baseURL;    // Defined in the constructor
 
     /**
-     * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
-     * If you want to accept multiple Hostnames, set this.
-     *
-     * E.g.,
-     * When your site URL ($baseURL) is 'http://example.com/', and your site
-     * also accepts 'http://media.example.com/' and 'http://accounts.example.com/':
-     *     ['media.example.com', 'accounts.example.com']
+     * Allowed Hostnames for the Site URL.
+     * 
+     * Security: This is used to validate the HTTP Host header to prevent
+     * Host Header Injection attacks. If the Host header doesn't match
+     * an entry in this list, the request will use the first allowed hostname.
+     * 
+     * IMPORTANT: This MUST be configured for production deployments.
+     * If empty, the application will fall back to 'localhost'.
+     * 
+     * Configure via .env file:
+     *   app.allowedHostnames.0 = 'example.com'
+     *   app.allowedHostnames.1 = 'www.example.com'
+     * 
+     * For local development:
+     *   app.allowedHostnames.0 = 'localhost'
      *
      * @var list<string>
      */
@@ -284,8 +292,44 @@ class App extends BaseConfig
     {
         parent::__construct();
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
+        
+        $host = $this->getValidHost();
         $this->baseURL = $this->https_on ? 'https' : 'http';
-        $this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
+        $this->baseURL .= '://' . $host . '/';
         $this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+    }
+
+    /**
+     * Validates and returns a trusted hostname.
+     * 
+     * Security: Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
+     * by validating the HTTP_HOST against a whitelist of allowed hostnames.
+     * 
+     * @return string A validated hostname
+     */
+    private function getValidHost(): string
+    {
+        $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+        if (empty($this->allowedHostnames)) {
+            log_message('warning', 
+                'Security: allowedHostnames is not configured. ' .
+                'Host header injection protection is disabled. ' .
+                'Please set app.allowedHostnames in your .env file. ' .
+                'Received Host: ' . $httpHost
+            );
+            return 'localhost';
+        }
+
+        if (in_array($httpHost, $this->allowedHostnames, true)) {
+            return $httpHost;
+        }
+
+        log_message('warning', 
+            'Security: Rejected HTTP_HOST "' . $httpHost . '" - not in allowedHostnames whitelist. ' .
+            'Using fallback: ' . $this->allowedHostnames[0]
+        );
+
+        return $this->allowedHostnames[0];
     }
 }

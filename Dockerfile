@@ -1,28 +1,22 @@
 FROM php:8.2-apache AS ospos
 LABEL maintainer="jekkos"
 
-RUN apt update && apt-get install -y libicu-dev libgd-dev
-RUN a2enmod rewrite
-RUN docker-php-ext-install mysqli bcmath intl gd
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libicu-dev \
+    libgd-dev \
+    && docker-php-ext-install mysqli bcmath intl gd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && a2enmod rewrite
+
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /app
-COPY . /app
-RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
-RUN chmod -R 770 /app/writable/uploads /app/writable/logs /app/writable/cache && chown -R www-data:www-data /app
-
-FROM ospos AS ospos_test
-
-COPY --from=composer /usr/bin/composer /usr/bin/composer
-
-RUN apt-get install -y libzip-dev wget git
-RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /bin/wait-for-it.sh && chmod +x /bin/wait-for-it.sh
-RUN docker-php-ext-install zip
-RUN composer install -d/app
-#RUN sed -i 's/backupGlobals="true"/backupGlobals="false"/g' /app/tests/phpunit.xml
-WORKDIR /app/tests
-
-CMD ["/app/vendor/phpunit/phpunit/phpunit", "/app/test/helpers"]
+COPY --chown=www-data:www-data . /app
+RUN chmod 770 /app/writable/uploads /app/writable/logs /app/writable/cache \
+    && ln -s /app/*[^public] /var/www \
+    && rm -rf /var/www/html \
+    && ln -nsf /app/public /var/www/html
 
 FROM ospos AS ospos_dev
 

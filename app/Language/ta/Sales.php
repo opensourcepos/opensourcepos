@@ -73,6 +73,12 @@ return [
     "employee"                         => "ஊழியர்",
     "entry"                            => "உள்ளீடு",
     "error_editing_item"               => "பொருளை திருத்துவதில் பிழை",
+    "negative_price_invalid"           => "",
+    "negative_quantity_invalid"        => "",
+    "negative_discount_invalid"        => "",
+    "discount_percent_exceeds_100"     => "",
+    "discount_exceeds_item_total"      => "",
+    "negative_total_invalid"           => "",
     "find_or_scan_item"                => "பொருளைக் தேடு அல்லது ஸ்கேன் செய்யுங்கள்",
     "find_or_scan_item_or_receipt"     => "தேடு அல்லது பொருளை வருடு அல்லது ரசீது",
     "giftcard"                         => "பரிசு அட்டை",
@@ -222,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "Work Order Number must be unique.",
     "work_order_sent"                  => "Work Order sent to",
     "work_order_unsent"                => "Work Order failed to be sent to",
+    "sale_not_found"                   => "விற்பனை காணப்படவில்லை",
 ];

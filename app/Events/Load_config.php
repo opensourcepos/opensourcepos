@@ -4,6 +4,8 @@ namespace App\Events;
 
 use App\Libraries\MY_Migration;
 use App\Models\Appconfig;
+use CodeIgniter\Session\Handlers\DatabaseHandler;
+use CodeIgniter\Session\Handlers\FileHandler;
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
 use Config\Services;
@@ -28,7 +30,8 @@ class Load_config
         $migration_config = config('Migrations');
         $migration = new MY_Migration($migration_config);
 
-        $this->session = session();
+        // Use file-based session until database is migrated
+        $this->session = $this->createSession($migration->is_latest());
 
         // Database Configuration
         $config = config(OSPOS::class);
@@ -52,5 +55,29 @@ class Load_config
         date_default_timezone_set($config->settings['timezone'] ?? ini_get('date.timezone'));
 
         bcscale(max(2, totals_decimals() + tax_decimals()));
+    }
+
+    /**
+     * Creates session with appropriate handler.
+     * Uses file-based session until database is migrated, then switches to database session.
+     * 
+     * This prevents a circular dependency where login requires session, but the sessions
+     * database table doesn't exist yet because migrations run after login.
+     */
+    private function createSession(bool $isDbMigrated): Session
+    {
+        $sessionConfig = config('Session');
+        
+        // If database is not migrated and we're configured to use database sessions,
+        // temporarily fall back to file-based sessions to allow migrations to complete.
+        // Once migrations run, the user must re-authenticate (session is destroyed in
+        // load_config() when migrations are pending).
+        if (!$isDbMigrated && $sessionConfig->driver === DatabaseHandler::class) {
+            $sessionConfig = clone $sessionConfig;
+            $sessionConfig->driver = FileHandler::class;
+            $sessionConfig->savePath = WRITEPATH . 'session';
+        }
+        
+        return Services::session($sessionConfig);
     }
 }

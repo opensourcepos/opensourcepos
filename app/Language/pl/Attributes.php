@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Czy jesteś pewny, że chcesz usunąć wybrane atrybuty?",
     "confirm_restore"                  => "Czy jesteś pewien, że chcesz przywrócić zaznaczone atrybuty?",
     "definition_cannot_be_deleted"     => "Nie można usunąć wybranych atrybutów",
+    "definition_invalid_group" => "Wybrana grupa nie istnieje lub jest nieprawidłowa.",
     "definition_error_adding_updating" => "Atrybut 51 nie może zostać dodany lub zaktualizowany. Sprawdź dziennik błędów.",
     "definition_flags"                 => "Widoczność atrybutu",
     "definition_group"                 => "Grupa",

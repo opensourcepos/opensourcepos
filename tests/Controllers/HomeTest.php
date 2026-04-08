@@ -232,20 +232,21 @@ class HomeTest extends CIUnitTestCase
     /**
      * Create a non-admin employee for testing
      * 
+     * @param array $overrides Optional overrides for username, email, password, etc.
      * @return int The person_id of the created employee
      */
-    protected function createNonAdminEmployee(): int
+    protected function createNonAdminEmployee(array $overrides = []): int
     {
         $personData = [
-            'first_name'   => 'NonAdmin',
-            'last_name'    => 'User',
-            'email'        => 'nonadmin@test.com',
-            'phone_number' => '555-1234'
+            'first_name'   => $overrides['first_name'] ?? 'NonAdmin',
+            'last_name'    => $overrides['last_name'] ?? 'User',
+            'email'        => $overrides['email'] ?? 'nonadmin@test.com',
+            'phone_number' => $overrides['phone_number'] ?? '555-1234'
         ];
         
         $employeeData = [
-            'username'      => 'nonadmin',
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
+            'username'      => $overrides['username'] ?? 'nonadmin',
+            'password'      => password_hash($overrides['password'] ?? 'password123', PASSWORD_DEFAULT),
             'hash_version'  => 2,
             'language_code' => 'en',
             'language'      => 'english'
@@ -291,8 +292,7 @@ class HomeTest extends CIUnitTestCase
         
         $response = $this->get('/home/changePassword/1');
         
-        $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $response->assertStatus(403);
     }
     
     /**
@@ -422,5 +422,61 @@ class HomeTest extends CIUnitTestCase
         
         $response->assertStatus(200);
         $response->assertSee('nonadmin');
+    }
+
+    /**
+     * Test non-admin cannot view another non-admin's password form
+     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * 
+     * @return void
+     */
+    public function testNonAdminCannotViewOtherNonAdminPasswordForm(): void
+    {
+        $nonAdminId1 = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId1);
+        
+        $otherUserId = $this->createNonAdminEmployee([
+            'username' => 'otheruser',
+            'email' => 'other@test.com',
+            'password' => 'password456'
+        ]);
+        
+        $response = $this->get('/home/changePassword/' . $otherUserId);
+        
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Test non-admin cannot change another non-admin's password
+     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * 
+     * @return void
+     */
+    public function testNonAdminCannotChangeOtherNonAdminPassword(): void
+    {
+        $nonAdminId1 = $this->createNonAdminEmployee();
+        $this->loginAs($nonAdminId1);
+        
+        $victimId = $this->createNonAdminEmployee([
+            'username' => 'victimuser',
+            'email' => 'victim@test.com',
+            'password' => 'victimpass123'
+        ]);
+        
+        $response = $this->post('/home/save/' . $victimId, [
+            'username' => 'victimuser',
+            'current_password' => 'victimpass123',
+            'password' => 'hacked123456'
+        ]);
+        
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        
+        // Verify victim's password was NOT changed
+        $employeeModel = model(Employee::class);
+        $victim = $employeeModel->get_info($victimId);
+        $this->assertTrue(password_verify('victimpass123', $victim->password), 
+            'Non-admin should not be able to change another non-admin password');
     }
 }

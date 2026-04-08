@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Er du sikker på, at du vil slette de valgte egenskaber?",
     "confirm_restore"                  => "Er du sikker på, at du vil gendanne de valgte egenskaber?",
     "definition_cannot_be_deleted"     => "De valgte egenskaber kunne ikke slettes",
+    "definition_invalid_group" => "Den valgte gruppe findes ikke eller er ugyldig.",
     "definition_error_adding_updating" => "Egenskab {0} Kunne ikke tilføjes eller opdateres. Tjek venligst fejlprotokollen.",
     "definition_flags"                 => "Egenskabens Synlighed",
     "definition_group"                 => "Gruppe",

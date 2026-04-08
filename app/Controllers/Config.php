@@ -11,6 +11,7 @@ use App\Models\Appconfig;
 use App\Models\Attribute;
 use App\Models\Customer_rewards;
 use App\Models\Dinner_table;
+use App\Models\Item;
 use App\Models\Module;
 use App\Models\Enums\Rounding_mode;
 use App\Models\Stock_location;
@@ -385,9 +386,9 @@ class Config extends Secure_Controller
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),
-            'suggestions_first_column'          => $this->request->getPost('suggestions_first_column'),
-            'suggestions_second_column'         => $this->request->getPost('suggestions_second_column'),
-            'suggestions_third_column'          => $this->request->getPost('suggestions_third_column'),
+            'suggestions_first_column'          => $this->validateSuggestionsColumn($this->request->getPost('suggestions_first_column'), 'first'),
+            'suggestions_second_column'         => $this->validateSuggestionsColumn($this->request->getPost('suggestions_second_column'), 'other'),
+            'suggestions_third_column'          => $this->validateSuggestionsColumn($this->request->getPost('suggestions_third_column'), 'other'),
             'giftcard_number'                   => $this->request->getPost('giftcard_number'),
             'derive_sale_quantity'              => $this->request->getPost('derive_sale_quantity') != null,
             'multi_pack_enabled'                => $this->request->getPost('multi_pack_enabled') != null,
@@ -503,9 +504,24 @@ class Config extends Secure_Controller
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
+        $protocol = $this->request->getPost('protocol');
+        $mailpath = $this->request->getPost('mailpath');
+
+        // Validate mailpath: required for sendmail, optional for others but must be safe if provided
+        $isMailpathRequired = ($protocol === 'sendmail');
+        $isMailpathProvided = !empty($mailpath);
+        $isMailpathValid = $isMailpathProvided && preg_match('/^[a-zA-Z0-9_\-\/.]+$/', $mailpath);
+
+        if (($isMailpathRequired && !$isMailpathProvided) || ($isMailpathProvided && !$isMailpathValid)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Config.mailpath_invalid')
+            ]);
+        }
+
         $batch_save_data = [
-            'protocol'     => $this->request->getPost('protocol'),
-            'mailpath'     => $this->request->getPost('mailpath'),
+            'protocol'     => $protocol,
+            'mailpath'     => $mailpath,
             'smtp_host'    => $this->request->getPost('smtp_host'),
             'smtp_user'    => $this->request->getPost('smtp_user'),
             'smtp_pass'    => $password,
@@ -975,5 +991,27 @@ class Config extends Secure_Controller
         $success = $this->appconfig->save(['company_logo' => '']);
 
         return $this->response->setJSON(['success' => $success]);
+    }
+
+    /**
+     * Validates suggestions column configuration to prevent SQL injection.
+     *
+     * @param mixed $column The column value from POST
+     * @param string $fieldType Either 'first' or 'other' to determine default fallback
+     * @return string Validated column name
+     */
+    private function validateSuggestionsColumn(mixed $column, string $fieldType): string
+    {
+        if (!is_string($column)) {
+            return $fieldType === 'first' ? 'name' : '';
+        }
+
+        $allowed = $fieldType === 'first' 
+            ? Item::ALLOWED_SUGGESTIONS_COLUMNS 
+            : Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY;
+
+        $fallback = $fieldType === 'first' ? 'name' : '';
+
+        return in_array($column, $allowed, true) ? $column : $fallback;
     }
 }

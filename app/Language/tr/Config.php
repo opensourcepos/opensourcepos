@@ -282,6 +282,7 @@ return [
     "right"                                     => "Sağ",
     "sales_invoice_format"                      => "Satış Fatura Biçimi",
     "sales_quote_format"                        => "Satış Teklif Biçimi",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "Yapılandırma kaydedildi.",
     "saved_unsuccessfully"                      => "Yapılandırma kaydedilemedi.",
     "security_issue"                            => "Güvenlik Arıklığı Uyarısı",

@@ -73,6 +73,12 @@ return [
     "employee"                         => "បុគ្គលិក",
     "entry"                            => "បញ្ចូល",
     "error_editing_item"               => "មានកំហុស ក្នុងការកែប្រែទំនិញ",
+    "negative_price_invalid"           => "",
+    "negative_quantity_invalid"        => "",
+    "negative_discount_invalid"        => "",
+    "discount_percent_exceeds_100"     => "",
+    "discount_exceeds_item_total"      => "",
+    "negative_total_invalid"           => "",
     "find_or_scan_item"                => "ស្វែងរក ឬស្កេនទំនិញ",
     "find_or_scan_item_or_receipt"     => "ស្វែងរក ឬ​ស្កេនទំនិញ ឬ វិក័យបត្រ",
     "giftcard"                         => "កាតអំណោយ",
@@ -222,4 +228,5 @@ return [
     "work_order_number_duplicate"      => "",
     "work_order_sent"                  => "",
     "work_order_unsent"                => "",
+    "sale_not_found"                   => "",
 ];

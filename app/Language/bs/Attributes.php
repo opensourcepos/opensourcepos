@@ -5,6 +5,7 @@ return [
     "confirm_delete"                   => "Da li ste sigurni da želite da izbrišete izabrani atribut?",
     "confirm_restore"                  => "Da li ste sigurni da želite vratiti izabrane atribute?",
     "definition_cannot_be_deleted"     => "Nije moguće izbrisati izabrane atribut",
+    "definition_invalid_group" => "",
     "definition_error_adding_updating" => "Atribut {0} nije moguće dodati ili ažurirati. Molimo provjerite dnevnik grešaka.",
     "definition_flags"                 => "Vidljivost atributa",
     "definition_group"                 => "Grupa",

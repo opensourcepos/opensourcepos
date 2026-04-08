@@ -69,9 +69,6 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
-      - name: Build database.sql
-        run: npm run gulp build-database
-
       - name: Start MariaDB
         run: |
           docker run -d --name mysql \
@@ -79,7 +76,6 @@ jobs:
             -e MYSQL_DATABASE=ospos \
             -e MYSQL_USER=admin \
             -e MYSQL_PASSWORD=pointofsale \
-            -v $PWD/app/Database/database.sql:/docker-entrypoint-initdb.d/database.sql \
             -p 3306:3306 \
             mariadb:10.5
           # Wait for MariaDB to be ready

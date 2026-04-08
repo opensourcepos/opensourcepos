@@ -6,6 +6,9 @@
  * @var array $stock_locations
  * @var int $stock_location
  * @var array $config
+ * @var string|null $start_date
+ * @var string|null $end_date
+ * @var array $selected_filters
  */
 
 use App\Models\Employee;
@@ -22,24 +25,20 @@ use App\Models\Employee;
             );
         });
 
-        // When any filter is clicked and the dropdown window is closed
-        $('#filters').on('hidden.bs.select', function(e) {
-            table_support.refresh();
-        });
-
         // Load the preset daterange picker
         <?= view('partial/daterangepicker') ?>
         // Set the beginning of time as starting date
         $('#daterangepicker').data('daterangepicker').setStartDate("<?= date($config['dateformat'], mktime(0, 0, 0, 01, 01, 2010)) ?>");
         // Update the hidden inputs with the selected dates before submitting the search data
         var start_date = "<?= date('Y-m-d', mktime(0, 0, 0, 01, 01, 2010)) ?>";
-        $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
-            table_support.refresh();
-        });
 
-        $("#stock_location").change(function() {
-            table_support.refresh();
-        });
+        // Override dates from server if provided
+        <?php if (isset($start_date) && $start_date): ?>
+        start_date = "<?= esc($start_date) ?>";
+        <?php endif; ?>
+        <?php if (isset($end_date) && $end_date): ?>
+        end_date = "<?= esc($end_date) ?>";
+        <?php endif; ?>
 
         <?php
         echo view('partial/bootstrap_tables_locale');
@@ -75,6 +74,8 @@ use App\Models\Employee;
     });
 </script>
 
+<?= view('partial/table_filter_persistence', ['additional_params' => ['stock_location']]) ?>
+
 <div id="title_bar" class="btn-toolbar print_hide">
     <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang('Items.import_items_csv') ?>">
         <span class="glyphicon glyphicon-import">&nbsp;</span><?= lang('Common.import_csv') ?>
@@ -97,7 +98,7 @@ use App\Models\Employee;
             <span class="glyphicon glyphicon-barcode">&nbsp;</span><?= lang('Items.generate_barcodes') ?>
         </button>
         <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-        <?= form_multiselect('filters[]', $filters, [''], [
+        <?= form_multiselect('filters[]', $filters, $selected_filters ?? [], [
             'id'                        => 'filters',
             'class'                     => 'selectpicker show-menu-arrow',
             'data-none-selected-text'   => lang('Common.none_selected_text'),
