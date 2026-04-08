@@ -23,9 +23,10 @@ app.allowedHostnames = 'yourdomain.com,www.yourdomain.com'
 
 ```bash
 app.allowedHostnames = 'localhost'
-```
 
 **If you see this error at startup:**
+
+
 
 ```text
 RuntimeException: Security: allowedHostnames is not configured.

@@ -57,9 +57,13 @@ class App extends BaseConfig
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.
+     * If empty in production, the application will fail to start.
+     * In development, it will fall back to 'localhost' with a warning.
+     * Configure via .env file (comma-separated list):
+     *   app.allowedHostnames = 'example.com,www.example.com'
      *
      * E.g.,
-     * When your site URL ($baseURL) is 'http://example.com/', and your site
+     *   app.allowedHostnames = 'localhost'
      * also accepts 'http://media.example.com/' and 'http://accounts.example.com/':
      *     ['media.example.com', 'accounts.example.com']
      *
@@ -283,15 +287,15 @@ class App extends BaseConfig
     public function __construct()
     {
         parent::__construct();
-
-        // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
+        
+        // Support comma-separated .env configuration for allowedHostnames
+        // Workaround for CodeIgniter 4 limitation: arrays cannot be set from .env
         // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
         $envAllowedHostnames = getenv('app.allowedHostnames');
-        if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
-            $this->allowedHostnames = array_values(array_filter(
-                array_map('trim', explode(',', $envAllowedHostnames)),
-                static fn (string $hostname): bool => $hostname !== ''
-            ));
+        if ($envAllowedHostnames !== false && !empty($envAllowedHostnames)) {
+            $this->allowedHostnames = array_map('trim', explode(',', $envAllowedHostnames));
+        }
+        
         }
 
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
@@ -310,33 +314,33 @@ class App extends BaseConfig
      *
      * In production: Fails fast if allowedHostnames is not configured.
      * In development: Allows localhost fallback with an error log.
-     *
+     * 
      * @return string A validated hostname
      * @throws \RuntimeException If allowedHostnames is not configured in production
      */
     private function getValidHost(): string
     {
         $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
-
+        
         // Determine environment
         // CodeIgniter's test bootstrap sets $_SERVER['CI_ENVIRONMENT'] = 'testing'
         // Check $_SERVER first, then $_ENV, then fall back to 'production'
         $environment = $_SERVER['CI_ENVIRONMENT'] ?? $_ENV['CI_ENVIRONMENT'] ?? getenv('CI_ENVIRONMENT') ?: 'production';
 
         if (empty($this->allowedHostnames)) {
-            $errorMessage =
+            $errorMessage = 
                 'Security: allowedHostnames is not configured. ' .
                 'Host header injection protection is disabled. ' .
                 'Set app.allowedHostnames in your .env file. ' .
                 'Example: app.allowedHostnames = "example.com,www.example.com" ' .
                 'Received Host: ' . $httpHost;
-
+            
             // Production: Fail explicitly to prevent silent security vulnerabilities
             // Testing and development: Allow localhost fallback
             if ($environment === 'production') {
                 throw new \RuntimeException($errorMessage);
             }
-
+            
             log_message('error', $errorMessage . ' Using localhost fallback (development only).');
             return 'localhost';
         }
