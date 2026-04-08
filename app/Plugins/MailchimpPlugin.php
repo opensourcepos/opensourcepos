@@ -63,7 +63,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function getConfigView(): ?string
     {
-        return 'Plugins/mailchimp/config';
+        return 'Plugins/MailchimpPlugin/Views/config';
     }
 
     public function getSettings(): array
