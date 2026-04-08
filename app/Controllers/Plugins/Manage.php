@@ -65,7 +65,7 @@ class Manage extends Secure_Controller
     public function getConfig(string $pluginId): ResponseInterface
     {
         $plugin = $this->pluginManager->getPlugin($pluginId);
-        
+
         if (!$plugin) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
         }
@@ -83,13 +83,13 @@ class Manage extends Secure_Controller
     public function postSaveConfig(string $pluginId): ResponseInterface
     {
         $plugin = $this->pluginManager->getPlugin($pluginId);
-        
+
         if (!$plugin) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
         }
 
         $settings = $this->request->getPost();
-        unset($settings['_method'], $settings['csrf_token_name']);
+        unset($settings['_method'], $settings[csrf_token()]);
 
         if ($plugin->saveSettings($settings)) {
             return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.settings_saved')]);
