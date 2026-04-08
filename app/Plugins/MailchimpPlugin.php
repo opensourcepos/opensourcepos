@@ -6,6 +6,7 @@ use App\Libraries\Plugins\BasePlugin;
 use App\Libraries\Mailchimp_lib;
 use CodeIgniter\Events\Events;
 use Config\Services;
+use Exception;
 
 /**
  * Plugin that integrates OSPOS with Mailchimp for customer newsletter subscriptions.
@@ -103,8 +104,10 @@ class MailchimpPlugin extends BasePlugin
         log_message('debug', "Customer saved event received for ID: {$customerData['person_id']}");
 
         try {
-            $this->subscribeCustomer($customerData);
-        } catch (\Exception $e) {
+            if (!$this->subscribeCustomer($customerData)) {
+                throw new Exception("Customer ID {$customerData['person_id']}");
+            }
+        } catch (Exception $e) {
             log_message('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
         }
     }
