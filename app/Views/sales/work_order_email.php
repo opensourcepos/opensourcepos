@@ -55,7 +55,7 @@
                     <pre><?= esc($company_info) ?></pre>
                 </td>
                 <td id="meta">
-                    <table align="right">
+                    <table style="text-align: right;">
                         <tr>
                             <td class="meta-head"><?= lang('Sales.work_order_number') ?> </td>
                             <td><?= esc($work_order_number) ?></td>
@@ -103,7 +103,7 @@
             ?>
 
             <tr>
-                <td colspan="6" align="center"><?= '&nbsp;' ?></td>
+                <td colspan="6" style="text-align: center;"><?= '&nbsp;' ?></td>
             </tr>
 
             <tr>

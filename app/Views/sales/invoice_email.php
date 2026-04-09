@@ -20,171 +20,167 @@
 ?>
 
 <!doctype html>
-
-<head>
-    <meta charset="utf-8">
-    <title><?= lang('Sales.email_receipt') ?></title>
-    <link rel="stylesheet" href="<?= base_url('css/invoice_email.css') ?>">
-</head>
-
-<body>
-    <?php
-    if (isset($error_message)) {
-        echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
-        exit;
-    }
-    ?>
-
-    <div id="page-wrap">
-        <div id="header"><?= lang('Sales.invoice') ?></div>
-        <table id="info">
-            <tr>
-                <td id="logo">
-                    <?php if ($config['company_logo'] != '') { ?>
-                        <img id="image" src="data:<?= esc($mimetype, 'attr') ?>;base64,<?= base64_encode(file_get_contents('uploads/' . esc($config['company_logo']))) ?>" alt="company_logo">
-                    <?php } ?>
-                </td>
-                <td id="customer-title" id="customer">
-                    <?php if (isset($customer)) {
-                        echo nl2br(esc($customer_info));
-                    } ?>
-                </td>
-            </tr>
-            <tr>
-                <td id="company-title" id="company">
-                    <?= esc($config['company']) ?><br>
-                    <?= nl2br(esc($company_info)) ?>
-                </td>
-                <td id="meta">
-                    <table id="meta-content" align="right">
-                        <tr>
-                            <td class="meta-head"><?= lang('Sales.invoice_number') ?></td>
-                            <td><?= esc($invoice_number) ?></td>
-                        </tr>
-                        <tr>
-                            <td class="meta-head"><?= lang('Common.date') ?></td>
-                            <td><?= esc($transaction_date) ?></td>
-                        </tr>
-                        <?php if ($amount_due > 0) { ?>
-                            <tr>
-                                <td class="meta-head"><?= lang('Sales.amount_due') ?></td>
-                                <td class="due"><?= to_currency($total) ?></td>
-                            </tr>
-                        <?php } ?>
-                    </table>
-                </td>
-            </tr>
-        </table>
-
-        <table id="items">
-            <tr>
-                <th><?= lang('Sales.item_number') ?></th>
-                <th><?= lang('Sales.item_name') ?></th>
-                <th><?= lang('Sales.quantity') ?></th>
-                <th><?= lang('Sales.price') ?></th>
-                <th><?= lang('Sales.discount') ?></th>
-                <?php
-                $invoice_columns = 6;
-                if ($discount > 0) {
-                    $invoice_columns = $invoice_columns + 1;
-                ?>
-                    <th><?= lang('Sales.customer_discount') ?></th>
-                <?php } ?>
-                <th><?= lang('Sales.total') ?></th>
-            </tr>
-
-            <?php
-            foreach ($cart as $line => $item) {
-                if ($item['print_option'] == PRINT_YES) {
-            ?>
-                    <tr class="item-row">
-                        <td><?= esc($item['item_number']) ?></td>
-                        <td class="item-name"><?= esc($item['name']) ?></td>
-                        <td><?= to_quantity_decimals($item['quantity']) ?></td>
-                        <td><?= to_currency($item['price']) ?></td>
-                        <td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
-                        <?php if ($item['discount'] > 0): ?>
-                            <td><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
-                        <?php endif; ?>
-                        <td class="total-line"><?= to_currency($item['discounted_total']) ?></td>
-                    </tr>
-            <?php
-                }
+    <head>
+        <meta charset="utf-8">
+        <title><?= lang('Sales.email_receipt') ?></title>
+        <link rel="stylesheet" href="<?= base_url('css/invoice_email.css') ?>">
+    </head>
+    <body>
+        <?php
+            if (isset($error_message)) {
+                echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
+                exit;
             }
-            ?>
+        ?>
 
-            <tr>
-                <td colspan="<?= $invoice_columns ?>" align="center"><?= '&nbsp;' ?></td>
-            </tr>
+        <div id="page-wrap">
+            <div id="header"><?= lang('Sales.invoice') ?></div>
+            <table id="info">
+                <tr>
+                    <td id="logo">
+                        <?php if ($config['company_logo'] != '') { ?>
+                            <img id="image" src="data:<?= esc($mimetype, 'attr') ?>;base64,<?= base64_encode(file_get_contents('uploads/' . esc($config['company_logo']))) ?>" alt="company_logo">
+                        <?php } ?>
+                    </td>
+                    <td id="customer-title" id="customer">
+                        <?php if (isset($customer)) {
+                            echo nl2br(esc($customer_info));
+                        } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="company-title" id="company">
+                        <?= esc($config['company']) ?><br>
+                        <?= nl2br(esc($company_info)) ?>
+                    </td>
+                    <td id="meta">
+                        <table id="meta-content" style="text-align: right;">
+                            <tr>
+                                <td class="meta-head"><?= lang('Sales.invoice_number') ?></td>
+                                <td><?= esc($invoice_number) ?></td>
+                            </tr>
+                            <tr>
+                                <td class="meta-head"><?= lang('Common.date') ?></td>
+                                <td><?= esc($transaction_date) ?></td>
+                            </tr>
+                            <?php if ($amount_due > 0) { ?>
+                                <tr>
+                                    <td class="meta-head"><?= lang('Sales.amount_due') ?></td>
+                                    <td class="due"><?= to_currency($total) ?></td>
+                                </tr>
+                            <?php } ?>
+                        </table>
+                    </td>
+                </tr>
+            </table>
 
-            <tr>
-                <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
-                <td id="subtotal" class="total-value"><?= to_currency($subtotal) ?></td>
-            </tr>
+            <table id="items">
+                <tr>
+                    <th><?= lang('Sales.item_number') ?></th>
+                    <th><?= lang('Sales.item_name') ?></th>
+                    <th><?= lang('Sales.quantity') ?></th>
+                    <th><?= lang('Sales.price') ?></th>
+                    <th><?= lang('Sales.discount') ?></th>
+                    <?php
+                    $invoice_columns = 6;
+                    if ($discount > 0) {
+                        $invoice_columns = $invoice_columns + 1;
+                    ?>
+                        <th><?= lang('Sales.customer_discount') ?></th>
+                    <?php } ?>
+                    <th><?= lang('Sales.total') ?></th>
+                </tr>
 
-            <?php foreach ($taxes as $tax_group_index => $tax) { ?>
+                <?php
+                foreach ($cart as $line => $item) {
+                    if ($item['print_option'] == PRINT_YES) {
+                ?>
+                        <tr class="item-row">
+                            <td><?= esc($item['item_number']) ?></td>
+                            <td class="item-name"><?= esc($item['name']) ?></td>
+                            <td><?= to_quantity_decimals($item['quantity']) ?></td>
+                            <td><?= to_currency($item['price']) ?></td>
+                            <td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
+                            <?php if ($item['discount'] > 0): ?>
+                                <td><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
+                            <?php endif; ?>
+                            <td class="total-line"><?= to_currency($item['discounted_total']) ?></td>
+                        </tr>
+                <?php
+                    }
+                }
+                ?>
+
+                <tr>
+                    <td colspan="<?= $invoice_columns ?>" style="text-align: center;"><?= '&nbsp;' ?></td>
+                </tr>
+
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
-                    <td id="taxes" class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
+                    <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
+                    <td id="subtotal" class="total-value"><?= to_currency($subtotal) ?></td>
                 </tr>
-            <?php } ?>
 
-            <tr>
-                <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
-                <td id="total" class="total-value"><?= to_currency($total) ?></td>
-            </tr>
+                <?php foreach ($taxes as $tax_group_index => $tax) { ?>
+                    <tr>
+                        <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
+                        <td id="taxes" class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
+                    </tr>
+                <?php } ?>
 
-            <?php
-            $only_sale_check = false;
-            $show_giftcard_remainder = false;
-
-            foreach ($payments as $payment_id => $payment) {
-                $only_sale_check |= $payment['payment_type'] == lang('Sales.check');
-                $splitpayment = explode(':', $payment['payment_type']);    // TODO: $splitpayment does not meet the variable naming conventions for this project
-                $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
-            ?>
                 <tr>
                     <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
-                    <td class="total-value"><?= to_currency(-$payment['payment_amount']) ?></td>
+                    <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
+                    <td id="total" class="total-value"><?= to_currency($total) ?></td>
                 </tr>
-            <?php } ?>
 
-            <?php if (isset($cur_giftcard_value) && $show_giftcard_remainder) { ?>
-                <tr>
-                    <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= lang('Sales.giftcard_balance') ?></td>
-                    <td class="total-value" id="giftcard"><?= to_currency($cur_giftcard_value) ?></td>
-                </tr>
-            <?php } ?>
+                <?php
+                $only_sale_check = false;
+                $show_giftcard_remainder = false;
 
-            <?php if (!empty($payments)) { ?>
-                <tr>
-                    <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= lang($amount_change >= 0 ? ($only_sale_check ? 'Sales.check_balance' : 'Sales.change_due') : 'Sales.amount_due') ?></td>
-                    <td class="total-value"><?= to_currency($amount_change) ?></td>
-                </tr>
-            <?php } ?>
-        </table>
+                foreach ($payments as $payment_id => $payment) {
+                    $only_sale_check |= $payment['payment_type'] == lang('Sales.check');
+                    $splitpayment = explode(':', $payment['payment_type']);    // TODO: $splitpayment does not meet the variable naming conventions for this project
+                    $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
+                ?>
+                    <tr>
+                        <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
+                        <td class="total-value"><?= to_currency(-$payment['payment_amount']) ?></td>
+                    </tr>
+                <?php } ?>
 
-        <div id="terms">
-            <div id="sale_return_policy">
-                <h5>
-                    <span><?= nl2br($config['payment_message']) ?></span>
-                    <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? esc($config['invoice_default_comments']) : esc($comments)) ?></span>
-                </h5>
-                <?= nl2br(esc($config['return_policy'])) ?>
-            </div>
-            <div id="barcode">
-                <img alt="<?= esc($sale_id) ?>" src="data:image/svg+xml;base64,<?= base64_encode($barcode) ?>"><br>
-                <?= esc($sale_id) ?>
+                <?php if (isset($cur_giftcard_value) && $show_giftcard_remainder) { ?>
+                    <tr>
+                        <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= lang('Sales.giftcard_balance') ?></td>
+                        <td class="total-value" id="giftcard"><?= to_currency($cur_giftcard_value) ?></td>
+                    </tr>
+                <?php } ?>
+
+                <?php if (!empty($payments)) { ?>
+                    <tr>
+                        <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= lang($amount_change >= 0 ? ($only_sale_check ? 'Sales.check_balance' : 'Sales.change_due') : 'Sales.amount_due') ?></td>
+                        <td class="total-value"><?= to_currency($amount_change) ?></td>
+                    </tr>
+                <?php } ?>
+            </table>
+
+            <div id="terms">
+                <div id="sale_return_policy">
+                    <h5>
+                        <span><?= nl2br($config['payment_message']) ?></span>
+                        <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? esc($config['invoice_default_comments']) : esc($comments)) ?></span>
+                    </h5>
+                    <?= nl2br(esc($config['return_policy'])) ?>
+                </div>
+                <div id="barcode">
+                    <img alt="<?= esc($sale_id) ?>" src="data:image/svg+xml;base64,<?= base64_encode($barcode) ?>"><br>
+                    <?= esc($sale_id) ?>
+                </div>
             </div>
         </div>
-    </div>
-
-</body>
-
+    </body>
 </html>

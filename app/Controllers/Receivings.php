@@ -190,11 +190,11 @@ class Receivings extends Secure_Controller
     /**
      * Edit line item in current receiving. Used in app/Views/receivings/receiving.php
      *
-     * @param string|int|null $item_id
+     * @param int|string|null $item_id
      * @return string
      * @noinspection PhpUnused
      */
-    public function postEditItem($item_id): string
+    public function postEditItem(int|string|null $item_id): string
     {
         $data = [];
 
@@ -242,7 +242,7 @@ class Receivings extends Secure_Controller
         }
 
         $receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
-        
+
         $current_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $can_assign_employee = $this->employee->has_grant('employees', $current_employee_id);
 
@@ -280,8 +280,10 @@ class Receivings extends Secure_Controller
     }
 
     /**
-     * @throws ReflectionException
+     * @param int $receiving_id
+     * @param bool $update_inventory
      * @return ResponseInterface
+     * @throws ReflectionException
      */
     public function postDelete(int $receiving_id = -1, bool $update_inventory = true): ResponseInterface
     {

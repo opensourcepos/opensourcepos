@@ -101,11 +101,9 @@ p.lead {
 }
 
 .tabs {
-    list-style: none;
-    list-style-position: inside;
-    margin: 0;
+    list-style: none inside none;
     padding: 0;
-    margin-bottom: -1px;
+    margin: 0 0 -1px;
 }
 .tabs li {
     display: inline;

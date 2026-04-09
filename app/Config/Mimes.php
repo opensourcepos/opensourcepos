@@ -486,9 +486,10 @@ class Mimes
     /**
      * Attempts to determine the best mime type for the given file extension.
      *
-     * @return string|null The mime type found, or none if unable to determine.
+     * @param string $extension
+     * @return array|string|null The mime type found, or none if unable to determine.
      */
-    public static function guessTypeFromExtension(string $extension)
+    public static function guessTypeFromExtension(string $extension): array|string|null
     {
         $extension = trim(strtolower($extension), '. ');
 
@@ -506,7 +507,7 @@ class Mimes
      *
      * @return string|null The extension determined, or null if unable to match.
      */
-    public static function guessExtensionFromType(string $type, ?string $proposedExtension = null)
+    public static function guessExtensionFromType(string $type, ?string $proposedExtension = null): ?string
     {
         $type = trim(strtolower($type), '. ');
 
@@ -522,7 +523,7 @@ class Mimes
         }
 
         // Reverse check the mime type list if no extension was proposed.
-        // This search is order sensitive!
+        // This search is order-sensitive!
         foreach (static::$mimes as $ext => $types) {
             if (in_array($type, (array) $types, true)) {
                 return $ext;

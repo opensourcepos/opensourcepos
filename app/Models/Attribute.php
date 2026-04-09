@@ -575,10 +575,10 @@ class Attribute extends Model
 
     /**
      * @param string $definition_name
-     * @param $definition_type
+     * @param string|bool $definition_type
      * @return array
      */
-    public function get_definition_by_name(string $definition_name, $definition_type = false): array
+    public function get_definition_by_name(string $definition_name, string|bool $definition_type = false): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where('definition_name', $definition_name);

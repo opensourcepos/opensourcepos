@@ -35,12 +35,12 @@ class Home extends Secure_Controller
     }
 
     /**
-     * Load "change employee password" form
+     * Load the "change employee password" form
      *
+     * @param int $employeeId
      * @return ResponseInterface|string
-     * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employeeId = NEW_ENTRY)
+    public function getChangePassword(int $employeeId = NEW_ENTRY): ResponseInterface|string
     {
         $loggedInEmployee = $this->employee->get_logged_in_employee_info();
         $currentPersonId = $loggedInEmployee->person_id;
