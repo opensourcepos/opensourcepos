@@ -28,9 +28,16 @@ DB_PASS="${DB_PASS:-$(openssl rand -base64 24)}"
 OSPOS_DIR="${OSPOS_DIR:-/var/www/ospos}"
 OSPOS_VERSION="${OSPOS_VERSION:-}"
 PHP_VERSION="${PHP_VERSION:-8.2}"
-APACHE_SERVER_NAME="${APACHE_SERVER_NAME:-localhost}"
+APACHE_SERVER_NAME="${APACHE_SERVER_NAME:-}"
 SSL_EMAIL="${SSL_EMAIL:-}"
+SSL_DOMAIN="${SSL_DOMAIN:-}"
 MYSQL_ROOT_PASS="${MYSQL_ROOT_PASS:-}"
+
+# Check if running interactively
+INTERACTIVE=false
+if [ -t 0 ]; then
+    INTERACTIVE=true
+fi
 
 echo -e "${COLOR_YELLOW}Configuration:${COLOR_RESET}"
 echo -e "  Database Name: ${DB_NAME}"
@@ -43,11 +50,8 @@ if [ -n "$OSPOS_VERSION" ]; then
 else
     echo -e "  OSPOS Version: latest"
 fi
-if [ -n "$SSL_EMAIL" ]; then
-    echo -e "  SSL Email: ${SSL_EMAIL}"
-    echo -e "  SSL: Let's Encrypt (production)"
-else
-    echo -e "  SSL: Self-signed certificate"
+if [ -n "$APACHE_SERVER_NAME" ]; then
+    echo -e "  Server Name: ${APACHE_SERVER_NAME}"
 fi
 echo ""
 
@@ -57,10 +61,10 @@ if [ -d "$OSPOS_DIR" ]; then
     exit 1
 fi
 
-echo -e "${COLOR_GREEN}[1/11] Updating system packages...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[1/9] Updating system packages...${COLOR_RESET}"
 apt-get update -qq
 
-echo -e "${COLOR_GREEN}[2/11] Installing Apache, PHP, and dependencies...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[2/9] Installing Apache, PHP, and dependencies...${COLOR_RESET}"
 apt-get install -y -qq \
     apache2 \
     mariadb-server \
@@ -80,7 +84,7 @@ apt-get install -y -qq \
     unzip \
     openssl
 
-echo -e "${COLOR_GREEN}[3/11] Starting MariaDB...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[3/9] Starting MariaDB...${COLOR_RESET}"
 systemctl start mariadb
 systemctl enable mariadb
 
@@ -92,7 +96,7 @@ else
     mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASS}';"
 fi
 
-echo -e "${COLOR_GREEN}[4/11] Creating database and user...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[4/9] Creating database and user...${COLOR_RESET}"
 mysql -u root <<EOF
 CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS '${DB_USER}'@'${DB_HOST}' IDENTIFIED BY '${DB_PASS}';
@@ -100,7 +104,7 @@ GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'${DB_HOST}';
 FLUSH PRIVILEGES;
 EOF
 
-echo -e "${COLOR_GREEN}[5/11] Downloading OSPOS...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[5/9] Downloading OSPOS...${COLOR_RESET}"
 mkdir -p /var/www
 cd /var/www
 
@@ -127,7 +131,7 @@ rm -rf ospos-temp ospos.zip
 
 echo -e "${COLOR_GREEN}Downloaded OSPOS ${OSPOS_VERSION}${COLOR_RESET}"
 
-echo -e "${COLOR_GREEN}[6/11] Setting up OSPOS...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[6/9] Setting up OSPOS...${COLOR_RESET}"
 cd ${OSPOS_DIR}
 
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer 2>/dev/null
@@ -137,7 +141,7 @@ if [ -f "composer.json" ]; then
     composer install --no-dev --optimize-autoloader --no-interaction --quiet 2>/dev/null
 fi
 
-echo -e "${COLOR_GREEN}[7/11] Configuring OSPOS...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[7/9] Configuring OSPOS...${COLOR_RESET}"
 if [ -f ".env.example" ]; then
     cp .env.example .env
     sed -i "s/database\.default\.hostname = localhost/database.default.hostname = ${DB_HOST}/" .env
@@ -147,10 +151,48 @@ if [ -f ".env.example" ]; then
     sed -i "s/CI_ENVIRONMENT = development/CI_ENVIRONMENT = production/" .env
 fi
 
-echo -e "${COLOR_GREEN}[8/11] Importing database schema...${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[8/9] Importing database schema...${COLOR_RESET}"
 mysql -u root ${DB_NAME} < app/Database/database.sql
 
-echo -e "${COLOR_GREEN}[9/11] Configuring Apache...${COLOR_RESET}"
+# Interactive SSL configuration
+if $INTERACTIVE && [ -z "$SSL_EMAIL" ] && [ -z "$APACHE_SERVER_NAME" ]; then
+    echo ""
+    echo -e "${COLOR_BLUE}╔══════════════════════════════════════════════════════════╗${COLOR_RESET}"
+    echo -e "${COLOR_BLUE}║            SSL/TLS Configuration                          ║${COLOR_RESET}"
+    echo -e "${COLOR_BLUE}╚══════════════════════════════════════════════════════════╝${COLOR_RESET}"
+    echo ""
+    echo -e "${COLOR_YELLOW}SSL provides secure HTTPS access to your OSPOS installation.${COLOR_RESET}"
+    echo -e "${COLOR_YELLOW}For production, we recommend Let's Encrypt (free SSL certificate).${COLOR_RESET}"
+    echo ""
+    
+    read -p "Configure SSL? (y/n) [n]: " CONFIGURE_SSL
+    CONFIGURE_SSL=${CONFIGURE_SSL:-n}
+    
+    if [[ "$CONFIGURE_SSL" =~ ^[Yy]$ ]]; then
+        read -p "Enter your domain name (e.g., pos.example.com): " SSL_DOMAIN
+        SSL_DOMAIN=${SSL_DOMAIN:-localhost}
+        APACHE_SERVER_NAME=$SSL_DOMAIN
+        
+        read -p "Enter your email for Let's Encrypt notifications: " SSL_EMAIL
+        
+        if [ -z "$SSL_EMAIL" ]; then
+            echo -e "${COLOR_YELLOW}No email provided. Using self-signed certificate (not recommended for production).${COLOR_RESET}"
+            SSL_TYPE="self-signed"
+        else
+            SSL_TYPE="letsencrypt"
+        fi
+    else
+        APACHE_SERVER_NAME="localhost"
+        SSL_TYPE="none"
+    fi
+fi
+
+# Set default server name if not provided
+if [ -z "$APACHE_SERVER_NAME" ]; then
+    APACHE_SERVER_NAME="localhost"
+fi
+
+echo -e "${COLOR_GREEN}[9/9] Configuring Apache...${COLOR_RESET}"
 cat > /etc/apache2/sites-available/ospos.conf <<EOF
 <VirtualHost *:80>
     ServerName ${APACHE_SERVER_NAME}
@@ -177,29 +219,32 @@ chmod -R 750 ${OSPOS_DIR}/writable
 systemctl restart apache2
 systemctl enable apache2
 
-echo -e "${COLOR_GREEN}[10/11] Setting up SSL...${COLOR_RESET}"
-if [ -n "$SSL_EMAIL" ]; then
+# Configure SSL if requested
+if [ -n "$SSL_EMAIL" ] && [ -n "$SSL_DOMAIN" ]; then
+    # Let's Encrypt SSL
     echo -e "${COLOR_BLUE}Installing Certbot for Let's Encrypt...${COLOR_RESET}"
     apt-get install -y -qq certbot python3-certbot-apache
     
-    echo -e "${COLOR_BLUE}Obtaining SSL certificate...${COLOR_RESET}"
-    certbot --apache -d ${APACHE_SERVER_NAME} --non-interactive --agree-tos --email ${SSL_EMAIL} --redirect
+    echo -e "${COLOR_BLUE}Obtaining SSL certificate for ${SSL_DOMAIN}...${COLOR_RESET}"
+    certbot --apache -d ${SSL_DOMAIN} --non-interactive --agree-tos --email ${SSL_EMAIL} --redirect
     
     echo -e "${COLOR_BLUE}Setting up auto-renewal...${COLOR_RESET}"
     systemctl enable certbot.timer
     systemctl start certbot.timer
     
     PROTOCOL="https"
-else
+    FINAL_URL="https://${SSL_DOMAIN}/"
+elif [ -n "$SSL_DOMAIN" ]; then
+    # Self-signed SSL
     echo -e "${COLOR_BLUE}Generating self-signed SSL certificate...${COLOR_RESET}"
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /etc/ssl/private/ospos-selfsigned.key \
         -out /etc/ssl/certs/ospos-selfsigned.crt \
-        -subj "/C=US/ST=State/L=City/O=Organization/CN=${APACHE_SERVER_NAME}" 2>/dev/null
+        -subj "/C=US/ST=State/L=City/O=Organization/CN=${SSL_DOMAIN}" 2>/dev/null
     
     cat > /etc/apache2/sites-available/ospos-ssl.conf <<EOF
 <VirtualHost *:443>
-    ServerName ${APACHE_SERVER_NAME}
+    ServerName ${SSL_DOMAIN}
     DocumentRoot ${OSPOS_DIR}/public
 
     SSLEngine on
@@ -222,8 +267,8 @@ EOF
     
     cat > /etc/apache2/sites-available/ospos.conf <<EOF
 <VirtualHost *:80>
-    ServerName ${APACHE_SERVER_NAME}
-    Redirect permanent / https://${APACHE_SERVER_NAME}/
+    ServerName ${SSL_DOMAIN}
+    Redirect permanent / https://${SSL_DOMAIN}/
 </VirtualHost>
 EOF
     
@@ -231,11 +276,18 @@ EOF
     a2ensite ospos.conf
     
     PROTOCOL="https"
+    FINAL_URL="https://${SSL_DOMAIN}/"
+    
+    echo -e "${COLOR_YELLOW}Note: Your browser will show a security warning for self-signed${COLOR_RESET}"
+    echo -e "${COLOR_YELLOW}      certificates. For production, re-run with an email for Let's Encrypt.${COLOR_RESET}"
+else
+    PROTOCOL="http"
+    FINAL_URL="http://${APACHE_SERVER_NAME}/"
 fi
 
 systemctl restart apache2
 
-echo -e "${COLOR_GREEN}[11/11] Configuring allowed hostnames...${COLOR_RESET}"
+# Configure allowed hostnames
 if [ -f "${OSPOS_DIR}/.env" ]; then
     sed -i "s/app\.allowedHostnames\.0 = 'localhost'/app.allowedHostnames.0 = '${APACHE_SERVER_NAME}'/" ${OSPOS_DIR}/.env
 fi
@@ -251,16 +303,13 @@ echo -e "  Username: ${DB_USER}"
 echo -e "  Password: ${DB_PASS}"
 echo ""
 echo -e "${COLOR_YELLOW}Login Credentials:${COLOR_RESET}"
+echo -e "  URL:      ${FINAL_URL}"
 if [ -n "$SSL_EMAIL" ]; then
-    echo -e "  URL:      https://${APACHE_SERVER_NAME}/"
     echo -e "  SSL:      Let's Encrypt (auto-renewal enabled)"
-else
-    echo -e "  URL:      https://${APACHE_SERVER_NAME}/"
+elif [ -n "$SSL_DOMAIN" ]; then
     echo -e "  SSL:      Self-signed certificate"
-    echo -e ""
-    echo -e "${COLOR_YELLOW}Note: Your browser will show a security warning for self-signed${COLOR_RESET}"
-    echo -e "${COLOR_YELLOW}      certificates. For production, use Let's Encrypt by setting${COLOR_RESET}"
-    echo -e "${COLOR_YELLOW}      SSL_EMAIL=your@email.com${COLOR_RESET}"
+else
+    echo -e "  SSL:      Not configured (HTTP only)"
 fi
 echo -e "  Username: admin"
 echo -e "  Password: pointofsale"
