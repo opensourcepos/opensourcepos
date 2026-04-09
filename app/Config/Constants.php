@@ -101,7 +101,6 @@ const NO_DEFINITION_ID = 0;
 const CATEGORY_DEFINITION_ID = -1;
 const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
 
-
 /**
  * Item Related Constants.
  */
