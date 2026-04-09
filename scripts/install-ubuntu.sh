@@ -26,7 +26,7 @@ DB_NAME="${DB_NAME:-ospos}"
 DB_USER="${DB_USER:-ospos}"
 DB_PASS="${DB_PASS:-$(openssl rand -base64 24)}"
 OSPOS_DIR="${OSPOS_DIR:-/var/www/ospos}"
-OSPOS_BRANCH="${OSPOS_BRANCH:-master}"
+OSPOS_VERSION="${OSPOS_VERSION:-}"
 PHP_VERSION="${PHP_VERSION:-8.2}"
 APACHE_SERVER_NAME="${APACHE_SERVER_NAME:-localhost}"
 MYSQL_ROOT_PASS="${MYSQL_ROOT_PASS:-}"
@@ -36,8 +36,12 @@ echo -e "  Database Name: ${DB_NAME}"
 echo -e "  Database User: ${DB_USER}"
 echo -e "  Database Host: ${DB_HOST}"
 echo -e "  Install Directory: ${OSPOS_DIR}"
-echo -e "  Branch: ${OSPOS_BRANCH}"
 echo -e "  PHP Version: ${PHP_VERSION}"
+if [ -n "$OSPOS_VERSION" ]; then
+    echo -e "  OSPOS Version: ${OSPOS_VERSION}"
+else
+    echo -e "  OSPOS Version: latest"
+fi
 echo ""
 
 if [ -d "$OSPOS_DIR" ]; then
@@ -92,12 +96,39 @@ EOF
 echo -e "${COLOR_GREEN}[5/9] Downloading OSPOS...${COLOR_RESET}"
 mkdir -p /var/www
 cd /var/www
-git clone --branch ${OSPOS_BRANCH} --depth 1 https://github.com/opensourcepos/opensourcepos.git ospos
 
-echo -e "${COLOR_GREEN}[6/9] Installing Composer dependencies...${COLOR_RESET}"
+if [ -z "$OSPOS_VERSION" ]; then
+    OSPOS_VERSION=$(curl -sS https://api.github.com/repos/opensourcepos/opensourcepos/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+    if [ -z "$OSPOS_VERSION" ]; then
+        echo -e "${COLOR_RED}Failed to get latest release version${COLOR_RESET}"
+        exit 1
+    fi
+fi
+
+echo -e "${COLOR_BLUE}Downloading OSPOS version ${OSPOS_VERSION}...${COLOR_RESET}"
+curl -sSL "https://github.com/opensourcepos/opensourcepos/releases/download/v${OSPOS_VERSION}/opensourcepos-${OSPOS_VERSION}.zip" -o ospos.zip
+
+if [ ! -f ospos.zip ] || [ ! -s ospos.zip ]; then
+    echo -e "${COLOR_RED}Failed to download OSPOS release v${OSPOS_VERSION}${COLOR_RESET}"
+    rm -f ospos.zip
+    exit 1
+fi
+
+unzip -q ospos.zip -d ospos-temp
+mv ospos-temp/opensourcepos-${OSPOS_VERSION} ospos
+rm -rf ospos-temp ospos.zip
+
+echo -e "${COLOR_GREEN}Downloaded OSPOS ${OSPOS_VERSION}${COLOR_RESET}"
+
+echo -e "${COLOR_GREEN}[6/9] Setting up OSPOS...${COLOR_RESET}"
 cd ${OSPOS_DIR}
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-composer install --no-dev --optimize-autoloader --no-interaction --quiet
+
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer 2>/dev/null
+
+if [ -f "composer.json" ]; then
+    echo -e "${COLOR_BLUE}Installing dependencies...${COLOR_RESET}"
+    composer install --no-dev --optimize-autoloader --no-interaction --quiet 2>/dev/null
+fi
 
 echo -e "${COLOR_GREEN}[7/9] Configuring OSPOS...${COLOR_RESET}"
 if [ -f ".env.example" ]; then
