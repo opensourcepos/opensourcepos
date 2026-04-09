@@ -118,6 +118,7 @@ The installer will:
 - Download the **latest stable release** of OSPOS from GitHub
 - Create a database with secure random password
 - Configure OSPOS and Apache
+- **Set up SSL/TLS certificates** (Let's Encrypt or self-signed)
 - Display login credentials after completion
 
 **Customization (optional):**
@@ -127,6 +128,9 @@ curl -sSL https://opensourcepos.org/install | DB_PASS=mypassword APACHE_SERVER_N
 
 # Install a specific OSPOS version
 curl -sSL https://opensourcepos.org/install | OSPOS_VERSION=3.4.2 sudo -E bash
+
+# Production setup with Let's Encrypt SSL (recommended)
+curl -sSL https://opensourcepos.org/install | APACHE_SERVER_NAME=pos.example.com SSL_EMAIL=admin@example.com sudo -E bash
 ```
 
 **Environment variables:**
@@ -137,6 +141,11 @@ curl -sSL https://opensourcepos.org/install | OSPOS_VERSION=3.4.2 sudo -E bash
 - `OSPOS_VERSION` - OSPOS version to install (default: latest stable release)
 - `PHP_VERSION` - PHP version (default: 8.2)
 - `APACHE_SERVER_NAME` - Server hostname (default: localhost)
+- `SSL_EMAIL` - Email for Let's Encrypt (production SSL). If set, enables production SSL with auto-renewal
+
+**SSL/TLS Configuration:**
+- **Production (recommended):** Set `SSL_EMAIL=your@email.com` to use Let's Encrypt with automatic renewal
+- **Development/Testing:** Without `SSL_EMAIL`, a self-signed certificate is generated (your browser will show a security warning)
 
 > **Note:** If the short URL is unavailable, use the direct GitHub URL:
 > ```bash
@@ -145,4 +154,4 @@ curl -sSL https://opensourcepos.org/install | OSPOS_VERSION=3.4.2 sudo -E bash
 
 For other cloud providers or manual installation, see the [detailed installation guide](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) in the wiki.
 
-**Important:** After installation, change the default password and configure SSL/TLS certificates for production use.
+**Important:** Change the default password after first login!
