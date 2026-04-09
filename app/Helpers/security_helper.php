@@ -94,4 +94,3 @@ function remove_backup(): void
     @unlink($backup_path);
     log_message('info', "Removed $backup_path");
 }
-
