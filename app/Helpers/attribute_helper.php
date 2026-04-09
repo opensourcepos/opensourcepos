@@ -27,7 +27,9 @@ function getAttributeDataType(string $input): string
  */
 function validateAttributeValueType(string $dataType): void
 {
-    if (!in_array($dataType, ATTRIBUTE_VALUE_TYPES, true)) {
+    $attributeValueTypes = ['attribute_value', 'attribute_decimal', 'attribute_date'];
+
+    if (!in_array($dataType, $attributeValueTypes, true)) {
         throw new InvalidArgumentException('Invalid data type');
     }
 }
