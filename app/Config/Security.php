@@ -13,9 +13,9 @@ class Security extends BaseConfig
      *
      * Protection Method for Cross Site Request Forgery protection.
      *
-     * @var string|false 'cookie', 'session', or false
+     * @var string 'cookie' or 'session'
      */
-    public string|false $csrfProtection = 'session';
+    public string $csrfProtection = 'session';
 
     /**
      * --------------------------------------------------------------------------
