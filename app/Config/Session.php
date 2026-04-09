@@ -3,10 +3,10 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Session\Handlers\BaseHandler;
 use CodeIgniter\Session\Handlers\DatabaseHandler;
 use CodeIgniter\Session\Handlers\FileHandler;
-use Config\Database;
 
 class Session extends BaseConfig
 {
@@ -139,7 +139,7 @@ class Session extends BaseConfig
                     $this->driver = FileHandler::class;
                     $this->savePath = WRITEPATH . 'session';
                 }
-            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            } catch (DatabaseException $e) {
                 $this->driver = FileHandler::class;
                 $this->savePath = WRITEPATH . 'session';
             }

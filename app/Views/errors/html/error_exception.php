@@ -32,7 +32,7 @@ $errorId = uniqid('error', true);
     <!-- Header -->
     <div class="header">
         <div class="environment">
-            Displayed at <?= esc(date('H:i:sa')) ?> &mdash;
+            Displayed at <?= esc(date('H:i:s')) ?> &mdash;
             PHP: <?= esc(PHP_VERSION) ?>  &mdash;
             CodeIgniter: <?= esc(CodeIgniter::CI_VERSION) ?> --
             Environment: <?= ENVIRONMENT ?>
@@ -66,16 +66,19 @@ $errorId = uniqid('error', true);
             $last = $prevException;
         ?>
 
-            <pre>
-                Caused by:
-                <?= esc($prevException::class), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
+    <pre>
+    Caused by:
+    <?= esc($prevException::class), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
 
-                <?= nl2br(esc($prevException->getMessage())) ?>
-                <a href="https://www.duckduckgo.com/?q=<?= urlencode($prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>" rel="noreferrer" target="_blank">search &rarr;</a>
-                <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
-            </pre>
+    <?= nl2br(esc($prevException->getMessage())) ?>
+    <a href="https://www.duckduckgo.com/?q=<?= urlencode($prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>"
+       rel="noreferrer" target="_blank">search &rarr;</a>
+    <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
+    </pre>
 
-        <?php } ?>
+        <?php
+        }
+        ?>
     </div>
 
     <?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) : ?>
