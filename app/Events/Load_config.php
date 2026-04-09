@@ -21,63 +21,47 @@ class Load_config
 {
     public Session $session;
 
-    /**
-     * Loads configuration from database into App CI config and then applies those settings
-     */
     public function load_config(): void
     {
-        // Migrations
         $migration_config = config('Migrations');
         $migration = new MY_Migration($migration_config);
 
-        // Use file-based session until database is migrated
-        $this->session = $this->createSession($migration->is_latest());
+        $this->session = session();
 
-        // Database Configuration
         $config = config(OSPOS::class);
 
         if (!$migration->is_latest()) {
             $this->session->destroy();
         }
 
-        // Language
-        $language_exists = file_exists('../app/Language/' . current_language_code());
-
-        if (current_language_code() == null || current_language() == null || !$language_exists) {    // TODO: current_language() is undefined
-            $config->settings['language'] = 'english';
-            $config->settings['language_code'] = 'en';
-        }
+        $this->setDefaultLanguage($config);
 
         $language = Services::language();
-        $language->setLocale($config->settings['language_code']);
+        $language->setLocale(current_language_code());
 
-        // Time Zone
         date_default_timezone_set($config->settings['timezone'] ?? ini_get('date.timezone'));
 
         bcscale(max(2, totals_decimals() + tax_decimals()));
     }
 
-    /**
-     * Creates session with appropriate handler.
-     * Uses file-based session until database is migrated, then switches to database session.
-     * 
-     * This prevents a circular dependency where login requires session, but the sessions
-     * database table doesn't exist yet because migrations run after login.
-     */
-    private function createSession(bool $isDbMigrated): Session
+    private function setDefaultLanguage(OSPOS $config): void
     {
-        $sessionConfig = config('Session');
-        
-        // If database is not migrated and we're configured to use database sessions,
-        // temporarily fall back to file-based sessions to allow migrations to complete.
-        // Once migrations run, the user must re-authenticate (session is destroyed in
-        // load_config() when migrations are pending).
-        if (!$isDbMigrated && $sessionConfig->driver === DatabaseHandler::class) {
-            $sessionConfig = clone $sessionConfig;
-            $sessionConfig->driver = FileHandler::class;
-            $sessionConfig->savePath = WRITEPATH . 'session';
+        $languageCode = $config->settings['language_code'] ?? null;
+
+        if (empty($config->settings) || $languageCode === null) {
+            $config->settings['language'] = 'english';
+            $config->settings['language_code'] = 'en';
+            return;
         }
-        
-        return Services::session($sessionConfig);
+
+        if (!$this->languageExists($languageCode)) {
+            $config->settings['language'] = 'english';
+            $config->settings['language_code'] = 'en';
+        }
+    }
+
+    private function languageExists(string $languageCode): bool
+    {
+        return file_exists(APPPATH . 'Language/' . $languageCode);
     }
 }
