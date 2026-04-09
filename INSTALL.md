@@ -115,14 +115,18 @@ Sign up through [our referral link](https://m.do.co/c/ac38c262507b) to get a [**
 
 The installer will:
 - Install Apache, MariaDB, PHP 8.2 and required extensions
+- Download the **latest stable release** of OSPOS from GitHub
 - Create a database with secure random password
-- Download and configure OSPOS
+- Configure OSPOS and Apache
 - Display login credentials after completion
 
 **Customization (optional):**
 ```bash
 # Set custom database password and server name
 curl -sSL https://opensourcepos.org/install | DB_PASS=mypassword APACHE_SERVER_NAME=pos.example.com sudo -E bash
+
+# Install a specific OSPOS version
+curl -sSL https://opensourcepos.org/install | OSPOS_VERSION=3.4.2 sudo -E bash
 ```
 
 **Environment variables:**
@@ -130,7 +134,7 @@ curl -sSL https://opensourcepos.org/install | DB_PASS=mypassword APACHE_SERVER_N
 - `DB_USER` - Database user (default: ospos)
 - `DB_PASS` - Database password (default: auto-generated)
 - `OSPOS_DIR` - Installation directory (default: /var/www/ospos)
-- `OSPOS_BRANCH` - Git branch to install (default: master)
+- `OSPOS_VERSION` - OSPOS version to install (default: latest stable release)
 - `PHP_VERSION` - PHP version (default: 8.2)
 - `APACHE_SERVER_NAME` - Server hostname (default: localhost)
 
