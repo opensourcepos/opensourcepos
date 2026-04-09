@@ -129,7 +129,7 @@ class Customer extends Person
     /**
      * Gets stats about a particular customer
      */
-    public function get_stats(int $customer_id): float|int|array|string|stdClass|null
+    public function get_stats(int $customer_id): ?stdClass
     {
         $db_prefix = $this->db->getPrefix();
         $totals_decimals = totals_decimals();

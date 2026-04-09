@@ -197,7 +197,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $objectSrc = 'self';
+    public $objectSrc = 'none';
 
     /**
      * @var list<string>|string|null

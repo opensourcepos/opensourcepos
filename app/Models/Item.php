@@ -352,7 +352,7 @@ class Item extends Model
     /**
      * Gets information about a particular item by item id or number
      */
-    public function get_info_by_id_or_number(string $item_id, bool $include_deleted = true): float|int|array|string|stdClass|null
+    public function get_info_by_id_or_number(string $item_id, bool $include_deleted = true): stdClass|string
     {
         $builder = $this->db->table('items');
         $builder->groupStart();

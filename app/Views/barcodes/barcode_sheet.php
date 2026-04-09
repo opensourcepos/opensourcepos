@@ -23,7 +23,7 @@ $barcode_lib = new Barcode_lib();
         </style>
     </head>
     <body class=<?= 'font_' . $barcode_lib->get_font_name($barcode_config['barcode_font']) ?> style="font-size: <?= $barcode_config['barcode_font_size'] ?>px;">
-        <table style="borderspacing: <?= $barcode_config['barcode_page_cellspacing'] ?>; width: <?= $barcode_config['barcode_page_width'] ?>%;">
+        <table style="border-spacing: <?= $barcode_config['barcode_page_cellspacing'] ?>; width: <?= $barcode_config['barcode_page_width'] ?>%;">
             <tr>
                 <?php
                     $count = 0;
