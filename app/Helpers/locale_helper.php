@@ -22,9 +22,7 @@ function current_language_code(bool $load_system_language = false): string
         }
     }
 
-    $language_code = $config['language_code'];
-
-    return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
+    return $config->language_code ?? DEFAULT_LANGUAGE_CODE;
 }
 
 /**
@@ -45,9 +43,7 @@ function current_language(bool $load_system_language = false): string
         }
     }
 
-    $language = $config['language'];
-
-    return empty($language) ? DEFAULT_LANGUAGE : $language;
+    return $config->language ?? DEFAULT_LANGUAGE_CODE;
 }
 
 /**

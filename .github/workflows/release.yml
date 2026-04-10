@@ -1,0 +1,172 @@
+name: Release Version Bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        type: choice
+        options:
+          - minor
+          - major
+          - patch
+        default: 'minor'
+
+permissions:
+  contents: write
+
+jobs:
+  prepare-release:
+    name: Prepare Release
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get current version
+        id: current_version
+        run: |
+          CURRENT_VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT_VERSION"
+
+      - name: Calculate new version
+        id: version
+        run: |
+          CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
+          VERSION_TYPE="${{ github.event.inputs.version_type }}"
+          
+          # Parse current version
+          MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
+          MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
+          PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
+          
+          # Bump version based on type
+          case $VERSION_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+          
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "previous_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION (was: $CURRENT_VERSION, type: $VERSION_TYPE)"
+
+      - name: Update version in App.php
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          sed -i "s/public string \\\$application_version = '[^']*';/public string \\\$application_version = '$NEW_VERSION';/" app/Config/App.php
+          echo "Updated app/Config/App.php"
+
+      - name: Update version in package.json
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          sed -i "s/\"version\": \"[^\"]*\",/\"version\": \"$NEW_VERSION\",/" package.json
+          echo "Updated package.json"
+
+      - name: Update version in docker-compose.nginx.yml
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          sed -i "s/jekkos\/opensourcepos:[^ ]*/jekkos\/opensourcepos:$NEW_VERSION/" docker-compose.nginx.yml
+          echo "Updated docker-compose.nginx.yml"
+
+      - name: Update version in README.md
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          # Extract major.minor for the "latest X.Y version" text
+          MAJOR_MINOR=$(echo "$NEW_VERSION" | cut -d. -f1,2)
+          sed -i "s/The latest \`[0-9]*\.[0-9]*\` version/The latest \`${MAJOR_MINOR}\` version/" README.md
+          echo "Updated README.md with version ${MAJOR_MINOR}"
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          PREVIOUS_VERSION="${{ steps.version.outputs.previous_version }}"
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          # Get commits since last version
+          if git rev-parse "$PREVIOUS_VERSION" >/dev/null 2>&1; then
+            COMMITS=$(git log "$PREVIOUS_VERSION"..HEAD --pretty=format:"- %s" --no-merges)
+          else
+            COMMITS=$(git log --pretty=format:"- %s" --no-merges -50)
+          fi
+          
+          # Create changelog entry
+          CHANGELOG_FILE="CHANGELOG.md"
+          
+          # Create the new version comparison link
+          NEW_LINK="[${NEW_VERSION}]: https://github.com/opensourcepos/opensourcepos/compare/${PREVIOUS_VERSION}...${NEW_VERSION}"
+          
+          # Insert new link after [unreleased] line
+          sed -i "/^\[unreleased\]/a $NEW_LINK" "$CHANGELOG_FILE"
+          
+          # Update [unreleased] link to start from new version
+          sed -i "s|^\[unreleased\]: .*|\[unreleased\]: https://github.com/opensourcepos/opensourcepos/compare/${NEW_VERSION}...HEAD|" "$CHANGELOG_FILE"
+          
+          # Create version header and content using temp file to avoid sed issues with special characters
+          VERSION_DATE=$(date +%Y-%m-%d)
+          VERSION_HEADER="## [$NEW_VERSION] - $VERSION_DATE"
+          
+          # Create temp file with changelog entry
+          TMP_FILE=$(mktemp)
+          {
+            echo ""
+            echo "$VERSION_HEADER"
+            echo ""
+            echo "$COMMITS"
+          } > "$TMP_FILE"
+          
+          # Insert after Unreleased header
+          sed -i "/^## \[Unreleased\]/r $TMP_FILE" "$CHANGELOG_FILE"
+          rm "$TMP_FILE"
+          
+          echo "Updated CHANGELOG.md"
+          echo "Changelog entries:"
+          echo "$COMMITS"
+
+      - name: Update version in issue templates
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          # Calculate version to remove (keep 5 versions)
+          PREVIOUS_VERSION="${{ steps.version.outputs.previous_version }}"
+          
+          # Bug report template - insert new version after development (unreleased)
+          BUG_TEMPLATE=".github/ISSUE_TEMPLATE/bug report.yml"
+          sed -i "/- development (unreleased)/a\\        - OpenSourcePOS ${NEW_VERSION}" "$BUG_TEMPLATE"
+          # Remove the oldest version (5th version from the end)
+          sed -i "/OpenSourcePOS 3\\.3\\.7/d" "$BUG_TEMPLATE"
+          echo "Updated $BUG_TEMPLATE"
+          
+          # Feature request template - insert new version after development (unreleased)
+          FEATURE_TEMPLATE=".github/ISSUE_TEMPLATE/feature_request.yml"
+          sed -i "/- development (unreleased)/a\\        - OpenSourcePOS ${NEW_VERSION}" "$FEATURE_TEMPLATE"
+          # Remove the oldest version (5th version from the end)
+          sed -i "/OpenSourcePOS 3\\.3\\.7/d" "$FEATURE_TEMPLATE"
+          echo "Updated $FEATURE_TEMPLATE"
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          git add app/Config/App.php package.json docker-compose.nginx.yml CHANGELOG.md README.md .github/ISSUE_TEMPLATE/
+          git commit -m "chore: release version $NEW_VERSION"
+          git push origin HEAD

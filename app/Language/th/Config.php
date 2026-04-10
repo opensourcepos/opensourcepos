@@ -282,6 +282,7 @@ return [
     "right"                                     => "ถูกต้อง",
     "sales_invoice_format"                      => "รหัสใบเสร็จ",
     "sales_quote_format"                        => "รูปแบบใบเสนอราคาขาย",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "บันทึกข้อมูลร้านค้าเรียบร้อยแล้ว",
     "saved_unsuccessfully"                      => "บันทึกข้อมูลร้านค้าไม่สำเร็จ",
     "security_issue"                            => "คำเตือนช่องโหว่ด้านความปลอดภัย",

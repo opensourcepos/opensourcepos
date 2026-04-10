@@ -282,6 +282,7 @@ return [
     "right"                                     => "Konfiqurasiya ugursuz oldu saxlanilmadi",
     "sales_invoice_format"                      => "Satış Fatura Formatı",
     "sales_quote_format"                        => "Satış Sitat Formati",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "Konfiqurasiya uğurla saxlanıldı.",
     "saved_unsuccessfully"                      => "Konfiqurasiyanı saxlamq mümkün olmadı.",
     "security_issue"                            => "Təhlükəsizlik açığı xəbərdarlığı",

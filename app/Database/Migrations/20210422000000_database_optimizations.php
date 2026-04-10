@@ -20,7 +20,7 @@ class Migration_database_optimizations extends Migration
 
         $attribute = model(Attribute::class);
 
-        $attribute->delete_orphaned_values();
+        $attribute->deleteOrphanedValues();
 
         $this->migrate_duplicate_attribute_values(DECIMAL);
         $this->migrate_duplicate_attribute_values(DATE);
