@@ -101,7 +101,7 @@
                             <td><?= to_quantity_decimals($item['quantity']) ?></td>
                             <td><?= to_currency($item['price']) ?></td>
                             <td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
-                            <?php if ($item['discount'] > 0): ?>
+                            <?php if ($discount > 0): ?>
                                 <td><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
                             <?php endif; ?>
                             <td class="total-line"><?= to_currency($item['discounted_total']) ?></td>
@@ -171,7 +171,7 @@
             <div id="terms">
                 <div id="sale_return_policy">
                     <h5>
-                        <span><?= nl2br($config['payment_message']) ?></span>
+                        <span><?= nl2br(esc($config['payment_message'])) ?></span>
                         <span><?= lang('Sales.comments') . ': ' . (empty($comments) ? esc($config['invoice_default_comments']) : esc($comments)) ?></span>
                     </h5>
                     <?= nl2br(esc($config['return_policy'])) ?>

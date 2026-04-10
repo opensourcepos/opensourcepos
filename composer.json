@@ -32,7 +32,7 @@
     },
     "require": {
         "ext-intl": "*",
-        "php": "^8.1",
+        "php": "^8.2",
         "codeigniter4/framework": "4.7.2",
         "dompdf/dompdf": "^2.0.3",
         "ezyang/htmlpurifier": "^4.17",
