@@ -12,7 +12,7 @@ CREATE TABLE `ospos_sales_payments` (
   `reference_code` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`payment_id`),
   KEY `payment_sale` (`sale_id`, `payment_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO ospos_sales_payments (sale_id, payment_type, payment_amount, payment_user)
 SELECT payments.sale_id, payments.payment_type, payments.payment_amount, sales.employee_id

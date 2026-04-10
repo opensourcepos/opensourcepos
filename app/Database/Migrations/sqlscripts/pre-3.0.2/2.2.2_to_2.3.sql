@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS `ospos_stock_locations` (
   `location_id` int(11) NOT NULL AUTO_INCREMENT,
-  `location_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `location_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=0;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 INSERT INTO `ospos_stock_locations` ( `deleted`, `location_name` ) VALUES ('0', 'stock');
 
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   PRIMARY KEY (`item_id`,`location_id`),
   KEY `item_id` (`item_id`),
   KEY `location_id` (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=0 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 UPDATE `ospos_item_quantities` SET location_id = (SELECT MIN(`location_id`) FROM `ospos_stock_locations`);
 

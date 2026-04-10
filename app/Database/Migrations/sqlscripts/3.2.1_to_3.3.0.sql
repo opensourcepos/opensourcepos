@@ -75,7 +75,7 @@ CREATE TABLE `ospos_cash_up` (
   `open_employee_id` int(10) NOT NULL,
   `close_employee_id` int(10) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Indexes for table `ospos_cash_up`
 
@@ -91,10 +91,11 @@ ALTER TABLE `ospos_cash_up`
 ALTER TABLE `ospos_cash_up`
   MODIFY `cashup_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
--- Change collation on columns to be utf8mb4_general_ci
+-- Change collation on columns to be utf8_general_ci
 
-ALTER TABLE ospos_expense_categories CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-ALTER TABLE ospos_expenses CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE ospos_cash_up CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_expense_categories CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_expenses CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 -- Add amount due
 

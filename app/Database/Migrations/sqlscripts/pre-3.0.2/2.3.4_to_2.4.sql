@@ -7,4 +7,4 @@ CREATE TABLE `ospos_sessions` (
   `data` blob NOT NULL,
   `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

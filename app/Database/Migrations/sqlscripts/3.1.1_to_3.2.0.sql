@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `ospos_expense_categories` (
   `category_name` varchar(255) DEFAULT NULL,
   `category_description` varchar(255) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- Table structure for table `ospos_expenses`
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `ospos_expenses` (
   `description` varchar(255) NOT NULL,
   `employee_id` int(10) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- Indexes for table `ospos_expense_categories`

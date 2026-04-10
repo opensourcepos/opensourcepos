@@ -109,7 +109,7 @@ CREATE TABLE `ospos_sessions` (
   `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
   `data` blob NOT NULL,
   KEY `ci_sessions_timestamp` (`timestamp`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- upgrade employees table
