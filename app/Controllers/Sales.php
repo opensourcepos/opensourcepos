@@ -796,7 +796,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_invoice_number_exists($invoice_number)) {
                 $data['error'] = lang('Sales.invoice_number_duplicate', [$invoice_number]);
-                $this->_reload($data);
+                return $this->_reload($data);
             } else {
                 $data['invoice_number'] = $invoice_number;
                 $data['sale_status'] = COMPLETED;
@@ -840,7 +840,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_work_order_number_exists($work_order_number)) {
                 $data['error'] = lang('Sales.work_order_number_duplicate');
-                $this->_reload($data);
+                return $this->_reload($data);
             } else {
                 $data['work_order_number'] = $work_order_number;
                 $data['sale_status'] = SUSPENDED;
@@ -868,7 +868,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_quote_number_exists($quote_number)) {
                 $data['error'] = lang('Sales.quote_number_duplicate');
-                $this->_reload($data);
+                return $this->_reload($data);
             } else {
                 $data['quote_number'] = $quote_number;
                 $data['sale_status'] = SUSPENDED;
@@ -1697,6 +1697,7 @@ class Sales extends Secure_Controller
             $cart[$x]['item_number'] = $item_number;
         }
         $this->sale_lib->set_cart($cart);
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
@@ -1720,6 +1721,7 @@ class Sales extends Secure_Controller
         }
 
         $this->sale_lib->set_cart($cart);
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
@@ -1743,6 +1745,7 @@ class Sales extends Secure_Controller
         }
 
         $this->sale_lib->set_cart($cart);
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
