@@ -796,7 +796,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_invoice_number_exists($invoice_number)) {
                 $data['error'] = lang('Sales.invoice_number_duplicate', [$invoice_number]);
-                $this->_reload($data);
+                return $this->_reload($data);
             } else {
                 $data['invoice_number'] = $invoice_number;
                 $data['sale_status'] = COMPLETED;
@@ -817,6 +817,7 @@ class Sales extends Secure_Controller
 
                 if ($data['sale_id_num'] == NEW_ENTRY) {
                     $data['error_message'] = lang('Sales.transaction_failed');
+                    return $this->_reload($data);
                 } else {
                     $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
                     $this->sale_lib->clear_all();
@@ -840,7 +841,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_work_order_number_exists($work_order_number)) {
                 $data['error'] = lang('Sales.work_order_number_duplicate');
-                $this->_reload($data);
+                return $this->_reload($data);
             } else {
                 $data['work_order_number'] = $work_order_number;
                 $data['sale_status'] = SUSPENDED;
@@ -868,7 +869,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_quote_number_exists($quote_number)) {
                 $data['error'] = lang('Sales.quote_number_duplicate');
-                $this->_reload($data);
+                return $this->_reload($data);
             } else {
                 $data['quote_number'] = $quote_number;
                 $data['sale_status'] = SUSPENDED;
@@ -900,6 +901,7 @@ class Sales extends Secure_Controller
 
             if ($data['sale_id_num'] == NEW_ENTRY) {
                 $data['error_message'] = lang('Sales.transaction_failed');
+                return $this->_reload($data);
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
                 $this->sale_lib->clear_all();
@@ -1693,10 +1695,11 @@ class Sales extends Secure_Controller
         $this->item->update_item_number($item_id, $item_number);
         $cart = $this->sale_lib->get_cart();
         $x = $this->search_cart_for_item_id($item_id, $cart);
-        if ($x != null) {
+        if ($x !== null) {
             $cart[$x]['item_number'] = $item_number;
         }
         $this->sale_lib->set_cart($cart);
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
@@ -1715,11 +1718,12 @@ class Sales extends Secure_Controller
         $cart = $this->sale_lib->get_cart();
         $x = $this->search_cart_for_item_id($item_id, $cart);
 
-        if ($x != null) {
+        if ($x !== null) {
             $cart[$x]['name'] = $name;
         }
 
         $this->sale_lib->set_cart($cart);
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
@@ -1738,11 +1742,12 @@ class Sales extends Secure_Controller
         $cart = $this->sale_lib->get_cart();
         $x = $this->search_cart_for_item_id($item_id, $cart);
 
-        if ($x != null) {
+        if ($x !== null) {
             $cart[$x]['description'] = $description;
         }
 
         $this->sale_lib->set_cart($cart);
+        return $this->response->setJSON(['success' => true]);
     }
 
     /**
