@@ -1069,7 +1069,7 @@ class Sale extends Model
                 INNER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
                 WHERE ' . $where . '
-                GROUP BY sale_id, item_id, line
+                GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id, sales_items_taxes.line
             )';
 
         $this->db->query($sql);
@@ -1154,7 +1154,7 @@ class Sale extends Model
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items_taxes_temp') . ' AS sales_items_taxes
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
                 WHERE ' . $where . '
-                GROUP BY sale_id, item_id, line
+                GROUP BY sales.sale_id, items.item_id, sales_items.line, sales_items.discount_type
             )';
 
         $this->db->query($sql);

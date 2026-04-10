@@ -18,10 +18,15 @@ function execute_script(string $path): bool
 
     $db = Database::connect();
 
-    $success = true; // whether *all* queries succeeded
+    $success = true;
     foreach ($sqls as $statement) {
         $statement = "$statement;";
-        $hadError = !$db->simpleQuery($statement);
+        try {
+            $hadError = !$db->simpleQuery($statement);
+        } catch (\Exception $e) {
+            $hadError = true;
+            log_message('error', "Migration SQL error: " . $e->getMessage());
+        }
 
         if ($hadError) {
             $success = false;
@@ -33,8 +38,7 @@ function execute_script(string $path): bool
 
     if ($success) {
         log_message('info', "Successfully migrated to $version");
-    }
-    else {
+    } else {
         log_message('info', "Could not migrate to $version.");
     }
 

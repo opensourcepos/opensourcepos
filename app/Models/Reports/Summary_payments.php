@@ -150,7 +150,7 @@ class Summary_payments extends Summary_report
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_taxes') . ' AS sales_taxes
                     ON sales.sale_id = sales_taxes.sale_id
                 WHERE ' . $where . ' AND sales_taxes.tax_type = \'1\'
-                GROUP BY sale_id
+                GROUP BY sales.sale_id
             )'
         );
 
@@ -164,7 +164,7 @@ class Summary_payments extends Summary_report
                 . 'ON sales.sale_id = sales_items.sale_id '
                 . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sumpay_taxes_temp') . ' AS sumpay_taxes '
                 . 'ON sales.sale_id = sumpay_taxes.sale_id '
-                . 'WHERE ' . $where . ' GROUP BY sale_id
+                . 'WHERE ' . $where . ' GROUP BY sales.sale_id
             )'
         );
 
@@ -184,7 +184,7 @@ class Summary_payments extends Summary_report
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_payments') . ' AS sales_payments
                     ON sales.sale_id = sales_payments.sale_id
                 WHERE ' . $where . '
-                GROUP BY sale_id
+                GROUP BY sales.sale_id
             )'
         );
     }
