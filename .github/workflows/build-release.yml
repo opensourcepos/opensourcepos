@@ -76,8 +76,8 @@ jobs:
         id: version
         run: |
           VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
-          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/feature\///')
-          TAG=$(echo "${GITHUB_TAG:-$BRANCH}" | tr '/' '-')
+          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/feature\///' | tr '/' '_')
+          TAG=$(echo "${GITHUB_TAG:-$BRANCH}" | tr '/' '_')
           SHORT_SHA=$(git rev-parse --short=6 HEAD)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version-tag=$VERSION-$BRANCH-$SHORT_SHA" >> $GITHUB_OUTPUT
@@ -153,9 +153,9 @@ jobs:
       - name: Determine Docker tags
         id: tags
         run: |
-          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '-')
+          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '_')
           if [ "$BRANCH" = "master" ]; then
-            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }},${{ secrets.DOCKER_USERNAME }}/opensourcepos:latest" >> $GITHUB_OUTPUT
+            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }},${{ secrets.DOCKER_USERNAME }}/opensourcepos:master" >> $GITHUB_OUTPUT
           else
             echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }}" >> $GITHUB_OUTPUT
           fi
