@@ -1,12 +1,12 @@
 <?php
 /**
  * Table Filter Persistence
- * 
+ *
  * This partial updates the URL when filters change, allowing users to
  * share/bookmark filtered views and maintain state on back navigation.
- * 
+ *
  * Filter restoration from URL is handled server-side in the controller.
- * 
+ *
  * @param array $options Additional filter options
  *   - 'additional_params': Array of additional parameter names to track (e.g., ['stock_location'])
  *   - 'filter_select_id': Filter multiselect element ID (default: 'filters')
