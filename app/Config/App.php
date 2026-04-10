@@ -58,9 +58,9 @@ class App extends BaseConfig
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.
      *
-     * E.g.,
-     * When your site URL ($baseURL) is 'http://example.com/', and your site
-     * also accepts 'http://media.example.com/' and 'http://accounts.example.com/':
+     * Or via environment variable (useful for Docker/Compose):
+     *   ALLOWED_HOSTNAMES=example.com,www.example.com
+     * 
      *     ['media.example.com', 'accounts.example.com']
      *
      * @var list<string>
@@ -286,7 +286,11 @@ class App extends BaseConfig
 
         // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
         // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
-        $envAllowedHostnames = getenv('app.allowedHostnames');
+        // Support both: app.allowedHostnames (from .env) and ALLOWED_HOSTNAMES (from environment/Docker)
+        $envAllowedHostnames = getenv('ALLOWED_HOSTNAMES');
+        if ($envAllowedHostnames === false || trim($envAllowedHostnames) === '') {
+            $envAllowedHostnames = getenv('app.allowedHostnames');
+        }
         if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
             $this->allowedHostnames = array_values(array_filter(
                 array_map('trim', explode(',', $envAllowedHostnames)),
@@ -327,7 +331,7 @@ class App extends BaseConfig
             $errorMessage =
                 'Security: allowedHostnames is not configured. ' .
                 'Host header injection protection is disabled. ' .
-                'Set app.allowedHostnames in your .env file. ' .
+                'Set app.allowedHostnames in your .env file or ALLOWED_HOSTNAMES environment variable. ' .
                 'Example: app.allowedHostnames = "example.com,www.example.com" ' .
                 'Received Host: ' . $httpHost;
 
