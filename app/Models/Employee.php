@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
+use stdClass;
 
 /**
  * Employee class
@@ -407,7 +408,7 @@ class Employee extends Person
     /**
      * Gets information about the currently logged in employee.
      */
-    public function get_logged_in_employee_info()
+    public function get_logged_in_employee_info(): float|false|array|int|string|stdClass|null
     {
         if ($this->is_logged_in()) {
             return $this->get_info($this->session->get('person_id'));

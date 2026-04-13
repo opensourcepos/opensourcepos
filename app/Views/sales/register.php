@@ -173,12 +173,12 @@ helper('url');
                             </td>
                             <?php if ($item['item_type'] == ITEM_TEMP) { ?>
                                 <td><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'form-control input-sm', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
-                                <td style="align: center;">
+                                <td style="text-align: center;">
                                     <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
                                 </td>
                             <?php } else { ?>
                                 <td><?= esc($item['item_number']) ?></td>
-                                <td style="align: center;">
+                                <td style="text-align: center;">
                                     <?= esc($item['name']) . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']]) ?>
                                     <br>
                                     <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
@@ -236,7 +236,7 @@ helper('url');
                         <tr>
                             <?php if ($item['item_type'] == ITEM_TEMP) { ?>
                                 <td><?= form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
-                                <td style="align: center;" colspan="6">
+                                <td style="text-align: center;" colspan="6">
                                     <?= form_input(['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
                                 </td>
                                 <td> </td>

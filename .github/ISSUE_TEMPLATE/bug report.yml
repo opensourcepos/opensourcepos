@@ -12,11 +12,11 @@ body:
     attributes:
       value: |
         ## Thanks for taking the time to fill out this bug report! 🐜
-        
+
         Bug reports help us identify and fix issues. Please provide as much detail as possible.
-        
+
         > ⚠️ **Important:** Submit a separate bug report for each problem you encounter.
-        > 
+        >
         > 🚫 Do not include personal identifying information such as email addresses or encryption keys.
 
   # ─────────────────────────────────────────────────────────────────────────────
@@ -28,7 +28,7 @@ body:
       label: 🐛 Bug Description
       description: A clear and concise description of what the bug is.
       placeholder: |
-        Example: When I try to print a receipt, the application crashes 
+        Example: When I try to print a receipt, the application crashes
         with an error message saying "Unable to connect to printer".
     validations:
       required: true
@@ -86,8 +86,7 @@ body:
         - PHP 8.2
         - PHP 8.1
         - PHP 7.4
-        - PHP 7.3
-        - PHP 7.2
+        - Other
       default: 0
     validations:
       required: true
@@ -141,7 +140,7 @@ body:
       label: 📊 System Information Report
       description: |
         Copy and paste the system information from OSPOS:
-        
+
         **Navigation:** Configuration → Setup & Conf → System Info
       placeholder: |
         Paste the System Information Report here...
@@ -155,7 +154,7 @@ body:
       label: 📜 Relevant Log Output
       description: |
         Please copy and paste any relevant log output.
-        
+
         **Log locations:**
         - OSPOS logs: `writable/logs/`
         - Web server logs: `/var/log/apache2/` or `/var/log/nginx/`

@@ -4,40 +4,41 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cf76605c1b45f81c547fefc5a29f101",
+    "content-hash": "e95f6e5e86d323370ddb0df57c4d3fb3",
     "packages": [
         {
             "name": "codeigniter4/framework",
-            "version": "v4.6.3",
+            "version": "v4.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeigniter4/framework.git",
-                "reference": "68d1a5896106f869452dd369a690dd5bc75160fb"
+                "reference": "b3359be849be29394660c3aed909aa32b6c45cf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeigniter4/framework/zipball/68d1a5896106f869452dd369a690dd5bc75160fb",
-                "reference": "68d1a5896106f869452dd369a690dd5bc75160fb",
+                "url": "https://api.github.com/repos/codeigniter4/framework/zipball/b3359be849be29394660c3aed909aa32b6c45cf6",
+                "reference": "b3359be849be29394660c3aed909aa32b6c45cf6",
                 "shasum": ""
             },
             "require": {
                 "ext-intl": "*",
                 "ext-mbstring": "*",
-                "laminas/laminas-escaper": "^2.17",
-                "php": "^8.1",
+                "laminas/laminas-escaper": "^2.18",
+                "php": "^8.2",
                 "psr/log": "^3.0"
             },
             "require-dev": {
                 "codeigniter/coding-standard": "^1.7",
                 "fakerphp/faker": "^1.24",
                 "friendsofphp/php-cs-fixer": "^3.47.1",
-                "kint-php/kint": "^6.0",
+                "kint-php/kint": "^6.1",
                 "mikey179/vfsstream": "^1.6.12",
                 "nexusphp/cs-config": "^3.6",
                 "phpunit/phpunit": "^10.5.16 || ^11.2",
                 "predis/predis": "^3.0"
             },
             "suggest": {
+                "ext-apcu": "If you use Cache class ApcuHandler",
                 "ext-curl": "If you use CURLRequest class",
                 "ext-dom": "If you use TestResponse",
                 "ext-exif": "If you run Image class tests",
@@ -49,7 +50,9 @@
                 "ext-memcached": "If you use Cache class MemcachedHandler with Memcached",
                 "ext-mysqli": "If you use MySQL",
                 "ext-oci8": "If you use Oracle Database",
+                "ext-pcntl": "If you use Signals",
                 "ext-pgsql": "If you use PostgreSQL",
+                "ext-posix": "If you use Signals",
                 "ext-readline": "Improves CLI::input() usability",
                 "ext-redis": "If you use Cache class RedisHandler",
                 "ext-simplexml": "If you format XML",
@@ -78,7 +81,7 @@
                 "slack": "https://codeigniterchat.slack.com",
                 "source": "https://github.com/codeigniter4/CodeIgniter4"
             },
-            "time": "2025-08-02T13:36:13+00:00"
+            "time": "2026-03-24T18:26:09+00:00"
         },
         {
             "name": "dompdf/dompdf",
@@ -205,32 +208,32 @@
         },
         {
             "name": "laminas/laminas-escaper",
-            "version": "2.17.0",
+            "version": "2.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-escaper.git",
-                "reference": "df1ef9503299a8e3920079a16263b578eaf7c3ba"
+                "reference": "06f211dfffff18d91844c1f55250d5d13c007e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/df1ef9503299a8e3920079a16263b578eaf7c3ba",
-                "reference": "df1ef9503299a8e3920079a16263b578eaf7c3ba",
+                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/06f211dfffff18d91844c1f55250d5d13c007e18",
+                "reference": "06f211dfffff18d91844c1f55250d5d13c007e18",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-mbstring": "*",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
             },
             "conflict": {
                 "zendframework/zend-escaper": "*"
             },
             "require-dev": {
-                "infection/infection": "^0.29.8",
-                "laminas/laminas-coding-standard": "~3.0.1",
-                "phpunit/phpunit": "^10.5.45",
-                "psalm/plugin-phpunit": "^0.19.2",
-                "vimeo/psalm": "^6.6.2"
+                "infection/infection": "^0.31.0",
+                "laminas/laminas-coding-standard": "~3.1.0",
+                "phpunit/phpunit": "^11.5.42",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.13.1"
             },
             "type": "library",
             "autoload": {
@@ -262,7 +265,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2025-05-06T19:29:36+00:00"
+            "time": "2025-10-14T18:31:13+00:00"
         },
         {
             "name": "masterminds/html5",
