@@ -425,7 +425,7 @@ class Sales extends Secure_Controller
                     $new_giftcard_value = $giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
                     $new_giftcard_value = max($new_giftcard_value, 0);
                     $this->sale_lib->set_giftcard_remainder($new_giftcard_value);
-                    $new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
+                    $new_giftcard_value = to_currency($new_giftcard_value);
                     $data['warning'] = lang('Giftcards.remaining_balance', [$giftcard_num, $new_giftcard_value]);
                     $amount_tendered = min($this->sale_lib->get_amount_due(), $giftcard->get_giftcard_value($giftcard_num));
 
@@ -582,12 +582,21 @@ class Sales extends Secure_Controller
         $data = [];
 
         $rules = [
-            'price'    => 'trim|required|decimal_locale',
+            'price'    => 'trim|required|decimal_locale|nonNegativeDecimal',
             'quantity' => 'trim|required|decimal_locale',
-            'discount' => 'trim|permit_empty|decimal_locale',
+            'discount' => 'trim|permit_empty|decimal_locale|nonNegativeDecimal',
         ];
 
-        if ($this->validate($rules)) {
+        $messages = [
+            'price' => [
+                'nonNegativeDecimal' => lang('Sales.negative_price_invalid'),
+            ],
+            'discount' => [
+                'nonNegativeDecimal' => lang('Sales.negative_discount_invalid'),
+            ],
+        ];
+
+        if ($this->validate($rules, $messages)) {
             $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $price = parse_decimals($this->request->getPost('price'));
@@ -596,12 +605,29 @@ class Sales extends Secure_Controller
             $discount = $discount_type
                 ? parse_quantity($this->request->getPost('discount'))
                 : parse_decimals($this->request->getPost('discount'));
+            $discount = $discount ?: 0;
+
+            // Return mode legitimately uses negative quantities for refunds
+            if ($this->sale_lib->get_mode() != 'return' && $quantity < 0) {
+                $data['error'] = lang('Sales.negative_quantity_invalid');
+                return $this->_reload($data);
+            }
+
+            // Business logic: discount bounds depend on discount_type and item values
+            if ($discount_type == PERCENT && $discount > 100) {
+                $data['error'] = lang('Sales.discount_percent_exceeds_100');
+                return $this->_reload($data);
+            }
+
+            if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, 2), 2) > 0) {
+                $data['error'] = lang('Sales.discount_exceeds_item_total');
+                return $this->_reload($data);
+            }
 
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
             $discounted_total = $this->request->getPost('discounted_total') != ''
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
                 : null;
-
 
             $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 
@@ -609,7 +635,8 @@ class Sales extends Secure_Controller
 
             $data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
         } else {
-            $data['error'] = lang('Sales.error_editing_item');
+            $errors = $this->validator->getErrors();
+            $data['error'] = $errors ? reset($errors) : lang('Sales.error_editing_item');
         }
 
         return $this->_reload($data);
@@ -722,6 +749,12 @@ class Sales extends Secure_Controller
         $data['non_cash_total'] = $totals['total'];
         $data['cash_amount_due'] = $totals['cash_amount_due'];
         $data['non_cash_amount_due'] = $totals['amount_due'];
+
+        // Prevent negative total sales (fraud/theft vector) - returns can have negative totals for legitimate refunds
+        if ($this->sale_lib->get_mode() != 'return' && bccomp($totals['total'], '0') < 0) {
+            $data['error'] = lang('Sales.negative_total_invalid');
+            return $this->_reload($data);
+        }
 
         if ($data['cash_mode']) {    // TODO: Convert this to ternary notation
             $data['amount_due'] = $totals['cash_amount_due'];

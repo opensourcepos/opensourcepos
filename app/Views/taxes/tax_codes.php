@@ -79,24 +79,18 @@
             $("input[name='tax_code[]']").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });
-            if (value_count > 1) {
-                return false;
-            }
-            return true;
+            return value_count <= 1;
+
         }, "<?= lang('Taxes.tax_code_duplicate') ?>");
 
         $.validator.addMethod('validateTaxCodeCharacters', function(value, element) {
-            if ((value.indexOf('_') != -1)) {
-                return false;
-            }
-            return true;
+            return (value.indexOf('_') == -1);
+
         }, "<?= lang('Taxes.tax_code_invalid_chars') ?>");
 
         $.validator.addMethod('requireTaxCode', function(value, element) {
-            if (value.trim() == '') {
-                return false;
-            }
-            return true;
+            return value.trim() != '';
+
         }, "<?= lang('Taxes.tax_code_required') ?>");
 
         $('#tax_codes_form').validate($.extend(form_support.handler, {

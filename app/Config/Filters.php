@@ -65,12 +65,15 @@ class Filters extends BaseFilters
      * List of filter aliases that are always
      * applied before and after every request.
      *
-     * @var array<string, array<string, array<string, string>>>|array<string, list<string>>
+     * @var array{
+     *     before: array<string, array{except: list<string>|string}>|list<string>,
+     *     after: array<string, array{except: list<string>|string}>|list<string>
+     * }
      */
     public array $globals = [
         'before' => [
             'honeypot',
-            'csrf' => ['except' => 'login'],
+            'csrf' => ['except' => 'login|migrate'],
             'invalidchars',
         ],
         'after' => [
@@ -100,7 +103,7 @@ class Filters extends BaseFilters
      * before or after URI patterns.
      *
      * Example:
-     * isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
+     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      *
      * @var array<string, array<string, list<string>>>
      */

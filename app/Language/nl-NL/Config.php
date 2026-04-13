@@ -282,6 +282,7 @@ return [
     "right"                                     => "Rechts",
     "sales_invoice_format"                      => "Indeling verkoopfactuur",
     "sales_quote_format"                        => "Indeling verkoopofferte",
+    "mailpath_invalid"                          => "Ongeldig sendmail pad. Alleen letters, cijfers, strepen, underscores, slashes en punten zijn toegestaan.",
     "saved_successfully"                        => "Configuratie opgeslagen.",
     "saved_unsuccessfully"                      => "Configuratie opslaan mislukt.",
     "security_issue"                            => "Beveilingskwetsbaarheid waarschuwing",

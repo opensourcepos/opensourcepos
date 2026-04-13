@@ -31,26 +31,27 @@
         labelPosition: 'outside',
         labelDirection: 'explode',
 
+        <?php
+            $currency_symbol = esc($config['currency_symbol'], 'js');
+            $currency_prefix = '';
+            $currency_suffix = '';
+
+            if ($show_currency) {
+                if (is_right_side_currency_symbol()) {
+                    $currency_suffix = $currency_symbol;
+                } else {
+                    $currency_prefix = $currency_symbol;
+                }
+            }
+        ?>
+
         plugins: [
             Chartist.plugins.tooltip({
                 transformTooltipTextFnc: function(value) {
-                    <?php
-                    if ($show_currency) {
-                        if (is_right_side_currency_symbol()) {
-                    ?>
-                            return value + '<?= esc($config['currency_symbol'], 'js') ?>';
-                        <?php } else { ?>
-                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        return value;
-                    <?php } ?>
+                    return '<?= $currency_prefix ?>' + value + '<?= $currency_suffix ?>';
                 }
             })
-        ]
-    };
+        ]    };
 
     var responsiveOptions = [
         ['screen and (min-width: 640px)', {

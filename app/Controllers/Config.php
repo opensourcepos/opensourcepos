@@ -367,7 +367,7 @@ class Config extends Secure_Controller
      */
     public function postSaveGeneral(): ResponseInterface
     {
-        $batch_save_data = [
+        $batchSaveData = [
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),
             'default_sales_discount_type'       => $this->request->getPost('default_sales_discount_type') != null,
@@ -398,19 +398,19 @@ class Config extends Secure_Controller
 
         $this->module->set_show_office_group($this->request->getPost('show_office_group') != null);
 
-        if ($batch_save_data['category_dropdown'] == 1) {
-            $definition_data['definition_name'] = 'ospos_category';
-            $definition_data['definition_flags'] = 0;
-            $definition_data['definition_type'] = 'DROPDOWN';
-            $definition_data['definition_id'] = CATEGORY_DEFINITION_ID;
-            $definition_data['deleted'] = 0;
+        if ($batchSaveData['category_dropdown']) {
+            $definitionData['definition_name'] = 'ospos_category';
+            $definitionData['definition_flags'] = 0;
+            $definitionData['definition_type'] = 'DROPDOWN';
+            $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
+            $definitionData['deleted'] = 0;
 
-            $this->attribute->save_definition($definition_data, CATEGORY_DEFINITION_ID);
-        } elseif ($batch_save_data['category_dropdown'] == NO_DEFINITION_ID) {
+            $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
+        } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
             $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
         }
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -504,9 +504,24 @@ class Config extends Secure_Controller
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
+        $protocol = $this->request->getPost('protocol');
+        $mailpath = $this->request->getPost('mailpath');
+
+        // Validate mailpath: required for sendmail, optional for others but must be safe if provided
+        $isMailpathRequired = ($protocol === 'sendmail');
+        $isMailpathProvided = !empty($mailpath);
+        $isMailpathValid = $isMailpathProvided && preg_match('/^[a-zA-Z0-9_\-\/.]+$/', $mailpath);
+
+        if (($isMailpathRequired && !$isMailpathProvided) || ($isMailpathProvided && !$isMailpathValid)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Config.mailpath_invalid')
+            ]);
+        }
+
         $batch_save_data = [
-            'protocol'     => $this->request->getPost('protocol'),
-            'mailpath'     => $this->request->getPost('mailpath'),
+            'protocol'     => $protocol,
+            'mailpath'     => $mailpath,
             'smtp_host'    => $this->request->getPost('smtp_host'),
             'smtp_user'    => $this->request->getPost('smtp_user'),
             'smtp_pass'    => $password,

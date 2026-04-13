@@ -282,6 +282,7 @@ return [
     "right"                                     => "Право",
     "sales_invoice_format"                      => "Формат рахунків-фактур продажів",
     "sales_quote_format"                        => "Формат котирування продажів",
+    "mailpath_invalid"                          => "",
     "saved_successfully"                        => "Конфігурація успішно збережена",
     "saved_unsuccessfully"                      => "Помилка збереження конфігурації",
     "security_issue"                            => "Попередження про вразливість системи безпеки",
