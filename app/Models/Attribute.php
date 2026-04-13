@@ -606,22 +606,43 @@ class Attribute extends Model
 
         $this->db->transStart();
 
+        $definitionType = $this->getAttributeInfo($definitionId)->definition_type ?? '';
+
         $builder = $this->db->table('attribute_links');
 
-        if ($this->attributeLinkExists($normalizedItemId, $definitionId)) {
-            $builder->set(['attribute_id' => $normalizedAttributeId]);
-            $builder->where('definition_id', $definitionId);
+        if ($definitionType === DROPDOWN) {
             $builder->where('item_id', $normalizedItemId);
+            $builder->where('definition_id', $definitionId);
+            $builder->where('attribute_id', $normalizedAttributeId);
             $builder->where('sale_id', null);
             $builder->where('receiving_id', null);
-            $builder->update();
+
+            $dropdownAttributeLinkExists = $builder->countAllResults(false) !== 0;
+
+            if (!$dropdownAttributeLinkExists) {
+                $data = [
+                    'attribute_id'  => $normalizedAttributeId,
+                    'item_id'       => $normalizedItemId,
+                    'definition_id' => $definitionId
+                ];
+                $builder->insert($data);
+            }
         } else {
-            $data = [
-                'attribute_id'  => $normalizedAttributeId,
-                'item_id'       => $normalizedItemId,
-                'definition_id' => $definitionId
-            ];
-            $builder->insert($data);
+            if ($this->attributeLinkExists($normalizedItemId, $definitionId)) {
+                $builder->set(['attribute_id' => $normalizedAttributeId]);
+                $builder->where('definition_id', $definitionId);
+                $builder->where('item_id', $normalizedItemId);
+                $builder->where('sale_id', null);
+                $builder->where('receiving_id', null);
+                $builder->update();
+            } else {
+                $data = [
+                    'attribute_id' => $normalizedAttributeId,
+                    'item_id' => $normalizedItemId,
+                    'definition_id' => $definitionId
+                ];
+                $builder->insert($data);
+            }
         }
 
         $this->db->transComplete();
