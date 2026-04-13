@@ -610,7 +610,7 @@ class Attribute extends Model
 
         $builder = $this->db->table('attribute_links');
 
-        if ($definitionType === DROPDOWN) {
+        if ($definitionType === DROPDOWN && $normalizedItemId === null) {
             $builder->where('item_id', $normalizedItemId);
             $builder->where('definition_id', $definitionId);
             $builder->where('attribute_id', $normalizedAttributeId);
