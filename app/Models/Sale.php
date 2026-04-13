@@ -438,14 +438,18 @@ class Sale extends Model
     /**
      * Update sale
      */
-    public function update($sale_id = null, $sale_data = null): bool
+    public function update($sale_id = null, $sale_data = null): bool         //Bug Identifyed: When a sale is edited, the reward points are not recalculated.
+                                                                             // This function needs a hook to the Rewards model to check if the payment_type 
+                                                                              // has changed to or from 'Reward' to ensure the customer's balance is updated.
     {
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
         $update_data = $sale_data;
         unset($update_data['payments']);
         $success = $builder->update($update_data);
-
+                                                                              // DATA INTEGRITY ISSUE: If the payment_amount is edited here, the 
+                                                                             // 'sales_reward_points' table does not receive an update, leading 
+                                                                            // to a mismatch between the sale total and the customer's point balance.
         // Touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
         if ($success && !empty($sale_data['payments'])) {
             // Run these queries as a transaction, we want to make sure we do all or nothing
@@ -1510,4 +1514,11 @@ class Sale extends Model
             $builder->like('payments.payment_type', lang('Sales.check'));
         }
     }
+        public function delete_sale(int $sale_id): bool
+{
+    // CRITICAL BUG: Deleting a sale fails to restore 'used' points to the customer.
+    // We must query 'sales_reward_points' for this $sale_id and increment 
+    // the 'points' column in the 'customers' table before completing the deletion.
+        return $this->db->table('sales')->where('sale_id', $sale_id)->delete();
+}
 }
