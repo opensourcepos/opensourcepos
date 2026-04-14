@@ -188,11 +188,11 @@ class PluginManager
 
     private function getEnabledKey(string $pluginId): string
     {
-        return "{$pluginId}_enabled";
+        return "{$pluginId}__enabled";
     }
 
     private function getInstalledKey(string $pluginId): string
     {
-        return "{$pluginId}_installed";
+        return "{$pluginId}__installed";
     }
 }
