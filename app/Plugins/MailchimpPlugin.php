@@ -165,7 +165,7 @@ class MailchimpPlugin extends BasePlugin
     }
 
     /**
-     * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/integrations_config.php
+     * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/plugins_config.php
      *
      * @return ResponseInterface
      * @noinspection PhpUnused
