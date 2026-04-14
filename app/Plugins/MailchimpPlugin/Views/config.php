@@ -10,7 +10,7 @@
     <fieldset id="config_info">
 
         <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-        <div id="integrations_header"><?= lang('Config.mailchimp_configuration') ?></div>
+        <div id="plugins_header"><?= lang('Config.plugins_configuration') ?></div>
         <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
         <div class="form-group form-group-sm">
