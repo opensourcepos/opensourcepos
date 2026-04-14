@@ -10,7 +10,7 @@ The OSPOS Plugin System allows third-party integrations to extend the applicatio
 
 Plugins are self-contained packages that can be installed by simply dropping the plugin folder into `app/Plugins/`:
 
-```
+```text
 app/Plugins/
 ├── MailchimpPlugin/              # Plugin directory (self-contained)
 │   ├── MailchimpPlugin.php       # Main plugin class (required - must match directory name)
@@ -264,7 +264,7 @@ class MyPlugin extends BasePlugin
 
 For plugins that need database tables, controllers, models, and views:
 
-```
+```text
 app/Plugins/
 └── MailchimpPlugin/                    # Plugin directory
     ├── MailchimpPlugin.php             # Main class - namespace: App\Plugins\MailchimpPlugin\MailchimpPlugin
@@ -382,7 +382,7 @@ Plugins can include their own language files, making them completely self-contai
 
 ### Plugin Language Directory Structure
 
-```
+```text
 app/Plugins/
 └── MailchimpPlugin/
     ├── MailchimpPlugin.php
@@ -510,7 +510,7 @@ Check logs in `writable/logs/`.
 
 Plugin developers can package their plugins as zip files:
 
-```
+```text
 MailchimpPlugin-1.0.0.zip
 └── MailchimpPlugin/
     ├── MailchimpPlugin.php
