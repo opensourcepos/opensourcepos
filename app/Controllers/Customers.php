@@ -31,6 +31,7 @@ class Customers extends Persons
         $this->tax_code = model(Tax_code::class);
         $this->config = config(OSPOS::class)->settings;
 
+        //TODO: This logic needs to be moved to the Mailchimp plugin
         $encrypter = Services::encrypter();
 
         if (!empty($this->config['mailchimp_list_id'])) {

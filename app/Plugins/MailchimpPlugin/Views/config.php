@@ -69,7 +69,7 @@
     // Validation and submit handling
     $(document).ready(function() {
         $('#mailchimp_api_key').change(function() {
-            $.post("<?= "$controller_name/checkMailchimpApiKey" ?>", {
+            $.post("<?= "checkMailchimpApiKey" ?>", {
                     'mailchimp_api_key': $('#mailchimp_api_key').val()
                 },
                 function(response) {

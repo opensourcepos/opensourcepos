@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Popust",
     "customer_email"                   => "E-mail kupca",
     "customer_location"                => "Mjesto kupca",
-    "customer_mailchimp_status"        => "Status MailChimp-a",
     "customer_optional"                => "(Potrebno za odloženo plaćanje)",
     "customer_required"                => "Obavezno",
     "customer_total"                   => "Ukupno",

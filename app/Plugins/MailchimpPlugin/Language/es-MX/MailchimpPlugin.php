@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'mailchimp'                     => 'Mailchimp',
+    'mailchimp_description'         => 'Integre Mailchimp para sincronizar los clientes con las listas de correos cuando se creen o actualicen.',
+    'mailchimp_api_key'             => 'Clave API de Mailchimp',
+    'mailchimp_api_key_required'    => 'La clave API no está configurada',
+    'mailchimp_configuration'       => 'Configuración de Mailchimp',
+    'mailchimp_customer_status'     => 'Estado de MailChimp',
+    'mailchimp_key_successfully'    => 'La clave API es válida.',
+    'mailchimp_key_unsuccessfully'  => 'La clave API no es válida.',
+    'mailchimp_lists'               => 'Lista(s) de Mailchimp',
+    ' uma_mailchimp_tooltip'         => 'Haga clic en el icono para la clave API.',
+    'mailchimp_tooltip'             => 'Haga clic en el icono para la clave API.',
+    'mailchimp_activity_click'      => 'Click Correo Electrónico',
+    'mailchimp_activity_lastopen'   => 'Último correo electrónico abierto',
+    'mailchimp_activity_open'       => 'Correo electrónico abierto',
+    'mailchimp_activity_total'      => 'Correo electrónico enviado',
+    'mailchimp_activity_unopen'     => 'Correo electrónico sin abrir',
+    'mailchimp_email_client'        => 'cliente de correo electrónico',
+    'mailchimp_info'                => 'Mailchimp',
+    'mailchimp_member_rating'       => 'Puntaje',
+    'mailchimp_status'              => 'Estado',
+    'mailchimp_vip'                 => 'VIP',
+];

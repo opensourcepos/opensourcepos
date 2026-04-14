@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Punguzo",
     "customer_email"                   => "Barua Pepe",
     "customer_location"                => "Mahali",
-    "customer_mailchimp_status"        => "Hali ya MailChimp",
     "customer_optional"                => "(Inahitajika kwa Malipo ya Madeni)",
     "customer_required"                => "(Inahitajika)",
     "customer_total"                   => "Jumla",
