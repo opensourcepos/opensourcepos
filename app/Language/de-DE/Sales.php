@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Rabatt",
     "customer_email"                   => "Kunden eMail",
     "customer_location"                => "Kunden Stadt",
-    "mailchimp_customer_status"        => "Mailchim Status",
     "customer_optional"                => "(Benötigt für fällige Zahlungen)",
     "customer_required"                => "(Benötigt)",
     "customer_total"                   => "Gesamtbetrag",
