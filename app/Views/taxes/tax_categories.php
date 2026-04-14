@@ -79,24 +79,18 @@
             $('input[name="tax_category[]"]').each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });
-            if (value_count > 1) {
-                return false;
-            }
-            return true;
+            return value_count <= 1;
+
         }, "<?= lang('Taxes.tax_category_duplicate') ?>");
 
         $.validator.addMethod('validateTaxCategoryCharacters', function(value, element) {
-            if ((value.indexOf('_') != -1)) {
-                return false;
-            }
-            return true;
+            return (value.indexOf('_') == -1);
+
         }, "<?= lang('Taxes.tax_category_invalid_chars') ?>");
 
         $.validator.addMethod('requireTaxCategory', function(value, element) {
-            if (value.trim() == '') {
-                return false;
-            }
-            return true;
+            return value.trim() != '';
+
         }, "<?= lang('Taxes.tax_category_required') ?>");
 
         $('#tax_categories_form').validate($.extend(form_support.handler, {
@@ -120,8 +114,8 @@
         }));
 
         <?php
-        $i = 0;
-        foreach ($tax_categories as $tax_category => $tax_category_data) {
+            $i = 0;
+            foreach ($tax_categories as $tax_category => $tax_category_data) {
         ?>
             $('<?= '#tax_category_' . ++$i ?>').rules("add", {
                 requireTaxCategory: true,

@@ -55,21 +55,13 @@ class App extends BaseConfig
     public string $baseURL;    // Defined in the constructor
 
     /**
-     * Allowed Hostnames for the Site URL.
-     * 
-     * Security: This is used to validate the HTTP Host header to prevent
-     * Host Header Injection attacks. If the Host header doesn't match
-     * an entry in this list, the request will use the first allowed hostname.
-     * 
-     * IMPORTANT: This MUST be configured for production deployments.
-     * If empty, the application will fall back to 'localhost'.
-     * 
-     * Configure via .env file:
-     *   app.allowedHostnames.0 = 'example.com'
-     *   app.allowedHostnames.1 = 'www.example.com'
-     * 
-     * For local development:
-     *   app.allowedHostnames.0 = 'localhost'
+     * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
+     * If you want to accept multiple Hostnames, set this.
+     *
+     * E.g.,
+     * When your site URL ($baseURL) is 'http://example.com/', and your site
+     * also accepts 'http://media.example.com/' and 'http://accounts.example.com/':
+     *     ['media.example.com', 'accounts.example.com']
      *
      * @var list<string>
      */
@@ -125,7 +117,7 @@ class App extends BaseConfig
     | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
     |
     */
-    public string $permittedURIChars = 'a-z 0-9~%.:_\-=';
+    public string $permittedURIChars = 'a-z 0-9~%.:_\-';
 
     /**
      * --------------------------------------------------------------------------
@@ -286,13 +278,24 @@ class App extends BaseConfig
      * @see http://www.html5rocks.com/en/tutorials/security/content-security-policy/
      * @see http://www.w3.org/TR/CSP/
      */
-    public bool $CSPEnabled = false;    // TODO: Currently CSP3 tags are not supported so enabling this causes problems with script-src-elem, style-src-attr and style-src-elem
+    public bool $CSPEnabled = false;
 
     public function __construct()
     {
         parent::__construct();
+
+        // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
+        // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
+        $envAllowedHostnames = getenv('app.allowedHostnames');
+        if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
+            $this->allowedHostnames = array_values(array_filter(
+                array_map('trim', explode(',', $envAllowedHostnames)),
+                static fn (string $hostname): bool => $hostname !== ''
+            ));
+        }
+
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
-        
+
         $host = $this->getValidHost();
         $this->baseURL = $this->https_on ? 'https' : 'http';
         $this->baseURL .= '://' . $host . '/';
@@ -301,23 +304,40 @@ class App extends BaseConfig
 
     /**
      * Validates and returns a trusted hostname.
-     * 
+     *
      * Security: Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
      * by validating the HTTP_HOST against a whitelist of allowed hostnames.
-     * 
+     *
+     * In production: Fails fast if allowedHostnames is not configured.
+     * In development: Allows localhost fallback with an error log.
+     *
      * @return string A validated hostname
+     * @throws \RuntimeException If allowedHostnames is not configured in production
      */
     private function getValidHost(): string
     {
         $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
+        // Determine environment
+        // CodeIgniter's test bootstrap sets $_SERVER['CI_ENVIRONMENT'] = 'testing'
+        // Check $_SERVER first, then $_ENV, then fall back to 'production'
+        $environment = $_SERVER['CI_ENVIRONMENT'] ?? $_ENV['CI_ENVIRONMENT'] ?? getenv('CI_ENVIRONMENT') ?: 'production';
+
         if (empty($this->allowedHostnames)) {
-            log_message('warning', 
+            $errorMessage =
                 'Security: allowedHostnames is not configured. ' .
                 'Host header injection protection is disabled. ' .
-                'Please set app.allowedHostnames in your .env file. ' .
-                'Received Host: ' . $httpHost
-            );
+                'Set app.allowedHostnames in your .env file. ' .
+                'Example: app.allowedHostnames = "example.com,www.example.com" ' .
+                'Received Host: ' . $httpHost;
+
+            // Production: Fail explicitly to prevent silent security vulnerabilities
+            // Testing and development: Allow localhost fallback
+            if ($environment === 'production') {
+                throw new \RuntimeException($errorMessage);
+            }
+
+            log_message('error', $errorMessage . ' Using localhost fallback (development only).');
             return 'localhost';
         }
 
@@ -325,7 +345,8 @@ class App extends BaseConfig
             return $httpHost;
         }
 
-        log_message('warning', 
+        // Host not in whitelist - use first configured hostname as fallback
+        log_message('warning',
             'Security: Rejected HTTP_HOST "' . $httpHost . '" - not in allowedHostnames whitelist. ' .
             'Using fallback: ' . $this->allowedHostnames[0]
         );

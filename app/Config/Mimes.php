@@ -3,8 +3,6 @@
 namespace Config;
 
 /**
- * Mimes
- *
  * This file contains an array of mime types.  It is used by the
  * Upload class to help identify allowed file types.
  *
@@ -15,8 +13,6 @@ namespace Config;
  *
  * When working with mime types, please make sure you have the ´fileinfo´
  * extension enabled to reliably detect the media types.
- *
- * @immutable
  */
 class Mimes
 {
@@ -482,13 +478,16 @@ class Mimes
             'application/sla',
             'application/vnd.ms-pki.stl',
             'application/x-navistyle',
+            'model/stl',
+            'application/octet-stream',
         ],
     ];
 
     /**
      * Attempts to determine the best mime type for the given file extension.
      *
-     * @return string|null The mime type found, or none if unable to determine.
+     * @param string $extension
+     * @return array|string|null The mime type found, or none if unable to determine.
      */
     public static function guessTypeFromExtension(string $extension): array|string|null
     {
@@ -524,7 +523,7 @@ class Mimes
         }
 
         // Reverse check the mime type list if no extension was proposed.
-        // This search is order sensitive!
+        // This search is order-sensitive!
         foreach (static::$mimes as $ext => $types) {
             if (in_array($type, (array) $types, true)) {
                 return $ext;

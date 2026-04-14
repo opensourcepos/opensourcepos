@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @param array $stock_locations
  * @param array $attributes
  * @return string
  */
-
 function generate_import_items_csv(array $stock_locations, array $attributes): string
 {
     $csv_headers = pack('CCC', 0xef, 0xbb, 0xbf);    // Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel

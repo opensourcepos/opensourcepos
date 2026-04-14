@@ -102,7 +102,7 @@ NOTE: If you're running non-release code, please make sure you always run the la
 
 - If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
 
-- PHP `≥ 8.1` is required to run this app.
+- PHP `≥ 8.2` is required to run this app.
 
 ## 🏃 Keep the Machine Running
 

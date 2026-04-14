@@ -63,7 +63,7 @@ if (isset($error_message)) {
     /* This line will allow to print and go back to sales automatically.
      * echo anchor('sales', '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();'));
      */
-    ?>
+?>
     <?php if (isset($customer_email) && !empty($customer_email)): ?>
         <a href="javascript:void(0);">
             <div class="btn btn-info btn-sm" id="show_email_button"><?= '<span class="glyphicon glyphicon-envelope">&nbsp;</span>' . lang('Sales.send_invoice') ?></div>
@@ -115,10 +115,10 @@ if (isset($error_message)) {
         <tr>
             <th><?= lang('Sales.item_number') ?></th>
             <?php
-            $invoice_columns = 6;
-            if ($include_hsn) {
-                $invoice_columns += 1;
-            ?>
+        $invoice_columns = 6;
+if ($include_hsn) {
+    $invoice_columns += 1;
+    ?>
                 <th><?= lang('Sales.hsn') ?></th>
             <?php } ?>
             <th><?= lang('Sales.item_name') ?></th>
@@ -126,9 +126,9 @@ if (isset($error_message)) {
             <th><?= lang('Sales.price') ?></th>
             <th><?= lang('Sales.discount') ?></th>
             <?php
-            if ($discount > 0) {
-                $invoice_columns += 1;
-            ?>
+    if ($discount > 0) {
+        $invoice_columns += 1;
+        ?>
                 <th><?= lang('Sales.customer_discount') ?></th>
             <?php } ?>
             <th><?= lang('Sales.total') ?></th>
@@ -137,7 +137,7 @@ if (isset($error_message)) {
         <?php
         foreach ($cart as $line => $item) {
             if ($item['print_option'] == PRINT_YES) {
-        ?>
+                ?>
                 <tr class="item-row">
                     <td><?= esc($item['item_number']) ?></td>
                     <?php if ($include_hsn): ?>
@@ -146,7 +146,7 @@ if (isset($error_message)) {
                     <td class="item-name"><?= ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? esc($item['description']) : esc($item['name'] . ' ' . $item['attribute_values']) ?></td>
                     <td style="text-align: center;"><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td><?= to_currency($item['price']) ?></td>
-                    <td style="height: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
+                    <td style="text-align: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                     <?php if ($discount > 0): ?>
                         <td style="text-align: center;"><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
                     <?php endif; ?>
@@ -155,13 +155,13 @@ if (isset($error_message)) {
                 <?php if ($item['is_serialized']) { ?>
                     <tr class="item-row">
                         <td class="item-description" colspan="<?= $invoice_columns - 1 ?>"></td>
-                        <td style="text-align: center;"><?= esc($item['serialnumber'])    // TODO: serialnumber does not match variable naming conventions for this project ?></td>
+                        <td style="text-align: center;"><?= esc($item['serialnumber'])    // TODO: `serialnumber` does not match variable naming conventions for this project.  Should be `serialNumber`?></td>
                     </tr>
         <?php
                 }
             }
         }
-        ?>
+?>
 
         <tr>
             <td class="blank" colspan="<?= $invoice_columns ?>" style="text-align: center;"><?= '&nbsp;' ?></td>
@@ -188,13 +188,13 @@ if (isset($error_message)) {
         </tr>
 
         <?php
-        $only_sale_check = false;
-        $show_giftcard_remainder = false;
-        foreach ($payments as $payment_id => $payment) {
-            $only_sale_check |= $payment['payment_type'] == lang('Sales.check');
-            $splitpayment = explode(':', $payment['payment_type']);    // TODO: $splitpayment does not meet variable naming standards for this project
-            $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
-        ?>
+$only_sale_check = false;
+$show_giftcard_remainder = false;
+foreach ($payments as $payment_id => $payment) {
+    $only_sale_check |= $payment['payment_type'] == lang('Sales.check');
+    $splitpayment = explode(':', $payment['payment_type']);    // TODO: $splitpayment does not meet variable naming standards for this project
+    $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
+    ?>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
                 <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>

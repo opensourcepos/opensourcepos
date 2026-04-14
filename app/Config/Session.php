@@ -3,8 +3,10 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Session\Handlers\BaseHandler;
 use CodeIgniter\Session\Handlers\DatabaseHandler;
+use CodeIgniter\Session\Handlers\FileHandler;
 
 class Session extends BaseConfig
 {
@@ -124,4 +126,23 @@ class Session extends BaseConfig
      * seconds.
      */
     public int $lockMaxRetries = 300;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        if ($this->driver === DatabaseHandler::class) {
+            try {
+                $db = Database::connect();
+
+                if (!$db->tableExists($this->savePath)) {
+                    $this->driver = FileHandler::class;
+                    $this->savePath = WRITEPATH . 'session';
+                }
+            } catch (DatabaseException $e) {
+                $this->driver = FileHandler::class;
+                $this->savePath = WRITEPATH . 'session';
+            }
+        }
+    }
 }
