@@ -87,3 +87,5 @@ auth.json
 /app/Database/database.sql
 /writable/cache/settings
 /.env.bak
+/.php-cs-fixer.cache
+/build
