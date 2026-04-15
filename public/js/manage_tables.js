@@ -107,7 +107,7 @@
 
 (function(table_support, $) {
 
-    const enable_actions = function(callback) {
+    let enable_actions = function(callback) {
         return function() {
             const selection_empty = selected_rows().length == 0;
             $("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
@@ -183,7 +183,7 @@
         };
     };
 
-    const load_success = function(callback) {
+    let load_success = function(callback) {
         return function(response) {
             typeof options.load_callback == 'function' && options.load_callback();
             options.load_callback = undefined;

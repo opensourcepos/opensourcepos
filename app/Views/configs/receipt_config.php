@@ -338,7 +338,7 @@
     // Validation and submit handling
     $(document).ready(function() {
         if (window.localStorage && window.jsPrintSetup) {
-            var printers = (jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
+            const printers = (jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
             $('#receipt_printer, #invoice_printer, #takings_printer').each(function() {
                 var $this = $(this)
                 $(printers).each(function(key, value) {
@@ -360,7 +360,7 @@
             });
         }
 
-        var dialog_confirmed = window.jsPrintSetup;
+        const dialog_confirmed = window.jsPrintSetup;
 
         $('#receipt_config_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {

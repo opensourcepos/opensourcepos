@@ -198,9 +198,9 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        var enable_disable_invoice_enable = (function() {
-            var invoice_enabled = $("#invoice_enable").is(":checked");
-            var work_order_enabled = $("#work_order_enable").is(":checked");
+        const enable_disable_invoice_enable = (function() {
+            const invoice_enabled = $("#invoice_enable").is(":checked");
+            const work_order_enabled = $("#work_order_enable").is(":checked");
             $("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message, select[name='invoice_type'], #sales_quote_format, select[name='line_sequence'], #last_used_invoice_number, #last_used_quote_number, #quote_default_comments, #work_order_enable, #work_order_format, #last_used_work_order_number").prop("disabled", !invoice_enabled);
             if (invoice_enabled) {
                 $("#work_order_format, #last_used_work_order_number").prop("disabled", !work_order_enabled);
@@ -210,9 +210,9 @@
             return arguments.callee;
         })();
 
-        var enable_disable_work_order_enable = (function() {
-            var work_order_enabled = $("#work_order_enable").is(":checked");
-            var invoice_enabled = $("#invoice_enable").is(":checked");
+        const enable_disable_work_order_enable = (function() {
+            const work_order_enabled = $("#work_order_enable").is(":checked");
+            const invoice_enabled = $("#invoice_enable").is(":checked");
             if (invoice_enabled) {
                 $("#work_order_format, #last_used_work_order_number").prop("disabled", !work_order_enabled);
             }
