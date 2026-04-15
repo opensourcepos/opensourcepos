@@ -664,7 +664,7 @@ class Items extends Secure_Controller
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
         // Wrap the entire save sequence in a single transaction for atomicity
-        $this->db->transStart();
+        $this->db->transBegin();
 
         $success = $this->item->save_value($item_data, $item_id);
         $new_item = false;
@@ -731,14 +731,16 @@ class Items extends Secure_Controller
             $success = $success && $this->saveItemAttributes($item_id);
         }
 
-        $this->db->transComplete();
-
-        if ($this->db->transStatus() && $success && $upload_success) {
+        // Check all success conditions before committing
+        if ($success && $upload_success) {
+            $this->db->transCommit();
             $message = lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name'];
 
             return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $item_id]);
         }
 
+        // Rollback on failure
+        $this->db->transRollback();
         $message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($upload_data['error']);
 
         return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $item_id]);
