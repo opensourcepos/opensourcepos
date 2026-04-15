@@ -601,6 +601,10 @@ class Attribute extends Model
      */
     public function saveAttributeLink(int $itemId, int $definitionId, int $attributeId): bool
     {
+        if ($attributeId <= 0) {
+            return false;
+        }
+
         $normalizedItemId = empty($itemId) ? null : $itemId;
         $normalizedAttributeId = empty($attributeId) ? null : $attributeId;
 
