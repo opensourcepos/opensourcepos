@@ -817,6 +817,7 @@ class Sales extends Secure_Controller
 
                 if ($data['sale_id_num'] == NEW_ENTRY) {
                     $data['error_message'] = lang('Sales.transaction_failed');
+                    return $this->_reload($data);
                 } else {
                     $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
                     $this->sale_lib->clear_all();
@@ -900,6 +901,7 @@ class Sales extends Secure_Controller
 
             if ($data['sale_id_num'] == NEW_ENTRY) {
                 $data['error_message'] = lang('Sales.transaction_failed');
+                return $this->_reload($data);
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
                 $this->sale_lib->clear_all();
@@ -1693,7 +1695,7 @@ class Sales extends Secure_Controller
         $this->item->update_item_number($item_id, $item_number);
         $cart = $this->sale_lib->get_cart();
         $x = $this->search_cart_for_item_id($item_id, $cart);
-        if ($x != null) {
+        if ($x !== null) {
             $cart[$x]['item_number'] = $item_number;
         }
         $this->sale_lib->set_cart($cart);
@@ -1716,7 +1718,7 @@ class Sales extends Secure_Controller
         $cart = $this->sale_lib->get_cart();
         $x = $this->search_cart_for_item_id($item_id, $cart);
 
-        if ($x != null) {
+        if ($x !== null) {
             $cart[$x]['name'] = $name;
         }
 
@@ -1740,7 +1742,7 @@ class Sales extends Secure_Controller
         $cart = $this->sale_lib->get_cart();
         $x = $this->search_cart_for_item_id($item_id, $cart);
 
-        if ($x != null) {
+        if ($x !== null) {
             $cart[$x]['description'] = $description;
         }
 
