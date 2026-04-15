@@ -198,6 +198,12 @@ class Receivings extends Secure_Controller
     {
         $data = [];
 
+        // Validate item_id to prevent null/empty values from reaching edit_item()
+        if ($item_id === null || $item_id === '') {
+            $data['error'] = lang('Receivings.error_editing_item');
+            return $this->_reload($data);
+        }
+
         $validation_rule = [
             'price'    => 'trim|required|decimal_locale',
             'quantity' => 'trim|required|decimal_locale',
