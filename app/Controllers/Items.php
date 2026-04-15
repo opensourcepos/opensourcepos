@@ -663,10 +663,13 @@ class Items extends Secure_Controller
 
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
-        if ($this->item->save_value($item_data, $item_id)) {
-            $success = true;
-            $new_item = false;
+        // Wrap the entire save sequence in a single transaction for atomicity
+        $this->db->transStart();
 
+        $success = $this->item->save_value($item_data, $item_id);
+        $new_item = false;
+
+        if ($success) {
             if ($item_id === NEW_ENTRY) {
                 $item_id = $item_data['item_id'];
                 $new_item = true;
@@ -690,7 +693,7 @@ class Items extends Secure_Controller
 
                     $tax_name_index++;
                 }
-                $success &= $this->item_taxes->save_value($items_taxes_data, $item_id);
+                $success = $success && $this->item_taxes->save_value($items_taxes_data, $item_id);
             }
 
             // Save item quantity
@@ -711,7 +714,7 @@ class Items extends Secure_Controller
                 $item_quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id']);
 
                 if ($item_quantity->quantity != $updated_quantity || $new_item) {
-                    $success = $success &&  $this->item_quantity->save_value($location_detail, $item_id, $location['location_id']);
+                    $success = $success && $this->item_quantity->save_value($location_detail, $item_id, $location['location_id']);
 
                     $inv_data = [
                         'trans_date'      => date('Y-m-d H:i:s'),
@@ -726,21 +729,19 @@ class Items extends Secure_Controller
                 }
             }
             $success = $success && $this->saveItemAttributes($item_id);
-
-            if ($success && $upload_success) {
-                $message = lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name'];
-
-                return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $item_id]);
-            } else {
-                $message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($upload_data['error']);
-
-                return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $item_id]);
-            }
-        } else {
-            $message = lang('Items.error_adding_updating') . ' ' . $item_data['name'];
-
-            return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => NEW_ENTRY]);
         }
+
+        $this->db->transComplete();
+
+        if ($this->db->transStatus() && $success && $upload_success) {
+            $message = lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name'];
+
+            return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $item_id]);
+        }
+
+        $message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($upload_data['error']);
+
+        return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $item_id]);
     }
 
     /**
