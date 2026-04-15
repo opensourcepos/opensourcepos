@@ -1302,7 +1302,7 @@ class Items extends Secure_Controller
             $items_taxes_data[] = ['name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']];
         }
 
-        if (isset($items_taxes_data)) {
+        if (!empty($items_taxes_data)) {
             return $this->item_taxes->save_value($items_taxes_data, $item_data['item_id']);
         }
 
