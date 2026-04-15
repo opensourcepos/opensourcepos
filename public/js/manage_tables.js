@@ -1,16 +1,16 @@
 (function(dialog_support, $) {
 
-    var btn_id, dialog_ref;
+    let btn_id, dialog_ref;
 
-    var hide = function() {
+    const hide = function() {
         dialog_ref && dialog_ref.close();
     };
 
-    var clicked_id = function() {
+    const clicked_id = function() {
         return btn_id;
     };
 
-    var submit = function(button_id) {
+    const submit = function(button_id) {
         return function(dlog_ref) {
             const form = $('form', dlog_ref.$modalBody).first();
             const validator = form.data('validator');
@@ -27,31 +27,31 @@
         }
     };
 
-    var button_class = {
+    const button_class = {
         'submit' : 'btn-primary',
         'delete' : 'btn-danger'
     };
 
-    var init = function(selector) {
+    const init = function(selector) {
 
-        var buttons = function(event) {
-            var buttons = [];
-            var dialog_class = 'modal-dlg';
+        const buttons = function(event) {
+            const buttons = [];
+            let dialog_class = 'modal-dlg';
             $.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
-                var width_class = className.split("modal-dlg-");
+                const width_class = className.split("modal-dlg-");
                 if (width_class && width_class.length > 1) {
                     dialog_class = className;
                 }
             });
 
-            var has_new_btn = "btnNew" in $(this).data();
+            const has_new_btn = "btnNew" in $(this).data();
             $.each($(this).data(), function(name, value) {
-                var btn_class = name.split("btn");
+                const btn_class = name.split("btn");
                 if (btn_class && btn_class.length > 1) {
-                    var btn_name = btn_class[1].toLowerCase();
-                    var is_submit = btn_name == 'submit';
-                    var is_new = btn_name === 'new';
-                    var is_enter = has_new_btn ? is_new: is_submit;
+                    const btn_name = btn_class[1].toLowerCase();
+                    const is_submit = btn_name == 'submit';
+                    const is_new = btn_name === 'new';
+                    const is_enter = has_new_btn ? is_new: is_submit;
                     buttons.push({
                         id: btn_name,
                         label: value,
@@ -78,12 +78,12 @@
         $(selector).each(function(index, $element) {
 
             return $(selector).off('click').on('click', function(event) {
-                var $link = $(event.target);
+                let $link = $(event.target);
                 $link = !$link.is("a, button") ? $link.parents("a, button") : $link ;
                 BootstrapDialog.show($.extend({
                     title: $link.attr('title'),
                     message: (function() {
-                        var node = $('<div></div>');
+                        const node = $('<div></div>');
                         $.get($link.attr('href') || $link.data('href'), function(data) {
                             node.html(data);
                         });
@@ -107,34 +107,34 @@
 
 (function(table_support, $) {
 
-    var enable_actions = function(callback) {
+    const enable_actions = function(callback) {
         return function() {
-            var selection_empty = selected_rows().length == 0;
+            const selection_empty = selected_rows().length == 0;
             $("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
             typeof callback == 'function' && callback();
         }
     };
 
-    var table = function() {
+    const table = function() {
         return $("#table").data('bootstrap.table');
     }
 
-    var selected_ids = function () {
+    const selected_ids = function () {
         return $.map(table().getSelections(), function (element) {
             return element[options.uniqueId || 'id'] !== '-' ? element[options.uniqueId || 'id'] : null;
         });
     };
 
-    var selected_rows = function () {
+    const selected_rows = function () {
         return $("#table td input:checkbox:checked").parents("tr");
     };
 
-    var row_selector = function(id) {
+    const row_selector = function(id) {
         return "tr[data-uniqueid='" + id + "']";
     };
 
-    var rows_selector = function(ids) {
-        var selectors = [];
+    const rows_selector = function(ids) {
+        const selectors = [];
         ids = ids instanceof Array ? ids : ("" + ids).split(":");
         $.each(ids, function(index, element) {
             selectors.push(row_selector(element));
@@ -142,22 +142,22 @@
         return selectors;;
     };
 
-    var highlight_row = function (id, color) {
+    const highlight_row = function (id, color) {
         $(rows_selector(id)).each(function(index, element) {
-            var original = $(element).css('backgroundColor');
+            const original = $(element).css('backgroundColor');
             $(element).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
                 .animate({backgroundColor: color || '#e1ffdd'}, 5000)
                 .animate({backgroundColor: original}, "slow", "linear");
         });
     };
 
-    var do_action = function(action) {
+    const do_action = function(action) {
         return function (url, ids) {
             if (confirm($.fn.bootstrapTable.defaults.formatConfirmAction(action))) {
                 $.post((url || options.resource) + '/' + action, {'ids[]': ids || selected_ids()}, function (response) {
                     // Delete was successful, remove checkbox rows
                     if (response.success) {
-                        var selector = ids ? row_selector(ids) : selected_rows();
+                        const selector = ids ? row_selector(ids) : selected_rows();
                         table().collapseAllRows();
                         $(selector).each(function (index, element) {
                             $(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
@@ -183,7 +183,7 @@
         };
     };
 
-    var load_success = function(callback) {
+    const load_success = function(callback) {
         return function(response) {
             typeof options.load_callback == 'function' && options.load_callback();
             options.load_callback = undefined;
@@ -192,18 +192,18 @@
         }
     };
 
-    var options;
+    let options;
 
-    var toggle_column_visibility = function() {
+    const toggle_column_visibility = function() {
         if (localStorage[options.employee_id]) {
-            var user_settings = JSON.parse(localStorage[options.employee_id]);
+            const user_settings = JSON.parse(localStorage[options.employee_id]);
             user_settings[options.resource] && $.each(user_settings[options.resource], function(index, element) {
                 element ? table().showColumn(index) : table().hideColumn(index);
             });
         }
     };
 
-    var init = function (_options) {
+    const init = function (_options) {
         options = _options;
         enable_actions = enable_actions(options.enableActions);
         load_success = load_success(options.onLoadSuccess);
@@ -244,7 +244,7 @@
                 enable_actions();
             },
             onColumnSwitch : function(field, checked) {
-                var user_settings = localStorage[options.employee_id];
+                let user_settings = localStorage[options.employee_id];
                 user_settings = (user_settings && JSON.parse(user_settings)) || {};
                 user_settings[options.resource] = user_settings[options.resource] || {};
                 user_settings[options.resource][field] = checked;
@@ -264,36 +264,36 @@
         dialog_support.init("button.modal-dlg");
     };
 
-    var init_delete = function (confirmMessage) {
+    const init_delete = function (confirmMessage) {
         $("#delete").click(function(event) {
             do_action("delete")();
         });
     };
 
-    var init_restore = function (confirmMessage) {
+    const init_restore = function (confirmMessage) {
         $("#restore").click(function(event) {
             do_action("restore")();
         });
     };
 
-    var refresh = function() {
+    const refresh = function() {
         table().refresh();
     }
 
-    var submit_handler = function(url) {
+    const submit_handler = function(url) {
         return function (resource, response) {
-            var id = response.id !== undefined ? response.id.toString() : "";
+            const id = response.id !== undefined ? response.id.toString() : "";
             if (!response.success) {
                 $.notify(response.message, { type: 'danger' });
             } else {
-                var message = response.message;
-                var selector = rows_selector(response.id);
-                var rows = $(selector.join(",")).length;
+                const message = response.message;
+                const selector = rows_selector(response.id);
+                const rows = $(selector.join(",")).length;
                 if (rows > 0 && rows < 15) {
-                    var ids = id.split(":");
+                    const ids = id.split(":");
                     $.get([url || resource + '/row', id].join("/"), {}, function (response) {
                         $.each(selector, function (index, element) {
-                            var id = $(element).data('uniqueid');
+                            const id = $(element).data('uniqueid');
                             table().updateByUniqueId({id: id, row: response[id] || response});
                         });
                         dialog_support.init("a.modal-dlg");
@@ -313,7 +313,7 @@
         };
     };
 
-    var handle_submit = submit_handler();
+    const handle_submit = submit_handler();
 
     $.extend(table_support, {
         submit_handler: function(url) {
