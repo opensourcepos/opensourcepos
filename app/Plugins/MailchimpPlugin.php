@@ -2,8 +2,8 @@
 
 namespace App\Plugins;
 
+use app\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use App\Libraries\Plugins\BasePlugin;
-use App\Libraries\Mailchimp_lib;
 use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
@@ -11,10 +11,18 @@ use Exception;
 
 /**
  * Plugin that integrates OSPOS with Mailchimp for customer newsletter subscriptions.
+ * Copyright (C) 2026 opensourcepos.org
  */
 class MailchimpPlugin extends BasePlugin
 {
-    private ?Mailchimp_lib $mailchimpLib = null;
+    private MailchimpLibrary $mailchimpLibrary;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->mailchimpLibrary = new MailchimpLibrary();
+        log_message('debug', 'MailchimpPlugin initialized');
+    }
 
     public function getPluginId(): string
     {
@@ -158,10 +166,10 @@ class MailchimpPlugin extends BasePlugin
 
     private function getMailchimpLib(array $params = []): Mailchimp_lib
     {
-        if ($this->mailchimpLib === null) {
-            $this->mailchimpLib = new Mailchimp_lib($params);
+        if ($this->mailchimpLibrary === null) {
+            $this->mailchimpLibrary = new Mailchimp_lib($params);
         }
-        return $this->mailchimpLib;
+        return $this->mailchimpLibrary;
     }
 
     /**
