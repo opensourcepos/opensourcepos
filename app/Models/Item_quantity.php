@@ -2,19 +2,15 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Item_quantity class
- */
-class Item_quantity extends Model
+class Item_quantity extends BaseModel
 {
-    protected $table = 'item_quantities';
-    protected $primaryKey = 'item_id';
-    protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'item_quantities';
+    protected string $primaryKey = 'item_id';
+    protected bool $useAutoIncrement = false;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'quantity'
     ];
 

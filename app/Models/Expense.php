@@ -3,20 +3,16 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Expense class
- */
-class Expense extends Model
+class Expense extends BaseModel
 {
-    protected $table = 'expenses';
-    protected $primaryKey = 'expense_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'expenses';
+    protected string $primaryKey = 'expense_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'date',
         'amount',
         'payment_type',

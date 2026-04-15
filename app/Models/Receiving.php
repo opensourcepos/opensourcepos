@@ -3,20 +3,16 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * Receiving class
- */
-class Receiving extends Model
+class Receiving extends BaseModel
 {
-    protected $table = 'receivings';
-    protected $primaryKey = 'receiving_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'receivings';
+    protected string $primaryKey = 'receiving_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'receiving_time',
         'supplier_id',
         'employee_id',

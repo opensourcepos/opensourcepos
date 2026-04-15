@@ -3,20 +3,15 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Tax Jurisdiction class
- */
-
-class Tax_jurisdiction extends Model
+class Tax_jurisdiction extends BaseModel
 {
-    protected $table = 'tax_jurisdictions';
-    protected $primaryKey = 'cashup_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'tax_jurisdictions';
+    protected string $primaryKey = 'cashup_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'jurisdiction_name',
         'tax_group',
         'tax_type',

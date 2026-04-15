@@ -3,20 +3,15 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Tax Category class
- */
-
-class Tax_category extends Model
+class Tax_category extends BaseModel
 {
-    protected $table = 'tax_categories';
-    protected $primaryKey = 'tax_category_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'tax_categories';
+    protected string $primaryKey = 'tax_category_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'tax_category',
         'tax_group_sequence',
         'deleted'

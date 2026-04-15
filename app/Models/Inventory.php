@@ -3,21 +3,14 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 
-/**
- * Inventory class
- *
- * @property employee employee
- *
- */
-class Inventory extends Model
+class Inventory extends BaseModel
 {
-    protected $table = 'inventory';
-    protected $primaryKey = 'trans_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'inventory';
+    protected string $primaryKey = 'trans_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'trans_items',
         'trans_user',
         'trans_date',

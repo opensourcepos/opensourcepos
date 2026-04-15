@@ -3,22 +3,16 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * Appconfig class
- *
- *
- */
-class Appconfig extends Model
+class Appconfig extends BaseModel
 {
-    protected $table = 'app_config';
-    protected $primaryKey = 'key';
-    protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'app_config';
+    protected string $primaryKey = 'key';
+    protected bool $useAutoIncrement = false;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'key',
         'value'
     ];

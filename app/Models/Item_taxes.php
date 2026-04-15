@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-/**
- * Item_taxes class
- */
-class Item_taxes extends Model
+class Item_taxes extends BaseModel
 {
-    protected $table = 'item_taxes';
-    protected $primaryKey = 'item_id';
-    protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'item_taxes';
+    protected string $primaryKey = 'item_id';
+    protected bool $useAutoIncrement = false;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'name',
         'percent'
     ];

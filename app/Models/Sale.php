@@ -4,21 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use App\Libraries\Sale_lib;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * Sale class
- */
-class Sale extends Model
+class Sale extends BaseModel
 {
-    protected $table = 'sales';
-    protected $primaryKey = 'sale_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'sales';
+    protected string $primaryKey = 'sale_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'sale_time',
         'customer_id',
         'employee_id',

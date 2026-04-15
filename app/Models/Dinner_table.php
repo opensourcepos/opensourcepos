@@ -3,18 +3,14 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 
-/**
- * Dinner_table class
- */
-class Dinner_table extends Model
+class Dinner_table extends BaseModel
 {
-    protected $table = 'dinner_tables';
-    protected $primaryKey = 'dinner_table_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'dinner_tables';
+    protected string $primaryKey = 'dinner_table_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'name',
         'status',
         'deleted'

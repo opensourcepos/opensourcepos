@@ -3,19 +3,15 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Base class for People classes
- */
-class Person extends Model
+class Person extends BaseModel
 {
-    protected $table = 'people';
-    protected $primaryKey = 'person_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'people';
+    protected string $primaryKey = 'person_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'first_name',
         'last_name',
         'phone_number',

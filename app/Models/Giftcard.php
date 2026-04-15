@@ -3,19 +3,15 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Giftcard class
- */
-class Giftcard extends Model
+class Giftcard extends BaseModel
 {
-    protected $table = 'giftcards';
-    protected $primaryKey = 'giftcard_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'giftcards';
+    protected string $primaryKey = 'giftcard_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'giftcard_number',
         'value',
         'deleted',

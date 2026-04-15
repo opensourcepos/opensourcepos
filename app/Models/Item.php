@@ -3,18 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use ReflectionException;
 use stdClass;
 
-/**
- * Item class
- *
- * @property inventory inventory
- * @property item_quantity item_quantity
- */
-class Item extends Model
+class Item extends BaseModel
 {
 
     public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
@@ -31,11 +24,11 @@ class Item extends Model
         'allow_alt_description',
         'is_serialized'
     ];
-    protected $table = 'items';
-    protected $primaryKey = 'item_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'items';
+    protected string $primaryKey = 'item_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'name',
         'category',
         'supplier_id',

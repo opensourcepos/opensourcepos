@@ -3,19 +3,15 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Expense_category class
- */
-class Expense_category extends Model
+class Expense_category extends BaseModel
 {
-    protected $table = 'expense_categories';
-    protected $primaryKey = 'expense_category_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'expense_categories';
+    protected string $primaryKey = 'expense_category_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'category_name',
         'category_description',
         'deleted'

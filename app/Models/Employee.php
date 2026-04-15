@@ -6,20 +6,14 @@ use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
 use stdClass;
 
-/**
- * Employee class
- *
- * @property session session
- *
- */
 class Employee extends Person
 {
     public Session $session;
-    protected $table = 'Employees';
-    protected $primaryKey = 'person_id';
-    protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'Employees';
+    protected string $primaryKey = 'person_id';
+    protected bool $useAutoIncrement = false;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'username',
         'password',
         'deleted',

@@ -3,20 +3,16 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Tax Code class
- */
-class Tax_code extends Model
+class Tax_code extends BaseModel
 {
-    protected $table = 'tax_codes';
-    protected $primaryKey = 'tax_code_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'tax_codes';
+    protected string $primaryKey = 'tax_code_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'tax_code',
         'tax_code_name',
         'city',

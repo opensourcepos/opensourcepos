@@ -3,18 +3,14 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 
-/**
- * Module class
- */
-class Module extends Model
+class Module extends BaseModel
 {
-    protected $table = 'modules';
-    protected $primaryKey = 'module_id';
-    protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'modules';
+    protected string $primaryKey = 'module_id';
+    protected bool $useAutoIncrement = false;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'name_lang_key',
         'desc_lang_key',
         'sort'

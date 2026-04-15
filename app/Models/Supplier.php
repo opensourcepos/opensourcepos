@@ -4,16 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 
-/**
- * Supplier class
- */
 class Supplier extends Person
 {
-    protected $table = 'suppliers';
-    protected $primaryKey = 'person_id';
-    protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'suppliers';
+    protected string $primaryKey = 'person_id';
+    protected bool $useAutoIncrement = false;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'company_name',
         'account_number',
         'tax_id',

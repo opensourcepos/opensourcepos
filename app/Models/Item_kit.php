@@ -3,20 +3,16 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Item_kit class
- */
-class Item_kit extends Model
+class Item_kit extends BaseModel
 {
-    protected $table = 'item_kits';
-    protected $primaryKey = 'item_kit_id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected string $table = 'item_kits';
+    protected string $primaryKey = 'item_kit_id';
+    protected bool $useAutoIncrement = true;
+    protected bool $useSoftDeletes = false;
+    protected array $allowedFields = [
         'item_kit_number',
         'name',
         'description',
