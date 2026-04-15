@@ -450,10 +450,9 @@ class Item extends Model
 
         // If id > 0 and record exists by primary key only, update it
         if ($id > 0) {
-            // Check existence strictly by primary key
+            // Check existence strictly by primary key (regardless of soft-delete status)
             $builder = $this->db->table('items');
             $builder->where($primaryKey, $id);
-            $builder->where('deleted', 0);
             $exists = $builder->countAllResults() > 0;
             
             if ($exists) {
@@ -470,8 +469,12 @@ class Item extends Model
         // Insert new record with transaction for atomicity
         $this->db->transBegin();
         
+        // Remove primary key from insert payload if present
+        $insertData = $data;
+        unset($insertData[$primaryKey]);
+        
         $builder = $this->db->table('items');
-        $success = $builder->insert($data);
+        $success = $builder->insert($insertData);
         
         if ($success) {
             $data[$primaryKey] = (int)$this->db->insertID();
