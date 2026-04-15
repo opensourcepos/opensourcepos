@@ -448,30 +448,46 @@ class Item extends Model
         $primaryKey = $this->primaryKey;
         $id = $data[$primaryKey] ?? NEW_ENTRY;
 
-        // If id > 0 and record exists, update it
-        if ($id > 0 && $this->exists($id, true)) {
-            // Remove primary key from data array for update
-            $updateData = $data;
-            unset($updateData[$primaryKey]);
-            
+        // If id > 0 and record exists by primary key only, update it
+        if ($id > 0) {
+            // Check existence strictly by primary key
             $builder = $this->db->table('items');
             $builder->where($primaryKey, $id);
-            return $builder->update($updateData);
+            $builder->where('deleted', 0);
+            $exists = $builder->countAllResults() > 0;
+            
+            if ($exists) {
+                // Remove primary key from data array for update
+                $updateData = $data;
+                unset($updateData[$primaryKey]);
+                
+                $builder = $this->db->table('items');
+                $builder->where($primaryKey, $id);
+                return $builder->update($updateData);
+            }
         }
 
-        // Insert new record
+        // Insert new record with transaction for atomicity
+        $this->db->transBegin();
+        
         $builder = $this->db->table('items');
-        if ($builder->insert($data)) {
+        $success = $builder->insert($data);
+        
+        if ($success) {
             $data[$primaryKey] = (int)$this->db->insertID();
             
             // Update low_sell_item_id for new items
             $builder = $this->db->table('items');
             $builder->where($primaryKey, $data[$primaryKey]);
-            $builder->update(['low_sell_item_id' => $data[$primaryKey]]);
-
+            $success = $builder->update(['low_sell_item_id' => $data[$primaryKey]]);
+        }
+        
+        if ($success) {
+            $this->db->transCommit();
             return true;
         }
-
+        
+        $this->db->transRollback();
         return false;
     }
 
