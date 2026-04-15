@@ -450,9 +450,13 @@ class Item extends Model
 
         // If id > 0 and record exists, update it
         if ($id > 0 && $this->exists($id, true)) {
+            // Remove primary key from data array for update
+            $updateData = $data;
+            unset($updateData[$primaryKey]);
+            
             $builder = $this->db->table('items');
             $builder->where($primaryKey, $id);
-            return $builder->update($data);
+            return $builder->update($updateData);
         }
 
         // Insert new record
