@@ -20,8 +20,8 @@ import { Stream } from 'readable-stream'
 const {finished, pipeline} = Stream.promises
 
 
-var prod0js;
-var prod1js;
+let prod0js;
+let prod1js;
 
 // Clear and remove the resources folder
 gulp.task('clean', function () {
@@ -194,7 +194,7 @@ gulp.task('prod-js', function() {
 gulp.task('debug-login-js', function() {
     // Match only core jQuery (jquery-HASH.js), exclude jquery plugins (jquery-HASH.form.js, etc) and jquery-ui (jquery-ui-HASH.js)
     // Pattern: jquery-[hash].js where hash is alphanumeric - core jQuery only
-    var loginDebugJs = gulp.src(['./public/resources/js/jquery-*.js', '!./public/resources/js/jquery-*.form.js', '!./public/resources/js/jquery-*.validate.js', '!./public/resources/js/jquery-ui-*.js']);
+    const loginDebugJs = gulp.src(['./public/resources/js/jquery-*.js', '!./public/resources/js/jquery-*.form.js', '!./public/resources/js/jquery-*.validate.js', '!./public/resources/js/jquery-ui-*.js']);
     return gulp.src('./app/Views/login.php').pipe(inject(loginDebugJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:debug:js -->'})).pipe(gulp.dest('./app/Views'));
 });
 
@@ -261,7 +261,7 @@ gulp.task('prod-css', function() {
         './public/css/reports.css'
     ]).pipe(cleanCSS({compatibility: 'ie8'}));
 
-    var prodcss = series(opensourcepos1css, opensourcepos2css, opensourcepos3css, opensourcepos4css, opensourcepos5css)
+    const prodcss = series(opensourcepos1css, opensourcepos2css, opensourcepos3css, opensourcepos4css, opensourcepos5css)
         .pipe(concat('opensourcepos.min.css')).pipe(rev()).pipe(gulp.dest('public/resources'));
 
 
