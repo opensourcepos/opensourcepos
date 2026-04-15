@@ -10,19 +10,6 @@ The OSPOS Plugin System allows third-party integrations to extend the applicatio
 
 Plugins are self-contained packages that can be installed by simply dropping the plugin folder into `app/Plugins/`:
 
-```text
-app/Plugins/
-├── MailchimpPlugin/              # Plugin directory (self-contained)
-│   ├── MailchimpPlugin.php       # Main plugin class (required - must match directory name)
-│   ├── Language/                # Plugin-specific translations (self-contained)
-│   │   ├── en/
-│   │   │   └── MailchimpPlugin.php
-│   │   └── es-ES/
-│   │       └── MailchimpPlugin.php
-│   └── Views/                   # Plugin-specific views
-│       └── config.php
-```
-
 ### Installation Steps
 
 1. **Download the plugin** - Copy the plugin folder/file to `app/Plugins/`
@@ -130,7 +117,7 @@ In your core view files, use the `pluginContent()` helper to define injection po
 In your plugin class, register a listener that returns HTML content:
 
 ```php
-class MailchimpPlugin extends BasePlugin
+class ExamplePlugin extends BasePlugin
 {
     public function registerEvents(): void
     {
@@ -142,7 +129,7 @@ class MailchimpPlugin extends BasePlugin
     
     public function injectCustomerTab(array $data): string
     {
-        return view('Plugins/MailchimpPlugin/Views/customer_tab', $data);
+        return view('Plugins/ExamplePlugin/Views/customer_tab', $data);
     }
 }
 ```
@@ -152,11 +139,11 @@ class MailchimpPlugin extends BasePlugin
 The plugin's view files are self-contained within the plugin directory:
 
 ```php
-// app/Plugins/MailchimpPlugin/Views/customer_tab.php
+// app/Plugins/ExamplePlugin/Views/customer_tab.php
 <li>
-    <a href="#mailchimp_panel" data-toggle="tab">
+    <a href="#Example_panel" data-toggle="tab">
         <span class="glyphicon glyphicon-envelope">&nbsp;</span>
-        Mailchimp
+        Example
     </a>
 </li>
 ```
@@ -198,6 +185,18 @@ Core views should define these standard hook points:
 ### Simple Plugin (Single File)
 
 For plugins that only need to listen to events without complex UI or database tables:
+
+```text
+app/Plugins/
+└── ExamplePlugin/                # Plugin directory (self-contained)
+    ├── Language/                 # Plugin-specific translations (self-contained)
+    │   ├── en/
+    │   │   └── ExamplePlugin.php
+    ├── Views/                    # Plugin-specific views
+    │   └── config.php
+    ├── ExamplePlugin.php         # Main class - namespace: App\Plugins\ExamplePlugin\ExamplePlugin
+    └── LICENSE                   # Plugin license (required)
+```
 
 ```php
 <?php
@@ -266,53 +265,53 @@ For plugins that need database tables, controllers, models, and views:
 
 ```text
 app/Plugins/
-└── MailchimpPlugin/                    # Plugin directory
-    ├── MailchimpPlugin.php             # Main class - namespace: App\Plugins\MailchimpPlugin\MailchimpPlugin
-    ├── Models/                         # Plugin models
-    │   └── MailchimpData.php
-    ├── Controllers/                    # Plugin controllers
-    │   └── Dashboard.php
-    ├── Views/                          # Plugin views
+└── ExamplePlugin/                # Plugin directory
+    ├── Controllers/              # Plugin controllers
+    │   └── ExampleController.php
+    ├── Language/                 # Plugin translations (self-contained)
+    │   ├── en/                   # IETF BCP 47 locale format per CodeIgniter standards
+    │   │   └── ExamplePlugin.php
+    │   └── es-ES/
+    │       └── ExamplePlugin.php
+    │── Libraries/                # Plugin libraries
+    │   └── ApiClient.php
+    ├── Models/                   # Plugin models
+    │   └── ExampleModel.php
+    ├── Views/                    # Plugin views
     │   ├── config.php
     │   └── dashboard.php
-    ├── Language/                       # Plugin translations (self-contained)
-    │   ├── en/
-    │   │   └── MailchimpPlugin.php
-    │   └── es-ES/
-    │       └── MailchimpPlugin.php
-    └── Libraries/                      # Plugin libraries
-        └── ApiClient.php
+    ├── ExamplePlugin.php         # Main class - namespace: App\Plugins\ExamplePlugin
+    └── LICENSE                   # Plugin license (required)
 ```
-
 **Main Plugin Class:**
 
 ```php
 <?php
-// app/Plugins/MailchimpPlugin/MailchimpPlugin.php
+// app/Plugins/ExamplePlugin/ExamplePlugin.php
 
-namespace App\Plugins\MailchimpPlugin;
+namespace App\Plugins\ExamplePlugin;
 
 use App\Libraries\Plugins\BasePlugin;
-use App\Plugins\MailchimpPlugin\Models\MailchimpData;
+use App\Plugins\ExamplePlugin\Models\ExampleData;
 use CodeIgniter\Events\Events;
 
-class MailchimpPlugin extends BasePlugin
+class ExamplePlugin extends BasePlugin
 {
-    private ?MailchimpData $dataModel = null;
+    private ?ExampleData $dataModel = null;
     
     public function getPluginId(): string
     {
-        return 'mailchimp';
+        return 'Example';
     }
 
     public function getPluginName(): string
     {
-        return 'Mailchimp';
+        return 'Example';
     }
 
     public function getPluginDescription(): string
     {
-        return 'Integrate with Mailchimp to sync customers to mailing lists.';
+        return 'Integrate with Example to sync customers to mailing lists.';
     }
 
     public function getVersion(): string
@@ -326,10 +325,10 @@ class MailchimpPlugin extends BasePlugin
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
     }
 
-    private function getDataModel(): MailchimpData
+    private function getDataModel(): ExampleData
     {
         if ($this->dataModel === null) {
-            $this->dataModel = new MailchimpData();
+            $this->dataModel = new ExampleData();
         }
         return $this->dataModel;
     }
@@ -359,19 +358,19 @@ class MailchimpPlugin extends BasePlugin
 
     public function getConfigView(): ?string
     {
-        return 'Plugins/MailchimpPlugin/Views/config';
+        return 'Plugins/ExamplePlugin/Views/config';
     }
     
     protected function lang(string $key, array $data = []): string
     {
         $language = \Config\Services::language();
-        $language->addLanguagePath(APPPATH . 'Plugins/MailchimpPlugin/Language/');
+        $language->addLanguagePath(APPPATH . 'Plugins/ExamplePlugin/Language/');
         return $language->getLine($key, $data);
     }
     
     protected function getPluginDir(): string
     {
-        return 'MailchimpPlugin';
+        return 'ExamplePlugin';
     }
 }
 ```
@@ -384,34 +383,31 @@ Plugins can include their own language files, making them completely self-contai
 
 ```text
 app/Plugins/
-└── MailchimpPlugin/
-    ├── MailchimpPlugin.php
-    ├── Language/
-    │   ├── en/
-    │   │   └── MailchimpPlugin.php      # English translations
-    │   ├── es-ES/
-    │   │   └── MailchimpPlugin.php      # Spanish translations
-    │   └── de-DE/
-    │       └── MailchimpPlugin.php      # German translations
-    └── Views/
-        └── config.php
+└── ExamplePlugin/
+    └── Language/
+        ├── en/
+        │   └── ExamplePlugin.php      # English translations
+        ├── es-ES/
+        │   └── ExamplePlugin.php      # Spanish translations
+        └── de-DE/
+            └── ExamplePlugin.php      # German translations
 ```
 
 ### Language File Format
 
-Each language file returns an array of translation strings:
+Each language file returns an array of translation strings per CodeIgniter standards:
 
 ```php
 <?php
-// app/Plugins/MailchimpPlugin/Language/en/MailchimpPlugin.php
+// app/Plugins/ExamplePlugin/Language/en/ExamplePlugin.php
 
 return [
-    'mailchimp'                     => 'Mailchimp',
-    'mailchimp_description'         => 'Integrate with Mailchimp to sync customers to mailing lists.',
-    'mailchimp_api_key'             => 'Mailchimp API Key',
-    'mailchimp_configuration'       => 'Mailchimp Configuration',
-    'mailchimp_key_successfully'    => 'API Key is valid.',
-    'mailchimp_key_unsuccessfully'  => 'API Key is invalid.',
+    'Example'                     => 'Example',
+    'Example_description'         => 'Integrate with Example to sync customers to mailing lists.',
+    'Example_api_key'             => 'Example API Key',
+    'Example_configuration'       => 'Example Configuration',
+    'Example_key_successfully'    => 'API Key is valid.',
+    'Example_key_unsuccessfully'  => 'API Key is invalid.',
 ];
 ```
 
@@ -429,7 +425,7 @@ protected function lang(string $key, array $data = []): string
 
 protected function getPluginDir(): string
 {
-    return 'MailchimpPlugin';
+    return 'ExamplePlugin';
 }
 ```
 
@@ -458,18 +454,18 @@ $settings = $this->getSettings();
 $this->saveSettings(['key1' => 'value1', 'key2' => 'value2']);
 ```
 
-Settings are prefixed with the plugin ID (e.g., `mailchimp_api_key`) and stored in `ospos_plugin_config` table.
+Settings are prefixed with the plugin ID (e.g., `example_api_key`) and stored in `ospos_plugin_config` table.
 
 ## Namespace Reference
 
-| File Location | Namespace |
-|--------------|-----------|
-| `app/Plugins/MyPlugin.php` | `App\Plugins\MyPlugin` |
-| `app/Plugins/MailchimpPlugin/MailchimpPlugin.php` | `App\Plugins\MailchimpPlugin\MailchimpPlugin` |
-| `app/Plugins/MailchimpPlugin/Models/MailchimpData.php` | `App\Plugins\MailchimpPlugin\Models\MailchimpData` |
-| `app/Plugins/MailchimpPlugin/Controllers/Dashboard.php` | `App\Plugins\MailchimpPlugin\Controllers\Dashboard` |
-| `app/Plugins/MailchimpPlugin/Libraries/ApiClient.php` | `App\Plugins\MailchimpPlugin\Libraries\ApiClient` |
-| `app/Plugins/MailchimpPlugin/Language/en/MailchimpPlugin.php` | *(Language file - returns array, no namespace)* |
+| File Location                                                 | Namespace                                                 |
+|---------------------------------------------------------------|-----------------------------------------------------------|
+| `app/Plugins/ExamplePlugin.php`                               | `App\Plugins`                                             |
+| `app/Plugins/ExamplePlugin/ExamplePlugin.php`                 | `App\Plugins\ExamplePlugin\ExamplePlugin`                 |
+| `app/Plugins/ExamplePlugin/Models/ExampleModel.php`           | `App\Plugins\ExamplePlugin\Models\ExampleModel`           |
+| `app/Plugins/ExamplePlugin/Controllers/ExampleController.php` | `App\Plugins\ExamplePlugin\Controllers\ExampleController` |
+| `app/Plugins/ExamplePlugin/Libraries/ApiClient.php`           | `App\Plugins\ExamplePlugin\Libraries\ApiClient`           |
+| `app/Plugins/ExamplePlugin/Language/en/ExamplePlugin.php`     | *(Language file - returns array, no namespace)*           |
 
 ## Database
 
@@ -511,18 +507,42 @@ Check logs in `writable/logs/`.
 Plugin developers can package their plugins as zip files:
 
 ```text
-MailchimpPlugin-1.0.0.zip
-└── MailchimpPlugin/
-    ├── MailchimpPlugin.php
-    ├── Models/
+ExamplePlugin-1.0.0.zip
+└── ExamplePlugin/
     ├── Controllers/
-    ├── Views/
     ├── Language/
     │   ├── en/
-    │   │   └── MailchimpPlugin.php
+    │   │   └── ExamplePlugin.php
     │   └── es-ES/
-    │       └── MailchimpPlugin.php
-    └── README.md                 # Plugin documentation
+    │       └── ExamplePlugin.php
+    ├── Libraries/
+    │   └── ApiClient.php
+    ├── Models/
+    ├── Views/
+    ├── ExamplePlugin.php
+    └── LICENSE
 ```
 
 Users extract the zip to `app/Plugins/` and the plugin is ready to use.
+
+### License Requirement
+
+Every plugin **must** include a `LICENSE` file in the root of the plugin directory. This file defines the legal terms under which the plugin can be used, modified, and redistributed.
+
+The `LICENSE` file should clearly define:
+
+- **Copyright**: Ownership and copyright notices
+- **Usage Rights**: How the plugin can be used (personal, commercial, etc.)
+- **Modification Rights**: Whether and how the plugin can be modified
+- **Redistribution Rights**: Terms for redistributing the plugin (with or without modifications)
+- **Warranty and Liability**: Any warranties or liability disclaimers
+- **Support Terms**: Unless developed by opensourcepos, indication should be made that support is provided by the plugin developer, not opensourcepos
+
+Common license types include:
+
+- **MIT License**: Permissive license with minimal restrictions
+- **GPL-3.0**: Copyleft license requiring derivative works to use the same license
+- **Apache-2.0**: Permissive license with patent grants
+- **Proprietary**: Custom commercial license with specific terms
+
+Plugin developers are responsible for ensuring their license complies with any third-party dependencies included in the plugin.
