@@ -1268,7 +1268,7 @@ class Items extends Secure_Controller
                 $success &= $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
                 $csv_data['trans_inventory'] = $row["location_$location_name"];
-                $this->inventory->insert($csv_data, false);
+                $success &= (bool)$this->inventory->insert($csv_data, false);
             } elseif ($is_update) {
                 continue;
             } else {
@@ -1276,7 +1276,7 @@ class Items extends Secure_Controller
                 $success &= $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
                 $csv_data['trans_inventory'] = 0;
-                $this->inventory->insert($csv_data, false);
+                $success &= (bool)$this->inventory->insert($csv_data, false);
             }
         }
 
