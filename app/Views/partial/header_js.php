@@ -33,7 +33,7 @@
     });
 
     const csrf_token = function() {
-        return "<?= csrf_hash() ?>";
+        return "<?= esc(csrf_hash(), 'js') ?>";
     };
 
     const csrf_form_base = function() {

@@ -40,7 +40,7 @@
             if ($("input[name*='tax_jurisdiction']:enabled").length > 1) {
                 $(".remove_tax_jurisdiction").show();
             } else {
-                $(".remove_tax_jurisdictions").hide();
+                $(".remove_tax_jurisdiction").hide();
             }
         };
 
