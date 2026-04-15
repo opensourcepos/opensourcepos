@@ -340,7 +340,7 @@
         if (window.localStorage && window.jsPrintSetup) {
             const printers = (jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
             $('#receipt_printer, #invoice_printer, #takings_printer').each(function() {
-                var $this = $(this)
+                const $this = $(this)
                 $(printers).each(function(key, value) {
                     $this.append($('<option>', {
                         value: value

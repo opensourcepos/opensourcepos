@@ -787,7 +787,7 @@ helper('url');
                     $('#customer').val(response.id);
                     $('#select_customer_form').submit();
                 } else {
-                    var $stock_location = $("select[name='stock_location']").val();
+                    const $stock_location = $("select[name='stock_location']").val();
                     $('#item_location').val($stock_location);
                     $('#item').val(response.id);
                     if (stay_open) {
