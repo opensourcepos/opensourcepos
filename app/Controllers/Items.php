@@ -482,9 +482,9 @@ class Items extends Secure_Controller
         foreach ($result as &$item) {
             if (isset($item['item_number']) && empty($item['item_number']) && $this->config['barcode_generate_if_empty']) {
                 if (isset($item['item_id'])) {
-                    $save_item = ['item_number' => $item['item_number']];
-                    $this->item->save_value($save_item, $item['item_id']);
-                }
+                     $save_item = ['item_number' => $item['item_number'], 'item_id' => $item['item_id']];
+                     $this->item->saveValue($save_item);
+                 }
             }
         }
         $data['items'] = $result;
@@ -663,7 +663,12 @@ class Items extends Secure_Controller
 
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
-        if ($this->item->save_value($item_data, $item_id)) {
+        // For updates, include item_id in data array
+        if ($item_id !== NEW_ENTRY) {
+            $item_data['item_id'] = $item_id;
+        }
+
+        if ($this->item->saveValue($item_data)) {
             $success = true;
             $new_item = false;
 
@@ -826,8 +831,8 @@ class Items extends Secure_Controller
      */
     public function getRemoveLogo($item_id): ResponseInterface
     {
-        $item_data = ['pic_filename' => null];
-        $result = $this->item->save_value($item_data, $item_id);
+        $item_data = ['pic_filename' => null, 'item_id' => $item_id];
+        $result = $this->item->saveValue($item_data);
 
         return $this->response->setJSON(['success' => $result]);
     }
@@ -1039,7 +1044,7 @@ class Items extends Secure_Controller
                             return $value !== null && strlen($value);
                         });
 
-                        if (!$isFailedRow && $this->item->save_value($itemData, $itemId)) {
+                        if (!$isFailedRow && $this->item->saveValue($itemData)) {
                             $this->save_tax_data($row, $itemData);
                             $this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId);
                             $csvAttributeValues = $this->extractAttributeData($row);
@@ -1312,8 +1317,8 @@ class Items extends Secure_Controller
                 $images = glob(FCPATH . "uploads/item_pics/$item->pic_filename.*");
                 if (sizeof($images) > 0) {
                     $new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
-                    $item_data = ['pic_filename' => $new_pic_filename];
-                    $this->item->save_value($item_data, $item->item_id);
+                    $item_data = ['pic_filename' => $new_pic_filename, 'item_id' => $item->item_id];
+                    $this->item->saveValue($item_data);
                 }
             }
         }

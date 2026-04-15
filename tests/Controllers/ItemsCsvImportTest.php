@@ -237,7 +237,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $row = $this->db->table('items')
             ->where('item_number', $itemData['item_number'])
@@ -268,7 +268,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $locationId = 1;
         $quantity = 100;
@@ -298,7 +298,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $inventoryData = [
             'trans_inventory' => 50,
@@ -329,7 +329,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $taxesData = [
             ['name' => 'VAT', 'percent' => 20],
@@ -406,7 +406,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
                 'deleted' => false
             ];
 
-            $this->assertTrue($this->item->save_value($itemData));
+            $this->assertTrue($this->item->saveValue($itemData));
         }
 
         $item1 = $this->item->get_info_by_id_or_number('ITEM-A');
@@ -430,7 +430,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($originalData));
+        $this->assertTrue($this->item->saveValue($originalData));
 
         $updatedData = [
             'item_id' => $originalData['item_id'],
@@ -443,7 +443,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($updatedData, $updatedData['item_id']));
+        $this->assertTrue($this->item->saveValue($updatedData));
 
         $updatedItem = $this->item->get_info($updatedData['item_id']);
         $this->assertEquals('Updated Name', $updatedItem->name);
@@ -464,7 +464,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($originalData));
+        $this->assertTrue($this->item->saveValue($originalData));
 
         $definitionData = [
             'definition_name' => 'Color',
@@ -510,7 +510,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $definitionData = [
             'definition_name' => 'Color',
@@ -553,7 +553,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         // Mock Attribute DROPDOWN
         $definitionData = [
@@ -604,7 +604,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $locationId = 1;
 
@@ -633,7 +633,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $savedItem = $this->item->get_info($itemData['item_id']);
         $this->assertEquals(-1, (int)$savedItem->reorder_level);
@@ -672,7 +672,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
                 'deleted' => 0
             ];
 
-            $this->assertTrue($this->item->save_value($itemData));
+            $this->assertTrue($this->item->saveValue($itemData));
 
             $savedItem = $this->item->get_info($itemData['item_id']);
 
@@ -702,7 +702,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $savedItem = $this->item->get_info($itemData['item_id']);
         $this->assertEquals('8471', $savedItem->hsn_code);
@@ -719,7 +719,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $locations = [
             'Warehouse' => 100,
@@ -792,7 +792,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $this->assertIsInt($itemData['item_id']);
         $this->assertGreaterThan(0, $itemData['item_id']);
@@ -812,7 +812,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $exists = $this->item->exists($itemData['item_id']);
         $this->assertTrue($exists);
@@ -858,7 +858,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $taxesData = [];
         if (is_numeric($csvRow['Tax 1 Percent']) && $csvRow['Tax 1 Name'] !== '') {
@@ -1032,7 +1032,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
             'deleted' => 0
         ];
 
-        $this->assertTrue($this->item->save_value($itemData));
+        $this->assertTrue($this->item->saveValue($itemData));
 
         $uniqueId = uniqid();
         $locations = ['Warehouse' . $uniqueId, 'Store' . $uniqueId];
