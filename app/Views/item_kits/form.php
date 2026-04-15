@@ -11,14 +11,14 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("item_kits/save/$item_kit_info->item_kit_id", ['id' => 'item_kit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("item_kits/save/$item_kit_info->item_kit_id", ['id' => 'item_kit_form', 'class' => '']) ?>
     <fieldset id="item_kit_basic_info">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
+                    <span class="input-group-text input-sm"><i class="bi bi-upc-scan"></i></span>
                     <?= form_input([
                         'name'  => 'item_kit_number',
                         'id'    => 'item_kit_number',
@@ -29,9 +29,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.name'), 'name', ['class' => 'required col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'name',
                     'id'    => 'name',
@@ -41,9 +41,9 @@
             </div>
         </div>
 
-        <div class="form-group  form-group-sm">
-            <?= form_label(lang('Item_kits.find_kit_item'), 'item_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.find_kit_item'), 'item_name', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <div class="input-group input-group-sm">
                     <?= form_input([
                         'name'  => 'item_name',
@@ -58,9 +58,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.discount_type'), 'kit_discount_type', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.discount_type'), 'kit_discount_type', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <label class="radio-inline">
                     <?= form_radio([
                         'name'    => 'kit_discount_type',
@@ -80,9 +80,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.discount'), 'kit_discount', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-3">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.discount'), 'kit_discount', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-3">
                 <div class="input-group input-group-sm">
                     <?= form_input([
                         'name'      => 'kit_discount',
@@ -96,9 +96,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? ['class' => 'required col-form-label col-3'] : ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <label class="radio-inline">
                     <?= form_radio([
                         'name'    => 'price_option',
@@ -126,9 +126,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? ['class' => 'required col-form-label col-3'] : ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <label class="radio-inline">
                     <?= form_radio([
                         'name'    => 'print_option',
@@ -157,9 +157,9 @@
         </div>
 
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.description'), 'description', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_textarea([
                     'name'  => 'description',
                     'id'    => 'description',
@@ -169,9 +169,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.add_item'), 'item', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="row mb-3">
+            <?= form_label(lang('Item_kits.add_item'), 'item', ['class' => 'col-form-label col-3']) ?>
+            <div class="col-8">
                 <?= form_input([
                     'name'  => 'item',
                     'id'    => 'item',
@@ -192,7 +192,7 @@
             <tbody>
                 <?php foreach ($item_kit_items as $item_kit_item) { ?>
                     <tr>
-                        <td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        <td><a href="#" onclick="return delete_item_kit_row(this);"><i class="bi bi-trash"></i></a></td>
                         <td><input class="quantity form-control input-sm" id="item_seq_<?= $item_kit_item['item_id'] ?>" name="item_kit_seq[<?= $item_kit_item['item_id'] ?>]" value="<?= parse_decimals($item_kit_item['kit_sequence'], 0) ?>"></td>
                         <td><?= esc($item_kit_item['name']) ?></td>
                         <td><input class="quantity form-control input-sm" id="item_qty_<?= $item_kit_item['item_id'] ?>" name="item_kit_qty[<?= $item_kit_item['item_id'] ?>]" value="<?= to_quantity_decimals($item_kit_item['quantity']) ?>"></td>
@@ -218,7 +218,7 @@
                     $('#item_kit_item_' + ui.item.value).val(parseFloat($('#item_kit_item_' + ui.item.value).val()) + 1);
                 } else {
                     $('#item_kit_items').append('<tr>' +
-                        '<td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>' +
+                        '<td><a href="#" onclick="return delete_item_kit_row(this);"><i class="bi bi-trash"></i></a></td>' +
                         '<td><input class="quantity form-control input-sm" id="item_seq_' + ui.item.value + '" name="item_kit_seq[' + ui.item.value + ']" value="0"></td>' +
                         '<td>' + DOMPurify.sanitize(ui.item.label) + '</td>' +
                         '<td><input class="quantity form-control input-sm" id="item_qty_' + ui.item.value + '" name="item_kit_qty[' + ui.item.value + ']" value="1"></td>' +

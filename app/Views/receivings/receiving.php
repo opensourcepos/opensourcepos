@@ -38,12 +38,12 @@ if (isset($success)) {
 
     <!-- Top register controls -->
 
-    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => ' card']) ?>
 
-    <div class="panel-body form-group">
+    <div class="card-body">
         <ul>
             <li class="pull-left first_li">
-                <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
+                <label class="form-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
             </li>
             <li class="pull-left">
                 <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -51,7 +51,7 @@ if (isset($success)) {
 
             <?php if ($show_stock_locations) { ?>
                 <li class="pull-left">
-                    <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_source') ?></label>
+                    <label class="form-label"><?= lang(ucfirst($controller_name) . '.stock_source') ?></label>
                 </li>
                 <li class="pull-left">
                     <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -59,7 +59,7 @@ if (isset($success)) {
 
                 <?php if ($mode == 'requisition') { ?>
                     <li class="pull-left">
-                        <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></label>
+                        <label class="form-label"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></label>
                     </li>
                     <li class="pull-left">
                         <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -73,12 +73,12 @@ if (isset($success)) {
 
     <?= form_close() ?>
 
-    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => ' card']) ?>
 
-    <div class="panel-body form-group">
+    <div class="card-body">
         <ul>
             <li class="pull-left first_li">
-                <label for="item" class="control-label">
+                <label for="item" class="form-label">
                     <?php if ($mode == 'receive' or $mode == 'requisition') { ?>
                         <?= lang(ucfirst($controller_name) . '.find_or_scan_item') ?>
                     <?php } else { ?>
@@ -93,7 +93,7 @@ if (isset($success)) {
 
             <li class="pull-right">
                 <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-btn-new="<?= lang('Common.new') ?>" data-href="<?= "items/view" ?>" title="<?= lang('Sales.new_item') ?>">
-                    <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang('Sales.new_item') ?>
+                    <i class="bi bi-tag me-2"></i><?= lang('Sales.new_item') ?>
                 </button>
             </li>
         </ul>
@@ -130,10 +130,10 @@ if (isset($success)) {
                 foreach (array_reverse($cart, true) as $line => $item) {
                 ?>
 
-                    <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+                    <?= form_open("$controller_name/editItem/$line", ['class' => '', 'id' => "cart_$line"]) ?>
 
                     <tr>
-                        <td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+                        <td><?= anchor("$controller_name/deleteItem/$line", '<i class="bi bi-trash"></i>') ?></td>
                         <td><?= esc($item['item_number']) ?></td>
                         <td style="text-align: center;">
                             <?= esc($item['name'] . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br>
@@ -173,7 +173,7 @@ if (isset($success)) {
                             <td>
                                 <div class="input-group">
                                     <?= form_input(['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
-                                    <span class="input-group-btn">
+                                    <span class="input-group-text">
                                         <?= form_checkbox([
                                             'id'           => 'discount_toggle',
                                             'name'         => 'discount_toggle',
@@ -198,7 +198,7 @@ if (isset($success)) {
                         </td>
                         <td>
                             <a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title=<?= lang(ucfirst($controller_name) . '.update') ?>>
-                                <span class="glyphicon glyphicon-refresh"></span>
+                                <i class="bi bi-arrow-repeat"></i>
                             </a>
                         </td>
                     </tr>
@@ -241,8 +241,8 @@ if (isset($success)) {
 
 <!-- Overall Receiving -->
 
-<div id="overall_sale" class="panel panel-default">
-    <div class="panel-body">
+<div id="overall_sale" class="card">
+    <div class="card-body">
         <?php if (isset($supplier)) { ?>
 
             <table class="sales_table_100">
@@ -272,7 +272,7 @@ if (isset($success)) {
 
             <?= anchor(
                 "$controller_name/removeSupplier",
-                '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
+                '<i class="bi bi-x-circle me-2"></i>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
                 [
                     'class' => 'btn btn-danger btn-sm',
                     'id'    => 'remove_supplier_button',
@@ -282,10 +282,10 @@ if (isset($success)) {
 
         <?php } else { ?>
 
-            <?= form_open("$controller_name/selectSupplier", ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
+            <?= form_open("$controller_name/selectSupplier", ['id' => 'select_supplier_form', 'class' => '']) ?>
 
-            <div class="form-group" id="select_customer">
-                <label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;">
+            <div class="row mb-3" id="select_customer">
+                <label id="supplier_label" for="supplier" class="form-label" style="margin-bottom: 1em; margin-top: -1em;">
                     <?= lang(ucfirst($controller_name) . '.select_supplier') ?>
                 </label>
                 <?= form_input([
@@ -296,7 +296,7 @@ if (isset($success)) {
                 ]) ?>
 
                 <button id="new_supplier_button" class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "suppliers/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new_supplier') ?>">
-                    <span class="glyphicon glyphicon-user">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
+                    <i class="bi bi-building-add me-2"></i><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
                 </button>
 
             </div>
@@ -321,9 +321,9 @@ if (isset($success)) {
             <div id="finish_sale">
                 <?php if ($mode == 'requisition') { ?>
 
-                    <?= form_open("$controller_name/requisitionComplete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+                    <?= form_open("$controller_name/requisitionComplete", ['id' => 'finish_receiving_form', 'class' => '']) ?>
 
-                    <div class="form-group form-group-sm">
+                    <div class="row mb-3">
                         <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
                         <?= form_textarea([
                             'name'  => 'comment',
@@ -334,10 +334,10 @@ if (isset($success)) {
                         ]) ?>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle me-2"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <span class="glyphicon glyphicon-ok">&nbsp;</span><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle me-2"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 
@@ -345,9 +345,9 @@ if (isset($success)) {
 
                 <?php } else { ?>
 
-                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form', 'class' => '']) ?>
 
-                    <div class="form-group form-group-sm">
+                    <div class="row mb-3">
                         <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
                         <?= form_textarea([
                             'name'  => 'comment',
@@ -415,10 +415,10 @@ if (isset($success)) {
                         </div>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle me-2"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <span class="glyphicon glyphicon-ok">&nbsp;</span><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle me-2"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 
