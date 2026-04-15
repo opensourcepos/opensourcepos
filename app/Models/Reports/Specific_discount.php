@@ -27,7 +27,7 @@ class Specific_discount extends Report
      * @return array
      */
     public function getDataColumns(): array
-    {    // TODO: Duplicated code
+    {
         return [
             'summary' => [
                 ['id'            => lang('Reports.sale_id')],
@@ -95,7 +95,7 @@ class Specific_discount extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment');
 
-        $builder->where('discount >=', $inputs['discount']);    // TODO: Duplicated code
+        $builder->where('discount >=', $inputs['discount']);
         $builder->where('discount_type', $inputs['discount_type']);
 
         switch ($inputs['sale_type']) {
@@ -136,7 +136,7 @@ class Specific_discount extends Report
                 break;
         }
 
-        $builder->groupBy('sale_id');    // TODO: Duplicated code
+        $builder->groupBy('sale_id');
         $builder->orderBy('MAX(sale_time)');
 
         $data = [];
@@ -168,7 +168,7 @@ class Specific_discount extends Report
         $builder = $this->db->table('sales_items_temp');
         $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 
-        $builder->where('discount >=', $inputs['discount']);    // TODO: Duplicated code
+        $builder->where('discount >=', $inputs['discount']);
         $builder->where('discount_type', $inputs['discount_type']);
 
         // TODO: this needs to be converted to a switch statement

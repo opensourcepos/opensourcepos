@@ -4,16 +4,15 @@ namespace App\Database\Migrations;
 
 use App\Libraries\Tax_lib;
 use App\Models\Appconfig;
+use App\Traits\Database\SalesTaxMigration;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
 
-/**
- * @property tax_lib tax_lib
- * @property appconfig appconfig
- */
 class Migration_Sales_Tax_Data extends Migration
 {
-    public const ROUND_UP = 5;    // TODO: These need to be moved to constants.php
+    use SalesTaxMigration;
+    
+    public const ROUND_UP = 5;
     public const ROUND_DOWN = 6;
     public const HALF_FIVE = 7;
     public const YES = '1';
@@ -327,79 +326,18 @@ class Migration_Sales_Tax_Data extends Migration
         }
     }
 
-    /**
-     * @param string $string
-     * @return string
-     */
-    public function clean(string $string): string    // TODO: $string is not a good name for this variable
+    public function clean(string $string): string
     {
-        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        return $this->cleanIdentifier($string);
     }
 
-    /**
-     * @param array $sales_taxes
-     * @return void
-     */
     public function apply_invoice_taxing(array &$sales_taxes): void
     {
-        if (!empty($sales_taxes)) {    // TODO: Duplicated code
-            $sort = [];
-
-            foreach ($sales_taxes as $key => $value) {
-                $sort['print_sequence'][$key] = $value['print_sequence'];
-            }
-
-            array_multisort($sort['print_sequence'], SORT_ASC, $sales_taxes);
-        }
-
-        $decimals = totals_decimals();
-
-        foreach ($sales_taxes as $row_number => $sales_tax) {
-            $sales_taxes[$row_number]['sale_tax_amount'] = $this->get_sales_tax_for_amount($sales_tax['sale_tax_basis'], $sales_tax['tax_rate'], $sales_tax['rounding_code'], $decimals);
-        }
+        $this->applyInvoiceTaxing($sales_taxes);
     }
 
-    /**
-     * @param array $sales_taxes
-     * @return void
-     */
     public function round_sales_taxes(array &$sales_taxes): void
     {
-        if (!empty($sales_taxes)) {
-            $sort = [];
-            foreach ($sales_taxes as $k => $v) {
-                $sort['print_sequence'][$k] = $v['print_sequence'];
-            }
-            array_multisort($sort['print_sequence'], SORT_ASC, $sales_taxes);
-        }
-
-        $decimals = totals_decimals();
-
-        foreach ($sales_taxes as $row_number => $sales_tax) {
-            $sale_tax_amount = (float)$sales_tax['sale_tax_amount'];
-            $rounding_code = $sales_tax['rounding_code'];
-            $rounded_sale_tax_amount = $sale_tax_amount;
-
-            if (
-                $rounding_code == PHP_ROUND_HALF_UP
-                || $rounding_code == PHP_ROUND_HALF_DOWN
-                || $rounding_code == PHP_ROUND_HALF_EVEN
-                || $rounding_code == PHP_ROUND_HALF_ODD
-            ) {
-                $rounded_sale_tax_amount = round($sale_tax_amount, $decimals, $rounding_code);
-            } elseif ($rounding_code == Migration_Sales_Tax_Data::ROUND_UP) {
-                $fig = (int) str_pad('1', $decimals, '0');
-                $rounded_sale_tax_amount = (ceil($sale_tax_amount * $fig) / $fig);
-            } elseif ($rounding_code == Migration_Sales_Tax_Data::ROUND_DOWN) {
-                $fig = (int) str_pad('1', $decimals, '0');
-                $rounded_sale_tax_amount = (floor($sale_tax_amount * $fig) / $fig);
-            } elseif ($rounding_code == Migration_Sales_Tax_Data::HALF_FIVE) {
-                $rounded_sale_tax_amount = round($sale_tax_amount / 5) * 5;
-            }
-
-            $sales_taxes[$row_number]['sale_tax_amount'] = $rounded_sale_tax_amount;
-        }
+        $this->roundSalesTaxes($sales_taxes, self::ROUND_UP, self::ROUND_DOWN, self::HALF_FIVE);
     }
 }

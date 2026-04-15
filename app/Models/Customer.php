@@ -423,7 +423,7 @@ class Customer extends Person
         $builder->orLike('phone_number', $search);
         $builder->orLike('account_number', $search);
         $builder->orLike('company_name', $search);
-        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);    // TODO: Duplicated code.
+        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
         $builder->groupEnd();
         $builder->where('deleted', 0);
 

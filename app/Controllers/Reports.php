@@ -128,8 +128,8 @@ class Reports extends Secure_Controller
      * @param string $location_id
      * @return string
      */
-    public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string    // TODO: Perhaps these need to be passed as an array?  Too many parameters in the signature.
-    {   // TODO: Duplicated code
+    public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
+    {
         $this->clearCache();
 
         $inputs = [
@@ -176,7 +176,7 @@ class Reports extends Secure_Controller
      * @return string
      */
     public function summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
-    {   // TODO: Duplicated code
+    {
         $this->clearCache();
 
         $inputs = [
@@ -493,7 +493,7 @@ class Reports extends Secure_Controller
      * @return string
      */
     public function summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
-    {   // TODO: Duplicated code
+    {
         $this->clearCache();
 
         $inputs = [

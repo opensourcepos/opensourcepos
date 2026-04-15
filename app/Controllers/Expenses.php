@@ -91,7 +91,7 @@ class Expenses extends Secure_Controller
      */
     public function getView(int $expense_id = NEW_ENTRY): string
     {
-        $data = [];    // TODO: Duplicated code
+        $data = [];
 
         $data['expenses_info'] = $this->expense->get_info($expense_id);
         $expense_id = $data['expenses_info']->expense_id;

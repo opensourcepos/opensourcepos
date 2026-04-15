@@ -93,7 +93,7 @@ class Specific_customer extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment');
 
-        $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicated code
+        $builder->where('customer_id', $inputs['customer_id']);
 
         if ($inputs['payment_type'] == 'invoices') {
             $builder->where('sale_type', SALE_TYPE_INVOICE);
@@ -139,7 +139,7 @@ class Specific_customer extends Report
                 break;
         }
 
-        $builder->groupBy('sale_id');    // TODO: Duplicated code
+        $builder->groupBy('sale_id');
         $builder->orderBy('MAX(sale_time)');
 
         $data = [];
