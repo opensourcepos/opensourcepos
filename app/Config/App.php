@@ -314,6 +314,9 @@ class App extends BaseConfig
      * Security: Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
      * by validating the HTTP_HOST against a whitelist of allowed hostnames.
      *
+     * Supports reverse proxies: Checks X-Forwarded-Host header when behind
+     * a trusted proxy (configured via $proxyIPs).
+     * 
      * In production: Fails fast if allowedHostnames is not configured.
      * In development: Allows localhost fallback with an error log.
      * 
@@ -322,7 +325,7 @@ class App extends BaseConfig
      */
     private function getValidHost(): string
     {
-        $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $httpHost = $this->getForwardedHost() ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
         
         // Determine environment
         // CodeIgniter's test bootstrap sets $_SERVER['CI_ENVIRONMENT'] = 'testing'
@@ -358,5 +361,79 @@ class App extends BaseConfig
         );
 
         return $this->allowedHostnames[0];
+    }
+
+    /**
+     * Get the forwarded host from X-Forwarded-Host header when behind a trusted proxy.
+     * 
+     * When behind a reverse proxy (nginx, load balancer, etc.), the actual hostname
+     * is sent in the X-Forwarded-Host header, while HTTP_HOST contains the proxy's hostname.
+     * 
+     * @return string|null The forwarded host if configured and behind trusted proxy, null otherwise
+     */
+    private function getForwardedHost(): ?string
+    {
+        // Only use forwarded headers if behind a trusted proxy
+        if (empty($this->proxyIPs)) {
+            return null;
+        }
+
+        // Check if the request comes from a trusted proxy
+        $clientIp = $_SERVER['REMOTE_ADDR'] ?? '';
+        if (!$this->isTrustedProxy($clientIp)) {
+            return null;
+        }
+
+        // Return the forwarded host if present
+        return $_SERVER['HTTP_X_FORWARDED_HOST'] ?? null;
+    }
+
+    /**
+     * Check if an IP address is a trusted proxy.
+     * 
+     * @param string $ip The IP address to check
+     * @return bool True if the IP is a trusted proxy
+     */
+    private function isTrustedProxy(string $ip): bool
+    {
+        foreach ($this->proxyIPs as $proxyIp => $header) {
+            if ($this->ipInRange($ip, $proxyIp)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * Check if an IP address is within a CIDR range.
+     * 
+     * @param string $ip The IP address to check
+     * @param string $range The CIDR range (e.g., '192.168.1.0/24' or '10.0.0.1')
+     * @return bool True if the IP is within the range
+     */
+    private function ipInRange(string $ip, string $range): bool
+    {
+        // If no subnet mask, check for exact match
+        if (strpos($range, '/') === false) {
+            return $ip === $range;
+        }
+
+        // Parse CIDR notation
+        list($subnet, $bits) = explode('/', $range);
+        
+        // Convert IP addresses to long format
+        $ipLong = ip2long($ip);
+        $subnetLong = ip2long($subnet);
+        
+        if ($ipLong === false || $subnetLong === false) {
+            return false;
+        }
+
+        // Calculate network mask
+        $mask = -1 << (32 - (int)$bits);
+        $network = $subnetLong & $mask;
+
+        return ($ipLong & $mask) === $network;
     }
 }
