@@ -398,6 +398,9 @@ class Config extends Secure_Controller
 
         $this->module->set_show_office_group($this->request->getPost('show_office_group') != null);
 
+        $this->db->transStart();
+
+        $attributeSuccess = true;
         if ($batchSaveData['category_dropdown']) {
             $definitionData['definition_name'] = 'ospos_category';
             $definitionData['definition_flags'] = 0;
@@ -405,12 +408,16 @@ class Config extends Secure_Controller
             $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
             $definitionData['deleted'] = 0;
 
-            $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
+            $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
         } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
-            $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
+            $attributeSuccess = $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
         }
 
-        $success = $this->appconfig->batch_save($batchSaveData);
+        $success = $attributeSuccess && $this->appconfig->batch_save($batchSaveData);
+
+        $this->db->transComplete();
+
+        $success = $success && $this->db->transStatus();
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
