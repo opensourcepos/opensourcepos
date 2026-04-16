@@ -431,4 +431,52 @@ class AppTest extends CIUnitTestCase
         // Clean up
         putenv('app.proxyIPs');
     }
+
+    public function testForwardedHostStillValidatesAgainstAllowedHostnames(): void
+    {
+        // Even with wildcard proxyIPs, forwarded host must be in allowedHostnames
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];  // Only example.com allowed
+            public array $proxyIPs = ['*' => 'X-Forwarded-For'];  // Trust all proxies
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Attacker tries to inject malicious forwarded host
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'malicious.com';  // NOT in allowedHostnames
+        $_SERVER['HTTP_HOST'] = 'example.com';  // This IS in allowedHostnames
+
+        $host = $method->invoke($app);
+        // Should fall back to HTTP_HOST since forwarded host is not whitelisted
+        $this->assertEquals('example.com', $host);
+    }
+
+    public function testForwardedHostRejectedWhenNotInAllowedHostnames(): void
+    {
+        // Attacker forges X-Forwarded-Host with wildcard proxyIPs
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];
+            public array $proxyIPs = ['*' => 'X-Forwarded-For'];
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Attacker sends malicious forwarded host (not in whitelist)
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'evil.com';  // NOT in allowedHostnames
+
+        $host = $method->invoke($app);
+        // Should use fallback (first allowed hostname), not the forged header
+        $this->assertEquals('example.com', $host);
+    }
 }

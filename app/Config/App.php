@@ -336,6 +336,10 @@ class App extends BaseConfig
      * Supports reverse proxies: Checks X-Forwarded-Host header when behind
      * a trusted proxy (configured via $proxyIPs).
      * 
+     * IMPORTANT: Both HTTP_HOST and X-Forwarded-Host are validated against
+     * the allowedHostnames whitelist. Even if an attacker injects a forged
+     * X-Forwarded-Host header, it must match an entry in allowedHostnames.
+     * 
      * In production: Fails fast if allowedHostnames is not configured.
      * In development: Allows localhost fallback with an error log.
      * 
@@ -344,7 +348,10 @@ class App extends BaseConfig
      */
     private function getValidHost(): string
     {
-        $httpHost = $this->getForwardedHost() ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
+        // Get host from forwarded header or HTTP_HOST
+        // Both are validated against allowedHostnames whitelist below
+        $forwardedHost = $this->getForwardedHost();
+        $httpHost = $forwardedHost ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
         
         // Determine environment
         // CodeIgniter's test bootstrap sets $_SERVER['CI_ENVIRONMENT'] = 'testing'
@@ -387,6 +394,15 @@ class App extends BaseConfig
      * 
      * When behind a reverse proxy (nginx, load balancer, etc.), the actual hostname
      * is sent in the X-Forwarded-Host header, while HTTP_HOST contains the proxy's hostname.
+     * 
+     * SECURITY WARNING: The returned hostname is still validated against allowedHostnames
+     * whitelist in getValidHost(). This prevents attacks even if an attacker:
+     * - Directly accesses PHP-FPM (bypassing nginx)
+     * - Forges X-Forwarded-Host with wildcard proxyIPs = '*'
+     * - Spoofs the header from an untrusted network
+     * 
+     * The defense is: allowedHostnames is the authoritative whitelist, regardless
+     * of which header the hostname comes from.
      * 
      * @return string|null The forwarded host if configured and behind trusted proxy, null otherwise
      */
