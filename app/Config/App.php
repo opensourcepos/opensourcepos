@@ -262,6 +262,10 @@ class App extends BaseConfig
      *         '192.168.5.0/24' => 'X-Real-IP',
      *     ]
      *
+     * For Docker/nginx or same-host deployments where the proxy runs locally,
+     * you can set this to ['*'] to trust all proxy sources for forwarded headers.
+     * In this case, only allow trusted networks via firewall/security groups.
+     *
      * @var array<string, string>
      */
     public array $proxyIPs = [];
@@ -290,6 +294,8 @@ class App extends BaseConfig
         
         // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
         // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
+        
+        // Parse allowedHostnames from .env (comma-separated)
         $envAllowedHostnames = getenv('app.allowedHostnames');
         if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
             $this->allowedHostnames = array_values(array_filter(
@@ -298,8 +304,21 @@ class App extends BaseConfig
             ));
         }
         
+        // Parse proxyIPs from .env (comma-separated, supports '*' for all)
+        $envProxyIPs = getenv('app.proxyIPs');
+        if ($envProxyIPs !== false && trim($envProxyIPs) !== '') {
+            $parsed = array_map('trim', explode(',', $envProxyIPs));
+            $this->proxyIPs = [];
+            foreach ($parsed as $ip) {
+                // Support wildcard '*' to trust all proxies
+                if ($ip === '*') {
+                    $this->proxyIPs['*'] = 'X-Forwarded-For';
+                } else {
+                    $this->proxyIPs[$ip] = 'X-Forwarded-For';
+                }
+            }
         }
-
+        
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
 
         $host = $this->getValidHost();
@@ -373,9 +392,14 @@ class App extends BaseConfig
      */
     private function getForwardedHost(): ?string
     {
-        // Only use forwarded headers if behind a trusted proxy
+        // Only use forwarded headers if proxyIPs is configured
         if (empty($this->proxyIPs)) {
             return null;
+        }
+
+        // Check if trusting all proxies (for Docker/same-host deployments)
+        if (isset($this->proxyIPs['*'])) {
+            return $_SERVER['HTTP_X_FORWARDED_HOST'] ?? null;
         }
 
         // Check if the request comes from a trusted proxy

@@ -369,4 +369,66 @@ class AppTest extends CIUnitTestCase
         // Should ignore X-Forwarded-Host when no proxy configured
         $this->assertEquals('example.com', $host);
     }
+
+    public function testGetValidHostUsesForwardedHostWithWildcardTrust(): void
+    {
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];
+            public array $proxyIPs = ['*' => 'X-Forwarded-For'];  // Trust all
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Any IP should be trusted with wildcard
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';  // Random external IP
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example.com';
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+
+        $host = $method->invoke($app);
+        $this->assertEquals('example.com', $host);
+    }
+
+    public function testEnvProxyIPsParsedAsCommaSeparated(): void
+    {
+        // Set proxy IPs as comma-separated string
+        putenv('app.proxyIPs=10.0.0.1,192.168.1.0/24');
+
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example.com';
+        $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Should parse proxyIPs and use forwarded host from trusted proxy
+        $this->assertStringContainsString('example.com', $app->baseURL);
+
+        // Clean up
+        putenv('app.proxyIPs');
+    }
+
+    public function testEnvProxyIPsWildcard(): void
+    {
+        // Set wildcard proxy IPs
+        putenv('app.proxyIPs=*');
+
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example.com';
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';  // Any IP
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Should trust any IP with wildcard
+        $this->assertStringContainsString('example.com', $app->baseURL);
+
+        // Clean up
+        putenv('app.proxyIPs');
+    }
 }
