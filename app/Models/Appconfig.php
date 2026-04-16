@@ -8,11 +8,11 @@ use ReflectionException;
 
 class Appconfig extends BaseModel
 {
-    protected string $table = 'app_config';
-    protected string $primaryKey = 'key';
-    protected bool $useAutoIncrement = false;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'app_config';
+    protected $primaryKey = 'key';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'key',
         'value'
     ];

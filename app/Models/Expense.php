@@ -8,11 +8,11 @@ use stdClass;
 
 class Expense extends BaseModel
 {
-    protected string $table = 'expenses';
-    protected string $primaryKey = 'expense_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'expenses';
+    protected $primaryKey = 'expense_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'date',
         'amount',
         'payment_type',

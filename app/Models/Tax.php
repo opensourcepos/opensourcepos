@@ -7,11 +7,11 @@ use stdClass;
 
 class Tax extends BaseModel
 {
-    protected string $table = 'tax_rates';
-    protected string $primaryKey = 'tax_rate_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'tax_rates';
+    protected $primaryKey = 'tax_rate_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'rate_tax_code_id',
         'rate_tax_category_id',
         'rate_jurisdiction_id',

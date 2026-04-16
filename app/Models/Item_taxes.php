@@ -4,11 +4,11 @@ namespace App\Models;
 
 class Item_taxes extends BaseModel
 {
-    protected string $table = 'item_taxes';
-    protected string $primaryKey = 'item_id';
-    protected bool $useAutoIncrement = false;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'item_taxes';
+    protected $primaryKey = 'item_id';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'name',
         'percent'
     ];

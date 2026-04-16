@@ -6,11 +6,11 @@ use CodeIgniter\Database\ResultInterface;
 
 class Customer_rewards extends BaseModel
 {
-    protected string $table = 'customer_packages';
-    protected string $primaryKey = 'package_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'customers_packages';
+    protected $primaryKey = 'package_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'package_name',
         'points_percent',
         'deleted'

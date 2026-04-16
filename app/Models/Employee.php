@@ -9,11 +9,11 @@ use stdClass;
 class Employee extends Person
 {
     public Session $session;
-    protected string $table = 'Employees';
-    protected string $primaryKey = 'person_id';
-    protected bool $useAutoIncrement = false;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'Employees';
+    protected $primaryKey = 'person_id';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'username',
         'password',
         'deleted',

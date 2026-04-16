@@ -7,11 +7,11 @@ use stdClass;
 
 class Expense_category extends BaseModel
 {
-    protected string $table = 'expense_categories';
-    protected string $primaryKey = 'expense_category_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'expense_categories';
+    protected $primaryKey = 'expense_category_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'category_name',
         'category_description',
         'deleted'

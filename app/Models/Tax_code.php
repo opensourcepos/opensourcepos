@@ -8,11 +8,11 @@ use stdClass;
 
 class Tax_code extends BaseModel
 {
-    protected string $table = 'tax_codes';
-    protected string $primaryKey = 'tax_code_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'tax_codes';
+    protected $primaryKey = 'tax_code_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'tax_code',
         'tax_code_name',
         'city',

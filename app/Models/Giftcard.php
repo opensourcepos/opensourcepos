@@ -7,11 +7,11 @@ use stdClass;
 
 class Giftcard extends BaseModel
 {
-    protected string $table = 'giftcards';
-    protected string $primaryKey = 'giftcard_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'giftcards';
+    protected $primaryKey = 'giftcard_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'giftcard_number',
         'value',
         'deleted',

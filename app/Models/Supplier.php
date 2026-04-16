@@ -6,11 +6,11 @@ use CodeIgniter\Database\ResultInterface;
 
 class Supplier extends Person
 {
-    protected string $table = 'suppliers';
-    protected string $primaryKey = 'person_id';
-    protected bool $useAutoIncrement = false;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'suppliers';
+    protected $primaryKey = 'person_id';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'company_name',
         'account_number',
         'tax_id',

@@ -14,11 +14,11 @@ use ReflectionClass;
 
 class Attribute extends BaseModel
 {
-    protected string $table = 'attribute_definitions';
-    protected string $primaryKey = 'definition_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'attribute_definitions';
+    protected $primaryKey = 'definition_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'definition_name',
         'definition_type',
         'definition_unit',

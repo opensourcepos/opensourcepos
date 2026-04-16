@@ -6,11 +6,11 @@ use CodeIgniter\Database\ResultInterface;
 
 class Inventory extends BaseModel
 {
-    protected string $table = 'inventory';
-    protected string $primaryKey = 'trans_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'inventory';
+    protected $primaryKey = 'trans_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'trans_items',
         'trans_user',
         'trans_date',

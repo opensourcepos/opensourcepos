@@ -4,11 +4,11 @@ namespace App\Models;
 
 class Item_kit_items extends BaseModel
 {
-    protected string $table = 'item_kit_items';
-    protected string $primaryKey = 'item_kit_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'item_kit_items';
+    protected $primaryKey = 'item_kit_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'kit_sequence'
     ];
 

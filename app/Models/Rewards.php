@@ -4,11 +4,11 @@ namespace App\Models;
 
 class Rewards extends BaseModel
 {
-    protected string $table = 'sales_reward_points';
-    protected string $primaryKey = 'id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'sales_reward_points';
+    protected $primaryKey = 'id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'sale_id',
         'earned',
         'used'

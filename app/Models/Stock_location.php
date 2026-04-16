@@ -7,11 +7,11 @@ use CodeIgniter\Session\Session;
 
 class Stock_location extends BaseModel
 {
-    protected string $table = 'stock_locations';
-    protected string $primaryKey = 'location_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'stock_locations';
+    protected $primaryKey = 'location_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'location_name',
         'deleted'
     ];

@@ -8,11 +8,11 @@ use ReflectionException;
 
 class Receiving extends BaseModel
 {
-    protected string $table = 'receivings';
-    protected string $primaryKey = 'receiving_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'receivings';
+    protected $primaryKey = 'receiving_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'receiving_time',
         'supplier_id',
         'employee_id',

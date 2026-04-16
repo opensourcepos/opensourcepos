@@ -24,11 +24,11 @@ class Item extends BaseModel
         'allow_alt_description',
         'is_serialized'
     ];
-    protected string $table = 'items';
-    protected string $primaryKey = 'item_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'items';
+    protected $primaryKey = 'item_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'name',
         'category',
         'supplier_id',

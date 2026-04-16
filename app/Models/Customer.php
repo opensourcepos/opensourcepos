@@ -8,11 +8,11 @@ use stdClass;
 
 class Customer extends Person
 {
-    protected string $table = 'customers';
-    protected string $primaryKey = 'person_id';
-    protected bool $useAutoIncrement = false;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'customers';
+    protected $primaryKey = 'person_id';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'account_number',
         'taxable',
         'tax_id',

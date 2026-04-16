@@ -7,11 +7,11 @@ use stdClass;
 
 class Tax_jurisdiction extends BaseModel
 {
-    protected string $table = 'tax_jurisdictions';
-    protected string $primaryKey = 'cashup_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'tax_jurisdictions';
+    protected $primaryKey = 'jurisdiction_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'jurisdiction_name',
         'tax_group',
         'tax_type',

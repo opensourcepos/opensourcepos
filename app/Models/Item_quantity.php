@@ -6,11 +6,11 @@ use stdClass;
 
 class Item_quantity extends BaseModel
 {
-    protected string $table = 'item_quantities';
-    protected string $primaryKey = 'item_id';
-    protected bool $useAutoIncrement = false;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'item_quantities';
+    protected $primaryKey = 'item_id';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'quantity'
     ];
 

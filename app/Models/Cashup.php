@@ -8,11 +8,11 @@ use stdClass;
 
 class Cashup extends BaseModel
 {
-    protected string $table = 'cash_up';
-    protected string $primaryKey = 'cashup_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'cash_up';
+    protected $primaryKey = 'cashup_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'open_date',
         'close_date',
         'open_cash_amount',

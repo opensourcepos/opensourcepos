@@ -7,11 +7,11 @@ use stdClass;
 
 class Person extends BaseModel
 {
-    protected string $table = 'people';
-    protected string $primaryKey = 'person_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'people';
+    protected $primaryKey = 'person_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'first_name',
         'last_name',
         'phone_number',

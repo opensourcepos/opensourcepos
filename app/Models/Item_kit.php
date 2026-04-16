@@ -8,11 +8,11 @@ use stdClass;
 
 class Item_kit extends BaseModel
 {
-    protected string $table = 'item_kits';
-    protected string $primaryKey = 'item_kit_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'item_kits';
+    protected $primaryKey = 'item_kit_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'item_kit_number',
         'name',
         'description',

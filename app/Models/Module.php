@@ -6,11 +6,11 @@ use CodeIgniter\Database\ResultInterface;
 
 class Module extends BaseModel
 {
-    protected string $table = 'modules';
-    protected string $primaryKey = 'module_id';
-    protected bool $useAutoIncrement = false;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'modules';
+    protected $primaryKey = 'module_id';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'name_lang_key',
         'desc_lang_key',
         'sort'

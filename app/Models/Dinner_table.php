@@ -6,11 +6,11 @@ use CodeIgniter\Database\ResultInterface;
 
 class Dinner_table extends BaseModel
 {
-    protected string $table = 'dinner_tables';
-    protected string $primaryKey = 'dinner_table_id';
-    protected bool $useAutoIncrement = true;
-    protected bool $useSoftDeletes = false;
-    protected array $allowedFields = [
+    protected $table = 'dinner_tables';
+    protected $primaryKey = 'dinner_table_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = false;
+    protected $allowedFields = [
         'name',
         'status',
         'deleted'
