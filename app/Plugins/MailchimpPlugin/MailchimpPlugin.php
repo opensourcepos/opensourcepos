@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Plugins;
+namespace App\Plugins\MailchimpPlugin;
 
-use app\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use App\Libraries\Plugins\BasePlugin;
+use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
@@ -20,6 +20,7 @@ class MailchimpPlugin extends BasePlugin
     public function __construct()
     {
         parent::__construct();
+
         $this->mailchimpLibrary = new MailchimpLibrary();
         log_message('debug', 'MailchimpPlugin initialized');
     }
@@ -46,6 +47,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function registerEvents(): void
     {
+        Events::on('customer_loaded', [$this, 'onCustomerLoaded']);
         Events::on('customer_saved', [$this, 'onCustomerSaved']);
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
 
@@ -102,6 +104,51 @@ class MailchimpPlugin extends BasePlugin
         }
 
         return parent::saveSettings($normalized);
+    }
+
+    public function onCustomerLoaded(object $customerInfo): void
+    {//TODO: This likely needs to be refactored to a controller function, called here then below it call another function to generate the view data so the mailchimpCustomerForm.php view can be displayed as a partial view.  Does the view need to be called here?
+        if (!empty($customerInfo->email)) {
+            $mailchimpInfo = $this->mailchimpLibrary->getMemberInfo($this->_list_id, $customerInfo->email);
+            if ($mailchimpInfo !== false) {
+                $customerData['mailchimp_info'] = $mailchimpInfo;
+
+                $customerActivities = $this->mailchimpLibrary->getMemberActivity($this->_list_id, $customerInfo->email);
+                if ($customerActivities !== false) {
+                    if (array_key_exists('activity', $customerActivities)) {
+                        $open = 0;
+                        $unopen = 0;
+                        $click = 0;
+                        $total = 0;
+                        $lastOpen = '';
+
+                        foreach ($customerActivities['activity'] as $activity) {
+                            if ($activity['action'] == 'sent') {
+                                ++$unopen;
+                            } elseif ($activity['action'] == 'open') {
+                                if (empty($lastOpen)) {
+                                    $lastOpen = substr($activity['timestamp'], 0, 10);
+                                }
+                                ++$open;
+                            } elseif ($activity['action'] == 'click') {
+                                if (empty($lastOpen)) {
+                                    $lastOpen = substr($activity['timestamp'], 0, 10);
+                                }
+                                ++$click;
+                            }
+
+                            ++$total;
+                        }
+
+                        $customerData['mailchimp_activity']['total'] = $total;
+                        $customerData['mailchimp_activity']['open'] = $open;
+                        $customerData['mailchimp_activity']['unopen'] = $unopen;
+                        $customerData['mailchimp_activity']['click'] = $click;
+                        $customerData['mailchimp_activity']['lastopen'] = $lastOpen;
+                    }
+                }
+            }
+        }
     }
 
     public function onCustomerSaved(array $customerData): void

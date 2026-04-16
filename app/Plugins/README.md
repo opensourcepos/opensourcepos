@@ -75,14 +75,15 @@ The `PluginManager` class handles:
 
 OSPOS fires these events that plugins can listen to:
 
-| Event | Arguments | Description |
-|-------|-----------|-------------|
-| `item_sale` | `array $saleData` | Fired when a sale is completed |
-| `item_return` | `array $returnData` | Fired when a return is processed |
-| `item_change` | `int $itemId` | Fired when an item is created/updated/deleted |
-| `item_inventory` | `array $inventoryData` | Fired on inventory changes |
-| `items_csv_import` | `array $importData` | Fired after items CSV import |
-| `customers_csv_import` | `array $importData` | Fired after customers CSV import |
+| Event                  | Arguments              | Description                                      |
+|------------------------|------------------------|--------------------------------------------------|
+| `item_sale`            | `array $saleData`      | Fired when a sale is completed                   |
+| `item_return`          | `array $returnData`    | Fired when a return is processed                 |
+| `item_change`          | `int $itemId`          | Fired when an item is created/updated/deleted    |
+| `item_inventory`       | `array $inventoryData` | Fired on inventory changes                       |
+| `items_csv_import`     | `array $importData`    | Fired after items CSV import                     |
+| `customers_csv_import` | `array $importData`    | Fired after customers CSV import                 |
+| `customer_load`        | `array $customerData`  | Fired during customer form view data preparation |
 
 ## View Hooks (Injecting Plugin Content into Views)
 

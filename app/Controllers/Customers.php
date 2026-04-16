@@ -2,11 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Libraries\Mailchimp_lib;
-
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Tax_code;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
@@ -15,8 +14,6 @@ use stdClass;
 
 class Customers extends Persons
 {
-    private string $_list_id;
-    private Mailchimp_lib $mailchimp_lib;
     private Customer_rewards $customer_rewards;
     private Customer $customer;
     private Tax_code $tax_code;
@@ -25,20 +22,11 @@ class Customers extends Persons
     public function __construct()
     {
         parent::__construct('customers');
-        $this->mailchimp_lib = new Mailchimp_lib();
+
         $this->customer_rewards = model(Customer_rewards::class);
         $this->customer = model(Customer::class);
         $this->tax_code = model(Tax_code::class);
         $this->config = config(OSPOS::class)->settings;
-
-        //TODO: This logic needs to be moved to the Mailchimp plugin
-        $encrypter = Services::encrypter();
-
-        if (!empty($this->config['mailchimp_list_id'])) {
-            $this->_list_id = $encrypter->decrypt($this->config['mailchimp_list_id']);
-        } else {
-            $this->_list_id = '';
-        }
     }
 
     /**
@@ -53,6 +41,7 @@ class Customers extends Persons
 
     /**
      * Gets one row for a customer manage table. This is called using AJAX to update one row.
+     * @param int $row_id
      * @return ResponseInterface
      */
     public function getRow(int $row_id): ResponseInterface
@@ -142,14 +131,16 @@ class Customers extends Persons
 
     /**
      * Loads the customer edit form
+     * @param int $customerId
      * @return string
      */
-    public function getView(int $customer_id = NEW_ENTRY): string
+    public function getView(int $customerId = NEW_ENTRY): string
     {
-        // Set default values
-        if ($customer_id == null) $customer_id = NEW_ENTRY;
+        if ($customerId == null) {
+            $customerId = NEW_ENTRY;
+        }
 
-        $info = $this->customer->get_info($customer_id);
+        $info = $this->customer->get_info($customerId);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
@@ -181,7 +172,7 @@ class Customers extends Persons
         $data['use_destination_based_tax'] = $this->config['use_destination_based_tax'];
 
         // Retrieve the total amount the customer spent so far together with min, max and average values
-        $stats = $this->customer->get_stats($customer_id);
+        $stats = $this->customer->get_stats($customerId);
         if (!empty($stats)) {
             foreach (get_object_vars($stats) as $property => $value) {
                 $info->$property = $value;
@@ -189,48 +180,7 @@ class Customers extends Persons
             $data['stats'] = $stats;
         }
 
-        // Retrieve the info from Mailchimp only if there is an email address assigned
-        if (!empty($info->email)) {
-            // Collect Mailchimp customer info
-            if (($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== false) {
-                $data['mailchimp_info'] = $mailchimp_info;
-
-                // Collect customer Mailchimp emails activities (stats)
-                if (($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== false) {
-                    if (array_key_exists('activity', $activities)) {
-                        $open = 0;
-                        $unopen = 0;
-                        $click = 0;
-                        $total = 0;
-                        $lastopen = '';
-
-                        foreach ($activities['activity'] as $activity) {
-                            if ($activity['action'] == 'sent') {
-                                ++$unopen;
-                            } elseif ($activity['action'] == 'open') {
-                                if (empty($lastopen)) {
-                                    $lastopen = substr($activity['timestamp'], 0, 10);
-                                }
-                                ++$open;
-                            } elseif ($activity['action'] == 'click') {
-                                if (empty($lastopen)) {
-                                    $lastopen = substr($activity['timestamp'], 0, 10);
-                                }
-                                ++$click;
-                            }
-
-                            ++$total;
-                        }
-
-                        $data['mailchimp_activity']['total'] = $total;
-                        $data['mailchimp_activity']['open'] = $open;
-                        $data['mailchimp_activity']['unopen'] = $unopen;
-                        $data['mailchimp_activity']['click'] = $click;
-                        $data['mailchimp_activity']['lastopen'] = $lastopen;
-                    }
-                }
-            }
-        }
+        Events::trigger('customer_loaded', $info);
 
         return view("customers/form", $data);
     }
