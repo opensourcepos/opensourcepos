@@ -84,36 +84,38 @@ class Email_lib
     }
 
     /**
+     * Gets the mime type of the company logo file.
+     *
+     * @return string Mime type or empty string if logo doesn't exist
+     */
+    public function getLogoMimeType(): string
+    {
+        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+
+        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
+            $mimeType = mime_content_type($logo_path);
+            return $mimeType !== false ? $mimeType : '';
+        }
+
+        return '';
+    }
+
+    /**
      * Builds an img tag for the company logo to use in email templates.
      *
      * @return string HTML img tag with base64-encoded logo, or empty string if no logo
      */
     public function buildLogoImgTag(): string
     {
-        $img_tag = '';
-        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+        $mimeType = $this->getLogoMimeType();
 
-        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
-            $logo_data = base64_encode(file_get_contents($logo_path));
-            $img_tag = '<img id="image" src="data:image/png;base64,' . $logo_data . '" alt="company_logo">';
+        if ($mimeType === '') {
+            return '';
         }
 
-        return $img_tag;
-    }
-
-    /**
-     * Gets the mime type of the company logo file.
-     *
-     * @return string|false Mime type or false if logo doesn't exist
-     */
-    public function getLogoMimeType(): string|false
-    {
         $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+        $logo_data = base64_encode(file_get_contents($logo_path));
 
-        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
-            return mime_content_type($logo_path);
-        }
-
-        return false;
+        return '<img id="image" src="data:' . $mimeType . ';base64,' . $logo_data . '" alt="company_logo">';
     }
 }
