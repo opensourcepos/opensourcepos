@@ -52,6 +52,7 @@ class MailchimpPlugin extends BasePlugin
         Events::on('customer_loaded', [$this, 'onCustomerLoaded']);
         Events::on('customer_saved', [$this, 'onCustomerSaved']);
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
+        Events::on('view:customer_tabs', [$this, 'injectMailchimpCustomerData']);
 
         log_message('debug', 'Mailchimp plugin events registered');
     }
@@ -108,14 +109,20 @@ class MailchimpPlugin extends BasePlugin
         return parent::saveSettings($normalized);
     }
 
+    public function injectMailchimpCustomerData(array $data): string
+    {
+        return view()
+    }
+
     public function onCustomerLoaded(object $customerInfo): void
     {//TODO: This likely needs to be refactored to a controller function, called here then below it call another function to generate the view data so the mailchimpCustomerForm.php view can be displayed as a partial view.  Does the view need to be called here?
         if (!empty($customerInfo->email)) {
-            $mailchimpInfo = $this->mailchimpLibrary->getMemberInfo($this->_list_id, $customerInfo->email);
+            $listId = $this->getSetting('list_id');
+            $mailchimpInfo = $this->mailchimpLibrary->getMemberInfo($listId, $customerInfo->email);
             if ($mailchimpInfo !== false) {
                 $customerData['mailchimp_info'] = $mailchimpInfo;
 
-                $customerActivities = $this->mailchimpLibrary->getMemberActivity($this->_list_id, $customerInfo->email);
+                $customerActivities = $this->mailchimpLibrary->getMemberActivity($listId, $customerInfo->email);
                 if ($customerActivities !== false) {
                     if (array_key_exists('activity', $customerActivities)) {
                         $open = 0;
@@ -170,31 +177,34 @@ class MailchimpPlugin extends BasePlugin
         }
 
         //TODO: This is the original code from the Customers->postSave() function. It needs to be handled correctly
-        $mailchimp_status = $this->request->getPost('mailchimp_status');
+        $mailchimpStatus = $this->request->getPost('mailchimp_status'); //TODO: Originally this was a dropdown in the view but needs to be modeled as a static class enum in the plugin and the ID needs to be stored as a column in the mailchimp table along with the customerId
+        $listId = $this->getSetting('list_id');
         $this->mailchimpLibrary->addOrUpdateMember(
-            $this->_list_id,
+            $listId,
             $customerData['email'],
             $customerData['first_name'],
             $customerData['last_name'],
-            $mailchimp_status == null ? "" : $mailchimp_status,
-            ['vip' => $this->request->getPost('mailchimp_vip') != null]
+            $mailchimpStatus == null ? '' : $mailchimpStatus
         );
 
         //TODO: this is the code as it looks in the customer CSV import function.
-        $this->mailchimpLibrary->addOrUpdateMember($this->_list_id,
+        $this->mailchimpLibrary->addOrUpdateMember(
+            $listId,
             $customerData['email'],
             $customerData['first_name'],
-            $customerData['last_name']
+            $customerData['last_name'],
+            ''
         );
     }
 
     public function onCustomerDeleted(stdClass $customer): void
     {
-        log_message('debug', "Customer deleted event received for ID: {$customer->person_id}");
+        log_message('debug', "Customer_deleted event received for ID: {$customer->person_id}");
 
         //TODO: This is code from the Customers Controller.  It needs to be adapted
         // remove customer from Mailchimp selected list
-        $this->mailchimpLibrary->removeMember($this->_list_id, $customer->email);
+        $listId = $this->getSetting('list_id');
+        $this->mailchimpLibrary->removeMember($listId, $customer->email);
     }
 
     private function subscribeCustomer(array $customerData): bool

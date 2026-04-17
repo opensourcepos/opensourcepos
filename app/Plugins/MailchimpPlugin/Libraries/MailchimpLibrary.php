@@ -175,7 +175,7 @@ class MailchimpLibrary
             ]
         ];
 
-        return $this->connector->call("/lists/$listId/members/" . md5(strtolower($email)), 'PATCH', $parameters);    // TODO: Hungarian notation
+        return $this->connector->call("/lists/$listId/members/" . md5(strtolower($email)), 'PATCH', $parameters);
     }
 
     /**
@@ -202,6 +202,6 @@ class MailchimpLibrary
             ]
         ];
 
-        return $this->connector->call("/lists/$listId/members/" . md5(strtolower($email)), 'PUT', $parameters);    // TODO: Hungarian notation
+        return $this->connector->call("/lists/$listId/members/" . md5(strtolower($email)), 'PUT', $parameters);
     }
 }
