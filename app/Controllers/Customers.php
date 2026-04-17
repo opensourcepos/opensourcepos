@@ -187,21 +187,22 @@ class Customers extends Persons
 
     /**
      * Inserts/updates a customer
+     * @param int $customerId
      * @return ResponseInterface
      */
-    public function postSave(int $customer_id = NEW_ENTRY): ResponseInterface
+    public function postSave(int $customerId = NEW_ENTRY): ResponseInterface
     {
-        $first_name = $this->request->getPost('first_name');
-        $last_name = $this->request->getPost('last_name');
+        $firstName = $this->request->getPost('first_name');
+        $lastName = $this->request->getPost('last_name');
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
         // Format first and last name properly
-        $first_name = $this->nameize($first_name);
-        $last_name = $this->nameize($last_name);
+        $firstName = $this->nameize($firstName);
+        $lastName = $this->nameize($lastName);
 
-        $person_data = [
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
+        $personData = [
+            'first_name'   => $firstName,
+            'last_name'    => $lastName,
             'gender'       => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
             'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number'),
@@ -214,9 +215,9 @@ class Customers extends Persons
             'comments'     => $this->request->getPost('comments')
         ];
 
-        $date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
+        $dateFormatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
 
-        $customer_data = [
+        $customerData = [
             'consent'           => $this->request->getPost('consent') != null,
             'account_number'    => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
             'tax_id'            => $this->request->getPost('tax_id'),
@@ -225,41 +226,32 @@ class Customers extends Persons
             'discount_type'     => $this->request->getPost('discount_type') == null ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
             'package_id'        => $this->request->getPost('package_id') == '' ? null : $this->request->getPost('package_id'),
             'taxable'           => $this->request->getPost('taxable') != null,
-            'date'              => $date_formatter->format('Y-m-d H:i:s'),
+            'date'              => $dateFormatter->format('Y-m-d H:i:s'),
             'employee_id'       => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
             'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? null : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        if ($this->customer->save_customer($person_data, $customer_data, $customer_id)) {
-            // Save customer to Mailchimp selected list    // TODO: addOrUpdateMember should be refactored. Potentially pass an array or object instead of 6 parameters.
-            $mailchimp_status = $this->request->getPost('mailchimp_status');
-            $this->mailchimp_lib->addOrUpdateMember(
-                $this->_list_id,
-                $email,
-                $first_name,
-                $last_name,
-                $mailchimp_status == null ? "" : $mailchimp_status,
-                ['vip' => $this->request->getPost('mailchimp_vip') != null]
-            );
+        if ($this->customer->save_customer($personData, $customerData, $customerId)) {
+            Events::trigger('customer_saved', $personData);
 
             // New customer
-            if ($customer_id == NEW_ENTRY) {
+            if ($customerId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Customers.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $customer_data['person_id']
+                    'message' => lang('Customers.successful_adding') . " $firstName $lastName",
+                    'id'      => $customerData['person_id']
                 ]);
             } else { // Existing customer
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Customers.successful_updating') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $customer_id
+                    'message' => lang('Customers.successful_updating') . " $firstName $lastName",
+                    'id'      => $customerId
                 ]);
             }
         } else { // Failure
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Customers.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+                'message' => lang('Customers.error_adding_updating') . " $firstName $lastName",
                 'id'      => NEW_ENTRY
             ]);
         }
@@ -300,21 +292,18 @@ class Customers extends Persons
      */
     public function postDelete(): ResponseInterface
     {
-        $customers_to_delete = $this->request->getPost('ids');
-        $customers_info = $this->customer->get_multiple_info($customers_to_delete);
+        $customersToDelete = $this->request->getPost('ids');
+        $customers = $this->customer->get_multiple_info($customersToDelete);
 
         $count = 0;
-
-        foreach ($customers_info->getResult() as $info) {
-            if ($this->customer->delete($info->person_id)) {
-                // remove customer from Mailchimp selected list
-                $this->mailchimp_lib->removeMember($this->_list_id, $info->email);
-
+        foreach ($customers->getResult() as $customer) {
+            if ($this->customer->delete($customer->person_id)) {
+                Events::trigger('customer_deleted', $customer);
                 $count++;
             }
         }
 
-        if ($count == count($customers_to_delete)) {
+        if ($count === count($customersToDelete)) {
             return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Customers.successful_deleted') . ' ' . $count . ' ' . lang('Customers.one_or_multiple')
@@ -362,7 +351,7 @@ class Customers extends Persons
             if (($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== false) {
                 // Skip the first row as it's the table description
                 fgetcsv($handle);
-                $i = 1;
+                $rowNumber = 1;
 
                 $failCodes = [];
 
@@ -409,16 +398,15 @@ class Customers extends Persons
                     }
 
                     if ($invalidated) {
-                        $failCodes[] = $i;
-                        log_message('error', "Row $i was not imported: Either email or account number already exist or data was invalid.");
+                        $failCodes[] = $rowNumber;
+                        log_message('error', "Row $rowNumber was not imported: Either email or account number already exist or data was invalid.");
                     } elseif ($this->customer->save_customer($person_data, $customer_data)) {
-                        // Save customer to Mailchimp selected list
-                        $this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
+                        Events::trigger('customer_saved', $person_data);
                     } else {
-                        $failCodes[] = $i;
+                        $failCodes[] = $rowNumber;
                     }
 
-                    ++$i;
+                    ++$rowNumber;
                 }
 
                 if (count($failCodes) > 0) {

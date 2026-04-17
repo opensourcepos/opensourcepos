@@ -3,11 +3,13 @@
 namespace App\Plugins\MailchimpPlugin;
 
 use App\Libraries\Plugins\BasePlugin;
+use App\Models\Customer;
 use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Exception;
+use stdClass;
 
 /**
  * Plugin that integrates OSPOS with Mailchimp for customer newsletter subscriptions.
@@ -166,11 +168,33 @@ class MailchimpPlugin extends BasePlugin
         } catch (Exception $e) {
             log_message('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
         }
+
+        //TODO: This is the original code from the Customers->postSave() function. It needs to be handled correctly
+        $mailchimp_status = $this->request->getPost('mailchimp_status');
+        $this->mailchimpLibrary->addOrUpdateMember(
+            $this->_list_id,
+            $customerData['email'],
+            $customerData['first_name'],
+            $customerData['last_name'],
+            $mailchimp_status == null ? "" : $mailchimp_status,
+            ['vip' => $this->request->getPost('mailchimp_vip') != null]
+        );
+
+        //TODO: this is the code as it looks in the customer CSV import function.
+        $this->mailchimpLibrary->addOrUpdateMember($this->_list_id,
+            $customerData['email'],
+            $customerData['first_name'],
+            $customerData['last_name']
+        );
     }
 
-    public function onCustomerDeleted(int $customerId): void
+    public function onCustomerDeleted(stdClass $customer): void
     {
-        log_message('debug', "Customer deleted event received for ID: {$customerId}");
+        log_message('debug', "Customer deleted event received for ID: {$customer->person_id}");
+
+        //TODO: This is code from the Customers Controller.  It needs to be adapted
+        // remove customer from Mailchimp selected list
+        $this->mailchimpLibrary->removeMember($this->_list_id, $customer->email);
     }
 
     private function subscribeCustomer(array $customerData): bool
