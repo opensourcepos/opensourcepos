@@ -939,6 +939,14 @@ class Sales extends Secure_Controller
             $text = $this->token_lib->render($text, $tokens);
             $sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
 
+            // Build img_tag for email views that need it (receipt_email.php)
+            $sale_data['img_tag'] = '';
+            $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+            if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
+                $logo_data = base64_encode(file_get_contents($logo_path));
+                $sale_data['img_tag'] = '<img id="image" src="data:image/png;base64,' . $logo_data . '" alt="company_logo">';
+            }
+
             // Generate email attachment: invoice in PDF format
             $view = Services::renderer();
             $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
