@@ -940,12 +940,7 @@ class Sales extends Secure_Controller
             $sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
 
             // Build img_tag for email views that need it (receipt_email.php)
-            $sale_data['img_tag'] = '';
-            $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
-            if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
-                $logo_data = base64_encode(file_get_contents($logo_path));
-                $sale_data['img_tag'] = '<img id="image" src="data:image/png;base64,' . $logo_data . '" alt="company_logo">';
-            }
+            $sale_data['img_tag'] = $this->_build_img_tag();
 
             // Generate email attachment: invoice in PDF format
             $view = Services::renderer();
@@ -982,13 +977,7 @@ class Sales extends Secure_Controller
 
         if (!empty($sale_data['customer_email'])) {
             $sale_data['barcode'] = $this->barcode_lib->generate_receipt_barcode($sale_data['sale_id']);
-            $sale_data['img_tag'] = '';
-
-            $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
-            if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
-                $logo_data = base64_encode(file_get_contents($logo_path));
-                $sale_data['img_tag'] = '<img id="image" src="data:image/png;base64,' . $logo_data . '" alt="company_logo">';
-            }
+            $sale_data['img_tag'] = $this->_build_img_tag();
 
             $to = $sale_data['customer_email'];
             $subject = lang('Sales.receipt');
@@ -1772,5 +1761,23 @@ class Sales extends Secure_Controller
         }
 
         return null;
+    }
+
+    /**
+     * Builds an img tag for the company logo to use in email templates.
+     *
+     * @return string HTML img tag with base64-encoded logo, or empty string if no logo
+     */
+    private function _build_img_tag(): string
+    {
+        $img_tag = '';
+        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+
+        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
+            $logo_data = base64_encode(file_get_contents($logo_path));
+            $img_tag = '<img id="image" src="data:image/png;base64,' . $logo_data . '" alt="company_logo">';
+        }
+
+        return $img_tag;
     }
 }
