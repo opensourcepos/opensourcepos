@@ -5,7 +5,6 @@ namespace App\Models;
 use CodeIgniter\Database\BaseResult;
 use CodeIgniter\Database\Query;
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use CodeIgniter\Database\RawSql;
 use Config\OSPOS;
 use DateTime;
@@ -13,16 +12,13 @@ use InvalidArgumentException;
 use stdClass;
 use ReflectionClass;
 
-/**
- * Attribute class
- */
-class Attribute extends Model
+class Attribute extends BaseModel
 {
     protected $table = 'attribute_definitions';
     protected $primaryKey = 'definition_id';
     protected $useAutoIncrement = true;
     protected $useSoftDeletes = false;
-    protected $allowedFields = [    // TODO: This model may not be well designed... The model accesses three different tables (attribute_definitions, attribute_links, attribute_values). Should that be more than one model? According to CodeIgniter, these are meant to model a single table https://codeigniter.com/user_guide/models/model.html#models
+    protected $allowedFields = [
         'definition_name',
         'definition_type',
         'definition_unit',

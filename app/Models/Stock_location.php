@@ -3,18 +3,9 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use CodeIgniter\Session\Session;
 
-/**
- * Stock_location class
- *
- * @property employee employee
- * @property item item
- * @property session session
- *
- */
-class Stock_location extends Model
+class Stock_location extends BaseModel
 {
     protected $table = 'stock_locations';
     protected $primaryKey = 'location_id';

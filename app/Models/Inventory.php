@@ -3,15 +3,8 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 
-/**
- * Inventory class
- *
- * @property employee employee
- *
- */
-class Inventory extends Model
+class Inventory extends BaseModel
 {
     protected $table = 'inventory';
     protected $primaryKey = 'trans_id';

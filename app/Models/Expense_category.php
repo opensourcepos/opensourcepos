@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Expense_category class
- */
-class Expense_category extends Model
+class Expense_category extends BaseModel
 {
     protected $table = 'expense_categories';
     protected $primaryKey = 'expense_category_id';
