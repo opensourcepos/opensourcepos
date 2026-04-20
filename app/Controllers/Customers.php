@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Mailchimp_lib;
-
+use App\Models\Attribute;
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Tax_code;
@@ -15,34 +15,31 @@ use stdClass;
 
 class Customers extends Persons
 {
-    private string $_list_id;
-    private Mailchimp_lib $mailchimp_lib;
-    private Customer_rewards $customer_rewards;
+    private string $listId;
+    private Mailchimp_lib $mailchimpLib;
+    private Customer_rewards $customerRewards;
     private Customer $customer;
-    private Tax_code $tax_code;
-    private array $config;
+    private Tax_code $taxCode;
+    private array $appConfig;
 
     public function __construct()
     {
         parent::__construct('customers');
-        $this->mailchimp_lib = new Mailchimp_lib();
-        $this->customer_rewards = model(Customer_rewards::class);
+        $this->mailchimpLib = new Mailchimp_lib();
+        $this->customerRewards = model(Customer_rewards::class);
         $this->customer = model(Customer::class);
-        $this->tax_code = model(Tax_code::class);
-        $this->config = config(OSPOS::class)->settings;
+        $this->taxCode = model(Tax_code::class);
+        $this->appConfig = config(OSPOS::class)->settings;
 
         $encrypter = Services::encrypter();
 
-        if (!empty($this->config['mailchimp_list_id'])) {
-            $this->_list_id = $encrypter->decrypt($this->config['mailchimp_list_id']);
+        if (!empty($this->appConfig['mailchimp_list_id'])) {
+            $this->listId = $encrypter->decrypt($this->appConfig['mailchimp_list_id']);
         } else {
-            $this->_list_id = '';
+            $this->listId = '';
         }
     }
 
-    /**
-     * @return string
-     */
     public function getIndex(): string
     {
         $data['table_headers'] = get_customer_manage_table_headers();
@@ -50,19 +47,13 @@ class Customers extends Persons
         return view('people/manage', $data);
     }
 
-    /**
-     * Gets one row for a customer manage table. This is called using AJAX to update one row.
-     * @return ResponseInterface
-     */
-    public function getRow(int $row_id): ResponseInterface
+    public function getRow(int $rowId): ResponseInterface
     {
-        $person = $this->customer->get_info($row_id);
+        $person = $this->customer->get_info($rowId);
 
-        // Retrieve the total amount the customer spent so far together with min, max and average values
-        $stats = $this->customer->get_stats($person->person_id);    // TODO: This and the next 11 lines are duplicated in search().  Extract a method.
+        $stats = $this->customer->get_stats($person->person_id);
 
         if (empty($stats)) {
-            // Create object with empty properties.
             $stats = new stdClass();
             $stats->total = 0;
             $stats->min = 0;
@@ -72,17 +63,11 @@ class Customers extends Persons
             $stats->quantity = 0;
         }
 
-        $data_row = get_customer_data_row($person, $stats);
+        $dataRow = get_customer_data_row($person, $stats);
 
-        return $this->response->setJSON($data_row);
+        return $this->response->setJSON($dataRow);
     }
 
-
-    /**
-     * Returns customer table data rows. This will be called with AJAX.
-     *
-     * @return void
-     */
     public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
@@ -92,15 +77,13 @@ class Customers extends Persons
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $customers = $this->customer->search($search, $limit, $offset, $sort, $order);
-        $total_rows = $this->customer->get_found_rows($search);
+        $totalRows = $this->customer->get_found_rows($search);
 
-        $data_rows = [];
+        $dataRows = [];
 
         foreach ($customers->getResult() as $person) {
-            // Retrieve the total amount the customer spent so far together with min, max and average values
-            $stats = $this->customer->get_stats($person->person_id);    // TODO: duplicated... see above
+            $stats = $this->customer->get_stats($person->person_id);
             if (empty($stats)) {
-                // Create object with empty properties.
                 $stats = new stdClass();
                 $stats->total = 0;
                 $stats->min = 0;
@@ -110,16 +93,12 @@ class Customers extends Persons
                 $stats->quantity = 0;
             }
 
-            $data_rows[] = get_customer_data_row($person, $stats);
+            $dataRows[] = get_customer_data_row($person, $stats);
         }
 
-        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
     }
 
-    /**
-     * Gives search suggestions based on what is being searched for
-     * @return ResponseInterface
-     */
     public function getSuggest(): ResponseInterface
     {
         $search = $this->request->getGet('term');
@@ -128,10 +107,7 @@ class Customers extends Persons
         return $this->response->setJSON($suggestions);
     }
 
-    /**
-     * @return ResponseInterface
-     */
-    public function suggest_search(): ResponseInterface
+    public function suggestSearch(): ResponseInterface
     {
         $search = $this->request->getGet('term');
         $suggestions = $this->customer->get_search_suggestions($search, 25, false);
@@ -139,16 +115,11 @@ class Customers extends Persons
         return $this->response->setJSON($suggestions);
     }
 
-    /**
-     * Loads the customer edit form
-     * @return string
-     */
-    public function getView(int $customer_id = NEW_ENTRY): string
+    public function getView(int $customerId = NEW_ENTRY): string
     {
-        // Set default values
-        if ($customer_id == null) $customer_id = NEW_ENTRY;
+        if ($customerId == null) $customerId = NEW_ENTRY;
 
-        $info = $this->customer->get_info($customer_id);
+        $info = $this->customer->get_info($customerId);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
@@ -159,28 +130,27 @@ class Customers extends Persons
             $data['person_info']->employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         }
 
-        $employee_info = $this->employee->get_info($info->employee_id);
-        $data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+        $employeeInfo = $this->employee->get_info($info->employee_id);
+        $data['employee'] = $employeeInfo->first_name . ' ' . $employeeInfo->last_name;
 
-        $tax_code_info = $this->tax_code->get_info($info->sales_tax_code_id);
+        $taxCodeInfo = $this->taxCode->get_info($info->sales_tax_code_id);
 
-        if ($tax_code_info->tax_code != null) {
-            $data['sales_tax_code_label'] = $tax_code_info->tax_code . ' ' . $tax_code_info->tax_code_name;
+        if ($taxCodeInfo->tax_code != null) {
+            $data['sales_tax_code_label'] = $taxCodeInfo->tax_code . ' ' . $taxCodeInfo->tax_code_name;
         } else {
             $data['sales_tax_code_label'] = '';
         }
 
         $packages = ['' => lang('Items.none')];
-        foreach ($this->customer_rewards->get_all()->getResultArray() as $row) {
+        foreach ($this->customerRewards->get_all()->getResultArray() as $row) {
             $packages[$row['package_id']] = $row['package_name'];
         }
         $data['packages'] = $packages;
         $data['selected_package'] = $info->package_id;
 
-        $data['use_destination_based_tax'] = $this->config['use_destination_based_tax'];
+        $data['use_destination_based_tax'] = $this->appConfig['use_destination_based_tax'];
 
-        // Retrieve the total amount the customer spent so far together with min, max and average values
-        $stats = $this->customer->get_stats($customer_id);
+        $stats = $this->customer->get_stats($customerId);
         if (!empty($stats)) {
             foreach (get_object_vars($stats) as $property => $value) {
                 $info->$property = $value;
@@ -188,14 +158,11 @@ class Customers extends Persons
             $data['stats'] = $stats;
         }
 
-        // Retrieve the info from Mailchimp only if there is an email address assigned
         if (!empty($info->email)) {
-            // Collect Mailchimp customer info
-            if (($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== false) {
-                $data['mailchimp_info'] = $mailchimp_info;
+            if (($mailchimpInfo = $this->mailchimpLib->getMemberInfo($this->listId, $info->email)) !== false) {
+                $data['mailchimp_info'] = $mailchimpInfo;
 
-                // Collect customer Mailchimp emails activities (stats)
-                if (($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== false) {
+                if (($activities = $this->mailchimpLib->getMemberActivity($this->listId, $info->email)) !== false) {
                     if (array_key_exists('activity', $activities)) {
                         $open = 0;
                         $unopen = 0;
@@ -235,22 +202,25 @@ class Customers extends Persons
     }
 
     /**
-     * Inserts/updates a customer
-     * @return ResponseInterface
+     * Gets person attributes for a customer (AJAX)
      */
-    public function postSave(int $customer_id = NEW_ENTRY): ResponseInterface
+    public function getAttributes(int $customerId = NEW_ENTRY): string
     {
-        $first_name = $this->request->getPost('first_name');
-        $last_name = $this->request->getPost('last_name');
+        return $this->getPersonAttributes($customerId, Attribute::SHOW_IN_CUSTOMERS);
+    }
+
+    public function postSave(int $customerId = NEW_ENTRY): ResponseInterface
+    {
+        $firstName = $this->request->getPost('first_name');
+        $lastName = $this->request->getPost('last_name');
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
-        // Format first and last name properly
-        $first_name = $this->nameize($first_name);
-        $last_name = $this->nameize($last_name);
+        $firstName = $this->nameize($firstName);
+        $lastName = $this->nameize($lastName);
 
-        $person_data = [
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
+        $personData = [
+            'first_name'   => $firstName,
+            'last_name'    => $lastName,
             'gender'       => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
             'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number'),
@@ -263,9 +233,9 @@ class Customers extends Persons
             'comments'     => $this->request->getPost('comments')
         ];
 
-        $date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
+        $dateFormatter = date_create_from_format($this->appConfig['dateformat'] . ' ' . $this->appConfig['timeformat'], $this->request->getPost('date'));
 
-        $customer_data = [
+        $customerData = [
             'consent'           => $this->request->getPost('consent') != null,
             'account_number'    => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
             'tax_id'            => $this->request->getPost('tax_id'),
@@ -274,68 +244,57 @@ class Customers extends Persons
             'discount_type'     => $this->request->getPost('discount_type') == null ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
             'package_id'        => $this->request->getPost('package_id') == '' ? null : $this->request->getPost('package_id'),
             'taxable'           => $this->request->getPost('taxable') != null,
-            'date'              => $date_formatter->format('Y-m-d H:i:s'),
+            'date'              => $dateFormatter->format('Y-m-d H:i:s'),
             'employee_id'       => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
             'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? null : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        if ($this->customer->save_customer($person_data, $customer_data, $customer_id)) {
-            // Save customer to Mailchimp selected list    // TODO: addOrUpdateMember should be refactored. Potentially pass an array or object instead of 6 parameters.
-            $mailchimp_status = $this->request->getPost('mailchimp_status');
-            $this->mailchimp_lib->addOrUpdateMember(
-                $this->_list_id,
+        if ($this->customer->save_customer($personData, $customerData, $customerId)) {
+            $personId = $customerId == NEW_ENTRY ? $customerData['person_id'] : $customerId;
+            $this->savePersonAttributes($personId, Attribute::SHOW_IN_CUSTOMERS);
+
+            $mailchimpStatus = $this->request->getPost('mailchimp_status');
+            $this->mailchimpLib->addOrUpdateMember(
+                $this->listId,
                 $email,
-                $first_name,
-                $last_name,
-                $mailchimp_status == null ? "" : $mailchimp_status,
+                $firstName,
+                $lastName,
+                $mailchimpStatus == null ? "" : $mailchimpStatus,
                 ['vip' => $this->request->getPost('mailchimp_vip') != null]
             );
 
-            // New customer
-            if ($customer_id == NEW_ENTRY) {
+            if ($customerId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Customers.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $customer_data['person_id']
+                    'message' => lang('Customers.successful_adding') . ' ' . $firstName . ' ' . $lastName,
+                    'id'      => $customerData['person_id']
                 ]);
-            } else { // Existing customer
+            } else {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Customers.successful_updating') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $customer_id
+                    'message' => lang('Customers.successful_updating') . ' ' . $firstName . ' ' . $lastName,
+                    'id'      => $customerId
                 ]);
             }
-        } else { // Failure
+        } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Customers.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+                'message' => lang('Customers.error_adding_updating') . ' ' . $firstName . ' ' . $lastName,
                 'id'      => NEW_ENTRY
             ]);
         }
     }
 
-    /**
-     * Verifies if an email address already exists. Used in app/Views/customers/form.php
-     *
-     * @return ResponseInterface
-     * @noinspection PhpUnused
-     */
     public function postCheckEmail(): ResponseInterface
     {
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
-        $person_id = $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT);
+        $personId = $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT);
 
-        $exists = $this->customer->check_email_exists($email, $person_id);
+        $exists = $this->customer->check_email_exists($email, $personId);
 
         return $this->response->setJSON(!$exists ? 'true' : 'false');
     }
 
-    /**
-     * Verifies if an account number already exists. Used in app/Views/customers/form.php
-     *
-     * @return ResponseInterface
-     * @noinspection PhpUnused
-     */
     public function postCheckAccountNumber(): ResponseInterface
     {
         $exists = $this->customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
@@ -343,27 +302,22 @@ class Customers extends Persons
         return $this->response->setJSON(!$exists ? 'true' : 'false');
     }
 
-    /**
-     * This deletes customers from the customers table
-     * @return ResponseInterface
-     */
     public function postDelete(): ResponseInterface
     {
-        $customers_to_delete = $this->request->getPost('ids');
-        $customers_info = $this->customer->get_multiple_info($customers_to_delete);
+        $customersToDelete = $this->request->getPost('ids');
+        $customersInfo = $this->customer->get_multiple_info($customersToDelete);
 
         $count = 0;
 
-        foreach ($customers_info->getResult() as $info) {
+        foreach ($customersInfo->getResult() as $info) {
             if ($this->customer->delete($info->person_id)) {
-                // remove customer from Mailchimp selected list
-                $this->mailchimp_lib->removeMember($this->_list_id, $info->email);
+                $this->mailchimpLib->removeMember($this->listId, $info->email);
 
                 $count++;
             }
         }
 
-        if ($count == count($customers_to_delete)) {
+        if ($count == count($customersToDelete)) {
             return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Customers.successful_deleted') . ' ' . $count . ' ' . lang('Customers.one_or_multiple')
@@ -373,12 +327,6 @@ class Customers extends Persons
         }
     }
 
-    /**
-     * Customers import from csv spreadsheet
-     *
-     * @return DownloadResponse The template for Customer CSV imports is returned and download forced.
-     * @noinspection PhpUnused
-     */
     public function getCsv(): DownloadResponse
     {
         $name = 'importCustomers.csv';
@@ -386,30 +334,17 @@ class Customers extends Persons
         return $this->response->download($name, $data);
     }
 
-    /**
-     * Displays the customer CSV import modal. Used in app/Views/people/manage.php
-     *
-     * @return string
-     * @noinspection PhpUnused
-     */
     public function getCsvImport(): string
     {
         return view('customers/form_csv_import');
     }
 
-    /**
-     * Imports a CSV file containing customers. Used in app/Views/customers/form_csv_import.php
-     *
-     * @return ResponseInterface
-     * @noinspection PhpUnused
-     */
     public function postImportCsvFile(): ResponseInterface
     {
         if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_failed')]);
         } else {
             if (($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== false) {
-                // Skip the first row as it's the table description
                 fgetcsv($handle);
                 $i = 1;
 
@@ -420,7 +355,7 @@ class Customers extends Persons
 
                     if (sizeof($data) >= 16 && $consent) {
                         $email = strtolower($data[4]);
-                        $person_data = [
+                        $personData = [
                             'first_name'   => $data[0],
                             'last_name'    => $data[1],
                             'gender'       => $data[2],
@@ -435,7 +370,7 @@ class Customers extends Persons
                             'comments'     => $data[12]
                         ];
 
-                        $customer_data = [
+                        $customerData = [
                             'consent'       => $consent,
                             'company_name'  => $data[13],
                             'discount'      => $data[15],
@@ -444,14 +379,13 @@ class Customers extends Persons
                             'date'          => date('Y-m-d H:i:s'),
                             'employee_id'   => $this->employee->get_logged_in_employee_info()->person_id
                         ];
-                        $account_number = $data[14];
+                        $accountNumber = $data[14];
 
-                        // Don't duplicate people with same email
                         $invalidated = $this->customer->check_email_exists($email);
 
-                        if ($account_number != '') {
-                            $customer_data['account_number'] = $account_number;
-                            $invalidated &= $this->customer->check_account_number_exists($account_number);
+                        if ($accountNumber != '') {
+                            $customerData['account_number'] = $accountNumber;
+                            $invalidated &= $this->customer->check_account_number_exists($accountNumber);
                         }
                     } else {
                         $invalidated = true;
@@ -460,9 +394,8 @@ class Customers extends Persons
                     if ($invalidated) {
                         $failCodes[] = $i;
                         log_message('error', "Row $i was not imported: Either email or account number already exist or data was invalid.");
-                    } elseif ($this->customer->save_customer($person_data, $customer_data)) {
-                        // Save customer to Mailchimp selected list
-                        $this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
+                    } elseif ($this->customer->save_customer($personData, $customerData)) {
+                        $this->mailchimpLib->addOrUpdateMember($this->listId, $personData['email'], $personData['first_name'], '', $personData['last_name']);
                     } else {
                         $failCodes[] = $i;
                     }
