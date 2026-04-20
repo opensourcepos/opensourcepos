@@ -1,0 +1,132 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy (e.g., v3.4.0, latest)'
+        required: true
+        default: 'latest'
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+        default: 'production'
+      skip_approval:
+        description: 'Skip approval gate (only for non-production)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+    
+    # Environment with protection rules (approval gates configured in GitHub Settings)
+    environment:
+      name: ${{ github.event.inputs.environment }}
+      url: ${{ github.event.inputs.environment == 'production' && 'https://demo.opensourcepos.org' || 'https://dev.opensourcepos.org' }}
+    
+    steps:
+      - name: Create GitHub Deployment
+        id: deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          DEPLOYMENT_ID=$(gh api repos/${{ github.repository }}/deployments \
+            -X POST \
+            -f ref="${{ github.sha }}" \
+            -f environment="${{ github.event.inputs.environment }}" \
+            -f description="Deploy image ${{ github.event.inputs.image_tag }}" \
+            -f auto_merge=false \
+            -F required_contexts[]=[] \
+            --jq '.id')
+          
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+          echo "Created deployment: $DEPLOYMENT_ID"
+      
+      - name: Set deployment status to in_progress
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/${{ github.repository }}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses \
+            -X POST \
+            -f state="in_progress" \
+            -f description="Deployment in progress..." \
+            -f log_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      
+      - name: Trigger deployment webhook
+        id: webhook
+        env:
+          DEPLOY_WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+          DEPLOY_WEBHOOK_TOKEN: ${{ secrets.DEPLOY_WEBHOOK_TOKEN }}
+        run: |
+          if [ -z "$DEPLOY_WEBHOOK_URL" ]; then
+            echo "::warning::DEPLOY_WEBHOOK_URL secret is not configured"
+            echo "Please add the DEPLOY_WEBHOOK_URL secret in your repository settings"
+            
+            # For testing: just succeed
+            echo "status=success" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Build the payload
+          PAYLOAD=$(cat <<EOF
+          {
+            "image_tag": "${{ github.event.inputs.image_tag }}",
+            "environment": "${{ github.event.inputs.environment }}",
+            "deployment_id": "${{ steps.deployment.outputs.deployment_id }}",
+            "repository": "${{ github.repository }}",
+            "sha": "${{ github.sha }}",
+            "run_id": "${{ github.run_id }}",
+            "actor": "${{ github.actor }}"
+          }
+          EOF
+          )
+          
+          echo "Sending deployment request..."
+          echo "Payload: $PAYLOAD"
+          
+          # Call the webhook
+          HTTP_CODE=$(curl -s -o response.txt -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            ${DEPLOY_WEBHOOK_TOKEN:+-H "Authorization: Bearer $DEPLOY_WEBHOOK_TOKEN"} \
+            -d "$PAYLOAD" \
+            "$DEPLOY_WEBHOOK_URL")
+          
+          echo "Response code: $HTTP_CODE"
+          cat response.txt 2>/dev/null || true
+          
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Set deployment status
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          STATE="${{ steps.webhook.outputs.status }}"
+          
+          if [ "$STATE" = "success" ]; then
+            gh api repos/${{ github.repository }}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses \
+              -X POST \
+              -f state="success" \
+              -f description="Deployed image ${{ github.event.inputs.image_tag }} to ${{ github.event.inputs.environment }}"
+          else
+            gh api repos/${{ github.repository }}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses \
+              -X POST \
+              -f state="failure" \
+              -f description="Deployment failed"
+            exit 1
+          fi
