@@ -2,7 +2,9 @@
 
 namespace app\Plugins\MailchimpPlugin\Libraries;
 
+use App\Plugins\MailchimpPlugin\Models\SubscriptionModel;
 use app\Plugins\MailichimpPlugin\Libraries\MailchimpConnector;
+use Exception;
 
 /**
  * Mailchimp library, usable from CI code
@@ -15,14 +17,74 @@ use app\Plugins\MailichimpPlugin\Libraries\MailchimpConnector;
 class MailchimpLibrary
 {
     private MailchimpConnector $connector;
+    private SubscriptionModel $subscriptionModel;
+    private array $settings;
 
-    /**
-     * @param array $parameters
-     */
-    public function __construct(array $parameters = [])
+    public function __construct(array $settings = [])
     {
-        $apiKey = (count($parameters) > 0 && !empty($parameters['api_key'])) ? $parameters['api_key'] : '';
+        $apiKey = $settings['api_key'] ?? '';
         $this->connector = new MailchimpConnector($apiKey);
+        $this->subscriptionModel = new SubscriptionModel();
+
+        $this->settings = $settings;
+    }
+
+    public function synchronizeSubscription(array $customerData, ?array $settings = null): bool
+    {
+        $settings = $settings ?? $this->settings;
+
+        try {
+            if (!$this->subscribeCustomer($customerData)) {
+                throw new Exception("Customer ID {$customerData['person_id']}");
+            }
+        } catch (Exception $e) {
+            log_message('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
+        }
+
+        //call exists
+        //if exists get current subscription
+        //TODO: This is the original code from the Customers->postSave() function. It needs to be handled correctly
+        $mailchimpStatus = $this->subscriptionModel->getByCustomerId($customerData['customer_id']); //TODO: Originally this was a dropdown in the view but needs to be modeled as a static class enum in the plugin and the ID needs to be stored as a column in the mailchimp table along with the customerId
+        $this->addOrUpdateMember(
+            $settings['list_id'],
+            $customerData['email'],
+            $customerData['first_name'],
+            $customerData['last_name'],
+            $mailchimpStatus == null ? '' : $mailchimpStatus
+        );
+
+        return false;
+    }
+
+    private function subscribeCustomer(array $customerData): bool
+    {
+        $apiKey = $this->getSetting('api_key');
+        $listId = $this->getSetting('list_id');
+
+        if (empty($apiKey) || empty($listId)) {
+            log_message('warning', 'Mailchimp API key or List ID not configured');
+            return false;
+        }
+
+        if (empty($customerData['email'])) {
+            log_message('debug', 'Customer has no email, skipping Mailchimp sync');
+            return false;
+        }
+
+        $result = $this->addOrUpdateMember(
+            $listId,
+            $customerData['email'],
+            $customerData['first_name'] ?? '',
+            $customerData['last_name'] ?? '',
+            'subscribed'
+        );
+
+        if ($result) {
+            log_message('info', "Successfully subscribed customer ID {$customerData['person_id']} to Mailchimp");
+            return true;
+        }
+
+        return false;
     }
 
     /**
