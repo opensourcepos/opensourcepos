@@ -5,6 +5,7 @@ namespace app\Plugins\MailchimpPlugin\Libraries;
 use App\Plugins\MailchimpPlugin\Models\SubscriptionModel;
 use app\Plugins\MailichimpPlugin\Libraries\MailchimpConnector;
 use Exception;
+use stdClass;
 
 /**
  * Mailchimp library, usable from CI code
@@ -29,10 +30,8 @@ class MailchimpLibrary
         $this->settings = $settings;
     }
 
-    public function synchronizeSubscription(array $customerData, ?array $settings = null): bool
+    public function synchronizeSubscription(array $customerData): bool
     {
-        $settings = $settings ?? $this->settings;
-
         try {
             if (!$this->subscribeCustomer($customerData)) {
                 throw new Exception("Customer ID {$customerData['person_id']}");
@@ -44,9 +43,9 @@ class MailchimpLibrary
         //call exists
         //if exists get current subscription
         //TODO: This is the original code from the Customers->postSave() function. It needs to be handled correctly
-        $mailchimpStatus = $this->subscriptionModel->getByCustomerId($customerData['customer_id']); //TODO: Originally this was a dropdown in the view but needs to be modeled as a static class enum in the plugin and the ID needs to be stored as a column in the mailchimp table along with the customerId
+        $mailchimpStatus = $this->subscriptionModel->find($customerData['customer_id']); //TODO: Originally this was a dropdown in the view but needs to be modeled as a static class enum in the plugin and the ID needs to be stored as a column in the mailchimp table along with the customerId
         $this->addOrUpdateMember(
-            $settings['list_id'],
+            $this->settings['list_id'],
             $customerData['email'],
             $customerData['first_name'],
             $customerData['last_name'],
@@ -58,8 +57,8 @@ class MailchimpLibrary
 
     private function subscribeCustomer(array $customerData): bool
     {
-        $apiKey = $this->getSetting('api_key');
-        $listId = $this->getSetting('list_id');
+        $apiKey = $this->settings['api_key'];
+        $listId = $this->settings['list_id'];
 
         if (empty($apiKey) || empty($listId)) {
             log_message('warning', 'Mailchimp API key or List ID not configured');
@@ -85,6 +84,66 @@ class MailchimpLibrary
         }
 
         return false;
+    }
+
+    public function deleteSubscription(stdClass $customer): bool
+    {
+        $this->subscriptionModel->delete($customer->customer_id);
+
+        $listId = $this->settings['list_id'];
+        $this->removeMember($listId, $customer->email);
+
+        return false;
+    }
+
+    public function getMailchimpData(array $customerData): array
+    {
+        if (!empty($customerInfo->email)) {
+            $listId = $this->settings['list_id'];
+            $mailchimpInfo = $this->getMemberInfo($listId, $customerInfo->email);
+            if ($mailchimpInfo !== false) {
+                $mailchimpData['mailchimp_info'] = $mailchimpInfo;
+
+                $customerActivities = $this->getMemberActivity($listId, $customerInfo->email);
+                if ($customerActivities !== false) {
+                    if (array_key_exists('activity', $customerActivities)) {
+                        $open = 0;
+                        $unopen = 0;
+                        $click = 0;
+                        $total = 0;
+                        $lastOpen = '';
+
+                        foreach ($customerActivities['activity'] as $activity) {
+                            if ($activity['action'] == 'sent') {
+                                ++$unopen;
+                            } elseif ($activity['action'] == 'open') {
+                                if (empty($lastOpen)) {
+                                    $lastOpen = substr($activity['timestamp'], 0, 10);
+                                }
+                                ++$open;
+                            } elseif ($activity['action'] == 'click') {
+                                if (empty($lastOpen)) {
+                                    $lastOpen = substr($activity['timestamp'], 0, 10);
+                                }
+                                ++$click;
+                            }
+
+                            ++$total;
+                        }
+
+                        $mailchimpData['mailchimp_activity']['total'] = $total;
+                        $mailchimpData['mailchimp_activity']['open'] = $open;
+                        $mailchimpData['mailchimp_activity']['unopen'] = $unopen;
+                        $mailchimpData['mailchimp_activity']['click'] = $click;
+                        $mailchimpData['mailchimp_activity']['lastopen'] = $lastOpen;
+                    }
+                }
+
+                return $mailchimpData;
+            }
+        }
+
+        return [];
     }
 
     /**
