@@ -9,12 +9,11 @@ use ReflectionException;
 class SubscriptionModel extends Model
 {
     protected $table = 'mailchimpplugin_subscriptions';
-    protected $primaryKey = 'subscription_id';
-    protected $useAutoIncrement = true;
+    protected $primaryKey = 'customer_id';
+    protected $useAutoIncrement = false;
     protected $returnType = Subscription::class;
     protected $useSoftDeletes = true;
     protected $allowedFields = [
-        'customer_id',  // ospos_customers.person_id
         'mailchimp_id', // MD5 hash of the lowercase version of the list member's email address
         'status_id',    // ospos_mailchimpplugin_subscription_status.status_id
         'created_at',   // Timestamp of when the subscription was created
@@ -46,15 +45,5 @@ class SubscriptionModel extends Model
         $builder->where('customer_id', $customerId);
 
         return ($builder->countAllResults() === 1);
-    }
-
-    public function getByCustomerId(int $customerId): ?Subscription
-    {
-        if ($customerId < 1) {
-            return null;
-        }
-
-        $result = $this->where('customer_id', $customerId)->first();
-        return $result instanceof Subscription ? $result : null;
     }
 }
