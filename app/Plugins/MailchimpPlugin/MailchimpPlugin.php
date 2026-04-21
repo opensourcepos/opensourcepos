@@ -21,7 +21,7 @@ class MailchimpPlugin extends BasePlugin
     {
         parent::__construct();
 
-        $this->mailchimpLibrary = new MailchimpLibrary();
+        $this->mailchimpLibrary = new MailchimpLibrary($this->getSettings());
         log_message('debug', 'MailchimpPlugin initialized');
     }
 
@@ -47,7 +47,6 @@ class MailchimpPlugin extends BasePlugin
 
     public function registerEvents(): void
     {
-        Events::on('customer_loaded', [$this, 'onCustomerLoaded']);
         Events::on('customer_saved', [$this, 'onCustomerSaved']);
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
         Events::on('view:customer_tabs', [$this, 'injectMailchimpCustomerTab']);
@@ -107,55 +106,11 @@ class MailchimpPlugin extends BasePlugin
         return parent::saveSettings($normalized);
     }
 
-    public function injectMailchimpCustomerTab(array $data): string
+    public function injectMailchimpCustomerTab(array $customerData): string
     {
-        return view('Plugins/MailchimpPlugin/Views/customer_tab', $data);
-    }
+        $mailchimpData = $this->mailchimpLibrary->getMailchimpData($customerData);
 
-    public function onCustomerLoaded(object $customerInfo): void
-    {//TODO: This likely needs to be refactored to a controller function, called here then below it call another function to generate the view data so the mailchimpCustomerForm.php view can be displayed as a partial view.  Does the view need to be called here?
-        if (!empty($customerInfo->email)) {
-            $listId = $this->getSetting('list_id');
-            $mailchimpInfo = $this->mailchimpLibrary->getMemberInfo($listId, $customerInfo->email);
-            if ($mailchimpInfo !== false) {
-                $customerData['mailchimp_info'] = $mailchimpInfo;
-
-                $customerActivities = $this->mailchimpLibrary->getMemberActivity($listId, $customerInfo->email);
-                if ($customerActivities !== false) {
-                    if (array_key_exists('activity', $customerActivities)) {
-                        $open = 0;
-                        $unopen = 0;
-                        $click = 0;
-                        $total = 0;
-                        $lastOpen = '';
-
-                        foreach ($customerActivities['activity'] as $activity) {
-                            if ($activity['action'] == 'sent') {
-                                ++$unopen;
-                            } elseif ($activity['action'] == 'open') {
-                                if (empty($lastOpen)) {
-                                    $lastOpen = substr($activity['timestamp'], 0, 10);
-                                }
-                                ++$open;
-                            } elseif ($activity['action'] == 'click') {
-                                if (empty($lastOpen)) {
-                                    $lastOpen = substr($activity['timestamp'], 0, 10);
-                                }
-                                ++$click;
-                            }
-
-                            ++$total;
-                        }
-
-                        $customerData['mailchimp_activity']['total'] = $total;
-                        $customerData['mailchimp_activity']['open'] = $open;
-                        $customerData['mailchimp_activity']['unopen'] = $unopen;
-                        $customerData['mailchimp_activity']['click'] = $click;
-                        $customerData['mailchimp_activity']['lastopen'] = $lastOpen;
-                    }
-                }
-            }
-        }
+        return view('Plugins/MailchimpPlugin/Views/customer_tab', $mailchimpData);
     }
 
     public function onCustomerSaved(array $customerData): void
@@ -166,17 +121,14 @@ class MailchimpPlugin extends BasePlugin
 
         log_message('debug', "Customer saved event received for ID: {$customerData['person_id']}");
 
-        $this->mailchimpLibrary->synchronizeSubscription($customerData, $this->getSettings());
+        $this->mailchimpLibrary->synchronizeSubscription($customerData);
     }
 
     public function onCustomerDeleted(stdClass $customer): void
     {
         log_message('debug', "Customer_deleted event received for ID: {$customer->person_id}");
 
-        //TODO: This is code from the Customers Controller.  It needs to be adapted
-        // remove customer from Mailchimp selected list
-        $listId = $this->getSetting('list_id');
-        $this->mailchimpLibrary->removeMember($listId, $customer->email);
+        $this->mailchimpLibrary->deleteSubscription();
     }
 
     private function shouldSyncOnSave(): bool
@@ -184,52 +136,6 @@ class MailchimpPlugin extends BasePlugin
         return $this->getSetting('sync_on_save', '1') === '1';
     }
 
-    private function getMailchimpLib(array $params = []): MailchimpLibrary
-    {
-        if ($this->mailchimpLibrary === null) {
-            $this->mailchimpLibrary = new Mailchimp_lib($params);
-        }
-        return $this->mailchimpLibrary;
-    }
-
-    /**
-     * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/plugins_config.php
-     *
-     * @return ResponseInterface
-     * @noinspection PhpUnused
-     */
-    public function postCheckMailchimpApiKey(): ResponseInterface
-    {
-        $lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
-        $success = count($lists) > 0;
-
-        return $this->response->setJSON([
-            'success'         => $success,
-            'message'         => lang('Config.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
-            'mailchimp_lists' => $lists
-        ]);
-    }
-
-    /**
-     * This function fetches all the available lists from Mailchimp for the given API key
-     */
-    private function _mailchimp(string $api_key = ''): array    // TODO: Hungarian notation
-    {
-        $mailchimpLibrary = new MailchimpLibrary(['api_key' => $api_key]);
-
-        $result = [];
-
-        $lists = $mailchimpLibrary->getLists();
-        if ($lists !== false) {
-            if (is_array($lists) && !empty($lists['lists']) && is_array($lists['lists'])) {
-                foreach ($lists['lists'] as $list) {
-                    $result[$list['id']] = $list['name'] . ' [' . $list['stats']['member_count'] . ']';
-                }
-            }
-        }
-
-        return $result;
-    }
 
     public function testConnection(): array
     {
@@ -239,8 +145,7 @@ class MailchimpPlugin extends BasePlugin
             return ['success' => false, 'message' => $this->lang('mailchimp_api_key_required')];
         }
 
-        $mailchimp = $this->getMailchimpLib(['api_key' => $apiKey]);
-        $result = $mailchimp->getLists();
+        $result = $this->mailchimpLibrary->getLists();
 
         if ($result && isset($result['lists'])) {
             return [
@@ -253,7 +158,7 @@ class MailchimpPlugin extends BasePlugin
         return ['success' => false, 'message' => $this->lang('mailchimp_key_unsuccessfully')];
     }
 
-    protected function lang(string $key, array $data = []): string
+    protected function lang(string $key, array $data = []): string  //TODO: The implementation of this is different from the implementation of lang in the framework. We need to make sure it works properly. Primarily it needs to be pulling the strings from the proper place.
     {
         $language = Services::language();
         return $language->getLine($key, $data);
