@@ -8,8 +8,14 @@ class Subscription extends Entity
 {
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts = [
+        'id' => 'integer',
+        'customer_id' => 'integer',
+        'mailchimp_id' => 'string',
         'status_id' => 'enum[App\Plugins\MailchimpPlugin\Enums\SubscriptionStatus]',
-        ];
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
 
     protected $attributes = [
         'id'            => null,
