@@ -2,7 +2,10 @@
 /**
  * @var array $mailchimpData
  * @var array $mailchimpActivity
+ * @var array $subscriptionStatusOptions
  */
+
+
 ?>
 
 
@@ -13,12 +16,7 @@
                         <div class="col-xs-4">
                             <?= form_dropdown(
                                 'mailchimp_status',
-                                [
-                                    'subscribed'   => 'subscribed',
-                                    'unsubscribed' => 'unsubscribed',
-                                    'cleaned'      => 'cleaned',
-                                    'pending'      => 'pending'
-                                ],
+                                $subscriptionStatusOptions,
                                 $mailchimpData['status'],
                                 ['id' => 'mailchimp_status', 'class' => 'form-control input-sm']
                             ) ?>
