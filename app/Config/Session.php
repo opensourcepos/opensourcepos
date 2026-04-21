@@ -3,7 +3,6 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
-use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Session\Handlers\BaseHandler;
 use CodeIgniter\Session\Handlers\DatabaseHandler;
 use CodeIgniter\Session\Handlers\FileHandler;
@@ -139,7 +138,11 @@ class Session extends BaseConfig
                     $this->driver = FileHandler::class;
                     $this->savePath = WRITEPATH . 'session';
                 }
-            } catch (DatabaseException $e) {
+            } catch (\Throwable $e) {
+                // Database not available yet (e.g. fresh install before migrations).
+                // Fall back to file-based sessions so the login/migration page
+                // can still be served. Catches mysqli_sql_exception which is
+                // not a subclass of DatabaseException.
                 $this->driver = FileHandler::class;
                 $this->savePath = WRITEPATH . 'session';
             }

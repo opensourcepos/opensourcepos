@@ -2,7 +2,6 @@
 
 namespace App\Libraries;
 
-use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\MigrationRunner;
 use Config\Database;
 use stdClass;
@@ -44,7 +43,9 @@ class MY_Migration extends MigrationRunner
                 $result = $builder->get()->getRow();
                 return $result ? $result->version : 0;
             }
-        } catch (DatabaseException $e) {
+        } catch (\Throwable $e) {
+            // Database not available yet (e.g. fresh install before schema).
+            // Catches mysqli_sql_exception which is not a DatabaseException.
             return 0;
         }
 
@@ -76,8 +77,9 @@ class MY_Migration extends MigrationRunner
                 $result = $builder->get()->getRow();
                 return $result ? $result->version : false;
             }
-        } catch (DatabaseException $e) {
-            // Database doesn't exist yet or connection failed
+        } catch (\Throwable $e) {
+            // Database not available yet (e.g. fresh install before schema).
+            // Catches mysqli_sql_exception which is not a DatabaseException.
         }
 
         return false;
