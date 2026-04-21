@@ -2,6 +2,7 @@
 
 namespace app\Plugins\MailchimpPlugin\Libraries;
 
+use App\Plugins\MailchimpPlugin\Enums\SubscriptionStatus;
 use App\Plugins\MailchimpPlugin\Models\SubscriptionModel;
 use app\Plugins\MailichimpPlugin\Libraries\MailchimpConnector;
 use Exception;
@@ -98,13 +99,16 @@ class MailchimpLibrary
 
     public function getMailchimpData(array $customerData): array
     {
-        if (!empty($customerInfo->email)) {
+        if (!empty($customerData->email)) {
             $listId = $this->settings['list_id'];
-            $mailchimpInfo = $this->getMemberInfo($listId, $customerInfo->email);
+            $mailchimpInfo = $this->getMemberInfo($listId, $customerData->email);
+
             if ($mailchimpInfo !== false) {
                 $mailchimpData['mailchimp_info'] = $mailchimpInfo;
 
-                $customerActivities = $this->getMemberActivity($listId, $customerInfo->email);
+                $mailchimpData['subscriptionStatusOptions'] = $this->getSubscriptionStatusOptionViewData();
+
+                $customerActivities = $this->getMemberActivity($listId, $customerData->email);
                 if ($customerActivities !== false) {
                     if (array_key_exists('activity', $customerActivities)) {
                         $open = 0;
@@ -144,6 +148,17 @@ class MailchimpLibrary
         }
 
         return [];
+    }
+
+    private function getSubscriptionStatusOptionViewData(): array
+    {
+        $statusOptions = [];
+        foreach (SubscriptionStatus::cases() as $case) {
+            $lowercaseName = strtolower($case->name);
+            $statusOptions[(int)$case] = lang("MailchimpPlugin.subscription_status_{$lowercaseName}");
+        }
+
+        return $statusOptions;
     }
 
     /**
