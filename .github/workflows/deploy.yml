@@ -68,40 +68,59 @@ jobs:
         env:
           DEPLOY_WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL }}
           DEPLOY_WEBHOOK_TOKEN: ${{ secrets.DEPLOY_WEBHOOK_TOKEN }}
+          DOCKER_REPO_NAME: ${{ secrets.DOCKER_REPO_NAME }}
         run: |
           if [ -z "$DEPLOY_WEBHOOK_URL" ]; then
             echo "::warning::DEPLOY_WEBHOOK_URL secret is not configured"
             echo "Please add the DEPLOY_WEBHOOK_URL secret in your repository settings"
-            
-            # For testing: just succeed
             echo "status=success" >> $GITHUB_OUTPUT
             exit 0
           fi
           
-          # Build the payload
+          IMAGE_TAG="${{ github.event.inputs.image_tag }}"
+          REPO_NAME="${DOCKER_REPO_NAME:-opensourcepos/opensourcepos}"
+          PUSHED_AT=$(date +%s)
+          
+          WEBHOOK_URL="$DEPLOY_WEBHOOK_URL"
+          if [ -n "$DEPLOY_WEBHOOK_TOKEN" ]; then
+            WEBHOOK_URL="${DEPLOY_WEBHOOK_URL}?token=${DEPLOY_WEBHOOK_TOKEN}"
+          fi
+          
           PAYLOAD=$(cat <<EOF
           {
-            "image_tag": "${{ github.event.inputs.image_tag }}",
-            "environment": "${{ github.event.inputs.environment }}",
-            "deployment_id": "${{ steps.deployment.outputs.deployment_id }}",
-            "repository": "${{ github.repository }}",
-            "sha": "${{ github.sha }}",
-            "run_id": "${{ github.run_id }}",
-            "actor": "${{ github.actor }}"
+            "callback_url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "push_data": {
+              "pushed_at": ${PUSHED_AT},
+              "pusher": "${{ github.actor }}",
+              "tag": "${IMAGE_TAG}"
+            },
+            "repository": {
+              "repo_name": "${REPO_NAME}",
+              "name": "$(echo $REPO_NAME | cut -d'/' -f2)",
+              "namespace": "$(echo $REPO_NAME | cut -d'/' -f1)",
+              "repo_url": "https://hub.docker.com/r/${REPO_NAME}/",
+              "status": "Active"
+            },
+            "github_deployment": {
+              "id": "${{ steps.deployment.outputs.deployment_id }}",
+              "environment": "${{ github.event.inputs.environment }}",
+              "repository": "${{ github.repository }}",
+              "sha": "${{ github.sha }}",
+              "run_id": "${{ github.run_id }}",
+              "actor": "${{ github.actor }}"
+            }
           }
           EOF
           )
           
-          echo "Sending deployment request..."
+          echo "Sending Docker Hub compatible webhook..."
           echo "Payload: $PAYLOAD"
           
-          # Call the webhook
           HTTP_CODE=$(curl -s -o response.txt -w "%{http_code}" \
             -X POST \
             -H "Content-Type: application/json" \
-            ${DEPLOY_WEBHOOK_TOKEN:+-H "Authorization: Bearer $DEPLOY_WEBHOOK_TOKEN"} \
             -d "$PAYLOAD" \
-            "$DEPLOY_WEBHOOK_URL")
+            "$WEBHOOK_URL")
           
           echo "Response code: $HTTP_CODE"
           cat response.txt 2>/dev/null || true
