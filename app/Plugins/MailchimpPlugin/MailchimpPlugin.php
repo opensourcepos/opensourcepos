@@ -3,12 +3,10 @@
 namespace App\Plugins\MailchimpPlugin;
 
 use App\Libraries\Plugins\BasePlugin;
-use App\Models\Customer;
 use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
-use Exception;
 use stdClass;
 
 /**
@@ -52,7 +50,7 @@ class MailchimpPlugin extends BasePlugin
         Events::on('customer_loaded', [$this, 'onCustomerLoaded']);
         Events::on('customer_saved', [$this, 'onCustomerSaved']);
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
-        Events::on('view:customer_tabs', [$this, 'injectMailchimpCustomerData']);
+        Events::on('view:customer_tabs', [$this, 'injectMailchimpCustomerTab']);
 
         log_message('debug', 'Mailchimp plugin events registered');
     }
@@ -109,9 +107,9 @@ class MailchimpPlugin extends BasePlugin
         return parent::saveSettings($normalized);
     }
 
-    public function injectMailchimpCustomerData(array $data): string
+    public function injectMailchimpCustomerTab(array $data): string
     {
-        return view()
+        return view('Plugins/MailchimpPlugin/Views/customer_tab', $data);
     }
 
     public function onCustomerLoaded(object $customerInfo): void
@@ -168,33 +166,7 @@ class MailchimpPlugin extends BasePlugin
 
         log_message('debug', "Customer saved event received for ID: {$customerData['person_id']}");
 
-        try {
-            if (!$this->subscribeCustomer($customerData)) {
-                throw new Exception("Customer ID {$customerData['person_id']}");
-            }
-        } catch (Exception $e) {
-            log_message('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
-        }
-
-        //TODO: This is the original code from the Customers->postSave() function. It needs to be handled correctly
-        $mailchimpStatus = $this->request->getPost('mailchimp_status'); //TODO: Originally this was a dropdown in the view but needs to be modeled as a static class enum in the plugin and the ID needs to be stored as a column in the mailchimp table along with the customerId
-        $listId = $this->getSetting('list_id');
-        $this->mailchimpLibrary->addOrUpdateMember(
-            $listId,
-            $customerData['email'],
-            $customerData['first_name'],
-            $customerData['last_name'],
-            $mailchimpStatus == null ? '' : $mailchimpStatus
-        );
-
-        //TODO: this is the code as it looks in the customer CSV import function.
-        $this->mailchimpLibrary->addOrUpdateMember(
-            $listId,
-            $customerData['email'],
-            $customerData['first_name'],
-            $customerData['last_name'],
-            ''
-        );
+        $this->mailchimpLibrary->synchronizeSubscription($customerData, $this->getSettings());
     }
 
     public function onCustomerDeleted(stdClass $customer): void
@@ -207,45 +179,12 @@ class MailchimpPlugin extends BasePlugin
         $this->mailchimpLibrary->removeMember($listId, $customer->email);
     }
 
-    private function subscribeCustomer(array $customerData): bool
-    {
-        $apiKey = $this->getSetting('api_key');
-        $listId = $this->getSetting('list_id');
-
-        if (empty($apiKey) || empty($listId)) {
-            log_message('warning', 'Mailchimp API key or List ID not configured');
-            return false;
-        }
-
-        if (empty($customerData['email'])) {
-            log_message('debug', 'Customer has no email, skipping Mailchimp sync');
-            return false;
-        }
-
-        $mailchimp = $this->getMailchimpLib(['api_key' => $apiKey]);
-
-        $result = $mailchimp->addOrUpdateMember(
-            $listId,
-            $customerData['email'],
-            $customerData['first_name'] ?? '',
-            $customerData['last_name'] ?? '',
-            'subscribed'
-        );
-
-        if ($result) {
-            log_message('info', "Successfully subscribed customer ID {$customerData['person_id']} to Mailchimp");
-            return true;
-        }
-
-        return false;
-    }
-
     private function shouldSyncOnSave(): bool
     {
         return $this->getSetting('sync_on_save', '1') === '1';
     }
 
-    private function getMailchimpLib(array $params = []): Mailchimp_lib
+    private function getMailchimpLib(array $params = []): MailchimpLibrary
     {
         if ($this->mailchimpLibrary === null) {
             $this->mailchimpLibrary = new Mailchimp_lib($params);
@@ -276,11 +215,11 @@ class MailchimpPlugin extends BasePlugin
      */
     private function _mailchimp(string $api_key = ''): array    // TODO: Hungarian notation
     {
-        $mailchimp_lib = new Mailchimp_lib(['api_key' => $api_key]);
+        $mailchimpLibrary = new MailchimpLibrary(['api_key' => $api_key]);
 
         $result = [];
 
-        $lists = $mailchimp_lib->getLists();
+        $lists = $mailchimpLibrary->getLists();
         if ($lists !== false) {
             if (is_array($lists) && !empty($lists['lists']) && is_array($lists['lists'])) {
                 foreach ($lists['lists'] as $list) {
