@@ -1,51 +1,36 @@
-name: Deploy
+name: PR Deploy
 
 on:
-  workflow_dispatch:
-    inputs:
-      image_tag:
-        description: 'Docker image tag to deploy (e.g., v3.4.0, latest)'
-        required: true
-        default: 'latest'
-      environment:
-        description: 'Target environment'
-        required: true
-        type: choice
-        options:
-          - production
-          - staging
-        default: 'production'
-  workflow_call:
-    inputs:
-      image_tag:
-        description: 'Docker image tag to deploy'
-        required: true
-        type: string
-        default: 'latest'
-      environment:
-        description: 'Target environment'
-        required: true
-        type: string
-        default: 'staging'
-      sha:
-        description: 'Git commit SHA to deploy'
-        required: true
-        type: string
+  pull_request_review:
+    types: [submitted]
 
 permissions:
   contents: read
   deployments: write
+  pull-requests: write
 
 jobs:
-  deploy:
-    name: Deploy to ${{ inputs.environment }}
+  deploy-staging:
+    name: Deploy to staging
     runs-on: ubuntu-latest
-    
+    if: github.event.review.state == 'approved'
     environment:
-      name: ${{ inputs.environment }}
-      url: ${{ inputs.environment == 'production' && 'https://demo.opensourcepos.org' || 'https://dev.opensourcepos.org' }}
+      name: staging
+      url: https://dev.opensourcepos.org
     
     steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      
+      - name: Get image tag
+        id: image
+        run: |
+          SHA="${{ github.event.pull_request.head.sha }}"
+          IMAGE_TAG="pr-${{ github.event.pull_request.number }}-${SHA:0:7}"
+          echo "tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+      
       - name: Create GitHub Deployment
         id: deployment
         env:
@@ -53,9 +38,9 @@ jobs:
         run: |
           DEPLOYMENT_ID=$(gh api repos/${{ github.repository }}/deployments \
             -X POST \
-            -f ref="${{ inputs.sha || github.sha }}" \
-            -f environment="${{ inputs.environment }}" \
-            -f description="Deploy image ${{ inputs.image_tag }}" \
+            -f ref="${{ github.event.pull_request.head.sha }}" \
+            -f environment="staging" \
+            -f description="Deploy PR #${{ github.event.pull_request.number }} to staging" \
             -f auto_merge=false \
             -F required_contexts=[] \
             --jq '.id')
@@ -70,7 +55,7 @@ jobs:
           gh api repos/${{ github.repository }}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses \
             -X POST \
             -f state="in_progress" \
-            -f description="Deployment in progress..." \
+            -f description="Deploying PR #${{ github.event.pull_request.number }}..." \
             -f log_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       
       - name: Trigger deployment webhook
@@ -82,12 +67,11 @@ jobs:
         run: |
           if [ -z "$DEPLOY_WEBHOOK_URL" ]; then
             echo "::warning::DEPLOY_WEBHOOK_URL secret is not configured"
-            echo "Please add the DEPLOY_WEBHOOK_URL secret in your repository settings"
             echo "status=success" >> $GITHUB_OUTPUT
             exit 0
           fi
           
-          IMAGE_TAG="${{ inputs.image_tag }}"
+          IMAGE_TAG="${{ steps.image.outputs.tag }}"
           REPO_NAME="${DOCKER_REPO_NAME:-opensourcepos/opensourcepos}"
           PUSHED_AT=$(date +%s)
           
@@ -113,18 +97,19 @@ jobs:
             },
             "github_deployment": {
               "id": "${{ steps.deployment.outputs.deployment_id }}",
-              "environment": "${{ inputs.environment }}",
+              "environment": "staging",
               "repository": "${{ github.repository }}",
-              "sha": "${{ inputs.sha || github.sha }}",
+              "sha": "${{ github.event.pull_request.head.sha }}",
               "run_id": "${{ github.run_id }}",
-              "actor": "${{ github.actor }}"
+              "actor": "${{ github.actor }}",
+              "pull_request": ${{ github.event.pull_request.number }}
             }
           }
           EOF
           )
           
           echo "Sending Docker Hub compatible webhook..."
-          echo "Payload: $PAYLOAD"
+          echo "Image: ${IMAGE_TAG}"
           
           HTTP_CODE=$(curl -s -o response.txt -w "%{http_code}" \
             -X POST \
@@ -151,11 +136,35 @@ jobs:
             gh api repos/${{ github.repository }}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses \
               -X POST \
               -f state="success" \
-              -f description="Deployed image ${{ inputs.image_tag }} to ${{ inputs.environment }}"
+              -f description="Deployed PR #${{ github.event.pull_request.number }} to staging"
           else
             gh api repos/${{ github.repository }}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses \
               -X POST \
               -f state="failure" \
-              -f description="Deployment failed"
+              -f description="Staging deployment failed"
             exit 1
           fi
+      
+      - name: Comment deployment status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS: ${{ steps.webhook.outputs.status }}
+        run: |
+          if [ "$STATUS" = "success" ]; then
+            BODY="✅ **Staging deployment completed**
+            
+            🔗 **URL**: https://dev.opensourcepos.org
+            📦 **Image Tag**: \`${{ steps.image.outputs.tag }}\`
+            🔨 **Commit**: ${{ github.event.pull_request.head.sha }}
+            
+            View logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          else
+            BODY="❌ **Staging deployment failed**
+            
+            Check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details."
+          fi
+          
+          gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
+            -X POST \
+            -f body="$BODY"
