@@ -45,6 +45,16 @@ class SubscriptionModel extends Model
         $builder = $this->db->table($this->table);
         $builder->where('customer_id', $customerId);
 
-        return ($builder->get()->getNumRows() === 1);
+        return ($builder->countAllResults() === 1);
+    }
+
+    public function getByCustomerId(int $customerId): ?Subscription
+    {
+        if ($customerId < 1) {
+            return null;
+        }
+
+        $result = $this->where('customer_id', $customerId)->first();
+        return $result instanceof Subscription ? $result : null;
     }
 }
