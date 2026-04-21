@@ -327,8 +327,9 @@ class App extends BaseConfig
             $errorMessage =
                 'Security: allowedHostnames is not configured. ' .
                 'Host header injection protection is disabled. ' .
-                'Set app.allowedHostnames in your .env file. ' .
-                'Example: app.allowedHostnames = "example.com,www.example.com" ' .
+                'Either set app.allowedHostnames in your .env file ' .
+                '(e.g., app.allowedHostnames = "example.com,www.example.com") ' .
+                'or configure $allowedHostnames in app/Config/App.php. ' .
                 'Received Host: ' . $httpHost;
 
             // Production: Fail explicitly to prevent silent security vulnerabilities
