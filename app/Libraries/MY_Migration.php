@@ -43,7 +43,7 @@ class MY_Migration extends MigrationRunner
                 $result = $builder->get()->getRow();
                 return $result ? $result->version : 0;
             }
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             // Database not available yet (e.g. fresh install before schema).
             // Catches mysqli_sql_exception which is not a DatabaseException.
             return 0;
@@ -77,7 +77,7 @@ class MY_Migration extends MigrationRunner
                 $result = $builder->get()->getRow();
                 return $result ? $result->version : false;
             }
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             // Database not available yet (e.g. fresh install before schema).
             // Catches mysqli_sql_exception which is not a DatabaseException.
         }

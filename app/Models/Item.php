@@ -391,7 +391,6 @@ class Item extends Model
     public function get_item_id(string $item_number, bool $ignore_deleted = false, bool $deleted = false): bool|int
     {
         $builder = $this->db->table('items');
-        $builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
         $builder->groupStart();
         $builder->where('item_number', $item_number);
         $builder->orWhere('item_id', $item_number);

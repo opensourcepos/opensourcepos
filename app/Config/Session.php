@@ -138,11 +138,11 @@ class Session extends BaseConfig
                     $this->driver = FileHandler::class;
                     $this->savePath = WRITEPATH . 'session';
                 }
-            } catch (\Throwable $e) {
+            } catch (\Exception $e) {
                 // Database not available yet (e.g. fresh install before migrations).
                 // Fall back to file-based sessions so the login/migration page
                 // can still be served. Catches mysqli_sql_exception which is
-                // not a subclass of DatabaseException.
+                // not a subclass of DatabaseException but is a RuntimeException.
                 $this->driver = FileHandler::class;
                 $this->savePath = WRITEPATH . 'session';
             }

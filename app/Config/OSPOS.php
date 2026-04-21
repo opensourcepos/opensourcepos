@@ -40,7 +40,7 @@ class OSPOS extends BaseConfig
                     $this->settings[$app_config->key] = $app_config->value;
                 }
                 $this->cache->save('settings', encode_array($this->settings));
-            } catch (\Throwable $e) {
+            } catch (\Exception $e) {
                 // Database table doesn't exist yet (migrations haven't run)
                 // or database connection failed. Return empty settings to
                 // allow migration page to display. Catches mysqli_sql_exception
