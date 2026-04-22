@@ -4,8 +4,10 @@ namespace App\Plugins\MailchimpPlugin;
 
 use App\Libraries\Plugins\BasePlugin;
 use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
+use CodeIgniter\Database\RawSql;
 use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\Services;
 use stdClass;
 
@@ -69,6 +71,7 @@ class MailchimpPlugin extends BasePlugin
     public function uninstall(): bool
     {
         log_message('info', 'Uninstalling Mailchimp plugin');
+
         return true;
     }
 
