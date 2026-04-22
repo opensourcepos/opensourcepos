@@ -1,0 +1,196 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy (e.g., v3.4.0, latest)'
+        required: true
+        default: 'latest'
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+        default: 'production'
+  workflow_call:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy'
+        type: string
+        default: 'latest'
+      environment:
+        description: 'Target environment'
+        type: string
+        default: 'staging'
+      sha:
+        description: 'Git commit SHA to deploy'
+        required: true
+        type: string
+
+concurrency:
+  group: deploy-${{ inputs.environment }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ vars.DEPLOY_URL || (inputs.environment == 'production' && 'https://demo.opensourcepos.org' || 'https://dev.opensourcepos.org') }}
+      deployment: false
+    
+    steps:
+      - name: Create GitHub Deployment
+        id: deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IMAGE_TAG: ${{ inputs.image_tag }}
+          TARGET_ENV: ${{ inputs.environment }}
+          REF_SHA: ${{ inputs.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          
+          DEPLOYMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/deployments" \
+            -X POST \
+            -f ref="${REF_SHA}" \
+            -f environment="${TARGET_ENV}" \
+            -f description="Deploy image ${IMAGE_TAG}" \
+            -F auto_merge=false \
+            -F required_contexts[] \
+            --jq '.id')
+          
+          if [ -z "$DEPLOYMENT_ID" ]; then
+            echo "::error::Failed to create deployment"
+            exit 1
+          fi
+          
+          echo "deployment_id=$DEPLOYMENT_ID" >> "$GITHUB_OUTPUT"
+          echo "Created deployment: $DEPLOYMENT_ID"
+      
+      - name: Set deployment status to in_progress
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          
+          gh api "repos/${GITHUB_REPOSITORY}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses" \
+            -X POST \
+            -f state="in_progress" \
+            -f description="Deployment in progress..." \
+            -f log_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+      
+      - name: Trigger deployment webhook
+        id: webhook
+        env:
+          DEPLOY_WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+          DEPLOY_WEBHOOK_SECRET: ${{ secrets.DEPLOY_WEBHOOK_SECRET }}
+          DOCKER_REPO_NAME: ${{ secrets.DOCKER_REPO_NAME }}
+          IMAGE_TAG: ${{ inputs.image_tag }}
+          TARGET_ENV: ${{ inputs.environment }}
+          REF_SHA: ${{ inputs.sha || github.sha }}
+          DEPLOYMENT_ID: ${{ steps.deployment.outputs.deployment_id }}
+        run: |
+          set -euo pipefail
+          
+          if [ -z "$DEPLOY_WEBHOOK_URL" ]; then
+            echo "::error::DEPLOY_WEBHOOK_URL secret is not configured"
+            echo "Please add the DEPLOY_WEBHOOK_URL secret in your repository settings"
+            echo "status=failure" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          
+          REPO_NAME="${DOCKER_REPO_NAME:-opensourcepos/opensourcepos}"
+          REPO_NAMESPACE="${REPO_NAME%%/*}"
+          REPO_SHORT_NAME="${REPO_NAME#*/}"
+          PUSHED_AT=$(date +%s)
+          
+          PAYLOAD=$(jq -n \
+            --arg callback_url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --argjson pushed_at "$PUSHED_AT" \
+            --arg pusher "$GITHUB_ACTOR" \
+            --arg tag "$IMAGE_TAG" \
+            --arg repo_name "$REPO_NAME" \
+            --arg name "$REPO_SHORT_NAME" \
+            --arg namespace "$REPO_NAMESPACE" \
+            --arg repo_url "https://hub.docker.com/r/${REPO_NAME}/" \
+            --arg deployment_id "$DEPLOYMENT_ID" \
+            --arg environment "$TARGET_ENV" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg sha "$REF_SHA" \
+            --arg run_id "$GITHUB_RUN_ID" \
+            --arg actor "$GITHUB_ACTOR" \
+            '{
+              callback_url: $callback_url,
+              push_data: {pushed_at: $pushed_at, pusher: $pusher, tag: $tag},
+              repository: {repo_name: $repo_name, name: $name, namespace: $namespace, repo_url: $repo_url, status: "Active"},
+              github_deployment: {id: $deployment_id, environment: $environment, repository: $repository, sha: $sha, run_id: $run_id, actor: $actor}
+            }')
+          
+          echo "Sending webhook..."
+          echo "Image: ${IMAGE_TAG}"
+          echo "Environment: ${TARGET_ENV}"
+          
+          HEADERS=(-H "Content-Type: application/json")
+          
+          if [ -n "$DEPLOY_WEBHOOK_SECRET" ]; then
+            SIGNATURE=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "$DEPLOY_WEBHOOK_SECRET" | sed 's/.*= //')
+            HEADERS+=(-H "X-Hub-Signature-256: sha256=$SIGNATURE")
+            echo "Using HMAC-SHA256 signature verification"
+          else
+            echo "::warning::DEPLOY_WEBHOOK_SECRET not set - webhook calls will not be signed"
+            echo "For security, configure DEPLOY_WEBHOOK_SECRET in your repository settings"
+          fi
+          
+          HTTP_CODE=$(curl -sS --connect-timeout 10 --max-time 120 \
+            -o response.txt -w "%{http_code}" \
+            -X POST \
+            "${HEADERS[@]}" \
+            -d "$PAYLOAD" \
+            "$DEPLOY_WEBHOOK_URL") || HTTP_CODE="000"
+          
+          echo "Response code: $HTTP_CODE"
+          if [ -s response.txt ]; then
+            cat response.txt
+          fi
+          
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "status=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=failure" >> "$GITHUB_OUTPUT"
+          fi
+      
+      - name: Set deployment status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IMAGE_TAG: ${{ inputs.image_tag }}
+          TARGET_ENV: ${{ inputs.environment }}
+        run: |
+          set -euo pipefail
+          
+          STATE="${{ steps.webhook.outputs.status }}"
+          
+          if [ "$STATE" = "success" ]; then
+            DESCRIPTION=$(jq -n --arg tag "$IMAGE_TAG" --arg env "$TARGET_ENV" \
+              'Deployed image \($tag) to \($env)')
+            
+            gh api "repos/${GITHUB_REPOSITORY}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses" \
+              -X POST \
+              -f state="success" \
+              -f description="$DESCRIPTION"
+          else
+            gh api "repos/${GITHUB_REPOSITORY}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses" \
+              -X POST \
+              -f state="failure" \
+              -f description="Deployment failed"
+            exit 1
+          fi
