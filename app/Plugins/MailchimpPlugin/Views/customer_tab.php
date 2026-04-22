@@ -55,12 +55,12 @@
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.activity_lastopen'), 'mailchimp_activity_lastopen', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.activity_last_open'), 'mailchimp_activity_last_open', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_activity_lastopen',
+                                'name'     => 'mailchimp_activity_last_open',
                                 'class'    => 'form-control input-sm',
-                                'value'    => $mailchimpActivity['lastopen'],
+                                'value'    => $mailchimpActivity['last_open'],
                                 'disabled' => ''
                             ]) ?>
                         </div>

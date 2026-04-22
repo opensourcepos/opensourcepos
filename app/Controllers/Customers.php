@@ -181,7 +181,7 @@ class Customers extends Persons
         }
 
         Events::trigger('customer_loaded', $info);
-        Events::trigger('view:customer_tabs', [$this, 'injectCustomerTab']);
+        Events::trigger('view:customer_tabs', $info);
 
         return view("customers/form", $data);
     }

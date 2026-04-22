@@ -4,10 +4,7 @@ namespace App\Plugins\MailchimpPlugin;
 
 use App\Libraries\Plugins\BasePlugin;
 use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
-use CodeIgniter\Database\RawSql;
 use CodeIgniter\Events\Events;
-use CodeIgniter\HTTP\ResponseInterface;
-use Config\Database;
 use Config\Services;
 use stdClass;
 
@@ -111,7 +108,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function injectMailchimpCustomerTab(array $customerData): string
     {
-        $mailchimpData = $this->mailchimpLibrary->getMailchimpData($customerData);
+        $mailchimpData = $this->mailchimpLibrary->getMailchimpViewData($customerData);
 
         return view('Plugins/MailchimpPlugin/Views/customer_tab', $mailchimpData);
     }
