@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'ສະຖານະ Mailchimp',
     'description'                    => 'ເຊື່ອມຕໍ່ກັບ Mailchimp ເພື່ອຊິງຄໂ ກຣນລູກຄ້າໄປຫາລາຍຊື່ອີເມວ ເມື່ອພວກເຂົາຖືກສ້າງ ຫຼື ອັບເດດ.',
     'email_client'                   => 'ລູກຄ້າອີເມວ',
+    'fields_required_message'        => 'ຕ້ອງໄດ້ປ້ອນຂໍ້ມູນໃນປ່ອງທີ່ເປັນສີແດງ',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'ລະຫັດ API ຖືກຕ້ອງ.',
     'key_unsuccessfully'             => 'ລະຫັດ API ບໍ່ຖືກຕ້ອງ.',

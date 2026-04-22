@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp-ის მომხმარებლის სტატუსი',
     'description'                    => 'ინტეგრირება Mailchimp-თან მომხმარებლების სინქრონიზაციისთვის მეილინგ სიებსა და სიაში მათი შექმნის ან განახლებისას.',
     'email_client'                   => 'ელ-ფოსტის კლიენტი',
+    'fields_required_message'        => 'Fields in red are required',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API გასაღები ვალიდურია.',
     'key_unsuccessfully'             => 'API გასაღები არ არის ვალიდური.',

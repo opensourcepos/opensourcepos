@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp ഉപഭോക്താവ് അവസ്ഥ',
     'description'                    => 'ഉപഭോക്താക്കളെ സൃഷ്ടിക്കുമ്പോഴോ പുതുക്കുമ്പോഴോ അവരെ മെയിലിംഗ് ലിസ്റ്റുകളിലേക്ക് സിൻക്രണൈസ് ചെയ്യാൻ Mailchimp-മായി സംയോജിപ്പിക്കുക.',
     'email_client'                   => 'ഇമെയിൽ ക്ലയന്റ്',
+    'fields_required_message'        => '',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API കീ ശരിയാണ്.',
     'key_unsuccessfully'             => 'API കീ തെറ്റാണ്.',

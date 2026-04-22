@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Statut de MailChimp',
     'description'                    => 'Intégrez Mailchimp pour synchroniser les clients avec les listes de diffusion lors de leur création ou mise à jour.',
     'email_client'                   => 'Client de messagerie',
+    'fields_required_message'        => 'Les champs en rouge sont requis',
     'info'                           => 'MailChimp',
     'key_successfully'               => 'La clé API est valide.',
     'key_unsuccessfully'             => 'La clé API est invalide.',

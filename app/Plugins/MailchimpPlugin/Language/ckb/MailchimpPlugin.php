@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'دۆخی کڕیاری Mailchimp',
     'description'                    => 'Mailchimp بەکاربهێنە بۆ سینککردنی کڕیاران بۆ لیستەکانی ئیمەیڵ کاتێک دروست دەکرێن یان نوێ دەکرێنەوە.',
     'email_client'                   => 'کلاینتی ئیمەیڵ',
+    'fields_required_message'        => 'بوارە سورەکان پێویستن',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'کلیلى API ڕاستە.',
     'key_unsuccessfully'             => 'کلیلى API هەڵەیە.',

@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp 客户状态',
     'description'                    => '与 Mailchimp 集成，在创建或更新客户时将客户同步到邮件列表。',
     'email_client'                   => '邮件客户端',
+    'fields_required_message'        => '红色栏位是必填项',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API 密钥有效。',
     'key_unsuccessfully'             => 'API 密钥无效。',

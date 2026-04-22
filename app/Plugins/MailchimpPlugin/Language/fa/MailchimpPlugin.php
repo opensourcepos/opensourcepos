@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'وضعیت Mailchimp',
     'description'                    => 'برای همگام‌سازی مشتریان با لیست‌های ایمیل هنگام ایجاد یا به‌روزرسانی، با Mailchimp ادغام کنید.',
     'email_client'                   => 'مشتری ایمیل',
+    'fields_required_message'        => 'زمینه هایی به رنگ قرمز لازم است',
     'info'                           => 'میل‌چیمپ',
     'key_successfully'               => 'کلید API معتبر است.',
     'key_unsuccessfully'             => 'کلید API نامعتبر است.',

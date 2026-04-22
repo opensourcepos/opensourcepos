@@ -9,12 +9,12 @@
 <div id="config_wrapper">
     <fieldset id="config_info">
 
-        <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-        <div id="plugins_header"><?= lang('Config.plugins_configuration') ?></div>
+        <div id="required_fields_message"><?= lang('MailchimpPlugin.fields_required_message') ?></div>
+        <div id="plugins_header"><?= lang('MailchimpPlugin.plugins_configuration') ?></div>
         <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
+            <?= form_label(lang('MailchimpPlugin.api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
             <div class="col-xs-4">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
@@ -31,14 +31,14 @@
             <div class="col-xs-1">
                 <label class="control-label">
                     <a href="https://eepurl.com/b9a05b" target="_blank">
-                        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') ?>"></span>
+                        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('MailchimpPlugin.tooltip') ?>"></span>
                     </a>
                 </label>
             </div>
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
+            <?= form_label(lang('MailchimpPlugin.lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
             <div class="col-xs-4">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
@@ -57,7 +57,7 @@
         <?= form_submit([
             'name'  => 'submit_mailchimp',
             'id'    => 'submit_mailchimp',
-            'value' => lang('Common.submit'),
+            'value' => lang('MailchimpPlugin.submit'),
             'class' => 'btn btn-primary btn-sm pull-right'
         ]) ?>
 

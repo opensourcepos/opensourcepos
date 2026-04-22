@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'MailChimp 電子報行銷狀態',
     'description'                    => '與 Mailchimp 集成，在創建或更新客戶時將客戶同步到郵件列表。',
     'email_client'                   => '電郵客戶端',
+    'fields_required_message'        => '紅色欄位為必填',
     'info'                           => '邮件猩猩',
     'key_successfully'               => 'API 密鑰有效。',
     'key_unsuccessfully'             => 'API 密鑰無效。',

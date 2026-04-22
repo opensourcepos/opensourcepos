@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Situatie Mailchimp',
     'description'                    => 'Integrează Mailchimp pentru a sincroniza clienții cu listele de mailing atunci când sunt creați sau actualizați.',
     'email_client'                   => 'Client de email',
+    'fields_required_message'        => 'Sunt obligatorii câmpurile roșii',
     'info'                           => 'MailChimp',
     'key_successfully'               => 'Cheia API este validă.',
     'key_unsuccessfully'             => 'Cheia API nu este validă.',

@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp vásárlói állapot',
     'description'                    => 'Integrálja a Mailchimp-et a vásárlók szinkronizálása a mailing listákra létrehozáskor vagy frissítéskor.',
     'email_client'                   => 'E-mail kliens',
+    'fields_required_message'        => 'A piros mezők kötelezők',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'Az API kulcs érvényes.',
     'key_unsuccessfully'             => 'Az API kulcs érvénytelen.',

@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Hali ya MailChimp',
     'description'                    => 'Unganisha na Mailchimp ili kusawazisha wateja kwenye orodha za barua pepe wanapoundwa au kusasishwa.',
     'email_client'                   => 'Mteja wa Barua Pepe',
+    'fields_required_message'        => 'Sehemu zilizo na rangi nyekundu ni za lazima',
     'info'                           => 'MailChimp',
     'key_successfully'               => 'Ufunguo wa API ni sahihi.',
     'key_unsuccessfully'             => 'Ufunguo wa API si sahihi.',

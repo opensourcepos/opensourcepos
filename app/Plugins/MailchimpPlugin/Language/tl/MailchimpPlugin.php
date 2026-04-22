@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp status',
     'description'                    => 'I-ugnay ang Mailchimp upang i-sync ang mga customer sa mga mailing list kapag sila ay ginawa o na-update.',
     'email_client'                   => 'Email client',
+    'fields_required_message'        => 'Fields in red are required',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'Ang API key ay valid.',
     'key_unsuccessfully'             => 'Ang API key ay invalid.',

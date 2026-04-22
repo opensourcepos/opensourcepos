@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp հաճախորդի կարգավիճակ',
     'description'                    => 'Ինտեգրեք Mailchimp-ը՝ հաճախորդներին փոստային ցուցակներով սինխրոնացնելու համար, երբ նրանք ստեղծվում են կամ թարմացվում:',
     'email_client'                   => 'Էլ. փոստի կլիենտ',
+    'fields_required_message'        => '',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API բանալին վավեր է:',
     'key_unsuccessfully'             => 'API բանալին անվավեր է:',

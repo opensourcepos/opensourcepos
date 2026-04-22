@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp-kundestatus',
     'description'                    => 'Integrer Mailchimp for at synkronisere kunder med mailinglister, når de oprettes eller opdateres.',
     'email_client'                   => 'E-mail-klient',
+    'fields_required_message'        => 'Røde felter er obligatoriske',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API-nøglen er gyldig.',
     'key_unsuccessfully'             => 'API-nøglen er ugyldig.',

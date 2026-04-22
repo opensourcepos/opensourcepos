@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'MailChimp Status',
     'description'                    => 'Integreer met Mailchimp om klanten te synchroniseren met mailinglijsten wanneer ze worden aangemaakt of bijgewerkt.',
     'email_client'                   => 'E-mailclient',
+    'fields_required_message'        => 'Rode velden zijn vereist',
     'info'                           => 'MailChimp',
     'key_successfully'               => 'API-sleutel is geldig.',
     'key_unsuccessfully'             => 'API-sleutel is ongeldig.',

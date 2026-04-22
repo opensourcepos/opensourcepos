@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Status klienta Mailchimp',
     'description'                    => 'Zintegruj się z Mailchimp, aby synchronizować klientów z listami mailingowymi podczas ich tworzenia lub aktualizacji.',
     'email_client'                   => 'Klient e-mail',
+    'fields_required_message'        => 'Czerwone pola są wymagane',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'Klucz API jest poprawny.',
     'key_unsuccessfully'             => 'Klucz API jest nieprawidłowy.',

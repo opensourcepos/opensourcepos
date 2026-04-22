@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'MailChimp status',
     'description'                    => 'Integrera Mailchimp för att synkronisera kunder med mailinglistor när de skapas eller uppdateras.',
     'email_client'                   => 'E-mailklient',
+    'fields_required_message'        => 'Fält markerade i rött är obligatoriska',
     'info'                           => 'MailChimp',
     'key_successfully'               => 'API-nyckeln är giltig.',
     'key_unsuccessfully'             => 'API-nyckeln är ogiltig.',

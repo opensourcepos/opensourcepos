@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'מצב Mailchimp',
     'description'                    => 'שלב את Mailchimp כדי לסנכרן לקוחות לרשימות תפוצה כאשר הם נוצרים או מעודכנים.',
     'email_client'                   => 'לקוח אימייל',
+    'fields_required_message'        => 'שדות באדום הינם חובה',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'מפתח ה-API תקין.',
     'key_unsuccessfully'             => 'מפתח ה-API אינו תקין.',

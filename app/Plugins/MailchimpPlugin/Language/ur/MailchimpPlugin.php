@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'میل چیمپ گاہک کی صورتحال',
     'description'                    => 'جب گاہک بنائے جائیں یا اپ ڈیٹ کیے جائیں تو انہیں میلنگ لسٹوں کے ساتھ ہم آہنگ کرنے کے لیے میل چیمپ کے ساتھ انٹیگریٹ کریں۔',
     'email_client'                   => 'ای میل کلائنٹ',
+    'fields_required_message'        => '',
     'info'                           => 'میل چیمپ',
     'key_successfully'               => 'API کلید درست ہے۔',
     'key_unsuccessfully'             => 'API کلید غلط ہے۔',

@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'สถานะของระบบส่งเมล์เมล์ชิม',
     'description'                    => 'เชื่อมต่อกับ Mailchimp เพื่อซิงโครไนซ์ลูกค้าเข้ากับรายการเมล์เมื่อมีการสร้างหรืออัปเดต',
     'email_client'                   => 'โปรแกรมรับส่งเมล',
+    'fields_required_message'        => 'ช่องสีแดง จำเป็นต้องป้อน',
     'info'                           => 'ระบบส่งอีเมล์ชิม',
     'key_successfully'               => 'คีย์ API ถูกต้อง',
     'key_unsuccessfully'             => 'คีย์ API ไม่ถูกต้อง',

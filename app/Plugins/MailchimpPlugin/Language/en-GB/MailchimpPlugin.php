@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'MailChimp Status',
     'description'                    => 'Integrate with Mailchimp to sync customers to mailing lists when they are created or updated.',
     'email_client'                   => 'Email client',
+    'fields_required_message'        => 'Fields in red are required',
     'info'                           => 'MailChimp',
     'key_successfully'               => 'API Key is valid.',
     'key_unsuccessfully'             => 'API Key is invalid.',

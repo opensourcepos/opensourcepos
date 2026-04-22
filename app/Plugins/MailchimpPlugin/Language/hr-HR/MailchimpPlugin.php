@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Status Mailchimp kupca',
     'description'                    => 'Integrirajte Mailchimp kako biste sinkronizirali kupce s listama za slanje e-pošte kada se kreiraju ili ažuriraju.',
     'email_client'                   => 'Klijent e-pošte',
+    'fields_required_message'        => 'Polja u crvenom su obavezna',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API ključ je valjajući.',
     'key_unsuccessfully'             => 'API ključ nije valjajući.',

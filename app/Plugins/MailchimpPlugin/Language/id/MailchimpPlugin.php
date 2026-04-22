@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Status MailChimp',
     'description'                    => 'Integrasikan dengan Mailchimp untuk menyinkronkan pelanggan ke daftar mailing saat mereka dibuat atau diperbarui.',
     'email_client'                   => 'Klien email',
+    'fields_required_message'        => 'Bagian yang berwarna merah harus diisi',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'Kunci API valid.',
     'key_unsuccessfully'             => 'Kunci API tidak valid.',

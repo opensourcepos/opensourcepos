@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Κατάσταση Mailchimp',
     'description'                    => 'Ενσωματώστε το Mailchimp για συγχρονισμό πελατών με λίστες αποστολής όταν δημιουργούνται ή ενημερώνονται.',
     'email_client'                   => 'Κλίεντ email',
+    'fields_required_message'        => 'Τα κόκκινα πεδία απαιτούνται',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'Το κλειδί API είναι έγκυρο.',
     'key_unsuccessfully'             => 'Το κλειδί API δεν είναι έγκυρο.',

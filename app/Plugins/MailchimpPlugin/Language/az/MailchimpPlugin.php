@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp Statusu',
     'description'                    => 'Müştərilər yaradıldıqda və ya yeniləndikdə onları poçt siyahılarına sinxronizasiya etmək üçün Mailchimp ilə inteqrasiya edin.',
     'email_client'                   => 'Müştəriyə Məktub Göndər',
+    'fields_required_message'        => 'Qırmızı sahələr tələb olunur',
     'info'                           => 'Mailchimp-də',
     'key_successfully'               => 'API açarı etibarlıdır.',
     'key_unsuccessfully'             => 'API açarı etibarsızdır.',

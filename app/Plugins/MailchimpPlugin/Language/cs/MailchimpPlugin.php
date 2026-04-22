@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Stav mailchimp',
     'description'                    => 'Integrujte Mailchimp pro synchronizaci zákazníků s e-mailovými seznamy při jejich vytváření nebo aktualizaci.',
     'email_client'                   => 'E-mailový klient',
+    'fields_required_message'        => 'Červená pole jsou vyžadována',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API klíč je platný.',
     'key_unsuccessfully'             => 'API klíč není platný.',

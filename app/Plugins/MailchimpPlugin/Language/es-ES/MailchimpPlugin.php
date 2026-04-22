@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Estado de Mailchimp',
     'description'                    => 'Integre Mailchimp para sincronizar los clientes con las listas de correos cuando se crean o actualizan.',
     'email_client'                   => 'Cliente de correo',
+    'fields_required_message'        => 'Los campos en rojo son requeridos',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'La clave API es válida.',
     'key_unsuccessfully'             => 'La clave API no es válida.',

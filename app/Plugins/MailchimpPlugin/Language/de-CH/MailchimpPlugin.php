@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Mailchimp Status',
     'description'                    => 'Integrieren Sie Mailchimp, um Kunden beim Erstellen oder Aktualisieren mit Mailinglisten zu synchronisieren.',
     'email_client'                   => 'E-Mail-Client',
+    'fields_required_message'        => 'Die Felder in rot sind erforderlich',
     'info'                           => 'Mailchimp',
     'key_successfully'               => 'API-Schlüssel ist gültig.',
     'key_unsuccessfully'             => 'API-Schlüssel ist ungültig.',

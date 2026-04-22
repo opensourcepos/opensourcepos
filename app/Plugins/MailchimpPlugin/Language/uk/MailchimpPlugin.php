@@ -12,6 +12,8 @@ return [
     'customer_status'                => 'Статус клієнта mailchimp',
     'description'                    => 'Інтегруйте Mailchimp для синхронізації клієнтів зі списками розсилки при їх створенні або оновленні.',
     'email_client'                   => 'Поштовий клієнт',
+    'fields_required_message'        => 'Поля червоного кольору обов\'язкові для заповнення',
+
     'info'                           => 'MailChimp',
     'key_successfully'               => 'API-ключ дійсний.',
     'key_unsuccessfully'             => 'API-ключ недійсний.',

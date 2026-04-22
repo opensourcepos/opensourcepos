@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'Състояние на Mailchimp',
     'description'                    => 'Интегрирайте Mailchimp, за да синхронизирате клиентите със списъците за имейли, когато бъдат създадени или актуализирани.',
     'email_client'                   => 'Имейл клиент',
+    'fields_required_message'        => 'Полетата в червено са задължителни',
     'info'                           => 'Mailchimp (Услуга)',
     'key_successfully'               => 'API ключът е валиден.',
     'key_unsuccessfully'             => 'API ключът е невалиден.',

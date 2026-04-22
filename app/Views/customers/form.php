@@ -27,7 +27,7 @@
         <?php } ?>
         <?php if (!empty($mailchimp_info) && !empty($mailchimp_activity)) { ?>
             <li role="presentation">
-                <a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
+                <a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('MailchimpPlugin.info') ?></a> <!-- This needs to be properly refactored so that it gets injected by the plugin mechanism, not here. -->
             </li>
         <?php } ?>
     </ul>

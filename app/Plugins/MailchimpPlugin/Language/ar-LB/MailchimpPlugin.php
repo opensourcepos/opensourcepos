@@ -12,6 +12,7 @@ return [
     'customer_status'                => 'حالة بريد ميل تشيمب',
     'description'                    => 'تكامل مع Mailchimp لمزامنة العملاء مع قوائم البريد الإلكتروني عند إنشائهم أو تحديثهم.',
     'email_client'                   => 'بريد الكتروني',
+    'fields_required_message'        => 'الحقول التي بالأحمر مطلوبة',
     'info'                           => 'ميل تشيمب',
     'key_successfully'               => 'مفتاح API صالح.',
     'key_unsuccessfully'             => 'مفتاح API غير صالح.',
