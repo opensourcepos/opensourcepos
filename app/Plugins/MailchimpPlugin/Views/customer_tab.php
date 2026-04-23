@@ -5,7 +5,6 @@
  * @var array $subscriptionStatusOptions
  */
 
-
 ?>
 
 
