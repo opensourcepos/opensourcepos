@@ -5,14 +5,14 @@
         return document.location.protocol + '//' + url;
     }
 
-    var url = http_s('nominatim.openstreetmap.org/search');
+    const url = http_s('nominatim.openstreetmap.org/search');
 
-    var handle_auto_completion = function(fields) {
+    const handle_auto_completion = function(fields) {
         return function(event, ui) {
-            var results = ui.item.results;
+            const results = ui.item.results;
             if (results != null && results.length > 0) {
                 // Handle auto completion
-                for(var i in fields) {
+                for(const i in fields) {
                     $("#" + fields[i]).val(results[i]);
                 }
                 return false;
@@ -21,11 +21,11 @@
         };
     };
 
-    var create_parser = function(field_name, parse_format)
+    const create_parser = function(field_name, parse_format)
     {
-        var parse_field = function(format, address)
+        const parse_field = function(format, address)
         {
-            var fields = [];
+            const fields = [];
             $.each(format.split("|"), function(key, value)
                {
                 if (address[value] && fields.length < 2 && $.inArray(address[value], fields) === -1)
@@ -38,11 +38,11 @@
 
         return function(data)
         {
-            var parsed = [];
+            const parsed = [];
             $.each(data, function(index, value)
             {
-                var row = [];
-                var address = value.address;
+                const row = [];
+                const address = value.address;
                 $.each(parse_format, function(key, format)
                 {
                     row.push(parse_field(format, address));
@@ -57,12 +57,12 @@
         };
     };
 
-    var init = function(options) {
+    const init = function(options) {
 
-        var default_params = function(id, key, language)
+        const default_params = function(id, key, language)
         {
             return function() {
-                var result = {
+                const result = {
                     format: 'json',
                     limit: 5,
                     addressdetails: 1,
@@ -75,8 +75,8 @@
 
         };
 
-        var unique = function(parsed) {
-            var filtered = [];
+        const unique = function(parsed) {
+            let filtered = [];
             $.each(parsed, function(index, element)
             {
                 filtered = $.map(filtered, function(el, ind)
@@ -91,12 +91,12 @@
 
         $.each(options.fields, function(key, value)
         {
-            var handle_field_completion = handle_auto_completion(value.dependencies);
+            const handle_field_completion = handle_auto_completion(value.dependencies);
 
             $("#" + key).autocomplete({
                 source: function (request, response) {
-                    var params = default_params(key, value.response && value.response.field, options.language);
-                    var request_params = {};
+                    const params = default_params(key, value.response && value.response.field, options.language);
+                    const request_params = {};
                     options.extra_params && $.each(options.extra_params, function(key, param) {
                         request_params[key] = typeof param == "function" ? param() : param;
                     });
@@ -122,7 +122,7 @@
         });
     };
 
-    var nominatim = {
+    const nominatim = {
 
         init : init
 

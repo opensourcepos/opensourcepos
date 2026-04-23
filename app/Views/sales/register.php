@@ -585,8 +585,8 @@ helper('url');
         });
 
         $("input[name='item_number']").change(function() {
-            var item_id = $(this).parents('tr').find("input[name='item_id']").val();
-            var item_number = $(this).val();
+            const item_id = $(this).parents('tr').find("input[name='item_id']").val();
+            const item_number = $(this).val();
             $.ajax({
                 url: "<?= site_url('sales/changeItemNumber') ?>",
                 method: 'post',
@@ -599,8 +599,8 @@ helper('url');
         });
 
         $("input[name='name']").change(function() {
-            var item_id = $(this).parents('tr').find("input[name='item_id']").val();
-            var item_name = $(this).val();
+            const item_id = $(this).parents('tr').find("input[name='item_id']").val();
+            const item_name = $(this).val();
             $.ajax({
                 url: "<?= site_url('sales/changeItemName') ?>",
                 method: 'post',
@@ -613,8 +613,8 @@ helper('url');
         });
 
         $("input[name='item_description']").change(function() {
-            var item_id = $(this).parents('tr').find("input[name='item_id']").val();
-            var item_description = $(this).val();
+            const item_id = $(this).parents('tr').find("input[name='item_id']").val();
+            const item_description = $(this).val();
             $.ajax({
                 url: "<?= site_url('sales/changeItemDescription') ?>",
                 method: 'post',
@@ -651,7 +651,7 @@ helper('url');
             }
         });
 
-        var clear_fields = function() {
+        const clear_fields = function() {
             if ($(this).val().match("<?= lang(ucfirst($controller_name) . '.start_typing_item_name') . '|' . lang(ucfirst($controller_name) . '.start_typing_customer_name') ?>")) {
                 $(this).val('');
             }
@@ -787,7 +787,7 @@ helper('url');
                     $('#customer').val(response.id);
                     $('#select_customer_form').submit();
                 } else {
-                    var $stock_location = $("select[name='stock_location']").val();
+                    const $stock_location = $("select[name='stock_location']").val();
                     $('#item_location').val($stock_location);
                     $('#item').val(response.id);
                     if (stay_open) {
@@ -804,14 +804,14 @@ helper('url');
         });
 
         $('[name="discount_toggle"]').change(function() {
-            var input = $('<input>').attr('type', 'hidden').attr('name', 'discount_type').val(($(this).prop('checked')) ? 1 : 0);
+            const input = $('<input>').attr('type', 'hidden').attr('name', 'discount_type').val(($(this).prop('checked')) ? 1 : 0);
             $('#cart_' + $(this).attr('data-line')).append($(input));
             $('#cart_' + $(this).attr('data-line')).submit();
         });
     });
 
     function check_payment_type() {
-        var cash_mode = <?= json_encode($cash_mode) ?>;
+        const cash_mode = <?= json_encode($cash_mode) ?>;
 
         if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
             $("#sale_total").html("<?= to_currency($total) ?>");

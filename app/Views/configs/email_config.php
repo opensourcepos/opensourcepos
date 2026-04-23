@@ -139,7 +139,7 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        var check_protocol = function() {
+        const check_protocol = function() {
             if ($('#protocol').val() == 'sendmail') {
                 $('#mailpath').prop('disabled', false);
                 $('#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', true);

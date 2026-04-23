@@ -87,7 +87,7 @@ if (isset($error)) {
         <?= view('partial/daterangepicker') ?>
 
         $("#generate_report").click(function() {
-            var specific_input_data = $('#specific_input_data').val();
+            let specific_input_data = $('#specific_input_data').val();
             if (!$(".discount_percent").is(":visible")) {
                 specific_input_data = $('#discount_fixed').val();
             }
@@ -97,7 +97,7 @@ if (isset($error)) {
     });
 
     function check_discount_type() {
-        var discount_type = $("#discount_type_id").val();
+        const discount_type = $("#discount_type_id").val();
 
         if (discount_type == 1) {
             $(".discount_percent").hide();
