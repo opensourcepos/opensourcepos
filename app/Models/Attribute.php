@@ -588,7 +588,8 @@ class Attribute extends Model
             $builder->where('definition_type', $definition_type);
         }
 
-        return $builder->get()->getResultArray();
+        $row = $builder->get()->getRowArray();
+        return $row ?? [];
     }
 
     /**

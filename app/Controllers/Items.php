@@ -981,8 +981,9 @@ class Items extends Secure_Controller
 
                     $attributeData = [];
 
+
                     foreach ($attributeDefinitionNames as $definitionName) {
-                        $attributeData[$definitionName] = $this->attribute->get_definition_by_name($definitionName)[0];
+                        $attributeData[$definitionName] = $this->attribute->get_definition_by_name($definitionName);
 
                         if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
                             $attributeData[$definitionName]['dropdown_values'] = $this->attribute->get_definition_values($attributeData[$definitionName]['definition_id']);
