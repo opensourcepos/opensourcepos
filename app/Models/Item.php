@@ -439,32 +439,62 @@ class Item extends Model
 
     /**
      * Inserts or updates an item
+     * 
+     * If the primary key (item_id) is present in the data array and the record exists,
+     * it will update the existing record. Otherwise, it will insert a new record.
+     * 
+     * @param array $data The item data to save (passed by reference to set item_id on insert)
+     * @return bool True on success, false on failure
      */
-    public function save_value(array &$item_data, int $item_id = NEW_ENTRY): bool    // TODO: need to bring this in line with parent or change the name
+    public function saveValue(array &$data): bool
     {
-        $builder = $this->db->table('items');
+        $primaryKey = $this->primaryKey;
+        $id = $data[$primaryKey] ?? NEW_ENTRY;
 
-        if ($item_id < 1 || !$this->exists($item_id, true)) {
-            if ($builder->insert($item_data)) {
-                $item_data['item_id'] = (int)$this->db->insertID();
-                if ($item_id < 1) {
-                    $builder = $this->db->table('items');
-                    $builder->where('item_id', $item_data['item_id']);
-                    $builder->update(['low_sell_item_id' => $item_data['item_id']]);
-                }
-
-                return true;
+        // If id > 0 and record exists by primary key only, update it
+        if ($id > 0) {
+            // Check existence strictly by primary key (regardless of soft-delete status)
+            $builder = $this->db->table('items');
+            $builder->where($primaryKey, $id);
+            $exists = $builder->countAllResults() > 0;
+            
+            if ($exists) {
+                // Remove primary key from data array for update
+                $updateData = $data;
+                unset($updateData[$primaryKey]);
+                
+                $builder = $this->db->table('items');
+                $builder->where($primaryKey, $id);
+                return $builder->update($updateData);
             }
-
-            return false;
-        } else {
-            $item_data['item_id'] = $item_id;
         }
 
+        // Insert new record with transaction for atomicity
+        $this->db->transBegin();
+        
+        // Remove primary key from insert payload if present
+        $insertData = $data;
+        unset($insertData[$primaryKey]);
+        
         $builder = $this->db->table('items');
-        $builder->where('item_id', $item_id);
-
-        return $builder->update($item_data);
+        $success = $builder->insert($insertData);
+        
+        if ($success) {
+            $data[$primaryKey] = (int)$this->db->insertID();
+            
+            // Update low_sell_item_id for new items
+            $builder = $this->db->table('items');
+            $builder->where($primaryKey, $data[$primaryKey]);
+            $success = $builder->update(['low_sell_item_id' => $data[$primaryKey]]);
+        }
+        
+        if ($success) {
+            $this->db->transCommit();
+            return true;
+        }
+        
+        $this->db->transRollback();
+        return false;
     }
 
     /**
@@ -1082,9 +1112,9 @@ class Item extends Model
         $total_quantity = $old_total_quantity + $items_received;
         $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
 
-        $data = ['cost_price' => $average_price];
+        $data = ['cost_price' => $average_price, 'item_id' => $item_id];
 
-        return $this->save_value($data, $item_id);
+        return $this->saveValue($data);
     }
 
     /**
