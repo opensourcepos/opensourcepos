@@ -158,7 +158,7 @@ class MailchimpPlugin extends BasePlugin
         return ['success' => false, 'message' => $this->lang('mailchimp_key_unsuccessfully')];
     }
 
-    protected function lang(string $key, array $data = []): string  //TODO: The implementation of this is different from the implementation of lang in the framework. We need to make sure it works properly. Primarily it needs to be pulling the strings from the proper place.
+    protected function lang(string $key, array $data = []): string
     {
         $language = Services::language();
         return $language->getLine($key, $data);

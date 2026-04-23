@@ -1,9 +1,8 @@
 <?php
 
-namespace app\Plugins\MailichimpPlugin\Libraries;
+namespace app\Plugins\MailchimpPlugin\Libraries;
 
 use CodeIgniter\Encryption\EncrypterInterface;
-use Config\OSPOS;
 use Config\Services;
 
 /**

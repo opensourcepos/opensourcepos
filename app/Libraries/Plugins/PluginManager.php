@@ -15,6 +15,7 @@ class PluginManager
     private array $enabledPlugins = [];
     private PluginConfig $configModel;
     private string $pluginsPath;
+    private bool $eventsRegistered = false;
 
     public function __construct()
     {
@@ -45,7 +46,7 @@ class PluginManager
                 continue;
             }
 
-            if (!class_exists($className, false)) {
+            if (!class_exists($className)) {
                 continue;
             }
 
@@ -80,6 +81,10 @@ class PluginManager
 
     public function registerPluginEvents(): void
     {
+        if ($this->eventsRegistered) {
+            return;
+        }
+
         foreach ($this->plugins as $pluginId => $plugin) {
             if ($this->isPluginEnabled($pluginId)) {
                 $this->enabledPlugins[$pluginId] = $plugin;
@@ -87,6 +92,8 @@ class PluginManager
                 log_message('debug', "Registered events for plugin: {$plugin->getPluginName()}");
             }
         }
+
+        $this->eventsRegistered = true;
     }
 
     public function getAllPlugins(): array

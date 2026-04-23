@@ -3,7 +3,6 @@
 namespace app\Plugins\MailchimpPlugin\Libraries;
 
 use App\Plugins\MailchimpPlugin\Enums\SubscriptionStatus;
-use app\Plugins\MailichimpPlugin\Libraries\MailchimpConnector;
 use Exception;
 use stdClass;
 

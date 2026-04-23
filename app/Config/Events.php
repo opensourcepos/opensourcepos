@@ -54,7 +54,9 @@ Events::on('pre_system', static function (): void {
             });
         }
     }
+});
 
+Events::on('post_controller_constructor', static function (): void {
     $pluginManager = new PluginManager();
 
     if ($pluginManager->canLoadPlugins()) {
@@ -63,10 +65,10 @@ Events::on('pre_system', static function (): void {
     } else {
         log_message('debug', 'Plugin loading is disabled until after migration has been run.');
     }
-});
+}, 10);
 
 $config = new Load_config();
-Events::on('post_controller_constructor', [$config, 'load_config']);
+Events::on('post_controller_constructor', [$config, 'load_config'], 1);
 
 $db_log = new Db_log();
 Events::on('DBQuery', [$db_log, 'db_log_queries']);

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Controllers\Plugins;
+namespace App\Controllers;
 
-use App\Controllers\Secure_Controller;
 use App\Libraries\Plugins\PluginManager;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class Manage extends Secure_Controller
+class Plugins extends Secure_Controller
 {
     private PluginManager $pluginManager;
 
