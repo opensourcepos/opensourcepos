@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Alacaklar",
     "show_in_sales"                    => "Satışlarda göster",
     "show_in_sales_visibility"         => "Satışlar",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Nitelik Güncelle",
 ];
