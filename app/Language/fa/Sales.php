@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "تخفیف",
     "customer_email"                   => "پست الکترونیک",
     "customer_location"                => "محل",
-    "customer_mailchimp_status"        => "وضعیت Mailchimp",
     "customer_optional"                => "(مورد نیاز برای پرداخت مقررات)",
     "customer_required"                => "(ضروری)",
     "customer_total"                   => "جمع",

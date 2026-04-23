@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Desconto",
     "customer_email"                   => "e-mail",
     "customer_location"                => "Localização",
-    "customer_mailchimp_status"        => "Status Mailchimp",
     "customer_optional"                => "(Obrigatório para pagamentos vencidos)",
     "customer_required"                => "(Requerido)",
     "customer_total"                   => "Total",

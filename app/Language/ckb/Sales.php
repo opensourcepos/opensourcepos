@@ -41,7 +41,6 @@ return [
     'customer_discount' => "داشکاندن",
     'customer_email' => "ئیمەیڵ",
     'customer_location' => "ناونیشان",
-    'customer_mailchimp_status' => "دۆخی بەکارهێنان مایلچیمپ",
     'customer_optional' => "(پێویستە بۆئەو پارانەی دەبێت بدرێت)",
     'customer_required' => "(پێویستە)",
     'customer_total' => "کۆی گشتی",

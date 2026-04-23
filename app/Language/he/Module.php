@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "עדכון מסד הנתונים של OSPOS.",
     "office"                     => "משרד",
     "office_desc"                => "רשימת תפריטי מודל המשרד.",
+    'plugins'                    => 'תוספים',
     "receivings"                 => "קליטה \ החזרה",
     "receivings_desc"            => "תהליך רכישת הזמנות.",
     "reports"                    => "דוחות",

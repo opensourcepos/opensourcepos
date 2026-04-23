@@ -6,7 +6,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 
 - Follow PHP CodeIgniter 4 coding standards
 - Run PHP-CS-Fixer before committing: `vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.no-header.php`
-- Write PHP 8.1+ compatible code with proper type declarations
+- Write PHP 8.2+ compatible code with proper type declarations
 - Use PSR-12 naming conventions: `camelCase` for variables and functions, `PascalCase` for classes, `UPPER_CASE` for constants
 
 ## Development
@@ -18,6 +18,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 
 - Run PHPUnit tests: `composer test`
 - Tests must pass before submitting changes
+- Minimum PHPUnit version: 10.5.16+. Default config: `phpunit.xml.dist` in project root
 
 ## Build
 
@@ -30,6 +31,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Models go in `app/Models/`
 - Views go in `app/Views/`
 - Database migrations in `app/Database/Migrations/`
+- Plugins go in `app/Plugins/` (see `app/Plugins/README.md` for plugin structure, event hooks, and LICENSE requirements)
 - Use CodeIgniter 4 framework patterns and helpers
 - Sanitize user input; escape output using `esc()` helper
 

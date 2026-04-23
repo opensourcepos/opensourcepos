@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "ส่วนลด",
     "customer_email"                   => "Customer Email",
     "customer_location"                => "Customer Location",
-    "customer_mailchimp_status"        => "สถานะของระบบส่งเมล์เมล์ชิม",
     "customer_optional"                => "(ต้องระบุวันที่ชำระเงิน)",
     "customer_required"                => "(ต้องระบุ)",
     "customer_total"                   => "Total",

@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "Aktualisiere die OSPOS-Datenbank.",
     "office"                     => "Verwaltung",
     "office_desc"                => "Auflistung der Module für das Verwaltungs-Menü.",
+    'plugins'                    => 'Plugins',
     "receivings"                 => "Eingänge",
     "receivings_desc"            => "Hinzufügen, Ändern, Löschen und Suchen von Bestellungen.",
     "reports"                    => "Berichte",

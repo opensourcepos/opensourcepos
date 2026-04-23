@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'activity_click'                    => 'Кнопка електронної пошти',
+    'activity_last_open'                => 'Останній відкритий лист',
+    'activity_open'                     => 'Лист прочитано',
+    'activity_total'                    => 'Відправлено електронною поштою',
+    'activity_unopen'                   => 'Лист непрочитано',
+    'api_key'                           => 'API-ключ Mailchimp',
+    'api_key_required'                  => 'API-ключ не налаштовано',
+    'configuration'                     => 'Конфігурація Mailchimp',
+    'customer_status'                   => 'Статус клієнта mailchimp',
+    'description'                       => 'Інтегруйте Mailchimp для синхронізації клієнтів зі списками розсилки при їх створенні або оновленні.',
+    'email_client'                      => 'Поштовий клієнт',
+    'fields_required_message'           => 'Поля червоного кольору обов\'язкові для заповнення',
+
+    'info'                              => 'MailChimp',
+    'key_successfully'                  => 'API-ключ дійсний.',
+    'key_unsuccessfully'                => 'API-ключ недійсний.',
+    'lists'                             => 'Список(и) Mailchimp',
+    'mailchimp'                         => 'Mailchimp',
+    'member_rating'                     => 'Рейтинг',
+    'status'                            => 'Статус',
+    'subscription_status_cleaned'       => 'Очищено',
+    'subscription_status_pending'       => 'В очікуванні',
+    'subscription_status_subscribed'    => 'Підписано',
+    'subscription_status_unsubscribed'  => 'Відписано',
+    'tooltip'                           => 'Натисніть на іконку для отримання API-ключа.',
+    'vip'                               => 'VIP',
+];

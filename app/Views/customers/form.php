@@ -27,7 +27,7 @@
         <?php } ?>
         <?php if (!empty($mailchimp_info) && !empty($mailchimp_activity)) { ?>
             <li role="presentation">
-                <a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
+                <a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('MailchimpPlugin.info') ?></a> <!-- This needs to be properly refactored so that it gets injected by the plugin mechanism, not here. -->
             </li>
         <?php } ?>
     </ul>
@@ -328,117 +328,7 @@
         <?php } ?>
 
         <?php if (!empty($mailchimp_info) && !empty($mailchimp_activity)) { ?>
-            <div class="tab-pane" id="customer_mailchimp_info">
-                <fieldset>
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_status'), 'mailchimp_status', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_dropdown(
-                                'mailchimp_status',
-                                [
-                                    'subscribed'   => 'subscribed',
-                                    'unsubscribed' => 'unsubscribed',
-                                    'cleaned'      => 'cleaned',
-                                    'pending'      => 'pending'
-                                ],
-                                $mailchimp_info['status'],
-                                ['id' => 'mailchimp_status', 'class' => 'form-control input-sm']
-                            ) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-1">
-                            <?= form_checkbox('mailchimp_vip', 1, $mailchimp_info['vip'] == 1) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_member_rating'), 'mailchimp_member_rating', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_member_rating',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_info['member_rating'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_total'), 'mailchimp_activity_total', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_total',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['total'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_lastopen'), 'mailchimp_activity_lastopen', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_lastopen',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['lastopen'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_open'), 'mailchimp_activity_open', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_open',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['open'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_click'), 'mailchimp_activity_click', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_click',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['click'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_unopen'), 'mailchimp_activity_unopen', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_unopen',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['unopen'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_email_client'), 'mailchimp_email_client', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_email_client',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_info['email_client'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
+            <?= pluginContent('customer_tabs', ['customer' => $customer]) ?>
         <?php } ?>
     </div>
 
