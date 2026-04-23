@@ -23,6 +23,10 @@ return [
     "new"                              => "New Attribute",
     "no_attributes_to_display"         => "No Attributes to display",
     "receipt_visibility"               => "Receipt",
+    "show_in_customers"                => "Show in customers",
+    "show_in_customers_visibility"     => "Customers",
+    "show_in_employees"                => "Show in employees",
+    "show_in_employees_visibility"     => "Employees",
     "show_in_items"                    => "Show in items",
     "show_in_items_visibility"         => "Items",
     "show_in_receipt"                  => "Show in receipt",
@@ -30,5 +34,7 @@ return [
     "show_in_receivings_visibility"    => "Receivings",
     "show_in_sales"                    => "Show in sales",
     "show_in_sales_visibility"         => "Sales",
+    "show_in_suppliers"                => "Show in suppliers",
+    "show_in_suppliers_visibility"     => "Suppliers",
     "update"                           => "Update Attribute",
 ];

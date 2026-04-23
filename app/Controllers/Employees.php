@@ -2,18 +2,15 @@
 
 namespace App\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Module;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
-/**
- *
- *
- * @property module module
- *
- */
 class Employees extends Persons
 {
+    protected Module $module;
+
     public function __construct()
     {
         parent::__construct('employees');
@@ -21,35 +18,25 @@ class Employees extends Persons
         $this->module = model('Module');
     }
 
-    /**
-     * Returns employee table data rows. This will be called with AJAX.
-     *
-     * @return void
-     */
     public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
-        $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-        $sort   = $this->sanitizeSortColumn(person_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'people.person_id');
-        $order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $sort = $this->sanitizeSortColumn(person_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'people.person_id');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $employees = $this->employee->search($search, $limit, $offset, $sort, $order);
-        $total_rows = $this->employee->get_found_rows($search);
+        $totalRows = $this->employee->get_found_rows($search);
 
-        $data_rows = [];
+        $dataRows = [];
         foreach ($employees->getResult() as $person) {
-            $data_rows[] = get_person_data_row($person);
+            $dataRows[] = get_person_data_row($person);
         }
 
-        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
     }
 
-    /**
-     * AJAX called function gives search suggestions based on what is being searched for.
-     *
-     * @return ResponseInterface
-     */
     public function getSuggest(): ResponseInterface
     {
         $search = $this->request->getGet('term');
@@ -58,10 +45,7 @@ class Employees extends Persons
         return $this->response->setJSON($suggestions);
     }
 
-    /**
-     * @return ResponseInterface
-     */
-    public function suggest_search(): ResponseInterface
+    public function suggestSearch(): ResponseInterface
     {
         $search = $this->request->getPost('term');
         $suggestions = $this->employee->get_search_suggestions($search);
@@ -69,39 +53,35 @@ class Employees extends Persons
         return $this->response->setJSON($suggestions);
     }
 
-    /**
-     * Loads the employee edit form
-     * @return string
-     */
-    public function getView(int $employee_id = NEW_ENTRY): string
+    public function getView(int $employeeId = NEW_ENTRY): string
     {
-        $person_info = $this->employee->get_info($employee_id);
-        $current_user = $this->employee->get_logged_in_employee_info();
+        $personInfo = $this->employee->get_info($employeeId);
+        $currentUser = $this->employee->get_logged_in_employee_info();
 
-        if ($employee_id != NEW_ENTRY && !$this->employee->canModifyEmployee($person_info->person_id, $current_user->person_id)) {
+        if ($employeeId != NEW_ENTRY && !$this->employee->canModifyEmployee($personInfo->person_id, $currentUser->person_id)) {
             header('Location: ' . base_url('no_access/employees/employees'));
             exit();
         }
 
-        foreach (get_object_vars($person_info) as $property => $value) {
-            $person_info->$property = $value;
+        foreach (get_object_vars($personInfo) as $property => $value) {
+            $personInfo->$property = $value;
         }
-        $data['person_info'] = $person_info;
-        $data['employee_id'] = $employee_id;
+        $data['person_info'] = $personInfo;
+        $data['employee_id'] = $employeeId;
 
         $modules = [];
         foreach ($this->module->get_all_modules()->getResult() as $module) {
-            $module->grant = $this->employee->has_grant($module->module_id, $person_info->person_id);
-            $module->menu_group = $this->employee->get_menu_group($module->module_id, $person_info->person_id);
+            $module->grant = $this->employee->has_grant($module->module_id, $personInfo->person_id);
+            $module->menu_group = $this->employee->get_menu_group($module->module_id, $personInfo->person_id);
 
             $modules[] = $module;
         }
         $data['all_modules'] = $modules;
 
         $permissions = [];
-        foreach ($this->module->get_all_subpermissions()->getResult() as $permission) {    // TODO: subpermissions does not follow naming standards.
+        foreach ($this->module->get_all_subpermissions()->getResult() as $permission) {
             $permission->permission_id = str_replace(' ', '_', $permission->permission_id);
-            $permission->grant = $this->employee->has_grant($permission->permission_id, $person_info->person_id);
+            $permission->grant = $this->employee->has_grant($permission->permission_id, $personInfo->person_id);
 
             $permissions[] = $permission;
         }
@@ -110,17 +90,18 @@ class Employees extends Persons
         return view('employees/form', $data);
     }
 
-    /**
-     * Inserts/updates an employee
-     * @return ResponseInterface
-     */
-    public function postSave(int $employee_id = NEW_ENTRY): ResponseInterface
+    public function getAttributes(int $employeeId = NEW_ENTRY): string
     {
-        $current_user = $this->employee->get_logged_in_employee_info();
+        return $this->getPersonAttributes($employeeId, Attribute::SHOW_IN_EMPLOYEES);
+    }
 
-        if ($employee_id != NEW_ENTRY) {
-            $target_employee = $this->employee->get_info($employee_id);
-            if (!$this->employee->canModifyEmployee($target_employee->person_id, $current_user->person_id)) {
+    public function postSave(int $employeeId = NEW_ENTRY): ResponseInterface
+    {
+        $currentUser = $this->employee->get_logged_in_employee_info();
+
+        if ($employeeId != NEW_ENTRY) {
+            $targetEmployee = $this->employee->get_info($employeeId);
+            if (!$this->employee->canModifyEmployee($targetEmployee->person_id, $currentUser->person_id)) {
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Employees.error_updating_admin'),
@@ -129,17 +110,16 @@ class Employees extends Persons
             }
         }
 
-        $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: duplicated code
-        $last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $firstName = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $lastName = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
-        // format first and last name properly
-        $first_name = $this->nameize($first_name);
-        $last_name = $this->nameize($last_name);
+        $firstName = $this->nameize($firstName);
+        $lastName = $this->nameize($lastName);
 
-        $person_data = [
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
+        $personData = [
+            'first_name'   => $firstName,
+            'last_name'    => $lastName,
             'gender'       => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
             'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -152,108 +132,98 @@ class Employees extends Persons
             'comments'     => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        $grants_array = [];
-        $isAdmin = $this->employee->isAdmin($current_user->person_id);
+        $grantsArray = [];
+        $isAdmin = $this->employee->isAdmin($currentUser->person_id);
 
         foreach ($this->module->get_all_permissions()->getResult() as $permission) {
             $grants = [];
             $grant = $this->request->getPost('grant_' . $permission->permission_id) != null ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
 
             if ($grant == $permission->permission_id) {
-                if (!$isAdmin && !$this->employee->has_grant($permission->permission_id, $current_user->person_id)) {
+                if (!$isAdmin && !$this->employee->has_grant($permission->permission_id, $currentUser->person_id)) {
                     continue;
                 }
                 $grants['permission_id'] = $permission->permission_id;
                 $grants['menu_group'] = $this->request->getPost('menu_group_' . $permission->permission_id) != null ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '--';
-                $grants_array[] = $grants;
+                $grantsArray[] = $grants;
             }
         }
 
-        // Password has been changed OR first time password set
         if (!empty($this->request->getPost('password')) && ENVIRONMENT != 'testing') {
             $exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-            $employee_data = [
+            $employeeData = [
                 'username'      => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'password'      => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
                 'hash_version'  => 2,
                 'language_code' => $exploded[0],
                 'language'      => $exploded[1]
             ];
-        } else { // Password not changed
+        } else {
             $exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-            $employee_data = [
+            $employeeData = [
                 'username'      => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'language_code' => $exploded[0],
                 'language'      => $exploded[1]
             ];
         }
 
-        if ($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id)) {
-            // New employee
-            if ($employee_id == NEW_ENTRY) {
+        if ($this->employee->save_employee($personData, $employeeData, $grantsArray, $employeeId)) {
+            $personId = $employeeId == NEW_ENTRY ? $employeeData['person_id'] : $employeeId;
+            $this->savePersonAttributes($personId, Attribute::SHOW_IN_EMPLOYEES);
+
+            if ($employeeId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $employee_data['person_id']
+                    'message' => lang('Employees.successful_adding') . ' ' . $firstName . ' ' . $lastName,
+                    'id'      => $employeeData['person_id']
                 ]);
-            } else { // Existing employee
-                $logged_in_employee_id = session()->get('person_id');
-                if ($employee_id == $logged_in_employee_id) {
-                    session()->set('language_code', $employee_data['language_code']);
-                    session()->set('language', $employee_data['language']);
+            } else {
+                $loggedInEmployeeId = session()->get('person_id');
+                if ($employeeId == $loggedInEmployeeId) {
+                    session()->set('language_code', $employeeData['language_code']);
+                    session()->set('language', $employeeData['language']);
                 }
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $employee_id
+                    'message' => lang('Employees.successful_updating') . ' ' . $firstName . ' ' . $lastName,
+                    'id'      => $employeeId
                 ]);
             }
-        } else { // Failure
+        } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+                'message' => lang('Employees.error_adding_updating') . ' ' . $firstName . ' ' . $lastName,
                 'id'      => NEW_ENTRY
             ]);
         }
     }
 
-    /**
-     * This deletes employees from the employees table
-     * @return ResponseInterface
-     */
     public function postDelete(): ResponseInterface
     {
-        $employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $current_user = $this->employee->get_logged_in_employee_info();
+        $employeesToDelete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $currentUser = $this->employee->get_logged_in_employee_info();
 
-        if (!$this->employee->isAdmin($current_user->person_id)) {
-            foreach ($employees_to_delete as $emp_id) {
-                if ($this->employee->isAdmin((int)$emp_id)) {
+        if (!$this->employee->isAdmin($currentUser->person_id)) {
+            foreach ($employeesToDelete as $empId) {
+                if ($this->employee->isAdmin((int)$empId)) {
                     return $this->response->setJSON(['success' => false, 'message' => lang('Employees.error_deleting_admin')]);
                 }
             }
         }
 
-        if ($this->employee->delete_list($employees_to_delete)) {    // TODO: this is passing a string, but delete_list expects an array
+        if ($this->employee->delete_list($employeesToDelete)) {
             return $this->response->setJSON([
                 'success' => true,
-                'message' => lang('Employees.successful_deleted') . ' ' . count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')
+                'message' => lang('Employees.successful_deleted') . ' ' . count($employeesToDelete) . ' ' . lang('Employees.one_or_multiple')
             ]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => lang('Employees.cannot_be_deleted')]);
         }
     }
 
-    /**
-     * Checks an employee username against the database. Used in app\Views\employees\form.php
-     *
-     * @param $employee_id
-     * @return ResponseInterface
-     * @noinspection PhpUnused
-     */
-    public function getCheckUsername($employee_id): ResponseInterface
+    public function getCheckUsername($employeeId): ResponseInterface
     {
-        $exists = $this->employee->username_exists($employee_id, $this->request->getGet('username'));
+        $exists = $this->employee->username_exists($employeeId, $this->request->getGet('username'));
         return $this->response->setJSON(!$exists ? 'true' : 'false');
     }
 }
