@@ -45,7 +45,7 @@ class PluginManager
                 continue;
             }
 
-            if (!class_exists($className)) {
+            if (!class_exists($className, false)) {
                 continue;
             }
 

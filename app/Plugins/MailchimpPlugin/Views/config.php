@@ -5,7 +5,7 @@
  */
 ?>
 
-<?= form_open('config/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('MailchimpPlugin/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 <div id="config_wrapper">
     <fieldset id="config_info">
 
