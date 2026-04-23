@@ -102,5 +102,69 @@ Do **not** use below command on live deployments unless you want to tear everyth
 
 ## Cloud install
 
-If you choose DigitalOcean:
-[Through this link](https://m.do.co/c/ac38c262507b), you will get a [**free $100, 60-day credit**](https://m.do.co/c/ac38c262507b). [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) for further instructions on how to install the necessary components.
+### Recommended: DigitalOcean
+
+Sign up through [our referral link](https://m.do.co/c/ac38c262507b) to get a [**$100, 60-day credit**](https://m.do.co/c/ac38c262507b).
+
+1. Create an Ubuntu 20.04+ or 22.04+ droplet
+2. SSH into your server: `ssh root@<your-droplet-ip>`
+3. Run the one-line installer:
+   ```bash
+   curl -sSL https://opensourcepos.org/install | sudo bash
+   ```
+
+The installer will:
+- Install Apache, MariaDB, PHP 8.2 and required extensions
+- Download the **latest stable release** of OSPOS from GitHub
+- Create a database with secure random password
+- Configure OSPOS and Apache
+- **Set up SSL/TLS certificates** (interactive prompt or environment variables)
+- Display login credentials after completion
+
+**Interactive Mode (Recommended for first-time users):**
+
+When run without environment variables, the installer will prompt you:
+1. Whether to configure SSL (recommended for production)
+2. Your domain name (e.g., `pos.example.com`)
+3. Your email for Let's Encrypt (for production SSL)
+
+```bash
+curl -sSL https://opensourcepos.org/install | sudo bash
+# Script will ask:
+# - Configure SSL? (y/n)
+# - Domain name: pos.example.com
+# - Email for Let's Encrypt: admin@example.com
+```
+
+**Non-Interactive Mode (for automation):**
+
+```bash
+# Development (no SSL)
+curl -sSL https://opensourcepos.org/install | APACHE_SERVER_NAME=localhost sudo -E bash
+
+# Production with Let's Encrypt SSL
+curl -sSL https://opensourcepos.org/install | APACHE_SERVER_NAME=pos.example.com SSL_EMAIL=admin@example.com sudo -E bash
+
+# Custom database password
+curl -sSL https://opensourcepos.org/install | DB_PASS=securepassword APACHE_SERVER_NAME=pos.example.com SSL_EMAIL=admin@example.com sudo -E bash
+```
+
+**Environment variables:**
+- `DB_NAME` - Database name (default: ospos)
+- `DB_USER` - Database user (default: ospos)
+- `DB_PASS` - Database password (default: auto-generated)
+- `OSPOS_DIR` - Installation directory (default: /var/www/ospos)
+- `OSPOS_VERSION` - OSPOS version to install (default: latest stable release)
+- `PHP_VERSION` - PHP version (default: 8.2)
+- `APACHE_SERVER_NAME` - Server hostname (default: localhost, or set interactively)
+- `SSL_EMAIL` - Email for Let's Encrypt. When set, enables production SSL with auto-renewal
+- `SSL_DOMAIN` - Alternative to `APACHE_SERVER_NAME` for SSL certificate domain
+
+> **Note:** If the short URL is unavailable, use the direct GitHub URL:
+> ```bash
+> curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | sudo bash
+> ```
+
+For other cloud providers or manual installation, see the [detailed installation guide](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) in the wiki.
+
+**Important:** Change the default password after first login!
