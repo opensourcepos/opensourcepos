@@ -20,6 +20,7 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
+use App\Traits\Controller\Shared;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Config\OSPOS;
@@ -28,6 +29,7 @@ use stdClass;
 
 class Sales extends Secure_Controller
 {
+    use Shared;
     protected $helpers = ['file'];
     private Barcode_lib $barcode_lib;
     private Email_lib $email_lib;
@@ -731,7 +733,7 @@ class Sales extends Secure_Controller
             $data["customer_comments"] = $customer_info->comments;
             $data['tax_id'] = $customer_info->tax_id;
         }
-        $tax_details = $this->tax_lib->get_taxes($data['cart']);    // TODO: Duplicated code
+        $tax_details = $this->tax_lib->get_taxes($data['cart']);
         $data['taxes'] = $tax_details[0];
         $data['discount'] = $this->sale_lib->get_discount();
         $data['payments'] = $this->sale_lib->get_payments();
@@ -743,7 +745,7 @@ class Sales extends Secure_Controller
         $data['payments_total'] = $totals['payment_total'];
         $data['payments_cover_total'] = $totals['payments_cover_total'];
         $data['cash_rounding'] = $this->session->get('cash_rounding');
-        $data['cash_mode'] = $this->session->get('cash_mode');    // TODO: Duplicated code
+        $data['cash_mode'] = $this->session->get('cash_mode');
         $data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
         $data['cash_total'] = $totals['cash_total'];
         $data['non_cash_total'] = $totals['total'];
@@ -1095,7 +1097,7 @@ class Sales extends Secure_Controller
         $data['subtotal'] = $totals['subtotal'];
         $data['payments_total'] = $totals['payment_total'];
         $data['payments_cover_total'] = $totals['payments_cover_total'];
-        $data['cash_mode'] = $this->session->get('cash_mode');    // TODO: Duplicated code.
+        $data['cash_mode'] = $this->session->get('cash_mode');.
         $data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
         $data['cash_total'] = $totals['cash_total'];
         $data['non_cash_total'] = $totals['total'];
@@ -1123,35 +1125,15 @@ class Sales extends Secure_Controller
         $data['quote_number'] = $sale_info['quote_number'];
         $data['sale_status'] = $sale_info['sale_status'];
 
-        $data['company_info'] = implode("\n", [$this->config['address'], $this->config['phone']]);    // TODO: Duplicated code.
-
-        if ($this->config['account_number']) {
-            $data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config['account_number'];
-        }
-        if ($this->config['tax_id'] != '') {
-            $data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config['tax_id'];
-        }
+        $data['company_info'] = $this->buildCompanyInfo();
 
         $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
         $data['print_after_sale'] = false;
         $data['price_work_orders'] = false;
 
-        if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
-            $data['mode_label'] = lang('Sales.invoice');
-            $data['customer_required'] = lang('Sales.customer_required');
-        } elseif ($this->sale_lib->get_mode() == 'sale_quote') {
-            $data['mode_label'] = lang('Sales.quote');
-            $data['customer_required'] = lang('Sales.customer_required');
-        } elseif ($this->sale_lib->get_mode() == 'sale_work_order') {
-            $data['mode_label'] = lang('Sales.work_order');
-            $data['customer_required'] = lang('Sales.customer_required');
-        } elseif ($this->sale_lib->get_mode() == 'return') {
-            $data['mode_label'] = lang('Sales.return');
-            $data['customer_required'] = lang('Sales.customer_optional');
-        } else {
-            $data['mode_label'] = lang('Sales.receipt');
-            $data['customer_required'] = lang('Sales.customer_optional');
-        }
+        $modeData = $this->getSaleModeLabel($this->sale_lib->get_mode());
+        $data['mode_label'] = $modeData['mode_label'];
+        $data['customer_required'] = $modeData['customer_required'];
 
         $invoice_type = $this->config['invoice_type'];
         if (!Sale_lib::isValidInvoiceType($invoice_type)) {
@@ -1189,7 +1171,7 @@ class Sales extends Secure_Controller
         $data['stock_locations'] = $this->stock_location->get_allowed_locations('sales');
         $data['stock_location'] = $this->sale_lib->get_sale_location();
         $data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(true, true);
-        $tax_details = $this->tax_lib->get_taxes($data['cart']);    // TODO: Duplicated code.
+        $tax_details = $this->tax_lib->get_taxes($data['cart']);.
         $data['taxes'] = $tax_details[0];
         $data['discount'] = $this->sale_lib->get_discount();
         $data['payments'] = $this->sale_lib->get_payments();
@@ -1207,7 +1189,7 @@ class Sales extends Secure_Controller
         // cash_mode indicates whether this sale is going to be processed using cash_rounding
         $cash_mode = $this->session->get('cash_mode');
         $data['cash_mode'] = $cash_mode;
-        $data['prediscount_subtotal'] = $totals['prediscount_subtotal'];    // TODO: Duplicated code.
+        $data['prediscount_subtotal'] = $totals['prediscount_subtotal'];.
         $data['cash_total'] = $totals['cash_total'];
         $data['non_cash_total'] = $totals['total'];
         $data['cash_amount_due'] = $totals['cash_amount_due'];
@@ -1254,23 +1236,9 @@ class Sales extends Secure_Controller
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
 
-        // TODO: the if/else set below should be converted to a switch
-        if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
-            $data['mode_label'] = lang('Sales.invoice');
-            $data['customer_required'] = lang('Sales.customer_required');
-        } elseif ($this->sale_lib->get_mode() == 'sale_quote') {
-            $data['mode_label'] = lang('Sales.quote');
-            $data['customer_required'] = lang('Sales.customer_required');
-        } elseif ($this->sale_lib->get_mode() == 'sale_work_order') {
-            $data['mode_label'] = lang('Sales.work_order');
-            $data['customer_required'] = lang('Sales.customer_required');
-        } elseif ($this->sale_lib->get_mode() == 'return') {
-            $data['mode_label'] = lang('Sales.return');
-            $data['customer_required'] = lang('Sales.customer_optional');
-        } else {
-            $data['mode_label'] = lang('Sales.receipt');
-            $data['customer_required'] = lang('Sales.customer_optional');
-        }
+        $modeData = $this->getSaleModeLabel($this->sale_lib->get_mode());
+        $data['mode_label'] = $modeData['mode_label'];
+        $data['customer_required'] = $modeData['customer_required'];
 
         return view("sales/register", $data);
     }

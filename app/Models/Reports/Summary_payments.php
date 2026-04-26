@@ -2,14 +2,14 @@
 
 namespace App\Models\Reports;
 
+use App\Traits\Models\Reports\ReportDateFilter;
 use Config\OSPOS;
 
 class Summary_payments extends Summary_report
 {
-    /**
-     * @return array[]
-     */
-    protected function _get_data_columns(): array    // TODO: Hungarian notation
+    use ReportDateFilter;
+
+    protected function _get_data_columns(): array
     {
         return [
             ['trans_group'    => lang('Reports.trans_group')],
@@ -22,13 +22,9 @@ class Summary_payments extends Summary_report
         ];
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getData(array $inputs): array
     {
-        $cash_payment = lang('Sales.cash');    // TODO: This is never used.  Should it be?
+        $cash_payment = lang('Sales.cash');
         $config = config(OSPOS::class)->settings;
 
         $separator[] = [
@@ -41,14 +37,7 @@ class Summary_payments extends Summary_report
             'trans_due'      => ''
         ];
 
-        $where = '';    // TODO: Duplicated code
-
-        // TODO: this needs to be converted to ternary notation
-        if (empty($config['date_or_time_format'])) {
-            $where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-        } else {
-            $where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
-        }
+        $where = $this->buildDateWhereClause($inputs);
 
         $this->create_summary_payments_temp_tables($where);
 

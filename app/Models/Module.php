@@ -116,7 +116,7 @@ class Module extends Model
     public function get_allowed_office_modules(int $person_id): ResultInterface
     {
         $menus = ['office', 'both'];
-        $builder = $this->db->table('modules');    // TODO: Duplicated code
+        $builder = $this->db->table('modules');
         $builder->join('permissions', 'permissions.permission_id = modules.module_id');
         $builder->join('grants', 'permissions.permission_id = grants.permission_id');
         $builder->where('person_id', $person_id);

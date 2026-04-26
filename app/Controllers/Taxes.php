@@ -8,12 +8,14 @@ use App\Models\Tax;
 use App\Models\Tax_category;
 use App\Models\Tax_code;
 use App\Models\Tax_jurisdiction;
+use App\Traits\Controller\Shared;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
 
 class Taxes extends Secure_Controller
 {
+    use Shared;
     private array $config;
     private Tax_lib $tax_lib;
     private Tax $tax;
@@ -140,10 +142,13 @@ class Taxes extends Secure_Controller
     {
         $tax_code_info = $this->tax->get_info($tax_code);
 
-        $default_tax_category_id = 1; // Tax category id is always the default tax category    // TODO: Replace 1 with constant
-        $default_tax_category = $this->tax->get_tax_category($default_tax_category_id);    // TODO: this variable is never used in the code.
+        $default_tax_category_id = 1; // Tax category id is always the default tax category    // TODO: This variable is not used anywhere in the code
+        $default_tax_category = $this->tax->get_tax_category($default_tax_category_id);    // TODO: This variable is not used anywhere in the code
 
         $tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
+
+        $data['rounding_options'] = Rounding_mode::get_rounding_options();
+        $data['html_rounding_options'] = $this->get_html_rounding_options();
 
         if ($this->config['tax_included']) {
             $data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
@@ -151,33 +156,12 @@ class Taxes extends Secure_Controller
             $data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
         }
 
-        $data['rounding_options'] = Rounding_mode::get_rounding_options();
-        $data['html_rounding_options'] = $this->get_html_rounding_options();
-
-        if ($tax_code == NEW_ENTRY) {   // TODO: Duplicated code
-            $data['tax_code'] = '';
-            $data['tax_code_name'] = '';
-            $data['tax_code_type'] = '0';
-            $data['city'] = '';
-            $data['state'] = '';
-            $data['tax_rate'] = '0.0000';
-            $data['rate_tax_code'] = '';
-            $data['rate_tax_category_id'] = 1;
-            $data['tax_category'] = '';
-            $data['add_tax_category'] = '';
-            $data['rounding_code'] = '0';
+        if ($tax_code == NEW_ENTRY) {
+            $taxData = $this->initDefaultTaxCodeData();
+            $data = array_merge($data, $taxData);
         } else {
-            $data['tax_code'] = $tax_code;
-            $data['tax_code_name'] = $tax_code_info->tax_code_name;
-            $data['tax_code_type'] = $tax_code_info->tax_code_type;
-            $data['city'] = $tax_code_info->city;
-            $data['state'] = $tax_code_info->state;
-            $data['rate_tax_code'] = $tax_code_info->rate_tax_code;
-            $data['rate_tax_category_id'] = $tax_code_info->rate_tax_category_id;
-            $data['tax_category'] = $tax_code_info->tax_category;
-            $data['add_tax_category'] = '';
-            $data['tax_rate'] = $tax_rate_info->tax_rate;
-            $data['rounding_code'] = $tax_rate_info->rounding_code;
+            $taxData = $this->buildTaxCodeData($tax_code_info, $tax_rate_info);
+            $data = array_merge($data, $taxData);
         }
 
         $tax_rates = [];
@@ -300,7 +284,7 @@ class Taxes extends Secure_Controller
      */
     public function getView_tax_jurisdictions(int $tax_code = NEW_ENTRY): string // TODO: This appears to be called no where in the code.
     {
-        $tax_code_info = $this->tax->get_info($tax_code);    // TODO: Duplicated code
+        $tax_code_info = $this->tax->get_info($tax_code);
 
         $default_tax_category_id = 1; // Tax category id is always the default tax category
         $default_tax_category = $this->tax->get_tax_category($default_tax_category_id);    // TODO: This variable is not used anywhere in the code

@@ -3,32 +3,21 @@
 namespace App\Models\Reports;
 
 use App\Models\Sale;
+use App\Traits\Models\Reports\SaleTypeFilter;
 
-/**
- *
- *
- * @property sale sale
- *
- */
 class Detailed_sales extends Report
 {
-    /**
-     * @param array $inputs
-     * @return void
-     */
+    use SaleTypeFilter;
+
     public function create(array $inputs): void
     {
-        // Create our temp tables to work with the data in our report
         $sale = model(Sale::class);
         $sale->create_temp_table($inputs);
     }
 
-    /**
-     * @return array
-     */
     public function getDataColumns(): array
     {
-        return [    // TODO: Duplicated code
+        return [
             'summary' => [
                 ['id'            => lang('Reports.sale_id')],
                 ['type_code'     => lang('Reports.code_type')],
@@ -119,47 +108,11 @@ class Detailed_sales extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment');
 
-        if ($inputs['location_id'] != 'all') {    // TODO: Duplicated code
+        if ($inputs['location_id'] != 'all') {
             $builder->where('item_location', $inputs['location_id']);
         }
 
-        switch ($inputs['sale_type']) {
-            case 'complete':
-                $builder->where('sale_status', COMPLETED);
-                $builder->groupStart();
-                $builder->where('sale_type', SALE_TYPE_POS);
-                $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-                $builder->orWhere('sale_type', SALE_TYPE_RETURN);
-                $builder->groupEnd();
-                break;
-
-            case 'sales':
-                $builder->where('sale_status', COMPLETED);
-                $builder->groupStart();
-                $builder->where('sale_type', SALE_TYPE_POS);
-                $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-                $builder->groupEnd();
-                break;
-
-            case 'quotes':
-                $builder->where('sale_status', SUSPENDED);
-                $builder->where('sale_type', SALE_TYPE_QUOTE);
-                break;
-
-            case 'work_orders':
-                $builder->where('sale_status', SUSPENDED);
-                $builder->where('sale_type', SALE_TYPE_WORK_ORDER);
-                break;
-
-            case 'canceled':
-                $builder->where('sale_status', CANCELED);
-                break;
-
-            case 'returns':
-                $builder->where('sale_status', COMPLETED);
-                $builder->where('sale_type', SALE_TYPE_RETURN);
-                break;
-        }
+        $this->applySaleTypeFilter($builder, $inputs['sale_type'], false);
 
         $builder->groupBy('sale_id');
         $builder->orderBy('MAX(sale_time)');
@@ -209,56 +162,16 @@ class Detailed_sales extends Report
         return $data;
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getSummaryData(array $inputs): array
     {
         $builder = $this->db->table('sales_items_temp');
         $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 
-        if ($inputs['location_id'] != 'all') {    // TODO: Duplicated code
+        if ($inputs['location_id'] != 'all') {
             $builder->where('item_location', $inputs['location_id']);
         }
 
-        switch ($inputs['sale_type']) {
-            case 'complete':
-                $builder->where('sale_status', COMPLETED);
-                $builder->groupStart();
-                $builder->where('sale_type', SALE_TYPE_POS);
-                $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-                $builder->orWhere('sale_type', SALE_TYPE_RETURN);
-                $builder->groupEnd();
-                break;
-
-            case 'sales':
-                $builder->where('sale_status', COMPLETED);
-                $builder->groupStart();
-                $builder->where('sale_type', SALE_TYPE_POS);
-                $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-                $builder->groupEnd();
-                break;
-
-            case 'quotes':
-                $builder->where('sale_status', SUSPENDED);
-                $builder->where('sale_type', SALE_TYPE_QUOTE);
-                break;
-
-            case 'work_orders':
-                $builder->where('sale_status', SUSPENDED);
-                $builder->where('sale_type', SALE_TYPE_WORK_ORDER);
-                break;
-
-            case 'canceled':
-                $builder->where('sale_status', CANCELED);
-                break;
-
-            case 'returns':
-                $builder->where('sale_status', COMPLETED);
-                $builder->where('sale_type', SALE_TYPE_RETURN);
-                break;
-        }
+        $this->applySaleTypeFilter($builder, $inputs['sale_type'], false);
 
         return $builder->get()->getRowArray();
     }

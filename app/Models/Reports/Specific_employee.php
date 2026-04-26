@@ -93,7 +93,7 @@ class Specific_employee extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment');
 
-        $builder->where('employee_id', $inputs['employee_id']);    // TODO: Duplicated code
+        $builder->where('employee_id', $inputs['employee_id']);
 
         switch ($inputs['sale_type']) {
             case 'complete':
@@ -164,7 +164,7 @@ class Specific_employee extends Report
     {
         $builder = $this->db->table('sales_items_temp');
         $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
-        $builder->where('employee_id', $inputs['employee_id']);    // TODO: Duplicated code
+        $builder->where('employee_id', $inputs['employee_id']);
 
         // TODO: this needs to be converted to a switch statement
         if ($inputs['sale_type'] == 'complete') {

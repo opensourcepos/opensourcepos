@@ -472,7 +472,7 @@ class Attribute extends Model
             }
         } elseif ($from_type === DROPDOWN) {
             if (in_array($to_type, [TEXT, CHECKBOX], true)) {
-                if ($to_type === CHECKBOX) {    // TODO: Duplicated code.
+                if ($to_type === CHECKBOX) {
                     $checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
 
                     $this->db->transStart();

@@ -2,25 +2,20 @@
 
 namespace App\Models\Reports;
 
-use Config\OSPOS;
+use App\Traits\Models\Reports\ReportDateFilter;
+use App\Traits\Models\Reports\SaleTypeFilter;
 use CodeIgniter\Database\BaseBuilder;
+use Config\OSPOS;
 
 abstract class Summary_report extends Report
 {
-    /**
-     * Private interface implementing the core basic functionality for all reports
-     */
-    private function __common_select(array $inputs, &$builder): void    // TODO: Hungarian notation
+    use ReportDateFilter;
+    use SaleTypeFilter;
+
+    private function __common_select(array $inputs, &$builder): void
     {
         $config = config(OSPOS::class)->settings;
-        // TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
-        $where = '';    // TODO: Duplicated code
-
-        if (empty($config['date_or_time_format'])) {
-            $where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-        } else {
-            $where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
-        }
+        $where = $this->buildDateWhereClause($inputs);
 
         $decimals = totals_decimals();
 
@@ -110,48 +105,16 @@ abstract class Summary_report extends Report
     {
         $config = config(OSPOS::class)->settings;
 
-        // TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-        if (empty($config['date_or_time_format'])) {    // TODO: Duplicated code
-            $builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
-        } else {
-            $builder->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
-        }
+        $this->applyDateFilter($builder, $inputs);
 
         if ($inputs['location_id'] != 'all') {
             $builder->where('sales_items.item_location', $inputs['location_id']);
         }
 
-        if ($inputs['sale_type'] == 'complete') {
-            $builder->where('sales.sale_status', COMPLETED);
-            $builder->groupStart();
-            $builder->where('sales.sale_type', SALE_TYPE_POS);
-            $builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
-            $builder->orWhere('sales.sale_type', SALE_TYPE_RETURN);
-            $builder->groupEnd();
-        } elseif ($inputs['sale_type'] == 'sales') {
-            $builder->where('sales.sale_status', COMPLETED);
-            $builder->groupStart();
-            $builder->where('sales.sale_type', SALE_TYPE_POS);
-            $builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
-            $builder->groupEnd();
-        } elseif ($inputs['sale_type'] == 'quotes') {
-            $builder->where('sales.sale_status', SUSPENDED);
-            $builder->where('sales.sale_type', SALE_TYPE_QUOTE);
-        } elseif ($inputs['sale_type'] == 'work_orders') {
-            $builder->where('sales.sale_status', SUSPENDED);
-            $builder->where('sales.sale_type', SALE_TYPE_WORK_ORDER);
-        } elseif ($inputs['sale_type'] == 'canceled') {
-            $builder->where('sales.sale_status', CANCELED);
-        } elseif ($inputs['sale_type'] == 'returns') {
-            $builder->where('sales.sale_status', COMPLETED);
-            $builder->where('sales.sale_type', SALE_TYPE_RETURN);
-        }
+        $this->applySaleTypeFilter($builder, $inputs['sale_type']);
     }
 
-    /**
-     * Protected class interface implemented by derived classes where required
-     */
-    abstract protected function _get_data_columns(): array;    // TODO: hungarian notation
+    abstract protected function _get_data_columns(): array;
 
     /**
      * @param array $inputs

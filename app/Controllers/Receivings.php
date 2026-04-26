@@ -11,6 +11,7 @@ use App\Models\Item_kit;
 use App\Models\Receiving;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use App\Traits\Controller\Shared;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
@@ -18,6 +19,7 @@ use ReflectionException;
 
 class Receivings extends Secure_Controller
 {
+    use Shared;
     private Receiving_lib $receiving_lib;
     private Token_lib $token_lib;
     private Barcode_lib $barcode_lib;
@@ -208,7 +210,7 @@ class Receivings extends Secure_Controller
         $quantity = parse_quantity($this->request->getPost('quantity'));
         $raw_receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
 
-        $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: Duplicated code
+        $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
         $discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT);
         $discount = $discount_type
@@ -425,19 +427,10 @@ class Receivings extends Secure_Controller
         $employee_info = $this->employee->get_info($receiving_info['employee_id']);
         $data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
-        $supplier_id = $this->receiving_lib->get_supplier();    // TODO: Duplicated code
+        $supplier_id = $this->receiving_lib->get_supplier();
         if ($supplier_id != -1) {
             $supplier_info = $this->supplier->get_info($supplier_id);
-            $data['supplier'] = $supplier_info->company_name;
-            $data['first_name'] = $supplier_info->first_name;
-            $data['last_name'] = $supplier_info->last_name;
-            $data['supplier_email'] = $supplier_info->email;
-            $data['supplier_address'] = $supplier_info->address_1;
-            if (!empty($supplier_info->zip) or !empty($supplier_info->city)) {
-                $data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
-            } else {
-                $data['supplier_location'] = '';
-            }
+            $this->buildSupplierInfo($supplier_info, $data);
         }
 
         $data['print_after_sale'] = false;
@@ -474,18 +467,9 @@ class Receivings extends Secure_Controller
 
         $supplier_id = $this->receiving_lib->get_supplier();
 
-        if ($supplier_id != -1) {    // TODO: Duplicated Code... replace -1 with a constant
+        if ($supplier_id != -1) {
             $supplier_info = $this->supplier->get_info($supplier_id);
-            $data['supplier'] = $supplier_info->company_name;
-            $data['first_name'] = $supplier_info->first_name;
-            $data['last_name'] = $supplier_info->last_name;
-            $data['supplier_email'] = $supplier_info->email;
-            $data['supplier_address'] = $supplier_info->address_1;
-            if (!empty($supplier_info->zip) or !empty($supplier_info->city)) {
-                $data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
-            } else {
-                $data['supplier_location'] = '';
-            }
+            $this->buildSupplierInfo($supplier_info, $data);
         }
 
         $data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();

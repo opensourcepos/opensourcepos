@@ -77,7 +77,7 @@ class Specific_supplier extends Report
             MAX(discount_type) AS discount_type,
             MAX(discount) AS discount');
 
-        $builder->where('supplier_id', $inputs['supplier_id']);    // TODO: Duplicated code
+        $builder->where('supplier_id', $inputs['supplier_id']);
 
         switch ($inputs['sale_type']) {
             case 'complete':
