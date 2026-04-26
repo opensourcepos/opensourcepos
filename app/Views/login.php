@@ -57,7 +57,7 @@
                     <?php endif; ?>
                 </h3>
                 
-                <div id="migration-warning" class="alert alert-warning mt-3<?= $is_new_install ? '' : ' d-none' ?>">
+                <div id="migration-warning" class="alert alert-warning mt-3<?= ($is_new_install || !$is_latest) ? '' : ' d-none' ?>">
                     <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
                 </div>
                 
@@ -90,7 +90,7 @@
                     <strong>Error:</strong> <span id="migration-error-message"></span>
                 </div>
                 
-                <div id="login-fields" class="w-100<?= $is_new_install ? ' d-none' : '' ?>">
+                <div id="login-fields" class="w-100<?= ($is_new_install || !$is_latest) ? ' d-none' : '' ?>">
                     <?php if (empty($config['login_form']) || 'floating_labels' == ($config['login_form'])): ?>
                         <div class="form-floating mt-3">
                             <input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
@@ -129,10 +129,10 @@
                 
                 <div class="d-grid">
                     <button id="submit-button" class="btn btn-lg btn-primary" name="login-button" type="submit">
-                        <?php if ($is_new_install): ?>
+                        <?php if ($is_new_install || !$is_latest): ?>
                             <?= lang('Module.migrate') ?>
                         <?php else: ?>
-                            <?= lang('Login.go') ?>
+                            <?= lang('Login.login') ?>
                         <?php endif; ?>
                     </button>
                 </div>
@@ -161,9 +161,11 @@
 
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:login:debug:js -->
+        <script src="resources/js/jquery-12e87d2f3a.js"></script>
         <!-- endinject -->
     <?php else : ?>
         <!-- inject:login:prod:js -->
+        <script src="resources/jquery-2c872dbe60.min.js"></script>
         <!-- endinject -->
     <?php endif; ?>
     <script>
@@ -177,7 +179,7 @@
             i18n: {
                 welcome: <?= json_encode(lang('Login.welcome', [lang('Common.software_short')])) ?>,
                 migrate: <?= json_encode(lang('Module.migrate')) ?>,
-                go: <?= json_encode(lang('Login.go')) ?>,
+                login: <?= json_encode(lang('Login.login')) ?>,
                 migrationRequired: <?= json_encode(lang('Login.migration_required')) ?>,
                 migrationInitializing: <?= json_encode(lang('Login.migration_initializing')) ?>,
                 migrationRunning: <?= json_encode(lang('Login.migration_running')) ?>,
@@ -225,7 +227,7 @@
                 $success.removeClass('d-none');
                 $heading.text(APP_STATE.i18n.welcome);
                 $loginFields.removeClass('d-none');
-                $submitButton.text(APP_STATE.i18n.go);
+                $submitButton.text(APP_STATE.i18n.login);
                 $submitButton.prop('disabled', false);
             }
 
@@ -247,15 +249,15 @@
                 $error.addClass('d-none');
                 $success.addClass('d-none');
                 $loginFields.removeClass('d-none');
-                $submitButton.text(APP_STATE.i18n.go);
+                $submitButton.text(APP_STATE.i18n.login);
             }
 
-            if (!APP_STATE.isNewInstall) {
+            if (APP_STATE.isLatest && !APP_STATE.isNewInstall) {
                 showLoginForm();
             }
 
             $form.on('submit', function(e) {
-                if (APP_STATE.isNewInstall) {
+                if (!APP_STATE.isLatest) {
                     e.preventDefault();
                     
                     showMigrationProgress();
@@ -271,6 +273,7 @@
                         success: function(response) {
                             if (response.success) {
                                 APP_STATE.isNewInstall = false;
+                                APP_STATE.isLatest = true;
                                 showMigrationSuccess();
                             } else {
                                 showMigrationError(response.message || APP_STATE.i18n.migrationFailed);
