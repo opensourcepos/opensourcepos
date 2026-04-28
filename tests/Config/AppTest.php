@@ -281,4 +281,202 @@ class AppTest extends CIUnitTestCase
         putenv('app.allowedHostnames');
         putenv('CI_ENVIRONMENT');
     }
+
+    public function testGetValidHostUsesForwardedHostWhenBehindTrustedProxy(): void
+    {
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com', 'www.example.com'];
+            public array $proxyIPs = ['10.0.0.1' => 'X-Forwarded-For'];
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Request from trusted proxy with forwarded host
+        $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'www.example.com';
+        $_SERVER['HTTP_HOST'] = 'internal-proxy.local';
+
+        $host = $method->invoke($app);
+        $this->assertEquals('www.example.com', $host);
+    }
+
+    public function testGetValidHostIgnoresForwardedHostWhenNotBehindTrustedProxy(): void
+    {
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];
+            public array $proxyIPs = ['10.0.0.1' => 'X-Forwarded-For'];
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Request from untrusted IP
+        $_SERVER['REMOTE_ADDR'] = '192.168.1.100';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'malicious.com';
+        $_SERVER['HTTP_HOST'] = 'example.com';
+
+        $host = $method->invoke($app);
+        // Should use HTTP_HOST, not X-Forwarded-Host
+        $this->assertEquals('example.com', $host);
+    }
+
+    public function testGetValidHostUsesForwardedHostWithCidrProxyRange(): void
+    {
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];
+            public array $proxyIPs = ['10.0.0.0/24' => 'X-Forwarded-For'];
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Request from IP within trusted range
+        $_SERVER['REMOTE_ADDR'] = '10.0.0.50';  // Within 10.0.0.0/24
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example.com';
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+
+        $host = $method->invoke($app);
+        $this->assertEquals('example.com', $host);
+    }
+
+    public function testGetValidHostNoProxyIPsUsesHttpHost(): void
+    {
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];
+            public array $proxyIPs = [];  // No proxy configured
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'malicious.com';
+
+        $host = $method->invoke($app);
+        // Should ignore X-Forwarded-Host when no proxy configured
+        $this->assertEquals('example.com', $host);
+    }
+
+    public function testGetValidHostUsesForwardedHostWithWildcardTrust(): void
+    {
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];
+            public array $proxyIPs = ['*' => 'X-Forwarded-For'];  // Trust all
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Any IP should be trusted with wildcard
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';  // Random external IP
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example.com';
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+
+        $host = $method->invoke($app);
+        $this->assertEquals('example.com', $host);
+    }
+
+    public function testEnvProxyIPsParsedAsCommaSeparated(): void
+    {
+        // Set proxy IPs as comma-separated string
+        putenv('app.proxyIPs=10.0.0.1,192.168.1.0/24');
+
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example.com';
+        $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Should parse proxyIPs and use forwarded host from trusted proxy
+        $this->assertStringContainsString('example.com', $app->baseURL);
+
+        // Clean up
+        putenv('app.proxyIPs');
+    }
+
+    public function testEnvProxyIPsWildcard(): void
+    {
+        // Set wildcard proxy IPs
+        putenv('app.proxyIPs=*');
+
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example.com';
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';  // Any IP
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        // Should trust any IP with wildcard
+        $this->assertStringContainsString('example.com', $app->baseURL);
+
+        // Clean up
+        putenv('app.proxyIPs');
+    }
+
+    public function testForwardedHostStillValidatesAgainstAllowedHostnames(): void
+    {
+        // Even with wildcard proxyIPs, forwarded host must be in allowedHostnames
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];  // Only example.com allowed
+            public array $proxyIPs = ['*' => 'X-Forwarded-For'];  // Trust all proxies
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Attacker tries to inject malicious forwarded host
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'malicious.com';  // NOT in allowedHostnames
+        $_SERVER['HTTP_HOST'] = 'example.com';  // This IS in allowedHostnames
+
+        $host = $method->invoke($app);
+        // Should fall back to HTTP_HOST since forwarded host is not whitelisted
+        $this->assertEquals('example.com', $host);
+    }
+
+    public function testForwardedHostRejectedWhenNotInAllowedHostnames(): void
+    {
+        // Attacker forges X-Forwarded-Host with wildcard proxyIPs
+        $app = new class extends App {
+            public array $allowedHostnames = ['example.com'];
+            public array $proxyIPs = ['*' => 'X-Forwarded-For'];
+            
+            public function __construct() {}
+        };
+
+        $reflection = new \ReflectionClass($app);
+        $method = $reflection->getMethod('getValidHost');
+        $method->setAccessible(true);
+
+        // Attacker sends malicious forwarded host (not in whitelist)
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';
+        $_SERVER['HTTP_HOST'] = 'internal.local';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'evil.com';  // NOT in allowedHostnames
+
+        $host = $method->invoke($app);
+        // Should use fallback (first allowed hostname), not the forged header
+        $this->assertEquals('example.com', $host);
+    }
 }

@@ -23,7 +23,6 @@ app.allowedHostnames = 'yourdomain.com,www.yourdomain.com'
 
 ```bash
 app.allowedHostnames = 'localhost'
-```
 
 **If you see this error at startup:**
 

@@ -57,9 +57,13 @@ class App extends BaseConfig
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.
+     * If empty in production, the application will fail to start.
+     * In development, it will fall back to 'localhost' with a warning.
+     * Configure via .env file (comma-separated list):
+     *   app.allowedHostnames = 'example.com,www.example.com'
      *
      * E.g.,
-     * When your site URL ($baseURL) is 'http://example.com/', and your site
+     *   app.allowedHostnames = 'localhost'
      * also accepts 'http://media.example.com/' and 'http://accounts.example.com/':
      *     ['media.example.com', 'accounts.example.com']
      *
@@ -258,6 +262,10 @@ class App extends BaseConfig
      *         '192.168.5.0/24' => 'X-Real-IP',
      *     ]
      *
+     * For Docker/nginx or same-host deployments where the proxy runs locally,
+     * you can set this to ['*'] to trust all proxy sources for forwarded headers.
+     * In this case, only allow trusted networks via firewall/security groups.
+     *
      * @var array<string, string>
      */
     public array $proxyIPs = [];
@@ -283,9 +291,11 @@ class App extends BaseConfig
     public function __construct()
     {
         parent::__construct();
-
+        
         // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
         // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
+        
+        // Parse allowedHostnames from .env (comma-separated)
         $envAllowedHostnames = getenv('app.allowedHostnames');
         if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
             $this->allowedHostnames = array_values(array_filter(
@@ -293,7 +303,22 @@ class App extends BaseConfig
                 static fn (string $hostname): bool => $hostname !== ''
             ));
         }
-
+        
+        // Parse proxyIPs from .env (comma-separated, supports '*' for all)
+        $envProxyIPs = getenv('app.proxyIPs');
+        if ($envProxyIPs !== false && trim($envProxyIPs) !== '') {
+            $parsed = array_map('trim', explode(',', $envProxyIPs));
+            $this->proxyIPs = [];
+            foreach ($parsed as $ip) {
+                // Support wildcard '*' to trust all proxies
+                if ($ip === '*') {
+                    $this->proxyIPs['*'] = 'X-Forwarded-For';
+                } else {
+                    $this->proxyIPs[$ip] = 'X-Forwarded-For';
+                }
+            }
+        }
+        
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
 
         $host = $this->getValidHost();
@@ -308,35 +333,45 @@ class App extends BaseConfig
      * Security: Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
      * by validating the HTTP_HOST against a whitelist of allowed hostnames.
      *
+     * Supports reverse proxies: Checks X-Forwarded-Host header when behind
+     * a trusted proxy (configured via $proxyIPs).
+     * 
+     * IMPORTANT: Both HTTP_HOST and X-Forwarded-Host are validated against
+     * the allowedHostnames whitelist. Even if an attacker injects a forged
+     * X-Forwarded-Host header, it must match an entry in allowedHostnames.
+     * 
      * In production: Fails fast if allowedHostnames is not configured.
      * In development: Allows localhost fallback with an error log.
-     *
+     * 
      * @return string A validated hostname
      * @throws \RuntimeException If allowedHostnames is not configured in production
      */
     private function getValidHost(): string
     {
-        $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
-
+        // Get host from forwarded header or HTTP_HOST
+        // Both are validated against allowedHostnames whitelist below
+        $forwardedHost = $this->getForwardedHost();
+        $httpHost = $forwardedHost ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
+        
         // Determine environment
         // CodeIgniter's test bootstrap sets $_SERVER['CI_ENVIRONMENT'] = 'testing'
         // Check $_SERVER first, then $_ENV, then fall back to 'production'
         $environment = $_SERVER['CI_ENVIRONMENT'] ?? $_ENV['CI_ENVIRONMENT'] ?? getenv('CI_ENVIRONMENT') ?: 'production';
 
         if (empty($this->allowedHostnames)) {
-            $errorMessage =
+            $errorMessage = 
                 'Security: allowedHostnames is not configured. ' .
                 'Host header injection protection is disabled. ' .
                 'Set app.allowedHostnames in your .env file. ' .
                 'Example: app.allowedHostnames = "example.com,www.example.com" ' .
                 'Received Host: ' . $httpHost;
-
+            
             // Production: Fail explicitly to prevent silent security vulnerabilities
             // Testing and development: Allow localhost fallback
             if ($environment === 'production') {
                 throw new \RuntimeException($errorMessage);
             }
-
+            
             log_message('error', $errorMessage . ' Using localhost fallback (development only).');
             return 'localhost';
         }
@@ -352,5 +387,93 @@ class App extends BaseConfig
         );
 
         return $this->allowedHostnames[0];
+    }
+
+    /**
+     * Get the forwarded host from X-Forwarded-Host header when behind a trusted proxy.
+     * 
+     * When behind a reverse proxy (nginx, load balancer, etc.), the actual hostname
+     * is sent in the X-Forwarded-Host header, while HTTP_HOST contains the proxy's hostname.
+     * 
+     * SECURITY WARNING: The returned hostname is still validated against allowedHostnames
+     * whitelist in getValidHost(). This prevents attacks even if an attacker:
+     * - Directly accesses PHP-FPM (bypassing nginx)
+     * - Forges X-Forwarded-Host with wildcard proxyIPs = '*'
+     * - Spoofs the header from an untrusted network
+     * 
+     * The defense is: allowedHostnames is the authoritative whitelist, regardless
+     * of which header the hostname comes from.
+     * 
+     * @return string|null The forwarded host if configured and behind trusted proxy, null otherwise
+     */
+    private function getForwardedHost(): ?string
+    {
+        // Only use forwarded headers if proxyIPs is configured
+        if (empty($this->proxyIPs)) {
+            return null;
+        }
+
+        // Check if trusting all proxies (for Docker/same-host deployments)
+        if (isset($this->proxyIPs['*'])) {
+            return $_SERVER['HTTP_X_FORWARDED_HOST'] ?? null;
+        }
+
+        // Check if the request comes from a trusted proxy
+        $clientIp = $_SERVER['REMOTE_ADDR'] ?? '';
+        if (!$this->isTrustedProxy($clientIp)) {
+            return null;
+        }
+
+        // Return the forwarded host if present
+        return $_SERVER['HTTP_X_FORWARDED_HOST'] ?? null;
+    }
+
+    /**
+     * Check if an IP address is a trusted proxy.
+     * 
+     * @param string $ip The IP address to check
+     * @return bool True if the IP is a trusted proxy
+     */
+    private function isTrustedProxy(string $ip): bool
+    {
+        foreach ($this->proxyIPs as $proxyIp => $header) {
+            if ($this->ipInRange($ip, $proxyIp)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * Check if an IP address is within a CIDR range.
+     * 
+     * @param string $ip The IP address to check
+     * @param string $range The CIDR range (e.g., '192.168.1.0/24' or '10.0.0.1')
+     * @return bool True if the IP is within the range
+     */
+    private function ipInRange(string $ip, string $range): bool
+    {
+        // If no subnet mask, check for exact match
+        if (strpos($range, '/') === false) {
+            return $ip === $range;
+        }
+
+        // Parse CIDR notation
+        list($subnet, $bits) = explode('/', $range);
+        
+        // Convert IP addresses to long format
+        $ipLong = ip2long($ip);
+        $subnetLong = ip2long($subnet);
+        
+        if ($ipLong === false || $subnetLong === false) {
+            return false;
+        }
+
+        // Calculate network mask
+        $mask = -1 << (32 - (int)$bits);
+        $network = $subnetLong & $mask;
+
+        return ($ipLong & $mask) === $network;
     }
 }
