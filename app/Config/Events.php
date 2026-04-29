@@ -8,7 +8,6 @@ use CodeIgniter\HotReloader\HotReloader;
 use App\Events\Db_log;
 use App\Events\Load_config;
 use App\Events\Method;
-use App\Libraries\Plugins\PluginManager;
 
 /*
  * --------------------------------------------------------------------
@@ -57,14 +56,7 @@ Events::on('pre_system', static function (): void {
 });
 
 Events::on('post_controller_constructor', static function (): void {
-    $pluginManager = new PluginManager();
-
-    if ($pluginManager->canLoadPlugins()) {
-        $pluginManager->discoverPlugins();
-        $pluginManager->registerPluginEvents();
-    } else {
-        log_message('debug', 'Plugin loading is disabled until after migration has been run.');
-    }
+    service('pluginManager');
 }, 10);
 
 $config = new Load_config();

@@ -12,8 +12,7 @@ class Plugins extends Secure_Controller
     public function __construct()
     {
         parent::__construct('plugins');
-        $this->pluginManager = new PluginManager();
-        $this->pluginManager->discoverPlugins();
+        $this->pluginManager = service('pluginManager');
     }
 
     public function getIndex(): string

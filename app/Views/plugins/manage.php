@@ -55,7 +55,7 @@
                                                     <span class="glyphicon glyphicon-play"></span> <?= lang('Plugins.enable') ?>
                                                 </button>
                                             <?php endif; ?>
-                                            
+
                                             <?php if ($plugin['has_config'] && $plugin['enabled']): ?>
                                                 <button class="btn btn-primary btn-xs plugin-config"
                                                         data-plugin-id="<?= esc($pluginId) ?>">
@@ -95,8 +95,8 @@ $(document).ready(function() {
         var btn = $(this);
         var action = btn.data('action');
         var pluginId = btn.data('plugin-id');
-        
-        $.post('plugins/manage/' + action + '/' + pluginId, {
+
+        $.post('plugins/' + action + '/' + pluginId, {
             <?= esc(csrf_token()) ?>: '<?= esc(csrf_hash()) ?>'
         }, function(response) {
             if (response.success) {
@@ -107,10 +107,10 @@ $(document).ready(function() {
             }
         }, 'json');
     });
-    
+
     $('.plugin-config').on('click', function() {
         var pluginId = $(this).data('plugin-id');
-        $('#plugin-config-content').load('plugins/manage/config/' + pluginId);
+        $('#plugin-config-content').load('plugins/config/' + pluginId);
         $('#plugin-config-modal').modal('show');
     });
 });

@@ -60,7 +60,6 @@ class MailchimpPlugin extends BasePlugin
         $this->setSetting('api_key', '');
         $this->setSetting('list_id', '');
         $this->setSetting('sync_on_save', '1');
-        $this->setSetting('enabled', '0');
 
         return true;
     }

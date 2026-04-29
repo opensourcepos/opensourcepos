@@ -25,7 +25,7 @@ abstract class BasePlugin implements PluginInterface
 
     public function isEnabled(): bool
     {
-        $enabled = $this->configModel->getValue("{$this->getPluginId()}_enabled");
+        $enabled = $this->configModel->getValue("{$this->getPluginId()}__enabled");
         return $enabled === '1' || $enabled === 'true';
     }
 

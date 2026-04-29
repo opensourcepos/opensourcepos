@@ -16,6 +16,8 @@ class PluginManager
     private PluginConfig $configModel;
     private string $pluginsPath;
     private bool $eventsRegistered = false;
+    private static bool $discovered = false;
+    private static array $registeredNamespaces = [];
 
     public function __construct()
     {
@@ -25,6 +27,11 @@ class PluginManager
 
     public function discoverPlugins(): void
     {
+        if (self::$discovered) {
+            log_message('debug', 'Plugin discovery already completed, skipping');
+            return;
+        }
+
         if (!is_dir($this->pluginsPath)) {
             log_message('debug', 'Plugins directory does not exist: ' . $this->pluginsPath);
             return;
@@ -59,15 +66,14 @@ class PluginManager
             $this->plugins[$plugin->getPluginId()] = $plugin;
 
             if ($this->isPluginEnabled($plugin->getPluginId())) {
-                $loader = Services::autoloader();
-                $loader->addNamespace(
-                    "App\\Plugins\\{$plugin->getPluginId()}",
-                    APPPATH . "Plugins/{$plugin->getPluginId()}"
-                );
+                $this->registerNamespace($plugin->getPluginId());
             }
 
             log_message('debug', "Discovered plugin: {$plugin->getPluginName()}");
         }
+
+        self::$discovered = true;
+        log_message('debug', 'Plugin discovery completed');
     }
 
     private function getClassNameFromFile(string $pathname): ?string
@@ -141,11 +147,7 @@ class PluginManager
 
         $this->configModel->setValue($this->getEnabledKey($pluginId), '1');
 
-        $loader = Services::autoloader();
-        $loader->addNamespace(
-            "App\\Plugins\\{$pluginId}",
-            APPPATH . "Plugins/{$pluginId}"
-        );
+        $this->registerNamespace($pluginId);
 
         log_message('info', "Plugin enabled: {$pluginId}");
 
@@ -191,6 +193,24 @@ class PluginManager
     public function setSetting(string $pluginId, string $key, mixed $value): bool
     {
         return $this->configModel->setValue("{$pluginId}_{$key}", $value);
+    }
+
+    public static function resetStatic(): void
+    {
+        self::$discovered = false;
+        self::$registeredNamespaces = [];
+    }
+
+    private function registerNamespace(string $pluginId): void
+    {
+        $namespace = "App\\Plugins\\{$pluginId}";
+
+        if (!in_array($namespace, self::$registeredNamespaces, true)) {
+            $loader = Services::autoloader();
+            $loader->addNamespace($namespace, APPPATH . "Plugins/{$pluginId}");
+            self::$registeredNamespaces[] = $namespace;
+            log_message('debug', "Registered namespace for plugin: {$pluginId}");
+        }
     }
 
     private function getEnabledKey(string $pluginId): string
