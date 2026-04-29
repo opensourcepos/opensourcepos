@@ -166,8 +166,6 @@ return [
     "info"                                      => "Информация",
     "info_configuration"                        => "Информация о магазине",
     "input_groups"                              => "Входные группы",
-    "plugins"                              => "Интеграции",
-    "plugins_configuration"                => "Сторонние интеграции",
     "invoice"                                   => "Счет (накладная)",
     "invoice_configuration"                     => "Настройки печати накладной",
     "invoice_default_comments"                  => "Комментарии к накладной по умолчанию",

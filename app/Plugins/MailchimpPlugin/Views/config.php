@@ -10,7 +10,7 @@
     <fieldset id="config_info">
 
         <div id="required_fields_message"><?= lang('MailchimpPlugin.fields_required_message') ?></div>
-        <div id="plugins_header"><?= lang('MailchimpPlugin.plugins_configuration') ?></div>
+        <div id="plugins_header"><?= lang('MailchimpPlugin.configuration') ?></div>
         <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
         <div class="form-group form-group-sm">
@@ -57,7 +57,7 @@
         <?= form_submit([
             'name'  => 'submit_mailchimp',
             'id'    => 'submit_mailchimp',
-            'value' => lang('MailchimpPlugin.submit'),
+            'value' => lang('Common.submit'),
             'class' => 'btn btn-primary btn-sm pull-right'
         ]) ?>
 

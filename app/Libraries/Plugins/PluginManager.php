@@ -194,13 +194,26 @@ class PluginManager
 
     private function registerNamespace(string $pluginId): void
     {
-        $namespace = "App\\Plugins\\{$pluginId}";
+        $plugin = $this->plugins[$pluginId] ?? null;
+        if ($plugin === null) {
+            return;
+        }
+
+        // Derive the directory name from the class: App\Plugins\MailchimpPlugin\MailchimpPlugin → MailchimpPlugin
+        // Single-file plugins have only 3 segments (App\Plugins\ClassName) and have no subdirectory.
+        $parts = explode('\\', get_class($plugin));
+        if (count($parts) < 4) {
+            return;
+        }
+
+        $pluginDirName = $parts[2];
+        $namespace = "App\\Plugins\\{$pluginDirName}";
 
         if (!in_array($namespace, self::$registeredNamespaces, true)) {
             $loader = Services::autoloader();
-            $loader->addNamespace($namespace, APPPATH . "Plugins/{$pluginId}");
+            $loader->addNamespace($namespace, APPPATH . "Plugins/{$pluginDirName}");
             self::$registeredNamespaces[] = $namespace;
-            log_message('debug', "Registered namespace for plugin: {$pluginId}");
+            log_message('debug', "Registered namespace for plugin dir: {$pluginDirName}");
         }
     }
 

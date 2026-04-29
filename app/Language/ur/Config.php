@@ -166,8 +166,6 @@ return [
     "info"                                      => "",
     "info_configuration"                        => "",
     "input_groups"                              => "",
-    "plugins"                              => "",
-    "plugins_configuration"                => "",
     "invoice"                                   => "",
     "invoice_configuration"                     => "",
     "invoice_default_comments"                  => "",

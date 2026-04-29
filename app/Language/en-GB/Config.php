@@ -166,8 +166,6 @@ return [
     "info"                                      => "Information",
     "info_configuration"                        => "Shop Information",
     "input_groups"                              => "Input Groups",
-    "plugins"                              => "plugins",
-    "plugins_configuration"                => "Third Party plugins",
     "invoice"                                   => "Invoice",
     "invoice_configuration"                     => "Invoice Print Settings",
     "invoice_default_comments"                  => "Default Invoice Comments",

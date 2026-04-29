@@ -166,8 +166,6 @@ return [
     "info"                                      => "מידע",
     "info_configuration"                        => "אחסון מידע",
     "input_groups"                              => "",
-    "plugins"                              => "אינטגרציה",
-    "plugins_configuration"                => "שילובים של צד שלישי",
     "invoice"                                   => "חשבונית",
     "invoice_configuration"                     => "הגדרות הדפסה של חשבוניות",
     "invoice_default_comments"                  => "הערות ברירת מחדל של חשבוניות",

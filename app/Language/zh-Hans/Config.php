@@ -166,8 +166,6 @@ return [
     "info"                                      => "儲存組態",
     "info_configuration"                        => "儲存組態",
     "input_groups"                              => "",
-    "plugins"                              => "",
-    "plugins_configuration"                => "",
     "invoice"                                   => "Invoice",
     "invoice_configuration"                     => "Invoice Print Settings",
     "invoice_default_comments"                  => "Default Invoice Comments",

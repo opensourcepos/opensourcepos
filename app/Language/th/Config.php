@@ -166,8 +166,6 @@ return [
     "info"                                      => "ข้อมูลร้านค้า",
     "info_configuration"                        => "ข้อมูลร้านค้า",
     "input_groups"                              => "นำเข้าแบบกลุ่ม",
-    "plugins"                              => "การเข้าร่วม",
-    "plugins_configuration"                => "การเข้าร่วมกับบุคคลภายนอก",
     "invoice"                                   => "ใบแจ้งหนี้",
     "invoice_configuration"                     => "ตั้งค่าการพิมพ์ใบแจ้งหนี้",
     "invoice_default_comments"                  => "ค่าเริ่มต้นหมายเหตุในใบแจ้งหนี้",

@@ -166,8 +166,6 @@ return [
     "info"                                      => "Instellungen",
     "info_configuration"                        => "Instellungen",
     "input_groups"                              => "",
-    "plugins"                              => "",
-    "plugins_configuration"                => "",
     "invoice"                                   => "Rechnungs",
     "invoice_configuration"                     => "Druckereinstellungen",
     "invoice_default_comments"                  => "Rechnungskommentar",

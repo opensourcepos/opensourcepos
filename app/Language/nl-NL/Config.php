@@ -166,8 +166,6 @@ return [
     "info"                                      => "Informatie",
     "info_configuration"                        => "Winkelinformatie",
     "input_groups"                              => "",
-    "plugins"                              => "Integraties",
-    "plugins_configuration"                => "Derde partij integraties",
     "invoice"                                   => "Factuur",
     "invoice_configuration"                     => "Factuur afdrukinstellingen",
     "invoice_default_comments"                  => "Standaard factuur opmerkingen",

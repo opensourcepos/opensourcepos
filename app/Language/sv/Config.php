@@ -166,8 +166,6 @@ return [
     "info"                                      => "Information",
     "info_configuration"                        => "Butiksinformation",
     "input_groups"                              => "Inmatningsgrupper",
-    "plugins"                              => "Integrationer",
-    "plugins_configuration"                => "Tredjepartsintegrationer",
     "invoice"                                   => "Faktura",
     "invoice_configuration"                     => "Faktura utskriftsinställningar",
     "invoice_default_comments"                  => "Standardfaktura kommentarer",

@@ -362,13 +362,6 @@ class ExamplePlugin extends BasePlugin
         return 'Plugins/ExamplePlugin/Views/config';
     }
     
-    protected function lang(string $key, array $data = []): string
-    {
-        $language = \Config\Services::language();
-        $language->addLanguagePath(APPPATH . 'Plugins/ExamplePlugin/Language/');
-        return $language->getLine($key, $data);
-    }
-    
     protected function getPluginDir(): string
     {
         return 'ExamplePlugin';
@@ -414,21 +407,7 @@ return [
 
 ### Loading Language Strings in Plugins
 
-The `BasePlugin` class can provide a helper method to load plugin-specific language strings:
-
-```php
-protected function lang(string $key, array $data = []): string
-{
-    $language = \Config\Services::language();
-    $language->addLanguagePath(APPPATH . 'Plugins/' . $this->getPluginDir() . '/Language/');
-    return $language->getLine($key, $data);
-}
-
-protected function getPluginDir(): string
-{
-    return 'ExamplePlugin';
-}
-```
+CodeIgniter automatically loads language strings from `app/Plugins/{PluginDir}/Language/{locale}/` for plugins.
 
 ### Benefits of Self-Contained Language Files
 

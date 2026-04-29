@@ -166,8 +166,6 @@ return [
     "info"                                      => "معلومات",
     "info_configuration"                        => "معلومات الشركة",
     "input_groups"                              => "مجموعات الإدخال",
-    "plugins"                              => "التكامل",
-    "plugins_configuration"                => "تكامل",
     "invoice"                                   => "الفاتورة",
     "invoice_configuration"                     => "إعدادات طباعة الفاتورة",
     "invoice_default_comments"                  => "التعليق الافتراضي على الفاتورة",

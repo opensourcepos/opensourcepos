@@ -5,7 +5,6 @@ namespace App\Plugins\MailchimpPlugin;
 use App\Libraries\Plugins\BasePlugin;
 use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use CodeIgniter\Events\Events;
-use Config\Services;
 use stdClass;
 
 /**
@@ -36,7 +35,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function getPluginDescription(): string
     {
-        return $this->lang('MailchimpPlugin.description');
+        return lang('MailchimpPlugin.description');
     }
 
     public function getVersion(): string
@@ -73,7 +72,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function getConfigView(): ?string
     {
-        return 'Plugins/MailchimpPlugin/Views/config';
+        return __DIR__ . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'config';
     }
 
     public function getSettings(): array
@@ -141,7 +140,7 @@ class MailchimpPlugin extends BasePlugin
         $apiKey = $this->getSetting('api_key');
 
         if (empty($apiKey)) {
-            return ['success' => false, 'message' => $this->lang('mailchimp_api_key_required')];
+            return ['success' => false, 'message' => lang('mailchimp_api_key_required')];
         }
 
         $result = $this->mailchimpLibrary->getLists();
@@ -149,22 +148,12 @@ class MailchimpPlugin extends BasePlugin
         if ($result && isset($result['lists'])) {
             return [
                 'success' => true,
-                'message' => $this->lang('mailchimp_key_successfully'),
+                'message' => lang('mailchimp_key_successfully'),
                 'lists' => $result['lists']
             ];
         }
 
-        return ['success' => false, 'message' => $this->lang('mailchimp_key_unsuccessfully')];
+        return ['success' => false, 'message' => lang('mailchimp_key_unsuccessfully')];
     }
 
-    protected function lang(string $key, array $data = []): string
-    {
-        $language = Services::language();
-        return $language->getLine($key, $data);
-    }
-
-    protected function getPluginDir(): string
-    {
-        return 'MailchimpPlugin';
-    }
 }

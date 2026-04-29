@@ -166,8 +166,6 @@ return [
     "info"                                      => "Thông tin",
     "info_configuration"                        => "Thông tin cửa hàng",
     "input_groups"                              => "",
-    "plugins"                              => "Tích hợp",
-    "plugins_configuration"                => "Tích hợp bên thứ ba",
     "invoice"                                   => "Hóa đơn",
     "invoice_configuration"                     => "Cài đặt in hóa đơn",
     "invoice_default_comments"                  => "Ghi chú mặc định cho hóa đơn",

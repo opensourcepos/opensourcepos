@@ -166,8 +166,6 @@ return [
     "info"                                      => "Informacije",
     "info_configuration"                        => "Info o web trgovini",
     "input_groups"                              => "Grupe unosa",
-    "plugins"                              => "Integracije",
-    "plugins_configuration"                => "Integracije trećih strana",
     "invoice"                                   => "Faktura",
     "invoice_configuration"                     => "Podešavanja štamapnja",
     "invoice_default_comments"                  => "Komentar na fakturi",

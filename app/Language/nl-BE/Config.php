@@ -166,8 +166,6 @@ return [
     "info"                                      => "Instellingen",
     "info_configuration"                        => "Instellingen",
     "input_groups"                              => "Invoer Groepen",
-    "plugins"                              => "Integraties",
-    "plugins_configuration"                => "Integraties",
     "invoice"                                   => "Factuur",
     "invoice_configuration"                     => "Print Instellingen",
     "invoice_default_comments"                  => "Factuur Mededeling",

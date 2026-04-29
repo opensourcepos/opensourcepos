@@ -221,8 +221,6 @@ return [
     "perm_risk"                                 => "Incorrect permissions leaves this software at risk.",
     "phone"                                     => "Company Phone",
     "phone_required"                            => "Company Phone is a required field.",
-    "plugins"                                   => "Plugins",
-    "plugins_configuration"                     => "Third Party Plugins",
     "print_bottom_margin"                       => "Margin Bottom",
     "print_bottom_margin_number"                => "Margin Bottom must be a number.",
     "print_bottom_margin_required"              => "Margin Bottom is a required field.",

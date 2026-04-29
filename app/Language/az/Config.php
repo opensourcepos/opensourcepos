@@ -166,8 +166,6 @@ return [
     "info"                                      => "Məlumat",
     "info_configuration"                        => "Dükan İnformasiyası",
     "input_groups"                              => "",
-    "plugins"                              => "İnteqrasiya",
-    "plugins_configuration"                => "Üçüncü tərəf inteqrasiya",
     "invoice"                                   => "Faktura",
     "invoice_configuration"                     => "Faktura Çap Parametrləri",
     "invoice_default_comments"                  => "Standart Faktura Şərhləri",

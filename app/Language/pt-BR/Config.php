@@ -166,8 +166,6 @@ return [
     "info"                                      => "Informações",
     "info_configuration"                        => "Informações da loja",
     "input_groups"                              => "",
-    "plugins"                              => "Integrações",
-    "plugins_configuration"                => "Integrações de terceiros",
     "invoice"                                   => "Fatura",
     "invoice_configuration"                     => "Configuração de Impressão",
     "invoice_default_comments"                  => "Comentário",

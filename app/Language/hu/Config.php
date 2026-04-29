@@ -166,8 +166,6 @@ return [
     "info"                                      => "Információk",
     "info_configuration"                        => "Bolt információk",
     "input_groups"                              => "",
-    "plugins"                              => "",
-    "plugins_configuration"                => "",
     "invoice"                                   => "Számla",
     "invoice_configuration"                     => "Nyomtatási beállitások",
     "invoice_default_comments"                  => "Alapértelmezett számla kommentek",
