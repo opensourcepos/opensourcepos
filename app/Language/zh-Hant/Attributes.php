@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "收貨",
     "show_in_sales"                    => "在銷售中顯示",
     "show_in_sales_visibility"         => "銷售",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "更新屬性",
 ];

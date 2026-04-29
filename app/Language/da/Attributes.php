@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Modtagelser",
     "show_in_sales"                    => "Vis i salg",
     "show_in_sales_visibility"         => "Salg",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Opdater egenskab",
 ];
