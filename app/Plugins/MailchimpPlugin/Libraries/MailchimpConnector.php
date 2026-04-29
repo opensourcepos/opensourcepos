@@ -23,11 +23,10 @@ class MailchimpConnector
 
     public function __construct(string $apiKey)
     {
-        $encrypter = Services::encrypter();
-        $mailchimpApiKey = (isset($apiKey) && !empty($apiKey)) ? $apiKey : '';
+        $mailchimpApiKey = !empty($apiKey) ? $apiKey : '';
 
         if (!empty($mailchimpApiKey)) {
-            $this->apiKey = $encrypter->decrypt($mailchimpApiKey);
+            $this->apiKey = Services::encrypter()->decrypt($mailchimpApiKey);
         }
 
         if (!empty($this->apiKey)) {

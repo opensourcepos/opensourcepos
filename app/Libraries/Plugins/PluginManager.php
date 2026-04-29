@@ -6,8 +6,6 @@ use App\Models\PluginConfig;
 use CodeIgniter\Events\Events;
 use Config\Database;
 use Config\Services;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class PluginManager
 {
@@ -37,21 +35,17 @@ class PluginManager
             return;
         }
 
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($this->pluginsPath, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
+        $pluginDirs = glob($this->pluginsPath . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
 
-        foreach ($iterator as $file) {
-            if ($file->isDir() || $file->getExtension() !== 'php') {
+        foreach ($pluginDirs as $pluginDir) {
+            $pluginName = basename($pluginDir);
+            $mainFile = $pluginDir . DIRECTORY_SEPARATOR . $pluginName . '.php';
+
+            if (!file_exists($mainFile)) {
                 continue;
             }
 
-            $className = $this->getClassNameFromFile($file->getPathname());
-
-            if (!$className) {
-                continue;
-            }
+            $className = 'App\\Plugins\\' . $pluginName . '\\' . $pluginName;
 
             if (!class_exists($className)) {
                 continue;
@@ -61,7 +55,12 @@ class PluginManager
                 continue;
             }
 
-            $plugin = new $className();
+            try {
+                $plugin = new $className();
+            } catch (\Throwable $e) {
+                log_message('error', "Failed to instantiate plugin {$className}: " . $e->getMessage());
+                continue;
+            }
 
             $this->plugins[$plugin->getPluginId()] = $plugin;
 
@@ -74,15 +73,6 @@ class PluginManager
 
         self::$discovered = true;
         log_message('debug', 'Plugin discovery completed');
-    }
-
-    private function getClassNameFromFile(string $pathname): ?string
-    {
-        $relativePath = str_replace($this->pluginsPath . DIRECTORY_SEPARATOR, '', $pathname);
-        $relativePath = str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
-        $className = 'App\\Plugins\\' . str_replace('.php', '', $relativePath);
-
-        return $className;
     }
 
     public function registerPluginEvents(): void
