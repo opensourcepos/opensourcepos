@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Expense class
- */
-class Expense extends Model
+class Expense extends BaseModel
 {
     protected $table = 'expenses';
     protected $primaryKey = 'expense_id';

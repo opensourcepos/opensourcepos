@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Giftcard class
- */
-class Giftcard extends Model
+class Giftcard extends BaseModel
 {
     protected $table = 'giftcards';
     protected $primaryKey = 'giftcard_id';

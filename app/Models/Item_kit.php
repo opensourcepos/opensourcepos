@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Item_kit class
- */
-class Item_kit extends Model
+class Item_kit extends BaseModel
 {
     protected $table = 'item_kits';
     protected $primaryKey = 'item_kit_id';
