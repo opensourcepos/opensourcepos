@@ -16,13 +16,13 @@ class MailchimpController extends Secure_Controller
      */
     public function postCheckMailchimpApiKey(): ResponseInterface
     {
-        $lists = $this->getAllMailchimpLists($this->request->getPost('mailchimp_api_key'));
+        $lists = $this->getAllMailchimpLists($this->request->getPost('api_key'));
         $success = count($lists) > 0;
 
         return $this->response->setJSON([
-            'success'         => $success,
-            'message'         => lang('MailchimpPlugin.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
-            'mailchimp_lists' => $lists
+            'success'   => $success,
+            'message'   => lang('MailchimpPlugin.key_' . ($success ? '' : 'un') . 'successfully'),
+            'lists'     => $lists
         ]);
     }
 

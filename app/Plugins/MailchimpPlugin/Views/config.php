@@ -5,24 +5,24 @@
  */
 ?>
 
-<?= form_open('MailchimpPlugin/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open(site_url('plugins/saveConfig/mailchimp'), ['id' => 'config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 <div id="config_wrapper">
     <fieldset id="config_info">
 
         <div id="required_fields_message"><?= lang('MailchimpPlugin.fields_required_message') ?></div>
         <div id="plugins_header"><?= lang('MailchimpPlugin.configuration') ?></div>
-        <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
+        <ul id="error_message_box" class="error_message_box"></ul>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('MailchimpPlugin.api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
+            <?= form_label(lang('MailchimpPlugin.api_key'), 'api_key', ['class' => 'control-label col-xs-2']) ?>
             <div class="col-xs-4">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-cloud"></span>
                         </span>
                     <?= form_input([
-                        'name'  => 'mailchimp_api_key',
-                        'id'    => 'mailchimp_api_key',
+                        'name'  => 'api_key',
+                        'id'    => 'api_key',
                         'class' => 'form-control input-sm',
                         'value' => esc($settings['api_key'] ?? '')
                     ]) ?>
@@ -38,17 +38,17 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('MailchimpPlugin.lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
+            <?= form_label(lang('MailchimpPlugin.lists'), 'list_id', ['class' => 'control-label col-xs-2']) ?>
             <div class="col-xs-4">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-user"></span>
                         </span>
                     <?= form_dropdown(
-                        'mailchimp_list_id',
+                        'list_id',
                         esc($settings['lists'] ?? ''),
                         esc($settings['list_id'] ?? ''),
-                        'id="mailchimp_list_id" class="form-control input-sm"'
+                        'id="list_id" class="form-control input-sm"'
                     ) ?>
                 </div>
             </div>
@@ -68,9 +68,9 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        $('#mailchimp_api_key').change(function() {
-            $.post("<?= "checkMailchimpApiKey" ?>", {
-                    'mailchimp_api_key': $('#mailchimp_api_key').val()
+        $('#api_key').change(function() {
+            $.post("<?= site_url('plugins/mailchimp/checkApiKey') ?>", {
+                    'api_key': $('#api_key').val()
                 },
                 function(response) {
                     $.notify({
@@ -78,17 +78,17 @@
                     }, {
                         type: response.success ? 'success' : 'danger'
                     });
-                    $('#mailchimp_list_id').empty();
-                    $.each(response.mailchimp_lists, function(val, text) {
-                        $('#mailchimp_list_id').append(new Option(text, val));
+                    $('#list_id').empty();
+                    $.each(response.lists, function(val, text) {
+                        $('#list_id').append(new Option(text, val));
                     });
-                    $('#mailchimp_list_id').prop('selectedIndex', 0);
+                    $('#list_id').prop('selectedIndex', 0);
                 },
                 'json'
             );
         });
 
-        $('#mailchimp_config_form').validate($.extend(form_support.handler, {
+        $('#config_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     success: function(response) {
@@ -102,7 +102,7 @@
                 });
             },
 
-            errorLabelContainer: '#mailchimp_error_message_box'
+            errorLabelContainer: '#error_message_box'
         }));
     });
 </script>

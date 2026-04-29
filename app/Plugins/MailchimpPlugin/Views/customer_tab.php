@@ -8,32 +8,32 @@
 ?>
 
 
-<div class="tab-pane" id="customer_mailchimp_info">
+<div class="tab-pane" id="activity_info">
                 <fieldset>
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.status'), 'mailchimp_status', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.status'), 'status', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_dropdown(
-                                'mailchimp_status',
+                                'status',
                                 $subscriptionStatusOptions,
                                 $mailchimpData['status'],
-                                ['id' => 'mailchimp_status', 'class' => 'form-control input-sm']
+                                ['id' => 'status', 'class' => 'form-control input-sm']
                             ) ?>
                         </div>
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.vip'), 'vip', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-1">
-                            <?= form_checkbox('mailchimp_vip', 1, $mailchimpData['vip'] == 1) ?>
+                            <?= form_checkbox('vip', 1, $mailchimpData['vip'] == 1) ?>
                         </div>
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.member_rating'), 'mailchimp_member_rating', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.member_rating'), 'member_rating', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_member_rating',
+                                'name'     => 'member_rating',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $mailchimpData['member_rating'],
                                 'disabled' => ''
@@ -42,10 +42,10 @@
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.activity_total'), 'mailchimp_activity_total', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.activity_total'), 'activity_total', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_activity_total',
+                                'name'     => 'activity_total',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $mailchimpActivity['total'],
                                 'disabled' => ''
@@ -54,10 +54,10 @@
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.activity_last_open'), 'mailchimp_activity_last_open', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.activity_last_open'), 'activity_last_open', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_activity_last_open',
+                                'name'     => 'activity_last_open',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $mailchimpActivity['last_open'],
                                 'disabled' => ''
@@ -66,10 +66,10 @@
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.activity_open'), 'mailchimp_activity_open', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.activity_open'), 'activity_open', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_activity_open',
+                                'name'     => 'activity_open',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $mailchimpActivity['open'],
                                 'disabled' => ''
@@ -78,10 +78,10 @@
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.activity_click'), 'mailchimp_activity_click', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.activity_click'), 'activity_click', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_activity_click',
+                                'name'     => 'activity_click',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $mailchimpActivity['click'],
                                 'disabled' => ''
@@ -90,10 +90,10 @@
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.activity_unopen'), 'mailchimp_activity_unopen', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.activity_unopen'), 'activity_unopen', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_activity_unopen',
+                                'name'     => 'activity_unopen',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $mailchimpActivity['unopen'],
                                 'disabled' => ''
@@ -102,10 +102,10 @@
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <?= form_label(lang('MailchimpPlugin.email_client'), 'mailchimp_email_client', ['class' => 'control-label col-xs-3']) ?>
+                        <?= form_label(lang('MailchimpPlugin.email_client'), 'email_client', ['class' => 'control-label col-xs-3']) ?>
                         <div class="col-xs-4">
                             <?= form_input([
-                                'name'     => 'mailchimp_email_client',
+                                'name'     => 'email_client',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $mailchimpData['email_client'],
                                 'disabled' => ''

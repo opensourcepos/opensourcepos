@@ -5,6 +5,7 @@ namespace App\Plugins\MailchimpPlugin;
 use App\Libraries\Plugins\BasePlugin;
 use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use CodeIgniter\Events\Events;
+use Config\Services;
 use stdClass;
 
 /**
@@ -77,11 +78,23 @@ class MailchimpPlugin extends BasePlugin
 
     public function getSettings(): array
     {
+        $encryptedKey = $this->getSetting('api_key', '');
+        $apiKey = '';
+
+        if (!empty($encryptedKey)) {
+            try {
+                $apiKey = Services::encrypter()->decrypt($encryptedKey);
+            } catch (\Exception $e) {
+                // Key stored as plaintext (pre-encryption migration) — use as-is
+                $apiKey = $encryptedKey;
+            }
+        }
+
         return [
-            'api_key' => $this->getSetting('api_key', ''),
-            'list_id' => $this->getSetting('list_id', ''),
+            'api_key'      => $apiKey,
+            'list_id'      => $this->getSetting('list_id', ''),
             'sync_on_save' => $this->getSetting('sync_on_save', '1'),
-            'enabled' => $this->getSetting('enabled', '0'),
+            'enabled'      => $this->getSetting('enabled', '0'),
         ];
     }
 
@@ -90,7 +103,10 @@ class MailchimpPlugin extends BasePlugin
         $normalized = [];
 
         if (array_key_exists('api_key', $settings)) {
-            $normalized['api_key'] = (string)$settings['api_key'];
+            $rawKey = (string)$settings['api_key'];
+            $normalized['api_key'] = !empty($rawKey)
+                ? Services::encrypter()->encrypt($rawKey)
+                : '';
         }
 
         if (array_key_exists('list_id', $settings)) {
@@ -126,7 +142,7 @@ class MailchimpPlugin extends BasePlugin
     {
         log_message('debug', "Customer_deleted event received for ID: {$customer->person_id}");
 
-        $this->mailchimpLibrary->deleteSubscription();
+        $this->mailchimpLibrary->deleteSubscription($customer);
     }
 
     private function shouldSyncOnSave(): bool
@@ -140,7 +156,7 @@ class MailchimpPlugin extends BasePlugin
         $apiKey = $this->getSetting('api_key');
 
         if (empty($apiKey)) {
-            return ['success' => false, 'message' => lang('mailchimp_api_key_required')];
+            return ['success' => false, 'message' => lang('api_key_required')];
         }
 
         $result = $this->mailchimpLibrary->getLists();
@@ -148,12 +164,12 @@ class MailchimpPlugin extends BasePlugin
         if ($result && isset($result['lists'])) {
             return [
                 'success' => true,
-                'message' => lang('mailchimp_key_successfully'),
+                'message' => lang('key_successfully'),
                 'lists' => $result['lists']
             ];
         }
 
-        return ['success' => false, 'message' => lang('mailchimp_key_unsuccessfully')];
+        return ['success' => false, 'message' => lang('key_unsuccessfully')];
     }
 
 }

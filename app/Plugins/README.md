@@ -190,6 +190,8 @@ For plugins that only need to listen to events without complex UI or database ta
 ```text
 app/Plugins/
 └── ExamplePlugin/                # Plugin directory (self-contained)
+    ├── Config/                   # Plugin-specific routing (optional)
+    │   └── Routes.php
     ├── Language/                 # Plugin-specific translations (self-contained)
     │   ├── en/
     │   │   └── ExamplePlugin.php
@@ -267,6 +269,8 @@ For plugins that need database tables, controllers, models, and views:
 ```text
 app/Plugins/
 └── ExamplePlugin/                # Plugin directory
+    ├── Config/                   # Plugin-specific routing
+    │   └── Routes.php
     ├── Controllers/              # Plugin controllers
     │   └── ExampleController.php
     ├── Language/                 # Plugin translations (self-contained)
@@ -369,6 +373,39 @@ class ExamplePlugin extends BasePlugin
 }
 ```
 
+## Plugin Routes
+
+Plugins can define their own routes in a `Config/Routes.php` file. Routes are *NOT* auto-loaded by the framework when the plugin directory is discovered.
+
+### Defining Plugin Routes
+
+Create `app/Plugins/ExamplePlugin/Config/Routes.php`:
+
+```php
+<?php
+
+use CodeIgniter\Router\RouteCollection;
+
+/**
+ * @var RouteCollection $routes
+ */
+$routes->post('plugins/example/action', '\App\Plugins\ExamplePlugin\Controllers\ExampleController::postAction');
+$routes->get('plugins/example/dashboard', '\App\Plugins\ExamplePlugin\Controllers\ExampleController::getDashboard');
+```
+
+### Route Naming Convention
+
+Use a consistent naming scheme for plugin routes:
+- Prefix routes with `plugins/` followed by plugin identifier
+- Examples: `plugins/mailchimp/checkApiKey`, `plugins/example/sync`
+
+### Full Qualified Class Names
+
+Always use fully qualified controller names:
+- `\App\Plugins\ExamplePlugin\Controllers\ExampleController::methodName`
+
+This ensures routes work correctly regardless of autoloader state.
+
 ## Internationalization (Language Files)
 
 Plugins can include their own language files, making them completely self-contained. This allows plugins to provide translations without modifying core language files.
@@ -442,6 +479,7 @@ Settings are prefixed with the plugin ID (e.g., `example_api_key`) and stored in
 |---------------------------------------------------------------|-----------------------------------------------------------|
 | `app/Plugins/ExamplePlugin.php`                               | `App\Plugins`                                             |
 | `app/Plugins/ExamplePlugin/ExamplePlugin.php`                 | `App\Plugins\ExamplePlugin\ExamplePlugin`                 |
+| `app/Plugins/ExamplePlugin/Config/Routes.php`                 | *(Route file - no namespace)*                             |
 | `app/Plugins/ExamplePlugin/Models/ExampleModel.php`           | `App\Plugins\ExamplePlugin\Models\ExampleModel`           |
 | `app/Plugins/ExamplePlugin/Controllers/ExampleController.php` | `App\Plugins\ExamplePlugin\Controllers\ExampleController` |
 | `app/Plugins/ExamplePlugin/Libraries/ApiClient.php`           | `App\Plugins\ExamplePlugin\Libraries\ApiClient`           |

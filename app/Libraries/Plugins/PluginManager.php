@@ -186,6 +186,29 @@ class PluginManager
         return $this->configModel->setValue("{$pluginId}_{$key}", $value);
     }
 
+    /**
+     * Registers PSR-4 namespaces for all plugin directories without touching the DB.
+     * Call this early (pre_system) so CI4's module route discovery can find each
+     * plugin's Config/Routes.php before the router runs.
+     */
+    public static function registerAllNamespaces(): void
+    {
+        $pluginsPath = APPPATH . 'Plugins';
+        if (!is_dir($pluginsPath)) {
+            return;
+        }
+
+        $loader = Services::autoloader();
+        foreach (glob($pluginsPath . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR) ?: [] as $dir) {
+            $name = basename($dir);
+            $namespace = "App\\Plugins\\{$name}";
+            if (!in_array($namespace, self::$registeredNamespaces, true)) {
+                $loader->addNamespace($namespace, $dir . DIRECTORY_SEPARATOR);
+                self::$registeredNamespaces[] = $namespace;
+            }
+        }
+    }
+
     public static function resetStatic(): void
     {
         self::$discovered = false;

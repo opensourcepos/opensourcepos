@@ -2,9 +2,6 @@
 
 namespace App\Plugins\MailchimpPlugin\Libraries;
 
-use CodeIgniter\Encryption\EncrypterInterface;
-use Config\Services;
-
 /**
  * MailChimp API v3 REST client Connector
  *
@@ -13,8 +10,6 @@ use Config\Services;
  * Inspired by the work of:
  *   - Rajitha Bandara: https://github.com/rajitha-bandara/ci-mailchimp-v3-rest-client
  *   - Stefan Ashwell: https://github.com/stef686/codeigniter-mailchimp-api-v3
- *
- * @property encrypterinterface encrypter
  */
 class MailchimpConnector
 {
@@ -23,11 +18,7 @@ class MailchimpConnector
 
     public function __construct(string $apiKey)
     {
-        $mailchimpApiKey = !empty($apiKey) ? $apiKey : '';
-
-        if (!empty($mailchimpApiKey)) {
-            $this->apiKey = Services::encrypter()->decrypt($mailchimpApiKey);
-        }
+        $this->apiKey = $apiKey;
 
         if (!empty($this->apiKey)) {
             // Replace <dc> with correct datacenter obtained from the last part of the api key

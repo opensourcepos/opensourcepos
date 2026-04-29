@@ -8,6 +8,7 @@ use CodeIgniter\HotReloader\HotReloader;
 use App\Events\Db_log;
 use App\Events\Load_config;
 use App\Events\Method;
+use App\Libraries\Plugins\PluginManager;
 
 /*
  * --------------------------------------------------------------------
@@ -25,6 +26,10 @@ use App\Events\Method;
  * Example:
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
+Events::on('pre_system', static function (): void {
+    PluginManager::registerAllNamespaces();
+});
+
 Events::on('pre_system', static function (): void {
     if (ENVIRONMENT !== 'testing') {
         if (ini_get('zlib.output_compression')) {

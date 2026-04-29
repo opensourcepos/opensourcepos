@@ -37,7 +37,7 @@ class MailchimpLibrary
      * @return array|bool
      * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
      */
-    public function getAllLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count']): bool|array
+    public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count']): bool|array
     {
         return $this->connector->call('/lists', 'GET', $parameters);
     }
@@ -229,14 +229,11 @@ class MailchimpLibrary
     public function synchronizeSubscription(array $customerData): bool
     {
         try {
-            if (!$this->subscribeCustomer($customerData)) {
-                throw new Exception("Customer ID {$customerData['person_id']}");
-            }
+            return $this->subscribeCustomer($customerData);
         } catch (Exception $e) {
             log_message('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
+            return false;
         }
-
-        return false;
     }
 
     private function subscribeCustomer(array $customerData): bool
@@ -284,7 +281,7 @@ class MailchimpLibrary
             $mailchimpInfo = $this->getMemberInfo($listId, $customerData->email);
 
             if ($mailchimpInfo !== false) {
-                $mailchimpData['mailchimp_info'] = $mailchimpInfo;
+                $mailchimpData['mailchimpActivity'] = $mailchimpInfo;
 
                 $mailchimpData['subscriptionStatusOptions'] = $this->getSubscriptionStatusOptionViewData();
 
@@ -315,11 +312,11 @@ class MailchimpLibrary
                             ++$total;
                         }
 
-                        $mailchimpData['mailchimp_activity']['total'] = $total;
-                        $mailchimpData['mailchimp_activity']['open'] = $open;
-                        $mailchimpData['mailchimp_activity']['unopen'] = $unopen;
-                        $mailchimpData['mailchimp_activity']['click'] = $click;
-                        $mailchimpData['mailchimp_activity']['last_open'] = $lastOpen;
+                        $mailchimpData['mailchimpActivity']['total'] = $total;
+                        $mailchimpData['mailchimpActivity']['open'] = $open;
+                        $mailchimpData['mailchimpActivity']['unopen'] = $unopen;
+                        $mailchimpData['mailchimpActivity']['click'] = $click;
+                        $mailchimpData['mailchimpActivity']['last_open'] = $lastOpen;
                     }
                 }
 
