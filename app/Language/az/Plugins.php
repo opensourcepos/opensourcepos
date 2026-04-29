@@ -14,7 +14,7 @@ return [
     'management'            => 'Plagin idarəetməsi',
     'name'                  => 'Plagin adı',
     'no_config'             => 'Bu plaginin konfiqurasiya seçimləri yoxdur',
-    'no_plugins_found'      => 'Plagin tapılmadı',
+    'no_plugins_to_display' => 'Göstəriləcək plagin yoxdur',
     'not_found'             => 'Plagin tapılmadı',
     'plugins'               => 'Plaginlər',
     'settings_save_failed'  => 'Plagin parametrlərini saxlamaq alınmadı',

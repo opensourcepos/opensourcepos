@@ -14,7 +14,7 @@ return [
     'management'            => 'Eklenti Yönetimi',
     'name'                  => 'Eklenti Adı',
     'no_config'             => 'Bu eklentinin yapılandırma seçeneği yok',
-    'no_plugins_found'      => 'Eklenti bulunamadı',
+    'no_plugins_to_display' => 'Gösterilecek eklenti yok',
     'not_found'             => 'Eklenti bulunamadı',
     'plugins'               => 'Eklentiler',
     'settings_save_failed'  => 'Eklenti ayarları kaydedilemedi',

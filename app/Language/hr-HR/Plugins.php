@@ -14,7 +14,7 @@ return [
     'management'            => 'Upravljanje dodacima',
     'name'                  => 'Naziv dodatka',
     'no_config'             => 'Ovaj dodatak nema opcija konfiguracije',
-    'no_plugins_found'      => 'Nisu pronađeni dodaci',
+    'no_plugins_to_display' => 'Nema dodataka za prikaz',
     'not_found'             => 'Dodatak nije pronađen',
     'plugins'               => 'Dodaci',
     'settings_save_failed'  => 'Spremanje postavki dodatka nije uspjelo',

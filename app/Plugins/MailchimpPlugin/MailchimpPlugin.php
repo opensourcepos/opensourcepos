@@ -36,7 +36,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function getPluginDescription(): string
     {
-        return $this->lang('mailchimp_description');
+        return $this->lang('MailchimpPlugin.description');
     }
 
     public function getVersion(): string

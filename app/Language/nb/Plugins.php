@@ -14,7 +14,7 @@ return [
     'management'            => 'Plugin-administrasjon',
     'name'                  => 'Plugin-navn',
     'no_config'             => 'Denne plugin har ingen konfigurasjonsalternativer',
-    'no_plugins_found'      => 'Ingen plugins funnet',
+    'no_plugins_to_display' => 'Ingen plugins å vise',
     'not_found'             => 'Plugin ikke funnet',
     'plugins'               => 'Plugins',
     'settings_save_failed'  => 'Lagring av plugin-innstillinger mislyktes',

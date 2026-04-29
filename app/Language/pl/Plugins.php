@@ -14,7 +14,7 @@ return [
     'management'            => 'Zarządzanie wtyczkami',
     'name'                  => 'Nazwa wtyczki',
     'no_config'             => 'Ta wtyczka nie ma opcji konfiguracyjnych',
-    'no_plugins_found'      => 'Nie znaleziono wtyczek',
+    'no_plugins_to_display' => 'Brak wtyczek do wyświetlenia',
     'not_found'             => 'Wtyczka nie została znaleziona',
     'plugins'               => 'Wtyczki',
     'settings_save_failed'  => 'Nie udało się zapisać ustawień wtyczki',

@@ -14,7 +14,7 @@ return [
     'management'            => 'Gestionarea plugin-urilor',
     'name'                  => 'Numele plugin-ului',
     'no_config'             => 'Acest plugin nu are opțiuni de configurare',
-    'no_plugins_found'      => 'Nu s-au găsit plugin-uri',
+    'no_plugins_to_display' => 'Nu există plugin-uri de afișat',
     'not_found'             => 'Plugin-ul nu a fost găsit',
     'plugins'               => 'Plugin-uri',
     'settings_save_failed'  => 'Salvarea setărilor plugin-ului a eșuat',

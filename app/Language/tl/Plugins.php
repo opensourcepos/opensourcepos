@@ -14,7 +14,7 @@ return [
     'management'            => 'Pamamahala ng Plugin',
     'name'                  => 'Pangalan ng Plugin',
     'no_config'             => 'Walang mga opsyon sa configuration ang plugin na ito',
-    'no_plugins_found'      => 'Walang nahanap na plugin',
+    'no_plugins_to_display' => 'Walang mga plugin na ipapakita',
     'not_found'             => 'Hindi nahanap ang plugin',
     'plugins'               => 'Mga Plugin',
     'settings_save_failed'  => 'Nabigo ang pag-save ng mga setting ng plugin',

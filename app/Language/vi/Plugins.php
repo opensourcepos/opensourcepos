@@ -14,7 +14,7 @@ return [
     'management'            => 'Quản lý plugin',
     'name'                  => 'Tên plugin',
     'no_config'             => 'Plugin này không có tùy chọn cấu hình',
-    'no_plugins_found'      => 'Không tìm thấy plugin',
+    'no_plugins_to_display' => 'Không có plugin nào để hiển thị',
     'not_found'             => 'Không tìm thấy plugin',
     'plugins'               => 'Plugins',
     'settings_save_failed'  => 'Lưu cài đặt plugin thất bại',

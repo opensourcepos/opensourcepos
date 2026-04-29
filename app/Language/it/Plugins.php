@@ -14,7 +14,7 @@ return [
     'management'            => 'Gestione plugin',
     'name'                  => 'Nome plugin',
     'no_config'             => 'Questo plugin non ha opzioni di configurazione',
-    'no_plugins_found'      => 'Nessun plugin trovato',
+    'no_plugins_to_display' => 'Nessun plugin da visualizzare',
     'not_found'             => 'Plugin non trovato',
     'plugins'               => 'Plugin',
     'settings_save_failed'  => 'Impossibile salvare le impostazioni del plugin',

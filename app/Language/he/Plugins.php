@@ -14,7 +14,7 @@ return [
     'management'            => 'ניהול תוספים',
     'name'                  => 'שם התוסף',
     'no_config'             => 'לתוסף זה אין אפשרויות תצורה',
-    'no_plugins_found'      => 'לא נמצאו תוספים',
+    'no_plugins_to_display' => 'אין תוספים להצגה',
     'not_found'             => 'התוסף לא נמצא',
     'plugins'               => 'תוספים',
     'settings_save_failed'  => 'שמירת הגדרות התוסף נכשלה',

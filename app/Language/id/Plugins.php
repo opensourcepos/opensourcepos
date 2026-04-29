@@ -14,7 +14,7 @@ return [
     'management'            => 'Manajemen Plugin',
     'name'                  => 'Nama Plugin',
     'no_config'             => 'Plugin ini tidak memiliki opsi konfigurasi',
-    'no_plugins_found'      => 'Tidak ada plugin yang ditemukan',
+    'no_plugins_to_display' => 'Tidak ada plugin untuk ditampilkan',
     'not_found'             => 'Plugin tidak ditemukan',
     'plugins'               => 'Plugin',
     'settings_save_failed'  => 'Gagal menyimpan pengaturan plugin',

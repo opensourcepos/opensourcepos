@@ -14,7 +14,7 @@ return [
     'management'            => 'Usimamizi wa programu-jalizi',
     'name'                  => 'Jina la programu-jalizi',
     'no_config'             => 'Programu-jalizi hii haina chaguo za usanidi',
-    'no_plugins_found'      => 'Hakuna programu-jalizi zilizopatikana',
+    'no_plugins_to_display' => 'Hakuna programu-jalizi za kuonyesha',
     'not_found'             => 'Programu-jalizi haikupatikana',
     'plugins'               => 'Programu-jalizi',
     'settings_save_failed'  => 'Imeshindwa kuhifadhi mipangilio ya programu-jalizi',

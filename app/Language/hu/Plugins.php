@@ -14,7 +14,7 @@ return [
     'management'            => 'Bővítménykezelés',
     'name'                  => 'Bővítmény neve',
     'no_config'             => 'Ennek a bővítménynek nincsenek konfigurációs lehetőségei',
-    'no_plugins_found'      => 'Nem találhatók bővítmények',
+    'no_plugins_to_display' => 'Nincs megjeleníthető bővítmény',
     'not_found'             => 'A bővítmény nem található',
     'plugins'               => 'Bővítmények',
     'settings_save_failed'  => 'A bővítmény beállításainak mentése sikertelen',

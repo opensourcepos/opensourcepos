@@ -14,7 +14,7 @@ return [
     'management'            => 'ການຈັດການ Plugin',
     'name'                  => 'ຊື່ Plugin',
     'no_config'             => 'Plugin ນີ້ບໍ່ມີທາງເລືອກການຕັ້ງຄ່າ',
-    'no_plugins_found'      => 'ບໍ່ພົບ Plugin',
+    'no_plugins_to_display' => 'ບໍ່ມີ Plugin ສຳລັບສະແດງ',
     'not_found'             => 'ບໍ່ພົບ Plugin',
     'plugins'               => 'Plugins',
     'settings_save_failed'  => 'ການບັນທຶກການຕັ້ງຄ່າ Plugin ລົ້ມເຫລວ',

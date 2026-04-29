@@ -14,7 +14,7 @@ return [
     'management'            => '插件管理',
     'name'                  => '插件名稱',
     'no_config'             => '此插件沒有設定選項',
-    'no_plugins_found'      => '未找到插件',
+    'no_plugins_to_display' => '沒有可顯示的插件',
     'not_found'             => '插件未找到',
     'plugins'               => '插件',
     'settings_save_failed'  => '儲存插件設定失敗',

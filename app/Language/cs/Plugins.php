@@ -14,7 +14,7 @@ return [
     'management'            => 'Správa pluginů',
     'name'                  => 'Název pluginu',
     'no_config'             => 'Tento plugin nemá žádné možnosti konfigurace',
-    'no_plugins_found'      => 'Nebyly nalezeny žádné pluginy',
+    'no_plugins_to_display' => 'Žádné pluginy k zobrazení',
     'not_found'             => 'Plugin nebyl nalezen',
     'plugins'               => 'Pluginy',
     'settings_save_failed'  => 'Uložení nastavení pluginu se nezdařilo',

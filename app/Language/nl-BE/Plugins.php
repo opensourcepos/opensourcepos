@@ -14,7 +14,7 @@ return [
     'management'            => 'Pluginbeheer',
     'name'                  => 'Pluginnaam',
     'no_config'             => 'Deze plugin heeft geen configuratieopties',
-    'no_plugins_found'      => 'Geen plugins gevonden',
+    'no_plugins_to_display' => 'Geen plugins om te tonen',
     'not_found'             => 'Plugin niet gevonden',
     'plugins'               => 'Plugins',
     'settings_save_failed'  => 'Plugin-instellingen opslaan mislukt',

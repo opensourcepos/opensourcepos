@@ -14,7 +14,7 @@ return [
     'management'            => 'Plugin-hantering',
     'name'                  => 'Plugin-namn',
     'no_config'             => 'Det här pluginet har inga konfigurationsalternativ',
-    'no_plugins_found'      => 'Inga plugins hittades',
+    'no_plugins_to_display' => 'Inga plugins att visa',
     'not_found'             => 'Plugin hittades inte',
     'plugins'               => 'Plugins',
     'settings_save_failed'  => 'Det gick inte att spara plugin-inställningar',
