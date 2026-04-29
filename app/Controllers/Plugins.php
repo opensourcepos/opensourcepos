@@ -32,7 +32,7 @@ class Plugins extends Secure_Controller
         $pluginData = $this->buildPluginDataArray();
 
         if ($search !== '') {
-            $pluginData = array_values(array_filter($pluginData, static function(array $p) use ($search): bool {
+            $pluginData = array_values(array_filter($pluginData, static function (array $p) use ($search): bool {
                 return str_contains(strtolower($p['name']), $search)
                     || str_contains(strtolower($p['description']), $search)
                     || str_contains(strtolower($p['id']), $search);
@@ -41,7 +41,7 @@ class Plugins extends Secure_Controller
 
         $total = count($pluginData);
 
-        usort($pluginData, static function(array $a, array $b) use ($sort, $order): int {
+        usort($pluginData, static function (array $a, array $b) use ($sort, $order): int {
             $valA = strtolower($a[$sort] ?? $a['name']);
             $valB = strtolower($b[$sort] ?? $b['name']);
             return $order === 'asc' ? strcmp($valA, $valB) : strcmp($valB, $valA);

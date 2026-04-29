@@ -6,6 +6,7 @@ use App\Models\PluginConfig;
 use CodeIgniter\Events\Events;
 use Config\Database;
 use Config\Services;
+use Throwable;
 
 class PluginManager
 {
@@ -57,7 +58,7 @@ class PluginManager
 
             try {
                 $plugin = new $className();
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 log_message('error', "Failed to instantiate plugin {$className}: " . $e->getMessage());
                 continue;
             }

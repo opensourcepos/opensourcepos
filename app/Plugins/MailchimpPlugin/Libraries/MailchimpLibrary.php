@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Plugins\MailchimpPlugin\Libraries;
+namespace App\Plugins\MailchimpPlugin\Libraries;
 
 use App\Plugins\MailchimpPlugin\Enums\SubscriptionStatus;
 use Exception;
