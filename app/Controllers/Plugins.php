@@ -39,25 +39,25 @@ class Plugins extends Secure_Controller
     public function postEnable(string $pluginId): ResponseInterface
     {
         if ($this->pluginManager->enablePlugin($pluginId)) {
-            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.plugin_enabled')]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.enabled')]);
         }
-        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_enable_failed')]);
+        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.enable_failed')]);
     }
 
     public function postDisable(string $pluginId): ResponseInterface
     {
         if ($this->pluginManager->disablePlugin($pluginId)) {
-            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.plugin_disabled')]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.disabled')]);
         }
-        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_disable_failed')]);
+        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.disable_failed')]);
     }
 
     public function postUninstall(string $pluginId): ResponseInterface
     {
         if ($this->pluginManager->uninstallPlugin($pluginId)) {
-            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.plugin_uninstalled')]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Plugins.uninstalled')]);
         }
-        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_uninstall_failed')]);
+        return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.uninstall_failed')]);
     }
 
     public function getConfig(string $pluginId): ResponseInterface
@@ -65,12 +65,12 @@ class Plugins extends Secure_Controller
         $plugin = $this->pluginManager->getPlugin($pluginId);
 
         if (!$plugin) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.not_found')]);
         }
 
         $configView = $plugin->getConfigView();
         if (!$configView) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_no_config')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.no_config')]);
         }
 
         $settings = $plugin->getSettings();
@@ -83,7 +83,7 @@ class Plugins extends Secure_Controller
         $plugin = $this->pluginManager->getPlugin($pluginId);
 
         if (!$plugin) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.plugin_not_found')]);
+            return $this->response->setJSON(['success' => false, 'message' => lang('Plugins.not_found')]);
         }
 
         $settings = $this->request->getPost();

@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-puzzle"></span> <?= lang('Plugins.plugin_management') ?>
+                        <span class="glyphicon glyphicon-puzzle"></span> <?= lang('Plugins.management') ?>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -18,11 +18,11 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th><?= lang('Plugins.plugin_name') ?></th>
-                                    <th><?= lang('Plugins.plugin_description') ?></th>
-                                    <th><?= lang('Plugins.plugin_version') ?></th>
-                                    <th><?= lang('Plugins.plugin_status') ?></th>
-                                    <th><?= lang('Common.actions') ?></th>
+                                    <th><?= lang('Plugins.name') ?></th>
+                                    <th><?= lang('Plugins.description') ?></th>
+                                    <th><?= lang('Plugins.version') ?></th>
+                                    <th><?= lang('Plugins.status') ?></th>
+                                    <th><?= lang('Plugins.actions') ?></th>
                                 </tr>
                             </thead>
                             <tbody>
