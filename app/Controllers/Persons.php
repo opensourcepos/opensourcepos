@@ -2,28 +2,28 @@
 
 namespace App\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Person;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\OSPOS;
 use Config\Services;
 use function Tamtamchik\NameCase\str_name_case;
 
 abstract class Persons extends Secure_Controller
 {
     protected Person $person;
+    protected Attribute $attribute;
+    protected array $appConfig;
 
-    /**
-     * @param string|null $module_id
-     */
-    public function __construct(?string $module_id = null)
+    public function __construct(?string $moduleId = null)
     {
-        parent::__construct($module_id);
+        parent::__construct($moduleId);
 
         $this->person = model(Person::class);
+        $this->attribute = model(Attribute::class);
+        $this->appConfig = config(OSPOS::class)->settings;
     }
 
-    /**
-     * @return string
-     */
     public function getIndex(): string
     {
         $data['table_headers'] = get_people_manage_table_headers();
@@ -31,10 +31,6 @@ abstract class Persons extends Secure_Controller
         return view('people/manage', $data);
     }
 
-    /**
-     * Gives search suggestions based on what is being searched for
-     * @return ResponseInterface
-     */
     public function getSuggest(): ResponseInterface
     {
         $search = $this->request->getGet('term');
@@ -43,34 +39,88 @@ abstract class Persons extends Secure_Controller
         return $this->response->setJSON($suggestions);
     }
 
-    /**
-     * Gets one row for a person manage table. This is called using AJAX to update one row.
-     * @return ResponseInterface
-     */
-    public function getRow(int $row_id): ResponseInterface
+    public function getRow(int $rowId): ResponseInterface
     {
-        $data_row = get_person_data_row($this->person->get_info($row_id));
+        $dataRow = get_person_data_row($this->person->get_info($rowId));
 
-        return $this->response->setJSON($data_row);
+        return $this->response->setJSON($dataRow);
     }
 
-    /**
-     * Capitalize segments of a name, and put the rest into lower case.
-     * You can pass the characters you want to use as delimiters as exceptions.
-     * The function supports UTF-8 strings
-     *
-     * Example:
-     * i.e. <?php echo nameize("john o'grady-smith"); ?>
-     *
-     * returns John O'Grady-Smith
-     */
+    protected function getPersonAttributes(int $personId, int $definitionFlags): string
+    {
+        $data['person_id'] = $personId;
+        $data['config'] = $this->appConfig;
+        $definitionIds = json_decode($this->request->getGet('definition_ids') ?? '', true);
+        $data['definition_values'] = $this->attribute->getAttributesByPerson($personId) + $this->attribute->get_values_by_definitions($definitionIds);
+        $data['definition_names'] = $this->attribute->getDefinitionsByType(true, $definitionFlags);
+
+        foreach ($data['definition_values'] as $definitionId => $definitionValue) {
+            $attributeValue = $this->attribute->getPersonAttributeValue($personId, $definitionId);
+            $attributeId = (empty($attributeValue) || empty($attributeValue->attribute_id)) ? null : $attributeValue->attribute_id;
+            $values = &$data['definition_values'][$definitionId];
+            $values['attribute_id'] = $attributeId;
+            $values['attribute_value'] = $attributeValue;
+            $values['selected_value'] = '';
+
+            if ($definitionValue['definition_type'] === DROPDOWN) {
+                $values['values'] = $this->attribute->get_definition_values($definitionId);
+                $linkValue = $this->getPersonLinkValue($personId, $definitionId);
+                $values['selected_value'] = (empty($linkValue)) ? '' : $linkValue->attribute_id;
+            }
+
+            if (!empty($definitionIds[$definitionId])) {
+                $values['selected_value'] = $definitionIds[$definitionId];
+            }
+
+            unset($data['definition_names'][$definitionId]);
+        }
+
+        return view('attributes/person', $data);
+    }
+
+    private function getPersonLinkValue(int $personId, int $definitionId): ?object
+    {
+        $builder = $this->db->table('attribute_links');
+        $builder->where('person_id', $personId);
+        $builder->where('item_id', null);
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+        $builder->where('definition_id', $definitionId);
+
+        return $builder->get()->getRowObject();
+    }
+
+    protected function savePersonAttributes(int $personId, int $definitionFlags): void
+    {
+        $attributeLinks = $this->request->getPost('attribute_links') ?? [];
+        $attributeIds = $this->request->getPost('attribute_ids') ?? [];
+
+        $this->attribute->deletePersonAttributeLinks($personId);
+
+        foreach ($attributeLinks as $definitionId => $attributeId) {
+            $definitionInfo = $this->attribute->getAttributeInfo((int)$definitionId);
+            $definitionType = $definitionInfo->definition_type;
+
+            if ($definitionType !== DROPDOWN) {
+                $attributeId = $this->attribute->savePersonAttributeValue(
+                    $attributeId,
+                    (int)$definitionId,
+                    $personId,
+                    $attributeIds[$definitionId] ?? false,
+                    $definitionType
+                );
+            }
+
+            $this->attribute->savePersonAttributeLink($personId, (int)$definitionId, (int)$attributeId);
+        }
+    }
+
     protected function nameize(string $input): string
     {
-        $adjusted_name = str_name_case($input);
+        $adjustedName = str_name_case($input);
 
-        // TODO: Use preg_replace to match HTML entities and convert them to lowercase. This is a workaround for https://github.com/tamtamchik/namecase/issues/20
         return preg_replace_callback('/&[a-zA-Z0-9#]+;/', function ($matches) {
             return strtolower($matches[0]);
-        }, $adjusted_name);
+        }, $adjustedName);
     }
 }

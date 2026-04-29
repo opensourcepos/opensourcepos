@@ -27,12 +27,14 @@ class Attribute extends Model
         'definition_type',
         'definition_unit',
         'definition_flags',
+        'person_attribute',
         'deleted',
         'attribute_id',
         'definition_id',
         'item_id',
         'sale_id',
         'receiving_id',
+        'person_id',
         'attribute_value',
         'attribute_date',
         'attribute_decimal'
@@ -41,7 +43,12 @@ class Attribute extends Model
     public const SHOW_IN_ITEMS = 1;    // TODO: These need to be moved to constants.php
     public const SHOW_IN_SALES = 2;
     public const SHOW_IN_RECEIVINGS = 4;
-    public function deleteDropdownAttributeValue(string $attribute_value, int $definition_id): bool
+    public const SHOW_IN_SEARCH = 8;
+    public const SHOW_IN_CUSTOMERS = 16;
+    public const SHOW_IN_EMPLOYEES = 32;
+    public const SHOW_IN_SUPPLIERS = 64;
+
+    public function deleteDropdownAttributeValue(string $attributeValue, int $definitionId): bool
     {
         $attribute_id = $this->getAttributeIdByValue($attribute_value);
         $this->deleteAttributeLinksByDefinitionIdAndAttributeId($definition_id, $attribute_id);
@@ -269,7 +276,7 @@ class Attribute extends Model
     public function get_definitions_by_flags(int $definition_flags, bool $include_types = false): array
     {
         $builder = $this->db->table('attribute_definitions');
-        $builder->where(new RawSql("definition_flags & $definition_flags"));    // TODO: we need to heed CI warnings to escape properly
+        $builder->where(new RawSql("definition_flags & $definition_flags"));
         $builder->where('deleted', 0);
         $builder->where('definition_type <>', GROUP);
         $builder->orderBy('definition_id');
@@ -291,11 +298,30 @@ class Attribute extends Model
     }
 
     /**
-     * Returns an array of attribute definition names and IDs
+     * Gets attribute definitions filtered by type (person or item)
      *
-     * @param     boolean        $groups        If false does not return GROUP type attributes in the array
-     * @return    array                    Array containing definition IDs, attribute names and -1 index with the local language '[SELECT]' line.
+     * @param bool $isPersonAttribute True for person attributes, false for item attributes
+     * @param int $definitionFlags Optional visibility flags to further filter
+     * @return array
      */
+    public function getDefinitionsByType(bool $isPersonAttribute, int $definitionFlags = 0): array
+    {
+        $builder = $this->db->table('attribute_definitions');
+        $builder->where('person_attribute', $isPersonAttribute ? 1 : 0);
+        $builder->where('deleted', 0);
+        $builder->where('definition_type <>', GROUP);
+
+        if ($definitionFlags > 0) {
+            $builder->where(new RawSql("definition_flags & $definitionFlags"));
+        }
+
+        $builder->orderBy('definition_name', 'ASC');
+
+        $results = $builder->get()->getResultArray();
+
+        return $this->to_array($results, 'definition_id', 'definition_name');
+    }
+
     public function get_definition_names(bool $groups = true): array
     {
         $builder = $this->db->table('attribute_definitions');
@@ -1226,5 +1252,228 @@ class Attribute extends Model
             $itemsBuilder->where('category', $attributeValue);
             $itemsBuilder->update();
         }
+    }
+
+    /**
+     * Gets all attributes connected to a person given the person_id
+     *
+     * @param int $personId Person to retrieve attributes for.
+     * @return array Attributes for the person.
+     */
+    public function getAttributesByPerson(int $personId): array
+    {
+        $builder = $this->db->table('attribute_definitions');
+        $builder->join('attribute_links', 'attribute_links.definition_id = attribute_definitions.definition_id');
+        $builder->where('person_id', $personId);
+        $builder->where('item_id', null);
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+        $builder->where('deleted', 0);
+        $builder->orderBy('definition_name', 'ASC');
+
+        $results = $builder->get()->getResultArray();
+
+        return $this->to_array($results, 'definition_id');
+    }
+
+    /**
+     * Returns whether an attribute_link row exists given a person_id and optionally a definition_id
+     *
+     * @param int $personId ID of the person to check for an associated attribute.
+     * @param int|bool $definitionId Attribute definition ID to check.
+     * @return bool Returns true if at least one attribute_link exists or false if no attributes exist for that person and attribute.
+     */
+    public function personAttributeLinkExists(int $personId, int|bool $definitionId = false): bool
+    {
+        $builder = $this->db->table('attribute_links');
+        $builder->where('person_id', $personId);
+        $builder->where('item_id', null);
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+
+        if ($definitionId) {
+            $builder->where('definition_id', $definitionId);
+        } else {
+            $builder->where('definition_id IS NOT NULL');
+            $builder->where('attribute_id', null);
+        }
+        $results = $builder->countAllResults();
+        return $results > 0;
+    }
+
+    /**
+     * Inserts or updates an attribute link for a person
+     *
+     * @param int $personId
+     * @param int $definitionId
+     * @param int $attributeId
+     * @return bool True if the attribute link was saved successfully, false otherwise.
+     */
+    public function savePersonAttributeLink(int $personId, int $definitionId, int $attributeId): bool
+    {
+        $this->db->transStart();
+
+        $builder = $this->db->table('attribute_links');
+
+        if ($this->personAttributeLinkExists($personId, $definitionId)) {
+            $builder->set(['attribute_id' => $attributeId]);
+            $builder->where('definition_id', $definitionId);
+            $builder->where('person_id', $personId);
+            $builder->where('item_id', null);
+            $builder->where('sale_id', null);
+            $builder->where('receiving_id', null);
+            $builder->update();
+        } else {
+            $data = [
+                'attribute_id'  => $attributeId,
+                'person_id'     => $personId,
+                'definition_id' => $definitionId
+            ];
+            $builder->insert($data);
+        }
+
+        $this->db->transComplete();
+
+        return $this->db->transStatus();
+    }
+
+    /**
+     * Deletes attribute links for a person
+     *
+     * @param int $personId
+     * @param int|bool $definitionId
+     * @return bool
+     */
+    public function deletePersonAttributeLinks(int $personId, int|bool $definitionId = false): bool
+    {
+        $deleteData = ['person_id' => $personId];
+
+        $builder = $this->db->table('attribute_links');
+        $builder->where('item_id', null);
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+
+        if (!empty($definitionId)) {
+            $deleteData['definition_id'] = $definitionId;
+        }
+
+        return $builder->delete($deleteData);
+    }
+
+    /**
+     * Gets the attribute value for a person and definition
+     *
+     * @param int $personId
+     * @param int $definitionId
+     * @return object|null
+     */
+    public function getPersonAttributeValue(int $personId, int $definitionId): ?object
+    {
+        $builder = $this->db->table('attribute_values');
+        $builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
+        $builder->where('person_id', $personId);
+        $builder->where('item_id', null);
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+        $builder->where('definition_id', $definitionId);
+        $query = $builder->get();
+
+        if ($query->getNumRows() == 1) {
+            return $query->getRow();
+        }
+
+        return $this->getEmptyObject('attribute_values');
+    }
+
+    /**
+     * Saves an attribute value for a person
+     *
+     * @param string $attributeValue
+     * @param int $definitionId
+     * @param int $personId
+     * @param int|bool $attributeId
+     * @param string $definitionType
+     * @return int
+     */
+    public function savePersonAttributeValue(string $attributeValue, int $definitionId, int $personId, int|bool $attributeId = false, string $definitionType = DROPDOWN): int
+    {
+        $config = config(OSPOS::class)->settings;
+
+        $this->db->transStart();
+
+        switch ($definitionType) {
+            case DATE:
+                $dataType = 'date';
+                $attributeDateValue = DateTime::createFromFormat($config['dateformat'], $attributeValue);
+                $attributeValue = $attributeDateValue ? $attributeDateValue->format('Y-m-d') : $attributeValue;
+                break;
+            case DECIMAL:
+                $dataType = 'decimal';
+                break;
+            default:
+                $dataType = 'value';
+                break;
+        }
+
+        // New Attribute
+        if (empty($attributeId) || empty($personId) || $attributeId == -1) {
+            $attributeId = $this->attributeValueExists($attributeValue, $definitionType);
+
+            if (!$attributeId) {
+                $builder = $this->db->table('attribute_values');
+                $builder->set(["attribute_$dataType" => $attributeValue]);
+                $builder->insert();
+
+                $attributeId = $this->db->insertID();
+            }
+
+            $data = [
+                'attribute_id'  => empty($attributeId) ? null : $attributeId,
+                'person_id'     => $personId,
+                'definition_id' => $definitionId
+            ];
+
+            $builder = $this->db->table('attribute_links');
+            $builder->set($data);
+            $builder->insert();
+        }
+        // Existing Attribute
+        else {
+            $builder = $this->db->table('attribute_values');
+            $builder->set(["attribute_$dataType" => $attributeValue]);
+            $builder->where('attribute_id', $attributeId);
+            $builder->update();
+        }
+
+        $this->db->transComplete();
+
+        return $attributeId;
+    }
+
+    /**
+     * Gets link values for a person given the person_id and visibility flags
+     *
+     * @param int $personId
+     * @param int $definitionFlags
+     * @return ResultInterface
+     */
+    public function getPersonLinkValues(int $personId, int $definitionFlags): ResultInterface
+    {
+        $format = $this->db->escape(dateformat_mysql());
+
+        $builder = $this->db->table('attribute_links');
+        $builder->select("GROUP_CONCAT(attribute_value SEPARATOR ', ') AS attribute_values");
+        $builder->select("GROUP_CONCAT(DATE_FORMAT(attribute_date, $format) SEPARATOR ', ') AS attribute_dtvalues");
+        $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
+        $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+        $builder->where('definition_type <>', GROUP);
+        $builder->where('deleted', ACTIVE);
+        $builder->where('person_id', $personId);
+        $builder->where('item_id', null);
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+        $builder->where(new RawSql("definition_flags & $definitionFlags"));
+
+        return $builder->get();
     }
 }

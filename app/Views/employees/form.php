@@ -29,6 +29,12 @@
         <div class="tab-pane fade in active" id="employee_basic_info">
             <fieldset>
                 <?= view('people/form_basic_info') ?>
+
+                <div id="person_attributes">
+                    <script type="text/javascript">
+                        $('#person_attributes').load('<?= "employees/attributes/$person_info->person_id" ?>');
+                    </script>
+                </div>
             </fieldset>
         </div>
 
