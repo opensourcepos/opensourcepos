@@ -62,6 +62,26 @@ class MyPlugin extends BasePlugin
 }
 ```
 
+`BasePlugin` provides these protected helpers:
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `getSetting` | `(string $key, mixed $default = null): mixed` | Read one plugin setting |
+| `setSetting` | `(string $key, mixed $value): bool` | Write one plugin setting |
+| `log` | `(string $level, string $message): void` | Write to CI4 log with plugin prefix |
+| `renderView` | `(string $viewName, array $data = []): string` | Render a view from the plugin's own `Views/` directory |
+
+#### `renderView()`
+
+Resolves views relative to the plugin's own namespace, so you pass only the bare view name — no path prefix needed:
+
+```php
+// Renders App\Plugins\MyPlugin\Views\customer_tab.php
+echo $this->renderView('customer_tab', $data);
+```
+
+The method derives the namespace from `get_class($this)`, so it works automatically for any plugin that follows the standard directory layout. Use it inside view-hook callbacks (with `echo`) or anywhere a rendered HTML string is needed.
+
 ### Plugin Manager
 
 The `PluginManager` class handles:
@@ -128,16 +148,16 @@ class ExamplePlugin extends BasePlugin
         Events::on('view:customer_tabs', [$this, 'injectCustomerTab']);
     }
     
-    public function injectCustomerTab(array $data): string
+    public function injectCustomerTab(array $data): void
     {
-        return view('Plugins/ExamplePlugin/Views/customer_tab', $data);
+        echo $this->renderView('customer_tab', $data);
     }
 }
 ```
 
 ### Plugin View Files
 
-The plugin's view files are self-contained within the plugin directory:
+Plugin view files live in the plugin's `Views/` subdirectory. `renderView('customer_tab', $data)` resolves to `app/Plugins/ExamplePlugin/Views/customer_tab.php`:
 
 ```php
 // app/Plugins/ExamplePlugin/Views/customer_tab.php

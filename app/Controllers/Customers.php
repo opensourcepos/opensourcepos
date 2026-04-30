@@ -181,7 +181,6 @@ class Customers extends Persons
         }
 
         Events::trigger('customer_loaded', $info);
-        Events::trigger('view:customer_tabs', $info);
 
         return view("customers/form", $data);
     }
@@ -233,7 +232,7 @@ class Customers extends Persons
         ];
 
         if ($this->customer->save_customer($personData, $customerData, $customerId)) {
-            Events::trigger('customer_saved', $personData);
+            Events::trigger('customer_saved', $customerData);
 
             // New customer
             if ($customerId == NEW_ENTRY) {

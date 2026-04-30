@@ -67,4 +67,10 @@ abstract class BasePlugin implements PluginInterface
     {
         log_message($level, "[Plugin:{$this->getPluginName()}] {$message}");
     }
+
+    protected function renderView(string $viewName, array $data = []): string
+    {
+        $namespace = substr(get_class($this), 0, strrpos(get_class($this), '\\'));
+        return view($namespace . '\\Views\\' . $viewName, $data);
+    }
 }

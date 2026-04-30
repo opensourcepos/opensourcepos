@@ -274,7 +274,7 @@ class MailchimpLibrary
         return !($this->removeMember($listId, $customer->email) === false);
     }
 
-    public function getMailchimpViewData(array $customerData): array
+    public function getMailchimpViewData(stdClass $customerData): array
     {
         if (!empty($customerData->email)) {
             $listId = $this->settings['list_id'];
@@ -332,7 +332,7 @@ class MailchimpLibrary
         $statusOptions = [];
         foreach (SubscriptionStatus::cases() as $case) {
             $lowercaseName = strtolower($case->name);
-            $statusOptions[(int)$case] = lang("MailchimpPlugin.subscription_status_{$lowercaseName}");
+            $statusOptions[$case->value] = lang("MailchimpPlugin.subscription_status_{$lowercaseName}");
         }
 
         return $statusOptions;

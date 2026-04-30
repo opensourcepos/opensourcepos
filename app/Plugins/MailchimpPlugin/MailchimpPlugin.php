@@ -48,7 +48,8 @@ class MailchimpPlugin extends BasePlugin
     {
         Events::on('customer_saved', [$this, 'onCustomerSaved']);
         Events::on('customer_deleted', [$this, 'onCustomerDeleted']);
-        Events::on('view:customer_tabs', [$this, 'injectMailchimpCustomerTab']);
+        Events::on('view:customer_tab_nav', [$this, 'injectMailchimpTabNav']);
+        Events::on('view:customer_tab_panels', [$this, 'injectMailchimpTabPanel']);
 
         log_message('debug', 'Mailchimp plugin events registered');
     }
@@ -145,11 +146,35 @@ class MailchimpPlugin extends BasePlugin
         return parent::saveSettings($normalized);
     }
 
-    public function injectMailchimpCustomerTab(array $customerData): string
+    public function injectMailchimpTabNav(array $data): void
     {
+        echo $this->renderView('customer_tab_nav', []);
+    }
+
+    public function injectMailchimpTabPanel(array $data): void
+    {
+        $customerData = $data['customer'] ?? new stdClass();
         $mailchimpData = $this->mailchimpLibrary->getMailchimpViewData($customerData);
 
-        return view('Plugins/MailchimpPlugin/Views/customer_tab', $mailchimpData);
+        $mailchimpInfo = $mailchimpData['mailchimpActivity'] ?? [];
+        $viewData = [
+            'mailchimpData' => [
+                'status'        => $mailchimpInfo['status'] ?? '',
+                'vip'           => $mailchimpInfo['vip'] ?? 0,
+                'member_rating' => $mailchimpInfo['member_rating'] ?? 0,
+                'email_client'  => $mailchimpInfo['email_client'] ?? '',
+            ],
+            'mailchimpActivity' => [
+                'total'     => $mailchimpInfo['total'] ?? 0,
+                'last_open' => $mailchimpInfo['last_open'] ?? '',
+                'open'      => $mailchimpInfo['open'] ?? 0,
+                'click'     => $mailchimpInfo['click'] ?? 0,
+                'unopen'    => $mailchimpInfo['unopen'] ?? 0,
+            ],
+            'subscriptionStatusOptions' => $mailchimpData['subscriptionStatusOptions'] ?? [],
+        ];
+
+        echo $this->renderView('customer_tab', $viewData);
     }
 
     public function onCustomerSaved(array $customerData): void

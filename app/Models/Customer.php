@@ -223,6 +223,7 @@ class Customer extends Person
             } else {
                 $builder->where('person_id', $customer_id);
                 $success = $builder->update($customer_data);
+                $customer_data['person_id'] = $customer_id;
             }
         }
 
