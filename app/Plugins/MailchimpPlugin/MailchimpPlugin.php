@@ -93,9 +93,29 @@ class MailchimpPlugin extends BasePlugin
         return [
             'api_key'      => $apiKey,
             'list_id'      => $this->getSetting('list_id', ''),
+            'lists'        => $this->getFormattedLists($apiKey),
             'sync_on_save' => $this->getSetting('sync_on_save', '1'),
             'enabled'      => $this->getSetting('enabled', '0'),
         ];
+    }
+
+    private function getFormattedLists(string $apiKey): array
+    {
+        if (empty($apiKey)) {
+            return [];
+        }
+
+        $tempLibrary = new MailchimpLibrary(['api_key' => $apiKey]);
+        $result = [];
+
+        $lists = $tempLibrary->getLists();
+        if ($lists !== false && is_array($lists) && !empty($lists['lists'])) {
+            foreach ($lists['lists'] as $list) {
+                $result[$list['id']] = $list['name'] . ' [' . $list['stats']['member_count'] . ']';
+            }
+        }
+
+        return $result;
     }
 
     public function saveSettings(array $settings): bool
@@ -111,6 +131,11 @@ class MailchimpPlugin extends BasePlugin
 
         if (array_key_exists('list_id', $settings)) {
             $normalized['list_id'] = (string)$settings['list_id'];
+        }
+
+        // Clear list_id if api_key is empty
+        if (isset($normalized['api_key']) && empty($normalized['api_key'])) {
+            $normalized['list_id'] = '';
         }
 
         if (array_key_exists('sync_on_save', $settings)) {

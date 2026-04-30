@@ -69,8 +69,13 @@
     // Validation and submit handling
     $(document).ready(function() {
         $('#api_key').change(function() {
-            $.post("<?= site_url('plugins/mailchimp/checkApiKey') ?>", {
-                    'api_key': $('#api_key').val()
+            const apiKey = $('#api_key').val();
+            if (!apiKey) {
+                return;
+            }
+
+            $.post("<?= site_url('plugins/mailchimp/checkMailchimpApiKey') ?>", {
+                    'api_key': apiKey
                 },
                 function(response) {
                     $.notify({
@@ -96,7 +101,10 @@
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'
-                        })
+                        });
+                        if (response.success) {
+                            $('#plugin-config-modal').modal('hide');
+                        }
                     },
                     dataType: 'json'
                 });

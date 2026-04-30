@@ -142,6 +142,13 @@ class Plugins extends Secure_Controller
         return $this->response;
     }
 
+    /**
+     * Save plugin settings by calling the plugin's saveSettings method.
+     *
+     * @param string $pluginId The plugin ID for the current plugin
+     * @return ResponseInterface The JSON response
+     * @noinspection PhpUnused Called via AJAX
+     */
     public function postSaveConfig(string $pluginId): ResponseInterface
     {
         $plugin = $this->pluginManager->getPlugin($pluginId);
