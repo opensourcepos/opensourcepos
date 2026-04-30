@@ -231,7 +231,7 @@ class Customers extends Persons
             'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? null : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        if ($this->customer->save_customer($personData, $customerData, $customerId)) {
+        if ($this->customer->saveCustomer($personData, $customerData, $customerId)) {
             Events::trigger('customer_saved', $customerData);
 
             // New customer
@@ -400,7 +400,7 @@ class Customers extends Persons
                     if ($invalidated) {
                         $failCodes[] = $rowNumber;
                         log_message('error', "Row $rowNumber was not imported: Either email or account number already exist or data was invalid.");
-                    } elseif ($this->customer->save_customer($person_data, $customer_data)) {
+                    } elseif ($this->customer->saveCustomer($person_data, $customer_data)) {
                         Events::trigger('customer_saved', $person_data);
                     } else {
                         $failCodes[] = $rowNumber;

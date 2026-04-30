@@ -210,28 +210,26 @@ class Customer extends Person
     /**
      * Inserts or updates a customer
      */
-    public function save_customer(array &$person_data, array &$customer_data, int $customer_id = NEW_ENTRY): bool
+    public function saveCustomer(array &$personData, array &$customerData, int $customerId = NEW_ENTRY): bool
     {
         $success = false;
         $this->db->transStart();
 
-        if (parent::save_value($person_data, $customer_id)) {
+        if (parent::save_value($personData, $customerId)) {
             $builder = $this->db->table('customers');
-            if ($customer_id == NEW_ENTRY || !$customer_id || !$this->exists($customer_id)) {
-                $customer_data['person_id'] = $person_data['person_id'];
-                $success = $builder->insert($customer_data);
+            if ($customerId == NEW_ENTRY || !$customerId || !$this->exists($customerId)) {
+                $customerData['person_id'] = $personData['person_id'];
+                $success = $builder->insert($customerData);
             } else {
-                $builder->where('person_id', $customer_id);
-                $success = $builder->update($customer_data);
-                $customer_data['person_id'] = $customer_id;
+                $builder->where('person_id', $customerId);
+                $success = $builder->update($customerData);
+                $customerData['person_id'] = $customerId;
             }
         }
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $success && $this->db->transStatus();
     }
 
     /**
