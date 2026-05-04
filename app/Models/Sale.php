@@ -671,6 +671,67 @@ class Sale extends Model
             }
         }
 
+        // --- ACCOUNTING MODULE INTEGRATION ---
+        if ($sale_status == COMPLETED && $total_amount > 0) {
+            $accounting_entry = model('App\Models\Accounting_entry');
+            $journal = model('App\Models\Journal');
+            $account = model('App\Models\Account');
+            
+            $sales_journal = $journal->get_by_code('SALES');
+            $cash_account = $account->get_by_code('101.01'); // SAT: Caja
+            $sales_account = $account->get_by_code('401.01'); // SAT: Ventas
+            $iva_account = $account->get_by_code('208.01'); // SAT: IVA Trasladado
+            
+            // Calculate total tax
+            $total_tax = 0;
+            if (isset($sales_taxes[0]) && is_array($sales_taxes[0])) {
+                foreach ($sales_taxes[0] as $tax) {
+                    if (isset($tax['sale_tax_amount'])) {
+                        $total_tax += (float) $tax['sale_tax_amount'];
+                    }
+                }
+            }
+            
+            $subtotal = $total_amount - $total_tax;
+            
+            if ($sales_journal && $cash_account && $sales_account && $iva_account) {
+                $entry_data = [
+                    'date' => date('Y-m-d H:i:s'),
+                    'journal_id' => $sales_journal->journal_id,
+                    'ref' => 'POS ' . $sale_id,
+                    'description' => 'Sale Transaction',
+                    'employee_id' => $employee_id
+                ];
+                
+                $items_data = [
+                    [
+                        'account_id' => $cash_account->account_id,
+                        'debit' => $total_amount,
+                        'credit' => 0,
+                        'description' => 'Payment Received'
+                    ],
+                    [
+                        'account_id' => $sales_account->account_id,
+                        'debit' => 0,
+                        'credit' => $subtotal,
+                        'description' => 'Sales Revenue'
+                    ]
+                ];
+                
+                if ($total_tax > 0) {
+                    $items_data[] = [
+                        'account_id' => $iva_account->account_id,
+                        'debit' => 0,
+                        'credit' => $total_tax,
+                        'description' => 'IVA Trasladado'
+                    ];
+                }
+                
+                $accounting_entry->save_entry($entry_data, $items_data);
+            }
+        }
+        // --- END ACCOUNTING MODULE INTEGRATION ---
+
         $this->db->transComplete();
 
         return $this->db->transStatus() ? $sale_id : -1;
