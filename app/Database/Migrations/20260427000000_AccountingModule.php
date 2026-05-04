@@ -63,7 +63,8 @@ class Migration_AccountingModule extends Migration
                 'constraint' => '50',
             ],
             'type' => [
-                'type' => 'ENUM("Sale", "Purchase", "Cash", "Bank", "General")',
+                'type' => 'ENUM',
+                'constraint' => ['Sale', 'Purchase', 'Cash', 'Bank', 'General'],
                 'default' => 'General',
             ],
             'deleted' => [
@@ -110,6 +111,7 @@ class Migration_AccountingModule extends Migration
             ],
         ]);
         $this->forge->addKey('entry_id', true);
+        $this->forge->addKey('journal_id');
         $this->forge->createTable('accounting_entries');
 
         // 4. Accounting Items (Lines)
@@ -143,13 +145,23 @@ class Migration_AccountingModule extends Migration
             ],
         ]);
         $this->forge->addKey('item_id', true);
+        $this->forge->addKey('entry_id');
+        $this->forge->addKey('account_id');
         $this->forge->createTable('accounting_items');
 
         // Insert into modules
-        $this->db->query("INSERT INTO " . $this->db->prefixTable('modules') . " (name_lang_key, desc_lang_key, sort, module_id) VALUES ('module_accounting', 'module_accounting_desc', 90, 'accounting')");
+        $this->db->table('modules')->insert([
+            'name_lang_key' => 'module_accounting',
+            'desc_lang_key' => 'module_accounting_desc',
+            'sort' => 90,
+            'module_id' => 'accounting'
+        ]);
         
         // Insert into permissions
-        $this->db->query("INSERT INTO " . $this->db->prefixTable('permissions') . " (permission_id, module_id) VALUES ('accounting', 'accounting')");
+        $this->db->table('permissions')->insert([
+            'permission_id' => 'accounting',
+            'module_id' => 'accounting'
+        ]);
 
         // Grant permission to admin (usually the first employee)
         $admin = $this->db->table('employees')->select('person_id')->orderBy('person_id', 'ASC')->get(1)->getRow();
@@ -161,23 +173,23 @@ class Migration_AccountingModule extends Migration
         ]);
         
         // Seed some basic data
-        $this->db->query("INSERT INTO " . $this->db->prefixTable('journals') . " (name, code, type) VALUES 
-            ('Sales Journal', 'SALES', 'Sale'),
-            ('Purchase Journal', 'PURCH', 'Purchase'),
-            ('Cash Journal', 'CASH', 'Cash'),
-            ('General Journal', 'GEN', 'General')
-        ");
+        $this->db->table('journals')->insertBatch([
+            ['name' => 'Sales Journal', 'code' => 'SALES', 'type' => 'Sale'],
+            ['name' => 'Purchase Journal', 'code' => 'PURCH', 'type' => 'Purchase'],
+            ['name' => 'Cash Journal', 'code' => 'CASH', 'type' => 'Cash'],
+            ['name' => 'General Journal', 'code' => 'GEN', 'type' => 'General']
+        ]);
         
-        $this->db->query("INSERT INTO " . $this->db->prefixTable('accounts') . " (code, name, type) VALUES 
-            ('1000', 'Cash and Cash Equivalents', 'Asset'),
-            ('1100', 'Accounts Receivable', 'Asset'),
-            ('1200', 'Inventory', 'Asset'),
-            ('2000', 'Accounts Payable', 'Liability'),
-            ('3000', 'Owner Equity', 'Equity'),
-            ('4000', 'Sales Revenue', 'Income'),
-            ('5000', 'Cost of Goods Sold', 'Expense'),
-            ('6000', 'Operating Expenses', 'Expense')
-        ");
+        $this->db->table('accounts')->insertBatch([
+            ['code' => '1000', 'name' => 'Cash and Cash Equivalents', 'type' => 'Asset'],
+            ['code' => '1100', 'name' => 'Accounts Receivable', 'type' => 'Asset'],
+            ['code' => '1200', 'name' => 'Inventory', 'type' => 'Asset'],
+            ['code' => '2000', 'name' => 'Accounts Payable', 'type' => 'Liability'],
+            ['code' => '3000', 'name' => 'Owner Equity', 'type' => 'Equity'],
+            ['code' => '4000', 'name' => 'Sales Revenue', 'type' => 'Income'],
+            ['code' => '5000', 'name' => 'Cost of Goods Sold', 'type' => 'Expense'],
+            ['code' => '6000', 'name' => 'Operating Expenses', 'type' => 'Expense']
+        ]);
 
     }
 

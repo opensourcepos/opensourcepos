@@ -56,6 +56,15 @@ class AccountingMexico extends Migration
         $db->table('accounts')->where('code', '501.01')->update(['code' => '5000', 'name' => 'Cost of Goods Sold']);
         $db->table('accounts')->where('code', '601.01')->update(['code' => '6000', 'name' => 'Operating Expenses']);
 
-        $db->table('accounts')->whereIn('code', ['118.01', '208.01'])->delete();
+        // Only delete accounts if they don't have any accounting items linked (to avoid data loss)
+        foreach (['118.01', '208.01'] as $code) {
+            $account = $db->table('accounts')->where('code', $code)->get()->getRow();
+            if ($account) {
+                $count = $db->table('accounting_items')->where('account_id', $account->account_id)->countAllResults();
+                if ($count === 0) {
+                    $db->table('accounts')->where('account_id', $account->account_id)->delete();
+                }
+            }
+        }
     }
 }
