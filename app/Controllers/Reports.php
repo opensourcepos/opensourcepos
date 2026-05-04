@@ -214,6 +214,53 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * Top 50 Categories report.
+     * @param string $start_date
+     * @param string $end_date
+     * @param string $sale_type
+     * @param string $location_id
+     * @return string
+     */
+    public function summary_top_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
+    {
+        $this->clearCache();
+
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id,
+            'top_50'      => true
+        ];
+
+        $report_data = $this->summary_categories->getData($inputs);
+        $summary = $this->summary_categories->getSummaryData($inputs);
+
+        $tabular_data = [];
+        foreach ($report_data as $row) {
+            $tabular_data[] = [
+                'category' => $row['category'],
+                'quantity' => to_quantity_decimals($row['quantity_purchased']),
+                'subtotal' => to_currency($row['subtotal']),
+                'tax'      => to_currency_tax($row['tax']),
+                'total'    => to_currency($row['total']),
+                'cost'     => to_currency($row['cost']),
+                'profit'   => to_currency($row['profit'])
+            ];
+        }
+
+        $data = [
+            'title'        => lang('Reports.top_50_categories_summary_report'),
+            'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
+            'headers'      => $this->summary_categories->getDataColumns(),
+            'data'         => $tabular_data,
+            'summary_data' => $summary
+        ];
+
+        return view('reports/tabular', $data);
+    }
+
+    /**
      * Summary Expenses by Categories report.
      * @param string $start_date
      * @param string $end_date
@@ -385,6 +432,57 @@ class Reports extends Secure_Controller
 
         $data = [
             'title'        => lang('Reports.items_summary_report'),
+            'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
+            'headers'      => $this->summary_items->getDataColumns(),
+            'data'         => $tabular_data,
+            'summary_data' => $summary
+        ];
+
+        return view('reports/tabular', $data);
+    }
+
+    /**
+     * Top 50 Items report.
+     * @param string $start_date
+     * @param string $end_date
+     * @param string $sale_type
+     * @param string $location_id
+     * @return string
+     */
+    public function summary_top_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
+    {
+        $this->clearCache();
+
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id,
+            'top_50'      => true
+        ];
+
+        $report_data = $this->summary_items->getData($inputs);
+        $summary = $this->summary_items->getSummaryData($inputs);
+
+        $tabular_data = [];
+
+        foreach ($report_data as $row) {
+            $tabular_data[] = [
+                'item_name'  => $row['name'],
+                'category'   => $row['category'],
+                'cost_price' => $row['cost_price'],
+                'unit_price' => $row['unit_price'],
+                'quantity'   => to_quantity_decimals($row['quantity_purchased']),
+                'subtotal'   => to_currency($row['subtotal']),
+                'tax'        => to_currency_tax($row['tax']),
+                'total'      => to_currency($row['total']),
+                'cost'       => to_currency($row['cost']),
+                'profit'     => to_currency($row['profit'])
+            ];
+        }
+
+        $data = [
+            'title'        => lang('Reports.top_50_items_summary_report'),
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_items->getDataColumns(),
             'data'         => $tabular_data,
@@ -853,6 +951,52 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * Graphical Top 50 Items report.
+     * @param string $start_date
+     * @param string $end_date
+     * @param string $sale_type
+     * @param string $location_id
+     * @return string
+     */
+    public function graphical_summary_top_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
+    {
+        $this->clearCache();
+
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id,
+            'top_50'      => true
+        ];
+
+        $report_data = $this->summary_items->getData($inputs);
+        $summary = $this->summary_items->getSummaryData($inputs);
+
+        $labels = [];
+        $series = [];
+
+        foreach ($report_data as $row) {
+            $labels[] = $row['name'];
+            $series[] = $row['total'];
+        }
+
+        $data = [
+            'title'          => lang('Reports.top_50_items_summary_report'),
+            'subtitle'       => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
+            'chart_type'     => 'reports/graphs/hbar',
+            'labels_1'       => $labels,
+            'series_data_1'  => $series,
+            'summary_data_1' => $summary,
+            'yaxis_title'    => lang('Reports.items'),
+            'xaxis_title'    => lang('Reports.revenue'),
+            'show_currency'  => true
+        ];
+
+        return view('reports/graphical', $data);
+    }
+
+    /**
      * Graphical summary customers report.
      *
      * @param string $start_date
@@ -884,6 +1028,49 @@ class Reports extends Secure_Controller
 
         $data = [
             'title'          => lang('Reports.categories_summary_report'),
+            'subtitle'       => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
+            'chart_type'     => 'reports/graphs/pie',
+            'labels_1'       => $labels,
+            'series_data_1'  => $series,
+            'summary_data_1' => $summary,
+            'show_currency'  => true
+        ];
+
+        return view('reports/graphical', $data);
+    }
+
+    /**
+     * Graphical Top 50 Categories report.
+     * @param string $start_date
+     * @param string $end_date
+     * @param string $sale_type
+     * @param string $location_id
+     * @return string
+     */
+    public function graphical_summary_top_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
+    {
+        $this->clearCache();
+
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id,
+            'top_50'      => true
+        ];
+
+        $report_data = $this->summary_categories->getData($inputs);
+        $summary = $this->summary_categories->getSummaryData($inputs);
+
+        $labels = [];
+        $series = [];
+        foreach ($report_data as $row) {
+            $labels[] = $row['category'];
+            $series[] = ['meta' => $row['category'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
+        }
+
+        $data = [
+            'title'          => lang('Reports.top_50_categories_summary_report'),
             'subtitle'       => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'chart_type'     => 'reports/graphs/pie',
             'labels_1'       => $labels,

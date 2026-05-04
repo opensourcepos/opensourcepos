@@ -15,7 +15,7 @@ services:
             - uploads:/app/public/uploads
             - logs:/app/writable/logs
         environment:
-            - CI_ENVIRONMENT=production
+            - CI_ENVIRONMENT=development
             - FORCE_HTTPS=false
             - PHP_TIMEZONE=UTC
             - MYSQL_USERNAME=admin
