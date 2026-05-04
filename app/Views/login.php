@@ -5,13 +5,18 @@
  * @var bool $is_new_install
  * @var string $latest_version
  * @var bool $gcaptcha_enabled
+ * @var CodeIgniter\HTTP\IncomingRequest $request
  * @var array $config
  * @var $validation
  */
+
+use Config\Services;
+
+$request = Services::request();
 ?>
 
 <!doctype html>
-<html lang="<?= current_language_code() ?>">
+<html lang="<?= $request->getLocale() ?>">
 
 <head>
     <meta charset="utf-8">
@@ -153,11 +158,6 @@
             <span><?= lang('Common.software_title') ?></span>
         </div>
     </footer>
-
-    <?php
-    use Config\Services;
-    $request = Services::request();
-    ?>
 
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:login:debug:js -->
