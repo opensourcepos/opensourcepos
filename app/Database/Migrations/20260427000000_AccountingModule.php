@@ -203,8 +203,8 @@ class Migration_AccountingModule extends Migration
         $this->forge->dropTable('journals', true);
         $this->forge->dropTable('accounts', true);
         
-        $this->db->query("DELETE FROM " . $this->db->prefixTable('grants') . " WHERE permission_id = 'accounting'");
-        $this->db->query("DELETE FROM " . $this->db->prefixTable('permissions') . " WHERE module_id = 'accounting'");
-        $this->db->query("DELETE FROM " . $this->db->prefixTable('modules') . " WHERE module_id = 'accounting'");
+        $this->db->table('grants')->where('permission_id', 'accounting')->delete();
+        $this->db->table('permissions')->where('module_id', 'accounting')->delete();
+        $this->db->table('modules')->where('module_id', 'accounting')->delete();
     }
 }
