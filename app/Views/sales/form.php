@@ -160,6 +160,7 @@
                         function(response) {
                             BootstrapDialog.closeAll();
                             $.notify({
+                                icon: 'bi bi-bell-fill',
                                 message: response.message
                             }, {
                                 type: response.success ? 'success' : 'danger'

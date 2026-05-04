@@ -25,6 +25,7 @@ if (isset($error_message)) {
                 $.get('<?= site_url() . esc("/sales/sendPdf/$sale_id_num/receipt") ?>',
                     function(response) {
                         $.notify({
+                            icon: 'bi bi-bell-fill',
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'
@@ -46,18 +47,18 @@ if (isset($error_message)) {
 
 <div class="print_hide" id="control_buttons" style="text-align: right;">
     <a href="javascript:printdoc();">
-        <div class="btn btn-info btn-sm" id="show_print_button"><?= '<i class="bi bi-printer icon-spacing"></i>' . lang('Common.print') ?></div>
+        <div class="btn btn-info btn-sm" id="show_print_button"><?= '<i class="bi bi-printer me-2"></i>' . lang('Common.print') ?></div>
     </a>
     <?php if (!empty($customer_email)): ?>
         <a href="javascript:void(0);">
-            <div class="btn btn-info btn-sm" id="show_email_button"><?= '<i class="bi bi-envelope icon-spacing"></i>' . lang('Sales.send_receipt') ?></div>
+            <div class="btn btn-info btn-sm" id="show_email_button"><?= '<i class="bi bi-envelope me-2"></i>' . lang('Sales.send_receipt') ?></div>
         </a>
     <?php endif; ?>
-    <?= anchor('sales', '<i class="bi bi-cart2 icon-spacing"></i>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+    <?= anchor('sales', '<i class="bi bi-cart2 me-2"></i>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
     <?php
     $employee = model(Employee::class);
     if ($employee->has_grant('reports_sales', session('person_id'))): ?>
-        <?= anchor('sales/manage', '<i class="bi bi-receipt-cutoff icon-spacing"></i>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
+        <?= anchor('sales/manage', '<i class="bi bi-receipt-cutoff me-2"></i>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
     <?php endif; ?>
 </div>
 

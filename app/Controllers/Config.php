@@ -82,7 +82,7 @@ class Config extends Secure_Controller
         $npmDev = false;
         $license = [];
 
-        $license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
+        $license[$i]['title'] = 'Open Source Point of Sale ' . config('App')->application_version;
 
         if (file_exists('license/LICENSE')) {
             $license[$i]['text'] = file_get_contents('license/LICENSE', false, null, 0, 3000);
@@ -368,8 +368,6 @@ class Config extends Secure_Controller
     public function postSaveGeneral(): ResponseInterface
     {
         $batchSaveData = [
-            'theme'                             => $this->request->getPost('theme'),
-            'login_form'                        => $this->request->getPost('login_form'),
             'default_sales_discount_type'       => $this->request->getPost('default_sales_discount_type') != null,
             'default_sales_discount'            => parse_decimals($this->request->getPost('default_sales_discount')),
             'default_receivings_discount_type'  => $this->request->getPost('default_receivings_discount_type') != null,
@@ -377,8 +375,6 @@ class Config extends Secure_Controller
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
-            'notify_horizontal_position'        => $this->request->getPost('notify_horizontal_position'),
-            'notify_vertical_position'          => $this->request->getPost('notify_vertical_position'),
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
             'image_max_height'                  => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
             'image_max_size'                    => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
@@ -418,6 +414,26 @@ class Config extends Secure_Controller
         $this->db->transComplete();
 
         $success = $success && $this->db->transStatus();
+
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    /**
+     * Saves Appearance configuration. Used in app/Views/configs/appearance_config.php
+     */
+    public function postSaveAppearance(): ResponseInterface
+    {
+        $batch_save_data = [
+            'theme'                      => $this->request->getPost('theme'),
+            'login_form'                 => $this->request->getPost('login_form'),
+            'notify_horizontal_position' => $this->request->getPost('notify_horizontal_position'),
+            'notify_vertical_position'   => $this->request->getPost('notify_vertical_position'),
+            'color_mode'                 => $this->request->getPost('color_mode'),
+            'config_menu_position'       => $this->request->getPost('config_menu_position'),
+            'responsive_design'          => $this->request->getPost('responsive_design') != null
+        ];
+
+        $success = $this->appconfig->batch_save($batch_save_data);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -478,6 +494,7 @@ class Config extends Secure_Controller
             'currency_code'         => $this->request->getPost('currency_code'),
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
+            'rtl_language'          => $this->request->getPost('rtl_language') != null,
             'timezone'              => $this->request->getPost('timezone'),
             'dateformat'            => $this->request->getPost('dateformat'),
             'timeformat'            => $this->request->getPost('timeformat'),
