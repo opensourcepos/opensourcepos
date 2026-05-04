@@ -59,13 +59,23 @@ class Accounting extends Secure_Controller
 
     public function postSaveAccount(): ResponseInterface
     {
-        $account_id = $this->request->getPost('account_id') ? $this->request->getPost('account_id') : false;
+        $account_id = $this->request->getPost('account_id') ?: false;
         
         $account_data = [
-            'code' => $this->request->getPost('code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'name' => $this->request->getPost('name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'type' => $this->request->getPost('type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'code' => esc($this->request->getPost('code')),
+            'name' => esc($this->request->getPost('name')),
+            'type' => esc($this->request->getPost('type')),
         ];
+
+        // Basic validation
+        if (empty($account_data['code']) || empty($account_data['name']) || empty($account_data['type'])) {
+            return $this->response->setJSON(['success' => false, 'message' => 'All fields are required']);
+        }
+
+        // Validate type against allowed ENUM values
+        if (!in_array($account_data['type'], ['Asset', 'Liability', 'Equity', 'Income', 'Expense'])) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid account type']);
+        }
 
         if ($this->account->save_value($account_data, $account_id)) {
             return $this->response->setJSON(['success' => true, 'message' => 'Account saved successfully']);

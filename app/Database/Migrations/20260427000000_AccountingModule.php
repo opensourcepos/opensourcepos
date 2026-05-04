@@ -150,8 +150,10 @@ class Migration_AccountingModule extends Migration
         // Insert into permissions
         $this->db->query("INSERT INTO " . $this->db->prefixTable('permissions') . " (permission_id, module_id) VALUES ('accounting', 'accounting')");
 
-        // Grant permission to admin (person_id 1 is usually admin)
-        $this->db->query("INSERT INTO " . $this->db->prefixTable('grants') . " (permission_id, person_id, menu_group) VALUES ('accounting', 1, 'office')");
+        // Grant permission to admin (usually the first employee)
+        $admin = $this->db->table('employees')->select('person_id')->orderBy('person_id', 'ASC')->get(1)->getRow();
+        $admin_id = $admin ? $admin->person_id : 1;
+        $this->db->query("INSERT INTO " . $this->db->prefixTable('grants') . " (permission_id, person_id, menu_group) VALUES ('accounting', $admin_id, 'office')");
         
         // Seed some basic data
         $this->db->query("INSERT INTO " . $this->db->prefixTable('journals') . " (name, code, type) VALUES 

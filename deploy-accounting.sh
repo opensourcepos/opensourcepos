@@ -11,6 +11,12 @@ CONTAINER_NAME="ospos"  # Nombre del servicio en docker-compose.yml
 APP_PATH="/app"          # Ruta base dentro del contenedor (imagen jekkos)
 OSPOS_DIR="$(cd "$(dirname "$0")" && pwd)"  # Directorio donde está este script
 
+# DB Credentials (defaults, but should be overridden by env vars)
+DB_USER=${MYSQL_USERNAME:-"admin"}
+DB_PASS=${MYSQL_PASSWORD:-"pointofsale"}
+DB_NAME=${MYSQL_DB_NAME:-"ospos"}
+DB_HOST=${MYSQL_HOST_NAME:-"mysql"}
+
 # ---- Colores para output ----
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -59,7 +65,7 @@ copy_file() {
     local DEST="$2"
     if [ -f "$SRC" ]; then
         docker cp "$SRC" "$RUNNING_CONTAINER:$DEST"
-        echo -e "  ${GREEN}✓ Copiado:${NC} $(basename $SRC)"
+        echo -e "  ${GREEN}✓ Copiado:${NC} $(basename "$SRC")"
     else
         echo -e "  ${RED}✗ No encontrado:${NC} $SRC"
     fi
@@ -72,7 +78,7 @@ copy_dir() {
         # Crear el directorio destino si no existe
         docker exec "$RUNNING_CONTAINER" mkdir -p "$DEST_DIR"
         for file in "$SRC_DIR"/*.php; do
-            [ -f "$file" ] && docker cp "$file" "$RUNNING_CONTAINER:$DEST_DIR/$(basename $file)" && echo -e "  ${GREEN}✓ Copiado:${NC} $(basename $file)"
+            [ -f "$file" ] && docker cp "$file" "$RUNNING_CONTAINER:$DEST_DIR/$(basename "$file")" && echo -e "  ${GREEN}✓ Copiado:${NC} $(basename "$file")"
         done
     else
         echo -e "  ${YELLOW}⚠ Directorio no encontrado localmente:${NC} $SRC_DIR"
@@ -174,7 +180,7 @@ echo ""
 # ---- 5. Verificar que las tablas fueron creadas ----
 echo -e "${YELLOW}[5/6] Verificando tablas en la base de datos...${NC}"
 
-TABLES=$(docker exec mysql mysql -u admin -ppointofsale ospos -e \
+TABLES=$(docker exec "$DB_HOST" mysql -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e \
     "SHOW TABLES LIKE '%account%'; SHOW TABLES LIKE '%journal%';" 2>/dev/null)
 
 if echo "$TABLES" | grep -q "accounts"; then
