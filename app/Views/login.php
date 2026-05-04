@@ -8,31 +8,51 @@
  * @var array $config
  * @var $validation
  */
+
+// Manually setting some error messages for testing
+// $validation->setError('test', 'The test error is testing.');
+// $validation->setError('email', 'The email field is required.');
+// $has_errors = $validation->hasError('email');
+// $has_errors = $validation->hasError('test');
+
+// Manually set database migration message to show
+// $is_latest = false;
+// $latest_version = '1.0.0';
+
+// Manually set language for page, doesn't work for dynamic elements
+// \Config\Services::language()->setLocale('de-DE');
+
+// Manually set login form appearence
+// $config['login_form'] = 'input_groups';
+
+// Manually set theme
+// $config['theme'] = 'cerulean';
+
 ?>
 
 <!doctype html>
-<html lang="<?= current_language_code() ?>">
+<html lang="<?= $request->getLocale() ?>" data-bs-theme="<?= esc($config['color_mode']) ?>" <?= esc($config['rtl_language']) == 1 ? 'dir="rtl"' : '' ?>>
 
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
     <title><?= esc($config['company']) . '&nbsp;|&nbsp;' . esc(lang('Common.software_short')) . '&nbsp;|&nbsp;' . esc(lang('Login.login')) ?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?= $config['responsive_design'] == 1 ? '<meta name="viewport" content="width=device-width, initial-scale=1">' : '' ?>
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <?php
-    $theme = (empty($config['theme'])
-        || 'paper' == $config['theme']
-        || 'readable' == $config['theme']
-        ? 'flatly'
-        : $config['theme']);
-    ?>
-    <link rel="stylesheet" href="resources/bootswatch5/<?= "$theme" ?>/bootstrap.min.css">
+    <?php $theme = (empty($config['theme']) ? 'flatly' : $config['theme']); ?>
+    <link rel="stylesheet" href="resources/bootswatch/<?= "$theme" ?>/bootstrap<?= esc($config['rtl_language']) == 1 ? '.rtl' : '' ?>.min.css">
+    <link rel="stylesheet" href="resources/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/login.css">
     <meta name="theme-color" content="#2c3e50">
 </head>
 
 <body class="bg-secondary-subtle d-flex flex-column">
+    <!-- BS5 WIP message -->
+    <div data-notify="container" class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4 alert alert-warning position-absolute top-0 mt-3 start-50 translate-middle-x" role="alert">
+        <span data-notify="icon" class="me-2" role="img"><i class="bi bi-exclamation-diamond-fill"></i></span>
+        <span data-notify="message">WIP conversion to Bootstrap 5</span>
+    </div>
     <main class="d-flex justify-content-around align-items-center flex-grow-1">
         <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
             <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end border-secondary-subtle px-4 pb-3 p-md-4">
@@ -58,7 +78,7 @@
                 </h3>
                 
                 <div id="migration-warning" class="alert alert-warning mt-3<?= $is_new_install ? '' : ' d-none' ?>">
-                    <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
+                    <?= lang('Login.migration_auth_message', [$latest_version]) ?>
                 </div>
                 
                 <?php if ($has_errors): ?>
@@ -103,19 +123,13 @@
                     <?php elseif ('input_groups' == ($config['login_form'])): ?>
                         <div class="input-group mt-3">
                             <span class="input-group-text" id="input-username">
-                                <svg class="bi bi-person-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                    <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.username') ?></title>
-                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                                </svg>
+                                <i class="bi bi-person" title="<?= lang('Common.icon') . '&nbsp;' . lang('Login.username') ?>"></i>
                             </span>
                             <input class="form-control" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="input-password">
-                                <svg class="bi bi-key-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                    <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.password') ?></title>
-                                    <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
-                                </svg>
+                                <i class="bi bi-lock" title="<?= lang('Common.icon') . '&nbsp;' . lang('Login.password') ?>"></i>
                             </span>
                             <input class="form-control" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                         </div>

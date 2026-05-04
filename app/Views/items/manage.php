@@ -16,6 +16,11 @@ use App\Models\Employee;
 
 <?= view('partial/header') ?>
 
+<?php
+$title_info['config_title'] = 'Items';
+echo view('configs/config_header', $title_info);
+?>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('#generate_barcodes').click(function() {
@@ -76,34 +81,33 @@ use App\Models\Employee;
 
 <?= view('partial/table_filter_persistence', ['additional_params' => ['stock_location']]) ?>
 
-<div id="title_bar" class="btn-toolbar print_hide">
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang('Items.import_items_csv') ?>">
-        <span class="glyphicon glyphicon-import">&nbsp;</span><?= lang('Common.import_csv') ?>
+<div class="d-flex gap-2 justify-content-end">
+    <button type="button" class="btn btn-primary" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
+        <i class="bi bi-tag me-2"></i><?= lang(ucfirst($controller_name) . '.new') ?>
     </button>
-
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
-        <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new') ?>
+    <button type="button" class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang('Items.import_items_csv') ?>">
+        <i class="bi bi-file-earmark-arrow-down me-2"></i><?= lang('Common.import_csv') ?>
     </button>
 </div>
 
 <div id="toolbar">
-    <div class="pull-left form-inline" role="toolbar">
-        <button id="delete" class="btn btn-default btn-sm print_hide">
-            <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary d-print-none" id="delete">
+            <i class="bi bi-trash"></i><span class="d-none d-md-inline ms-2"><?= lang('Common.delete') ?></span>
         </button>
-        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/bulkEdit" ?>" title="<?= lang('Items.edit_multiple_items') ?>">
-            <span class="glyphicon glyphicon-edit">&nbsp;</span><?= lang('Items.bulk_edit') ?>
+        <button type="button" class="btn btn-secondary d-print-none" id="bulk_edit" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/bulkEdit" ?>" title="<?= lang('Items.edit_multiple_items') ?>">
+            <i class="bi bi-pencil-square"></i><span class="d-none d-md-inline ms-2"><?= lang('Items.bulk_edit') ?></span>
         </button>
-        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href="<?= "$controller_name/generateBarcodes" ?>" title="<?= lang('Items.generate_barcodes') ?>">
-            <span class="glyphicon glyphicon-barcode">&nbsp;</span><?= lang('Items.generate_barcodes') ?>
+        <button type="button" class="btn btn-secondary d-print-none" id="generate_barcodes" data-href="<?= "$controller_name/generateBarcodes" ?>" title="<?= lang('Items.generate_barcodes') ?>">
+            <i class="bi bi-upc-scan"></i><span class="d-none d-md-inline ms-2"><?= lang('Items.generate_barcodes') ?></span>
         </button>
-        <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+        <input type="text" class="form-control" name="daterangepicker" id="daterangepicker">
         <?= form_multiselect('filters[]', $filters, $selected_filters ?? [], [
             'id'                        => 'filters',
             'class'                     => 'selectpicker show-menu-arrow',
             'data-none-selected-text'   => lang('Common.none_selected_text'),
             'data-selected-text-format' => 'count > 1',
-            'data-style'                => 'btn-default btn-sm',
+            'data-style'                => 'btn-secondary',
             'data-width'                => 'fit'
         ]) ?>
         <?php
@@ -115,7 +119,7 @@ use App\Models\Employee;
                 [
                     'id'         => 'stock_location',
                     'class'      => 'selectpicker show-menu-arrow',
-                    'data-style' => 'btn-default btn-sm',
+                    'data-style' => 'btn-secondary',
                     'data-width' => 'fit'
                 ]
             );
