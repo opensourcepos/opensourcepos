@@ -17,9 +17,9 @@
                     <?= form_dropdown(
                         'protocol',
                         [
-                            'mail'     => 'mail',
-                            'sendmail' => 'sendmail',
-                            'smtp'     => 'smtp'
+                            'mail'     => 'Mail',
+                            'sendmail' => 'Sendmail',
+                            'smtp'     => 'SMTP'
                         ],
                         $config['protocol'],
                         'class="form-control input-sm" id="protocol"'
@@ -55,6 +55,7 @@
                 <?= form_label(lang('Config.email_smtp_port'), 'smtp_port', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
+                        'type'  => 'number',
                         'name'  => 'smtp_port',
                         'id'    => 'smtp_port',
                         'class' => 'form-control input-sm',
@@ -83,6 +84,7 @@
                 <?= form_label(lang('Config.email_smtp_timeout'), 'smtp_timeout', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
+                        'type'  => 'number',
                         'name'  => 'smtp_timeout',
                         'id'    => 'smtp_timeout',
                         'class' => 'form-control input-sm',
