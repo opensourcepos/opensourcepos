@@ -30,7 +30,7 @@ echo -e "${BLUE}================================================${NC}"
 echo ""
 
 # ---- 1. Verificar que Docker esté corriendo ----
-echo -e "${YELLOW}[1/5] Verificando que Docker y el contenedor estén activos...${NC}"
+echo -e "${YELLOW}[1/6] Verificando que Docker y el contenedor estén activos...${NC}"
 
 if ! docker info > /dev/null 2>&1; then
     echo -e "${RED}✗ Error: Docker no está corriendo. Inicia Docker Desktop e intenta de nuevo.${NC}"
@@ -58,7 +58,7 @@ echo -e "${GREEN}✓ Contenedor activo: ${RUNNING_CONTAINER}${NC}"
 echo ""
 
 # ---- 2. Copiar los nuevos archivos PHP al contenedor ----
-echo -e "${YELLOW}[2/5] Copiando archivos del módulo al contenedor...${NC}"
+echo -e "${YELLOW}[2/6] Copiando archivos del módulo al contenedor...${NC}"
 
 copy_file() {
     local SRC="$1"
@@ -92,6 +92,9 @@ copy_file \
 copy_file \
     "$OSPOS_DIR/app/Database/Migrations/20260428000000_AccountingMexico.php" \
     "$APP_PATH/app/Database/Migrations/20260428000000_AccountingMexico.php"
+copy_file \
+    "$OSPOS_DIR/app/Database/Migrations/20260430000000_AddTopReportsPermissions.php" \
+    "$APP_PATH/app/Database/Migrations/20260430000000_AddTopReportsPermissions.php"
 
 # Modelos
 copy_file \
@@ -146,7 +149,7 @@ copy_file \
 echo ""
 
 # ---- 3. Limpiar caché de CodeIgniter ----
-echo -e "${YELLOW}[3/5] Limpiando caché y preparando directorios...${NC}"
+echo -e "${YELLOW}[3/6] Limpiando caché y preparando directorios...${NC}"
 docker exec "$RUNNING_CONTAINER" bash -c "
     rm -rf ${APP_PATH}/writable/cache/* 2>/dev/null || true
     mkdir -p ${APP_PATH}/public/license
@@ -161,7 +164,7 @@ docker exec "$RUNNING_CONTAINER" bash -c "
 echo ""
 
 # ---- 4. Ejecutar migraciones ----
-echo -e "${YELLOW}[4/5] Ejecutando migraciones de base de datos...${NC}"
+echo -e "${YELLOW}[4/6] Ejecutando migraciones de base de datos...${NC}"
 
 MIGRATE_OUTPUT=$(docker exec "$RUNNING_CONTAINER" bash -c "
     cd $APP_PATH && php spark migrate --all 2>&1

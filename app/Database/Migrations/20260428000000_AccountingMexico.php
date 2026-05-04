@@ -6,9 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class AccountingMexico extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        $db = \Config\Database::connect();
+        $db = $this->db;
         
         // 1. Update existing default accounts to SAT codes
         $db->table('accounts')->where('code', '1000')->update(['code' => '101.01', 'name' => 'Caja y Efectivo']);
@@ -44,10 +44,10 @@ class AccountingMexico extends Migration
         }
     }
 
-    public function down()
+    public function down(): void
     {
         // Revert SAT codes back to generic codes
-        $db = \Config\Database::connect();
+        $db = $this->db;
         $db->table('accounts')->where('code', '101.01')->update(['code' => '1000', 'name' => 'Cash and Cash Equivalents']);
         $db->table('accounts')->where('code', '115.01')->update(['code' => '1200', 'name' => 'Inventory']);
         $db->table('accounts')->where('code', '201.01')->update(['code' => '2000', 'name' => 'Accounts Payable']);

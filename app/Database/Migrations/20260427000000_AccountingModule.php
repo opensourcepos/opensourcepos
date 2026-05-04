@@ -28,7 +28,8 @@ class Migration_AccountingModule extends Migration
                 'constraint' => '255',
             ],
             'type' => [
-                'type' => 'ENUM("Asset", "Liability", "Equity", "Income", "Expense")',
+                'type' => 'ENUM',
+                'constraint' => ['Asset', 'Liability', 'Equity', 'Income', 'Expense'],
                 'default' => 'Asset',
             ],
             'parent_id' => [
@@ -153,7 +154,11 @@ class Migration_AccountingModule extends Migration
         // Grant permission to admin (usually the first employee)
         $admin = $this->db->table('employees')->select('person_id')->orderBy('person_id', 'ASC')->get(1)->getRow();
         $admin_id = $admin ? $admin->person_id : 1;
-        $this->db->query("INSERT INTO " . $this->db->prefixTable('grants') . " (permission_id, person_id, menu_group) VALUES ('accounting', $admin_id, 'office')");
+        $this->db->table('grants')->insert([
+            'permission_id' => 'accounting',
+            'person_id' => $admin_id,
+            'menu_group' => 'office'
+        ]);
         
         // Seed some basic data
         $this->db->query("INSERT INTO " . $this->db->prefixTable('journals') . " (name, code, type) VALUES 

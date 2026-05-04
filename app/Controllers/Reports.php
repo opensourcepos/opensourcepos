@@ -1066,7 +1066,8 @@ class Reports extends Secure_Controller
         $series = [];
         foreach ($report_data as $row) {
             $labels[] = $row['category'];
-            $series[] = ['meta' => $row['category'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
+            $percentage = $summary['total'] > 0 ? round($row['total'] / $summary['total'] * 100, 2) : 0;
+            $series[] = ['meta' => $row['category'] . ' ' . $percentage . '%', 'value' => $row['total']];
         }
 
         $data = [
@@ -1111,7 +1112,8 @@ class Reports extends Secure_Controller
 
         foreach ($report_data as $row) {
             $labels[] = $row['supplier'];
-            $series[] = ['meta' => $row['supplier'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
+            $percentage = $summary['total'] > 0 ? round($row['total'] / $summary['total'] * 100, 2) : 0;
+            $series[] = ['meta' => $row['supplier'] . ' ' . $percentage . '%', 'value' => $row['total']];
         }
 
         $data = [
@@ -1155,7 +1157,8 @@ class Reports extends Secure_Controller
 
         foreach ($report_data as $row) {
             $labels[] = $row['employee'];
-            $series[] = ['meta' => $row['employee'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
+            $percentage = $summary['total'] > 0 ? round($row['total'] / $summary['total'] * 100, 2) : 0;
+            $series[] = ['meta' => $row['employee'] . ' ' . $percentage . '%', 'value' => $row['total']];
         }
 
         $data = [
@@ -1199,7 +1202,8 @@ class Reports extends Secure_Controller
 
         foreach ($report_data as $row) {
             $labels[] = $row['percent'];
-            $series[] = ['meta' => $row['percent'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
+            $percentage = $summary['total'] > 0 ? round($row['total'] / $summary['total'] * 100, 2) : 0;
+            $series[] = ['meta' => $row['percent'] . ' ' . $percentage . '%', 'value' => $row['total']];
         }
 
         $data = [
@@ -1383,7 +1387,8 @@ class Reports extends Secure_Controller
         foreach ($report_data as $row) {
             if ($row['trans_group'] == lang('Reports.trans_payments') && !empty($row['trans_amount'])) {
                 $labels[] = $row['trans_type'];
-                $series[] = ['meta' => $row['trans_type'] . ' ' . round($row['trans_amount'] / $summary['total'] * 100, 2) . '%', 'value' => $row['trans_amount']];
+                $percentage = $summary['total'] > 0 ? round($row['trans_amount'] / $summary['total'] * 100, 2) : 0;
+                $series[] = ['meta' => $row['trans_type'] . ' ' . $percentage . '%', 'value' => $row['trans_amount']];
             }
         }
 
