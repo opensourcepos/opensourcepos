@@ -12,5 +12,5 @@ INSERT IGNORE INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `m
 INSERT IGNORE INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
    ('plugins', 'plugins');
 
-INSERT IGNORE INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
-    ('plugins', 1, 'office');
+INSERT IGNORE INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`)
+SELECT 'plugins', `person_id`, 'office' FROM `ospos_grants` WHERE `permission_id` = 'config';

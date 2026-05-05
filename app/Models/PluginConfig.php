@@ -49,7 +49,8 @@ class PluginConfig extends Model
     public function getPluginSettings(string $pluginId): array
     {
         $builder = $this->db->table('plugin_config');
-        $builder->like('key', $pluginId . '_', 'after');
+        $builder->like('key', $pluginId . '_', 'after')
+                ->notLike('key', $pluginId . '__', 'after');
         $query = $builder->get();
 
         $settings = [];
@@ -79,17 +80,17 @@ class PluginConfig extends Model
 
     public function batchSave(array $data): bool
     {
-        $success = true;
-
-        $this->db->transStart();
+        $this->db->transBegin();
 
         foreach ($data as $key => $value) {
-            $success &= $this->setValue($key, $value);
+            if (!$this->setValue($key, $value)) {
+                $this->db->transRollback();
+                return false;
+            }
         }
 
-        $this->db->transComplete();
-
-        return $success && $this->db->transStatus();
+        $this->db->transCommit();
+        return true;
     }
 
     public function getAll(): array

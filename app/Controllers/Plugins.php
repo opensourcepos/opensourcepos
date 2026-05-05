@@ -26,7 +26,7 @@ class Plugins extends Secure_Controller
         $search = strtolower($this->request->getGet('search') ?? '');
         $limit  = (int)($this->request->getGet('limit') ?? 0);
         $offset = (int)($this->request->getGet('offset') ?? 0);
-        $sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'name';
+        $sort   = $this->sanitizeSortColumn(plugin_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'name');
         $order  = strtolower($this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'asc');
 
         $pluginData = $this->buildPluginDataArray();

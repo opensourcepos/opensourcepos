@@ -21,7 +21,12 @@ class MailchimpPlugin extends BasePlugin
     {
         parent::__construct();
 
-        $this->mailchimpLibrary = new MailchimpLibrary($this->getSettings());
+        $apiKey = $this->decryptApiKey($this->getSetting('api_key', ''));
+        $this->mailchimpLibrary = new MailchimpLibrary([
+            'api_key'      => $apiKey,
+            'list_id'      => $this->getSetting('list_id', ''),
+            'sync_on_save' => $this->getSetting('sync_on_save', '1'),
+        ]);
         log_message('debug', 'MailchimpPlugin initialized');
     }
 
@@ -80,17 +85,7 @@ class MailchimpPlugin extends BasePlugin
 
     public function getSettings(): array
     {
-        $encryptedKey = $this->getSetting('api_key', '');
-        $apiKey = '';
-
-        if (!empty($encryptedKey)) {
-            try {
-                $apiKey = Services::encrypter()->decrypt($encryptedKey);
-            } catch (\Exception $e) {
-                // Key stored as plaintext (pre-encryption migration) — use as-is
-                $apiKey = $encryptedKey;
-            }
-        }
+        $apiKey = $this->decryptApiKey($this->getSetting('api_key', ''));
 
         return [
             'api_key'      => $apiKey,
@@ -99,6 +94,22 @@ class MailchimpPlugin extends BasePlugin
             'sync_on_save' => $this->getSetting('sync_on_save', '1'),
             'enabled'      => $this->getSetting('enabled', '0'),
         ];
+    }
+
+    private function decryptApiKey(string $encryptedKey): string
+    {
+        if (empty($encryptedKey)) {
+            return '';
+        }
+        try {
+            $decoded = base64_decode($encryptedKey, true);
+            if ($decoded !== false) {
+                return Services::encrypter()->decrypt($decoded);
+            }
+        } catch (\Exception) {
+            // Legacy plaintext or old binary-encrypted key — fall through
+        }
+        return $encryptedKey;
     }
 
     private function getFormattedLists(string $apiKey): array
@@ -127,7 +138,7 @@ class MailchimpPlugin extends BasePlugin
         if (array_key_exists('api_key', $settings)) {
             $rawKey = (string)$settings['api_key'];
             $normalized['api_key'] = !empty($rawKey)
-                ? Services::encrypter()->encrypt($rawKey)
+                ? base64_encode(Services::encrypter()->encrypt($rawKey))
                 : '';
         }
 
@@ -186,7 +197,10 @@ class MailchimpPlugin extends BasePlugin
 
         log_message('debug', "Customer saved event received for ID: {$customerData['person_id']}");
 
-        $statusInt = (int)(($postData ?? [])['status'] ?? SubscriptionStatus::SUBSCRIBED->value);
+        $statusInt = !empty($customerData['consent'])
+            ? (int)(($postData ?? [])['status'] ?? SubscriptionStatus::SUBSCRIBED->value)
+            : SubscriptionStatus::UNSUBSCRIBED->value;
+
         $statusEnum = SubscriptionStatus::tryFrom($statusInt) ?? SubscriptionStatus::SUBSCRIBED;
         $subscriptionStatus = strtolower($statusEnum->name);
 
@@ -214,27 +228,4 @@ class MailchimpPlugin extends BasePlugin
     {
         return $this->getSetting('sync_on_save', '1') === '1';
     }
-
-
-    public function testConnection(): array
-    {
-        $apiKey = $this->getSetting('api_key');
-
-        if (empty($apiKey)) {
-            return ['success' => false, 'message' => lang('api_key_required')];
-        }
-
-        $result = $this->mailchimpLibrary->getLists();
-
-        if ($result && isset($result['lists'])) {
-            return [
-                'success' => true,
-                'message' => lang('key_successfully'),
-                'lists' => $result['lists']
-            ];
-        }
-
-        return ['success' => false, 'message' => lang('key_unsuccessfully')];
-    }
-
 }

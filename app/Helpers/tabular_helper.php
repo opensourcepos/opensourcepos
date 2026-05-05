@@ -940,6 +940,7 @@ function plugin_headers(): array
         ['description' => lang('Plugins.description')],
         ['version'     => lang('Plugins.version'), 'escape' => false],
         ['status'      => lang('Plugins.status'),  'escape' => false],
+        ['actions'     => lang('Plugins.actions'),  'escape' => false],
     ];
 }
 
@@ -970,7 +971,7 @@ function get_plugin_data_row(array $plugin): array
     return [
         'plugin_id'   => $pluginId,
         'name'        => '<strong>' . esc($plugin['name']) . '</strong><br><small class="text-muted">' . esc($pluginId) . '</small>',
-        'description' => $plugin['description'],
+        'description' => esc($plugin['description']),
         'version'     => '<span class="label label-default">' . esc($plugin['version']) . '</span>',
         'status'      => $statusHtml,
         'edit'        => $editHtml,

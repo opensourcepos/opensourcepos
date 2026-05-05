@@ -166,6 +166,8 @@ class PluginManager
             return false;
         }
 
+        $this->disablePlugin($pluginId);
+
         if (!$plugin->uninstall()) {
             log_message('error', "Failed to uninstall plugin: {$pluginId}");
             return false;

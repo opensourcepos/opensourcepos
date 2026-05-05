@@ -303,33 +303,30 @@ class MailchimpLibrary
                 $customerActivities = $this->getMemberActivity($listId, $customerData->email);
                 if ($customerActivities !== false) {
                     if (array_key_exists('activity', $customerActivities)) {
+                        $sent = 0;
                         $open = 0;
-                        $unopen = 0;
                         $click = 0;
-                        $total = 0;
                         $lastOpen = '';
 
                         foreach ($customerActivities['activity'] as $activity) {
-                            if ($activity['action'] == 'sent') {
-                                ++$unopen;
-                            } elseif ($activity['action'] == 'open') {
+                            if ($activity['action'] === 'sent') {
+                                ++$sent;
+                            } elseif ($activity['action'] === 'open') {
                                 if (empty($lastOpen)) {
                                     $lastOpen = substr($activity['timestamp'], 0, 10);
                                 }
                                 ++$open;
-                            } elseif ($activity['action'] == 'click') {
+                            } elseif ($activity['action'] === 'click') {
                                 if (empty($lastOpen)) {
                                     $lastOpen = substr($activity['timestamp'], 0, 10);
                                 }
                                 ++$click;
                             }
-
-                            ++$total;
                         }
 
-                        $mailchimpData['mailchimpActivity']['total'] = $total;
+                        $mailchimpData['mailchimpActivity']['total'] = $sent;
                         $mailchimpData['mailchimpActivity']['open'] = $open;
-                        $mailchimpData['mailchimpActivity']['unopen'] = $unopen;
+                        $mailchimpData['mailchimpActivity']['unopen'] = max(0, $sent - $open);
                         $mailchimpData['mailchimpActivity']['click'] = $click;
                         $mailchimpData['mailchimpActivity']['last_open'] = $lastOpen;
                     }
