@@ -232,7 +232,7 @@ class Customers extends Persons
         ];
 
         if ($this->customer->saveCustomer($personData, $customerData, $customerId)) {
-            Events::trigger('customer_saved', $customerData);
+            Events::trigger('customer_saved', $personData, $customerData, $this->request->getPost());
 
             // New customer
             if ($customerId == NEW_ENTRY) {
@@ -360,7 +360,7 @@ class Customers extends Persons
 
                     if (sizeof($data) >= 16 && $consent) {
                         $email = strtolower($data[4]);
-                        $person_data = [
+                        $personData = [
                             'first_name'   => $data[0],
                             'last_name'    => $data[1],
                             'gender'       => $data[2],
@@ -375,7 +375,7 @@ class Customers extends Persons
                             'comments'     => $data[12]
                         ];
 
-                        $customer_data = [
+                        $customerData = [
                             'consent'       => $consent,
                             'company_name'  => $data[13],
                             'discount'      => $data[15],
@@ -390,7 +390,7 @@ class Customers extends Persons
                         $invalidated = $this->customer->check_email_exists($email);
 
                         if ($account_number != '') {
-                            $customer_data['account_number'] = $account_number;
+                            $customerData['account_number'] = $account_number;
                             $invalidated &= $this->customer->check_account_number_exists($account_number);
                         }
                     } else {
@@ -400,8 +400,9 @@ class Customers extends Persons
                     if ($invalidated) {
                         $failCodes[] = $rowNumber;
                         log_message('error', "Row $rowNumber was not imported: Either email or account number already exist or data was invalid.");
-                    } elseif ($this->customer->saveCustomer($person_data, $customer_data)) {
-                        Events::trigger('customer_saved', $person_data);
+                    } elseif ($this->customer->saveCustomer($personData, $customerData)) {
+                        Events::trigger('customer_saved', $personData, $customerData);
+
                     } else {
                         $failCodes[] = $rowNumber;
                     }

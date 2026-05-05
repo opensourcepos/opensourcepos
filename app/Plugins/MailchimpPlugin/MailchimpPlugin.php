@@ -3,6 +3,7 @@
 namespace App\Plugins\MailchimpPlugin;
 
 use App\Libraries\Plugins\BasePlugin;
+use App\Plugins\MailchimpPlugin\Enums\SubscriptionStatus;
 use App\Plugins\MailchimpPlugin\Libraries\MailchimpLibrary;
 use CodeIgniter\Events\Events;
 use Config\Services;
@@ -159,7 +160,7 @@ class MailchimpPlugin extends BasePlugin
         $mailchimpInfo = $mailchimpData['mailchimpActivity'] ?? [];
         $viewData = [
             'mailchimpData' => [
-                'status'        => $mailchimpInfo['status'] ?? '',
+                'status'        => SubscriptionStatus::fromApiString($mailchimpInfo['status'] ?? '')?->value ?? 0,
                 'vip'           => $mailchimpInfo['vip'] ?? 0,
                 'member_rating' => $mailchimpInfo['member_rating'] ?? 0,
                 'email_client'  => $mailchimpInfo['email_client'] ?? '',
@@ -177,7 +178,7 @@ class MailchimpPlugin extends BasePlugin
         echo $this->renderView('customer_tab', $viewData);
     }
 
-    public function onCustomerSaved(array $customerData): void
+    public function onCustomerSaved(array $personData, array $customerData, ?array $postData = null): void
     {
         if (!$this->shouldSyncOnSave()) {
             return;
@@ -185,14 +186,28 @@ class MailchimpPlugin extends BasePlugin
 
         log_message('debug', "Customer saved event received for ID: {$customerData['person_id']}");
 
-        $this->mailchimpLibrary->synchronizeSubscription($customerData);
+        $statusInt = (int)(($postData ?? [])['status'] ?? SubscriptionStatus::SUBSCRIBED->value);
+        $statusEnum = SubscriptionStatus::tryFrom($statusInt) ?? SubscriptionStatus::SUBSCRIBED;
+        $subscriptionStatus = strtolower($statusEnum->name);
+
+        $vip = isset($postData['vip']) && (bool)$postData['vip'];
+
+        $this->mailchimpLibrary->synchronizeSubscription($personData, $customerData, $subscriptionStatus, $vip);
     }
 
     public function onCustomerDeleted(stdClass $customer): void
     {
         log_message('debug', "Customer_deleted event received for ID: {$customer->person_id}");
 
-        $this->mailchimpLibrary->deleteSubscription($customer);
+        $result = $this->mailchimpLibrary->deleteSubscription($customer);
+
+        if ($result === true) {
+            log_message('info', "MailchimpPlugin: deleted subscription for customer ID: {$customer->person_id}");
+        } elseif (is_array($result)) {
+            log_message('error', "MailchimpPlugin: deleteSubscription API error for customer ID: {$customer->person_id} — {$result['title']} (HTTP {$result['status']}): {$result['detail']}");
+        } else {
+            log_message('error', "MailchimpPlugin: deleteSubscription transport failure for customer ID: {$customer->person_id}");
+        }
     }
 
     private function shouldSyncOnSave(): bool

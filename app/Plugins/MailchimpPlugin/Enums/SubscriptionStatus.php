@@ -8,5 +8,16 @@ enum SubscriptionStatus: int
     case UNSUBSCRIBED = 2;
     case PENDING = 3;
     case CLEANED = 4;
+
+    public static function fromApiString(string $status): ?self
+    {
+        foreach (self::cases() as $case) {
+            if (strtolower($case->name) === strtolower($status)) {
+                return $case;
+            }
+        }
+
+        return null;
+    }
 }
 

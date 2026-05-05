@@ -161,7 +161,8 @@ class MailchimpLibrary
      *   The ID of the list.
      * @param string $email
      *   The member's email address.
-     * @return array|bool
+     * @return true|array|false true on success (HTTP 204), array with API error details on failure (keys: status, title, detail),
+     *                          false on curl transport failure.
      * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
      */
     public function removeMember(string $listId, string $email): bool|array
@@ -226,17 +227,17 @@ class MailchimpLibrary
         return $this->connector->call("/lists/$listId/members/" . md5(strtolower($email)), 'PUT', $parameters);
     }
 
-    public function synchronizeSubscription(array $customerData): bool
+    public function synchronizeSubscription(array $personData, array $customerData, string $subscriptionStatus, bool $vip = false): bool
     {
         try {
-            return $this->subscribeCustomer($customerData);
+            return $this->subscribeCustomer($personData, $customerData, $subscriptionStatus, $vip);
         } catch (Exception $e) {
             log_message('error', "Failed to sync customer to Mailchimp: {$e->getMessage()}");
             return false;
         }
     }
 
-    private function subscribeCustomer(array $customerData): bool
+    private function subscribeCustomer(array $personData, array $customerData, string $subscriptionStatus, bool $vip = false): bool
     {
         $apiKey = $this->settings['api_key'];
         $listId = $this->settings['list_id'];
@@ -246,32 +247,46 @@ class MailchimpLibrary
             return false;
         }
 
-        if (empty($customerData['email'])) {
+        if (empty($personData['email'])) {
             log_message('debug', 'Customer has no email, skipping Mailchimp sync');
             return false;
         }
 
         $result = $this->addOrUpdateMember(
             $listId,
-            $customerData['email'],
-            $customerData['first_name'] ?? '',
-            $customerData['last_name'] ?? '',
-            'subscribed'
+            $personData['email'],
+            $personData['first_name'] ?? '',
+            $personData['last_name'] ?? '',
+            $subscriptionStatus,
+            ['vip' => $vip]
         );
 
+        if (is_array($result) && isset($result['status']) && is_int($result['status']) && $result['status'] >= 400) {
+            log_message('error', 'Mailchimp API error syncing customer ID ' . $customerData['person_id'] . ': ' . json_encode($result));
+            return false;
+        }
+
         if ($result) {
-            log_message('info', "Successfully subscribed customer ID {$customerData['person_id']} to Mailchimp");
+            log_message('info', "Successfully synced customer ID {$customerData['person_id']} to Mailchimp as '{$subscriptionStatus}'");
             return true;
         }
 
         return false;
     }
 
-    public function deleteSubscription(stdClass $customer): bool
+    /**
+     * Deletes a customer's Mailchimp subscription.
+     *
+     * @param stdClass $customer Customer object with an 'email' property.
+     * @return true|array|false true on success, array with API error details on API failure, false on transport failure.
+     */
+    public function deleteSubscription(stdClass $customer): bool|array
     {
         $listId = $this->settings['list_id'];
 
-        return !($this->removeMember($listId, $customer->email) === false);
+        $this->addOrUpdateMember($listId, $customer->email, '', '', 'unsubscribed');
+
+        return $this->removeMember($listId, $customer->email);
     }
 
     public function getMailchimpViewData(stdClass $customerData): array
@@ -280,7 +295,7 @@ class MailchimpLibrary
             $listId = $this->settings['list_id'];
             $mailchimpInfo = $this->getMemberInfo($listId, $customerData->email);
 
-            if ($mailchimpInfo !== false) {
+            if (is_array($mailchimpInfo) && !(isset($mailchimpInfo['status']) && is_int($mailchimpInfo['status']) && $mailchimpInfo['status'] >= 400)) {
                 $mailchimpData['mailchimpActivity'] = $mailchimpInfo;
 
                 $mailchimpData['subscriptionStatusOptions'] = $this->getSubscriptionStatusOptionViewData();

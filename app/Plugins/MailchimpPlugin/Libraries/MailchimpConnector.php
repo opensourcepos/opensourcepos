@@ -34,7 +34,9 @@ class MailchimpConnector
      * @param string $httpVerb The HTTP method to be used
      * @param string $method The API method to call, e.g. 'lists/list'
      * @param array $args An array of arguments to pass to the method. Will be json-encoded for you.
-     * @return array|bool Associative array of json decoded API response or false on error.
+     * @return true|array|false true on HTTP 204 (no content), decoded JSON array on all other responses
+     *                          including API errors (RFC 7807: check $result['status'] >= 400 to detect errors).
+     *                          false on curl transport failure or missing API key.
      */
     public function call(string $method, string $httpVerb = 'POST', array $args = []): bool|array
     {
@@ -62,29 +64,41 @@ class MailchimpConnector
      * @param string $httpVerb The HTTP method to be used
      * @param string $method The API method to be called
      * @param array $args Associative array of parameters to be passed
-     * @return bool|array Associative array of decoded result or False
+     * @return true|array|false true on HTTP 204 (no content), decoded JSON array for all other HTTP responses
+     *                          including 4xx/5xx API errors (RFC 7807: keys 'status', 'title', 'detail').
+     *                          Callers must inspect $result['status'] >= 400 to detect API errors.
+     *                          false only on curl transport failure or unparseable non-204 response.
      */
     private function request(string $httpVerb, string $method, array $args = []): bool|array
     {
-        $result = false;
-
-        if (($ch = curl_init()) !== false) {
-            curl_setopt($ch, CURLOPT_URL, $this->buildRequestUrl($method, $httpVerb, $args));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-            curl_setopt($ch, CURLOPT_USERPWD, "user:" . $this->apiKey);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'PHP-MCAPI/3.0');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($args));
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpVerb);
-
-            $result = curl_exec($ch);
-
-            curl_close($ch);
+        if (($ch = curl_init()) === false) {
+            return false;
         }
 
-        return $result ? json_decode($result, true) : false;
+        curl_setopt($ch, CURLOPT_URL, $this->buildRequestUrl($method, $httpVerb, $args));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_USERPWD, "user:" . $this->apiKey);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'PHP-MCAPI/3.0');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($args));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpVerb);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response === false) {
+            return false;
+        }
+
+        if ($httpCode === 204) {
+            return true;
+        }
+
+        $decoded = json_decode($response, true);
+        return $decoded ?? false;
     }
 }
