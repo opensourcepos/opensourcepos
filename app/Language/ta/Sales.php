@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "தள்ளுபடி",
     "customer_email"                   => "மின்னஞ்சல்",
     "customer_location"                => "இடம்",
-    "customer_mailchimp_status"        => "மெயில்சிம்ப் நிலை",
     "customer_optional"                => "(நிலுவை தொகை வைக்க அவசியம்)",
     "customer_required"                => "(தேவை)",
     "customer_total"                   => "மொத்தம்",

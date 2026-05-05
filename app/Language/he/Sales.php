@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "הנחה",
     "customer_email"                   => "אימייל",
     "customer_location"                => "מיקום",
-    "customer_mailchimp_status"        => "מצב Mailchimp",
     "customer_optional"                => "נדרש עבור תשלומים עתידיים (אופציונאלי)",
     "customer_required"                => "(נדרש)",
     "customer_total"                   => "סהכ",

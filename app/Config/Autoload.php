@@ -78,6 +78,7 @@ class Autoload extends AutoloadConfig
         'No_access'           => '/App/Controllers/No_access.php',
         'Office'              => '/App/Controllers/Office.php',
         'Persons'             => '/App/Controllers/Persons.php',
+        'Plugins'             => '/App/Controllers/Plugins.php',
         'Receivings'          => '/App/Controllers/Receivings.php',
         'Reports'             => '/App/Controllers/Reports.php',
         'Sales'               => '/App/Controllers/Sales.php',
@@ -157,9 +158,9 @@ class Autoload extends AutoloadConfig
         'Barcode_lib'   => '/App/Libraries/Barcode_lib.php',
         'Email_lib'     => '/App/Libraries/Email_lib.php',
         'Item_lib'      => '/App/Libraries/Item_lib.php',
-        'Mailchimp_lib' => '/App/Libraries/Mailchimp_lib.php',
         'MY_Email'      => '/App/Libraries/MY_Email.php',
         'MY_Migration'  => '/App/Libraries/MY_Migration.php',
+        'PluginManager' => '/App/Libraries/Plugins/PluginManager.php',
         'Receving_lib'  => '/App/Libraries/Receiving_lib.php',
         'Sale_lib'      => '/App/Libraries/Sale_lib.php',
         'Sms_lib'       => '/App/Libraries/Sms_lib.php',
@@ -203,6 +204,7 @@ class Autoload extends AutoloadConfig
         'cookie',
         'tabular',
         'locale',
-        'security'
+        'security',
+        'plugin'
     ];
 }

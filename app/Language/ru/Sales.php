@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Скидка",
     "customer_email"                   => "Эл. почта",
     "customer_location"                => "Расположение",
-    "customer_mailchimp_status"        => "Статус Mailchimp",
     "customer_optional"                => "(Требуется для своевременной оплаты)",
     "customer_required"                => "(Необходимо)",
     "customer_total"                   => "Итог",

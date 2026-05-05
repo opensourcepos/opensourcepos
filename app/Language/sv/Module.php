@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "Uppdatera OSPOS-databasen.",
     "office"                     => "Kontor",
     "office_desc"                => "Lista kontors menyn moduler.",
+    'plugins'                    => 'Tillägg',
     "receivings"                 => "Inkomster",
     "receivings_desc"            => "Behandla inköpsordrar.",
     "reports"                    => "Rapporter",

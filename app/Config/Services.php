@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Libraries\MY_Language;
+use App\Libraries\Plugins\PluginManager;
 use Locale;
 use HTMLPurifier;
 use HTMLPurifier_Config;
@@ -59,6 +60,24 @@ class Services extends BaseService
         $locale = $locale ?: $requestLocale;
 
         return new MY_Language($locale);
+    }
+
+    public static function pluginManager(bool $getShared = true): PluginManager
+    {
+        if ($getShared) {
+            return static::getSharedInstance('pluginManager');
+        }
+
+        $manager = new PluginManager();
+
+        if ($manager->canLoadPlugins()) {
+            $manager->discoverPlugins();
+            $manager->registerPluginEvents();
+        } else {
+            log_message('debug', 'PluginManager: skipping init, plugin_config table not found.');
+        }
+
+        return $manager;
     }
 
     private static HTMLPurifier $htmlPurifier;
