@@ -528,6 +528,12 @@ For custom tables, plugins can create them during `install()` and drop them duri
 3. Each enabled plugin registers its listeners via `registerEvents()`
 4. Events::on() callbacks are invoked automatically
 
+If a plugin event trigger is not available, create an issue in the opensourcepos repository requesting the event to be
+added as a feature. Specify the event, where it should be triggered, and what data should be passed to the callback.
+
+If a plugin event trigger exists but the data you need is not passed to the callback, please open an issue in the
+opensourcepos repository requesting the data to be added as a feature.
+
 ## Testing
 
 Enable plugin logging to debug:
