@@ -65,8 +65,10 @@ class Item extends Model
     public function exists(string $item_id, bool $ignore_deleted = false, bool $deleted = false): bool
     {
         $builder = $this->db->table('items');
+        $builder->groupStart();
         $builder->where('item_id', $item_id);
         $builder->orWhere('item_number', $item_id);
+        $builder->groupEnd();
 
         if (!$ignore_deleted) {
             $builder->where('deleted', $deleted);
@@ -389,9 +391,10 @@ class Item extends Model
     public function get_item_id(string $item_number, bool $ignore_deleted = false, bool $deleted = false): bool|int
     {
         $builder = $this->db->table('items');
-        $builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+        $builder->groupStart();
         $builder->where('item_number', $item_number);
         $builder->orWhere('item_id', $item_number);
+        $builder->groupEnd();
 
         if (!$ignore_deleted) {
             $builder->where('items.deleted', $deleted);

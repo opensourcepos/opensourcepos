@@ -370,6 +370,9 @@ class Config extends Secure_Controller
 
         $this->module->set_show_office_group($this->request->getPost('show_office_group') != null);
 
+        $this->db->transStart();
+
+        $attributeSuccess = true;
         if ($batchSaveData['category_dropdown']) {
             $definitionData['definition_name'] = 'ospos_category';
             $definitionData['definition_flags'] = 0;
@@ -377,12 +380,16 @@ class Config extends Secure_Controller
             $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
             $definitionData['deleted'] = 0;
 
-            $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
+            $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
         } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
-            $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
+            $attributeSuccess = $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
         }
 
-        $success = $this->appconfig->batch_save($batchSaveData);
+        $success = $attributeSuccess && $this->appconfig->batch_save($batchSaveData);
+
+        $this->db->transComplete();
+
+        $success = $success && $this->db->transStatus();
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -395,32 +402,35 @@ class Config extends Secure_Controller
      */
     public function postCheckNumberLocale(): ResponseInterface
     {
-        $number_locale = $this->request->getPost('number_locale');
-        $save_number_locale = $this->request->getPost('save_number_locale');
+        $numberLocale = $this->request->getPost('number_locale');
+        $saveNumberLocale = $this->request->getPost('save_number_locale');
+        $postedCurrencySymbol = $this->request->getPost('currency_symbol');
+        $postedCurrencyCode = $this->request->getPost('currency_code');
 
-        $fmt = new NumberFormatter($number_locale, NumberFormatter::CURRENCY);
-        if ($number_locale != $save_number_locale) {
-            $currency_symbol = $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
-            $currency_code = $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE);
-            $save_number_locale = $number_locale;
-        } else {
-            $currency_symbol = empty($this->request->getPost('currency_symbol')) ? $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL) : $this->request->getPost('currency_symbol');
-            $currency_code = empty($this->request->getPost('currency_code')) ? $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE) : $this->request->getPost('currency_code');
+        $fmt = new NumberFormatter($numberLocale, NumberFormatter::CURRENCY);
+
+        // Use posted values if provided, otherwise fall back to locale defaults
+        $currencySymbol = $postedCurrencySymbol !== '' ? $postedCurrencySymbol : $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+        $currencyCode = $postedCurrencyCode !== '' ? $postedCurrencyCode : $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE);
+
+        // Update saved locale if it changed
+        if ($numberLocale !== $saveNumberLocale) {
+            $saveNumberLocale = $numberLocale;
         }
 
         if ($this->request->getPost('thousands_separator') == 'false') {
             $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
         }
 
-        $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
-        $number_local_example = $fmt->format(1234567890.12300);
+        $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currencySymbol);
+        $numberLocaleExample = $fmt->format(1234567890.12300);
 
         return $this->response->setJSON([
-            'success'               => $number_local_example != false,
-            'save_number_locale'    => $save_number_locale,
-            'number_locale_example' => $number_local_example,
-            'currency_symbol'       => $currency_symbol,
-            'currency_code'         => $currency_code,
+            'success'               => $numberLocaleExample != false,
+            'save_number_locale'    => $saveNumberLocale,
+            'number_locale_example' => $numberLocaleExample,
+            'currency_symbol'       => $currencySymbol,
+            'currency_code'         => $currencyCode,
         ]);
     }
 

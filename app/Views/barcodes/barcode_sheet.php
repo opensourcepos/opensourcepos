@@ -13,17 +13,17 @@ $barcode_lib = new Barcode_lib();
 <html lang="<?= current_language_code() ?>">
     <head>
         <meta charset="utf-8">
-        <title><?= lang('Items.generate_barcodes') ?></title>
-        <link rel="stylesheet" href="<?= base_url() ?>css/barcode_font.css">
+        <title><?= esc(lang('Items.generate_barcodes')) ?></title>
+        <link rel="stylesheet" href="<?= esc(base_url('css/barcode_font.css'), 'url') ?>">
         <style>
             .barcode svg {
-                height: <?= $barcode_config['barcode_height'] ?>px;
-                width: <?= $barcode_config['barcode_width'] ?>px;
+                height: <?= (int) $barcode_config['barcode_height'] ?>px;
+                width: <?= (int) $barcode_config['barcode_width'] ?>px;
             }
         </style>
     </head>
-    <body class=<?= 'font_' . $barcode_lib->get_font_name($barcode_config['barcode_font']) ?> style="font-size: <?= $barcode_config['barcode_font_size'] ?>px;">
-        <table style="border-spacing: <?= $barcode_config['barcode_page_cellspacing'] ?>; width: <?= $barcode_config['barcode_page_width'] ?>%;">
+    <body class="<?= esc('font_' . $barcode_lib->get_font_name($barcode_config['barcode_font']), 'attr') ?>" style="font-size: <?= (int) $barcode_config['barcode_font_size'] ?>px;">
+        <table style="border-spacing: <?= (int) $barcode_config['barcode_page_cellspacing'] ?>px; width: <?= (int) $barcode_config['barcode_page_width'] ?>%;">
             <tr>
                 <?php
                     $count = 0;
