@@ -940,7 +940,6 @@ function plugin_headers(): array
         ['description' => lang('Plugins.description')],
         ['version'     => lang('Plugins.version'), 'escape' => false],
         ['status'      => lang('Plugins.status'),  'escape' => false],
-        ['actions'     => lang('Plugins.actions'),  'escape' => false],
     ];
 }
 

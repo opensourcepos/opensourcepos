@@ -43,7 +43,7 @@ Tests require a MariaDB/MySQL database (see CI config in `.github/workflows/phpu
 
 ### Directory Layout
 
-```
+```text
 app/
 ├── Config/         # CI4 config classes
 ├── Controllers/    # ~27 controllers (Sales, Items, Reports, Customers, etc.)
