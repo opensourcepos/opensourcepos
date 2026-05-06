@@ -471,6 +471,10 @@ class Sales extends Secure_Controller
             }
         }
 
+        if ($this->request->getPost('complete_after_payment') && $this->sale_lib->get_amount_due() <= 0) {
+            return redirect()->to(site_url('sales/complete'));
+        }
+
         return $this->_reload($data);
     }
 
@@ -1253,6 +1257,7 @@ class Sales extends Secure_Controller
 
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
+        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
 
         // TODO: the if/else set below should be converted to a switch
         if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
@@ -1641,7 +1646,9 @@ class Sales extends Secure_Controller
      */
     public function getSalesKeyboardHelp(): string
     {
-        return view('sales/help');
+        return view('sales/help', [
+            'keyboardShortcuts' => $this->sale_lib->getKeyShortcuts()
+        ]);
     }
 
     /**

@@ -405,6 +405,7 @@ helper('url');
             <div id="payment_details">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -445,6 +446,7 @@ helper('url');
                     ?>
                 <?php } else { ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -565,6 +567,21 @@ helper('url');
 </div>
 
 <script type="text/javascript">
+    const keyboardShortcuts = <?= json_encode($keyboardShortcuts ?? []) ?>;
+    const paymentsCoverTotal = <?= json_encode((bool) $payments_cover_total) ?>;
+    const shortcutCodes = {
+        items: keyboardShortcuts?.items?.code ?? null,
+        customers: keyboardShortcuts?.customers?.code ?? null,
+        suspend: keyboardShortcuts?.suspend?.code ?? null,
+        suspended: keyboardShortcuts?.suspended?.code ?? null,
+        amount: keyboardShortcuts?.amount?.code ?? null,
+        payment: keyboardShortcuts?.payment?.code ?? null,
+        complete: keyboardShortcuts?.complete?.code ?? null,
+        finish: keyboardShortcuts?.finish?.code ?? null,
+        help: keyboardShortcuts?.help?.code ?? null,
+        cancel: keyboardShortcuts?.cancel?.code ?? null
+    };
+
     $(document).ready(function() {
         const redirect = function() {
             window.location.href = "<?= site_url('sales'); ?>";
@@ -750,6 +767,7 @@ helper('url');
         });
 
         $('#add_payment_button').click(function() {
+            $('#add_payment_form').find('input[name="complete_after_payment"]').val('0');
             $('#add_payment_form').submit();
         });
 
@@ -839,43 +857,62 @@ helper('url');
     }
 
     // Add Keyboard Shortcuts/Hotkeys to Sale Register
-    document.body.onkeyup = function(e) {
-        switch (event.altKey && event.keyCode) {
-            case 49: // Alt + 1 Items Seach
-                $("#item").focus();
-                $("#item").select();
-                break;
-            case 50: // Alt + 2 Customers Search
-                $("#customer").focus();
-                $("#customer").select();
-                break;
-            case 51: // Alt + 3 Suspend Current Sale
-                $("#suspend_sale_button").click();
-                break;
-            case 52: // Alt + 4 Check Suspended
-                $("#show_suspended_sales_button").click();
-                break;
-            case 53: // Alt + 5 Edit Amount Tendered Value
-                $("#amount_tendered").focus();
-                $("#amount_tendered").select();
-                break;
-            case 54: // Alt + 6 Add Payment
-                $("#add_payment_button").click();
-                break;
-            case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
-                $("#add_payment_button").click();
-                window.location.href = "<?= 'sales/complete' ?>";
-                break;
-            case 56: // Alt + 8 Finish Quote/Invoice without payment
-                $("#finish_invoice_quote_button").click();
-                break;
-            case 57: // Alt + 9 Open Shortcuts Help Modal
-                $("#show_keyboard_help").click();
-                break;
+    document.body.onkeyup = function(event) {
+        if (event.altKey) {
+            switch (event.keyCode) {
+                case shortcutCodes.items:
+                    $("#item").focus();
+                    $("#item").select();
+                    break;
+                case shortcutCodes.customers:
+                    $("#customer").focus();
+                    $("#customer").select();
+                    break;
+                case shortcutCodes.suspend:
+                    $("#suspend_sale_button").click();
+                    break;
+                case shortcutCodes.suspended:
+                    $("#show_suspended_sales_button").click();
+                    break;
+                case shortcutCodes.amount:
+                    $("#amount_tendered").focus();
+                    $("#amount_tendered").select();
+                    break;
+                case shortcutCodes.payment:
+                    $("#add_payment_button").click();
+                    break;
+                case shortcutCodes.complete:
+                    if (paymentsCoverTotal && $("#finish_sale_button").length) {
+                        $("#finish_sale_button").click();
+                    } else {
+                        const $addPaymentForm = $("#add_payment_form");
+                        let $completeAfterPayment = $addPaymentForm.find('input[name="complete_after_payment"]');
+
+                        if (!$completeAfterPayment.length) {
+                            $completeAfterPayment = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'complete_after_payment',
+                                value: '1'
+                            });
+                            $addPaymentForm.append($completeAfterPayment);
+                        } else {
+                            $completeAfterPayment.val('1');
+                        }
+
+                        $("#add_payment_button").click();
+                    }
+                    break;
+                case shortcutCodes.finish:
+                    $("#finish_invoice_quote_button").click();
+                    break;
+                case shortcutCodes.help:
+                    $("#show_keyboard_help").click();
+                    break;
+            }
         }
 
         switch (event.keyCode) {
-            case 27: // ESC Cancel Current Sale
+            case shortcutCodes.cancel:
                 $("#cancel_sale_button").click();
                 break;
         }

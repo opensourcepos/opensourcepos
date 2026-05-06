@@ -221,6 +221,7 @@ class Config extends Secure_Controller
      */
     public function getIndex(): string
     {
+        $data['config'] = $this->config;
         $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
         $data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
@@ -231,6 +232,8 @@ class Config extends Secure_Controller
         $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
         $data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
         $data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
+        $data['keyboardShortcutsOptions'] = $this->sale_lib->getKeyShortcutsOptions();
+        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
         $data['rounding_options'] = rounding_mode::get_rounding_options();
         $data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
         $data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
@@ -944,6 +947,44 @@ class Config extends Secure_Controller
         $success = $this->appconfig->batch_save($batch_save_data);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    /**
+     * Saves keyboard shortcut bindings.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveShortcuts(): ResponseInterface
+    {
+        $allowedShortcuts = array_keys($this->sale_lib->getKeyShortcutsOptions());
+        $currentShortcuts = $this->sale_lib->getKeyShortcuts();
+        $batchSaveData = [];
+
+        foreach ($currentShortcuts as $name => $shortcut) {
+            $postedValue = trim((string)$this->request->getPost('key_' . $name));
+
+            if (!in_array($postedValue, $allowedShortcuts, true)) {
+                $postedValue = $shortcut['value'];
+            }
+
+            $batchSaveData['key_' . $name] = $postedValue;
+        }
+
+        $duplicateValues = array_filter(array_count_values($batchSaveData), static fn(int $count): bool => $count > 1);
+        if (!empty($duplicateValues)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Config.shortcuts_duplicate_bindings')
+            ]);
+        }
+
+        $success = $this->appconfig->batch_save($batchSaveData);
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')
+        ]);
     }
 
     /**
