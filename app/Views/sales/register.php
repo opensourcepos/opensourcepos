@@ -858,6 +858,9 @@ helper('url');
 
     // Add Keyboard Shortcuts/Hotkeys to Sale Register
     document.body.onkeyup = function(event) {
+        if ($(event.target).closest('.modal').length || $('.modal.in').length) {
+            return;
+        }
         if (event.altKey) {
             switch (event.keyCode) {
                 case shortcutCodes.items:
