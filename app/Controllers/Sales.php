@@ -471,10 +471,6 @@ class Sales extends Secure_Controller
             }
         }
 
-        if ($this->request->getPost('complete_after_payment') && $this->sale_lib->get_amount_due() <= 0) {
-            return redirect()->to(site_url('sales/complete'));
-        }
-
         return $this->_reload($data);
     }
 

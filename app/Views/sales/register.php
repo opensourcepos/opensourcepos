@@ -885,20 +885,6 @@ helper('url');
                     if (paymentsCoverTotal && $("#finish_sale_button").length) {
                         $("#finish_sale_button").click();
                     } else {
-                        const $addPaymentForm = $("#add_payment_form");
-                        let $completeAfterPayment = $addPaymentForm.find('input[name="complete_after_payment"]');
-
-                        if (!$completeAfterPayment.length) {
-                            $completeAfterPayment = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'complete_after_payment',
-                                value: '1'
-                            });
-                            $addPaymentForm.append($completeAfterPayment);
-                        } else {
-                            $completeAfterPayment.val('1');
-                        }
-
                         $("#add_payment_button").click();
                     }
                     break;
