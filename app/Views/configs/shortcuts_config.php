@@ -28,7 +28,7 @@ $shortcutLabels = [
         <div class="row">
             <fieldset id="config_info">
                 <div class="col-md-8">
-                    <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
+                    <div id="required_fields_message"><?= esc(lang('Common.fields_required_message')) ?></div>
                     <ul id="shortcuts_error_message_box" class="error_message_box"></ul>
 
                     <?php foreach ($shortcutLabels as $name => $label): ?>
@@ -72,8 +72,9 @@ $shortcutLabels = [
                     });
                 },
                 error: function(xhr) {
+                    const rawMessage = xhr.responseJSON?.message ?? xhr.responseText ?? <?= json_encode(lang('Config.shortcuts_save_error')) ?>;
                     $.notify({
-                        message: xhr.responseJSON?.message ?? xhr.responseText ?? <?= json_encode(lang('Config.shortcuts_save_error')) ?>
+                        message: DOMPurify.sanitize(rawMessage)
                     }, {
                         type: 'danger'
                     });
