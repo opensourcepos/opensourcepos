@@ -189,7 +189,7 @@
                         'name'    => 'receipt_show_secondary_currency',
                         'value'   => 'receipt_show_secondary_currency',
                         'id'      => 'receipt_show_secondary_currency',
-                        'checked' => $config['receipt_show_secondary_currency'] == 1
+                        'checked' => ($config['receipt_show_secondary_currency'] ?? 0) == 1
                     ]) ?>
                 </div>
             </div>

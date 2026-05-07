@@ -69,7 +69,7 @@ helper('url');
         </tr>
         <tr>
             <td style="text-align: center; padding-right: 5%;"><?= esc($secondaryTotalLabel ?? secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?>:</td>
-            <td style="text-align: center;"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
+            <td style="text-align: center;"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></td>
         </tr>
     </table>
 <?php endif; ?>
@@ -204,7 +204,7 @@ helper('url');
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
-                                    echo esc($item['secondaryPriceDisplay'] ?? to_currency($item['price']));
+                    echo esc($item['secondaryPriceDisplay'] ?? secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true));
                                     echo form_hidden('price', to_currency_no_money($item['price']));
                                 }
                                 ?>
@@ -401,7 +401,7 @@ helper('url');
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -419,7 +419,7 @@ helper('url');
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.amount_due'), $secondaryCurrency)) ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? to_currency($amount_due)) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? secondary_currency_render_amount((float) $amount_due, $secondaryCurrency)) ?></span></th>
                 </tr>
             <?php } ?>
         </table>

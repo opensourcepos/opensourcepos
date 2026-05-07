@@ -43,7 +43,7 @@
             <div class="summary_row"><?= esc($label) . ": " . esc($value) ?></div>
         <?php } elseif (is_numeric($value) && preg_match($currencySummaryPattern, $name)) { ?>
             <div class="summary_row"><?= esc($label) . ': ' . esc(to_currency($value)) ?></div>
-            <?php if (!empty($summary_secondary_data[$name])) { ?>
+            <?php if ($secondaryCurrency['show'] && !empty($summary_secondary_data[$name])) { ?>
                 <div class="summary_row"><?= esc(secondary_currency_display_label($label, $secondaryCurrency)) . ': ' . esc($summary_secondary_data[$name]) ?></div>
             <?php } elseif ($secondaryCurrency['show']) { ?>
                 <div class="summary_row"><?= esc(secondary_currency_display_label($label, $secondaryCurrency)) . ': ' . esc(secondary_currency_render_amount((float) $value, $secondaryCurrency)) ?></div>

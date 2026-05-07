@@ -33,7 +33,7 @@
 <div id="report_summary">
     <?php foreach ($overall_summary_display_data ?? [] as $summary_row) { ?>
         <div class="summary_row"><?= esc($summary_row['primary']) ?></div>
-        <?php if ($secondaryCurrency['show']) { ?>
+        <?php if (!empty($secondaryCurrency['show'])) { ?>
             <div class="summary_row"><?= esc($summary_row['secondary']) ?></div>
             <div class="summary_row" style="height: 0.9em;"></div>
         <?php } ?>

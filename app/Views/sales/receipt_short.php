@@ -122,7 +122,7 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
         <?php if ($secondaryCurrency['show']) { ?>
         <tr>
             <td colspan="2" style="text-align: right;"><?= esc(secondary_currency_display_label(lang('Sales.total'), $secondaryCurrency)) ?></td>
-            <td class="total-value"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
+                    <td class="total-value"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></td>
         </tr>
         <?php } ?>
 

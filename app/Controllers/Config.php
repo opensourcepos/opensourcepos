@@ -479,7 +479,7 @@ class Config extends Secure_Controller
             'secondary_currency_enabled'  => $this->request->getPost('secondary_currency_enabled') != null,
             'secondary_currency_symbol'   => htmlspecialchars($this->request->getPost('secondary_currency_symbol') ?? ''),
             'secondary_currency_code'     => $this->request->getPost('secondary_currency_code'),
-            'secondary_currency_rate'     => $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'secondary_currency_rate'     => parse_decimals($this->request->getPost('secondary_currency_rate') ?? ''),
             'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],

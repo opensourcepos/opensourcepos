@@ -132,7 +132,7 @@ if (isset($error_message)) {
                     <td><?= esc($item['item_number']) ?></td>
                     <td class="item-name"><?= esc($item['name']) ?></td>
                     <td style="text-align: center;"><?= to_quantity_decimals($item['quantity']) ?></td>
-                    <td><?= esc($item['secondaryPriceDisplay'] ?? to_currency($item['price'])) ?></td>
+                    <td><?= esc($item['secondaryPriceDisplay'] ?? secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true)) ?></td>
                     <td style="text-align: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                     <?php if ($discount > 0): ?>
                         <td style="text-align: center;"><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
@@ -178,7 +178,7 @@ if (isset($error_message)) {
             <tr>
                 <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
                 <td colspan="2" class="total-line"><?= esc(secondary_currency_display_label(lang('Sales.total'), $secondaryCurrency)) ?></td>
-                <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
+                        <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></td>
             </tr>
             <tr>
                 <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>

@@ -77,13 +77,21 @@ abstract class Summary_report extends Report
             )'
         );
 
+        $secondary_rate_subquery = '(SELECT AVG(sale_rates.secondary_currency_rate)
+            FROM (
+                SELECT sales.sale_id, MAX(sales.secondary_currency_rate) AS secondary_currency_rate
+                FROM ' . $this->db->prefixTable('sales') . ' AS sales
+                WHERE ' . $where . '
+                GROUP BY sales.sale_id
+            ) AS sale_rates)';
+
         $builder->select("
                 IFNULL($sale_subtotal, $sale_total) AS subtotal,
                 $sales_tax AS tax,
                 IFNULL($sale_total, $sale_subtotal) AS total,
                 $sale_cost AS cost,
                 (IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit,
-                AVG(sales.secondary_currency_rate) AS secondary_currency_rate
+                $secondary_rate_subquery AS secondary_currency_rate
         ");
     }
 

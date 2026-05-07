@@ -69,7 +69,7 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
         ?>
                 <tr>
                     <td><?= esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
-                    <td><?= esc($item['secondaryPriceDisplay'] ?? to_currency($item['price'])) ?></td>
+                    <td><?= esc($item['secondaryPriceDisplay'] ?? secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true)) ?></td>
                     <td><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td class="total-value"><?= to_currency($item[($config['receipt_show_total_discount'] ? 'total' : 'discounted_total')]) ?></td>
                     <?php if ($config['receipt_show_tax_ind']) { ?>
@@ -114,12 +114,12 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
         <?php if ($config['receipt_show_taxes']) { ?>
             <tr>
                 <td colspan="3" style="text-align: right; border-top: 2px solid #000000;"><?= lang('Sales.sub_total') ?></td>
-                <td style="text-align: right; border-top: 2px solid #000000;"><?= esc($secondarySubtotalDisplay ?? to_currency($subtotal)) ?></td>
+                <td style="text-align: right; border-top: 2px solid #000000;"><?= esc($secondarySubtotalDisplay ?? secondary_currency_render_amount((float) $subtotal, $secondaryCurrency)) ?></td>
             </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="3" class="total-value"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?>:</td>
-                    <td class="total-value"><?= esc($tax['secondarySaleTaxAmountDisplay'] ?? to_currency_tax($tax['sale_tax_amount'])) ?></td>
+                    <td class="total-value"><?= esc($tax['secondarySaleTaxAmountDisplay'] ?? secondary_currency_render_amount((float) $tax['sale_tax_amount'], $secondaryCurrency)) ?></td>
                 </tr>
         <?php
             }
@@ -131,7 +131,7 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
         <?php $border = (!$config['receipt_show_taxes'] && !($config['receipt_show_total_discount'] && $discount > 0)); ?>
         <tr>
             <td colspan="3" style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= lang('Sales.total') ?></td>
-            <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= esc($secondaryTotalDisplay ?? to_currency($total)) . ' <br> ' . to_currency($total) ?></td>
+            <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) . ' <br> ' . to_currency($total) ?></td>
         </tr>
 
         <tr>
