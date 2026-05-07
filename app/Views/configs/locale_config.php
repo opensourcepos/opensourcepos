@@ -90,6 +90,81 @@
             </div>
 
             <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.secondary_currency_enable'), 'secondary_currency_enabled', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-2">
+                    <?= form_checkbox([
+                        'name'    => 'secondary_currency_enabled',
+                        'id'      => 'secondary_currency_enabled',
+                        'value'   => 'secondary_currency_enabled',
+                        'checked' => ($config['secondary_currency_enabled'] ?? 1) == 1
+                    ]) ?>
+                </div>
+                <div class="col-xs-4">
+                    <label class="control-label">
+                        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.secondary_currency_enable_tooltip') ?>"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="secondary_currency_fields" style="<?= (($config['secondary_currency_enabled'] ?? 1) == 1) ? '' : 'display:none;' ?>">
+                <div class="form-group form-group-sm">
+                    <?= form_label(lang('Config.secondary_currency_symbol'), 'secondary_currency_symbol', ['class' => 'control-label col-xs-2']) ?>
+                    <div class="col-xs-1">
+                        <?= form_input([
+                            'name'  => 'secondary_currency_symbol',
+                            'id'    => 'secondary_currency_symbol',
+                            'class' => 'form-control input-sm',
+                            'value' => $config['secondary_currency_symbol'] ?? 'LL'
+                        ]) ?>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <?= form_label(lang('Config.secondary_currency_code'), 'secondary_currency_code', ['class' => 'control-label col-xs-2']) ?>
+                    <div class="col-xs-1">
+                        <?= form_input([
+                            'name'  => 'secondary_currency_code',
+                            'id'    => 'secondary_currency_code',
+                            'class' => 'form-control input-sm',
+                            'value' => $config['secondary_currency_code'] ?? 'LBP'
+                        ]) ?>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <?= form_label(lang('Config.secondary_currency_rate'), 'secondary_currency_rate', ['class' => 'control-label col-xs-2']) ?>
+                    <div class="col-xs-1">
+                        <?= form_input([
+                            'type'  => 'number',
+                            'step'  => '0.0001',
+                            'name'  => 'secondary_currency_rate',
+                            'id'    => 'secondary_currency_rate',
+                            'class' => 'form-control input-sm',
+                            'value' => $config['rate'] ?? '1'
+                        ]) ?>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <?= form_label(lang('Config.secondary_currency_decimals'), 'secondary_currency_decimals', ['class' => 'control-label col-xs-2']) ?>
+                    <div class="col-xs-2">
+                        <?= form_dropdown(
+                            'secondary_currency_decimals',
+                            [
+                                '0' => '0',
+                                '1' => '1',
+                                '2' => '2',
+                                '3' => '3',
+                                '4' => '4'
+                            ],
+                            $config['secondary_currency_decimals'] ?? 0,
+                            ['class' => 'form-control input-sm']
+                        ) ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.tax_decimals'), 'tax_decimals', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_dropdown(
@@ -290,6 +365,20 @@
     // Validation and submit handling
     $(document).ready(function() {
         $('span').tooltip();
+
+        const $secondaryCurrencyEnabled = $('#secondary_currency_enabled');
+        const $secondaryCurrencyFields = $('#secondary_currency_fields');
+
+        function toggleSecondaryCurrencyFields() {
+            if ($secondaryCurrencyEnabled.is(':checked')) {
+                $secondaryCurrencyFields.show();
+            } else {
+                $secondaryCurrencyFields.hide();
+            }
+        }
+
+        toggleSecondaryCurrencyFields();
+        $secondaryCurrencyEnabled.change(toggleSecondaryCurrencyFields);
 
         $('#currency_symbol, #thousands_separator, #currency_code').change(function() {
             var data = {

@@ -53,6 +53,13 @@ if (isset($error_message)) {
 
 <?= view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
+<?php $rate = (($config['secondary_currency_enabled'] ?? 1) == 1) ? (float)($config['rate'] ?? 0) : 0; ?>
+<?php
+$secondary_currency_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+$secondary_currency_symbol = (string)($config['secondary_currency_symbol'] ?? '');
+$secondary_currency_code = (string)($config['secondary_currency_code'] ?? '');
+?>
+
 <div class="print_hide" id="control_buttons" style="text-align: right;">
     <a href="javascript:printdoc();">
         <div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print') ?></div>
@@ -128,7 +135,7 @@ if (isset($error_message)) {
                     <td><?= esc($item['item_number']) ?></td>
                     <td class="item-name"><?= esc($item['name']) ?></td>
                     <td style="text-align: center;"><?= to_quantity_decimals($item['quantity']) ?></td>
-                    <td><?php if ($print_price_info) echo to_currency($item['price']) ?></td>
+                        <td><?php if ($print_price_info) echo $rate > 0 ? secondary_currency_dual_amount((float)$item['price'], $rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) : to_currency($item['price']) ?></td>
                     <td style="text-align: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                     <td style="border-right: solid 1px; text-align: right;"><?php if ($print_price_info) echo to_currency($item['discounted_total']) ?></td>
                 </tr>
@@ -165,6 +172,18 @@ if (isset($error_message)) {
                 <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
                 <td class="total-value" id="total"><?= to_currency($total) ?></td>
             </tr>
+            <?php if ($print_price_info && !empty($rate) && $rate > 0) { ?>
+                <tr>
+                    <td colspan="3" class="blank"> </td>
+                    <td colspan="2" class="total-line"><?= 'Total ' . secondary_currency_label($secondary_currency_symbol, $secondary_currency_code) ?></td>
+                    <td class="total-value" id="total_secondary_currency"><?= secondary_currency_amount((float)$total, $rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="blank"> </td>
+                    <td colspan="2" class="total-line"><?= lang('Sales.rate') ?></td>
+                    <td class="total-value" id="currency_rate"><?= secondary_currency_rate_display($rate) ?></td>
+                </tr>
+            <?php } ?>
         <?php } ?>
         <?php
         $only_sale_check = false;

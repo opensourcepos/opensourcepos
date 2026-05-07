@@ -133,11 +133,14 @@ if (isset($success)) {
                     <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 
                     <tr>
-                        <td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+                        <td>
+                            <?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>', ['title' => lang('Common.delete')]) ?>
+                            <?= anchor("items/generateBarcodes/" . $item['item_id'], '<span class="glyphicon glyphicon-barcode"></span>', ['title' => lang('Items.generate_barcodes'), 'style' => 'margin-left: 0.35em;', 'target' => '_blank', 'rel' => 'noopener']) ?>
+                        </td>
                         <td><?= esc($item['item_number']) ?></td>
                         <td style="text-align: center;">
                             <?= esc($item['name'] . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br>
-                            <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']' ?>
+                            <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
                             <?= form_hidden('location', (string)$item['item_location']) ?>
                         </td>
 
@@ -215,15 +218,15 @@ if (isset($success)) {
                                     'class' => 'form-control input-sm',
                                     'value' => $item['description']
                                 ]);
+                            } else {
+                                if ($item['description'] != '') {    // TODO: !==?
+                                    echo $item['description'];
+                                    echo form_hidden('description', $item['description']);
                                 } else {
-                                    if ($item['description'] != '') {    // TODO: !==?
-                                        echo esc($item['description']);
-                                        echo form_hidden('description', $item['description']);
-                                    } else {
-                                        echo '<i>' . lang('Sales.no_description') . '</i>';
-                                        echo form_hidden('description', '');
-                                    }
+                                    echo '<i>' . lang('Sales.no_description') . '</i>';
+                                    echo form_hidden('description', '');
                                 }
+                            }
                             ?>
                         </td>
                         <td colspan="7"></td>
@@ -305,6 +308,14 @@ if (isset($success)) {
 
         <?php } ?>
 
+        <?php
+        $secondary_currency_enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
+        $secondary_currency_rate = (float)($config['rate'] ?? 0);
+        $secondary_currency_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+        $secondary_currency_symbol = (string)($config['secondary_currency_symbol'] ?? '');
+        $secondary_currency_code = (string)($config['secondary_currency_code'] ?? '');
+        ?>
+
         <table class="sales_table_100" id="sale_totals">
             <tr>
                 <?php if ($mode != 'requisition') { ?>
@@ -315,6 +326,12 @@ if (isset($success)) {
                     <th style="width: 45%; text-align: right;"></th>
                 <?php } ?>
             </tr>
+            <?php if ($mode != 'requisition' && $secondary_currency_enabled && $secondary_currency_rate > 0) { ?>
+                <tr>
+                    <th style="width: 55%;"><?= 'Total ' . secondary_currency_label($secondary_currency_symbol, $secondary_currency_code) ?></th>
+                    <th style="width: 45%; text-align: right;"><?= secondary_currency_amount((float)$total, $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) ?></th>
+                </tr>
+            <?php } ?>
         </table>
 
         <?php if (count($cart) > 0) { ?>

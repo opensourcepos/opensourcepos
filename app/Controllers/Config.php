@@ -221,6 +221,7 @@ class Config extends Secure_Controller
      */
     public function getIndex(): string
     {
+        $data['config'] = $this->config;
         $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
         $data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
@@ -231,6 +232,38 @@ class Config extends Secure_Controller
         $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
         $data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
         $data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
+        $data['keyboardShortcutsOptions'] = $this->sale_lib->getKeyShortcutsOptions();
+        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
+        $data['scale_export_formats'] = [
+            'txt' => 'TXT',
+            'csv' => 'CSV'
+        ];
+        $data['scale_export_charsets'] = [
+            'windows-1256' => 'Windows-1256',
+            'utf-8' => 'UTF-8',
+            'windows-1252' => 'Windows-1252'
+        ];
+        $data['scale_export_delimiters'] = [
+            ';' => ';',
+            ',' => ',',
+            "\t" => 'TAB'
+        ];
+        $data['scale_export_fields_options'] = [
+            'legacy_code' => 'Dept. Code (21)',
+            'item_number' => 'Item Number',
+            'repeat_item_number' => 'Repeat Item Number',
+            'name' => 'Item Name',
+            'description' => 'Description',
+            'category' => 'Category',
+            'supplier' => 'Supplier',
+            'unit_price' => 'Retail Price',
+            'cost_price' => 'Wholesale Price',
+            'qty_per_pack' => 'Qty per Pack',
+            'pack_name' => 'Pack Name',
+            'scale_identifier' => 'Scale Identifier',
+            'legacy_tail' => 'Shelf Time (15)',
+            'item_id' => 'Item ID'
+        ];
         $data['rounding_options'] = rounding_mode::get_rounding_options();
         $data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
         $data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
@@ -374,6 +407,8 @@ class Config extends Secure_Controller
             'default_sales_discount'            => parse_decimals($this->request->getPost('default_sales_discount')),
             'default_receivings_discount_type'  => $this->request->getPost('default_receivings_discount_type') != null,
             'default_receivings_discount'       => parse_decimals($this->request->getPost('default_receivings_discount')),
+            'second_display_enabled'            => $this->request->getPost('second_display_enabled') != null,
+            'show_grid_enabled'                 => $this->request->getPost('show_grid_enabled') != null,
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
@@ -382,7 +417,7 @@ class Config extends Secure_Controller
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
             'image_max_height'                  => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
             'image_max_size'                    => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
-            'image_allowed_types'               => implode(',', $this->request->getPost('image_allowed_types')),
+            'image_allowed_types'               => $this->normalizeImageAllowedTypes($this->request->getPost('image_allowed_types')),
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),
@@ -398,22 +433,26 @@ class Config extends Secure_Controller
 
         $this->module->set_show_office_group($this->request->getPost('show_office_group') != null);
 
-        $this->db->transStart();
-
         $attributeSuccess = true;
-        if ($batchSaveData['category_dropdown']) {
-            $definitionData['definition_name'] = 'ospos_category';
-            $definitionData['definition_flags'] = 0;
-            $definitionData['definition_type'] = 'DROPDOWN';
-            $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
-            $definitionData['deleted'] = 0;
+        try {
+            if ($batchSaveData['category_dropdown']) {
+                $definitionData['definition_name'] = 'ospos_category';
+                $definitionData['definition_flags'] = 0;
+                $definitionData['definition_type'] = 'DROPDOWN';
+                $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
+                $definitionData['deleted'] = 0;
 
-            $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
-        } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
-            $attributeSuccess = $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
+                $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
+            } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
+                $attributeSuccess = $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
+            }
+        } catch (\Throwable) {
+            $attributeSuccess = false;
         }
 
-        $success = $attributeSuccess && $this->appconfig->batch_save($batchSaveData);
+        $this->db->transStart();
+
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         $this->db->transComplete();
 
@@ -476,6 +515,12 @@ class Config extends Secure_Controller
         $batch_save_data = [
             'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
             'currency_code'         => $this->request->getPost('currency_code'),
+            'secondary_currency_enabled'  => $this->request->getPost('secondary_currency_enabled') != null,
+            'secondary_currency_symbol'   => htmlspecialchars($this->request->getPost('secondary_currency_symbol') ?? ''),
+            'secondary_currency_code'     => $this->request->getPost('secondary_currency_code'),
+            'rate'                        => $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'secondary_currency_rate'     => $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
             'timezone'              => $this->request->getPost('timezone'),
@@ -918,6 +963,28 @@ class Config extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
+    /**
+     * Saves scale configuration. Used in app/Views/configs/scale_config.php.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveScale(): ResponseInterface
+    {
+        $batch_save_data = [
+            'scale_sync_enabled'     => $this->request->getPost('scale_sync_enabled') != null,
+            'scale_export_format'    => $this->request->getPost('scale_export_format'),
+            'scale_export_charset'   => $this->request->getPost('scale_export_charset'),
+            'scale_export_delimiter' => $this->request->getPost('scale_export_delimiter'),
+            'barcode_formats'        => json_encode($this->request->getPost('barcode_formats') ?? []),
+            'scale_export_fields'    => json_encode($this->request->getPost('scale_export_fields') ?? [])
+        ];
+
+        $success = $this->appconfig->batch_save($batch_save_data);
+
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
     public function postSaveReceipt(): ResponseInterface
     {
         $batch_save_data = [
@@ -931,6 +998,7 @@ class Config extends Secure_Controller
             'receipt_show_tax_ind'          => $this->request->getPost('receipt_show_tax_ind') != null,
             'receipt_show_total_discount'   => $this->request->getPost('receipt_show_total_discount') != null,
             'receipt_show_description'      => $this->request->getPost('receipt_show_description') != null,
+            'receipt_show_secondary_currency' => $this->request->getPost('receipt_show_secondary_currency') != null,
             'receipt_show_serialnumber'     => $this->request->getPost('receipt_show_serialnumber') != null,
             'print_silently'                => $this->request->getPost('print_silently') != null,
             'print_header'                  => $this->request->getPost('print_header') != null,
@@ -944,6 +1012,44 @@ class Config extends Secure_Controller
         $success = $this->appconfig->batch_save($batch_save_data);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    /**
+     * Saves keyboard shortcut bindings.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveShortcuts(): ResponseInterface
+    {
+        $allowedShortcuts = array_keys($this->sale_lib->getKeyShortcutsOptions());
+        $currentShortcuts = $this->sale_lib->getKeyShortcuts();
+        $batchSaveData = [];
+
+        foreach ($currentShortcuts as $name => $shortcut) {
+            $postedValue = trim((string)$this->request->getPost('key_' . $name));
+
+            if (!in_array($postedValue, $allowedShortcuts, true)) {
+                $postedValue = $shortcut['value'];
+            }
+
+            $batchSaveData['key_' . $name] = $postedValue;
+        }
+
+        $duplicateValues = array_filter(array_count_values($batchSaveData), static fn(int $count): bool => $count > 1);
+        if (!empty($duplicateValues)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Config.shortcuts_duplicate_bindings')
+            ]);
+        }
+
+        $success = $this->appconfig->batch_save($batchSaveData);
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')
+        ]);
     }
 
     /**
@@ -1004,6 +1110,26 @@ class Config extends Secure_Controller
     }
 
     /**
+     * Normalize the image allowed types input into a comma-separated string.
+     *
+     * @param mixed $imageAllowedTypes
+     * @return string
+     */
+    private function normalizeImageAllowedTypes(mixed $imageAllowedTypes): string
+    {
+        if (is_array($imageAllowedTypes)) {
+            return implode(',', $imageAllowedTypes);
+        }
+
+        $imageAllowedTypes = trim((string)$imageAllowedTypes);
+        if ($imageAllowedTypes === '') {
+            return $this->config['image_allowed_types'] ?? '';
+        }
+
+        return $imageAllowedTypes;
+    }
+
+    /**
      * Validates suggestions column configuration to prevent SQL injection.
      *
      * @param mixed $column The column value from POST
@@ -1025,3 +1151,4 @@ class Config extends Secure_Controller
         return in_array($column, $allowed, true) ? $column : $fallback;
     }
 }
+

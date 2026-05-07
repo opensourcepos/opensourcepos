@@ -41,7 +41,9 @@ class Specific_customer extends Report
                 ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
                 ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter'],
                 ['payment_type'  => lang('Reports.payment_type'), 'sortable' => false],
-                ['comment'       => lang('Reports.comments')]
+                ['comment'       => lang('Reports.comments')],
+                ['rate'          => lang('Reports.rate')],
+                ['total_secondary_currency' => lang('Reports.total_secondary_currency')]
             ],
             'details' => [
                 lang('Reports.name'),
@@ -91,7 +93,8 @@ class Specific_customer extends Report
             SUM(cost) AS cost,
             SUM(profit) AS profit,
             MAX(payment_type) AS payment_type,
-            MAX(comment) AS comment');
+            MAX(comment) AS comment,
+            MAX(rate) AS rate');
 
         $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicated code
 
@@ -169,7 +172,7 @@ class Specific_customer extends Report
     public function getSummaryData(array $inputs): array
     {
         $builder = $this->db->table('sales_items_temp');
-        $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+        $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(FLOOR(total * rate)) AS total_secondary_currency, SUM(cost) AS cost, SUM(profit) AS profit');
 
         $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicate code
 

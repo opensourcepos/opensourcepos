@@ -36,6 +36,8 @@
  * @var int $cash_mode
  * @var float $non_cash_total
  * @var float $cash_amount_due
+ * @var float $rate
+ * @var array $shortcut_categories
  * @var array $config
  */
 
@@ -60,6 +62,58 @@ if (isset($success)) {
 
 helper('url');
 ?>
+
+<?php if (!empty($rate) && $rate > 0): ?>
+    <table align="center" style="font-size: 22px; font-weight: 600; background-color: rgb(221, 221, 221); width: 25%; margin: 0 auto 0.5em; border: dashed 1px;">
+        <tr>
+            <td style="text-align: center; padding-right: 5%;">Total:</td>
+            <td style="text-align: center;"><?= to_currency($total) ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: center; padding-right: 5%;">Total LBP:</td>
+            <td style="text-align: center;"><?= number_format($total * $rate) ?></td>
+        </tr>
+    </table>
+<?php endif; ?>
+
+<?php if (!empty($shortcut_categories) && ($config['show_grid_enabled'] ?? true) == 1) { ?>
+    <div class="grid-toggle-row" style="clear:both; width:100%; margin:0 0 0.25em 0; text-align:left;">
+        <button type="button" class="toggle-grid btn btn-info btn-sm" data-target=".shortcut-content">Show Grid</button>
+    </div>
+    <div class="content shortcut-content" style="display:none; width:100%; background-color:#DDD; margin:0.25em 0 0.5em 0;">
+        <div class="tab">
+            <div class="container-fluid">
+                <br />
+                <ul class="nav nav-tabs">
+                    <?php foreach ($shortcut_categories as $index => $shortcut_category) { ?>
+                        <li class="<?= $index === 0 ? 'active' : '' ?>">
+                            <a href="#<?= esc($shortcut_category['key']) ?>" data-toggle="tab"><?= esc($shortcut_category['category']) ?></a>
+                        </li>
+                    <?php } ?>
+                </ul>
+                <div class="tab-content">
+                    <br /><br>
+                    <?php foreach ($shortcut_categories as $index => $shortcut_category) { ?>
+                        <div id="<?= esc($shortcut_category['key']) ?>" class="tab-pane fade <?= $index === 0 ? 'in active' : '' ?>">
+                            <?php foreach ($shortcut_category['items'] as $shortcut_item) { ?>
+                                <div align="center" style="font-weight:700; background-color:#DDD; float:left; margin-left:5px; margin-bottom:10px">
+                                    <input
+                                        style="text-transform:uppercase; font-weight:bold; white-space:normal; display:inline-block; width:150px; height:75px"
+                                        class="btn btn-info btn-sm"
+                                        type="button"
+                                        onclick="setShortcutItem('<?= esc($shortcut_item['item_id'], 'js') ?>')"
+                                        value="<?= esc($shortcut_item['name']) ?>"
+                                        alt="<?= esc($shortcut_item['item_id']) ?>">
+                                </div>
+                            <?php } ?>
+                            <div style="clear:both"></div>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 
 <div id="register_wrapper">
 
@@ -90,17 +144,27 @@ helper('url');
                     </li>
                 <?php } ?>
 
-                <li class="pull-right">
+                  <li class="pull-right">
                     <button class="btn btn-default btn-sm modal-dlg" id="show_suspended_sales_button" data-href="<?= esc("$controller_name/suspended") ?>"
                         title="<?= lang(ucfirst($controller_name) . '.suspended_sales') ?>">
                         <span class="glyphicon glyphicon-align-justify">&nbsp;</span><?= lang(ucfirst($controller_name) . '.suspended_sales') ?>
                     </button>
-                </li>
+                  </li>
 
-                <?php
-                $employee = model(Employee::class);
-                if ($employee->has_grant('reports_sales', session('person_id'))) {
-                ?>
+                  <?php if (($config['second_display_enabled'] ?? true) == 1) { ?>
+                      <li class="pull-right">
+                          <?= anchor(
+                              "$controller_name/secondDisplay",
+                              '<span class="glyphicon glyphicon-blackboard">&nbsp;</span>' . lang(ucfirst($controller_name) . '.second_display'),
+                              ['class' => 'btn btn-success btn-sm', 'id' => 'show_second_display', 'title' => lang(ucfirst($controller_name) . '.second_display'), 'onclick' => "return openSecondDisplay(this.href);"]
+                          ) ?>
+                      </li>
+                  <?php } ?>
+
+                  <?php
+                  $employee = model(Employee::class);
+                  if ($employee->has_grant('reports_sales', session('person_id'))) {
+                  ?>
                     <li class="pull-right">
                         <?= anchor(
                             "$controller_name/manage",
@@ -388,23 +452,47 @@ helper('url');
                 <th style="width: 55%; font-size: 150%"><?= lang(ucfirst($controller_name) . '.total') ?></th>
                 <th style="width: 45%; font-size: 150%; text-align: right;"><span id="sale_total"><?= to_currency($total) ?></span></th>
             </tr>
+            <?php if (!empty($rate) && $rate > 0): ?>
+                <tr>
+                    <th style="width: 55%;">Total LBP</th>
+                    <th style="width: 45%; text-align: right;"><span id="sale_total_lbp"><?= number_format($total * $rate) ?></span></th>
+                </tr>
+            <?php endif; ?>
         </table>
 
         <?php if (count($cart) > 0) { // Only show this part if there are Items already in the register ?>
-            <table class="sales_table_100" id="payment_totals">
-                <tr>
-                    <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.payments_total') ?></th>
-                    <th style="width: 45%; text-align: right;"><?= to_currency($payments_total) ?></th>
-                </tr>
-                <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
-                </tr>
-            </table>
+    <table class="sales_table_100" id="payment_totals">
+        <tr>
+            <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.payments_total') ?></th>
+            <th style="width: 45%; text-align: right;"><?= to_currency($payments_total) ?></th>
+        </tr>
+        <tr>
+            <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
+            <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
+        </tr>
+        <?php if (!empty($rate) && $rate > 0): ?>
+            <tr>
+                <th style="width: 55%;">Amount Due LBP</th>
+                <th style="width: 45%; text-align: right;"><span id="sale_amount_due_lbp"><?= number_format($amount_due * $rate) ?></span></th>
+            </tr>
+            <tr>
+                <th colspan="2" style="height: 0.5em;"></th>
+            </tr>
+            <tr>
+                <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.change_due') ?></th>
+                <th style="width: 45%; text-align: right;"><span id="sale_change_due"><?= to_currency(0) ?></span></th>
+            </tr>
+            <tr>
+                <th style="width: 55%;">Change Due LBP</th>
+                <th style="width: 45%; text-align: right;"><span id="sale_change_due_lbp"><?= number_format(0) ?></span></th>
+            </tr>
+        <?php endif; ?>
+    </table>
 
             <div id="payment_details">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -445,6 +533,7 @@ helper('url');
                     ?>
                 <?php } else { ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -565,23 +654,172 @@ helper('url');
 </div>
 
 <script type="text/javascript">
+    const keyboardShortcuts = <?= json_encode($keyboardShortcuts ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const paymentsCoverTotal = <?= json_encode((bool) $payments_cover_total, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const primaryCurrencyZero = <?= json_encode(to_currency(0), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const currentRate = <?= json_encode((float) $rate, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const amountDue = <?= json_encode((float) $amount_due, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const cashAmountDue = <?= json_encode((float) $cash_amount_due, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const cashMode = <?= json_encode($cash_mode, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const giftcardPaymentLabel = <?= json_encode(lang(ucfirst($controller_name) . '.giftcard'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const cashPaymentLabel = <?= json_encode(lang(ucfirst($controller_name) . '.cash'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const shortcutGridStateKey = 'ospos_sales_shortcut_grid_state';
+    const registerStateHash = <?= json_encode(md5(json_encode([
+        $cart ?? [],
+        $payments ?? [],
+        $mode ?? null,
+        $customer_id ?? null,
+        $customer_total ?? 0,
+        $total ?? 0,
+        $payments_total ?? 0,
+        $amount_due ?? 0,
+        $rate ?? 0,
+        $cash_mode ?? 0,
+        $price_work_orders ?? false,
+        $invoice_number ?? ''
+    ])), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const shortcutCodes = {
+        items: keyboardShortcuts?.items?.code ?? null,
+        customers: keyboardShortcuts?.customers?.code ?? null,
+        suspend: keyboardShortcuts?.suspend?.code ?? null,
+        suspended: keyboardShortcuts?.suspended?.code ?? null,
+        amount: keyboardShortcuts?.amount?.code ?? null,
+        payment: keyboardShortcuts?.payment?.code ?? null,
+        complete: keyboardShortcuts?.complete?.code ?? null,
+        finish: keyboardShortcuts?.finish?.code ?? null,
+        help: keyboardShortcuts?.help?.code ?? null,
+        cancel: keyboardShortcuts?.cancel?.code ?? null
+    };
+
+    function formatPrimaryCurrency(amount) {
+        const fixedAmount = (Math.round(amount * 100) / 100).toFixed(2);
+        return primaryCurrencyZero.replace(/-?[\d.,]+/, fixedAmount);
+    }
+
+    function formatSecondaryCurrency(amount) {
+        return Math.round(amount).toLocaleString('en-US');
+    }
+
+    function getCurrentDueValue() {
+        if ($("#payment_types").val() === giftcardPaymentLabel) {
+            return amountDue;
+        }
+
+        if ($("#payment_types").val() === cashPaymentLabel && cashMode == '1') {
+            return cashAmountDue;
+        }
+
+        return amountDue;
+    }
+
+    function updateChangeDueDisplay() {
+        const tenderedValue = $("#amount_tendered:enabled").val() || $("#amount_tendered").val() || '0';
+        const tendered = parseFloat(String(tenderedValue).replace(/[^0-9.-]/g, '')) || 0;
+        const due = getCurrentDueValue();
+        const changeDue = Math.max(tendered - due, 0);
+
+        $("#sale_change_due").html(formatPrimaryCurrency(changeDue));
+        if (currentRate > 0) {
+            $("#sale_change_due_lbp").html(formatSecondaryCurrency(changeDue * currentRate));
+        }
+    }
+
+    window.secondDisplayWindow = window.secondDisplayWindow || null;
+    window.openSecondDisplay = function(url) {
+        window.secondDisplayWindow = window.open(url, 'second_display', 'width=1280,height=720,resizable=yes,scrollbars=yes');
+        if (window.secondDisplayWindow && !window.secondDisplayWindow.closed) {
+            window.secondDisplayWindow.focus();
+        }
+
+        return false;
+    };
+
+    window.refreshSecondDisplay = function() {
+        const secondDisplayWindow = window.open('', 'second_display');
+        if (secondDisplayWindow && !secondDisplayWindow.closed) {
+            secondDisplayWindow.location.reload();
+            secondDisplayWindow.focus();
+            window.secondDisplayWindow = secondDisplayWindow;
+        }
+    };
+
+    window.notifySecondDisplay = function() {
+        window.refreshSecondDisplay();
+    };
+
+    window.setShortcutItem = function(itemId) {
+        $('#item').val(itemId);
+        window.notifySecondDisplay();
+        $('#add_item_form').submit();
+    };
+
     $(document).ready(function() {
         const redirect = function() {
             window.location.href = "<?= site_url('sales'); ?>";
         };
 
+        const previousRegisterHash = sessionStorage.getItem('ospos_sales_register_state_hash');
+        sessionStorage.setItem('ospos_sales_register_state_hash', registerStateHash);
+        if (previousRegisterHash !== registerStateHash) {
+            window.refreshSecondDisplay();
+        }
+
+        const readShortcutGridState = function() {
+            try {
+                return JSON.parse(localStorage.getItem(shortcutGridStateKey) || 'null');
+            } catch (e) {
+                return null;
+            }
+        };
+
+        const saveShortcutGridState = function(state) {
+            localStorage.setItem(shortcutGridStateKey, JSON.stringify(state));
+        };
+
+        const clearShortcutGridState = function() {
+            localStorage.removeItem(shortcutGridStateKey);
+        };
+
+        const openShortcutGrid = function(tabKey) {
+            const $shortcutContent = $(".shortcut-content");
+            if (!$shortcutContent.length) {
+                return;
+            }
+
+            if (!$shortcutContent.is(':visible')) {
+                $shortcutContent.show();
+                $('.toggle-grid').text('Hide Grid');
+            }
+
+            if (tabKey) {
+                const $tabLink = $shortcutContent.find(`.nav-tabs a[href="#${tabKey}"]`).first();
+                if ($tabLink.length) {
+                    $tabLink.tab('show');
+                }
+            }
+        };
+
         $("#remove_customer_button").click(function() {
-            $.post("<?= site_url('sales/removeCustomer'); ?>", redirect);
+            $.post("<?= site_url('sales/removeCustomer'); ?>", function() {
+                window.notifySecondDisplay();
+                redirect();
+            });
         });
 
         $(".delete_item_button").click(function() {
             const item_id = $(this).data('item-id');
-            $.post("<?= site_url('sales/deleteItem/'); ?>" + item_id, redirect);
+            $.post("<?= site_url('sales/deleteItem/'); ?>" + item_id, function() {
+                window.notifySecondDisplay();
+                redirect();
+            });
         });
 
         $(".delete_payment_button").click(function() {
             const item_id = $(this).data('payment-id');
-            $.post("<?= site_url('sales/deletePayment/'); ?>" + item_id, redirect);
+            $.post("<?= site_url('sales/deletePayment/'); ?>" + item_id, function() {
+                window.notifySecondDisplay();
+                redirect();
+            });
         });
 
         $("input[name='item_number']").change(function() {
@@ -639,6 +877,7 @@ helper('url');
             delay: 500,
             select: function(a, ui) {
                 $(this).val(ui.item.value);
+                window.notifySecondDisplay();
                 $('#add_item_form').submit();
                 return false;
             }
@@ -646,6 +885,7 @@ helper('url');
 
         $('#item').keypress(function(e) {
             if (e.which == 13) {
+                window.notifySecondDisplay();
                 $('#add_item_form').submit();
                 return false;
             }
@@ -671,6 +911,7 @@ helper('url');
             delay: 10,
             select: function(a, ui) {
                 $(this).val(ui.item.value);
+                window.notifySecondDisplay();
                 $('#select_customer_form').submit();
                 return false;
             }
@@ -678,6 +919,7 @@ helper('url');
 
         $('#customer').keypress(function(e) {
             if (e.which == 13) {
+                window.notifySecondDisplay();
                 $('#select_customer_form').submit();
                 return false;
             }
@@ -689,6 +931,7 @@ helper('url');
             delay: 10,
             select: function(a, ui) {
                 $(this).val(ui.item.value);
+                window.notifySecondDisplay();
                 $('#add_payment_form').submit();
                 return false;
             }
@@ -727,12 +970,49 @@ helper('url');
             });
         });
 
+        $(".shortcut-content").hide();
+        const shortcutGridState = readShortcutGridState();
+        if (shortcutGridState?.open) {
+            openShortcutGrid(shortcutGridState.tab);
+        }
+
+        $(".toggle-grid").on("click", function() {
+            const target = $($(this).data('target'));
+            const isVisible = target.is(':visible');
+
+            target.slideToggle(200, function() {
+                if (target.is(':visible')) {
+                    $(this).text('Hide Grid');
+                    const activeTab = target.find('.nav-tabs li.active a').attr('href');
+                    saveShortcutGridState({
+                        open: true,
+                        tab: activeTab ? activeTab.replace('#', '') : null
+                    });
+                } else {
+                    $(this).text('Show Grid');
+                    clearShortcutGridState();
+                }
+            }.bind(this));
+
+            if (isVisible) {
+                clearShortcutGridState();
+            }
+        });
+
+        $(".shortcut-content .nav-tabs a").on("shown.bs.tab", function() {
+            const tabKey = $(this).attr('href').replace('#', '');
+            const current = readShortcutGridState() || {};
+            saveShortcutGridState({ ...current, open: true, tab: tabKey });
+        });
+
         $('#finish_sale_button').click(function() {
+            clearShortcutGridState();
             $('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
             $('#buttons_form').submit();
         });
 
         $('#finish_invoice_quote_button').click(function() {
+            clearShortcutGridState();
             $('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
             $('#buttons_form').submit();
         });
@@ -750,6 +1030,9 @@ helper('url');
         });
 
         $('#add_payment_button').click(function() {
+            clearShortcutGridState();
+            $('#add_payment_form').find('input[name="complete_after_payment"]').val('0');
+            window.notifySecondDisplay();
             $('#add_payment_form').submit();
         });
 
@@ -763,9 +1046,12 @@ helper('url');
 
         $('#amount_tendered').keypress(function(event) {
             if (event.which == 13) {
+                window.notifySecondDisplay();
                 $('#add_payment_form').submit();
             }
         });
+
+        $('#amount_tendered').on('input keyup change', updateChangeDueDisplay);
 
         $('#finish_sale_button').keypress(function(event) {
             if (event.which == 13) {
@@ -811,19 +1097,25 @@ helper('url');
     });
 
     function check_payment_type() {
-        var cash_mode = <?= json_encode($cash_mode) ?>;
-
         if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
+            <?php if (!empty($rate) && $rate > 0): ?>
+            $("#sale_total_lbp").html("<?= number_format($total * $rate) ?>");
+            $("#sale_amount_due_lbp").html("<?= number_format($amount_due * $rate) ?>");
+            <?php endif; ?>
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
             $("#amount_tendered:enabled").val('').focus();
             $(".giftcard-input").attr('disabled', false);
             $(".non-giftcard-input").attr('disabled', true);
             $(".giftcard-input:enabled").val('').focus();
-        } else if (($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.cash') ?>" && cash_mode == '1')) {
+        } else if (($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.cash') ?>" && cashMode == '1')) {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
+            <?php if (!empty($rate) && $rate > 0): ?>
+            $("#sale_total_lbp").html("<?= number_format($non_cash_total * $rate) ?>");
+            $("#sale_amount_due_lbp").html("<?= number_format($cash_amount_due * $rate) ?>");
+            <?php endif; ?>
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
@@ -831,53 +1123,74 @@ helper('url');
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
+            <?php if (!empty($rate) && $rate > 0): ?>
+            $("#sale_total_lbp").html("<?= number_format($non_cash_total * $rate) ?>");
+            $("#sale_amount_due_lbp").html("<?= number_format($amount_due * $rate) ?>");
+            <?php endif; ?>
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
         }
+
+        updateChangeDueDisplay();
     }
 
     // Add Keyboard Shortcuts/Hotkeys to Sale Register
-    document.body.onkeyup = function(e) {
-        switch (event.altKey && event.keyCode) {
-            case 49: // Alt + 1 Items Seach
-                $("#item").focus();
-                $("#item").select();
-                break;
-            case 50: // Alt + 2 Customers Search
-                $("#customer").focus();
-                $("#customer").select();
-                break;
-            case 51: // Alt + 3 Suspend Current Sale
-                $("#suspend_sale_button").click();
-                break;
-            case 52: // Alt + 4 Check Suspended
-                $("#show_suspended_sales_button").click();
-                break;
-            case 53: // Alt + 5 Edit Amount Tendered Value
-                $("#amount_tendered").focus();
-                $("#amount_tendered").select();
-                break;
-            case 54: // Alt + 6 Add Payment
-                $("#add_payment_button").click();
-                break;
-            case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
-                $("#add_payment_button").click();
-                window.location.href = "<?= 'sales/complete' ?>";
-                break;
-            case 56: // Alt + 8 Finish Quote/Invoice without payment
-                $("#finish_invoice_quote_button").click();
-                break;
-            case 57: // Alt + 9 Open Shortcuts Help Modal
-                $("#show_keyboard_help").click();
-                break;
+    document.body.onkeyup = function(event) {
+        if ($('.modal.in').length) {
+            return;
         }
 
-        switch (event.keyCode) {
-            case 27: // ESC Cancel Current Sale
-                $("#cancel_sale_button").click();
-                break;
+        if (event.altKey) {
+            switch (event.keyCode) {
+                case shortcutCodes.items:
+                    $("#item").focus();
+                    $("#item").select();
+                    break;
+                case shortcutCodes.customers:
+                    $("#customer").focus();
+                    $("#customer").select();
+                    break;
+                case shortcutCodes.suspend:
+                    $("#suspend_sale_button").click();
+                    break;
+                case shortcutCodes.suspended:
+                    $("#show_suspended_sales_button").click();
+                    break;
+                case shortcutCodes.amount:
+                    $('#add_payment_form .non-giftcard-input:enabled, #add_payment_form .giftcard-input:enabled')
+                        .first()
+                        .focus()
+                        .select();
+                    break;
+                case shortcutCodes.payment:
+                    $("#add_payment_button").click();
+                    break;
+                case shortcutCodes.complete:
+                    if (paymentsCoverTotal) {
+                        if ($("#finish_sale_button").length) {
+                            $("#finish_sale_button").click();
+                        } else if ($("#finish_invoice_quote_button").length) {
+                            $("#finish_invoice_quote_button").click();
+                        }
+                    } else {
+                        $('#add_payment_form').find('input[name="complete_after_payment"]').val('1');
+                        $('#add_payment_form').submit();
+                    }
+                    break;
+                case shortcutCodes.finish:
+                    $("#finish_invoice_quote_button").click();
+                    break;
+                case shortcutCodes.help:
+                    $("#show_keyboard_help").click();
+                    break;
+            }
+        }
+
+        // Cancel: Escape always works, or configured shortcut with Alt key
+        if (event.keyCode === 27 || (event.altKey && event.keyCode === shortcutCodes.cancel)) {
+            $("#cancel_sale_button").click();
         }
     }
 </script>

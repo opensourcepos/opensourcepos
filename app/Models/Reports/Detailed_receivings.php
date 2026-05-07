@@ -38,6 +38,8 @@ class Detailed_receivings extends Report
                 ['total'          => lang('Reports.total'), 'sorter' => 'number_sorter'],
                 ['payment_type'   => lang('Reports.payment_type')],
                 ['comment'        => lang('Reports.comments')],
+                ['rate'           => lang('Reports.rate')],
+                ['total_secondary_currency' => lang('Reports.total_secondary_currency')],
                 ['reference'      => lang('Receivings.reference')]
             ],
             'details' => [
@@ -66,6 +68,7 @@ class Detailed_receivings extends Report
             SUM(subtotal) AS subtotal,
             SUM(total) AS total,
             SUM(profit) AS profit,
+            MAX(rate) AS rate,
             MAX(payment_type) as payment_type,
             MAX(comment) as comment,
             MAX(reference) as reference');
@@ -91,6 +94,7 @@ class Detailed_receivings extends Report
             MAX(supplier.company_name) AS supplier_name,
             SUM(total) AS total,
             SUM(profit) AS profit,
+            MAX(rate) AS rate,
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment,
             MAX(reference) AS reference');
@@ -156,7 +160,7 @@ class Detailed_receivings extends Report
     public function getSummaryData(array $inputs): array
     {
         $builder = $this->db->table('receivings_items_temp');
-        $builder->select('SUM(total) AS total');
+        $builder->select('SUM(total) AS total, SUM(FLOOR(total * rate)) AS total_secondary_currency');
 
         if ($inputs['location_id'] != 'all') {
             $builder->where('item_location', $inputs['location_id']);

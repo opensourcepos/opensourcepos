@@ -15,11 +15,20 @@
  */
 ?>
 
+<?php
+$secondary_currency_enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
+$secondary_currency_rate = (float)($config['rate'] ?? 0);
+$secondary_currency_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+$secondary_currency_symbol = (string)($config['secondary_currency_symbol'] ?? '');
+$secondary_currency_code = (string)($config['secondary_currency_code'] ?? '');
+$show_secondary_currency = $secondary_currency_enabled && $secondary_currency_rate > 0;
+?>
+
 <div id="receipt_wrapper" style="width: 100%;">
     <div id="receipt_header" style="text-align: center;">
         <?php if ($config['company_logo'] != '') { ?>
             <div id="company_name">
-                <?= $img_tag ?>
+                <img id="image" src="data:image/png;base64,<?= base64_encode(file_get_contents('uploads/' . $config['company_logo'])) ?>" alt="company_logo">
             </div>
         <?php } ?>
 
@@ -60,7 +69,7 @@
         ?>
                 <tr>
                     <td><?= esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
-                    <td><?= to_currency($item['price']) ?></td>
+                    <td><?= $show_secondary_currency ? secondary_currency_dual_amount((float)$item['price'], $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) : to_currency($item['price']) ?></td>
                     <td><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td style="text-align: right;"><?= to_currency($item[($config['receipt_show_total_discount'] ? 'total' : 'discounted_total')]) ?></td>
                 </tr>
@@ -121,6 +130,16 @@
             <td colspan="3" style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= lang('Sales.total') ?></td>
             <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= to_currency($total) ?></td>
         </tr>
+        <?php if ($show_secondary_currency) { ?>
+            <tr>
+                <td colspan="3" style="text-align: right;"><?= 'Total ' . secondary_currency_label($secondary_currency_symbol, $secondary_currency_code) ?></td>
+                <td style="text-align: right;"><?= secondary_currency_amount((float)$total, $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) ?></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: right;"><?= lang('Sales.rate') ?></td>
+                <td style="text-align: right;"><?= secondary_currency_rate_display($secondary_currency_rate) ?></td>
+            </tr>
+        <?php } ?>
 
         <?php
         $only_sale_check = false;
@@ -131,15 +150,18 @@
             $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
         ?>
             <tr>
-                <td colspan="3" style="text-align: right;"><?= esc($splitpayment[0]) ?> </td>
+                <td colspan="3" style="text-align: right;"><?= $splitpayment[0] ?> </td>
                 <td style="text-align: right;"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>
 
-        <?php if (isset($cur_giftcard_value) && $show_giftcard_remainder) { ?>
+        <?php if (isset($cur_giftcard_value) && ($show_giftcard_remainder || $cur_giftcard_value !== null)) { ?>
             <tr>
                 <td colspan="3" style="text-align: right;"><?= lang('Sales.giftcard_balance') ?></td>
                 <td style="text-align: right;"><?= to_currency($cur_giftcard_value) ?></td>
+            </tr>
+            <tr>
+                <td colspan="4">&nbsp;</td>
             </tr>
         <?php } ?>
         <tr>

@@ -27,11 +27,20 @@
     </head>
     <body>
         <?php
-            if (isset($error_message)) {
-                echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
-                exit;
-            }
-        ?>
+    if (isset($error_message)) {
+        echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
+        exit;
+    }
+    ?>
+
+    <?php
+    $secondary_currency_enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
+    $secondary_currency_rate = (float)($config['rate'] ?? 0);
+    $secondary_currency_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+    $secondary_currency_symbol = (string)($config['secondary_currency_symbol'] ?? '');
+    $secondary_currency_code = (string)($config['secondary_currency_code'] ?? '');
+    $show_secondary_currency = $secondary_currency_enabled && $secondary_currency_rate > 0;
+    ?>
 
         <div id="page-wrap">
             <div id="header"><?= lang('Sales.invoice') ?></div>
@@ -99,7 +108,7 @@
                             <td><?= esc($item['item_number']) ?></td>
                             <td class="item-name"><?= esc($item['name']) ?></td>
                             <td><?= to_quantity_decimals($item['quantity']) ?></td>
-                            <td><?= to_currency($item['price']) ?></td>
+                            <td><?= $show_secondary_currency ? secondary_currency_dual_amount((float)$item['price'], $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) : to_currency($item['price']) ?></td>
                             <td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                             <?php if ($discount > 0): ?>
                                 <td><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
@@ -134,6 +143,18 @@
                     <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
                     <td id="total" class="total-value"><?= to_currency($total) ?></td>
                 </tr>
+                <?php if ($show_secondary_currency) { ?>
+                    <tr>
+                        <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= 'Total ' . secondary_currency_label($secondary_currency_symbol, $secondary_currency_code) ?></td>
+                        <td class="total-value" id="total_secondary_currency"><?= secondary_currency_amount((float)$total, $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) ?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= lang('Sales.rate') ?></td>
+                        <td class="total-value" id="currency_rate"><?= secondary_currency_rate_display($secondary_currency_rate) ?></td>
+                    </tr>
+                <?php } ?>
 
                 <?php
                 $only_sale_check = false;

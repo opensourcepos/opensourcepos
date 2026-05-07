@@ -15,6 +15,14 @@
  */
 ?>
 
+<?php
+$show_secondary_currency = !empty($config['secondary_currency_enabled']) && !empty($config['receipt_show_secondary_currency']) && (float)($config['rate'] ?? $config['secondary_currency_rate'] ?? 0) > 0;
+$secondary_rate = (float)($config['rate'] ?? $config['secondary_currency_rate'] ?? 0);
+$secondary_symbol = (string)($config['secondary_currency_symbol'] ?? '');
+$secondary_code = (string)($config['secondary_currency_code'] ?? '');
+$secondary_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+?>
+
 <div id="receipt_wrapper" style="font-size: <?= esc($config['receipt_font_size']) ?>px;">
     <div id="receipt_header">
         <?php if ($config['company_logo'] != '') { ?>
@@ -115,6 +123,12 @@
             <td colspan="2" style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= lang('Sales.total') ?></td>
             <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= to_currency($total) ?></td>
         </tr>
+        <?php if ($show_secondary_currency) { ?>
+        <tr>
+            <td colspan="2" style="text-align: right;"><?= lang('Config.secondary_currency') ?></td>
+            <td class="total-value"><?= secondary_currency_amount((float) $total, $secondary_rate, $secondary_decimals, $secondary_symbol, $secondary_code) ?></td>
+        </tr>
+        <?php } ?>
 
 
         <?php

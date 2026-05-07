@@ -10,8 +10,8 @@
 <script type="text/javascript">
     // Labels and data series
     var data = {
-        labels: <?= json_encode(esc($labels_1, 'js')) ?>,
-        series: <?= json_encode(esc($series_data_1, 'js')) ?>
+        labels: <?= json_encode($labels_1, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
+        series: <?= json_encode($series_data_1, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>
     };
 
     // We are setting a few options for our chart and override the defaults
@@ -31,27 +31,26 @@
         labelPosition: 'outside',
         labelDirection: 'explode',
 
-        <?php
-            $currency_symbol = esc($config['currency_symbol'], 'js');
-            $currency_prefix = '';
-            $currency_suffix = '';
-
-            if ($show_currency) {
-                if (is_right_side_currency_symbol()) {
-                    $currency_suffix = $currency_symbol;
-                } else {
-                    $currency_prefix = $currency_symbol;
-                }
-            }
-        ?>
-
         plugins: [
             Chartist.plugins.tooltip({
                 transformTooltipTextFnc: function(value) {
-                    return '<?= $currency_prefix ?>' + value + '<?= $currency_suffix ?>';
+                    <?php
+                    if ($show_currency) {
+                        if (is_right_side_currency_symbol()) {
+                    ?>
+                            return value + '<?= esc($config['currency_symbol'], 'js') ?>';
+                        <?php } else { ?>
+                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
+                        <?php
+                        }
+                    } else {
+                        ?>
+                        return value;
+                    <?php } ?>
                 }
             })
-        ]    };
+        ]
+    };
 
     var responsiveOptions = [
         ['screen and (min-width: 640px)', {

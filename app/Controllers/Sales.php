@@ -28,7 +28,7 @@ use stdClass;
 
 class Sales extends Secure_Controller
 {
-    protected $helpers = ['file'];
+    protected $helpers = ['file', 'currency', 'sale'];
     private Barcode_lib $barcode_lib;
     private Email_lib $email_lib;
     private Sale_lib $sale_lib;
@@ -73,6 +73,153 @@ class Sales extends Secure_Controller
     }
 
     /**
+     * Build shortcut item categories for the register screen.
+     *
+     * @return array<int, array{category:string,key:string,items:array<int, array{name:string,item_id:int}>}>
+     */
+    private function _get_shortcut_categories(): array
+    {
+        $db = db_connect();
+
+        $categories = $db->table('items')
+            ->select('category')
+            ->where('shortcut', 1)
+            ->where('deleted', 0)
+            ->groupBy('category')
+            ->orderBy('category', 'asc')
+            ->get()
+            ->getResultArray();
+
+        $data = [];
+
+        foreach ($categories as $row) {
+            $category = (string)($row['category'] ?? '');
+
+            $items = $db->table('items')
+                ->select('name, item_id')
+                ->where('shortcut', 1)
+                ->where('deleted', 0)
+                ->where('category', $category)
+                ->orderBy('name', 'asc')
+                ->get()
+                ->getResultArray();
+
+            $data[] = [
+                'category' => $category === '' ? lang('Items.none') : $category,
+                'key'      => 'cat_' . md5($category === '' ? '__blank__' : $category),
+                'items'    => $items,
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Load the second display view used on customer-facing screens.
+     *
+     * @return ResponseInterface|string
+     * @noinspection PhpUnused
+     */
+    public function getSecondDisplay(): ResponseInterface|string
+    {
+        if ($this->session->get('sale_id') == '') {
+            $this->session->set('sale_id', NEW_ENTRY);
+        }
+
+        $cashRounding = $this->sale_lib->reset_cash_rounding();
+
+        $data['cash_rounding'] = $cashRounding;
+        $data['cart'] = $this->sale_lib->get_cart();
+        $customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, true);
+        $data['customer_name'] = $data['customer'] ?? lang('Sales.walk_in_customer');
+        $data['customer_reward_points'] = (int)($data['customer_rewards']['points'] ?? 0);
+        $data['customer_reward_package'] = $data['customer_rewards']['package_name'] ?? '';
+        $data['giftcard_remainder'] = $this->sale_lib->get_giftcard_remainder();
+        $data['rewards_remainder'] = $this->sale_lib->get_rewards_remainder();
+
+        $data['modes'] = $this->sale_lib->get_register_mode_options();
+        $data['mode'] = $this->sale_lib->get_mode();
+        $data['selected_table'] = $this->sale_lib->get_dinner_table();
+        $data['empty_tables'] = $this->sale_lib->get_empty_tables($data['selected_table']);
+        $data['stock_locations'] = $this->stock_location->get_allowed_locations('sales');
+        $data['stock_location'] = $this->sale_lib->get_sale_location();
+        $data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(true, true);
+        $tax_details = $this->tax_lib->get_taxes($data['cart']);
+        $data['taxes'] = $tax_details[0];
+        $data['discount'] = $this->sale_lib->get_discount();
+        $data['payments'] = $this->sale_lib->get_payments();
+
+        $totals = $this->sale_lib->get_totals($tax_details[0]);
+        $data['item_count'] = $totals['item_count'];
+        $data['total_units'] = $totals['total_units'];
+        $data['subtotal'] = $totals['subtotal'];
+        $data['total'] = $totals['total'];
+        $data['payments_total'] = $totals['payment_total'];
+        $data['payments_cover_total'] = $totals['payments_cover_total'];
+        $data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
+        $data['cash_total'] = $totals['cash_total'];
+        $data['non_cash_total'] = $totals['total'];
+        $data['cash_amount_due'] = $totals['cash_amount_due'];
+        $data['non_cash_amount_due'] = $totals['amount_due'];
+        $data['cash_mode'] = $this->session->get('cash_mode');
+        $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
+
+        if ($data['cash_mode'] && ($data['selected_payment_type'] === lang('Sales.cash') || $data['payments_total'] > 0)) {
+            $data['amount_due'] = $totals['cash_amount_due'];
+        } else {
+            $data['amount_due'] = $totals['amount_due'];
+        }
+
+        $data['amount_change'] = $data['amount_due'] * -1;
+        $data['payment_change_due'] = max(((float) $data['payments_total']) - ((float) $data['total']), 0);
+        $data['comment'] = $this->sale_lib->get_comment();
+        $data['email_receipt'] = $this->sale_lib->is_email_receipt();
+        $data['config'] = $this->config;
+
+        if ($customer_info && $this->config['customer_reward_enable']) {
+            $data['payment_options'] = $this->sale->get_payment_options(true, true);
+        } else {
+            $data['payment_options'] = $this->sale->get_payment_options();
+        }
+
+        $data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
+        $data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
+
+        $invoice_number = $this->sale_lib->get_invoice_number();
+        if ($invoice_number == null || $invoice_number == '') {
+            $invoice_number = $this->token_lib->render($this->config['sales_invoice_format'], [], false);
+        }
+
+        $data['invoice_number'] = $invoice_number;
+        $data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+        $data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
+        $data['pos_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
+        $data['quote_number'] = $this->sale_lib->get_quote_number();
+        $data['work_order_number'] = $this->sale_lib->get_work_order_number();
+
+        if ($this->sale_lib->get_mode() == 'sale_invoice') {
+            $data['mode_label'] = lang('Sales.invoice');
+            $data['customer_required'] = lang('Sales.customer_required');
+        } elseif ($this->sale_lib->get_mode() == 'sale_quote') {
+            $data['mode_label'] = lang('Sales.quote');
+            $data['customer_required'] = lang('Sales.customer_required');
+        } elseif ($this->sale_lib->get_mode() == 'sale_work_order') {
+            $data['mode_label'] = lang('Sales.work_order');
+            $data['customer_required'] = lang('Sales.customer_required');
+        } elseif ($this->sale_lib->get_mode() == 'return') {
+            $data['mode_label'] = lang('Sales.return');
+            $data['customer_required'] = lang('Sales.customer_optional');
+        } else {
+            $data['mode_label'] = lang('Sales.receipt');
+            $data['customer_required'] = lang('Sales.customer_optional');
+        }
+
+        $data['rate'] = (($this->config['secondary_currency_enabled'] ?? true) == 1) ? (float)($this->config['rate'] ?? 0) : 0.0;
+
+        return view('sales/second_display', $data);
+    }
+
+    /**
      * Load the sale edit modal. Used in app/Views/sales/register.php.
      *
      * @return ResponseInterface|string
@@ -85,6 +232,8 @@ class Sales extends Secure_Controller
         if (!$this->employee->has_grant('reports_sales', $personId)) {
             return redirect()->to('no_access/sales/reports_sales');
         } else {
+            $data['controller_name'] = 'sales';
+            $data['config'] = $this->config;
             $data['table_headers'] = get_sales_manage_table_headers();
 
             $data['filters'] = [
@@ -105,16 +254,20 @@ class Sales extends Secure_Controller
                 $selectedFilters = [];
             }
 
-            // Restore filters from URL query string
-            $filters = restoreTableFilters($this->request);
-            if (!empty($filters['selected_filters'])) {
-                $selectedFilters = array_merge($selectedFilters, $filters['selected_filters']);
+            // Restore filters from URL query string when present.
+            $requestFilters = $this->request->getGet('selected_filters');
+            if (!empty($requestFilters)) {
+                $selectedFilters = array_merge($selectedFilters, (array) $requestFilters);
             }
-            if (isset($filters['start_date'])) {
-                $data['start_date'] = $filters['start_date'];
+
+            $startDate = $this->request->getGet('start_date');
+            if (!empty($startDate)) {
+                $data['start_date'] = $startDate;
             }
-            if (isset($filters['end_date'])) {
-                $data['end_date'] = $filters['end_date'];
+
+            $endDate = $this->request->getGet('end_date');
+            if (!empty($endDate)) {
+                $data['end_date'] = $endDate;
             }
             $data['selected_filters'] = $selectedFilters;
 
@@ -363,7 +516,7 @@ class Sales extends Secure_Controller
      */
     public function postSetPriceWorkOrders(): ResponseInterface
     {
-        $price_work_orders = parse_decimals($this->request->getPost('price_work_orders'));
+        $price_work_orders = filter_var($this->request->getPost('price_work_orders'), FILTER_VALIDATE_BOOLEAN);
         $this->sale_lib->set_price_work_orders($price_work_orders);
         return $this->response->setJSON(['success' => true]);
     }
@@ -391,6 +544,7 @@ class Sales extends Secure_Controller
         $data = [];
         $giftcard = model(Giftcard::class);
         $payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $complete_after_payment = $this->request->getPost('complete_after_payment') === '1';
 
         if ($payment_type !== lang('Sales.giftcard')) {
             $rules = ['amount_tendered' => 'trim|required|decimal_locale',];
@@ -471,7 +625,32 @@ class Sales extends Secure_Controller
             }
         }
 
-        return $this->_reload($data);
+        if ($complete_after_payment
+            && empty($data['error'])
+            && bccomp((string) $this->sale_lib->get_amount_due(), '0') <= 0
+        ) {
+            return $this->postComplete();
+        }
+
+        if (!empty($data['error'])) {
+            $this->session->setFlashdata('error', $data['error']);
+        }
+
+        if (!empty($data['warning'])) {
+            $this->session->setFlashdata('warning', $data['warning']);
+        }
+
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'success' => empty($data['error']),
+                'message' => empty($data['error'])
+                    ? lang('Sales.successfully_updated')
+                    : $data['error'],
+                'warning' => $data['warning'] ?? '',
+            ]);
+        }
+
+        return redirect()->to('sales');
     }
 
     /**
@@ -579,67 +758,98 @@ class Sales extends Secure_Controller
      */
     public function postEditItem(string $line): ResponseInterface|string
     {
-        $data = [];
+        try {
+            $data = [];
 
-        $rules = [
-            'price'    => 'trim|required|decimal_locale|nonNegativeDecimal',
-            'quantity' => 'trim|required|decimal_locale',
-            'discount' => 'trim|permit_empty|decimal_locale|nonNegativeDecimal',
-        ];
+            $rules = [
+                'price'    => 'trim|required|decimal_locale|nonNegativeDecimal',
+                'quantity' => 'trim|required|decimal_locale',
+                'discount' => 'trim|permit_empty|decimal_locale|nonNegativeDecimal',
+            ];
 
-        $messages = [
-            'price' => [
-                'nonNegativeDecimal' => lang('Sales.negative_price_invalid'),
-            ],
-            'discount' => [
-                'nonNegativeDecimal' => lang('Sales.negative_discount_invalid'),
-            ],
-        ];
+            $messages = [
+                'price' => [
+                    'nonNegativeDecimal' => lang('Sales.negative_price_invalid'),
+                ],
+                'discount' => [
+                    'nonNegativeDecimal' => lang('Sales.negative_discount_invalid'),
+                ],
+            ];
 
-        if ($this->validate($rules, $messages)) {
-            $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $price = parse_decimals($this->request->getPost('price'));
-            $quantity = parse_decimals($this->request->getPost('quantity'));
-            $discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $discount = $discount_type
-                ? parse_quantity($this->request->getPost('discount'))
-                : parse_decimals($this->request->getPost('discount'));
-            $discount = $discount ?: 0;
+            if ($this->validate($rules, $messages)) {
+                $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $price = parse_decimals($this->request->getPost('price'));
+                $quantity = parse_decimals($this->request->getPost('quantity'));
+                $discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $discount = $discount_type
+                    ? parse_quantity($this->request->getPost('discount'))
+                    : parse_decimals($this->request->getPost('discount'));
+                $discount = $discount ?: 0;
 
-            // Return mode legitimately uses negative quantities for refunds
-            if ($this->sale_lib->get_mode() != 'return' && $quantity < 0) {
-                $data['error'] = lang('Sales.negative_quantity_invalid');
-                return $this->_reload($data);
+                // Return mode legitimately uses negative quantities for refunds
+                if ($this->sale_lib->get_mode() != 'return' && $quantity < 0) {
+                    $data['error'] = lang('Sales.negative_quantity_invalid');
+                    return $this->_reload($data);
+                }
+
+                // Business logic: discount bounds depend on discount_type and item values
+                if ($discount_type == PERCENT && $discount > 100) {
+                    $data['error'] = lang('Sales.discount_percent_exceeds_100');
+                    return $this->_reload($data);
+                }
+
+                if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, 2), 2) > 0) {
+                    $data['error'] = lang('Sales.discount_exceeds_item_total');
+                    return $this->_reload($data);
+                }
+
+                $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
+                $discounted_total = $this->request->getPost('discounted_total') != ''
+                    ? parse_decimals($this->request->getPost('discounted_total') ?? '')
+                    : null;
+
+                $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
+
+                $this->sale_lib->empty_payments();
+
+                $data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
+            } else {
+                $errors = $this->validator->getErrors();
+                $data['error'] = $errors ? reset($errors) : lang('Sales.error_editing_item');
             }
 
-            // Business logic: discount bounds depend on discount_type and item values
-            if ($discount_type == PERCENT && $discount > 100) {
-                $data['error'] = lang('Sales.discount_percent_exceeds_100');
-                return $this->_reload($data);
+            if (!empty($data['error'])) {
+                $this->session->setFlashdata('error', $data['error']);
             }
 
-            if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, 2), 2) > 0) {
-                $data['error'] = lang('Sales.discount_exceeds_item_total');
-                return $this->_reload($data);
+            if (!empty($data['warning'])) {
+                $this->session->setFlashdata('warning', $data['warning']);
             }
 
-            $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
-            $discounted_total = $this->request->getPost('discounted_total') != ''
-                ? parse_decimals($this->request->getPost('discounted_total') ?? '')
-                : null;
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'success' => empty($data['error']),
+                    'message' => empty($data['error'])
+                        ? lang('Sales.successfully_updated')
+                        : $data['error'],
+                    'warning' => $data['warning'] ?? null,
+                ]);
+            }
 
-            $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
+            return redirect()->to('sales');
+        } catch (\Throwable $e) {
+            log_message('error', 'Sales editItem failed: {message}', ['message' => $e->getMessage()]);
+            $this->session->setFlashdata('error', lang('Sales.error_editing_item'));
+            if ($this->request->isAJAX()) {
+                return $this->response->setStatusCode(500)->setJSON([
+                    'success' => false,
+                    'message' => lang('Sales.error_editing_item'),
+                ]);
+            }
 
-            $this->sale_lib->empty_payments();
-
-            $data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
-        } else {
-            $errors = $this->validator->getErrors();
-            $data['error'] = $errors ? reset($errors) : lang('Sales.error_editing_item');
+            return redirect()->to('sales');
         }
-
-        return $this->_reload($data);
     }
 
     /**
@@ -1168,6 +1378,13 @@ class Sales extends Secure_Controller
      */
     private function _reload(array $data = []): ResponseInterface|string    // TODO: Hungarian notation
     {
+        foreach (['error', 'warning', 'success'] as $messageType) {
+            $flashMessage = $this->session->getFlashdata($messageType);
+            if ($flashMessage !== null && $flashMessage !== '') {
+                $data[$messageType] = $flashMessage;
+            }
+        }
+
         $sale_id = $this->session->get('sale_id');    // TODO: This variable is never used
 
         if ($sale_id == '') {
@@ -1248,11 +1465,15 @@ class Sales extends Secure_Controller
 
         $data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
         $data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
+        $data['config'] = $this->config;
+        $data['rate'] = (($this->config['secondary_currency_enabled'] ?? true) == 1) ? (float)($this->config['rate'] ?? 0) : 0.0;
+        $data['shortcut_categories'] = $this->_get_shortcut_categories();
 
         $data['pos_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
 
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
+        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
 
         // TODO: the if/else set below should be converted to a switch
         if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
@@ -1641,7 +1862,9 @@ class Sales extends Secure_Controller
      */
     public function getSalesKeyboardHelp(): string
     {
-        return view('sales/help');
+        return view('sales/help', [
+            'keyboardShortcuts' => $this->sale_lib->getKeyShortcuts()
+        ]);
     }
 
     /**
