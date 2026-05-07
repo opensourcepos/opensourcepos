@@ -925,6 +925,7 @@ helper('url');
                     $("#finish_invoice_quote_button").click();
                     break;
                 case shortcutCodes.help:
+                    $("#show_keyboard_help").click();
                     break;
             }
         }
