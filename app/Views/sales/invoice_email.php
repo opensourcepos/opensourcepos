@@ -137,7 +137,7 @@
                 <?php if ($secondaryCurrency['show']) { ?>
                     <tr>
                         <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                        <td colspan="2" class="total-line"><?= esc($secondaryTotalLabel ?? lang('Config.secondary_currency')) ?></td>
+                        <td colspan="2" class="total-line"><?= esc($secondaryTotalLabel ?? lang('Sales.total')) ?></td>
                         <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
                     </tr>
                     <tr>

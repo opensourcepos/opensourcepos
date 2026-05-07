@@ -1828,7 +1828,6 @@ class Reports extends Secure_Controller
         $columns['details'] = array_merge($columns['details'], $definitionHeaders);
 
         $headers = $columns;
-        $secondaryCurrency = secondary_currency_context($this->config);
 
         $report_data = $this->detailed_sales->getData($inputs);
 
@@ -1857,7 +1856,6 @@ class Reports extends Secure_Controller
                 'subtotal'      => to_currency($row['subtotal']),
                 'tax'           => to_currency_tax($row['tax']),
                 'total'         => to_currency($row['total']),
-                'total_secondary_currency' => secondary_currency_render_amount((float) $row['total'], $secondaryCurrency),
                 'cost'          => to_currency($row['cost']),
                 'profit'        => to_currency($row['profit']),
                 'payment_type'  => $row['payment_type'],
