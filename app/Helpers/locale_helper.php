@@ -351,9 +351,44 @@ function to_datetime(int $datetime = DEFAULT_DATETIME): string
  * @param string|null $number
  * @return string
  */
+function format_locale_number(?string $number, int $precision = DEFAULT_PRECISION, int $type = NumberFormatter::DECIMAL, ?string $currency_symbol = null): string
+{
+    if (!isset($number)) {
+        return '';
+    }
+
+    $config = config(OSPOS::class)->settings;
+    $fmt = new NumberFormatter($config['number_locale'], $type);
+    $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $precision);
+    $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $precision);
+
+    if (empty($config['thousands_separator'])) {
+        $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+    }
+
+    if ($currency_symbol !== null) {
+        $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
+    } elseif ($type === NumberFormatter::CURRENCY) {
+        $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $config['currency_symbol']);
+    }
+
+    return $fmt->format((float) $number);
+}
+
+/**
+ * @param string|null $number
+ * @return string
+ */
 function to_currency(?string $number): string
 {
-    return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
+    $config = config(OSPOS::class)->settings;
+
+    return format_locale_number(
+        $number,
+        (int) $config['currency_decimals'],
+        NumberFormatter::CURRENCY,
+        $config['currency_symbol']
+    );
 }
 
 /**
@@ -374,9 +409,19 @@ function to_currency_tax(?string $number): string
     $config = config(OSPOS::class)->settings;
 
     if ($config['tax_included']) {    // TODO: ternary notation
-        return to_decimals($number, 'tax_decimals', NumberFormatter::CURRENCY);
+        return format_locale_number(
+            $number,
+            (int) $config['tax_decimals'],
+            NumberFormatter::CURRENCY,
+            $config['currency_symbol']
+        );
     } else {
-        return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
+        return format_locale_number(
+            $number,
+            (int) $config['currency_decimals'],
+            NumberFormatter::CURRENCY,
+            $config['currency_symbol']
+        );
     }
 }
 
@@ -410,6 +455,24 @@ function to_quantity_decimals(?string $number): string
 }
 
 /**
+ * @param string|null $number
+ * @param string $currency_symbol
+ * @param int|null $precision
+ * @return string
+ */
+function to_currency_with_symbol(?string $number, string $currency_symbol, ?int $precision = null): string
+{
+    if (!isset($number)) {
+        return '';
+    }
+
+    $config = config(OSPOS::class)->settings;
+    $precision = $precision ?? (int) $config['currency_decimals'];
+
+    return format_locale_number($number, $precision, NumberFormatter::CURRENCY, $currency_symbol);
+}
+
+/**
  * Converts a string to locale-specific number format for display.
  *
  * @param string|null $decimals
@@ -423,16 +486,12 @@ function to_decimals(?string $number, ?string $decimals = null, int $type = Numb
     }
 
     $config = config(OSPOS::class)->settings;
-    $fmt = new NumberFormatter($config['number_locale'], $type);
-    $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
-    $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
-
-    if (empty($config['thousands_separator'])) {
-        $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
-    }
-    $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $config['currency_symbol']);
-
-    return $fmt->format((float) $number);
+    return format_locale_number(
+        $number,
+        empty($decimals) ? DEFAULT_PRECISION : (int) $config[$decimals],
+        $type,
+        $type === NumberFormatter::CURRENCY ? $config['currency_symbol'] : null
+    );
 }
 
 /**

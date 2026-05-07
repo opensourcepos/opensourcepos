@@ -40,21 +40,11 @@ function secondary_currency_amount(float $amount, float $rate = 1.0, int $decima
         return to_currency($amount);
     }
 
-    $decimals = max(0, $decimals);
     $converted_amount = $amount * $rate;
 
-    if ($decimals === 0) {
-        $converted_amount = floor($converted_amount);
-    } else {
-        $precision = 10 ** $decimals;
-        $converted_amount = floor($converted_amount * $precision) / $precision;
-    }
+    $prefix = secondary_currency_label($symbol, $code);
 
-    $prefix = trim($symbol !== '' ? $symbol : secondary_currency_label($symbol, $code));
-
-    return $prefix !== ''
-        ? $prefix . ' ' . number_format($converted_amount, $decimals, '.', ',')
-        : number_format($converted_amount, $decimals, '.', ',');
+    return to_currency_with_symbol((string) $converted_amount, $prefix, $decimals);
 }
 
 function secondary_currency_dual_amount(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
@@ -66,14 +56,17 @@ function secondary_currency_dual_amount(float $amount, float $rate = 1.0, int $d
     return secondary_currency_amount($amount, $rate, $decimals, $symbol, $code) . ' | ' . to_currency($amount);
 }
 
-function to_scnd_currency(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
+function to_secondary_currency(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
 {
     return secondary_currency_amount($amount, $rate, $decimals, $symbol, $code);
 }
 
+function to_scnd_currency(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
+{
+    return to_secondary_currency($amount, $rate, $decimals, $symbol, $code);
+}
+
 function secondary_currency_rate_display(float $rate): string
 {
-    $formatted_rate = rtrim(rtrim(number_format($rate, 6, '.', ''), '0'), '.');
-
-    return $formatted_rate === '' ? '0' : $formatted_rate;
+    return format_locale_number((string) $rate, 6, NumberFormatter::DECIMAL);
 }
