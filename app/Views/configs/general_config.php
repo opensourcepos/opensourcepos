@@ -421,18 +421,6 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.show_grid'), 'show_grid_enabled', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_checkbox([
-                        'name'    => 'show_grid_enabled',
-                        'id'      => 'show_grid_enabled',
-                        'value'   => 'show_grid_enabled',
-                        'checked' => ($config['show_grid_enabled'] ?? true) == 1
-                    ]) ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.show_office_group'), 'show_office_group', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_checkbox([
