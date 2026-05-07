@@ -501,8 +501,9 @@ helper('url');
 
                         <tbody id="payment_contents">
                             <?php foreach ($payments as $payment_id => $payment) { ?>
+                                <?php $encodedPaymentId = rtrim(strtr(base64_encode((string) $payment_id), '+/', '-_'), '='); ?>
                                 <tr>
-                                    <td><?= anchor("$controller_name/deletePayment/". esc(base64url_encode($payment_id), 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+                                    <td><?= anchor("$controller_name/deletePayment/" . esc($encodedPaymentId, 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
                                     <td><?= $payment['payment_type'] ?></td>
                                     <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
                                 </tr>

@@ -18,18 +18,19 @@ class Sale extends Model
     protected $primaryKey = 'sale_id';
     protected $useAutoIncrement = true;
     protected $useSoftDeletes = false;
-    protected $allowedFields = [
-        'sale_time',
-        'customer_id',
-        'employee_id',
-        'comment',
-        'quote_number',
-        'sale_status',
-        'invoice_number',
-        'dinner_table_id',
-        'work_order_number',
-        'sale_type'
-    ];
+      protected $allowedFields = [
+          'sale_time',
+          'customer_id',
+          'employee_id',
+          'comment',
+          'quote_number',
+          'sale_status',
+          'invoice_number',
+          'dinner_table_id',
+          'work_order_number',
+          'sale_type',
+          'secondary_currency_rate'
+      ];
 
     public function __construct()
     {
@@ -58,11 +59,12 @@ class Sale extends Model
 
         $sql = 'sales.sale_id AS sale_id,
                 MAX(DATE(sales.sale_time)) AS sale_date,
-                MAX(sales.sale_time) AS sale_time,
-                MAX(sales.comment) AS comment,
-                MAX(sales.sale_status) AS sale_status,
-                MAX(sales.invoice_number) AS invoice_number,
-                MAX(sales.quote_number) AS quote_number,
+                  MAX(sales.sale_time) AS sale_time,
+                  MAX(sales.comment) AS comment,
+                  MAX(sales.secondary_currency_rate) AS secondary_currency_rate,
+                  MAX(sales.sale_status) AS sale_status,
+                  MAX(sales.invoice_number) AS invoice_number,
+                  MAX(sales.quote_number) AS quote_number,
                 MAX(sales.employee_id) AS employee_id,
                 MAX(sales.customer_id) AS customer_id,
                 MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
@@ -536,6 +538,15 @@ class Sale extends Model
             return -1;    // TODO: Replace -1 with a constant
         }
 
+        $existing_secondary_currency_rate = null;
+        if ($sale_id != NEW_ENTRY) {
+            $existing_secondary_currency_rate = $this->db->table('sales')
+                ->select('secondary_currency_rate')
+                ->where('sale_id', $sale_id)
+                ->get()
+                ->getRowArray()['secondary_currency_rate'] ?? null;
+        }
+
         $sales_data = [
             'sale_time'         => date('Y-m-d H:i:s'),
             'customer_id'       => $customer->exists($customer_id) ? $customer_id : null,
@@ -546,8 +557,13 @@ class Sale extends Model
             'quote_number'      => $quote_number,
             'work_order_number' => $work_order_number,
             'dinner_table_id'   => $dinner_table_id,
-            'sale_type'         => $sale_type
-        ];
+            'sale_type'         => $sale_type,
+            'secondary_currency_rate' => $sale_id == NEW_ENTRY
+                ? (int) round((float) ($config['secondary_currency_rate'] ?? 0))
+                : ($existing_secondary_currency_rate !== null
+                    ? (int) round((float) $existing_secondary_currency_rate)
+                    : null)
+          ];
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
@@ -1104,6 +1120,7 @@ class Sale extends Model
                     MAX(sales.comment) AS comment,
                     MAX(sales.invoice_number) AS invoice_number,
                     MAX(sales.quote_number) AS quote_number,
+                    MAX(sales.secondary_currency_rate) AS secondary_currency_rate,
                     MAX(sales.customer_id) AS customer_id,
                     MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
                     MAX(customer_p.first_name) AS customer_first_name,

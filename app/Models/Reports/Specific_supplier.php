@@ -84,7 +84,8 @@ class Specific_supplier extends Report
             SUM(cost) AS cost,
             SUM(profit) AS profit,
             MAX(discount_type) AS discount_type,
-            MAX(discount) AS discount');
+            MAX(discount) AS discount,
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
 
         $builder->where('supplier_id', $inputs['supplier_id']);    // TODO: Duplicated code
 

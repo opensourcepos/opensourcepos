@@ -3,6 +3,7 @@
  * @var string $title
  * @var string $subtitle
  * @var array $summary_data
+ * @var array $summary_secondary_data
  * @var array $headers
  * @var array $data
  * @var array $config
@@ -33,7 +34,7 @@
 
 <div id="report_summary">
     <?php
-    $secondaryCurrency = secondary_currency_context($config);
+    $secondaryCurrency = $secondaryCurrency ?? secondary_currency_context($config, $secondary_currency_rate ?? null);
     $currencySummaryPattern = '/(amount|subtotal|tax|total|cost|profit|retail|value)$/';
     foreach ($summary_data as $name => $value) {
         $label = lang("Reports.$name");
@@ -42,7 +43,9 @@
             <div class="summary_row"><?= esc($label) . ": " . esc($value) ?></div>
         <?php } elseif (is_numeric($value) && preg_match($currencySummaryPattern, $name)) { ?>
             <div class="summary_row"><?= esc($label) . ': ' . esc(to_currency($value)) ?></div>
-            <?php if ($secondaryCurrency['show']) { ?>
+            <?php if (!empty($summary_secondary_data[$name])) { ?>
+                <div class="summary_row"><?= esc(secondary_currency_display_label($label, $secondaryCurrency)) . ': ' . esc($summary_secondary_data[$name]) ?></div>
+            <?php } elseif ($secondaryCurrency['show']) { ?>
                 <div class="summary_row"><?= esc(secondary_currency_display_label($label, $secondaryCurrency)) . ': ' . esc(secondary_currency_render_amount((float) $value, $secondaryCurrency)) ?></div>
             <?php } ?>
             <div class="summary_row" style="height: 0.9em;"></div>

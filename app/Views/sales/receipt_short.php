@@ -151,6 +151,12 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
             <td colspan="2" style="text-align: right;"> <?= lang($amount_change >= 0 ? ($only_sale_check ? 'Sales.check_balance' : 'Sales.change_due') : 'Sales.amount_due') ?> </td>
             <td class="total-value"><?= to_currency($amount_change) ?></td>
         </tr>
+        <?php if ($secondaryCurrency['show']) { ?>
+        <tr>
+            <td colspan="2" style="text-align: right;"><?= esc(lang('Config.currency_rate')) ?></td>
+            <td class="total-value"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></td>
+        </tr>
+        <?php } ?>
     </table>
 
     <div id="sale_return_policy">

@@ -26,7 +26,8 @@ class Expense extends Model
         'deleted',
         'supplier_tax_code',
         'tax_amount',
-        'supplier_id'
+        'supplier_id',
+        'secondary_currency_rate'
     ];
 
     /**
@@ -207,6 +208,7 @@ class Expense extends Model
             expenses.description AS description,
             expenses.employee_id AS employee_id,
             expenses.deleted AS deleted,
+            expenses.secondary_currency_rate AS secondary_currency_rate,
             employees.first_name AS first_name,
             employees.last_name AS last_name,
             expense_categories.expense_category_id AS expense_category_id,
@@ -262,8 +264,11 @@ class Expense extends Model
     public function save_value(array &$expense_data, int $expense_id = NEW_ENTRY): bool
     {
         $builder = $this->db->table('expenses');
-
         if ($expense_id == NEW_ENTRY || !$this->exists($expense_id)) {
+            if (!array_key_exists('secondary_currency_rate', $expense_data)) {
+                $expense_data['secondary_currency_rate'] = (int) round((float) (config(OSPOS::class)->settings['secondary_currency_rate'] ?? 0));
+            }
+
             if ($builder->insert($expense_data)) {
                 $expense_data['expense_id'] = $this->db->insertID();
 

@@ -131,8 +131,6 @@ class Reports extends Secure_Controller
       public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string    // TODO: Perhaps these need to be passed as an array?  Too many parameters in the signature.
       {   // TODO: Duplicated code
           $this->clearCache();
-          $secondaryCurrency = secondary_currency_context($this->config);
-          $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
   
           $inputs = [
               'start_date'  => $start_date,
@@ -143,6 +141,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_sales->getData($inputs);
         $summary = $this->summary_sales->getSummaryData($inputs);
+          $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
           $tabular_data = [];
           foreach ($report_data as $row) {
@@ -157,9 +156,10 @@ class Reports extends Secure_Controller
                   'profit'    => to_currency($row['profit'])
               ];
 
-              if ($secondaryCurrency['show']) {
-                  $row_data['secondary_rate'] = $secondaryRateDisplay;
-                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+              $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+              if ($rowSecondaryCurrency['show']) {
+                  $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
               }
 
               $tabular_data[] = $row_data;
@@ -170,7 +170,9 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_sales->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $summary
+            'summary_data' => $summary,
+            'summary_secondary_data' => $this->_build_secondary_summary_display_map($report_data, $summary, $secondaryCurrency),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -197,6 +199,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_categories->getData($inputs);
         $summary = $this->summary_categories->getSummaryData($inputs);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
         $tabular_data = [];
         foreach ($report_data as $row) {
@@ -216,7 +219,9 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_categories->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $summary
+            'summary_data' => $summary,
+            'summary_secondary_data' => $this->_build_secondary_summary_display_map($report_data, $summary, $secondaryCurrency),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -270,8 +275,6 @@ class Reports extends Secure_Controller
     public function summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
     {
         $this->clearCache();
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
 
         $inputs = [    // TODO: Duplicated Code
             'start_date'  => $start_date,
@@ -282,8 +285,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_customers->getData($inputs);
         $summary = $this->summary_customers->getSummaryData($inputs);
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
         $tabular_data = [];
 
@@ -299,9 +301,10 @@ class Reports extends Secure_Controller
                 'profit'        => to_currency($row['profit'])
             ];
 
-            if ($secondaryCurrency['show']) {
-                $row_data['secondary_rate'] = $secondaryRateDisplay;
-                $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+            $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+            if ($rowSecondaryCurrency['show']) {
+                $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
             }
 
             $tabular_data[] = $row_data;
@@ -312,7 +315,9 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_customers->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $summary
+            'summary_data' => $summary,
+            'summary_secondary_data' => $this->_build_secondary_summary_display_map($report_data, $summary, $secondaryCurrency),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -329,8 +334,6 @@ class Reports extends Secure_Controller
       public function summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
       {   // TODO: Duplicated Code
           $this->clearCache();
-          $secondaryCurrency = secondary_currency_context($this->config);
-          $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
   
           $inputs = [
               'start_date'  => $start_date,
@@ -341,6 +344,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_suppliers->getData($inputs);
         $summary = $this->summary_suppliers->getSummaryData($inputs);
+          $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
           $tabular_data = [];
           foreach ($report_data as $row) {
@@ -354,9 +358,10 @@ class Reports extends Secure_Controller
                   'profit'        => to_currency($row['profit'])
               ];
 
-              if ($secondaryCurrency['show']) {
-                  $row_data['secondary_rate'] = $secondaryRateDisplay;
-                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+              $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+              if ($rowSecondaryCurrency['show']) {
+                  $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
               }
 
               $tabular_data[] = $row_data;
@@ -367,7 +372,9 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_suppliers->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $summary
+            'summary_data' => $summary,
+            'summary_secondary_data' => $this->_build_secondary_summary_display_map($report_data, $summary, $secondaryCurrency),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -384,8 +391,6 @@ class Reports extends Secure_Controller
       public function summary_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
       {
           $this->clearCache();
-          $secondaryCurrency = secondary_currency_context($this->config);
-          $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
   
           $inputs = [
               'start_date'  => $start_date,
@@ -396,6 +401,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_items->getData($inputs);
         $summary = $this->summary_items->getSummaryData($inputs);
+          $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
           $tabular_data = [];
   
@@ -413,9 +419,10 @@ class Reports extends Secure_Controller
                   'profit'     => to_currency($row['profit'])
               ];
 
-              if ($secondaryCurrency['show']) {
-                  $row_data['secondary_rate'] = $secondaryRateDisplay;
-                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+              $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+              if ($rowSecondaryCurrency['show']) {
+                  $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
               }
 
               $tabular_data[] = $row_data;
@@ -426,7 +433,9 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_items->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $summary
+            'summary_data' => $summary,
+            'summary_secondary_data' => $this->_build_secondary_summary_display_map($report_data, $summary, $secondaryCurrency),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -443,8 +452,6 @@ class Reports extends Secure_Controller
     public function summary_employees(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): string
     {
         $this->clearCache();
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
 
         $inputs = [
             'start_date'  => $start_date,
@@ -455,8 +462,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_employees->getData($inputs);
         $summary = $this->summary_employees->getSummaryData($inputs);
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
         $tabular_data = [];
 
@@ -472,9 +478,10 @@ class Reports extends Secure_Controller
                 'profit'        => to_currency($row['profit'])
             ];
 
-            if ($secondaryCurrency['show']) {
-                $row_data['secondary_rate'] = $secondaryRateDisplay;
-                $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+            $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+            if ($rowSecondaryCurrency['show']) {
+                $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
             }
 
             $tabular_data[] = $row_data;
@@ -485,7 +492,9 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_employees->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $summary
+            'summary_data' => $summary,
+            'summary_secondary_data' => $this->_build_secondary_summary_display_map($report_data, $summary, $secondaryCurrency),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -604,8 +613,6 @@ class Reports extends Secure_Controller
       public function summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): string
       {   // TODO: Duplicated Code
           $this->clearCache();
-          $secondaryCurrency = secondary_currency_context($this->config);
-          $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
   
           $inputs = [
               'start_date'    => $start_date,
@@ -617,6 +624,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_discounts->getData($inputs);
         $summary = $this->summary_discounts->getSummaryData($inputs);
+          $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
           $tabular_data = [];
           foreach ($report_data as $row) {
@@ -626,9 +634,10 @@ class Reports extends Secure_Controller
                   'count'    => $row['count']
               ];
 
-              if ($secondaryCurrency['show']) {
-                  $row_data['secondary_rate'] = $secondaryRateDisplay;
-                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+              $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+              if ($rowSecondaryCurrency['show']) {
+                  $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
               }
 
               $tabular_data[] = $row_data;
@@ -639,7 +648,8 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $this->summary_discounts->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $summary
+            'summary_data' => $summary,
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -811,6 +821,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'show_currency'  => true
         ];
 
@@ -855,6 +866,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'yaxis_title'    => lang('Reports.revenue'),
             'xaxis_title'    => lang('Reports.date'),
             'show_currency'  => true
@@ -902,6 +914,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'yaxis_title'    => lang('Reports.items'),
             'xaxis_title'    => lang('Reports.revenue'),
             'show_currency'  => true
@@ -947,6 +960,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'show_currency'  => true
         ];
 
@@ -992,6 +1006,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'show_currency'  => true
         ];
 
@@ -1036,6 +1051,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'show_currency'  => true
         ];
 
@@ -1080,6 +1096,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'show_currency'  => true
         ];
 
@@ -1124,6 +1141,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'show_currency'  => true
         ];
 
@@ -1168,6 +1186,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'yaxis_title'    => lang('Reports.customers'),
             'xaxis_title'    => lang('Reports.revenue'),
             'show_currency'  => true
@@ -1201,6 +1220,7 @@ class Reports extends Secure_Controller
 
         $report_data = $this->summary_discounts->getData($inputs);
         $summary = $this->summary_discounts->getSummaryData($inputs);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
         $labels = [];
         $series = [];
@@ -1217,6 +1237,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $secondaryCurrency),
             'yaxis_title'    => lang('Reports.count'),
             'xaxis_title'    => lang('Reports.discount'),
             'show_currency'  => false
@@ -1265,6 +1286,7 @@ class Reports extends Secure_Controller
             'labels_1'       => $labels,
             'series_data_1'  => $series,
             'summary_data_1' => $summary,
+            'summary_secondary_data_1' => $this->_build_secondary_summary_display_map($report_data, $summary, $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data))),
             'show_currency'  => true
         ];
 
@@ -1328,8 +1350,6 @@ class Reports extends Secure_Controller
     public function specific_customers(string $start_date, string $end_date, string $customer_id, string $sale_type, string $payment_type): string
     {
         $this->clearCache();
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
 
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type];
 
@@ -1339,6 +1359,7 @@ class Reports extends Secure_Controller
 
         $headers = $specific_customer->getDataColumns();
         $report_data = $specific_customer->getData($inputs);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data['summary']));
 
         $summary_data = [];
         $details_data = [];
@@ -1378,9 +1399,10 @@ class Reports extends Secure_Controller
                 )
             ];
 
-            if ($secondaryCurrency['show']) {
-                $summary_data[array_key_last($summary_data)]['secondary_rate'] = $secondaryRateDisplay;
-                $summary_data[array_key_last($summary_data)]['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+            $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+            if ($rowSecondaryCurrency['show']) {
+                $summary_data[array_key_last($summary_data)]['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                $summary_data[array_key_last($summary_data)]['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
             }
 
             foreach ($report_data['details'][$key] as $drow) {    // TODO: Duplicated Code
@@ -1420,7 +1442,9 @@ class Reports extends Secure_Controller
             'summary_data'         => $summary_data,
             'details_data'         => $details_data,
             'details_data_rewards' => $details_data_rewards,
-            'overall_summary_data' => $specific_customer->getSummaryData($inputs)
+            'overall_summary_data' => $specific_customer->getSummaryData($inputs),
+            'summary_rows'         => $report_data['summary'],
+            'secondaryCurrency'    => $secondaryCurrency
         ];
         $this->_append_secondary_currency($data);
 
@@ -1435,7 +1459,7 @@ class Reports extends Secure_Controller
      */
     private function _append_secondary_currency(array &$data): void
     {
-        $secondaryCurrency = secondary_currency_context($this->config);
+        $secondaryCurrency = $data['secondaryCurrency'] ?? $this->_secondary_currency_snapshot($data['secondary_currency_rate'] ?? null);
         $data['secondaryCurrency'] = $secondaryCurrency;
         $data['secondaryTotalLabel'] = secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency);
         $data['secondaryRateDisplay'] = secondary_currency_render_rate($secondaryCurrency);
@@ -1444,6 +1468,11 @@ class Reports extends Secure_Controller
             return;
         }
 
+        $summaryRows = $data['summary_rows'] ?? [];
+        $summarySecondaryMap = is_array($summaryRows) && count($summaryRows) > 0
+            ? $this->_build_secondary_summary_display_map($summaryRows, $data['overall_summary_data'], $secondaryCurrency)
+            : [];
+
         $data['overall_summary_display_data'] = [];
         foreach ($data['overall_summary_data'] as $name => $value) {
             $primaryLabel = $name === 'total_secondary_currency'
@@ -1451,9 +1480,101 @@ class Reports extends Secure_Controller
                 : lang("Reports.$name");
             $data['overall_summary_display_data'][] = [
                 'primary' => $primaryLabel . ': ' . to_currency($value),
-                'secondary' => secondary_currency_display_label($primaryLabel, $secondaryCurrency) . ': ' . secondary_currency_render_amount((float) $value, $secondaryCurrency)
+                'secondary' => secondary_currency_display_label($primaryLabel, $secondaryCurrency) . ': ' . ($summarySecondaryMap[$name] ?? secondary_currency_render_amount((float) $value, $secondaryCurrency))
             ];
         }
+    }
+
+    /**
+     * Returns a normalized secondary-currency context using the configured live defaults.
+     */
+    private function _secondary_currency_snapshot(?float $rate = null): array
+    {
+        return secondary_currency_context($this->config, $rate);
+    }
+
+    /**
+     * Returns a normalized secondary-currency context for a report row, with an optional fallback rate.
+     */
+    private function _secondary_currency_for_row(array $row, ?float $fallbackRate = null): array
+    {
+        $rate = $fallbackRate;
+
+        if (array_key_exists('secondary_currency_rate', $row) && $row['secondary_currency_rate'] !== null && $row['secondary_currency_rate'] !== '') {
+            $rate = (float) $row['secondary_currency_rate'];
+        }
+
+        return $this->_secondary_currency_snapshot($rate);
+    }
+
+    /**
+     * Build a summary display map using row-level secondary currency snapshots.
+     *
+     * @param array $rows
+     * @param array $summaryData
+     * @param array $secondaryCurrency
+     * @return array<string, string>
+     */
+    private function _build_secondary_summary_display_map(array $rows, array $summaryData, array $secondaryCurrency): array
+    {
+        $currencySummaryPattern = '/(amount|subtotal|tax|total|cost|profit|retail|value)$/';
+        $displayCurrency = [
+            'show'     => true,
+            'rate'     => 1,
+            'decimals' => (int) ($secondaryCurrency['decimals'] ?? 0),
+            'symbol'   => (string) ($secondaryCurrency['symbol'] ?? ''),
+            'code'     => (string) ($secondaryCurrency['code'] ?? '')
+        ];
+
+        $displayMap = [];
+
+        foreach ($summaryData as $name => $value) {
+            if (!is_numeric($value) || !preg_match($currencySummaryPattern, (string) $name)) {
+                continue;
+            }
+
+            $secondaryTotal = null;
+            foreach ($rows as $row) {
+                if (!is_array($row) || !array_key_exists($name, $row) || !is_numeric($row[$name])) {
+                    continue;
+                }
+
+                $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+                if (!$rowSecondaryCurrency['show']) {
+                    continue;
+                }
+
+                $secondaryTotal = ($secondaryTotal ?? 0.0) + ((float) $row[$name] * (float) $rowSecondaryCurrency['rate']);
+            }
+
+            $displayMap[$name] = $secondaryTotal !== null
+                ? secondary_currency_render_amount($secondaryTotal, $displayCurrency)
+                : secondary_currency_render_amount((float) $value, $secondaryCurrency);
+        }
+
+        return $displayMap;
+    }
+
+    /**
+     * @param array $rows
+     * @param string $field
+     * @return float|null
+     */
+    private function _average_secondary_rate(array $rows, string $field = 'secondary_currency_rate'): ?float
+    {
+        $rates = [];
+
+        foreach ($rows as $row) {
+            if (is_array($row) && array_key_exists($field, $row) && $row[$field] !== null && $row[$field] !== '') {
+                $rates[] = (float) $row[$field];
+            }
+        }
+
+        if (count($rates) === 0) {
+            return null;
+        }
+
+        return array_sum($rates) / count($rates);
     }
 
     /**
@@ -1492,8 +1613,6 @@ class Reports extends Secure_Controller
     public function specific_employees(string $start_date, string $end_date, string $employee_id, string $sale_type): string
     {
         $this->clearCache();
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
 
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type];
 
@@ -1503,6 +1622,7 @@ class Reports extends Secure_Controller
 
         $headers = $specific_employee->getDataColumns();
         $report_data = $specific_employee->getData($inputs);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data['summary']));
 
         $summary_data = [];
         $details_data = [];
@@ -1542,9 +1662,10 @@ class Reports extends Secure_Controller
                 )
             ];
 
-            if ($secondaryCurrency['show']) {
-                $summary_data[array_key_last($summary_data)]['secondary_rate'] = $secondaryRateDisplay;
-                $summary_data[array_key_last($summary_data)]['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+            $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+            if ($rowSecondaryCurrency['show']) {
+                $summary_data[array_key_last($summary_data)]['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                $summary_data[array_key_last($summary_data)]['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
             }
 
             // TODO: Duplicated Code
@@ -1581,7 +1702,9 @@ class Reports extends Secure_Controller
             'summary_data'         => $summary_data,
             'details_data'         => $details_data,
             'details_data_rewards' => $details_data_rewards,
-            'overall_summary_data' => $specific_employee->getSummaryData($inputs)
+            'overall_summary_data' => $specific_employee->getSummaryData($inputs),
+            'summary_rows'         => $report_data['summary'],
+            'secondaryCurrency'    => $secondaryCurrency
         ];
         $this->_append_secondary_currency($data);
 
@@ -1641,6 +1764,7 @@ class Reports extends Secure_Controller
 
         $headers = $specific_discount->getDataColumns();
         $report_data = $specific_discount->getData($inputs);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data['summary']));
 
         $summary_data = [];
         $details_data = [];
@@ -1665,8 +1789,6 @@ class Reports extends Secure_Controller
                 'subtotal'      => to_currency($row['subtotal']),
                 'tax'           => to_currency_tax($row['tax']),
                 'total'         => to_currency($row['total']),
-                'secondary_rate' => secondary_currency_render_rate(secondary_currency_context($this->config)),
-                'total_secondary_currency' => secondary_currency_render_amount((float) $row['total'], secondary_currency_context($this->config)),
                 'cost'          => to_currency($row['cost']),
                 'profit'        => to_currency($row['profit']),
                 'payment_type'  => $row['payment_type'],
@@ -1682,6 +1804,11 @@ class Reports extends Secure_Controller
                     ]
                 )
             ];
+            $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+            if ($rowSecondaryCurrency['show']) {
+                $summary_data[array_key_last($summary_data)]['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                $summary_data[array_key_last($summary_data)]['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
+            }
             // TODO: Duplicated Code
             foreach ($report_data['details'][$key] as $drow) {
                 $details_data[$row['sale_id']][] = [
@@ -1715,7 +1842,9 @@ class Reports extends Secure_Controller
             'summary_data'         => $summary_data,
             'details_data'         => $details_data,
             'details_data_rewards' => $details_data_rewards,
-            'overall_summary_data' => $specific_discount->getSummaryData($inputs)
+            'overall_summary_data' => $specific_discount->getSummaryData($inputs),
+            'summary_rows'         => $report_data['summary'],
+            'secondaryCurrency'    => $secondaryCurrency
         ];
         $this->_append_secondary_currency($data);
 
@@ -1738,6 +1867,7 @@ class Reports extends Secure_Controller
         $this->detailed_sales->create($inputs);
 
         $report_data = $this->detailed_sales->getDataBySaleId($sale_id);
+        $secondaryCurrency = $this->_secondary_currency_for_row($report_data, (float) $this->config['secondary_currency_rate']);
 
         if ($report_data['sale_status'] == CANCELED) {
             $button_key = 'data-btn-restore';
@@ -1756,8 +1886,6 @@ class Reports extends Secure_Controller
             'subtotal'      => to_currency($report_data['subtotal']),
             'tax'           => to_currency_tax($report_data['tax']),
             'total'         => to_currency($report_data['total']),
-            'secondary_rate' => secondary_currency_render_rate(secondary_currency_context($this->config)),
-            'total_secondary_currency' => secondary_currency_render_amount((float) $report_data['total'], secondary_currency_context($this->config)),
             'cost'          => to_currency($report_data['cost']),
             'profit'        => to_currency($report_data['profit']),
             'payment_type'  => $report_data['payment_type'],
@@ -1773,6 +1901,11 @@ class Reports extends Secure_Controller
                 ]
             )
         ];
+
+        if ($secondaryCurrency['show']) {
+            $summary_data['secondary_rate'] = secondary_currency_render_rate($secondaryCurrency);
+            $summary_data['total_secondary_currency'] = secondary_currency_render_amount((float) $report_data['total'], $secondaryCurrency);
+        }
 
         return $this->response->setJSON([$sale_id => $summary_data]);
     }
@@ -1811,9 +1944,6 @@ class Reports extends Secure_Controller
      */
       public function specific_suppliers(string $start_date, string $end_date, string $supplier_id, string $sale_type): string
       {
-          $secondaryCurrency = secondary_currency_context($this->config);
-          $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
-
           $inputs = [
               'start_date'  => $start_date,
               'end_date'    => $end_date,
@@ -1826,6 +1956,7 @@ class Reports extends Secure_Controller
         $specific_supplier->create($inputs);
 
         $report_data = $specific_supplier->getData($inputs);
+          $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data));
 
           $tabular_data = [];
           foreach ($report_data as $row) {
@@ -1845,9 +1976,10 @@ class Reports extends Secure_Controller
                   'discount'    => ($row['discount_type'] == PERCENT) ? $row['discount'] . '%' : to_currency($row['discount'])
               ];
 
-              if ($secondaryCurrency['show']) {
-                  $row_data['secondary_rate'] = $secondaryRateDisplay;
-                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+              $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+              if ($rowSecondaryCurrency['show']) {
+                  $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
               }
 
               $tabular_data[] = $row_data;
@@ -1859,7 +1991,8 @@ class Reports extends Secure_Controller
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'      => $specific_supplier->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $specific_supplier->getSummaryData($inputs)
+            'summary_data' => $specific_supplier->getSummaryData($inputs),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);
@@ -1918,6 +2051,7 @@ class Reports extends Secure_Controller
         $headers = $columns;
 
         $report_data = $this->detailed_sales->getData($inputs);
+        $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data['summary']));
 
         $summary_data = [];
         $details_data = [];
@@ -1944,8 +2078,6 @@ class Reports extends Secure_Controller
                 'subtotal'      => to_currency($row['subtotal']),
                 'tax'           => to_currency_tax($row['tax']),
                 'total'         => to_currency($row['total']),
-                'secondary_rate' => secondary_currency_render_rate(secondary_currency_context($this->config)),
-                'total_secondary_currency' => secondary_currency_render_amount((float) $row['total'], secondary_currency_context($this->config)),
                 'cost'          => to_currency($row['cost']),
                 'profit'        => to_currency($row['profit']),
                 'payment_type'  => $row['payment_type'],
@@ -1961,6 +2093,12 @@ class Reports extends Secure_Controller
                     ]
                 )
             ];
+
+            $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+            if ($rowSecondaryCurrency['show']) {
+                $summary_data[array_key_last($summary_data)]['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                $summary_data[array_key_last($summary_data)]['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
+            }
 
             foreach ($report_data['details'][$key] as $drow) {
                 $quantity_purchased = to_quantity_decimals($drow['quantity_purchased']);
@@ -2000,7 +2138,9 @@ class Reports extends Secure_Controller
             'summary_data'         => $summary_data,
             'details_data'         => $details_data,
             'details_data_rewards' => $details_data_rewards,
-            'overall_summary_data' => $this->detailed_sales->getSummaryData($inputs)
+            'overall_summary_data' => $this->detailed_sales->getSummaryData($inputs),
+            'summary_rows'         => $report_data['summary'],
+            'secondaryCurrency'    => $secondaryCurrency
         ];
         $this->_append_secondary_currency($data);
         return view('reports/tabular_details', $data);
@@ -2016,12 +2156,11 @@ class Reports extends Secure_Controller
       public function getGet_detailed_receivings_row(string $receiving_id): ResponseInterface
       {
           $inputs = ['receiving_id' => $receiving_id];
-          $secondaryCurrency = secondary_currency_context($this->config);
-          $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
   
           $this->detailed_receivings->create($inputs);
   
           $report_data = $this->detailed_receivings->getDataByReceivingId($receiving_id);
+          $secondaryCurrency = $this->_secondary_currency_for_row($report_data, (float) $this->config['secondary_currency_rate']);
 
         $summary_data = [
             'receiving_id'   => $report_data['receiving_id'],
@@ -2042,11 +2181,11 @@ class Reports extends Secure_Controller
                     'data-btn-delete' => lang('Common.delete'),
                     'title'           => lang('Receivings.update')
                   ]
-              )
+            )
           ];
 
           if ($secondaryCurrency['show']) {
-              $summary_data['secondary_rate'] = $secondaryRateDisplay;
+              $summary_data['secondary_rate'] = secondary_currency_render_rate($secondaryCurrency);
               $summary_data['total_secondary_currency'] = secondary_currency_render_amount((float) $report_data['total'], $secondaryCurrency);
           }
   
@@ -2063,8 +2202,6 @@ class Reports extends Secure_Controller
       public function detailed_receivings(string $start_date, string $end_date, string $receiving_type, string $location_id = 'all'): string
       {
           $this->clearCache();
-          $secondaryCurrency = secondary_currency_context($this->config);
-          $secondaryRateDisplay = secondary_currency_render_rate($secondaryCurrency);
   
           $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_RECEIVINGS, true);
 
@@ -2082,6 +2219,7 @@ class Reports extends Secure_Controller
 
         $headers = $columns;
         $report_data = $this->detailed_receivings->getData($inputs);
+          $secondaryCurrency = $this->_secondary_currency_snapshot($this->_average_secondary_rate($report_data['summary']));
 
           $summary_data = [];
           $details_data = [];
@@ -2112,9 +2250,10 @@ class Reports extends Secure_Controller
                   )
               ];
 
-              if ($secondaryCurrency['show']) {
-                  $row_data['secondary_rate'] = $secondaryRateDisplay;
-                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $secondaryCurrency);
+              $rowSecondaryCurrency = $this->_secondary_currency_for_row($row, $secondaryCurrency['rate']);
+              if ($rowSecondaryCurrency['show']) {
+                  $row_data['secondary_rate'] = secondary_currency_render_rate($rowSecondaryCurrency);
+                  $row_data['total_secondary_currency'] = secondary_currency_render_amount((float) $row['total'], $rowSecondaryCurrency);
               }
 
               $summary_data[] = $row_data;
@@ -2143,10 +2282,12 @@ class Reports extends Secure_Controller
             'subtitle'             => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
             'headers'              => $headers,
             'editable'             => 'receivings',
-            'summary_data'         => $summary_data,
-            'details_data'         => $details_data,
-            'overall_summary_data' => $this->detailed_receivings->getSummaryData($inputs)
-        ];
+          'summary_data'         => $summary_data,
+          'details_data'         => $details_data,
+          'overall_summary_data' => $this->detailed_receivings->getSummaryData($inputs),
+          'summary_rows'         => $report_data['summary'],
+          'secondaryCurrency'    => $secondaryCurrency
+      ];
         $this->_append_secondary_currency($data);
 
         return view('reports/tabular_details', $data);
@@ -2219,6 +2360,7 @@ class Reports extends Secure_Controller
         $inputs = ['location_id' => $location_id, 'item_count' => $item_count];
 
         $report_data = $this->inventory_summary->getData($inputs);
+        $secondaryCurrency = $this->_secondary_currency_snapshot();
 
         $tabular_data = [];
         foreach ($report_data as $row) {
@@ -2241,7 +2383,8 @@ class Reports extends Secure_Controller
             'subtitle'     => '',
             'headers'      => $this->inventory_summary->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $this->inventory_summary->getSummaryData($report_data)
+            'summary_data' => $this->inventory_summary->getSummaryData($report_data),
+            'secondaryCurrency' => $secondaryCurrency
         ];
 
         return view('reports/tabular', $data);

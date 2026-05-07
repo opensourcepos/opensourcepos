@@ -28,7 +28,7 @@ use stdClass;
 
 class Sales extends Secure_Controller
 {
-    protected $helpers = ['file'];
+    protected $helpers = ['file', 'tabular'];
     private Barcode_lib $barcode_lib;
     private Email_lib $email_lib;
     private Sale_lib $sale_lib;
@@ -74,7 +74,10 @@ class Sales extends Secure_Controller
      */
     private function _append_secondary_currency(array &$data): void
     {
-        $secondaryCurrency = secondary_currency_context($this->config);
+        $secondaryCurrency = $data['secondaryCurrency'] ?? secondary_currency_context(
+            $this->config,
+            $data['secondary_currency_rate'] ?? null
+        );
         $data['secondaryCurrency'] = $secondaryCurrency;
         $data['secondaryTotalLabel'] = secondary_currency_display_label(lang(ucfirst($data['controller_name'] ?? 'Sales') . '.total'), $secondaryCurrency);
         $data['secondaryAmountDueLabel'] = secondary_currency_display_label(lang(ucfirst($data['controller_name'] ?? 'Sales') . '.amount_due'), $secondaryCurrency);
@@ -167,8 +170,12 @@ class Sales extends Secure_Controller
                 $selectedFilters = [];
             }
 
-            // Restore filters from URL query string
-            $filters = restoreTableFilters($this->request);
+            // Restore filters from URL query string.
+            $filters = [
+                'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null,
+                'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null,
+                'selected_filters' => $this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? []
+            ];
             if (!empty($filters['selected_filters'])) {
                 $selectedFilters = array_merge($selectedFilters, $filters['selected_filters']);
             }
@@ -545,9 +552,13 @@ class Sales extends Secure_Controller
      */
     public function getDeletePayment(string $payment_id): ResponseInterface|string
     {
-        helper('url');
+        $remainder = strlen($payment_id) % 4;
+        if ($remainder) {
+            $payment_id .= str_repeat('=', 4 - $remainder);
+        }
 
-        $this->sale_lib->delete_payment(base64url_decode($payment_id));
+        $decoded_payment_id = base64_decode(strtr($payment_id, '-_', '+/'));
+        $this->sale_lib->delete_payment($decoded_payment_id);
 
         return $this->_reload();
     }
@@ -1142,6 +1153,7 @@ class Sales extends Secure_Controller
         $sale_info = $this->sale->get_info($sale_id)->getRowArray();
         $this->sale_lib->copy_entire_sale($sale_id);
         $data = [];
+        $data['secondary_currency_rate'] = $sale_info['secondary_currency_rate'] ?? null;
         $data['cart'] = $this->sale_lib->get_cart();
         $data['payments'] = $this->sale_lib->get_payments();
         $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
@@ -1235,6 +1247,8 @@ class Sales extends Secure_Controller
      */
     private function _reload(array $data = []): ResponseInterface|string    // TODO: Hungarian notation
     {
+        helper('url');
+
         $sale_id = $this->session->get('sale_id');    // TODO: This variable is never used
 
         if ($sale_id == '') {

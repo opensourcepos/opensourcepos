@@ -100,7 +100,8 @@ class Specific_customer extends Report
             SUM(cost) AS cost,
             SUM(profit) AS profit,
             MAX(payment_type) AS payment_type,
-            MAX(comment) AS comment');
+            MAX(comment) AS comment,
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
 
         $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicated code
 

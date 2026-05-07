@@ -126,7 +126,8 @@ class Detailed_sales extends Report
             SUM(cost) AS cost,
             SUM(profit) AS profit,
             MAX(payment_type) AS payment_type,
-            MAX(comment) AS comment');
+            MAX(comment) AS comment,
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
 
         if ($inputs['location_id'] != 'all') {    // TODO: Duplicated code
             $builder->where('item_location', $inputs['location_id']);
@@ -194,7 +195,8 @@ class Detailed_sales extends Report
                 MAX(profit) AS profit,
                 MAX(discount) AS discount,
                 MAX(discount_type) AS discount_type,
-                MAX(sale_status) AS sale_status');
+                MAX(sale_status) AS sale_status,
+                MAX(secondary_currency_rate) AS secondary_currency_rate');
 
             if (count($inputs['definition_ids']) > 0) {
                 $format = $this->db->escape(dateformat_mysql());

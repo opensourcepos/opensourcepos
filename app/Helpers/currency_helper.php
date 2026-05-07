@@ -1,12 +1,12 @@
 <?php
 
-function secondary_currency_context(array $config): array
+function secondary_currency_context(array $config, ?float $rateOverride = null): array
 {
-    $enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
-    $rate = (float)($config['secondary_currency_rate'] ?? 0);
-    $decimals = (int)($config['secondary_currency_decimals'] ?? 0);
-    $symbol = (string)($config['secondary_currency_symbol'] ?? '');
-    $code = (string)($config['secondary_currency_code'] ?? '');
+      $enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
+      $rate = $rateOverride !== null ? (float) $rateOverride : (float)($config['secondary_currency_rate'] ?? 0);
+      $decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+      $symbol = (string)($config['secondary_currency_symbol'] ?? '');
+      $code = (string)($config['secondary_currency_code'] ?? '');
 
     return [
         'enabled' => $enabled,

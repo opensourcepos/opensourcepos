@@ -168,7 +168,7 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
         </tr>
         <?php if ($secondaryCurrency['show']) { ?>
         <tr>
-            <td colspan="3" style="text-align: right;"><?= esc(lang('Config.secondary_currency_rate')) ?></td>
+            <td colspan="3" style="text-align: right;"><?= esc(lang('Config.currency_rate')) ?></td>
             <td class="total-value"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></td>
         </tr>
         <?php } ?>

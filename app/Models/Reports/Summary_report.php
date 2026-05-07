@@ -82,7 +82,8 @@ abstract class Summary_report extends Report
                 $sales_tax AS tax,
                 IFNULL($sale_total, $sale_subtotal) AS total,
                 $sale_cost AS cost,
-                (IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit
+                (IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit,
+                AVG(sales.secondary_currency_rate) AS secondary_currency_rate
         ");
     }
 

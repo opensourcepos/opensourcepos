@@ -281,6 +281,7 @@ return [
     "secondary_currency_rate"                    => "Secondary Currency Rate",
     "secondary_currency_settings"                => "Secondary Currency Settings",
     "secondary_currency_symbol"                  => "Secondary Currency Symbol",
+    "currency_rate"                              => "Currency Rate",
     "receiving_calculate_average_price"         => "Calc avg. Price (Receiving)",
     "recv_invoice_format"                       => "Receivings Invoice Format",
     "register_mode_default"                     => "Default Register Mode",
