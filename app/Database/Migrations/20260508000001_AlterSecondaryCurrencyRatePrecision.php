@@ -3,30 +3,41 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use Config\Database;
 
 class AlterSecondaryCurrencyRatePrecision extends Migration
 {
     public function up(): void
     {
-        $tables = ['sales', 'receivings', 'expenses'];
+        $forge = Database::forge();
+        $fields = [
+            'secondary_currency_rate' => [
+                'type' => 'DECIMAL',
+                'constraint' => '15,6',
+                'null' => true,
+                'default' => null,
+            ],
+        ];
 
-        foreach ($tables as $table) {
-            $this->db->query(
-                'ALTER TABLE ' . $this->db->prefixTable($table) .
-                ' MODIFY `secondary_currency_rate` DECIMAL(15,6) NULL DEFAULT NULL'
-            );
+        foreach (['sales', 'receivings', 'expenses'] as $table) {
+            $forge->modifyColumn($table, $fields);
         }
     }
 
     public function down(): void
     {
-        $tables = ['sales', 'receivings', 'expenses'];
+        $forge = Database::forge();
+        $fields = [
+            'secondary_currency_rate' => [
+                'type' => 'DECIMAL',
+                'constraint' => '15,0',
+                'null' => true,
+                'default' => null,
+            ],
+        ];
 
-        foreach ($tables as $table) {
-            $this->db->query(
-                'ALTER TABLE ' . $this->db->prefixTable($table) .
-                ' MODIFY `secondary_currency_rate` DECIMAL(15,0) NULL DEFAULT NULL'
-            );
+        foreach (['sales', 'receivings', 'expenses'] as $table) {
+            $forge->modifyColumn($table, $fields);
         }
     }
 }
