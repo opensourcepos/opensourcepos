@@ -238,6 +238,28 @@ class Config extends Secure_Controller
         $data['show_office_group'] = $this->module->get_show_office_group();
         $data['currency_code'] = $this->config['currency_code'] ?? '';
         $data['dbVersion'] = mysqli_get_server_info($this->db->getConnection());
+        $data['scale_export_formats'] = [
+            'txt' => 'TXT',
+            'csv' => 'CSV',
+        ];
+        $data['scale_export_charsets'] = [
+            'windows-1256' => 'Windows-1256',
+            'utf-8' => 'UTF-8',
+            'windows-1252' => 'Windows-1252',
+        ];
+        $data['scale_export_delimiters'] = [
+            ';' => ';',
+            ',' => ',',
+            "\t" => 'Tab',
+        ];
+        $data['scale_export_fields_options'] = [
+            'legacy_code' => lang('Items.item_number'),
+            'item_number' => lang('Items.item_number'),
+            'repeat_item_number' => lang('Items.item_number'),
+            'name' => lang('Items.name'),
+            'unit_price' => lang('Items.unit_price'),
+            'legacy_tail' => lang('Items.item_number'),
+        ];
 
         // Load all the license statements, they are already XSS cleaned in the private function
         $data['licenses'] = $this->_licenses();
@@ -376,7 +398,6 @@ class Config extends Secure_Controller
             'default_receivings_discount'       => parse_decimals($this->request->getPost('default_receivings_discount')),
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
-            'second_display_enabled'            => $this->request->getPost('second_display_enabled') != null,
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
             'notify_horizontal_position'        => $this->request->getPost('notify_horizontal_position'),
             'notify_vertical_position'          => $this->request->getPost('notify_vertical_position'),
@@ -392,6 +413,7 @@ class Config extends Secure_Controller
             'suggestions_third_column'          => $this->validateSuggestionsColumn($this->request->getPost('suggestions_third_column'), 'other'),
             'giftcard_number'                   => $this->request->getPost('giftcard_number'),
             'derive_sale_quantity'              => $this->request->getPost('derive_sale_quantity') != null,
+            'customer_display_enabled'          => $this->request->getPost('customer_display_enabled') != null,
             'multi_pack_enabled'                => $this->request->getPost('multi_pack_enabled') != null,
             'include_hsn'                       => $this->request->getPost('include_hsn') != null,
             'category_dropdown'                 => $this->request->getPost('category_dropdown') != null
@@ -477,6 +499,11 @@ class Config extends Secure_Controller
         $batch_save_data = [
             'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
             'currency_code'         => $this->request->getPost('currency_code'),
+            'secondary_currency_enabled'  => $this->request->getPost('secondary_currency_enabled') != null,
+            'secondary_currency_symbol'   => htmlspecialchars($this->request->getPost('secondary_currency_symbol') ?? ''),
+            'secondary_currency_code'     => $this->request->getPost('secondary_currency_code'),
+            'secondary_currency_rate'     => $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
             'timezone'              => $this->request->getPost('timezone'),
@@ -932,6 +959,7 @@ class Config extends Secure_Controller
             'receipt_show_tax_ind'          => $this->request->getPost('receipt_show_tax_ind') != null,
             'receipt_show_total_discount'   => $this->request->getPost('receipt_show_total_discount') != null,
             'receipt_show_description'      => $this->request->getPost('receipt_show_description') != null,
+            'receipt_show_secondary_currency' => $this->request->getPost('receipt_show_secondary_currency') != null,
             'receipt_show_serialnumber'     => $this->request->getPost('receipt_show_serialnumber') != null,
             'print_silently'                => $this->request->getPost('print_silently') != null,
             'print_header'                  => $this->request->getPost('print_header') != null,
@@ -1026,3 +1054,6 @@ class Config extends Secure_Controller
         return in_array($column, $allowed, true) ? $column : $fallback;
     }
 }
+
+
+
