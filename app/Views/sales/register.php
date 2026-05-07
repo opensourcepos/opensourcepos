@@ -61,6 +61,26 @@ if (isset($success)) {
 helper('url');
 ?>
 
+<?php
+$secondary_currency_enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
+$secondary_currency_rate = (float)($config['secondary_currency_rate'] ?? 0);
+$secondary_currency_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+$show_secondary_currency = $secondary_currency_enabled && $secondary_currency_rate > 0;
+?>
+
+<?php if ($show_secondary_currency): ?>
+    <table align="center" style="font-size: 22px; font-weight: 600; background-color: rgb(221, 221, 221); width: 25%; margin: 0 auto 0.5em; border: dashed 1px;">
+        <tr>
+            <td style="text-align: center; padding-right: 5%;"><?= lang(ucfirst($controller_name) . '.total') ?>:</td>
+            <td style="text-align: center;"><?= to_currency($total) ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: center; padding-right: 5%;"><?= lang('Config.secondary_currency') ?>:</td>
+            <td style="text-align: center;"><?= secondary_currency_amount((float) $total, $secondary_currency_rate, $secondary_currency_decimals, $config['secondary_currency_symbol'] ?? '', $config['secondary_currency_code'] ?? '') ?></td>
+        </tr>
+    </table>
+<?php endif; ?>
+
 <div id="register_wrapper">
 
     <!-- Top register controls -->
@@ -191,7 +211,7 @@ helper('url');
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
-                                    echo to_currency($item['price']);
+                                    echo $show_secondary_currency ? secondary_currency_dual_amount((float) $item['price'], $secondary_currency_rate, $secondary_currency_decimals, $config['secondary_currency_symbol'] ?? '', $config['secondary_currency_code'] ?? '') : to_currency($item['price']);
                                     echo form_hidden('price', to_currency_no_money($item['price']));
                                 }
                                 ?>
@@ -362,9 +382,6 @@ helper('url');
                     <button class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "customers/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_customer") ?>">
                         <span class="glyphicon glyphicon-user">&nbsp;</span><?= lang(ucfirst($controller_name) . ".new_customer") ?>
                     </button>
-                    <button class="btn btn-default btn-sm modal-dlg" id="show_keyboard_help" data-href="<?= esc("$controller_name/salesKeyboardHelp") ?>" title="<?= lang(ucfirst($controller_name) . '.key_title') ?>">
-                        <span class="glyphicon glyphicon-share-alt">&nbsp;</span><?= lang(ucfirst($controller_name) . '.key_help') ?>
-                    </button>
                 </div>
             <?php } ?>
         <?= form_close() ?>
@@ -380,7 +397,7 @@ helper('url');
             </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
-                    <th style="width: 55%;"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></th>
+                <th style="width: 55%;"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></th>
                     <th style="width: 45%; text-align: right;"><?= to_currency_tax($tax['sale_tax_amount']) ?></th>
                 </tr>
             <?php } ?>
@@ -388,6 +405,12 @@ helper('url');
                 <th style="width: 55%; font-size: 150%"><?= lang(ucfirst($controller_name) . '.total') ?></th>
                 <th style="width: 45%; font-size: 150%; text-align: right;"><span id="sale_total"><?= to_currency($total) ?></span></th>
             </tr>
+            <?php if ($show_secondary_currency) { ?>
+                <tr>
+                    <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= secondary_currency_amount((float) $total, $secondary_currency_rate, $secondary_currency_decimals, $config['secondary_currency_symbol'] ?? '', $config['secondary_currency_code'] ?? '') ?></span></th>
+                </tr>
+            <?php } ?>
         </table>
 
         <?php if (count($cart) > 0) { // Only show this part if there are Items already in the register ?>
@@ -396,11 +419,17 @@ helper('url');
                     <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.payments_total') ?></th>
                     <th style="width: 45%; text-align: right;"><?= to_currency($payments_total) ?></th>
                 </tr>
+            <tr>
+                <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
+                <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
+            </tr>
+            <?php if ($show_secondary_currency) { ?>
                 <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
+                    <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= secondary_currency_amount((float) $amount_due, $secondary_currency_rate, $secondary_currency_decimals, $config['secondary_currency_symbol'] ?? '', $config['secondary_currency_code'] ?? '') ?></span></th>
                 </tr>
-            </table>
+            <?php } ?>
+        </table>
 
             <div id="payment_details">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
@@ -565,6 +594,10 @@ helper('url');
 </div>
 
 <script type="text/javascript">
+    const secondaryCurrencyRate = <?= json_encode($secondary_currency_rate, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const secondaryCurrencyDecimals = <?= json_encode($secondary_currency_decimals, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const numberLocale = <?= json_encode($config['number_locale'] ?? 'en-US', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+
     $(document).ready(function() {
         const redirect = function() {
             window.location.href = "<?= site_url('sales'); ?>";
@@ -812,10 +845,24 @@ helper('url');
 
     function check_payment_type() {
         var cash_mode = <?= json_encode($cash_mode) ?>;
+        const formatSecondaryCurrency = function(amount) {
+            return Number(amount).toLocaleString(numberLocale, {
+                minimumFractionDigits: secondaryCurrencyDecimals,
+                maximumFractionDigits: secondaryCurrencyDecimals
+            });
+        };
+
+        const updateSecondaryRows = function(primaryTotal, primaryAmountDue) {
+            if (secondaryCurrencyRate > 0) {
+                $("#sale_total_secondary_currency").html(formatSecondaryCurrency(primaryTotal * secondaryCurrencyRate));
+                $("#sale_amount_due_secondary_currency").html(formatSecondaryCurrency(primaryAmountDue * secondaryCurrencyRate));
+            }
+        };
 
         if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
+            updateSecondaryRows(<?= json_encode((float) $total) ?>, <?= json_encode((float) $amount_due) ?>);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
             $("#amount_tendered:enabled").val('').focus();
             $(".giftcard-input").attr('disabled', false);
@@ -824,6 +871,7 @@ helper('url');
         } else if (($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.cash') ?>" && cash_mode == '1')) {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
+            updateSecondaryRows(<?= json_encode((float) $non_cash_total) ?>, <?= json_encode((float) $cash_amount_due) ?>);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
@@ -831,53 +879,11 @@ helper('url');
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
+            updateSecondaryRows(<?= json_encode((float) $non_cash_total) ?>, <?= json_encode((float) $amount_due) ?>);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
-        }
-    }
-
-    // Add Keyboard Shortcuts/Hotkeys to Sale Register
-    document.body.onkeyup = function(e) {
-        switch (event.altKey && event.keyCode) {
-            case 49: // Alt + 1 Items Seach
-                $("#item").focus();
-                $("#item").select();
-                break;
-            case 50: // Alt + 2 Customers Search
-                $("#customer").focus();
-                $("#customer").select();
-                break;
-            case 51: // Alt + 3 Suspend Current Sale
-                $("#suspend_sale_button").click();
-                break;
-            case 52: // Alt + 4 Check Suspended
-                $("#show_suspended_sales_button").click();
-                break;
-            case 53: // Alt + 5 Edit Amount Tendered Value
-                $("#amount_tendered").focus();
-                $("#amount_tendered").select();
-                break;
-            case 54: // Alt + 6 Add Payment
-                $("#add_payment_button").click();
-                break;
-            case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
-                $("#add_payment_button").click();
-                window.location.href = "<?= 'sales/complete' ?>";
-                break;
-            case 56: // Alt + 8 Finish Quote/Invoice without payment
-                $("#finish_invoice_quote_button").click();
-                break;
-            case 57: // Alt + 9 Open Shortcuts Help Modal
-                $("#show_keyboard_help").click();
-                break;
-        }
-
-        switch (event.keyCode) {
-            case 27: // ESC Cancel Current Sale
-                $("#cancel_sale_button").click();
-                break;
         }
     }
 </script>

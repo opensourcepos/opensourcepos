@@ -183,6 +183,18 @@
             </div>
 
             <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.receipt_show_secondary_currency'), 'receipt_show_secondary_currency', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-1">
+                    <?= form_checkbox([
+                        'name'    => 'receipt_show_secondary_currency',
+                        'value'   => 'receipt_show_secondary_currency',
+                        'id'      => 'receipt_show_secondary_currency',
+                        'checked' => $config['receipt_show_secondary_currency'] == 1
+                    ]) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.receipt_show_serialnumber'), 'receipt_show_serialnumber', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_checkbox([

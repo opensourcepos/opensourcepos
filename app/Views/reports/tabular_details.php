@@ -12,6 +12,15 @@
 
 <?= view('partial/header') ?>
 
+<?php
+$secondary_currency_enabled = (($config['secondary_currency_enabled'] ?? 0) == 1);
+$secondary_currency_rate = (float)($config['secondary_currency_rate'] ?? 0);
+$secondary_currency_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+$secondary_currency_symbol = (string)($config['secondary_currency_symbol'] ?? '');
+$secondary_currency_code = (string)($config['secondary_currency_code'] ?? '');
+$show_secondary_currency = $secondary_currency_enabled && $secondary_currency_rate > 0;
+?>
+
 <div id="page_title"><?= esc($title) ?></div>
 
 <div id="page_subtitle"><?= esc($subtitle) ?></div>
@@ -32,6 +41,9 @@
 <div id="report_summary">
     <?php foreach ($overall_summary_data as $name => $value) { ?>
         <div class="summary_row"><?= lang("Reports.$name") . ': ' . esc(to_currency($value)) ?></div>
+        <?php if ($show_secondary_currency) { ?>
+            <div class="summary_row"><?= esc(lang('Config.secondary_currency')) . ': ' . secondary_currency_amount((float)$value, $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) ?></div>
+        <?php } ?>
     <?php } ?>
 </div>
 
