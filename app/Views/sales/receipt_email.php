@@ -64,7 +64,7 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
         ?>
                 <tr>
                     <td><?= esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
-                    <td><?= $secondaryCurrency['show'] ? to_secondary_currency_dual((float)$item['price'], $secondaryCurrency) : to_currency($item['price']) ?></td>
+                    <td><?= esc($item['secondaryPriceDisplay'] ?? to_currency($item['price'])) ?></td>
                     <td><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td style="text-align: right;"><?= to_currency($item[($config['receipt_show_total_discount'] ? 'total' : 'discounted_total')]) ?></td>
                 </tr>
@@ -128,11 +128,11 @@ $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['recei
         <?php if ($secondaryCurrency['show']) { ?>
             <tr>
                 <td colspan="3" style="text-align: right;"><?= esc(lang('Config.secondary_currency')) ?></td>
-                <td style="text-align: right;"><?= to_secondary_currency((float)$total, $secondaryCurrency) ?></td>
+            <td style="text-align: right;"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
             </tr>
             <tr>
                 <td colspan="3" style="text-align: right;"><?= esc(lang('Config.secondary_currency_rate')) ?></td>
-                <td style="text-align: right;"><?= secondary_currency_rate_display($secondaryCurrency['rate']) ?></td>
+                <td style="text-align: right;"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></td>
             </tr>
         <?php } ?>
 

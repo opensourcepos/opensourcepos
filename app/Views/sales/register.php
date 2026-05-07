@@ -69,7 +69,7 @@ helper('url');
         </tr>
         <tr>
             <td style="text-align: center; padding-right: 5%;"><?= lang('Config.secondary_currency') ?>:</td>
-            <td style="text-align: center;"><?= $secondaryTotalDisplay ?? to_secondary_currency((float) $total, $secondaryCurrency) ?></td>
+            <td style="text-align: center;"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
         </tr>
     </table>
 <?php endif; ?>
@@ -204,7 +204,7 @@ helper('url');
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
-                                    echo $secondaryCurrency['show'] ? to_secondary_currency_dual((float) $item['price'], $secondaryCurrency) : to_currency($item['price']);
+                                    echo esc($item['secondaryPriceDisplay'] ?? to_currency($item['price']));
                                     echo form_hidden('price', to_currency_no_money($item['price']));
                                 }
                                 ?>
@@ -401,7 +401,7 @@ helper('url');
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= $secondaryTotalDisplay ?? to_secondary_currency((float) $total, $secondaryCurrency) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -419,7 +419,7 @@ helper('url');
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= $secondaryAmountDueDisplay ?? to_secondary_currency((float) $amount_due, $secondaryCurrency) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? to_currency($amount_due)) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -587,13 +587,7 @@ helper('url');
 </div>
 
 <script type="text/javascript">
-    const secondaryAmounts = <?= json_encode([
-        'total' => $secondaryTotalDisplay ?? null,
-        'amountDue' => $secondaryAmountDueDisplay ?? null,
-        'cashAmountDue' => $secondaryCashAmountDueDisplay ?? null,
-        'nonCashTotal' => $secondaryNonCashTotalDisplay ?? null,
-        'nonCashAmountDue' => $secondaryNonCashAmountDueDisplay ?? null
-    ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const secondaryAmounts = <?= json_encode($secondaryAmounts ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
 
     $(document).ready(function() {
         const redirect = function() {

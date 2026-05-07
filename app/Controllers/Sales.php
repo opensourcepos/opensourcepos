@@ -76,12 +76,11 @@ class Sales extends Secure_Controller
     {
         $secondaryCurrency = secondary_currency_context($this->config);
         $data['secondaryCurrency'] = $secondaryCurrency;
-
-        if (!$secondaryCurrency['show']) {
-            return;
-        }
+        $data['secondaryRateDisplay'] = secondary_currency_render_rate($secondaryCurrency);
 
         $displayFields = [
+            'prediscount_subtotal' => 'secondaryPrediscountSubtotalDisplay',
+            'subtotal' => 'secondarySubtotalDisplay',
             'total' => 'secondaryTotalDisplay',
             'amount_due' => 'secondaryAmountDueDisplay',
             'cash_amount_due' => 'secondaryCashAmountDueDisplay',
@@ -91,9 +90,40 @@ class Sales extends Secure_Controller
 
         foreach ($displayFields as $sourceField => $targetField) {
             if (array_key_exists($sourceField, $data)) {
-                $data[$targetField] = to_secondary_currency((float) $data[$sourceField], $secondaryCurrency);
+                $data[$targetField] = secondary_currency_render_amount((float) $data[$sourceField], $secondaryCurrency);
             }
         }
+
+        if (array_key_exists('discount', $data)) {
+            $data['secondaryDiscountDisplay'] = secondary_currency_render_amount((float) $data['discount'] * -1, $secondaryCurrency);
+        }
+
+        if (array_key_exists('taxes', $data) && is_array($data['taxes'])) {
+            foreach ($data['taxes'] as $tax_group_index => $tax) {
+                $data['taxes'][$tax_group_index]['secondarySaleTaxAmountDisplay'] = secondary_currency_render_amount((float) $tax['sale_tax_amount'], $secondaryCurrency);
+            }
+        }
+
+        if (array_key_exists('cart', $data) && is_array($data['cart'])) {
+            foreach ($data['cart'] as $line => $item) {
+                $data['cart'][$line]['secondaryPriceDisplay'] = secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true);
+                $data['cart'][$line]['secondaryDiscountedTotalDisplay'] = secondary_currency_render_amount((float) $item['discounted_total'], $secondaryCurrency);
+
+                if (!empty($item['discount']) && ($item['discount_type'] ?? null) === FIXED) {
+                    $data['cart'][$line]['secondaryDiscountDisplay'] = secondary_currency_render_amount((float) $item['discount'], $secondaryCurrency) . ' ' . lang('Sales.discount');
+                } elseif (($item['discount_type'] ?? null) === PERCENT) {
+                    $data['cart'][$line]['secondaryDiscountDisplay'] = to_decimals($item['discount']) . ' ' . lang('Sales.discount_included');
+                }
+            }
+        }
+
+        $data['secondaryAmounts'] = [
+            'total' => $data['secondaryTotalDisplay'] ?? null,
+            'amountDue' => $data['secondaryAmountDueDisplay'] ?? null,
+            'cashAmountDue' => $data['secondaryCashAmountDueDisplay'] ?? null,
+            'nonCashTotal' => $data['secondaryNonCashTotalDisplay'] ?? null,
+            'nonCashAmountDue' => $data['secondaryNonCashAmountDueDisplay'] ?? null
+        ];
     }
 
     public function getIndex(): ResponseInterface|string

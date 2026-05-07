@@ -34,6 +34,20 @@ function secondary_currency_label(string $symbol = '', string $code = ''): strin
     return '';
 }
 
+function secondary_currency_render_amount(float $amount, array $secondaryCurrency, bool $dual = false): string
+{
+    if (empty($secondaryCurrency['show']) || (float)($secondaryCurrency['rate'] ?? 0) <= 0) {
+        return to_currency((string) $amount);
+    }
+
+    return $dual ? to_secondary_currency_dual($amount, $secondaryCurrency) : to_secondary_currency($amount, $secondaryCurrency);
+}
+
+function secondary_currency_render_rate(array $secondaryCurrency): string
+{
+    return secondary_currency_rate_display((float) ($secondaryCurrency['rate'] ?? 0));
+}
+
 function secondary_currency_amount(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
 {
     return to_secondary_currency($amount, [

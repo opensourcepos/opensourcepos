@@ -3,6 +3,7 @@
  * @var string $title
  * @var string $subtitle
  * @var array $overall_summary_data
+ * @var array $overall_summary_display_data
  * @var array $details_data
  * @var array $headers
  * @var array $summary_data
@@ -30,10 +31,10 @@
 </div>
 
 <div id="report_summary">
-    <?php foreach ($overall_summary_data as $name => $value) { ?>
-        <div class="summary_row"><?= lang("Reports.$name") . ': ' . esc(to_currency($value)) ?></div>
+    <?php foreach ($overall_summary_display_data ?? [] as $summary_row) { ?>
+        <div class="summary_row"><?= esc($summary_row['primary']) ?></div>
         <?php if ($secondaryCurrency['show']) { ?>
-            <div class="summary_row"><?= esc(lang("Reports.$name")) . ' ' . esc($secondaryCurrency['symbol'] ?: $secondaryCurrency['code']) . ': ' . to_secondary_currency((float)$value, $secondaryCurrency) ?></div>
+            <div class="summary_row"><?= esc($summary_row['secondary']) ?></div>
             <div class="summary_row" style="height: 0.9em;"></div>
         <?php } ?>
     <?php } ?>

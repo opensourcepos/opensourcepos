@@ -1372,6 +1372,18 @@ class Reports extends Secure_Controller
     {
         $secondaryCurrency = secondary_currency_context($this->config);
         $data['secondaryCurrency'] = $secondaryCurrency;
+
+        if (!array_key_exists('overall_summary_data', $data) || !is_array($data['overall_summary_data'])) {
+            return;
+        }
+
+        $data['overall_summary_display_data'] = [];
+        foreach ($data['overall_summary_data'] as $name => $value) {
+            $data['overall_summary_display_data'][] = [
+                'primary' => lang("Reports.$name") . ': ' . to_currency($value),
+                'secondary' => lang("Reports.$name") . ' ' . secondary_currency_label($secondaryCurrency['symbol'] ?? '', $secondaryCurrency['code'] ?? '') . ': ' . secondary_currency_render_amount((float) $value, $secondaryCurrency)
+            ];
+        }
     }
 
     /**
