@@ -73,6 +73,88 @@ class Sales extends Secure_Controller
     }
 
     /**
+     * Load the secondary display popup.
+     *
+     * @return ResponseInterface|string
+     * @noinspection PhpUnused
+     */
+    public function getSecondDisplay(): ResponseInterface|string
+    {
+        if ($this->session->get('sale_id') == '') {
+            $this->session->set('sale_id', NEW_ENTRY);
+        }
+
+        $cashRounding = $this->sale_lib->reset_cash_rounding();
+
+        $data['cash_rounding'] = $cashRounding;
+        $data['cart'] = $this->sale_lib->get_cart();
+        $customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, true);
+        $data['customer_name'] = $data['customer'] ?? lang('Sales.walk_in_customer');
+        $data['customer_reward_points'] = (int)($data['customer_rewards']['points'] ?? 0);
+        $data['customer_reward_package'] = $data['customer_rewards']['package_name'] ?? '';
+        $data['giftcard_remainder'] = $this->sale_lib->get_giftcard_remainder();
+        $data['rewards_remainder'] = $this->sale_lib->get_rewards_remainder();
+
+        $data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(true, true);
+        $tax_details = $this->tax_lib->get_taxes($data['cart']);
+        $data['taxes'] = $tax_details[0];
+        $data['discount'] = $this->sale_lib->get_discount();
+        $data['payments'] = $this->sale_lib->get_payments();
+
+        $totals = $this->sale_lib->get_totals($tax_details[0]);
+        $data['item_count'] = $totals['item_count'];
+        $data['total_units'] = $totals['total_units'];
+        $data['subtotal'] = $totals['subtotal'];
+        $data['total'] = $totals['total'];
+        $data['payments_total'] = $totals['payment_total'];
+        $data['payments_cover_total'] = $totals['payments_cover_total'];
+        $data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
+        $data['cash_total'] = $totals['cash_total'];
+        $data['non_cash_total'] = $totals['total'];
+        $data['cash_amount_due'] = $totals['cash_amount_due'];
+        $data['non_cash_amount_due'] = $totals['amount_due'];
+        $data['cash_mode'] = $this->session->get('cash_mode');
+        $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
+
+        if ($data['cash_mode'] && ($data['selected_payment_type'] === lang('Sales.cash') || $data['payments_total'] > 0)) {
+            $data['amount_due'] = $totals['cash_amount_due'];
+        } else {
+            $data['amount_due'] = $totals['amount_due'];
+        }
+
+        $data['amount_change'] = $data['amount_due'] * -1;
+        $data['payment_change_due'] = max(((float) $data['payments_total']) - ((float) $data['amount_due']), 0);
+        $data['comment'] = $this->sale_lib->get_comment();
+        $data['email_receipt'] = $this->sale_lib->is_email_receipt();
+        $data['config'] = $this->config;
+        $data['mode'] = $this->sale_lib->get_mode();
+        $data['rate'] = 0.0;
+
+        if ($customer_info && $this->config['customer_reward_enable']) {
+            $data['payment_options'] = $this->sale->get_payment_options(true, true);
+        } else {
+            $data['payment_options'] = $this->sale->get_payment_options();
+        }
+
+        $data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
+        $data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
+
+        $invoice_number = $this->sale_lib->get_invoice_number();
+        if ($invoice_number == null || $invoice_number == '') {
+            $invoice_number = $this->token_lib->render($this->config['sales_invoice_format'], [], false);
+        }
+
+        $data['invoice_number'] = $invoice_number;
+        $data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+        $data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
+        $data['pos_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
+        $data['quote_number'] = $this->sale_lib->get_quote_number();
+        $data['work_order_number'] = $this->sale_lib->get_work_order_number();
+
+        return view('sales/second_display', $data);
+    }
+
+    /**
      * Load the sale edit modal. Used in app/Views/sales/register.php.
      *
      * @return ResponseInterface|string

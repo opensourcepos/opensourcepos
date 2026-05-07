@@ -418,6 +418,18 @@
             </div>
 
             <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.second_display'), 'second_display_enabled', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-1">
+                    <?= form_checkbox([
+                        'name'    => 'second_display_enabled',
+                        'id'      => 'second_display_enabled',
+                        'value'   => 'second_display_enabled',
+                        'checked' => ($config['second_display_enabled'] ?? true) == 1
+                    ]) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.multi_pack_enabled'), 'multi_pack_enabled', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_checkbox([

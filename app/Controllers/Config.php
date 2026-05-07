@@ -376,6 +376,7 @@ class Config extends Secure_Controller
             'default_receivings_discount'       => parse_decimals($this->request->getPost('default_receivings_discount')),
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
+            'second_display_enabled'            => $this->request->getPost('second_display_enabled') != null,
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
             'notify_horizontal_position'        => $this->request->getPost('notify_horizontal_position'),
             'notify_vertical_position'          => $this->request->getPost('notify_vertical_position'),

@@ -97,6 +97,16 @@ helper('url');
                     </button>
                 </li>
 
+                <?php if (($config['second_display_enabled'] ?? true) == 1) { ?>
+                    <li class="pull-right">
+                        <?= anchor(
+                            "$controller_name/secondDisplay",
+                            '<span class="glyphicon glyphicon-blackboard">&nbsp;</span>' . lang(ucfirst($controller_name) . '.second_display'),
+                            ['class' => 'btn btn-success btn-sm', 'id' => 'show_second_display', 'title' => lang(ucfirst($controller_name) . '.second_display'), 'onclick' => 'return openSecondDisplay(this.href);']
+                        ) ?>
+                    </li>
+                <?php } ?>
+
                 <?php
                 $employee = model(Employee::class);
                 if ($employee->has_grant('reports_sales', session('person_id'))) {
@@ -565,8 +575,38 @@ helper('url');
 </div>
 
 <script type="text/javascript">
+    window.secondDisplayWindow = window.secondDisplayWindow || null;
+
+    window.openSecondDisplay = function(url) {
+        sessionStorage.setItem('secondDisplayOpen', '1');
+        window.secondDisplayWindow = window.open(url, 'second_display', 'width=1280,height=720,resizable=yes,scrollbars=yes');
+        if (window.secondDisplayWindow && !window.secondDisplayWindow.closed) {
+            window.secondDisplayWindow.focus();
+        }
+
+        return false;
+    };
+
+    window.refreshSecondDisplay = function() {
+        if (sessionStorage.getItem('secondDisplayOpen') !== '1') {
+            return;
+        }
+
+        const secondDisplayWindow = window.open('', 'second_display');
+        if (secondDisplayWindow && !secondDisplayWindow.closed) {
+            secondDisplayWindow.location.reload();
+            secondDisplayWindow.focus();
+            window.secondDisplayWindow = secondDisplayWindow;
+        }
+    };
+
+    window.notifySecondDisplay = function() {
+        window.refreshSecondDisplay();
+    };
+
     $(document).ready(function() {
         const redirect = function() {
+            window.notifySecondDisplay();
             window.location.href = "<?= site_url('sales'); ?>";
         };
 
@@ -587,6 +627,7 @@ helper('url');
         $("input[name='item_number']").change(function() {
             var item_id = $(this).parents('tr').find("input[name='item_id']").val();
             var item_number = $(this).val();
+            window.notifySecondDisplay();
             $.ajax({
                 url: "<?= site_url('sales/changeItemNumber') ?>",
                 method: 'post',
@@ -601,6 +642,7 @@ helper('url');
         $("input[name='name']").change(function() {
             var item_id = $(this).parents('tr').find("input[name='item_id']").val();
             var item_name = $(this).val();
+            window.notifySecondDisplay();
             $.ajax({
                 url: "<?= site_url('sales/changeItemName') ?>",
                 method: 'post',
@@ -615,6 +657,7 @@ helper('url');
         $("input[name='item_description']").change(function() {
             var item_id = $(this).parents('tr').find("input[name='item_id']").val();
             var item_description = $(this).val();
+            window.notifySecondDisplay();
             $.ajax({
                 url: "<?= site_url('sales/changeItemDescription') ?>",
                 method: 'post',
@@ -671,6 +714,7 @@ helper('url');
             delay: 10,
             select: function(a, ui) {
                 $(this).val(ui.item.value);
+                window.notifySecondDisplay();
                 $('#select_customer_form').submit();
                 return false;
             }
@@ -689,6 +733,7 @@ helper('url');
             delay: 10,
             select: function(a, ui) {
                 $(this).val(ui.item.value);
+                window.notifySecondDisplay();
                 $('#add_payment_form').submit();
                 return false;
             }
@@ -728,28 +773,33 @@ helper('url');
         });
 
         $('#finish_sale_button').click(function() {
+            window.notifySecondDisplay();
             $('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
             $('#buttons_form').submit();
         });
 
         $('#finish_invoice_quote_button').click(function() {
+            window.notifySecondDisplay();
             $('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
             $('#buttons_form').submit();
         });
 
         $('#suspend_sale_button').click(function() {
+            window.notifySecondDisplay();
             $('#buttons_form').attr('action', "<?= site_url("$controller_name/suspend") ?>");
             $('#buttons_form').submit();
         });
 
         $('#cancel_sale_button').click(function() {
             if (confirm("<?= lang(ucfirst($controller_name) . '.confirm_cancel_sale') ?>")) {
+                window.notifySecondDisplay();
                 $('#buttons_form').attr('action', "<?= site_url("$controller_name/cancel") ?>");
                 $('#buttons_form').submit();
             }
         });
 
         $('#add_payment_button').click(function() {
+            window.notifySecondDisplay();
             $('#add_payment_form').submit();
         });
 
@@ -785,11 +835,13 @@ helper('url');
             if (response.success) {
                 if (resource.match(/customers$/)) {
                     $('#customer').val(response.id);
+                    window.notifySecondDisplay();
                     $('#select_customer_form').submit();
                 } else {
                     var $stock_location = $("select[name='stock_location']").val();
                     $('#item_location').val($stock_location);
                     $('#item').val(response.id);
+                    window.notifySecondDisplay();
                     if (stay_open) {
                         $('#add_item_form').ajaxSubmit();
                     } else {

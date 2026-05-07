@@ -289,6 +289,7 @@ return [
     "server_notice"                             => "Please use the below info for issue reporting.",
     "service_charge"                            => "",
     "show_due_enable"                           => "",
+    "second_display"                            => "Second Display",
     "show_office_group"                         => "Show office icon",
     "statistics"                                => "Send Statistics",
     "statistics_tooltip"                        => "Send statistics for development and feature improvement purposes.",
