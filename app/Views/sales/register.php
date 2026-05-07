@@ -599,11 +599,35 @@ helper('url');
 
 <script type="text/javascript">
     window.customerDisplayWindow = window.customerDisplayWindow || null;
+    window.customerDisplayDisplayId = window.customerDisplayDisplayId || sessionStorage.getItem('customerDisplayId') || localStorage.getItem('customerDisplayId') || '';
+
+    window.customerDisplayStorageSuffix = function() {
+        return window.customerDisplayDisplayId ? '_' + window.customerDisplayDisplayId : '';
+    };
+
+    window.customerDisplayStorageKeys = function() {
+        const suffix = window.customerDisplayStorageSuffix();
+
+        return {
+            open: 'customerDisplayOpen' + suffix,
+            dirtyAt: 'customerDisplayDirtyAt' + suffix
+        };
+    };
 
     window.openCustomerDisplay = function(url) {
-        localStorage.setItem('customerDisplayOpen', '1');
-        localStorage.setItem('customerDisplayDirtyAt', String(Date.now()));
-        window.customerDisplayWindow = window.open(url, 'customer_display', 'width=1280,height=720,resizable=yes,scrollbars=yes');
+        if (window.customerDisplayDisplayId === '') {
+            window.customerDisplayDisplayId = String(Date.now()) + Math.random().toString(36).slice(2);
+        }
+
+        const keys = window.customerDisplayStorageKeys();
+        const displayUrl = new URL(url, window.location.href);
+        displayUrl.searchParams.set('displayId', window.customerDisplayDisplayId);
+
+        sessionStorage.setItem('customerDisplayId', window.customerDisplayDisplayId);
+        localStorage.setItem('customerDisplayId', window.customerDisplayDisplayId);
+        localStorage.setItem(keys.open, '1');
+        localStorage.setItem(keys.dirtyAt, String(Date.now()));
+        window.customerDisplayWindow = window.open(displayUrl.toString(), 'customer_display_' + window.customerDisplayDisplayId, 'width=1280,height=720,resizable=yes,scrollbars=yes');
         if (window.customerDisplayWindow && !window.customerDisplayWindow.closed) {
             window.customerDisplayWindow.focus();
         }
@@ -612,11 +636,13 @@ helper('url');
     };
 
     window.refreshCustomerDisplay = function() {
-        if (localStorage.getItem('customerDisplayOpen') !== '1') {
+        const keys = window.customerDisplayStorageKeys();
+
+        if (localStorage.getItem(keys.open) !== '1') {
             return;
         }
 
-        localStorage.setItem('customerDisplayDirtyAt', String(Date.now()));
+        localStorage.setItem(keys.dirtyAt, String(Date.now()));
         if (window.customerDisplayWindow && !window.customerDisplayWindow.closed) {
             window.customerDisplayWindow.location.reload();
             window.customerDisplayWindow.focus();

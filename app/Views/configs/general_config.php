@@ -281,7 +281,7 @@
                         'checked' => $config['gcaptcha_enable'] == 1
                     ]) ?>
                     <label class="control-label">
-                        <a href="https://www.google.com/recaptcha/admin" target="_blank">
+                        <a href="https://www.google.com/recaptcha/admin" target="_blank" rel="noopener noreferrer">
                             <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.gcaptcha_tooltip') ?>"></span>
                         </a>
                     </label>

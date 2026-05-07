@@ -18,7 +18,7 @@
             <div class="customer-display-cart-column">
                 <div class="register-wrap">
                     <div class="panel panel-default customer-display-items-panel">
-                        <div class="panel-heading">Items</div>
+                        <div class="panel-heading"><?= lang('Sales.items') ?></div>
                         <div class="panel-body table-responsive">
                             <table class="table table-striped table-condensed" id="register">
                                 <thead>
@@ -36,7 +36,7 @@
                                 <tbody id="cart_contents">
                                     <?php if (count($cart) == 0) { ?>
                                         <tr>
-                                            <td colspan="<?= $cartColspan ?>">
+                                            <td colspan="<?= (int) $cartColspan ?>">
                                                 <div class="alert alert-dismissible alert-info"><?= lang('Sales.no_items_in_cart') ?></div>
                                             </td>
                                         </tr>
@@ -70,7 +70,7 @@
                                                 <td class="serial-cell">
                                                     <?= $item['is_serialized'] == 1 ? lang('Sales.serial') : '' ?>
                                                 </td>
-                                                <td colspan="<?= $cartHasCustomerDisplay ? 2 : 2 ?>" class="serial-cell">
+                                                <td colspan="2" class="serial-cell">
                                                     <?php if ($item['is_serialized'] == 1) {
                                                         echo esc($item['serialnumber']);
                                                     } ?>
@@ -86,22 +86,22 @@
             </div>
             <div class="customer-display-summary-column">
                 <div class="panel panel-primary customer-display-summary-panel">
-                    <div class="panel-heading">Summary</div>
+                    <div class="panel-heading"><?= lang('Sales.summary') ?></div>
                     <div class="panel-body">
                         <table class="table table-condensed summary-subtable">
                             <tbody>
                                 <tr>
-                                    <th>Total</th>
+                                    <th><?= lang('Sales.total') ?></th>
                                     <td><?= to_currency($total) ?></td>
                                 </tr>
                                 <?php if ($showCustomerDisplay): ?>
                                     <tr>
-                                        <th>Total <?= esc($customerDisplayCurrencyLabel) ?></th>
+                                        <th><?= lang('Sales.total') ?> <?= esc($customerDisplayCurrencyLabel) ?></th>
                                         <td><?= to_secondary_currency((float)$total, $secondaryCurrency) ?></td>
                                     </tr>
                                     <tr class="rate-row">
-                                        <th>Rate</th>
-                                        <td><?= number_format($rate) ?></td>
+                                        <th><?= lang('Sales.rate') ?></th>
+                                        <td><?= number_format((float) $rate, 2) ?></td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -110,18 +110,18 @@
                         <table class="table table-condensed summary-subtable" style="margin-top: 10px;">
                             <tbody>
                                 <tr class="summary-section-row">
-                                    <th colspan="2">Customer</th>
+                                    <th colspan="2"><?= lang('Sales.customer') ?></th>
                                 </tr>
                                 <tr>
-                                    <th>Customer Name</th>
+                                    <th><?= lang('Sales.customer_name') ?></th>
                                     <td class="customer-name-value"><?= esc($customerName ?? lang('Sales.walk_in_customer')) ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Gift Card Balance</th>
-                                    <td class="giftcard-value"><?= esc((string)($giftcardRemainder ?? '0')) ?></td>
+                                    <th><?= lang('Sales.giftcard_balance') ?></th>
+                                    <td class="giftcard-value"><?= to_currency((float) ($giftcardRemainder ?? 0)) ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Loyalty Reward Points</th>
+                                    <th><?= lang('Sales.loyalty_reward_points') ?></th>
                                     <td class="reward-value"><?= esc((string)($customerRewardPoints ?? 0)) ?></td>
                                 </tr>
                             </tbody>
@@ -130,29 +130,29 @@
                         <table class="table table-condensed summary-subtable" style="margin-top: 10px;">
                             <tbody>
                                 <tr class="summary-section-row">
-                                    <th colspan="2">Change</th>
+                                    <th colspan="2"><?= lang('Sales.change') ?></th>
                                 </tr>
                                 <tr>
-                                    <th>Payments Total</th>
+                                    <th><?= lang('Sales.payments_total') ?></th>
                                     <td><?= to_currency($payments_total) ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Amount Due</th>
+                                    <th><?= lang('Sales.amount_due') ?></th>
                                     <td><?= to_currency($amount_due) ?></td>
                                 </tr>
                                 <?php if ($showCustomerDisplay): ?>
                                     <tr>
-                                        <th>Amount Due <?= esc($customerDisplayCurrencyLabel) ?></th>
+                                        <th><?= lang('Sales.amount_due') ?> <?= esc($customerDisplayCurrencyLabel) ?></th>
                                         <td><?= to_secondary_currency((float)$amount_due, $secondaryCurrency) ?></td>
                                     </tr>
                                 <?php endif; ?>
                                 <tr>
-                                    <th>Change Due</th>
+                                    <th><?= lang('Sales.change_due') ?></th>
                                     <td><?= to_currency($paymentChangeDue ?? 0) ?></td>
                                 </tr>
                                 <?php if ($showCustomerDisplay): ?>
                                     <tr>
-                                        <th>Change Due <?= esc($customerDisplayCurrencyLabel) ?></th>
+                                        <th><?= lang('Sales.change_due') ?> <?= esc($customerDisplayCurrencyLabel) ?></th>
                                         <td><?= to_secondary_currency((float)($paymentChangeDue ?? 0), $secondaryCurrency) ?></td>
                                     </tr>
                                 <?php endif; ?>
@@ -166,10 +166,17 @@
         <div class="customer-display-footer"></div>
     </div>
 
-    <script>
-        localStorage.setItem('customerDisplayOpen', '1');
+<script>
+        const customerDisplayId = new URLSearchParams(window.location.search).get('displayId') || sessionStorage.getItem('customerDisplayId') || localStorage.getItem('customerDisplayId') || '';
+        const customerDisplayStorageSuffix = customerDisplayId !== '' ? '_' + customerDisplayId : '';
+        const customerDisplayStorageKeys = {
+            open: 'customerDisplayOpen' + customerDisplayStorageSuffix,
+            dirtyAt: 'customerDisplayDirtyAt' + customerDisplayStorageSuffix
+        };
 
-        let lastDirtyAt = localStorage.getItem('customerDisplayDirtyAt') || '';
+        localStorage.setItem(customerDisplayStorageKeys.open, '1');
+
+        let lastDirtyAt = localStorage.getItem(customerDisplayStorageKeys.dirtyAt) || '';
         let refreshTimer = null;
 
         const scheduleRefresh = function(dirtyAt) {
@@ -178,18 +185,18 @@
             }
 
             refreshTimer = setTimeout(function() {
-                if (localStorage.getItem('customerDisplayOpen') !== '1') {
+                if (localStorage.getItem(customerDisplayStorageKeys.open) !== '1') {
                     return;
                 }
 
-                if (localStorage.getItem('customerDisplayDirtyAt') === dirtyAt) {
+                if (localStorage.getItem(customerDisplayStorageKeys.dirtyAt) === dirtyAt) {
                     window.location.reload();
                 }
             }, 700);
         };
 
         const checkForRefresh = function() {
-            const dirtyAt = localStorage.getItem('customerDisplayDirtyAt') || '';
+            const dirtyAt = localStorage.getItem(customerDisplayStorageKeys.dirtyAt) || '';
             if (dirtyAt !== '' && dirtyAt !== lastDirtyAt) {
                 lastDirtyAt = dirtyAt;
                 scheduleRefresh(dirtyAt);
@@ -197,7 +204,7 @@
         };
 
         window.addEventListener('storage', function(event) {
-            if (event.key === 'customerDisplayDirtyAt') {
+            if (event.key === customerDisplayStorageKeys.dirtyAt) {
                 checkForRefresh();
             }
         });
@@ -205,7 +212,7 @@
         setInterval(checkForRefresh, 500);
 
         window.addEventListener('beforeunload', function() {
-            localStorage.removeItem('customerDisplayOpen');
+            localStorage.removeItem(customerDisplayStorageKeys.open);
         });
     </script>
 
