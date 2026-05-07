@@ -33,10 +33,6 @@
     }
     ?>
 
-    <?php
-    $secondaryCurrency = secondary_currency_context($config);
-    ?>
-
         <div id="page-wrap">
             <div id="header"><?= lang('Sales.invoice') ?></div>
             <table id="info">

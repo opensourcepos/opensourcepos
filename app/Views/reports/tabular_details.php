@@ -12,10 +12,6 @@
 
 <?= view('partial/header') ?>
 
-<?php
-$secondaryCurrency = secondary_currency_context($config);
-?>
-
 <div id="page_title"><?= esc($title) ?></div>
 
 <div id="page_subtitle"><?= esc($subtitle) ?></div>

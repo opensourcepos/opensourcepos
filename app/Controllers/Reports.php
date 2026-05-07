@@ -1337,9 +1337,9 @@ class Reports extends Secure_Controller
             if (isset($report_data['rewards'][$key])) {
                 foreach ($report_data['rewards'][$key] as $drow) {
                     $details_data_rewards[$row['sale_id']][] = [$drow['used'], $drow['earned']];
-                }
             }
         }
+    }
 
         $customer_info = $this->customer->get_info($customer_id);
         $customer_name = !empty($customer_info->company_name)    // TODO: This variable is not used anywhere in the code. Should it be or can it be deleted?
@@ -1357,8 +1357,21 @@ class Reports extends Secure_Controller
             'details_data_rewards' => $details_data_rewards,
             'overall_summary_data' => $specific_customer->getSummaryData($inputs)
         ];
+        $this->_append_secondary_currency($data);
 
         return view('reports/tabular_details', $data);
+    }
+
+    /**
+     * Adds the shared secondary currency context to a report view data array.
+     *
+     * @param array $data
+     * @return void
+     */
+    private function _append_secondary_currency(array &$data): void
+    {
+        $secondaryCurrency = secondary_currency_context($this->config);
+        $data['secondaryCurrency'] = $secondaryCurrency;
     }
 
     /**
@@ -1480,6 +1493,7 @@ class Reports extends Secure_Controller
             'details_data_rewards' => $details_data_rewards,
             'overall_summary_data' => $specific_employee->getSummaryData($inputs)
         ];
+        $this->_append_secondary_currency($data);
 
         return view('reports/tabular_details', $data);
     }
@@ -1611,6 +1625,7 @@ class Reports extends Secure_Controller
             'details_data_rewards' => $details_data_rewards,
             'overall_summary_data' => $specific_discount->getSummaryData($inputs)
         ];
+        $this->_append_secondary_currency($data);
 
         return view('reports/tabular_details', $data);
     }
@@ -1881,6 +1896,7 @@ class Reports extends Secure_Controller
             'details_data_rewards' => $details_data_rewards,
             'overall_summary_data' => $this->detailed_sales->getSummaryData($inputs)
         ];
+        $this->_append_secondary_currency($data);
         return view('reports/tabular_details', $data);
     }
 
@@ -2009,6 +2025,7 @@ class Reports extends Secure_Controller
             'details_data'         => $details_data,
             'overall_summary_data' => $this->detailed_receivings->getSummaryData($inputs)
         ];
+        $this->_append_secondary_currency($data);
 
         return view('reports/tabular_details', $data);
     }

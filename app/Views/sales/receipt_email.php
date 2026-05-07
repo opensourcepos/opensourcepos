@@ -16,7 +16,6 @@
 ?>
 
 <?php
-$secondaryCurrency = secondary_currency_context($config);
 $secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['receipt_show_secondary_currency']);
 ?>
 

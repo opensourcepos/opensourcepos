@@ -61,10 +61,6 @@ if (isset($success)) {
 helper('url');
 ?>
 
-<?php
-$secondaryCurrency = secondary_currency_context($config);
-?>
-
 <?php if ($secondaryCurrency['show']): ?>
     <table align="center" style="font-size: 22px; font-weight: 600; background-color: rgb(221, 221, 221); width: 25%; margin: 0 auto 0.5em; border: dashed 1px;">
         <tr>
@@ -73,7 +69,7 @@ $secondaryCurrency = secondary_currency_context($config);
         </tr>
         <tr>
             <td style="text-align: center; padding-right: 5%;"><?= lang('Config.secondary_currency') ?>:</td>
-            <td style="text-align: center;"><?= to_secondary_currency((float) $total, $secondaryCurrency) ?></td>
+            <td style="text-align: center;"><?= $secondaryTotalDisplay ?? to_secondary_currency((float) $total, $secondaryCurrency) ?></td>
         </tr>
     </table>
 <?php endif; ?>
@@ -405,7 +401,7 @@ $secondaryCurrency = secondary_currency_context($config);
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= to_secondary_currency((float) $total, $secondaryCurrency) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= $secondaryTotalDisplay ?? to_secondary_currency((float) $total, $secondaryCurrency) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -423,7 +419,7 @@ $secondaryCurrency = secondary_currency_context($config);
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= to_secondary_currency((float) $amount_due, $secondaryCurrency) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= $secondaryAmountDueDisplay ?? to_secondary_currency((float) $amount_due, $secondaryCurrency) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -591,9 +587,13 @@ $secondaryCurrency = secondary_currency_context($config);
 </div>
 
 <script type="text/javascript">
-    const secondaryCurrencyRate = <?= json_encode($secondary_currency_rate, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
-    const secondaryCurrencyDecimals = <?= json_encode($secondary_currency_decimals, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
-    const numberLocale = <?= json_encode($config['number_locale'] ?? 'en-US', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+    const secondaryAmounts = <?= json_encode([
+        'total' => $secondaryTotalDisplay ?? null,
+        'amountDue' => $secondaryAmountDueDisplay ?? null,
+        'cashAmountDue' => $secondaryCashAmountDueDisplay ?? null,
+        'nonCashTotal' => $secondaryNonCashTotalDisplay ?? null,
+        'nonCashAmountDue' => $secondaryNonCashAmountDueDisplay ?? null
+    ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
 
     $(document).ready(function() {
         const redirect = function() {
@@ -842,24 +842,17 @@ $secondaryCurrency = secondary_currency_context($config);
 
     function check_payment_type() {
         var cash_mode = <?= json_encode($cash_mode) ?>;
-        const formatSecondaryCurrency = function(amount) {
-            return Number(amount).toLocaleString(numberLocale, {
-                minimumFractionDigits: secondaryCurrencyDecimals,
-                maximumFractionDigits: secondaryCurrencyDecimals
-            });
-        };
-
-        const updateSecondaryRows = function(primaryTotal, primaryAmountDue) {
-            if (secondaryCurrencyRate > 0) {
-                $("#sale_total_secondary_currency").html(formatSecondaryCurrency(primaryTotal * secondaryCurrencyRate));
-                $("#sale_amount_due_secondary_currency").html(formatSecondaryCurrency(primaryAmountDue * secondaryCurrencyRate));
+        const updateSecondaryRows = function(totalDisplay, amountDueDisplay) {
+            if (totalDisplay !== null && amountDueDisplay !== null) {
+                $("#sale_total_secondary_currency").html(totalDisplay);
+                $("#sale_amount_due_secondary_currency").html(amountDueDisplay);
             }
         };
 
         if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
-            updateSecondaryRows(<?= json_encode((float) $total) ?>, <?= json_encode((float) $amount_due) ?>);
+            updateSecondaryRows(secondaryAmounts.total, secondaryAmounts.amountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
             $("#amount_tendered:enabled").val('').focus();
             $(".giftcard-input").attr('disabled', false);
@@ -868,7 +861,7 @@ $secondaryCurrency = secondary_currency_context($config);
         } else if (($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.cash') ?>" && cash_mode == '1')) {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
-            updateSecondaryRows(<?= json_encode((float) $non_cash_total) ?>, <?= json_encode((float) $cash_amount_due) ?>);
+            updateSecondaryRows(secondaryAmounts.nonCashTotal, secondaryAmounts.cashAmountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
@@ -876,7 +869,7 @@ $secondaryCurrency = secondary_currency_context($config);
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
-            updateSecondaryRows(<?= json_encode((float) $non_cash_total) ?>, <?= json_encode((float) $amount_due) ?>);
+            updateSecondaryRows(secondaryAmounts.nonCashTotal, secondaryAmounts.nonCashAmountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);

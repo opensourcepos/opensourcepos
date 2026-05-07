@@ -51,10 +51,6 @@ if (isset($error_message)) {
 
 <?= view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
-<?php
-$secondaryCurrency = secondary_currency_context($config);
-?>
-
 <div class="print_hide" id="control_buttons" style="text-align: right;">
     <a href="javascript:printdoc();">
         <div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print') ?></div>
