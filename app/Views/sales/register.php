@@ -478,6 +478,7 @@ helper('url');
                     ?>
                 <?php } else { ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -598,6 +599,21 @@ helper('url');
 </div>
 
 <script type="text/javascript">
+    const keyboardShortcuts = <?= json_encode($keyboardShortcuts ?? []) ?>;
+    const paymentsCoverTotal = <?= json_encode((bool) $payments_cover_total) ?>;
+    const shortcutCodes = {
+        items: keyboardShortcuts?.items?.code ?? null,
+        customers: keyboardShortcuts?.customers?.code ?? null,
+        suspend: keyboardShortcuts?.suspend?.code ?? null,
+        suspended: keyboardShortcuts?.suspended?.code ?? null,
+        amount: keyboardShortcuts?.amount?.code ?? null,
+        payment: keyboardShortcuts?.payment?.code ?? null,
+        complete: keyboardShortcuts?.complete?.code ?? null,
+        finish: keyboardShortcuts?.finish?.code ?? null,
+        help: keyboardShortcuts?.help?.code ?? null,
+        cancel: keyboardShortcuts?.cancel?.code ?? null
+    };
+
     window.customerDisplayWindow = window.customerDisplayWindow || null;
     window.customerDisplayDisplayId = window.customerDisplayDisplayId || sessionStorage.getItem('customerDisplayId') || localStorage.getItem('customerDisplayId') || '';
 
@@ -867,6 +883,7 @@ helper('url');
 
         $('#add_payment_button').click(function() {
             window.notifyCustomerDisplay();
+            $('#add_payment_form').find('input[name="complete_after_payment"]').val('0');
             $('#add_payment_form').submit();
         });
 
@@ -963,6 +980,58 @@ helper('url');
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
+        }
+    }
+
+    // Add Keyboard Shortcuts/Hotkeys to Sale Register
+    document.body.onkeyup = function(event) {
+        if ($(event.target).closest('.modal').length || $('.modal.in').length) {
+            return;
+        }
+
+        if (event.altKey) {
+            switch (event.keyCode) {
+                case shortcutCodes.items:
+                    $("#item").focus();
+                    $("#item").select();
+                    break;
+                case shortcutCodes.customers:
+                    $("#customer").focus();
+                    $("#customer").select();
+                    break;
+                case shortcutCodes.suspend:
+                    $("#suspend_sale_button").click();
+                    break;
+                case shortcutCodes.suspended:
+                    $("#show_suspended_sales_button").click();
+                    break;
+                case shortcutCodes.amount:
+                    $("#amount_tendered").focus();
+                    $("#amount_tendered").select();
+                    break;
+                case shortcutCodes.payment:
+                    $("#add_payment_button").click();
+                    break;
+                case shortcutCodes.complete:
+                    if (paymentsCoverTotal && $("#finish_sale_button").length) {
+                        $("#finish_sale_button").click();
+                    } else {
+                        $("#add_payment_button").click();
+                    }
+                    break;
+                case shortcutCodes.finish:
+                    $("#finish_invoice_quote_button").click();
+                    break;
+                case shortcutCodes.help:
+                    $("#show_keyboard_help").click();
+                    break;
+            }
+        }
+
+        switch (event.keyCode) {
+            case shortcutCodes.cancel:
+                $("#cancel_sale_button").click();
+                break;
         }
     }
 </script>

@@ -1390,9 +1390,11 @@ class Sales extends Secure_Controller
         $data['comment'] = $this->sale_lib->get_comment();
         $data['email_receipt'] = $this->sale_lib->is_email_receipt();
 
-        $data['payment_options'] = $customer_info && $this->config['customer_reward_enable']
-            ? $this->sale->get_payment_options(true, true)
-            : $this->sale->get_payment_options();
+        if ($customer_info && $this->config['customer_reward_enable']) {
+            $data['payment_options'] = $this->sale->get_payment_options(true, true);
+        } else {
+            $data['payment_options'] = $this->sale->get_payment_options();
+        }
 
         $data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
         $data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
