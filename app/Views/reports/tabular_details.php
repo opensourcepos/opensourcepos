@@ -37,7 +37,7 @@ $secondaryCurrency = secondary_currency_context($config);
     <?php foreach ($overall_summary_data as $name => $value) { ?>
         <div class="summary_row"><?= lang("Reports.$name") . ': ' . esc(to_currency($value)) ?></div>
         <?php if ($secondaryCurrency['show']) { ?>
-            <div class="summary_row"><?= esc(lang('Config.secondary_currency')) . ': ' . secondary_currency_amount((float)$value, $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) ?></div>
+            <div class="summary_row"><?= esc(lang('Config.secondary_currency')) . ': ' . to_secondary_currency((float)$value, $secondaryCurrency) ?></div>
         <?php } ?>
     <?php } ?>
 </div>

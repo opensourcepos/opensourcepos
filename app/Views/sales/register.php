@@ -73,7 +73,7 @@ $secondaryCurrency = secondary_currency_context($config);
         </tr>
         <tr>
             <td style="text-align: center; padding-right: 5%;"><?= lang('Config.secondary_currency') ?>:</td>
-            <td style="text-align: center;"><?= secondary_currency_amount((float) $total, $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) ?></td>
+            <td style="text-align: center;"><?= to_secondary_currency((float) $total, $secondaryCurrency) ?></td>
         </tr>
     </table>
 <?php endif; ?>
@@ -208,7 +208,7 @@ $secondaryCurrency = secondary_currency_context($config);
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
-                                    echo $secondaryCurrency['show'] ? secondary_currency_dual_amount((float) $item['price'], $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) : to_currency($item['price']);
+                                    echo $secondaryCurrency['show'] ? to_secondary_currency_dual((float) $item['price'], $secondaryCurrency) : to_currency($item['price']);
                                     echo form_hidden('price', to_currency_no_money($item['price']));
                                 }
                                 ?>
@@ -405,7 +405,7 @@ $secondaryCurrency = secondary_currency_context($config);
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= secondary_currency_amount((float) $total, $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= to_secondary_currency((float) $total, $secondaryCurrency) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -423,7 +423,7 @@ $secondaryCurrency = secondary_currency_context($config);
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= secondary_currency_amount((float) $amount_due, $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= to_secondary_currency((float) $amount_due, $secondaryCurrency) ?></span></th>
                 </tr>
             <?php } ?>
         </table>

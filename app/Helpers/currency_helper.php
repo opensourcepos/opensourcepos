@@ -36,34 +36,55 @@ function secondary_currency_label(string $symbol = '', string $code = ''): strin
 
 function secondary_currency_amount(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
 {
-    if ($rate <= 0) {
-        return to_currency($amount);
-    }
-
-    $converted_amount = $amount * $rate;
-
-    $prefix = secondary_currency_label($symbol, $code);
-
-    return to_currency_with_symbol((string) $converted_amount, $prefix, $decimals);
+    return to_secondary_currency($amount, [
+        'enabled' => $rate > 0,
+        'rate' => $rate,
+        'decimals' => $decimals,
+        'symbol' => $symbol,
+        'code' => $code,
+        'show' => $rate > 0,
+    ]);
 }
 
 function secondary_currency_dual_amount(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
 {
-    if ($rate <= 0) {
+    return to_secondary_currency_dual($amount, [
+        'enabled' => $rate > 0,
+        'rate' => $rate,
+        'decimals' => $decimals,
+        'symbol' => $symbol,
+        'code' => $code,
+        'show' => $rate > 0,
+    ]);
+}
+
+function to_secondary_currency(float $amount, ?array $secondaryCurrency = null): string
+{
+    $secondaryCurrency ??= secondary_currency_context(config(\Config\OSPOS::class)->settings);
+
+    if (empty($secondaryCurrency['show']) || (float)($secondaryCurrency['rate'] ?? 0) <= 0) {
         return to_currency($amount);
     }
 
-    return secondary_currency_amount($amount, $rate, $decimals, $symbol, $code) . ' | ' . to_currency($amount);
+    $convertedAmount = $amount * (float) $secondaryCurrency['rate'];
+    $prefix = secondary_currency_label((string) ($secondaryCurrency['symbol'] ?? ''), (string) ($secondaryCurrency['code'] ?? ''));
+
+    return to_currency_with_symbol(
+        (string) $convertedAmount,
+        $prefix,
+        (int) ($secondaryCurrency['decimals'] ?? 0)
+    );
 }
 
-function to_secondary_currency(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
+function to_secondary_currency_dual(float $amount, ?array $secondaryCurrency = null): string
 {
-    return secondary_currency_amount($amount, $rate, $decimals, $symbol, $code);
-}
+    $secondaryCurrency ??= secondary_currency_context(config(\Config\OSPOS::class)->settings);
 
-function to_scnd_currency(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
-{
-    return to_secondary_currency($amount, $rate, $decimals, $symbol, $code);
+    if (empty($secondaryCurrency['show']) || (float)($secondaryCurrency['rate'] ?? 0) <= 0) {
+        return to_currency($amount);
+    }
+
+    return to_secondary_currency($amount, $secondaryCurrency) . ' | ' . to_currency($amount);
 }
 
 function secondary_currency_rate_display(float $rate): string

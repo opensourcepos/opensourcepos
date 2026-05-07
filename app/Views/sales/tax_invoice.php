@@ -149,7 +149,7 @@ $secondaryCurrency = secondary_currency_context($config);
                     <?php endif; ?>
                     <td class="item-name"><?= esc($item['name']) ?></td>
                     <td style="text-align: center;"><?= to_quantity_decimals($item['quantity']) ?></td>
-                    <td><?= $secondaryCurrency['show'] ? secondary_currency_dual_amount((float)$item['price'], $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) : to_currency($item['price']) ?></td>
+                    <td><?= $secondaryCurrency['show'] ? to_secondary_currency_dual((float)$item['price'], $secondaryCurrency) : to_currency($item['price']) ?></td>
                     <td style="text-align: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                     <?php if ($discount > 0): ?>
                         <td style="text-align: center;"><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
@@ -197,7 +197,7 @@ $secondaryCurrency = secondary_currency_context($config);
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
                 <td colspan="2" class="total-line"><?= esc(lang('Config.secondary_currency')) ?></td>
-                <td class="total-value" id="total_secondary_currency"><?= secondary_currency_amount((float)$total, $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) ?></td>
+                <td class="total-value" id="total_secondary_currency"><?= to_secondary_currency((float)$total, $secondaryCurrency) ?></td>
             </tr>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
