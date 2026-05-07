@@ -427,7 +427,7 @@
                         'name'    => 'show_grid_enabled',
                         'id'      => 'show_grid_enabled',
                         'value'   => 'show_grid_enabled',
-                        'checked' => ($config['show_grid_enabled'] ?? 1) == 1
+                        'checked' => ($config['show_grid_enabled'] ?? true) == 1
                     ]) ?>
                 </div>
             </div>
