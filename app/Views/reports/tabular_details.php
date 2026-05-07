@@ -34,6 +34,7 @@
         <div class="summary_row"><?= lang("Reports.$name") . ': ' . esc(to_currency($value)) ?></div>
         <?php if ($secondaryCurrency['show']) { ?>
             <div class="summary_row"><?= esc(lang("Reports.$name")) . ' ' . esc($secondaryCurrency['symbol'] ?: $secondaryCurrency['code']) . ': ' . to_secondary_currency((float)$value, $secondaryCurrency) ?></div>
+            <div class="summary_row" style="height: 0.9em;"></div>
         <?php } ?>
     <?php } ?>
 </div>
