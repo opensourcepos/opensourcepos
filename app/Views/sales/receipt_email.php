@@ -16,12 +16,8 @@
 ?>
 
 <?php
-$secondary_currency_enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
-$secondary_currency_rate = (float)($config['secondary_currency_rate'] ?? 0);
-$secondary_currency_decimals = (int)($config['secondary_currency_decimals'] ?? 0);
-$secondary_currency_symbol = (string)($config['secondary_currency_symbol'] ?? '');
-$secondary_currency_code = (string)($config['secondary_currency_code'] ?? '');
-$show_secondary_currency = $secondary_currency_enabled && $secondary_currency_rate > 0;
+$secondaryCurrency = secondary_currency_context($config);
+$secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['receipt_show_secondary_currency']);
 ?>
 
 <div id="receipt_wrapper" style="width: 100%;">
@@ -69,7 +65,7 @@ $show_secondary_currency = $secondary_currency_enabled && $secondary_currency_ra
         ?>
                 <tr>
                     <td><?= esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
-                    <td><?= $show_secondary_currency ? secondary_currency_dual_amount((float)$item['price'], $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) : to_currency($item['price']) ?></td>
+                    <td><?= $secondaryCurrency['show'] ? secondary_currency_dual_amount((float)$item['price'], $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) : to_currency($item['price']) ?></td>
                     <td><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td style="text-align: right;"><?= to_currency($item[($config['receipt_show_total_discount'] ? 'total' : 'discounted_total')]) ?></td>
                 </tr>
@@ -130,14 +126,14 @@ $show_secondary_currency = $secondary_currency_enabled && $secondary_currency_ra
             <td colspan="3" style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= lang('Sales.total') ?></td>
             <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= to_currency($total) ?></td>
         </tr>
-        <?php if ($show_secondary_currency) { ?>
+        <?php if ($secondaryCurrency['show']) { ?>
             <tr>
                 <td colspan="3" style="text-align: right;"><?= esc(lang('Config.secondary_currency')) ?></td>
-                <td style="text-align: right;"><?= secondary_currency_amount((float)$total, $secondary_currency_rate, $secondary_currency_decimals, $secondary_currency_symbol, $secondary_currency_code) ?></td>
+                <td style="text-align: right;"><?= secondary_currency_amount((float)$total, $secondaryCurrency['rate'], $secondaryCurrency['decimals'], $secondaryCurrency['symbol'], $secondaryCurrency['code']) ?></td>
             </tr>
             <tr>
                 <td colspan="3" style="text-align: right;"><?= esc(lang('Config.secondary_currency_rate')) ?></td>
-                <td style="text-align: right;"><?= secondary_currency_rate_display($secondary_currency_rate) ?></td>
+                <td style="text-align: right;"><?= secondary_currency_rate_display($secondaryCurrency['rate']) ?></td>
             </tr>
         <?php } ?>
 

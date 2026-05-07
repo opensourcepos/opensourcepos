@@ -1,5 +1,23 @@
 <?php
 
+function secondary_currency_context(array $config): array
+{
+    $enabled = (($config['secondary_currency_enabled'] ?? false) == 1);
+    $rate = (float)($config['secondary_currency_rate'] ?? 0);
+    $decimals = (int)($config['secondary_currency_decimals'] ?? 0);
+    $symbol = (string)($config['secondary_currency_symbol'] ?? '');
+    $code = (string)($config['secondary_currency_code'] ?? '');
+
+    return [
+        'enabled' => $enabled,
+        'rate' => $rate,
+        'decimals' => $decimals,
+        'symbol' => $symbol,
+        'code' => $code,
+        'show' => $enabled && $rate > 0,
+    ];
+}
+
 function secondary_currency_label(string $symbol = '', string $code = ''): string
 {
     $symbol = trim($symbol);
