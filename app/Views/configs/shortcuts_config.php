@@ -1,12 +1,12 @@
 <?php
 /**
  * @var array $config
- * @var array $keyboardShortcutsOptions
+ * @var array $keyboardShortcutOptions
  * @var array $keyboardShortcuts
  */
 
 $keyboardShortcuts ??= [];
-$keyboardShortcutsOptions ??= [];
+$keyboardShortcutOptions ??= [];
 $config ??= [];
 
 $shortcutLabels = [
@@ -35,11 +35,11 @@ $shortcutLabels = [
                         <div class="form-group form-group-sm">
                             <?= form_label($label, 'key_' . $name, ['class' => 'control-label col-xs-3']) ?>
                             <div class="col-xs-4">
-                                <?php $shortcutValue = $keyboardShortcuts[$name]['value'] ?? ''; ?>
+                                <?php $keyboardShortcutSelectedValue = $keyboardShortcuts[$name]['value'] ?? ''; ?>
                                 <?= form_dropdown(
                                     'key_' . $name,
-                                    $keyboardShortcutsOptions,
-                                    $shortcutValue,
+                                    $keyboardShortcutOptions,
+                                    $keyboardShortcutSelectedValue,
                                     'class="form-control input-sm"'
                                 ) ?>
                             </div>

@@ -232,7 +232,7 @@ class Config extends Secure_Controller
         $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
         $data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
         $data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
-        $data['keyboardShortcutsOptions'] = $this->sale_lib->getKeyShortcutsOptions();
+        $data['keyboardShortcutOptions'] = $this->sale_lib->getKeyShortcutsOptions();
         $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
         $data['rounding_options'] = rounding_mode::get_rounding_options();
         $data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
