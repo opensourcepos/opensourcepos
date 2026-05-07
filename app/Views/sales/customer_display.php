@@ -23,14 +23,14 @@
                             <table class="table table-striped table-condensed" id="register">
                                 <thead>
                                     <tr>
-                                        <th style="width: <?= $cartItemWidth ?>%;"><?= lang('Sales.item_name') ?></th>
+                                        <th style="width: <?= (int) $cartItemWidth ?>%;"><?= lang('Sales.item_name') ?></th>
                                         <?php if ($cartHasCustomerDisplay) { ?>
-                                            <th style="width: <?= $cartPriceWidth ?>%;"><?= 'Price (' . esc($customerDisplayCurrencyLabel) . ')' ?></th>
+                                            <th style="width: <?= (int) $cartPriceWidth ?>%;"><?= 'Price (' . esc($customerDisplayCurrencyLabel) . ')' ?></th>
                                         <?php } ?>
-                                        <th style="width: <?= $cartOriginalWidth ?>%;"><?= 'Price (' . esc($originalCurrencyLabel) . ')' ?></th>
-                                        <th style="width: <?= $cartQuantityWidth ?>%;"><?= lang('Sales.quantity') ?></th>
-                                        <th style="width: <?= $cartDiscountWidth ?>%;"><?= lang('Sales.discount') ?></th>
-                                        <th style="width: <?= $cartTotalWidth ?>%;"><?= lang('Sales.total') ?></th>
+                                        <th style="width: <?= (int) $cartOriginalWidth ?>%;"><?= 'Price (' . esc($originalCurrencyLabel) . ')' ?></th>
+                                        <th style="width: <?= (int) $cartQuantityWidth ?>%;"><?= lang('Sales.quantity') ?></th>
+                                        <th style="width: <?= (int) $cartDiscountWidth ?>%;"><?= lang('Sales.discount') ?></th>
+                                        <th style="width: <?= (int) $cartTotalWidth ?>%;"><?= lang('Sales.total') ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="cart_contents">

@@ -29,7 +29,7 @@
                             ) ?>
                         </div>
                         <div class="col-sm-7">
-                            <a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=???????????????noopener???????????????>
+                            <a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel="noopener">
                                 <span><?= lang('Config.theme_preview') . ' ' . ucfirst(esc($config['theme'])) . ' ' ?></span>
                                 <span class="glyphicon glyphicon-new-window"></span>
                             </a>
@@ -130,8 +130,35 @@
             </div>
 
             <div class="form-group form-group-sm">
+<<<<<<< HEAD
                 <?= form_label(lang('Config.receiving_cost_price_method'), 'receiving_cost_price_method', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-3">
+=======
+                <?= form_label(lang('Config.theme'), 'theme', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-sm-10">
+                    <div class="form-group form-group-sm row">
+                        <div class="col-sm-3">
+                            <?= form_dropdown(
+                                'theme',
+                                $themes,
+                                $config['theme'],
+                                'class="form-control input-sm" id="theme-change"'
+                            ) ?>
+                        </div>
+                        <div class="col-sm-7">
+                            <a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel="noopener">
+                                <span><?= lang('Config.theme_preview') . ' ' . ucfirst(esc($config['theme'])) . ' ' ?></span>
+                                <span class="glyphicon glyphicon-new-window"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.login_form'), 'login_form', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-2">
+>>>>>>> 3ef01a6ee (Customer Display fixes)
                     <?= form_dropdown(
                         'receiving_cost_price_method',
                         [
