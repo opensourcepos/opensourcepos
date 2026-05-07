@@ -68,7 +68,7 @@ helper('url');
             <td style="text-align: center;"><?= to_currency($total) ?></td>
         </tr>
         <tr>
-            <td style="text-align: center; padding-right: 5%;"><?= lang('Config.secondary_currency') ?>:</td>
+            <td style="text-align: center; padding-right: 5%;"><?= esc($secondaryTotalLabel ?? secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?>:</td>
             <td style="text-align: center;"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
         </tr>
     </table>
@@ -400,7 +400,7 @@ helper('url');
             </tr>
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
-                    <th style="width: 55%; font-size: 120%"><?= esc($secondaryTotalLabel ?? lang(ucfirst($controller_name) . '.total')) ?></th>
+                    <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?></th>
                     <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></span></th>
                 </tr>
             <?php } ?>
@@ -418,7 +418,7 @@ helper('url');
             </tr>
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
-                    <th style="width: 55%; font-size: 120%"><?= esc($secondaryAmountDueLabel ?? lang(ucfirst($controller_name) . '.amount_due')) ?></th>
+                    <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.amount_due'), $secondaryCurrency)) ?></th>
                     <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? to_currency($amount_due)) ?></span></th>
                 </tr>
             <?php } ?>

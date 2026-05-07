@@ -3,6 +3,7 @@
 namespace App\Models\Reports;
 
 use App\Models\Sale;
+use Config\OSPOS;
 
 /**
  *
@@ -28,7 +29,8 @@ class Specific_supplier extends Report
      */
     public function getDataColumns(): array
     {
-        return [
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $columns = [
             ['id'          => lang('Reports.sale_id')],
             ['type_code'   => lang('Reports.code_type')],
             ['sale_time'   => lang('Reports.date'), 'sortable' => false],
@@ -43,6 +45,13 @@ class Specific_supplier extends Report
             ['profit'      => lang('Reports.profit'), 'sorter' => 'number_sorter'],
             ['discount'    => lang('Reports.discount')]
         ];
+
+        if ($secondaryCurrency['show']) {
+            $columns[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+            $columns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+        }
+
+        return $columns;
     }
 
     /**

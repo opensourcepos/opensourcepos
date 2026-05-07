@@ -189,7 +189,7 @@ if ($include_hsn) {
         <?php if ($secondaryCurrency['show']) { ?>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= esc($secondaryTotalLabel ?? lang('Sales.total')) ?></td>
+                <td colspan="2" class="total-line"><?= esc(secondary_currency_display_label(lang('Sales.total'), $secondaryCurrency)) ?></td>
                 <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
             </tr>
             <tr>

@@ -2,6 +2,8 @@
 
 namespace App\Models\Reports;
 
+use Config\OSPOS;
+
 class Summary_sales extends Summary_report
 {
     /**
@@ -9,7 +11,8 @@ class Summary_sales extends Summary_report
      */
     protected function _get_data_columns(): array
     {
-        return [
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $columns = [
             ['sale_date' => lang('Reports.date'), 'sortable' => false],
             ['sales'     => lang('Reports.sales'), 'sorter' => 'number_sorter'],
             ['quantity'  => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
@@ -19,6 +22,13 @@ class Summary_sales extends Summary_report
             ['cost'      => lang('Reports.cost'), 'sorter' => 'number_sorter'],
             ['profit'    => lang('Reports.profit'), 'sorter' => 'number_sorter']
         ];
+
+        if ($secondaryCurrency['show']) {
+            $columns[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+            $columns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+        }
+
+        return $columns;
     }
 
     /**

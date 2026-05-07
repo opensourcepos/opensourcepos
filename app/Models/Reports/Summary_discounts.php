@@ -11,11 +11,19 @@ class Summary_discounts extends Summary_report
      */
     protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
-        return [
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $columns = [
             ['discount' => lang('Reports.discount'), 'sorter' => 'number_sorter'],
             ['count'    => lang('Reports.count')],
             ['total'    => lang('Reports.total')]
         ];
+
+        if ($secondaryCurrency['show']) {
+            $columns[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+            $columns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+        }
+
+        return $columns;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models\Reports;
 
 use App\Models\Receiving;
+use Config\OSPOS;
 
 /**
  *
@@ -28,18 +29,26 @@ class Detailed_receivings extends Report
      */
     public function getDataColumns(): array
     {
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $summaryColumns = [
+            ['id'             => lang('Reports.receiving_id')],
+            ['receiving_time' => lang('Reports.date'), 'sortable' => false],
+            ['quantity'       => lang('Reports.quantity')],
+            ['employee_name'  => lang('Reports.received_by')],
+            ['supplier_name'  => lang('Reports.supplied_by')],
+            ['total'          => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['payment_type'   => lang('Reports.payment_type')],
+            ['comment'        => lang('Reports.comments')],
+            ['reference'      => lang('Receivings.reference')]
+        ];
+
+        if ($secondaryCurrency['show']) {
+            $summaryColumns[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+            $summaryColumns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+        }
+
         return [
-            'summary' => [
-                ['id'             => lang('Reports.receiving_id')],
-                ['receiving_time' => lang('Reports.date'), 'sortable' => false],
-                ['quantity'       => lang('Reports.quantity')],
-                ['employee_name'  => lang('Reports.received_by')],
-                ['supplier_name'  => lang('Reports.supplied_by')],
-                ['total'          => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['payment_type'   => lang('Reports.payment_type')],
-                ['comment'        => lang('Reports.comments')],
-                ['reference'      => lang('Receivings.reference')]
-            ],
+            'summary' => $summaryColumns,
             'details' => [
                 lang('Reports.item_number'),
                 lang('Reports.name'),

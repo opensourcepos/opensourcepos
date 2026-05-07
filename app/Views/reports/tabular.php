@@ -33,12 +33,21 @@
 
 <div id="report_summary">
     <?php
+    $secondaryCurrency = secondary_currency_context($config);
+    $currencySummaryPattern = '/(amount|subtotal|tax|total|cost|profit|retail|value)$/';
     foreach ($summary_data as $name => $value) {
+        $label = lang("Reports.$name");
         if ($name == "total_quantity") {
             ?>
-            <div class="summary_row"><?= lang("Reports.$name") . ": " . esc($value) ?></div>
+            <div class="summary_row"><?= esc($label) . ": " . esc($value) ?></div>
+        <?php } elseif (is_numeric($value) && preg_match($currencySummaryPattern, $name)) { ?>
+            <div class="summary_row"><?= esc($label) . ': ' . esc(to_currency($value)) ?></div>
+            <?php if ($secondaryCurrency['show']) { ?>
+                <div class="summary_row"><?= esc(secondary_currency_display_label($label, $secondaryCurrency)) . ': ' . esc(secondary_currency_render_amount((float) $value, $secondaryCurrency)) ?></div>
+            <?php } ?>
+            <div class="summary_row" style="height: 0.9em;"></div>
         <?php } else { ?>
-            <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+            <div class="summary_row"><?= esc($label) . ': ' . esc(is_string($value) ? $value : (string) $value) ?></div>
             <?php
         }
     }

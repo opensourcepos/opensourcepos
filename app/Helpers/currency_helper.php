@@ -45,7 +45,10 @@ function secondary_currency_render_amount(float $amount, array $secondaryCurrenc
 
 function secondary_currency_render_rate(array $secondaryCurrency): string
 {
-    return secondary_currency_rate_display((float) ($secondaryCurrency['rate'] ?? 0));
+    return secondary_currency_rate_display(
+        (float) ($secondaryCurrency['rate'] ?? 0),
+        (int) ($secondaryCurrency['decimals'] ?? 0)
+    );
 }
 
 function secondary_currency_display_label(string $label, array $secondaryCurrency): string
@@ -112,7 +115,7 @@ function to_secondary_currency_dual(float $amount, ?array $secondaryCurrency = n
     return to_secondary_currency($amount, $secondaryCurrency) . ' | ' . to_currency($amount);
 }
 
-function secondary_currency_rate_display(float $rate): string
+function secondary_currency_rate_display(float $rate, int $precision = 0): string
 {
-    return format_locale_number((string) $rate, 6, NumberFormatter::DECIMAL);
+    return format_locale_number((string) $rate, $precision, NumberFormatter::DECIMAL);
 }
