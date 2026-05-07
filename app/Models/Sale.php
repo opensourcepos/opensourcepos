@@ -559,9 +559,9 @@ class Sale extends Model
             'dinner_table_id'   => $dinner_table_id,
             'sale_type'         => $sale_type,
             'secondary_currency_rate' => $sale_id == NEW_ENTRY
-                ? (int) round((float) ($config['secondary_currency_rate'] ?? 0))
+                ? (float) ($config['secondary_currency_rate'] ?? 0)
                 : ($existing_secondary_currency_rate !== null
-                    ? (int) round((float) $existing_secondary_currency_rate)
+                    ? (float) $existing_secondary_currency_rate
                     : null)
           ];
 

@@ -121,7 +121,7 @@ class Receiving extends Model
             'payment_type'   => $payment_type,
             'comment'        => $comment,
             'reference'      => $reference,
-            'secondary_currency_rate' => (int) round((float) (config(OSPOS::class)->settings['secondary_currency_rate'] ?? 0))
+            'secondary_currency_rate' => (float) (config(OSPOS::class)->settings['secondary_currency_rate'] ?? 0)
         ];
 
         // Run these queries as a transaction, we want to make sure we do all or nothing

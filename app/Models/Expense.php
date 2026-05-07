@@ -266,7 +266,7 @@ class Expense extends Model
         $builder = $this->db->table('expenses');
         if ($expense_id == NEW_ENTRY || !$this->exists($expense_id)) {
             if (!array_key_exists('secondary_currency_rate', $expense_data)) {
-                $expense_data['secondary_currency_rate'] = (int) round((float) (config(OSPOS::class)->settings['secondary_currency_rate'] ?? 0));
+                $expense_data['secondary_currency_rate'] = (float) (config(OSPOS::class)->settings['secondary_currency_rate'] ?? 0);
             }
 
             if ($builder->insert($expense_data)) {

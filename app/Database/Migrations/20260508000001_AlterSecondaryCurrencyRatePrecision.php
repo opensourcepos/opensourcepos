@@ -13,7 +13,7 @@ class AlterSecondaryCurrencyRatePrecision extends Migration
         foreach ($tables as $table) {
             $this->db->query(
                 'ALTER TABLE ' . $this->db->prefixTable($table) .
-                ' MODIFY `secondary_currency_rate` DECIMAL(15,0) NULL DEFAULT NULL'
+                ' MODIFY `secondary_currency_rate` DECIMAL(15,6) NULL DEFAULT NULL'
             );
         }
     }

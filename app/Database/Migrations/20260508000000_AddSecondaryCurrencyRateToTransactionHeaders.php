@@ -11,7 +11,7 @@ class AddSecondaryCurrencyRateToTransactionHeaders extends Migration
         $columns = [
             'secondary_currency_rate' => [
                 'type'       => 'DECIMAL',
-                'constraint' => '15,0',
+                'constraint' => '15,6',
                 'null'       => true,
                 'default'    => null
             ]
