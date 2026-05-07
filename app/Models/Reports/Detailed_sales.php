@@ -3,6 +3,7 @@
 namespace App\Models\Reports;
 
 use App\Models\Sale;
+use Config\OSPOS;
 
 /**
  *
@@ -28,6 +29,9 @@ class Detailed_sales extends Report
      */
     public function getDataColumns(): array
     {
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $secondaryTotalLabel = secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency);
+
         return [    // TODO: Duplicated code
             'summary' => [
                 ['id'            => lang('Reports.sale_id')],
@@ -39,6 +43,7 @@ class Detailed_sales extends Report
                 ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
                 ['tax'           => lang('Reports.tax'), 'sorter' => 'number_sorter'],
                 ['total'         => lang('Reports.total'), 'sorter' => 'number_sorter'],
+                ['total_secondary_currency' => $secondaryTotalLabel, 'sorter' => 'number_sorter'],
                 ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
                 ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter'],
                 ['payment_type'  => lang('Reports.payment_type'), 'sortable' => false],

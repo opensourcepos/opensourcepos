@@ -48,6 +48,17 @@ function secondary_currency_render_rate(array $secondaryCurrency): string
     return secondary_currency_rate_display((float) ($secondaryCurrency['rate'] ?? 0));
 }
 
+function secondary_currency_display_label(string $label, array $secondaryCurrency): string
+{
+    $currencyLabel = secondary_currency_label((string) ($secondaryCurrency['symbol'] ?? ''), (string) ($secondaryCurrency['code'] ?? ''));
+
+    if ($currencyLabel === '') {
+        return $label;
+    }
+
+    return trim($label . ' ' . $currencyLabel);
+}
+
 function secondary_currency_amount(float $amount, float $rate = 1.0, int $decimals = 0, string $symbol = '', string $code = ''): string
 {
     return to_secondary_currency($amount, [

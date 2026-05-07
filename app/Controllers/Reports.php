@@ -1372,6 +1372,7 @@ class Reports extends Secure_Controller
     {
         $secondaryCurrency = secondary_currency_context($this->config);
         $data['secondaryCurrency'] = $secondaryCurrency;
+        $data['secondaryTotalLabel'] = secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency);
 
         if (!array_key_exists('overall_summary_data', $data) || !is_array($data['overall_summary_data'])) {
             return;
@@ -1379,9 +1380,12 @@ class Reports extends Secure_Controller
 
         $data['overall_summary_display_data'] = [];
         foreach ($data['overall_summary_data'] as $name => $value) {
+            $primaryLabel = $name === 'total_secondary_currency'
+                ? lang('Reports.total')
+                : lang("Reports.$name");
             $data['overall_summary_display_data'][] = [
-                'primary' => lang("Reports.$name") . ': ' . to_currency($value),
-                'secondary' => lang("Reports.$name") . ' ' . secondary_currency_label($secondaryCurrency['symbol'] ?? '', $secondaryCurrency['code'] ?? '') . ': ' . secondary_currency_render_amount((float) $value, $secondaryCurrency)
+                'primary' => $primaryLabel . ': ' . to_currency($value),
+                'secondary' => secondary_currency_display_label($primaryLabel, $secondaryCurrency) . ': ' . secondary_currency_render_amount((float) $value, $secondaryCurrency)
             ];
         }
     }
@@ -1824,6 +1828,7 @@ class Reports extends Secure_Controller
         $columns['details'] = array_merge($columns['details'], $definitionHeaders);
 
         $headers = $columns;
+        $secondaryCurrency = secondary_currency_context($this->config);
 
         $report_data = $this->detailed_sales->getData($inputs);
 
@@ -1852,6 +1857,7 @@ class Reports extends Secure_Controller
                 'subtotal'      => to_currency($row['subtotal']),
                 'tax'           => to_currency_tax($row['tax']),
                 'total'         => to_currency($row['total']),
+                'total_secondary_currency' => secondary_currency_render_amount((float) $row['total'], $secondaryCurrency),
                 'cost'          => to_currency($row['cost']),
                 'profit'        => to_currency($row['profit']),
                 'payment_type'  => $row['payment_type'],

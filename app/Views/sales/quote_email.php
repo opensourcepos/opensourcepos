@@ -141,8 +141,8 @@
                 <?php if ($secondaryCurrency['show']) { ?>
                     <tr>
                         <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
-                        <td colspan="2" class="total-line"><?= esc(lang('Config.secondary_currency')) ?></td>
-            <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
+                        <td colspan="2" class="total-line"><?= esc($secondaryTotalLabel ?? lang('Config.secondary_currency')) ?></td>
+                        <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
                     </tr>
                     <tr>
                         <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>

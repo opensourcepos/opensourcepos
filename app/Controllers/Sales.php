@@ -76,6 +76,8 @@ class Sales extends Secure_Controller
     {
         $secondaryCurrency = secondary_currency_context($this->config);
         $data['secondaryCurrency'] = $secondaryCurrency;
+        $data['secondaryTotalLabel'] = secondary_currency_display_label(lang(ucfirst($data['controller_name'] ?? 'Sales') . '.total'), $secondaryCurrency);
+        $data['secondaryAmountDueLabel'] = secondary_currency_display_label(lang(ucfirst($data['controller_name'] ?? 'Sales') . '.amount_due'), $secondaryCurrency);
         $data['secondaryRateDisplay'] = secondary_currency_render_rate($secondaryCurrency);
 
         $displayFields = [

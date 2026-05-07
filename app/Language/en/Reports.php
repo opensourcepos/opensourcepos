@@ -129,7 +129,6 @@ return [
     "taxes"                                   => "Taxes",
     "taxes_summary_report"                    => "Taxes Summary Report",
     "total"                                   => "Total",
-    "total_secondary_currency"                => "Total Secondary Currency",
     "total_inventory_value"                   => "Total Inventory Value",
     "total_low_sell_quantity"                 => "Total Low Sell Quantity",
     "total_quantity"                          => "Total Quantity",

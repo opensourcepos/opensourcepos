@@ -400,7 +400,7 @@ helper('url');
             </tr>
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
+                    <th style="width: 55%; font-size: 120%"><?= esc($secondaryTotalLabel ?? lang('Config.secondary_currency')) ?></th>
                     <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></span></th>
                 </tr>
             <?php } ?>
@@ -418,7 +418,7 @@ helper('url');
             </tr>
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang('Config.secondary_currency') ?></th>
+                    <th style="width: 55%; font-size: 120%"><?= esc($secondaryAmountDueLabel ?? lang('Config.secondary_currency')) ?></th>
                     <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? to_currency($amount_due)) ?></span></th>
                 </tr>
             <?php } ?>
