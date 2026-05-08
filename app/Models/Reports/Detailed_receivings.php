@@ -78,12 +78,11 @@ class Detailed_receivings extends Report
             MAX(payment_type) as payment_type,
             MAX(comment) as comment,
             MAX(reference) as reference,
-            MAX(receivings.secondary_currency_rate) AS secondary_currency_rate');
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
         $builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
         $builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-        $builder->join('receivings', 'receivings_items_temp.receiving_id = receivings.receiving_id');
-        $builder->where('receiving_id', $receiving_id);
-        $builder->groupBy('receiving_id');
+        $builder->where('receivings_items_temp.receiving_id', $receiving_id);
+        $builder->groupBy('receivings_items_temp.receiving_id');
 
         return $builder->get()->getRowArray();
     }
@@ -105,10 +104,9 @@ class Detailed_receivings extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment,
             MAX(reference) AS reference,
-            MAX(receivings.secondary_currency_rate) AS secondary_currency_rate');
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
         $builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
         $builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-        $builder->join('receivings', 'receivings_items_temp.receiving_id = receivings.receiving_id');
 
         if ($inputs['location_id'] != 'all') {
             $builder->where('item_location', $inputs['location_id']);
@@ -122,7 +120,7 @@ class Detailed_receivings extends Report
             $builder->having('items_purchased = 0');
         }
 
-        $builder->groupBy('receiving_id', 'receiving_time');
+        $builder->groupBy(['receivings_items_temp.receiving_id', 'receivings_items_temp.receiving_time']);
         $builder->orderBy('MAX(receiving_id)');
 
         $data = [];
