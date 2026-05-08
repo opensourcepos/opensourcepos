@@ -35,6 +35,7 @@
     <?php $secondaryCurrency = $secondaryCurrency ?? secondary_currency_context(config(\Config\OSPOS::class)->settings, $secondary_currency_rate ?? null); ?>
     <?php $currencySummaryPattern = '/(amount|subtotal|tax|total|cost|profit|retail|value)$/'; ?>
     <?php foreach ($summary_data_1 as $name => $value) { ?>
+        <?php if ($name === 'secondary_currency_rate') { continue; } ?>
         <?php $label = lang("Reports.$name"); ?>
         <?php if (is_numeric($value) && preg_match($currencySummaryPattern, $name)) { ?>
             <div class="summary_row"><?= esc($label) . ': ' . esc(to_currency($value)) ?></div>
