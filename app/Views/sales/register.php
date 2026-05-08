@@ -856,8 +856,8 @@ helper('url');
         var cash_mode = <?= json_encode($cash_mode) ?>;
         const updateSecondaryRows = function(totalDisplay, amountDueDisplay) {
             if (totalDisplay !== null && amountDueDisplay !== null) {
-                $("#sale_total_secondary_currency").html(totalDisplay);
-                $("#sale_amount_due_secondary_currency").html(amountDueDisplay);
+                $("#sale_total_secondary_currency").text(totalDisplay);
+                $("#sale_amount_due_secondary_currency").text(amountDueDisplay);
             }
         };
 

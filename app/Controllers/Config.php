@@ -476,14 +476,46 @@ class Config extends Secure_Controller
     {
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
+        $secondary_currency_enabled = $this->request->getPost('secondary_currency_enabled') != null;
+        $secondary_currency_code = trim((string) $this->request->getPost('secondary_currency_code'));
+        $secondary_currency_rate = parse_decimals((string) ($this->request->getPost('secondary_currency_rate') ?? ''));
+        $secondary_currency_decimals = $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT);
+
+        if ($secondary_currency_enabled) {
+            $validation_errors = [];
+
+            if ($secondary_currency_code === '') {
+                $validation_errors[] = 'Secondary currency code is required.';
+            }
+
+            if ($secondary_currency_rate === false || $secondary_currency_rate === '' || (float) $secondary_currency_rate <= 0) {
+                $validation_errors[] = 'Secondary currency rate must be a positive number.';
+            }
+
+            if (
+                !is_numeric($secondary_currency_decimals)
+                || (int) $secondary_currency_decimals < 0
+                || (int) $secondary_currency_decimals > 8
+            ) {
+                $validation_errors[] = 'Secondary currency decimals must be between 0 and 8.';
+            }
+
+            if (!empty($validation_errors)) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => implode(' ', $validation_errors)
+                ]);
+            }
+        }
+
         $batch_save_data = [
             'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
             'currency_code'         => $this->request->getPost('currency_code'),
-            'secondary_currency_enabled'  => $this->request->getPost('secondary_currency_enabled') != null,
+            'secondary_currency_enabled'  => $secondary_currency_enabled,
             'secondary_currency_symbol'   => htmlspecialchars($this->request->getPost('secondary_currency_symbol') ?? ''),
-            'secondary_currency_code'     => $this->request->getPost('secondary_currency_code'),
-            'secondary_currency_rate'     => parse_decimals($this->request->getPost('secondary_currency_rate') ?? ''),
-            'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'secondary_currency_code'     => htmlspecialchars($secondary_currency_code),
+            'secondary_currency_rate'     => $secondary_currency_rate,
+            'secondary_currency_decimals' => $secondary_currency_decimals,
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
             'timezone'              => $this->request->getPost('timezone'),
