@@ -300,6 +300,7 @@ gulp.task('copy-menubar', function() {
 // Run all required tasks
 gulp.task('default',
     gulp.series('clean',
+        'update-licenses',
         'copy-bootswatch',
         'copy-bootswatch5',
         'copy-bootstrap',
