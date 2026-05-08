@@ -126,7 +126,8 @@ class Expense extends Model
                 MAX(expenses.description) AS description,
                 MAX(employees.first_name) AS first_name,
                 MAX(employees.last_name) AS last_name,
-                MAX(expense_categories.category_name) AS category_name
+                MAX(expense_categories.category_name) AS category_name,
+                MAX(expenses.secondary_currency_rate) AS secondary_currency_rate
             ');
         }
 
