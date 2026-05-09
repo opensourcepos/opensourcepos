@@ -1907,6 +1907,10 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
+        $sale_type = array_key_exists($sale_type, $this->get_sale_type_options()) ? $sale_type : 'sales';
+        $location_id = ctype_digit($location_id) ? (string) (int) $location_id : 'all';
+        $discount_type = in_array($discount_type, ['all', (string) PERCENT, (string) FIXED], true) ? $discount_type : 'all';
+
         $inputs = [
             'start_date'    => $start_date,
             'end_date'      => $end_date,
