@@ -32,7 +32,7 @@ $routes->add('reports/inventory_summary', 'Reports::inventory_summary_input');
 $routes->add('reports/inventory_summary/(:any)/(:any)/(:any)', 'Reports::inventory_summary/$1/$2/$3');
 
 $routes->add('reports/detailed_item_sales', 'Reports::date_input_item_sales');
-$routes->add('reports/detailed_item_sales/(:segment)/(:segment)/(:segment)/(:segment)/(:segment)', 'Reports::detailed_item_sales/$1/$2/$3/$4');
+$routes->add('reports/detailed_item_sales/(:segment)/(:segment)/(:segment)/(:segment)/(:segment)', 'Reports::detailed_item_sales/$1/$2/$3/$4/$5');
 $routes->add('reports/detailed_(:any)/(:any)/(:any)/(:any)', 'Reports::Detailed_$1/$2/$3/$4');
 $routes->add('reports/detailed_sales', 'Reports::date_input_sales');
 $routes->add('reports/detailed_receivings', 'Reports::date_input_recv');
