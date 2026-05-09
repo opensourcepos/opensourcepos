@@ -708,6 +708,11 @@ class Reports extends Secure_Controller
         $stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
         $stock_locations['all'] = lang('Reports.all');
         $data['stock_locations'] = array_reverse($stock_locations, true);
+        $data['mode'] = 'sale';
+        $data['sale_type_options'] = $this->get_sale_type_options();
+        $data['selected_sale_type'] = 'sales';
+        $data['discount_type_options'] = ['all' => lang('Reports.all'), '0' => lang('Reports.discount_percent'), '1' => lang('Reports.discount_fixed')];
+        $data['selected_discount_type'] = 'all';
 
         return view('reports/date_input', $data);
     }
@@ -1898,15 +1903,16 @@ class Reports extends Secure_Controller
         return view('reports/tabular_details', $data);
     }
 
-    public function detailed_item_sales(string $start_date, string $end_date, string $sale_type = '0', string $location_id = 'all'): string
+    public function detailed_item_sales(string $start_date, string $end_date, string $sale_type = 'sales', string $location_id = 'all', string $discount_type = 'all'): string
     {
         $this->clearCache();
 
         $inputs = [
-            'start_date'  => $start_date,
-            'end_date'    => $end_date,
-            'sale_type'   => 'sales',
-            'location_id' => $location_id
+            'start_date'    => $start_date,
+            'end_date'      => $end_date,
+            'sale_type'     => $sale_type,
+            'location_id'   => $location_id,
+            'discount_type' => $discount_type
         ];
 
         $this->detailed_item_sales->create($inputs);

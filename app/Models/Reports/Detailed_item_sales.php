@@ -87,14 +87,51 @@ class Detailed_item_sales extends Report
 
     private function applyFilters(array $inputs, object $builder): void
     {
-        $builder->where('sale_status', COMPLETED);
-        $builder->groupStart();
-        $builder->where('sale_type', SALE_TYPE_POS);
-        $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-        $builder->groupEnd();
+        switch ($inputs['sale_type']) {
+            case 'complete':
+                $builder->where('sale_status', COMPLETED);
+                $builder->groupStart();
+                $builder->where('sale_type', SALE_TYPE_POS);
+                $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+                $builder->orWhere('sale_type', SALE_TYPE_RETURN);
+                $builder->groupEnd();
+                break;
+
+            case 'quotes':
+                $builder->where('sale_status', SUSPENDED);
+                $builder->where('sale_type', SALE_TYPE_QUOTE);
+                break;
+
+            case 'work_orders':
+                $builder->where('sale_status', SUSPENDED);
+                $builder->where('sale_type', SALE_TYPE_WORK_ORDER);
+                break;
+
+            case 'canceled':
+                $builder->where('sale_status', CANCELED);
+                break;
+
+            case 'returns':
+                $builder->where('sale_status', COMPLETED);
+                $builder->where('sale_type', SALE_TYPE_RETURN);
+                break;
+
+            case 'sales':
+            default:
+                $builder->where('sale_status', COMPLETED);
+                $builder->groupStart();
+                $builder->where('sale_type', SALE_TYPE_POS);
+                $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+                $builder->groupEnd();
+                break;
+        }
 
         if (($inputs['location_id'] ?? 'all') !== 'all') {
             $builder->where('item_location', $inputs['location_id']);
+        }
+
+        if (($inputs['discount_type'] ?? 'all') !== 'all') {
+            $builder->where('discount_type', $inputs['discount_type']);
         }
     }
 }
