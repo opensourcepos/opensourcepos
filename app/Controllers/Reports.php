@@ -6,6 +6,7 @@ use App\Models\Attribute;
 use App\Models\Customer;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use App\Models\Reports\Detailed_item_sales;
 use App\Models\Reports\Detailed_receivings;
 use App\Models\Reports\Detailed_sales;
 use App\Models\Reports\Inventory_low;
@@ -46,6 +47,7 @@ class Reports extends Secure_Controller
     private Summary_taxes $summary_taxes;
     private Summary_discounts $summary_discounts;
     private Summary_payments $summary_payments;
+    private Detailed_item_sales $detailed_item_sales;
     private Detailed_sales $detailed_sales;
     private Supplier $supplier;
     private Detailed_receivings $detailed_receivings;
@@ -73,6 +75,7 @@ class Reports extends Secure_Controller
         $this->summary_taxes = model(Summary_taxes::class);
         $this->summary_discounts = model(Summary_discounts::class);
         $this->summary_payments = model(Summary_payments::class);
+        $this->detailed_item_sales = model(Detailed_item_sales::class);
         $this->detailed_sales = model(Detailed_sales::class);
         $this->supplier = model(Supplier::class);
         $this->detailed_receivings = model(Detailed_receivings::class);
@@ -694,6 +697,17 @@ class Reports extends Secure_Controller
         $data['stock_locations'] = array_reverse($stock_locations, true);
         $data['mode'] = 'sale';
         $data['sale_type_options'] = $this->get_sale_type_options();
+
+        return view('reports/date_input', $data);
+    }
+
+    public function date_input_item_sales(): string
+    {
+        $this->clearCache();
+
+        $stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
+        $stock_locations['all'] = lang('Reports.all');
+        $data['stock_locations'] = array_reverse($stock_locations, true);
 
         return view('reports/date_input', $data);
     }
@@ -1882,6 +1896,57 @@ class Reports extends Secure_Controller
             'overall_summary_data' => $this->detailed_sales->getSummaryData($inputs)
         ];
         return view('reports/tabular_details', $data);
+    }
+
+    public function detailed_item_sales(string $start_date, string $end_date, string $sale_type = '0', string $location_id = 'all'): string
+    {
+        $this->clearCache();
+
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => 'sales',
+            'location_id' => $location_id
+        ];
+
+        $this->detailed_item_sales->create($inputs);
+
+        $report_data = $this->detailed_item_sales->getData($inputs);
+        $summary = $this->detailed_item_sales->getSummaryData($inputs);
+
+        $tabular_data = [];
+
+        foreach ($report_data as $row) {
+            $tabular_data[] = [
+                'sale_time'     => to_datetime(strtotime($row['sale_time'])),
+                'sale_id'       => $row['sale_id'],
+                'customer_name' => $row['customer_name'],
+                'item_name'     => $row['item_name'],
+                'category'      => $row['category'],
+                'item_number'   => $row['item_number'],
+                'quantity'      => to_quantity_decimals($row['quantity_purchased']),
+                'unit_price'    => to_currency($row['item_unit_price']),
+                'discount'      => ($row['discount_type'] == PERCENT) ? $row['discount'] . '%' : to_currency($row['discount']),
+                'subtotal'      => to_currency($row['subtotal']),
+                'tax'           => to_currency_tax($row['tax']),
+                'total'         => to_currency($row['total']),
+                'cost'          => to_currency($row['cost']),
+                'profit'        => to_currency($row['profit']),
+                'employee_name' => $row['employee_name'],
+                'payment_type'  => $row['payment_type'],
+                'comment'       => $row['comment']
+            ];
+        }
+
+        $data = [
+            'title'        => lang('Reports.detailed_item_sales_report'),
+            'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
+            'headers'      => $this->detailed_item_sales->getDataColumns(),
+            'data'         => $tabular_data,
+            'summary_data' => $summary
+        ];
+
+        return view('reports/tabular', $data);
     }
 
     /**
