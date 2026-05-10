@@ -221,7 +221,6 @@ class Config extends Secure_Controller
      */
     public function getIndex(): string
     {
-        $data['config'] = $this->config;
         $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
         $data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
@@ -232,8 +231,6 @@ class Config extends Secure_Controller
         $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
         $data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
         $data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
-        $data['keyboardShortcutOptions'] = $this->sale_lib->getKeyShortcutsOptions();
-        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
         $data['rounding_options'] = rounding_mode::get_rounding_options();
         $data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
         $data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
@@ -477,27 +474,35 @@ class Config extends Secure_Controller
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
         $secondary_currency_enabled = $this->request->getPost('secondary_currency_enabled') != null;
+        $secondary_currency_auto_enabled = $this->request->getPost('secondary_currency_auto_enabled') != null;
+        $secondary_currency_feed_url = trim((string) $this->request->getPost('secondary_currency_feed_url'));
+        $secondary_currency_refresh_interval_minutes = $this->request->getPost('secondary_currency_refresh_interval_minutes', FILTER_SANITIZE_NUMBER_INT);
+        $secondary_currency_rate = $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $secondary_currency_code = trim((string) $this->request->getPost('secondary_currency_code'));
-        $secondary_currency_rate = parse_decimals((string) ($this->request->getPost('secondary_currency_rate') ?? ''));
-        $secondary_currency_decimals = $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT);
 
         if ($secondary_currency_enabled) {
             $validation_errors = [];
 
             if ($secondary_currency_code === '') {
-                $validation_errors[] = 'Secondary currency code is required.';
+                $validation_errors[] = lang('Config.secondary_currency_base_quote_required');
             }
 
             if ($secondary_currency_rate === false || $secondary_currency_rate === '' || (float) $secondary_currency_rate <= 0) {
-                $validation_errors[] = 'Secondary currency rate must be a positive number.';
+                $validation_errors[] = lang('Config.secondary_currency_rate_required');
             }
 
-            if (
-                !is_numeric($secondary_currency_decimals)
-                || (int) $secondary_currency_decimals < 0
-                || (int) $secondary_currency_decimals > 8
-            ) {
-                $validation_errors[] = 'Secondary currency decimals must be between 0 and 8.';
+            if ($secondary_currency_auto_enabled) {
+                if (
+                    !is_numeric($secondary_currency_refresh_interval_minutes)
+                    || (int) $secondary_currency_refresh_interval_minutes < 1
+                    || (int) $secondary_currency_refresh_interval_minutes > 1440
+                ) {
+                    $validation_errors[] = lang('Config.secondary_currency_refresh_interval_invalid');
+                }
+
+                if ($secondary_currency_feed_url === '') {
+                    $secondary_currency_feed_url = 'https://open.er-api.com/v6/latest/{base}';
+                }
             }
 
             if (!empty($validation_errors)) {
@@ -513,9 +518,16 @@ class Config extends Secure_Controller
             'currency_code'         => $this->request->getPost('currency_code'),
             'secondary_currency_enabled'  => $secondary_currency_enabled,
             'secondary_currency_symbol'   => htmlspecialchars($this->request->getPost('secondary_currency_symbol') ?? ''),
-            'secondary_currency_code'     => htmlspecialchars($secondary_currency_code),
+            'secondary_currency_code'     => $secondary_currency_code,
             'secondary_currency_rate'     => $secondary_currency_rate,
-            'secondary_currency_decimals' => $secondary_currency_decimals,
+            'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'secondary_currency_auto_enabled' => $secondary_currency_auto_enabled,
+            'secondary_currency_refresh_interval_minutes' => is_numeric($secondary_currency_refresh_interval_minutes)
+                ? (int) $secondary_currency_refresh_interval_minutes
+                : 10,
+            'secondary_currency_feed_url' => $secondary_currency_feed_url !== ''
+                ? htmlspecialchars($secondary_currency_feed_url)
+                : 'https://open.er-api.com/v6/latest/{base}',
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
             'timezone'              => $this->request->getPost('timezone'),
@@ -985,44 +997,6 @@ class Config extends Secure_Controller
         $success = $this->appconfig->batch_save($batch_save_data);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
-    }
-
-    /**
-     * Saves keyboard shortcut bindings.
-     *
-     * @return ResponseInterface
-     * @noinspection PhpUnused
-     */
-    public function postSaveShortcuts(): ResponseInterface
-    {
-        $allowedShortcuts = array_keys($this->sale_lib->getKeyShortcutsOptions());
-        $currentShortcuts = $this->sale_lib->getKeyShortcuts();
-        $batchSaveData = [];
-
-        foreach ($currentShortcuts as $name => $shortcut) {
-            $postedValue = trim((string)$this->request->getPost('key_' . $name));
-
-            if (!in_array($postedValue, $allowedShortcuts, true)) {
-                $postedValue = $shortcut['value'];
-            }
-
-            $batchSaveData['key_' . $name] = $postedValue;
-        }
-
-        $duplicateValues = array_filter(array_count_values($batchSaveData), static fn(int $count): bool => $count > 1);
-        if (!empty($duplicateValues)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => lang('Config.shortcuts_duplicate_bindings')
-            ]);
-        }
-
-        $success = $this->appconfig->batch_save($batchSaveData);
-
-        return $this->response->setJSON([
-            'success' => $success,
-            'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')
-        ]);
     }
 
     /**

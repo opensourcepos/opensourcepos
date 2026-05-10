@@ -62,14 +62,27 @@ helper('url');
 ?>
 
 <?php if ($secondaryCurrency['show']): ?>
-    <table align="center" style="font-size: 22px; font-weight: 600; background-color: rgb(221, 221, 221); width: 25%; margin: 0 auto 0.5em; border: dashed 1px;">
+    <table align="center" style="font-size: 16px; font-weight: 600; background-color: rgb(221, 221, 221); width: 25%; margin: 0 auto 0.5em; border: dashed 1px;">
         <tr>
             <td style="text-align: center; padding-right: 5%;"><?= lang(ucfirst($controller_name) . '.total') ?>:</td>
             <td style="text-align: center;"><?= to_currency($total) ?></td>
         </tr>
         <tr>
             <td style="text-align: center; padding-right: 5%;"><?= esc($secondaryTotalLabel ?? secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?>:</td>
-            <td style="text-align: center;"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></td>
+            <td style="text-align: center;"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: center; padding-right: 5%;"><?= esc(lang('Sales.rate')) ?>:</td>
+            <td style="text-align: center;">
+                <span id="secondary_currency_rate_display"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></span>
+                <a href="javascript:void(0);"
+                    id="secondary_currency_refresh_button"
+                    title="<?= esc(lang('Sales.secondary_currency_update_live_rate_tooltip')) ?>"
+                    aria-label="<?= esc(lang('Sales.secondary_currency_update_live_rate_tooltip')) ?>"
+                    style="margin-left: 0.5em; color: inherit; text-decoration: none;">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </a>
+            </td>
         </tr>
     </table>
 <?php endif; ?>
@@ -204,7 +217,7 @@ helper('url');
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
-                    echo esc($item['secondaryPriceDisplay'] ?? secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true));
+                                    echo esc($item['secondaryPriceDisplay'] ?? to_currency($item['price']));
                                     echo form_hidden('price', to_currency_no_money($item['price']));
                                 }
                                 ?>
@@ -401,7 +414,7 @@ helper('url');
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -419,7 +432,7 @@ helper('url');
             <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
                     <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.amount_due'), $secondaryCurrency)) ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? secondary_currency_render_amount((float) $amount_due, $secondaryCurrency)) ?></span></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? to_currency($amount_due)) ?></span></th>
                 </tr>
             <?php } ?>
         </table>
@@ -427,7 +440,6 @@ helper('url');
             <div id="payment_details">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
-                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -468,7 +480,6 @@ helper('url');
                     ?>
                 <?php } else { ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
-                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -590,20 +601,6 @@ helper('url');
 </div>
 
 <script type="text/javascript">
-    const keyboardShortcuts = <?= json_encode($keyboardShortcuts ?? []) ?>;
-    const paymentsCoverTotal = <?= json_encode((bool) $payments_cover_total) ?>;
-    const shortcutCodes = {
-        items: keyboardShortcuts?.items?.code ?? null,
-        customers: keyboardShortcuts?.customers?.code ?? null,
-        suspend: keyboardShortcuts?.suspend?.code ?? null,
-        suspended: keyboardShortcuts?.suspended?.code ?? null,
-        amount: keyboardShortcuts?.amount?.code ?? null,
-        payment: keyboardShortcuts?.payment?.code ?? null,
-        complete: keyboardShortcuts?.complete?.code ?? null,
-        finish: keyboardShortcuts?.finish?.code ?? null,
-        help: keyboardShortcuts?.help?.code ?? null,
-        cancel: keyboardShortcuts?.cancel?.code ?? null
-    };
     const secondaryAmounts = <?= json_encode($secondaryAmounts ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
 
     $(document).ready(function() {
@@ -791,7 +788,6 @@ helper('url');
         });
 
         $('#add_payment_button').click(function() {
-            $('#add_payment_form').find('input[name="complete_after_payment"]').val('0');
             $('#add_payment_form').submit();
         });
 
@@ -850,14 +846,34 @@ helper('url');
             $('#cart_' + $(this).attr('data-line')).append($(input));
             $('#cart_' + $(this).attr('data-line')).submit();
         });
+
+        $('#secondary_currency_refresh_button').click(function(event) {
+            event.preventDefault();
+            const $button = $(this);
+            $button.css('pointer-events', 'none');
+
+            $.post("<?= esc(site_url("$controller_name/refreshSecondaryCurrency")) ?>", {}, function(response) {
+                $.notify({
+                    message: response.message
+                }, {
+                    type: response.success ? 'success' : 'danger'
+                });
+
+                if (response.success) {
+                    window.location.reload();
+                }
+            }, 'json').always(function() {
+                $button.css('pointer-events', '');
+            });
+        });
     });
 
     function check_payment_type() {
         var cash_mode = <?= json_encode($cash_mode) ?>;
         const updateSecondaryRows = function(totalDisplay, amountDueDisplay) {
             if (totalDisplay !== null && amountDueDisplay !== null) {
-                $("#sale_total_secondary_currency").text(totalDisplay);
-                $("#sale_amount_due_secondary_currency").text(amountDueDisplay);
+                $("#sale_total_secondary_currency").html(totalDisplay);
+                $("#sale_amount_due_secondary_currency").html(amountDueDisplay);
             }
         };
 
@@ -886,57 +902,6 @@ helper('url');
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
-        }
-    }
-
-    // Add Keyboard Shortcuts/Hotkeys to Sale Register
-    document.body.onkeyup = function(event) {
-        if ($(event.target).closest('.modal').length || $('.modal.in').length) {
-            return;
-        }
-        if (event.altKey) {
-            switch (event.keyCode) {
-                case shortcutCodes.items:
-                    $("#item").focus();
-                    $("#item").select();
-                    break;
-                case shortcutCodes.customers:
-                    $("#customer").focus();
-                    $("#customer").select();
-                    break;
-                case shortcutCodes.suspend:
-                    $("#suspend_sale_button").click();
-                    break;
-                case shortcutCodes.suspended:
-                    $("#show_suspended_sales_button").click();
-                    break;
-                case shortcutCodes.amount:
-                    $("#amount_tendered").focus();
-                    $("#amount_tendered").select();
-                    break;
-                case shortcutCodes.payment:
-                    $("#add_payment_button").click();
-                    break;
-                case shortcutCodes.complete:
-                    if (paymentsCoverTotal && $("#finish_sale_button").length) {
-                        $("#finish_sale_button").click();
-                    } else {
-                        $("#add_payment_button").click();
-                    }
-                    break;
-                case shortcutCodes.finish:
-                    $("#finish_invoice_quote_button").click();
-                    break;
-                case shortcutCodes.help:
-                    $("#show_keyboard_help").click();
-                    break;
-            }
-        }
-
-        switch (event.keyCode) {
-            case shortcutCodes.cancel:
-                $("#cancel_sale_button").click();
-                break;
         }
     }
 </script>

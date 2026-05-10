@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Email_lib;
+use App\Libraries\SecondaryCurrencyFeedLib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
 use App\Libraries\Token_lib;
+use App\Models\Appconfig;
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Dinner_table;
@@ -1335,7 +1337,6 @@ class Sales extends Secure_Controller
 
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
-        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
 
         // TODO: the if/else set below should be converted to a switch
         if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
@@ -1724,8 +1725,40 @@ class Sales extends Secure_Controller
      */
     public function getSalesKeyboardHelp(): string
     {
-        return view('sales/help', [
-            'keyboardShortcuts' => $this->sale_lib->getKeyShortcuts()
+        return view('sales/help');
+    }
+
+    /**
+     * Refresh the secondary currency rate from the configured feed.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postRefreshSecondaryCurrency(): ResponseInterface
+    {
+        $service = new SecondaryCurrencyFeedLib();
+        $result = $service->refreshRate($this->config, true);
+        $syncedAt = date('Y-m-d H:i:s');
+
+        if (empty($result['success'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $result['message'] ?? lang('Config.secondary_currency_refresh_failed')
+            ]);
+        }
+
+        $appconfig = model(Appconfig::class);
+        $appconfig->batch_save([
+            'secondary_currency_rate' => $result['rate'],
+            'secondary_currency_last_synced_at' => $syncedAt,
+            'secondary_currency_last_error' => ''
+        ]);
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Config.secondary_currency_refresh_successful'),
+            'rate' => $result['rate'],
+            'synced_at' => $syncedAt
         ]);
     }
 
