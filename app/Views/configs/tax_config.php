@@ -51,6 +51,10 @@
                 </div>
                 <div class="col-xs-1 input-group">
                     <?= form_input([
+                        'type'  => 'number',
+                        'step'  => 'any',
+                        'min'   => '0',
+                        'max'   => '100',
                         'name'  => 'default_tax_1_rate',
                         'id'    => 'default_tax_1_rate',
                         'class' => 'form-control input-sm',
@@ -72,6 +76,10 @@
                 </div>
                 <div class="col-xs-1 input-group">
                     <?= form_input([
+                        'type'  => 'number',
+                        'step'  => 'any',
+                        'min'   => '0',
+                        'max'   => '100',
                         'name'  => 'default_tax_2_rate',
                         'id'    => 'default_tax_2_rate',
                         'class' => 'form-control input-sm',
