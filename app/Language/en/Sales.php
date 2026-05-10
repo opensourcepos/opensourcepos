@@ -151,6 +151,7 @@ return [
     "payments_total"                   => "Payments Total",
     "loyalty_reward_points"            => "Loyalty Reward Points",
     "price"                            => "Price",
+    "price_with_currency"              => "Price (%s)",
     "print_after_sale"                 => "Print after Sale",
     "quantity"                         => "Quantity",
     "quantity_less_than_reorder_level" => "Warning: Desired Quantity is below Reorder Level for that Item.",

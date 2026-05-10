@@ -11,6 +11,8 @@
  * @var float $amount_change
  */
 
+$priceWithCurrencyLabel = lang('Sales.price_with_currency');
+
 ?>
 
 <?= view('partial/customer_display_header') ?>
@@ -25,9 +27,9 @@
                                     <tr>
                                         <th style="width: <?= (int) $cartItemWidth ?>%;"><?= lang('Sales.item_name') ?></th>
                                         <?php if ($cartHasCustomerDisplay) { ?>
-                                            <th style="width: <?= (int) $cartPriceWidth ?>%;"><?= 'Price (' . esc($customerDisplayCurrencyLabel) . ')' ?></th>
+                                            <th style="width: <?= (int) $cartPriceWidth ?>%;"><?= sprintf($priceWithCurrencyLabel, esc($customerDisplayCurrencyLabel)) ?></th>
                                         <?php } ?>
-                                        <th style="width: <?= (int) $cartOriginalWidth ?>%;"><?= 'Price (' . esc($originalCurrencyLabel) . ')' ?></th>
+                                        <th style="width: <?= (int) $cartOriginalWidth ?>%;"><?= sprintf($priceWithCurrencyLabel, esc($originalCurrencyLabel)) ?></th>
                                         <th style="width: <?= (int) $cartQuantityWidth ?>%;"><?= lang('Sales.quantity') ?></th>
                                         <th style="width: <?= (int) $cartDiscountWidth ?>%;"><?= lang('Sales.discount') ?></th>
                                         <th style="width: <?= (int) $cartTotalWidth ?>%;"><?= lang('Sales.total') ?></th>
@@ -167,7 +169,7 @@
     </div>
 
 <script>
-        const customerDisplayId = new URLSearchParams(window.location.search).get('displayId') || sessionStorage.getItem('customerDisplayId') || localStorage.getItem('customerDisplayId') || '';
+        const customerDisplayId = new URLSearchParams(window.location.search).get('displayId') || '';
         const customerDisplayStorageSuffix = customerDisplayId !== '' ? '_' + customerDisplayId : '';
         const customerDisplayStorageKeys = {
             open: 'customerDisplayOpen' + customerDisplayStorageSuffix,

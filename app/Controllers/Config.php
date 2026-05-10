@@ -499,12 +499,18 @@ class Config extends Secure_Controller
     {
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
+        $secondaryCurrencyCode = strtoupper(trim((string) $this->request->getPost('secondary_currency_code')));
+
+        if (!preg_match('/^[A-Z]{3}$/', $secondaryCurrencyCode)) {
+            $secondaryCurrencyCode = '';
+        }
+
         $batch_save_data = [
             'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
             'currency_code'         => $this->request->getPost('currency_code'),
             'secondary_currency_enabled'  => $this->request->getPost('secondary_currency_enabled') != null,
             'secondary_currency_symbol'   => htmlspecialchars($this->request->getPost('secondary_currency_symbol') ?? ''),
-            'secondary_currency_code'     => $this->request->getPost('secondary_currency_code'),
+            'secondary_currency_code'     => $secondaryCurrencyCode,
             'secondary_currency_rate'     => $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
             'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
             'language_code'         => $exploded[0],
