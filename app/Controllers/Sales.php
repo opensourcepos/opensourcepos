@@ -908,6 +908,14 @@ class Sales extends Secure_Controller
                 return $this->_reload($data);
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
+
+                // Validate receipt template to prevent path traversal
+                $receipt_template = $this->config['receipt_template'] ?? '';
+                if (!Sale_lib::isValidReceiptTemplate($receipt_template)) {
+                    $receipt_template = 'receipt_default';
+                }
+                $data['receipt_template_view'] = $receipt_template;
+
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);
             }
@@ -1162,6 +1170,13 @@ class Sales extends Secure_Controller
             $invoice_type = 'invoice';
         }
         $data['invoice_view'] = $invoice_type;
+
+        // Validate receipt template to prevent path traversal
+        $receipt_template = $this->config['receipt_template'] ?? '';
+        if (!Sale_lib::isValidReceiptTemplate($receipt_template)) {
+            $receipt_template = 'receipt_default';
+        }
+        $data['receipt_template_view'] = $receipt_template;
 
         return $data;
     }
