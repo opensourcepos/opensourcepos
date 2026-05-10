@@ -985,6 +985,44 @@ class Config extends Secure_Controller
     }
 
     /**
+     * Saves keyboard shortcut bindings.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveShortcuts(): ResponseInterface
+    {
+        $allowedShortcuts = array_keys($this->sale_lib->getKeyShortcutsOptions());
+        $currentShortcuts = $this->sale_lib->getKeyShortcuts();
+        $batchSaveData = [];
+
+        foreach ($currentShortcuts as $name => $shortcut) {
+            $postedValue = trim((string) $this->request->getPost('key_' . $name));
+
+            if (!in_array($postedValue, $allowedShortcuts, true)) {
+                $postedValue = $shortcut['value'];
+            }
+
+            $batchSaveData['key_' . $name] = $postedValue;
+        }
+
+        $duplicateValues = array_filter(array_count_values($batchSaveData), static fn(int $count): bool => $count > 1);
+        if (!empty($duplicateValues)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Config.shortcuts_duplicate_bindings')
+            ]);
+        }
+
+        $success = $this->appconfig->batch_save($batchSaveData);
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')
+        ]);
+    }
+
+    /**
      * Saves invoice configuration. Used in app/Views/configs/invoice_config.php.
      *
      * @throws ReflectionException
