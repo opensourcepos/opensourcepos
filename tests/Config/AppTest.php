@@ -18,6 +18,7 @@ class AppTest extends CIUnitTestCase
         // Clean up environment
         putenv('CI_ENVIRONMENT');
         putenv('app.allowedHostnames');
+        unset($_SERVER['CI_ENVIRONMENT']);
         unset($_SERVER['HTTP_HOST']);
     }
 
@@ -67,6 +68,7 @@ class AppTest extends CIUnitTestCase
     {
         // Set development environment
         putenv('CI_ENVIRONMENT=development');
+        $_SERVER['CI_ENVIRONMENT'] = 'development';
 
         $app = new class extends App {
             public array $allowedHostnames = [];
@@ -94,6 +96,7 @@ class AppTest extends CIUnitTestCase
 
         // Set production environment
         putenv('CI_ENVIRONMENT=production');
+        $_SERVER['CI_ENVIRONMENT'] = 'production';
 
         $app = new class extends App {
             public array $allowedHostnames = [];
@@ -216,6 +219,7 @@ class AppTest extends CIUnitTestCase
 
         // Set development environment
         putenv('CI_ENVIRONMENT=development');
+        $_SERVER['CI_ENVIRONMENT'] = 'development';
 
         $_SERVER['HTTP_HOST'] = 'example.com';
         $_SERVER['SCRIPT_NAME'] = '/index.php';
@@ -270,6 +274,7 @@ class AppTest extends CIUnitTestCase
 
         // All-whitespace value should be treated as not configured
         putenv('CI_ENVIRONMENT=development');
+        $_SERVER['CI_ENVIRONMENT'] = 'development';
         putenv('app.allowedHostnames= , , ');
         $_SERVER['HTTP_HOST'] = 'example.com';
 
