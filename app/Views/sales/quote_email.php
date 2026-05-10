@@ -138,7 +138,7 @@
                     <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
                     <td id="total" class="total-value"><?= to_currency($total) ?></td>
                 </tr>
-                <?php if ($secondaryCurrency['show']) { ?>
+                <?php if (!empty($secondaryCurrency['show'])) { ?>
                     <tr>
                         <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
                         <td colspan="2" class="total-line"><?= esc(secondary_currency_display_label(lang('Sales.total'), $secondaryCurrency)) ?></td>
@@ -147,7 +147,7 @@
                     <tr>
                         <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
                         <td colspan="2" class="total-line"><?= esc(lang('Config.secondary_currency_rate')) ?></td>
-            <td class="total-value" id="currency_rate"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></td>
+            <td class="total-value" id="currency_rate"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display((float) ($secondaryCurrency['rate'] ?? 0))) ?></td>
                     </tr>
                 <?php } ?>
         </table>

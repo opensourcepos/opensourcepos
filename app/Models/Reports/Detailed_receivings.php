@@ -43,7 +43,7 @@ class Detailed_receivings extends Report
         ];
 
         if ($secondaryCurrency['show']) {
-            $summaryColumns[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+            $summaryColumns[] = ['secondary_currency_rate' => lang('Reports.rate'), 'sorter' => 'number_sorter'];
             $summaryColumns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
         }
 
