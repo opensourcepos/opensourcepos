@@ -72,6 +72,15 @@ class SecondaryCurrencyFeedLib
         }
 
         $url = $this->buildFeedUrl($config);
+        if (!$this->isSafeFeedUrl($url)) {
+            log_message('warning', 'Secondary currency feed URL rejected: ' . $url);
+
+            return [
+                'success' => false,
+                'message' => lang('Config.secondary_currency_feed_request_failed', ['Invalid feed URL'])
+            ];
+        }
+
         $curlOptions = [
             'timeout' => 15,
             'http_errors' => false,
@@ -126,6 +135,75 @@ class SecondaryCurrencyFeedLib
             'message' => lang('Config.secondary_currency_refresh_successful'),
             'feed_url' => $url,
         ];
+    }
+
+    private function isSafeFeedUrl(string $url): bool
+    {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+
+        $parsedUrl = parse_url($url);
+        if (!is_array($parsedUrl)) {
+            return false;
+        }
+
+        $scheme = strtolower((string) ($parsedUrl['scheme'] ?? ''));
+        $host = strtolower((string) ($parsedUrl['host'] ?? ''));
+
+        if (!in_array($scheme, ['http', 'https'], true) || $host === '') {
+            return false;
+        }
+
+        if (filter_var($host, FILTER_VALIDATE_IP) !== false) {
+            return $this->isPublicIpAddress($host);
+        }
+
+        if ($host === 'localhost' || str_ends_with($host, '.localhost')) {
+            return false;
+        }
+
+        $resolvedAddresses = [];
+
+        if (function_exists('dns_get_record')) {
+            foreach ([DNS_A, DNS_AAAA] as $recordType) {
+                $records = dns_get_record($host, $recordType);
+                if (!is_array($records)) {
+                    continue;
+                }
+
+                foreach ($records as $record) {
+                    $resolvedAddress = (string) ($record['ip'] ?? $record['ipv6'] ?? '');
+                    if ($resolvedAddress !== '') {
+                        $resolvedAddresses[] = $resolvedAddress;
+                    }
+                }
+            }
+        }
+
+        if ($resolvedAddresses === []) {
+            $resolved = gethostbynamel($host);
+            if (is_array($resolved)) {
+                $resolvedAddresses = $resolved;
+            }
+        }
+
+        if ($resolvedAddresses === []) {
+            return false;
+        }
+
+        foreach (array_unique($resolvedAddresses) as $resolvedAddress) {
+            if (!$this->isPublicIpAddress($resolvedAddress)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function isPublicIpAddress(string $address): bool
+    {
+        return filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false;
     }
 
     public function extractRate(array $payload, string $secondaryCurrency): ?float
