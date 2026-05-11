@@ -31,6 +31,7 @@ return [
     'description' => "คำอธิบาย",
     'detailed_receivings_report' => "รายงานรายละเอียกการรับของ",
     'detailed_receivings_report_input' => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     'detailed_reports' => "รายละเอียดรายงาน",
     'detailed_requisition_report' => "รายงานรายละเอียดการเบิกของ",
     'detailed_sales_report' => "รายงายงานขาย",

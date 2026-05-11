@@ -31,6 +31,7 @@ return [
     "description"                             => "Omschrijving",
     "detailed_receivings_report"              => "Gedetailleerd Raport Orders",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "Gedetailleerde Rapporten",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Gedetailleerd Rapport Verkoop",

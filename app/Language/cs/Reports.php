@@ -31,6 +31,7 @@ return [
     "description"                             => "Popis",
     "detailed_receivings_report"              => "Podrobný přehled příjmů",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "Podrobné sestavy",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Podrobný přehled transakcí",
