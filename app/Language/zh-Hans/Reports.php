@@ -31,6 +31,7 @@ return [
     "description"                             => "描述",
     "detailed_receivings_report"              => "詳細的進貨報告",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "詳細報表",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "詳細銷售報表",

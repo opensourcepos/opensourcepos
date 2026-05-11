@@ -31,6 +31,7 @@ return [
     "description"                             => "الوصف",
     "detailed_receivings_report"              => "تقرير مفصل لاستلام البضاعة",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "التقارير التفصيلية",
     "detailed_requisition_report"             => "تقرير مفصل لطلبات الشراء",
     "detailed_sales_report"                   => "تقرير مفصل للمبيعات",
