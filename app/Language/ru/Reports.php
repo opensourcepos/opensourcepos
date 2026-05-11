@@ -31,7 +31,7 @@ return [
     "description"                             => "Описание",
     "detailed_receivings_report"              => "Детальный отчет о закупках",
     "detailed_receivings_report_input"        => "",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     "detailed_reports"                        => "Подробные отчеты",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Подробный отчет о транзакциях",

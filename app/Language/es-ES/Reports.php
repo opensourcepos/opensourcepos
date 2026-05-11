@@ -31,7 +31,7 @@ return [
     "description"                             => "Descripción",
     "detailed_receivings_report"              => "Reporte Detallado de Entradas",
     "detailed_receivings_report_input"        => "Entrada detallada del reporte de recepción",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     "detailed_reports"                        => "Reportes Detallados",
     "detailed_requisition_report"             => "Reporte Detallado de Requisiciones",
     "detailed_sales_report"                   => "Reporte de Ventas Detallado",
