@@ -31,6 +31,7 @@ return [
     "description"                             => "תיאור",
     "detailed_receivings_report"              => "דוח מפורט של תקבולים",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "דוחות מפורטים",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "דוח עסקאות מפורט",
