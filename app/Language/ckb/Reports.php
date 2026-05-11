@@ -31,7 +31,7 @@ return [
     'description' => "دەربارە",
     'detailed_receivings_report' => "ڕاپۆرتی وردی وەرگرتنەکان",
     'detailed_receivings_report_input' => "",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     'detailed_reports' => "ڕاپۆرتە وردەکان",
     'detailed_requisition_report' => "",
     'detailed_sales_report' => "ڕاپۆرتی وردی مامەڵەکان",

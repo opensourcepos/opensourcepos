@@ -31,7 +31,7 @@ return [
     "description"                             => "Опис",
     "detailed_receivings_report"              => "Детальний звіт про надходження",
     "detailed_receivings_report_input"        => "",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     "detailed_reports"                        => "Детальні звіти",
     "detailed_requisition_report"             => "Детальний звіт про реквізити",
     "detailed_sales_report"                   => "Докладний звіт про продажі",
