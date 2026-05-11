@@ -12,14 +12,16 @@ $request = Services::request();
 ?>
 
 <!doctype html>
-<html lang="<?= $request->getLocale() ?>">
+<html lang="<?= current_language_code() ?>">
 
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
     <title><?= esc($config['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
+    <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="<?= 'resources/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>">
+    <?php $theme = (empty($config['theme']) ? 'flatly' : esc($config['theme'])); ?>
+    <link rel="stylesheet" href="resources/bootswatch/<?= "$theme" ?>/bootstrap.min.css">
 
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:debug:css -->

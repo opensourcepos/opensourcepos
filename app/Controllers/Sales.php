@@ -1253,6 +1253,7 @@ class Sales extends Secure_Controller
 
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
+        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
 
         // TODO: the if/else set below should be converted to a switch
         if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
@@ -1641,7 +1642,9 @@ class Sales extends Secure_Controller
      */
     public function getSalesKeyboardHelp(): string
     {
-        return view('sales/help');
+        return view('sales/help', [
+            'keyboardShortcuts' => $this->sale_lib->getKeyShortcuts()
+        ]);
     }
 
     /**

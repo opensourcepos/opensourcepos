@@ -23,6 +23,19 @@ use ReflectionException;
  */
 class Sale_lib
 {
+    private const KEY_SHORTCUT_DEFAULTS = [
+        'cancel'    => ['value' => '27 | ESC', 'code' => 27, 'label' => 'ESC'],
+        'items'     => ['value' => '49 | ALT + 1', 'code' => 49, 'label' => 'ALT + 1'],
+        'customers' => ['value' => '50 | ALT + 2', 'code' => 50, 'label' => 'ALT + 2'],
+        'suspend'   => ['value' => '51 | ALT + 3', 'code' => 51, 'label' => 'ALT + 3'],
+        'suspended' => ['value' => '52 | ALT + 4', 'code' => 52, 'label' => 'ALT + 4'],
+        'amount'    => ['value' => '53 | ALT + 5', 'code' => 53, 'label' => 'ALT + 5'],
+        'payment'   => ['value' => '54 | ALT + 6', 'code' => 54, 'label' => 'ALT + 6'],
+        'complete'  => ['value' => '55 | ALT + 7', 'code' => 55, 'label' => 'ALT + 7'],
+        'finish'    => ['value' => '56 | ALT + 8', 'code' => 56, 'label' => 'ALT + 8'],
+        'help'      => ['value' => '57 | ALT + 9', 'code' => 57, 'label' => 'ALT + 9'],
+    ];
+
     private Attribute $attribute;
     private Customer $customer;
     private Dinner_table $dinner_table;
@@ -103,6 +116,44 @@ class Sale_lib
         $invoice_types['custom_invoice'] = lang('Sales.invoice_type_custom_invoice');
         $invoice_types['custom_tax_invoice'] = lang('Sales.invoice_type_custom_tax_invoice');
         return $invoice_types;
+    }
+
+    /**
+     * Returns the available keyboard shortcut choices for the configuration screen.
+     *
+     * @return array<string, string>
+     */
+    public function getKeyShortcutsOptions(): array
+    {
+        $keyShortcuts = [];
+
+        foreach (self::KEY_SHORTCUT_DEFAULTS as $shortcut) {
+            $keyShortcuts[$shortcut['value']] = $shortcut['label'];
+        }
+
+        return $keyShortcuts;
+    }
+
+    /**
+     * Returns parsed shortcut bindings from app_config with sensible defaults.
+     *
+     * @return array<string, array{value:string,code:int,label:string}>
+     */
+    public function getKeyShortcuts(): array
+    {
+        $keyboardShortcuts = [];
+
+        foreach (self::KEY_SHORTCUT_DEFAULTS as $name => $default) {
+            $value = $this->config["key_$name"] ?? $default['value'];
+            $parts = array_map('trim', explode('|', $value, 2));
+            $keyboardShortcuts[$name] = [
+                'value' => $value,
+                'code'  => (int)($parts[0] ?? $default['code']),
+                'label' => $parts[1] ?? $default['label']
+            ];
+        }
+
+        return $keyboardShortcuts;
     }
 
     public static function isValidInvoiceType(string $invoice_type): bool
