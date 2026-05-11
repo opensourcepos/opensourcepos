@@ -31,6 +31,7 @@ return [
     "description"                             => "detallı hesabatlar",
     "detailed_receivings_report"              => "Ətraflı satınalma hesabatı",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "etraflı məlumat",
     "detailed_requisition_report"             => "endirimler",
     "detailed_sales_report"                   => "Ətraflı satış hesabatı",

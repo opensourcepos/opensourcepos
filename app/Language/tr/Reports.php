@@ -31,6 +31,7 @@ return [
     "description"                             => "Tanım",
     "detailed_receivings_report"              => "Detaylı Alım Raporu",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "Detaylı Raporlar",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Detaylı Satış Raporu",

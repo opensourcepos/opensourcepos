@@ -31,6 +31,7 @@ return [
     "description"                             => "شرح",
     "detailed_receivings_report"              => "گزارش دریافتی دقیق",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "گزارش های تفصیلی",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "گزارش معاملات دقیق",

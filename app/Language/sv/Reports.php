@@ -31,6 +31,7 @@ return [
     "description"                             => "Beskrivning",
     "detailed_receivings_report"              => "Detaljerad mottagningsrapport",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "Detaljerade rapporter",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Detaljerad rapport för transaktioner",
