@@ -31,7 +31,7 @@ return [
     "description"                             => "Descrizione",
     "detailed_receivings_report"              => "Resoconto d'incasso dettagliato",
     "detailed_receivings_report_input"        => "",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     "detailed_reports"                        => "Incasso dettagliato",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Resoconto dettagliato Transazioni",

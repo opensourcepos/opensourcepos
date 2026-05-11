@@ -31,7 +31,7 @@ return [
     "description"                             => "Maelezo",
     "detailed_receivings_report"              => "Ripoti ya Mapokezi ya Kina",
     "detailed_receivings_report_input"        => "",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     "detailed_reports"                        => "Ripoti za Kina",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Ripoti ya Muamala wa Kina",
