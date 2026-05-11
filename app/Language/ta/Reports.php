@@ -31,6 +31,7 @@ return [
     "description"                             => "Description",
     "detailed_receivings_report"              => "விரிவான பெறுதல் அறிக்கை",
     "detailed_receivings_report_input"        => "",
+    "detailed_item_sales_report"              => "Detailed Item Sales Report",
     "detailed_reports"                        => "விரிவான அறிக்கைகள்",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "விரிவான பரிவர்த்தனை அறிக்கை",
