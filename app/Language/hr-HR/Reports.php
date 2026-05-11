@@ -31,7 +31,7 @@ return [
     "description"                             => "Opis",
     "detailed_receivings_report"              => "Izvještaj primki",
     "detailed_receivings_report_input"        => "",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     "detailed_reports"                        => "Izvještaji",
     "detailed_requisition_report"             => "Izvještaj međuskladišnice",
     "detailed_sales_report"                   => "Izvještaj o prodaji",

@@ -31,7 +31,7 @@ return [
     "description"                             => "Leirás",
     "detailed_receivings_report"              => "Részletes átvételi riportok",
     "detailed_receivings_report_input"        => "",
-    "detailed_item_sales_report"              => "Detailed Item Sales Report",
+    "detailed_item_sales_report"              => "",
     "detailed_reports"                        => "Részletes riportok",
     "detailed_requisition_report"             => "",
     "detailed_sales_report"                   => "Részletes értékesítési riport",
