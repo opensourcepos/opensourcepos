@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite \
-    && sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+    && sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
+    && echo '<Directory /app/public>\n\tAllowOverride All\n</Directory>' >> /etc/apache2/apache2.conf
 
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 
@@ -17,7 +18,6 @@ COPY --chown=www-data:www-data . /app
 RUN chmod 770 /app/writable/uploads /app/writable/logs /app/writable/cache \
     && mkdir -p /app/public/uploads/item_pics \
     && chown www-data:www-data /app/public/uploads/item_pics \
-    && chmod 640 /app/.env \
     && ln -s /app/*[^public] /var/www \
     && rm -rf /var/www/html \
     && ln -nsf /app/public /var/www/html
