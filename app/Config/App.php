@@ -286,12 +286,12 @@ class App extends BaseConfig
 
         // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
         // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
-        $envAllowedHostnames = getenv('app.allowedHostnames');
-        if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
-            $this->allowedHostnames = array_values(array_filter(
-                array_map('trim', explode(',', $envAllowedHostnames)),
-                static fn (string $hostname): bool => $hostname !== ''
-            ));
+        // Check multiple sources to support Docker environment variables:
+        // ALLOWED_HOSTNAMES takes priority (Docker convention),
+        // app.allowedHostnames is the .env/CodeIgniter fallback.
+        $envAllowedHostnames = $this->getEnvAllowedHostnames();
+        if (! empty($envAllowedHostnames)) {
+            $this->allowedHostnames = $envAllowedHostnames;
         }
 
         $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
@@ -300,6 +300,37 @@ class App extends BaseConfig
         $this->baseURL = $this->https_on ? 'https' : 'http';
         $this->baseURL .= '://' . $host . '/';
         $this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+    }
+
+    /**
+     * Get allowedHostnames from environment variables.
+     * 
+     * Checks ALLOWED_HOSTNAMES (Docker convention) first,
+     * then falls back to app.allowedHostnames (.env/CodeIgniter convention).
+     *
+     * @return array<string> Array of allowed hostnames, empty if not configured
+     */
+    private function getEnvAllowedHostnames(): array
+    {
+        $sources = [
+            $_ENV['ALLOWED_HOSTNAMES'] ?? null,
+            $_SERVER['ALLOWED_HOSTNAMES'] ?? null,
+            getenv('ALLOWED_HOSTNAMES') ?: null,
+            $_ENV['app.allowedHostnames'] ?? null,
+            $_SERVER['app.allowedHostnames'] ?? null,
+            getenv('app.allowedHostnames') ?: null,
+        ];
+
+        foreach ($sources as $value) {
+            if ($value !== null && $value !== false && trim($value) !== '') {
+                return array_values(array_filter(
+                    array_map('trim', explode(',', $value)),
+                    static fn(string $hostname): bool => $hostname !== ''
+                ));
+            }
+        }
+
+        return [];
     }
 
     /**

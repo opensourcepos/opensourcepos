@@ -281,4 +281,51 @@ class AppTest extends CIUnitTestCase
         putenv('app.allowedHostnames');
         putenv('CI_ENVIRONMENT');
     }
+
+    public function testAllowedHostnamesFromDockerServer(): void
+    {
+        $_SERVER['ALLOWED_HOSTNAMES'] = 'docker.local,docker.example.com';
+        $_SERVER['HTTP_HOST'] = 'docker.local';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals(['docker.local', 'docker.example.com'], $app->allowedHostnames);
+        $this->assertStringContainsString('docker.local', $app->baseURL);
+
+        unset($_SERVER['ALLOWED_HOSTNAMES']);
+    }
+
+    public function testAllowedHostnamesFromDockerEnv(): void
+    {
+        $_ENV['ALLOWED_HOSTNAMES'] = 'env.local,env.example.com';
+        $_SERVER['HTTP_HOST'] = 'env.local';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals(['env.local', 'env.example.com'], $app->allowedHostnames);
+        $this->assertStringContainsString('env.local', $app->baseURL);
+
+        unset($_ENV['ALLOWED_HOSTNAMES']);
+    }
+
+    public function testAllowedHostnamesDockerOverridesEmptyEnv(): void
+    {
+        putenv('app.allowedHostnames=');
+        $_SERVER['ALLOWED_HOSTNAMES'] = 'docker.override.com';
+        $_SERVER['HTTP_HOST'] = 'docker.override.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals(['docker.override.com'], $app->allowedHostnames);
+        $this->assertStringContainsString('docker.override.com', $app->baseURL);
+
+        putenv('app.allowedHostnames');
+        unset($_SERVER['ALLOWED_HOSTNAMES']);
+    }
 }

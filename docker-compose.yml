@@ -22,3 +22,4 @@ services:
             - MYSQL_PASSWORD=pointofsale
             - MYSQL_DB_NAME=ospos
             - MYSQL_HOST_NAME=mysql
+            - ALLOWED_HOSTNAMES=

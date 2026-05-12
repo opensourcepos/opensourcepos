@@ -52,3 +52,4 @@ services:
             - MYSQL_HOST_NAME=mysql
             - PHP_TIMEZONE=UTC
             - XDEBUG_CONFIG=client_host=172.17.0.1
+            - ALLOWED_HOSTNAMES=localhost
