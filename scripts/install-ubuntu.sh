@@ -140,9 +140,9 @@ if [ ! -f ospos.zip ] || [ ! -s ospos.zip ]; then
     exit 1
 fi
 
-ASSET_NAME=$(basename "$ASSET_URL" .zip)
 unzip -q ospos.zip -d ospos-temp
-mv ospos-temp/$ASSET_NAME ospos
+mkdir -p ${OSPOS_DIR}
+cp -r ospos-temp/* ${OSPOS_DIR}/
 rm -rf ospos-temp ospos.zip
 
 echo -e "${COLOR_GREEN}Downloaded OSPOS ${OSPOS_VERSION}${COLOR_RESET}"
