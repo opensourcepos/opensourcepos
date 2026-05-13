@@ -43,7 +43,6 @@ jobs:
       - name: Run install script
         env:
           DB_PASS: ${{ matrix.db_pass }}
-          OSPOS_VERSION: '3.4.0'
         run: |
           echo "Running install script with scenario: ${{ matrix.scenario }}"
           sudo -E bash scripts/install-ubuntu.sh 2>&1 | tee install-output.log
