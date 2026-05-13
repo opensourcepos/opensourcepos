@@ -1,0 +1,125 @@
+name: Install Script Test
+
+on:
+  push:
+    paths:
+      - 'scripts/install-ubuntu.sh'
+      - '.github/workflows/install-script-test.yml'
+  pull_request:
+    paths:
+      - 'scripts/install-ubuntu.sh'
+      - '.github/workflows/install-script-test.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  install-test:
+    name: Test Install Script (${{ matrix.scenario }})
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - scenario: default
+            db_pass: ''
+          - scenario: custom-password
+            db_pass: 'TestPass123!'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make install script executable
+        run: chmod +x scripts/install-ubuntu.sh
+
+      - name: Run install script
+        env:
+          DB_PASS: ${{ matrix.db_pass }}
+          OSPOS_VERSION: '3.4.0'
+        run: |
+          echo "Running install script with scenario: ${{ matrix.scenario }}"
+          sudo -E bash scripts/install-ubuntu.sh 2>&1 | tee install-output.log
+          echo "Install completed successfully"
+
+      - name: Wait for services to stabilize
+        run: sleep 10
+
+      - name: Verify Apache is running
+        run: |
+          echo "Checking Apache status..."
+          sudo systemctl status apache2 --no-pager
+          sudo systemctl is-active apache2
+
+      - name: Verify MariaDB is running
+        run: |
+          echo "Checking MariaDB status..."
+          sudo systemctl status mariadb --no-pager
+          sudo systemctl is-active mariadb
+
+      - name: Verify Apache HTTP response
+        run: |
+          echo "Testing HTTP response on port 80..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
+          echo "HTTP Response Code: $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "302" ]; then
+            echo "Apache is responding correctly"
+          else
+            echo "Unexpected HTTP code: $HTTP_CODE"
+            exit 1
+          fi
+
+      - name: Verify OSPOS login page
+        run: |
+          echo "Checking OSPOS login page..."
+          curl -s http://localhost/ | grep -qi "login\|password\|username" && echo "Login page content found" || {
+            echo "Login page verification failed"
+            curl -s http://localhost/ | head -50
+            exit 1
+          }
+
+      - name: Verify database exists
+        env:
+          DB_PASS: ${{ matrix.db_pass != '' && matrix.db_pass || '' }}
+        run: |
+          echo "Verifying database..."
+          
+          # Extract the generated password from install output if using default
+          if [ -z "${{ matrix.db_pass }}" ]; then
+            GENERATED_PASS=$(grep -oP 'Database Password: \K[^\s]+' install-output.log || true)
+            if [ -n "$GENERATED_PASS" ]; then
+              DB_PASS="$GENERATED_PASS"
+            fi
+          fi
+          
+          # Check database exists
+          sudo mysql -u root -e "SHOW DATABASES LIKE 'ospos';" | grep -q ospos && echo "Database 'ospos' exists" || {
+            echo "Database 'ospos' not found"
+            sudo mysql -u root -e "SHOW DATABASES;"
+            exit 1
+          }
+          
+          # Check tables exist
+          TABLE_COUNT=$(sudo mysql -u root ospos -e "SHOW TABLES;" | wc -l)
+          echo "Found $TABLE_COUNT tables in database"
+          if [ "$TABLE_COUNT" -gt 5 ]; then
+            echo "Database tables verified"
+          else
+            echo "Not enough tables found"
+            exit 1
+          fi
+
+      - name: Upload install log
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: install-log-${{ matrix.scenario }}
+          path: install-output.log
+          retention-days: 7
