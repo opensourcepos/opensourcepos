@@ -154,8 +154,23 @@ class Items extends Secure_Controller
     {
         helper('file');
 
-        $pic_filename = rawurldecode($pic_filename);
-        $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
+        // Security: Sanitize filename to prevent path traversal
+        // Use basename() to strip directory components and prevent '../' attacks
+        $pic_filename = basename(rawurldecode($pic_filename));
+        $file_extension = strtolower(pathinfo($pic_filename, PATHINFO_EXTENSION));
+
+        // Validate file extension against system-configured allowed image types
+        // Handle both legacy pipe-separated and current comma-separated formats
+        // Fallback to types that GD library can process for thumbnail generation
+        $allowed_types = $this->config['image_allowed_types'] ?? 'jpg,jpeg,gif,png,webp,bmp,tif,tiff';
+        $allowed_extensions = strpos($allowed_types, '|') !== false
+            ? explode('|', $allowed_types)
+            : explode(',', $allowed_types);
+
+        if (!in_array($file_extension, $allowed_extensions, true)) {
+            return $this->response->setStatusCode(400)->setBody('Invalid file type');
+        }
+
         $images = glob("./uploads/item_pics/$pic_filename");
         $base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
 
