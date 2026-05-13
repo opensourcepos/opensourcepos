@@ -65,6 +65,14 @@ echo -e "${COLOR_GREEN}[1/9] Updating system packages...${COLOR_RESET}"
 apt-get update -qq
 
 echo -e "${COLOR_GREEN}[2/9] Installing Apache, PHP, and dependencies...${COLOR_RESET}"
+# Add PHP repository for newer PHP versions if not available in default repos
+if ! apt-cache policy php${PHP_VERSION} 2>/dev/null | grep -q "Candidate:"; then
+    echo -e "${COLOR_YELLOW}PHP ${PHP_VERSION} not in default repos, adding ondrej/php PPA...${COLOR_RESET}"
+    apt-get install -y -qq software-properties-common
+    add-apt-repository -y ppa:ondrej/php
+    apt-get update -qq
+fi
+
 apt-get install -y -qq \
     apache2 \
     mariadb-server \
