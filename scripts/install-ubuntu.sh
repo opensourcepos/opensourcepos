@@ -117,7 +117,7 @@ mkdir -p /var/www
 cd /var/www
 
 if [ -z "$OSPOS_VERSION" ]; then
-    OSPOS_VERSION=$(curl -sS https://api.github.com/repos/opensourcepos/opensourcepos/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+    OSPOS_VERSION=$(curl -sS https://api.github.com/repos/opensourcepos/opensourcepos/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     if [ -z "$OSPOS_VERSION" ]; then
         echo -e "${COLOR_RED}Failed to get latest release version${COLOR_RESET}"
         exit 1
@@ -125,16 +125,24 @@ if [ -z "$OSPOS_VERSION" ]; then
 fi
 
 echo -e "${COLOR_BLUE}Downloading OSPOS version ${OSPOS_VERSION}...${COLOR_RESET}"
-curl -sSL "https://github.com/opensourcepos/opensourcepos/releases/download/v${OSPOS_VERSION}/opensourcepos-${OSPOS_VERSION}.zip" -o ospos.zip
+ASSET_URL=$(curl -sS "https://api.github.com/repos/opensourcepos/opensourcepos/releases/tags/${OSPOS_VERSION}" | grep '"browser_download_url"' | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+
+if [ -z "$ASSET_URL" ]; then
+    echo -e "${COLOR_RED}Failed to find release asset for ${OSPOS_VERSION}${COLOR_RESET}"
+    exit 1
+fi
+
+curl -sSL "$ASSET_URL" -o ospos.zip
 
 if [ ! -f ospos.zip ] || [ ! -s ospos.zip ]; then
-    echo -e "${COLOR_RED}Failed to download OSPOS release v${OSPOS_VERSION}${COLOR_RESET}"
+    echo -e "${COLOR_RED}Failed to download OSPOS release ${OSPOS_VERSION}${COLOR_RESET}"
     rm -f ospos.zip
     exit 1
 fi
 
+ASSET_NAME=$(basename "$ASSET_URL" .zip)
 unzip -q ospos.zip -d ospos-temp
-mv ospos-temp/opensourcepos-${OSPOS_VERSION} ospos
+mv ospos-temp/$ASSET_NAME ospos
 rm -rf ospos-temp ospos.zip
 
 echo -e "${COLOR_GREEN}Downloaded OSPOS ${OSPOS_VERSION}${COLOR_RESET}"
