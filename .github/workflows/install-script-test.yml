@@ -70,6 +70,13 @@ jobs:
           echo "HTTP Response Code: $HTTP_CODE"
           if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "302" ]; then
             echo "Apache is responding correctly"
+          elif [ "$HTTP_CODE" = "500" ]; then
+            echo "HTTP 500 - Application error. Checking logs..."
+            sudo tail -50 /var/log/apache2/ospos_error.log 2>/dev/null || true
+            sudo tail -50 /var/log/apache2/error.log 2>/dev/null || true
+            echo "---"
+            curl -s http://localhost/ | head -100
+            exit 1
           else
             echo "Unexpected HTTP code: $HTTP_CODE"
             exit 1
