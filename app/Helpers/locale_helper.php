@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Employee;
+use CodeIgniter\Events\Events;
 use Config\OSPOS;
 
 /**
@@ -270,6 +271,12 @@ function get_payment_options(): array
     // If India (list of country codes include India) then include Unified Payment Interface
     if (stripos($config['country_codes'], 'IN') !== false) {
         $payments[lang('Sales.upi')] = lang('Sales.upi');
+    }
+
+    // Allow payment provider plugins to add additional payment options
+    $eventPayments = Events::trigger('payment_options', $payments);
+    if (is_array($eventPayments)) {
+        return $eventPayments;
     }
 
     return $payments;
