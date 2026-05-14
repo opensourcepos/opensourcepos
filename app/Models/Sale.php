@@ -277,6 +277,14 @@ class Sale extends Model
             $builder->like('payment_type', lang('Sales.debit'));
         }
 
+        if ($filters['only_bank_transfer']) {
+            $builder->like('payment_type', lang('Sales.bank_transfer'));
+        }
+
+        if ($filters['only_wallet']) {
+            $builder->like('payment_type', lang('Sales.wallet'));
+        }
+
         $builder->groupBy('payment_type');
 
         $payments = $builder->get()->getResultArray();
@@ -1508,6 +1516,14 @@ class Sale extends Model
 
         if ($filters['only_check']) {
             $builder->like('payments.payment_type', lang('Sales.check'));
+        }
+
+        if ($filters['only_bank_transfer']) {
+            $builder->like('payments.payment_type', lang('Sales.bank_transfer'));
+        }
+
+        if ($filters['only_wallet']) {
+            $builder->like('payments.payment_type', lang('Sales.wallet'));
         }
     }
 }

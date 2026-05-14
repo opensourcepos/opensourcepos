@@ -1251,8 +1251,10 @@ class Reports extends Secure_Controller
             'due'      => lang('Sales.due'),
             'check'    => lang('Sales.check'),
             'credit'   => lang('Sales.credit'),
-            'debit'    => lang('Sales.debit'),
-            'invoices' => lang('Sales.invoice')
+            'debit'         => lang('Sales.debit'),
+            'bank_transfer' => lang('Sales.bank_transfer'),
+            'wallet'        => lang('Sales.wallet'),
+            'invoices'      => lang('Sales.invoice')
         ];
     }
 
