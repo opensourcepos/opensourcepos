@@ -66,6 +66,11 @@ jobs:
       - name: Verify Apache HTTP response
         run: |
           echo "Testing HTTP response on port 80..."
+          echo "=== Checking .env configuration ==="
+          sudo cat /var/www/ospos/.env 2>/dev/null | grep -E "database\.default\.(hostname|database|username|password)|CI_ENVIRONMENT|encryption\.key" | head -10
+          echo "=== Checking PHP error log ==="
+          sudo cat /var/www/ospos/writable/logs/*.log 2>/dev/null | tail -20 || echo "No PHP logs found"
+          echo "=== Testing HTTP ==="
           HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
           echo "HTTP Response Code: $HTTP_CODE"
           if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "302" ]; then
@@ -74,11 +79,6 @@ jobs:
             echo "HTTP 500 - Application error. Checking logs..."
             echo "=== Apache error log ==="
             sudo tail -50 /var/log/apache2/error.log 2>/dev/null || true
-            echo "=== OSPOS writable/logs ==="
-            sudo ls -la /var/www/ospos/writable/logs/ 2>/dev/null || true
-            sudo cat /var/www/ospos/writable/logs/*.log 2>/dev/null | tail -50 || true
-            echo "=== .env file ==="
-            sudo cat /var/www/ospos/.env 2>/dev/null | grep -v "^#" | head -20 || true
             echo "=== Response body ==="
             curl -s http://localhost/ | head -100
             exit 1
