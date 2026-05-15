@@ -39,8 +39,26 @@ permissions:
   deployments: write
 
 jobs:
+  validate-inputs:
+    name: Validate deployment inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate environment
+        env:
+          TARGET_ENV: ${{ inputs.environment }}
+        run: |
+          set -euo pipefail
+          case "$TARGET_ENV" in
+            production|staging) ;;
+            *)
+              echo "::error::Invalid environment '$TARGET_ENV'. Expected 'production' or 'staging'."
+              exit 1
+              ;;
+          esac
+
   deploy:
     name: Deploy to ${{ inputs.environment }}
+    needs: validate-inputs
     runs-on: ubuntu-latest
     
     environment:
@@ -180,8 +198,8 @@ jobs:
           STATE="${{ steps.webhook.outputs.status }}"
           
           if [ "$STATE" = "success" ]; then
-            DESCRIPTION=$(jq -n --arg tag "$IMAGE_TAG" --arg env "$TARGET_ENV" \
-              'Deployed image \($tag) to \($env)')
+            DESCRIPTION=$(jq -nr --arg tag "$IMAGE_TAG" --arg env "$TARGET_ENV" \
+              '"Deployed image \($tag) to \($env)"')
             
             gh api "repos/${GITHUB_REPOSITORY}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses" \
               -X POST \

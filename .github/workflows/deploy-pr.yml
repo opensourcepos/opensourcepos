@@ -17,7 +17,9 @@ jobs:
   deploy-staging:
     name: Deploy to staging
     runs-on: ubuntu-latest
-    if: github.event.review.state == 'approved'
+    if: >
+      github.event.review.state == 'approved' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     
     environment:
       name: staging
@@ -165,8 +167,8 @@ jobs:
           STATE="${{ steps.webhook.outputs.status }}"
           
           if [ "$STATE" = "success" ]; then
-            DESCRIPTION=$(jq -n --arg tag "$IMAGE_TAG" --arg pr "$PR_NUMBER" \
-              'Deployed PR #\($pr) (\($tag)) to staging')
+            DESCRIPTION=$(jq -nr --arg tag "$IMAGE_TAG" --arg pr "$PR_NUMBER" \
+              '"Deployed PR #\($pr) (\($tag)) to staging"')
             
             gh api "repos/${GITHUB_REPOSITORY}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses" \
               -X POST \
@@ -190,19 +192,11 @@ jobs:
           STATUS: ${{ steps.webhook.outputs.status }}
         run: |
           if [ "$STATUS" = "success" ]; then
-            BODY=$(jq -n --arg tag "$IMAGE_TAG" --arg sha "$REF_SHA" --arg url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
-              '✅ **Staging deployment completed**
-              
-              🔗 **URL**: https://dev.opensourcepos.org
-              📦 **Image Tag**: `\($tag)`
-              🔨 **Commit**: \($sha)
-              
-              View logs: \($url)')
+            BODY=$(jq -nr --arg tag "$IMAGE_TAG" --arg sha "$REF_SHA" --arg url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+              '"✅ **Staging deployment completed**\n\n🔗 **URL**: https://dev.opensourcepos.org\n📦 **Image Tag**: `\($tag)`\n🔨 **Commit**: \($sha)\n\nView logs: \($url)"')
           else
-            BODY=$(jq -n --arg url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
-              '❌ **Staging deployment failed**
-              
-              Check the [workflow logs](\($url)) for details.')
+            BODY=$(jq -nr --arg url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+              '"❌ **Staging deployment failed**\n\nCheck the [workflow logs](\($url)) for details."')
           fi
           
           gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
