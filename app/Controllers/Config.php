@@ -924,7 +924,9 @@ class Config extends Secure_Controller
     public function postSaveReceipt(): ResponseInterface
     {
         $batch_save_data = [
-            'receipt_template'              => $this->request->getPost('receipt_template'),
+            'receipt_template'              => Sale_lib::isValidReceiptTemplate($this->request->getPost('receipt_template'))
+                ? $this->request->getPost('receipt_template')
+                : 'receipt_default',
             'receipt_font_size'             => $this->request->getPost('receipt_font_size', FILTER_SANITIZE_NUMBER_INT),
             'print_delay_autoreturn'        => $this->request->getPost('print_delay_autoreturn', FILTER_SANITIZE_NUMBER_INT),
             'email_receipt_check_behaviour' => $this->request->getPost('email_receipt_check_behaviour'),
