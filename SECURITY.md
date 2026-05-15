@@ -7,7 +7,7 @@
   - [Reporting a Vulnerability](#reporting-a-vulnerability)
   - [Disclosure Process](#disclosure-process)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!-- END doctoc generated TOC please keep comment here to allow update -->
 
 # Security Policy
 
@@ -78,13 +78,34 @@ You will receive a response within 48 hours. Confirmed vulnerabilities will be p
 | 6. Advisory published | Day 14 | We publish the advisory with credit |
 | 7. Public disclosure | Day 14+ | Full disclosure after patch release |
 
-### What to Expect
+### CVE Process
 
-- **Acknowledgment**: We'll confirm receipt within 48 hours
-- **Validation**: We'll verify the vulnerability within 72 hours
-- **CVSS Assessment**: We'll provide a severity rating using CVSS 3.1
-- **Credit**: We'll credit you in the published advisory (unless you prefer anonymity)
-- **CVE**: For confirmed vulnerabilities, we'll request a CVE identifier through GitHub
+**We request CVE identifiers through GitHub's security advisory system.** This is the preferred and easiest method:
+
+1. After we confirm and fix the vulnerability, we'll request a CVE through GitHub
+2. GitHub coordinates with MITRE on our behalf
+3. The CVE is automatically linked to the advisory
+4. You'll be credited as the reporter in the published advisory
+
+**Already have a CVE?** If you've already obtained a CVE from another source (e.g., VulDB, CVE.MITRE.ORG), please include it in your report or advisory. We'll update our advisory to reference the existing CVE.
+
+### No Bug Bounty Program
+
+**Important:** Open Source Point of Sale does not offer a bug bounty program.
+
+- All security research and vulnerability triage is done on a **voluntary basis** in our free time
+- We do not offer monetary rewards for vulnerability reports
+- We do credit reporters in published advisories (unless anonymity is requested)
+- We greatly appreciate the security research community's efforts to help improve project security
+
+### Security Best Practices for Researchers
+
+- **Do not** access, modify, or delete data that doesn't belong to you
+- **Do not** perform denial of service attacks
+- **Do not** publicly disclose vulnerabilities before we've had time to fix them
+- **Do** provide sufficient information to reproduce the vulnerability
+- **Do** allow us reasonable time to fix before public disclosure
+- **Do** report through official channels (GitHub advisories or email)
 
 ### Vulnerability Template
 
@@ -127,14 +148,8 @@ When creating a draft advisory, please include:
 [Your GitHub username or preferred name]
 ```
 
-### Security Best Practices for Researchers
+---
 
-- **Do not** access, modify, or delete data that doesn't belong to you
-- **Do not** perform denial of service attacks
-- **Do** provide sufficient information to reproduce the vulnerability
-- **Do** allow us reasonable time to fix before public disclosure
-- **Do** report through official channels (GitHub advisories or email)
+**Thank you to all security researchers who have contributed to making Open Source Point of Sale more secure.** Your voluntary efforts help protect thousands of users worldwide and contribute to a safer, more trustworthy free and open-source software ecosystem. We deeply appreciate your responsible disclosure and the time you invest in improving our project.
 
-## Draft Advisory Status
-
-We currently have [check GitHub for count](https://github.com/opensourcepos/opensourcepos/security/advisories) draft advisories under review. Each will be processed according to the disclosure timeline above.
+If you've reported a vulnerability and would like to discuss CVE coordination or have questions about the process, please reach out to us at [jeroen@steganos.dev](mailto:jeroen@steganos.dev).
