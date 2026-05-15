@@ -162,6 +162,9 @@ if [ -f ".env.example" ]; then
     cp .env.example .env
 fi
 
+echo -e "${COLOR_BLUE}Checking for .env file in $(pwd)...${COLOR_RESET}"
+ls -la .env 2>/dev/null || echo "Warning: .env not found"
+
 if [ -f ".env" ]; then
     echo -e "${COLOR_BLUE}Configuring .env file...${COLOR_RESET}"
     sed -i "s/database\.default\.hostname = 'localhost'/database.default.hostname = '${DB_HOST}'/" .env
@@ -170,7 +173,6 @@ if [ -f ".env" ]; then
     sed -i "s/database\.default\.password = 'pointofsale'/database.default.password = '${DB_PASS}'/" .env
     sed -i "s/CI_ENVIRONMENT = development/CI_ENVIRONMENT = production/" .env
     
-    # Generate encryption key if empty
     if grep -q "encryption\.key = ''" .env; then
         ENCRYPTION_KEY=$(openssl rand -base64 32)
         sed -i "s/encryption\.key = ''/encryption.key = '${ENCRYPTION_KEY}'/" .env
@@ -179,6 +181,8 @@ if [ -f ".env" ]; then
     
     echo -e "${COLOR_BLUE}Verifying .env configuration...${COLOR_RESET}"
     grep -E "database\.default\.(hostname|database|username|password)|encryption\.key|CI_ENVIRONMENT" .env | head -10
+else
+    echo -e "${COLOR_RED}ERROR: .env file not found!${COLOR_RESET}"
 fi
 
 echo -e "${COLOR_GREEN}[8/9] Importing database schema...${COLOR_RESET}"
