@@ -168,6 +168,12 @@ if [ -f ".env" ]; then
     sed -i "s/database\.default\.username = 'admin'/database.default.username = '${DB_USER}'/" .env
     sed -i "s/database\.default\.password = 'pointofsale'/database.default.password = '${DB_PASS}'/" .env
     sed -i "s/CI_ENVIRONMENT = development/CI_ENVIRONMENT = production/" .env
+    
+    # Generate encryption key if empty
+    if grep -q "encryption\.key = ''" .env; then
+        ENCRYPTION_KEY=$(openssl rand -base64 32)
+        sed -i "s/encryption\.key = ''/encryption.key = '${ENCRYPTION_KEY}'/" .env
+    fi
 fi
 
 echo -e "${COLOR_GREEN}[8/9] Importing database schema...${COLOR_RESET}"
