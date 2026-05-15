@@ -167,15 +167,15 @@ ls -la .env 2>/dev/null || echo "Warning: .env not found"
 
 if [ -f ".env" ]; then
     echo -e "${COLOR_BLUE}Configuring .env file...${COLOR_RESET}"
-    sed -i "s/database\.default\.hostname = 'localhost'/database.default.hostname = '${DB_HOST}'/" .env
-    sed -i "s/database\.default\.database = 'ospos'/database.default.database = '${DB_NAME}'/" .env
-    sed -i "s/database\.default\.username = 'admin'/database.default.username = '${DB_USER}'/" .env
-    sed -i "s/database\.default\.password = 'pointofsale'/database.default.password = '${DB_PASS}'/" .env
-    sed -i "s/CI_ENVIRONMENT = development/CI_ENVIRONMENT = production/" .env
+    sed -i "s|database\.default\.hostname = 'localhost'|database.default.hostname = '${DB_HOST}'|" .env
+    sed -i "s|database\.default\.database = 'ospos'|database.default.database = '${DB_NAME}'|" .env
+    sed -i "s|database\.default\.username = 'admin'|database.default.username = '${DB_USER}'|" .env
+    sed -i "s|database\.default\.password = 'pointofsale'|database.default.password = '${DB_PASS}'|" .env
+    sed -i "s|CI_ENVIRONMENT = development|CI_ENVIRONMENT = production|" .env
     
     if grep -q "encryption\.key = ''" .env; then
         ENCRYPTION_KEY=$(openssl rand -base64 32)
-        sed -i "s/encryption\.key = ''/encryption.key = '${ENCRYPTION_KEY}'/" .env
+        sed -i "s|encryption\.key = ''|encryption.key = '${ENCRYPTION_KEY}'|" .env
         echo -e "${COLOR_BLUE}Generated encryption key${COLOR_RESET}"
     fi
     
