@@ -142,7 +142,7 @@ fi
 
 unzip -q ospos.zip -d ospos-temp
 mkdir -p ${OSPOS_DIR}
-cp -r ospos-temp/* ${OSPOS_DIR}/
+cp -r ospos-temp/. ${OSPOS_DIR}/
 rm -rf ospos-temp ospos.zip
 
 echo -e "${COLOR_GREEN}Downloaded OSPOS ${OSPOS_VERSION}${COLOR_RESET}"
