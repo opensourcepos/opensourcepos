@@ -66,21 +66,15 @@ jobs:
       - name: Verify Apache HTTP response
         run: |
           echo "Testing HTTP response on port 80..."
-          echo "=== Checking .env configuration ==="
-          sudo cat /var/www/ospos/.env 2>/dev/null | grep -E "database\.default\.(hostname|database|username|password)|CI_ENVIRONMENT|encryption\.key" | head -10
-          echo "=== Checking PHP error log ==="
-          sudo cat /var/www/ospos/writable/logs/*.log 2>/dev/null | tail -20 || echo "No PHP logs found"
-          echo "=== Testing HTTP ==="
           HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
           echo "HTTP Response Code: $HTTP_CODE"
           if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "302" ]; then
             echo "Apache is responding correctly"
           elif [ "$HTTP_CODE" = "500" ]; then
-            echo "HTTP 500 - Application error. Checking logs..."
-            echo "=== Apache error log ==="
-            sudo tail -50 /var/log/apache2/error.log 2>/dev/null || true
-            echo "=== Response body ==="
-            curl -s http://localhost/ | head -100
+            echo "HTTP 500 - Application error. Checking .env configuration..."
+            sudo cat /var/www/ospos/.env 2>/dev/null | grep -E "database\.default\.(hostname|database|username|password)|encryption\.key|CI_ENVIRONMENT" | head -10
+            sudo cat /var/www/ospos/writable/logs/*.log 2>/dev/null | tail -20 || true
+            curl -s http://localhost/ | head -50
             exit 1
           else
             echo "Unexpected HTTP code: $HTTP_CODE"
