@@ -22,25 +22,7 @@ We release patches for security vulnerabilities.
 
 ## Security Advisories
 
-The following security vulnerabilities have been published:
-
-### High Severity
-
-| CVE | Vulnerability | CVSS | Published | Fixed In | Credit |
-|-----|--------------|------|-----------|----------|--------|
-| [CVE-2026-41306](https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-2w4j-mm2p-g28q) | Blind SQL Injection in Tax Controllers | 7.4 | 2026-04-05 | 3.4.3 | @jiva |
-| [CVE-2026-41307](https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-w2px-qm8j-jj26) | OS Command Injection via Sendmail Path | 9.8 | 2026-04-04 | 3.4.3 | @jiva |
-| [CVE-2025-68434](https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-wjm4-hfwg-5w5r) | CSRF leading to Admin Creation | 8.8 | 2025-12-17 | 3.4.2 | @Nixon-H, @jekkos |
-| [CVE-2025-68147](https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-xgr7-7pvw-fpmh) | Stored XSS in Return Policy | 8.1 | 2025-12-17 | 3.4.2 | @Nixon-H, @jekkos |
-| [CVE-2025-66924](https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-gv8j-f6gq-g59m) | Stored XSS in Item Kits | 7.2 | 2026-03-04 | 3.4.2 | @hungnqdz, @omkaryepre |
-
-### Medium Severity
-
-| CVE | Vulnerability | CVSS | Published | Fixed In | Credit |
-|-----|--------------|------|-----------|----------|--------|
-| [CVE-2025-68658](https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-32r8-8r9r-9chw) | Stored XSS in Company Name | 4.3 | 2026-01-13 | 3.4.2 | @hungnqdz |
-
-For a complete list including draft advisories, see our [GitHub Security Advisories page](https://github.com/opensourcepos/opensourcepos/security/advisories).
+For a complete list of published and draft security advisories with CVE details, see our [GitHub Security Advisories page](https://github.com/opensourcepos/opensourcepos/security/advisories).
 
 ## Reporting a Vulnerability
 
