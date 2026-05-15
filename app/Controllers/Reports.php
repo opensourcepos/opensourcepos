@@ -1246,11 +1246,11 @@ class Reports extends Secure_Controller
     public function get_payment_type(): array
     {
         return [
-            'all'      => lang('Common.none_selected_text'),
-            'cash'     => lang('Sales.cash'),
-            'due'      => lang('Sales.due'),
-            'check'    => lang('Sales.check'),
-            'credit'   => lang('Sales.credit'),
+            'all'           => lang('Common.none_selected_text'),
+            'cash'          => lang('Sales.cash'),
+            'due'           => lang('Sales.due'),
+            'check'         => lang('Sales.check'),
+            'credit'        => lang('Sales.credit'),
             'debit'         => lang('Sales.debit'),
             'bank_transfer' => lang('Sales.bank_transfer'),
             'wallet'        => lang('Sales.wallet'),

@@ -92,10 +92,10 @@ class Sales extends Secure_Controller
                 'only_due'          => lang('Sales.due_filter'),
                 'only_check'        => lang('Sales.check_filter'),
                 'only_creditcard'   => lang('Sales.credit_filter'),
-                'only_debit'         => lang('Sales.debit'),
-                'only_bank_transfer' => lang('Sales.bank_transfer'),
-                'only_wallet'        => lang('Sales.wallet'),
-                'only_invoices'      => lang('Sales.invoice_filter'),
+                'only_debit'        => lang('Sales.debit'),
+                'only_bank_transfer'=> lang('Sales.bank_transfer'),
+                'only_wallet'       => lang('Sales.wallet'),
+                'only_invoices'     => lang('Sales.invoice_filter'),
                 'selected_customer' => lang('Sales.selected_customer')
             ];
 
