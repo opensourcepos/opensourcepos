@@ -160,6 +160,9 @@ fi
 echo -e "${COLOR_GREEN}[7/9] Configuring OSPOS...${COLOR_RESET}"
 if [ -f ".env.example" ]; then
     cp .env.example .env
+fi
+
+if [ -f ".env" ]; then
     sed -i "s/database\.default\.hostname = localhost/database.default.hostname = ${DB_HOST}/" .env
     sed -i "s/database\.default\.database = ospos/database.default.database = ${DB_NAME}/" .env
     sed -i "s/database\.default\.username = admin/database.default.username = ${DB_USER}/" .env
