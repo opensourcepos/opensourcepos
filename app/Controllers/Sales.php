@@ -93,6 +93,8 @@ class Sales extends Secure_Controller
                 'only_check'        => lang('Sales.check_filter'),
                 'only_creditcard'   => lang('Sales.credit_filter'),
                 'only_debit'        => lang('Sales.debit'),
+                'only_bank_transfer'=> lang('Sales.bank_transfer'),
+                'only_wallet'       => lang('Sales.wallet'),
                 'only_invoices'     => lang('Sales.invoice_filter'),
                 'selected_customer' => lang('Sales.selected_customer')
             ];
@@ -156,6 +158,8 @@ class Sales extends Secure_Controller
             'selected_customer' => false,
             'only_creditcard'   => false,
             'only_debit'        => false,
+            'only_bank_transfer'=> false,
+            'only_wallet'       => false,
             'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
             'is_valid_receipt'  => $this->sale->is_valid_receipt($search)
         ];
