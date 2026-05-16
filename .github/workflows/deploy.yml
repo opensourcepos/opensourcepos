@@ -7,31 +7,19 @@ on:
         description: 'Docker image tag to deploy (e.g., v3.4.0, latest)'
         required: true
         default: 'latest'
-      environment:
-        description: 'Target environment'
-        required: true
-        type: choice
-        options:
-          - production
-          - staging
-        default: 'production'
   workflow_call:
     inputs:
       image_tag:
         description: 'Docker image tag to deploy'
         type: string
         default: 'latest'
-      environment:
-        description: 'Target environment'
-        type: string
-        default: 'staging'
       sha:
         description: 'Git commit SHA to deploy'
         required: true
         type: string
 
 concurrency:
-  group: deploy-${{ inputs.environment }}
+  group: deploy-staging
   cancel-in-progress: false
 
 permissions:
@@ -39,31 +27,13 @@ permissions:
   deployments: write
 
 jobs:
-  validate-inputs:
-    name: Validate deployment inputs
-    runs-on: ubuntu-latest
-    steps:
-      - name: Validate environment
-        env:
-          TARGET_ENV: ${{ inputs.environment }}
-        run: |
-          set -euo pipefail
-          case "$TARGET_ENV" in
-            production|staging) ;;
-            *)
-              echo "::error::Invalid environment '$TARGET_ENV'. Expected 'production' or 'staging'."
-              exit 1
-              ;;
-          esac
-
   deploy:
-    name: Deploy to ${{ inputs.environment }}
-    needs: validate-inputs
+    name: Deploy to staging
     runs-on: ubuntu-latest
     
     environment:
-      name: ${{ inputs.environment }}
-      url: ${{ vars.DEPLOY_URL || (inputs.environment == 'production' && 'https://demo.opensourcepos.org' || 'https://dev.opensourcepos.org') }}
+      name: staging
+      url: ${{ vars.DEPLOY_URL || 'https://dev.opensourcepos.org' }}
       deployment: false
     
     steps:
@@ -72,7 +42,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           IMAGE_TAG: ${{ inputs.image_tag }}
-          TARGET_ENV: ${{ inputs.environment }}
           REF_SHA: ${{ inputs.sha || github.sha }}
         run: |
           set -euo pipefail
@@ -80,7 +49,7 @@ jobs:
           DEPLOYMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/deployments" \
             -X POST \
             -f ref="${REF_SHA}" \
-            -f environment="${TARGET_ENV}" \
+            -f environment="staging" \
             -f description="Deploy image ${IMAGE_TAG}" \
             -F auto_merge=false \
             -F required_contexts[] \
@@ -113,7 +82,6 @@ jobs:
           DEPLOY_WEBHOOK_SECRET: ${{ secrets.DEPLOY_WEBHOOK_SECRET }}
           DOCKER_REPO_NAME: ${{ secrets.DOCKER_REPO_NAME }}
           IMAGE_TAG: ${{ inputs.image_tag }}
-          TARGET_ENV: ${{ inputs.environment }}
           REF_SHA: ${{ inputs.sha || github.sha }}
           DEPLOYMENT_ID: ${{ steps.deployment.outputs.deployment_id }}
         run: |
@@ -141,7 +109,6 @@ jobs:
             --arg namespace "$REPO_NAMESPACE" \
             --arg repo_url "https://hub.docker.com/r/${REPO_NAME}/" \
             --arg deployment_id "$DEPLOYMENT_ID" \
-            --arg environment "$TARGET_ENV" \
             --arg repository "$GITHUB_REPOSITORY" \
             --arg sha "$REF_SHA" \
             --arg run_id "$GITHUB_RUN_ID" \
@@ -150,12 +117,12 @@ jobs:
               callback_url: $callback_url,
               push_data: {pushed_at: $pushed_at, pusher: $pusher, tag: $tag},
               repository: {repo_name: $repo_name, name: $name, namespace: $namespace, repo_url: $repo_url, status: "Active"},
-              github_deployment: {id: $deployment_id, environment: $environment, repository: $repository, sha: $sha, run_id: $run_id, actor: $actor}
+              github_deployment: {id: $deployment_id, environment: "staging", repository: $repository, sha: $sha, run_id: $run_id, actor: $actor}
             }')
           
           echo "Sending webhook..."
           echo "Image: ${IMAGE_TAG}"
-          echo "Environment: ${TARGET_ENV}"
+          echo "Environment: staging"
           
           HEADERS=(-H "Content-Type: application/json")
           
@@ -191,15 +158,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           IMAGE_TAG: ${{ inputs.image_tag }}
-          TARGET_ENV: ${{ inputs.environment }}
         run: |
           set -euo pipefail
           
           STATE="${{ steps.webhook.outputs.status }}"
           
           if [ "$STATE" = "success" ]; then
-            DESCRIPTION=$(jq -nr --arg tag "$IMAGE_TAG" --arg env "$TARGET_ENV" \
-              '"Deployed image \($tag) to \($env)"')
+            DESCRIPTION=$(jq -nr --arg tag "$IMAGE_TAG" \
+              '"Deployed image \($tag) to staging"')
             
             gh api "repos/${GITHUB_REPOSITORY}/deployments/${{ steps.deployment.outputs.deployment_id }}/statuses" \
               -X POST \
