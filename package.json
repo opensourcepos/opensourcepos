@@ -1,34 +1,33 @@
 {
     "name": "@opensourcepos/opensourcepos",
     "version": "3.4.2",
-    "description": "pen Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
-    "main": "index.php",
-    "license": "MIT",
-    "authors": [
-        "jekkos <jekkos - at - opensourcepos.org>",
-        "FrancescoUK <francesco.lodolo.uk - at - gmail.com>",
-        "objecttothis <objecttothis - at - gmail.com>",
-        "SteveIreland <stevei - at - ruledomain.com>"
-    ],
-    "files": [
-        "dist/opensourcepos.$version.tgz"
-    ],
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
-    },
+    "description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
     "keywords": [
         "point-of-sale",
         "POS"
     ],
+    "homepage": "https://opensourcepos.org",
+    "bugs": {
+        "url": "https://github.com/opensourcepos/opensourcepos/issues"
+    },
     "repository": {
         "type": "git",
-        "url": "https://github.com/opensourcepos/opensourcepos"
+        "url": "git+https://github.com/opensourcepos/opensourcepos.git"
     },
+    "license": "MIT",
+    "contributors": [
+        "jekkos <jekkos - at - opensourcepos.org>",
+        "objecttothis <objecttothis - at - gmail.com>"
+    ],
+    "files": [
+        "dist/opensourcepos.$version.tgz"
+    ],
+    "type": "module",
+    "main": "index.php",
     "scripts": {
         "build": "gulp default",
         "gulp": "gulp"
     },
-    "type": "module",
     "dependencies": {
         "bootstrap": "^3.4.1",
         "bootstrap-daterangepicker": "^2.1.27",
@@ -39,9 +38,9 @@
         "bootstrap-tagsinput-2021": "^0.8.6",
         "bootstrap-toggle": "^2.2.2",
         "bootstrap3-dialog": "github:nakupanda/bootstrap3-dialog#master",
-        "bootstrap5": "npm:bootstrap@^5.3.5",
+        "bootstrap5": "npm:bootstrap@^5.3.8",
         "bootswatch": "^3.4.1",
-        "bootswatch5": "npm:bootswatch@^5.3.5",
+        "bootswatch5": "npm:bootswatch@^5.3.8",
         "chartist": "^0.11.4",
         "chartist-plugin-axistitle": "^0.0.7",
         "chartist-plugin-barlabels": "^0.0.5",
@@ -49,7 +48,7 @@
         "chartist-plugin-tooltips": "^0.0.17",
         "clipboard": "^2.0.11",
         "coffeescript": "^2.7.0",
-        "dompurify": "^3.3.2",
+        "dompurify": "^3.4.0",
         "elegant-circles": "github:opensourcepos/elegant-circles#minified",
         "es6-promise": "^4.2.8",
         "file-saver": "^2.0.5",
@@ -64,23 +63,26 @@
         "tableexport.jquery.plugin": "^1.30.0"
     },
     "devDependencies": {
-        "gulp": "^5.0.0",
+        "gulp": "^5.0.1",
         "gulp-clean": "^0.4.0",
         "gulp-clean-css": "^4.3.0",
         "gulp-concat": "^2.6.1",
         "gulp-debug": "^5.0.1",
         "gulp-gzip": "^1.4.2",
-        "gulp-header": "^2.0.9",
+        "gulp-header": "^2.0.12",
         "gulp-inject": "^5.0.5",
-        "gulp-rename": "^2.0.0",
-        "gulp-rev": "^10.0.0",
+        "gulp-rename": "^2.1.0",
+        "gulp-rev": "^12.0.0",
         "gulp-run": "^1.7.1",
-        "gulp-tar": "^4.0.0",
+        "gulp-tar": "^5.0.0",
         "gulp-uglify": "^3.0.2",
         "gulp-zip": "^6.1.0",
-        "license-report": "^6.7.2",
-        "npm-check-updates": "^17.1.14",
+        "license-report": "^6.8.2",
+        "npm-check-updates": "^22.1.1",
         "readable-stream": "^4.4.2",
         "stream-series": "^0.1.1"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
     }
 }

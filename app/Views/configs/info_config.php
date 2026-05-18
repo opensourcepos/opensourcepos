@@ -105,6 +105,7 @@
                             <span class="glyphicon glyphicon-phone-alt"></span>
                         </span>
                         <?= form_input([
+                            'type'  => 'tel',
                             'name'  => 'phone',
                             'id'    => 'phone',
                             'class' => 'form-control input-sm required',
@@ -122,6 +123,7 @@
                             <span class="glyphicon glyphicon-phone-alt"></span>
                         </span>
                         <?= form_input([
+                            'type'  => 'tel',
                             'name'  => 'fax',
                             'id'    => 'fax',
                             'class' => 'form-control input-sm',

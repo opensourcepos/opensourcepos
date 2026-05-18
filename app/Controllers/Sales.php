@@ -93,6 +93,8 @@ class Sales extends Secure_Controller
                 'only_check'        => lang('Sales.check_filter'),
                 'only_creditcard'   => lang('Sales.credit_filter'),
                 'only_debit'        => lang('Sales.debit'),
+                'only_bank_transfer'=> lang('Sales.bank_transfer'),
+                'only_wallet'       => lang('Sales.wallet'),
                 'only_invoices'     => lang('Sales.invoice_filter'),
                 'selected_customer' => lang('Sales.selected_customer')
             ];
@@ -156,6 +158,8 @@ class Sales extends Secure_Controller
             'selected_customer' => false,
             'only_creditcard'   => false,
             'only_debit'        => false,
+            'only_bank_transfer'=> false,
+            'only_wallet'       => false,
             'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
             'is_valid_receipt'  => $this->sale->is_valid_receipt($search)
         ];
@@ -904,6 +908,14 @@ class Sales extends Secure_Controller
                 return $this->_reload($data);
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
+
+                // Validate receipt template to prevent path traversal
+                $receipt_template = $this->config['receipt_template'] ?? '';
+                if (!Sale_lib::isValidReceiptTemplate($receipt_template)) {
+                    $receipt_template = 'receipt_default';
+                }
+                $data['receipt_template_view'] = $receipt_template;
+
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);
             }
@@ -937,7 +949,10 @@ class Sales extends Secure_Controller
                 new Token_customer((array)$sale_data)
             ];
             $text = $this->token_lib->render($text, $tokens);
-            $sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
+            $sale_data['mimetype'] = $this->email_lib->getLogoMimeType();
+
+            // Build img_tag for email views that need it (receipt_email.php)
+            $sale_data['img_tag'] = $this->email_lib->buildLogoImgTag();
 
             // Generate email attachment: invoice in PDF format
             $view = Services::renderer();
@@ -974,13 +989,7 @@ class Sales extends Secure_Controller
 
         if (!empty($sale_data['customer_email'])) {
             $sale_data['barcode'] = $this->barcode_lib->generate_receipt_barcode($sale_data['sale_id']);
-            $sale_data['img_tag'] = '';
-
-            $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
-            if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
-                $logo_data = base64_encode(file_get_contents($logo_path));
-                $sale_data['img_tag'] = '<img id="image" src="data:image/png;base64,' . $logo_data . '" alt="company_logo">';
-            }
+            $sale_data['img_tag'] = $this->email_lib->buildLogoImgTag();
 
             $to = $sale_data['customer_email'];
             $subject = lang('Sales.receipt');
@@ -1162,6 +1171,13 @@ class Sales extends Secure_Controller
         }
         $data['invoice_view'] = $invoice_type;
 
+        // Validate receipt template to prevent path traversal
+        $receipt_template = $this->config['receipt_template'] ?? '';
+        if (!Sale_lib::isValidReceiptTemplate($receipt_template)) {
+            $receipt_template = 'receipt_default';
+        }
+        $data['receipt_template_view'] = $receipt_template;
+
         return $data;
     }
 
@@ -1256,6 +1272,7 @@ class Sales extends Secure_Controller
 
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
+        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
 
         // TODO: the if/else set below should be converted to a switch
         if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
@@ -1644,7 +1661,9 @@ class Sales extends Secure_Controller
      */
     public function getSalesKeyboardHelp(): string
     {
-        return view('sales/help');
+        return view('sales/help', [
+            'keyboardShortcuts' => $this->sale_lib->getKeyShortcuts()
+        ]);
     }
 
     /**

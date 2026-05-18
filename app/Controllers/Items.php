@@ -154,8 +154,23 @@ class Items extends Secure_Controller
     {
         helper('file');
 
-        $pic_filename = rawurldecode($pic_filename);
-        $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
+        // Security: Sanitize filename to prevent path traversal
+        // Use basename() to strip directory components and prevent '../' attacks
+        $pic_filename = basename(rawurldecode($pic_filename));
+        $file_extension = strtolower(pathinfo($pic_filename, PATHINFO_EXTENSION));
+
+        // Validate file extension against system-configured allowed image types
+        // Handle both legacy pipe-separated and current comma-separated formats
+        // Fallback to types that GD library can process for thumbnail generation
+        $allowed_types = $this->config['image_allowed_types'] ?? 'jpg,jpeg,gif,png,webp,bmp,tif,tiff';
+        $allowed_extensions = strpos($allowed_types, '|') !== false
+            ? explode('|', $allowed_types)
+            : explode(',', $allowed_types);
+
+        if (!in_array($file_extension, $allowed_extensions, true)) {
+            return $this->response->setStatusCode(400)->setBody('Invalid file type');
+        }
+
         $images = glob("./uploads/item_pics/$pic_filename");
         $base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
 
@@ -1040,14 +1055,20 @@ class Items extends Secure_Controller
                         });
 
                         if (!$isFailedRow && $this->item->save_value($itemData, $itemId)) {
-                            $this->save_tax_data($row, $itemData);
-                            $this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId);
+                            if (!$this->save_tax_data($row, $itemData)) {
+                                $isFailedRow = true;
+                            }
+                            if (!$this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId)) {
+                                $isFailedRow = true;
+                            }
                             $csvAttributeValues = $this->extractAttributeData($row);
-                            $isFailedRow = !$this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData);
+                            if (!$this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData)) {
+                                $isFailedRow = true;
+                            }
                             if ($isFailedRow) {
                                 $failedRow = $key + 2;
                                 $failCodes[] = $failedRow;
-                                log_message('error', "CSV Item import failed on line $failedRow while saving attributes.");
+                                log_message('error', "CSV Item import failed on line $failedRow while saving item.");
                                 continue;
                             }
 
@@ -1237,13 +1258,15 @@ class Items extends Secure_Controller
      * @param array $item_data
      * @param array $allowed_locations
      * @param int $employee_id
+     * @return bool Returns true on success, false on failure
      * @throws ReflectionException
      */
-    private function save_inventory_quantities(array $row, array $item_data, array $allowed_locations, int $employee_id): void
+    private function save_inventory_quantities(array $row, array $item_data, array $allowed_locations, int $employee_id): bool
     {
         // Quantities & Inventory Section
         $comment = lang('Items.inventory_CSV_import_quantity');
         $is_update = (bool)$row['Id'];
+        $success = true;
 
         foreach ($allowed_locations as $location_id => $location_name) {
             $item_quantity_data = ['item_id' => $item_data['item_id'], 'location_id' => $location_id];
@@ -1257,20 +1280,22 @@ class Items extends Secure_Controller
 
             if (!empty($row["location_$location_name"]) || $row["location_$location_name"] === '0') {
                 $item_quantity_data['quantity'] = $row["location_$location_name"];
-                $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
+                $success &= $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
                 $csv_data['trans_inventory'] = $row["location_$location_name"];
-                $this->inventory->insert($csv_data, false);
+                $success &= (bool)$this->inventory->insert($csv_data, false);
             } elseif ($is_update) {
-                return;
+                continue;
             } else {
                 $item_quantity_data['quantity'] = 0;
-                $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
+                $success &= $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
                 $csv_data['trans_inventory'] = 0;
-                $this->inventory->insert($csv_data, false);
+                $success &= (bool)$this->inventory->insert($csv_data, false);
             }
         }
+
+        return (bool)$success;
     }
 
     /**
@@ -1278,8 +1303,9 @@ class Items extends Secure_Controller
      *
      * @param array $row
      * @param array $item_data
+     * @return bool Returns true on success, false on failure
      */
-    private function save_tax_data(array $row, array $item_data): void
+    private function save_tax_data(array $row, array $item_data): bool
     {
         $items_taxes_data = [];
 
@@ -1291,9 +1317,11 @@ class Items extends Secure_Controller
             $items_taxes_data[] = ['name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']];
         }
 
-        if (isset($items_taxes_data)) {
-            $this->item_taxes->save_value($items_taxes_data, $item_data['item_id']);
+        if (!empty($items_taxes_data)) {
+            return $this->item_taxes->save_value($items_taxes_data, $item_data['item_id']);
         }
+
+        return true;
     }
 
     /**

@@ -22,7 +22,7 @@ function current_language_code(bool $load_system_language = false): string
         }
     }
 
-    return $config->language_code ?? DEFAULT_LANGUAGE_CODE;
+    return $config['language_code'] ?? DEFAULT_LANGUAGE_CODE;
 }
 
 /**
@@ -43,7 +43,7 @@ function current_language(bool $load_system_language = false): string
         }
     }
 
-    return $config->language ?? DEFAULT_LANGUAGE_CODE;
+    return $config['language'] ?? DEFAULT_LANGUAGE;
 }
 
 /**
@@ -271,6 +271,9 @@ function get_payment_options(): array
     if (stripos($config['country_codes'], 'IN') !== false) {
         $payments[lang('Sales.upi')] = lang('Sales.upi');
     }
+
+    $payments[lang('Sales.bank_transfer')] = lang('Sales.bank_transfer');
+    $payments[lang('Sales.wallet')]        = lang('Sales.wallet');
 
     return $payments;
 }
