@@ -31,6 +31,28 @@ class Item_taxes extends Model
     }
 
     /**
+     * Get all the taxes of given items. Used by plugins. Do not remove from code.
+     *
+     * @param array $itemIds
+     * @param bool $getDeleted
+     * @return array
+     */
+    public function getBulkInfo(array $itemIds, bool $getDeleted = false): array
+    {
+        $builder = $this->db->table($this->table);
+        $builder->whereIn('items_taxes.item_id', $itemIds);
+
+        if (!$getDeleted) {
+            $builder->join('items', 'items.item_id = items_taxes.item_id');
+            $builder->where('items.deleted', 0);
+            $builder->select('items_taxes.*');
+        }
+
+        return $builder->get()->getResultArray();
+    }
+
+
+    /**
      * Inserts or updates an item's taxes
      */
     public function save_value(array &$items_taxes_data, int $item_id): bool

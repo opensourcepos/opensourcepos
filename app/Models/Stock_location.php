@@ -260,6 +260,19 @@ class Stock_location extends Model
         }
     }
 
+    public function getStockLocationsByItem(int $itemId): array
+    {
+        return $this->db->table('item_quantities')
+            ->select('stock_locations.location_name, item_quantities.quantity')
+            ->join('stock_locations', 'stock_locations.location_id = item_quantities.location_id')
+            ->where('item_quantities.item_id', $itemId)
+            ->where('stock_locations.deleted', 0)
+            ->where('item_quantities.quantity >', 0)
+            ->orderBy('item_quantities.quantity', 'DESC')
+            ->get()
+            ->getResultArray();
+    }
+
     /**
      * Deletes one item
      * @param int|null $location_id

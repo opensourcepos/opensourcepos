@@ -303,6 +303,22 @@ class Item extends Model
         return $builder->get();
     }
 
+    public function getDistinctCategories(): array
+    {
+        $results = $this->db->table('items')
+            ->select('category')
+            ->where('deleted', 0)
+            ->where('category !=', '')
+            ->where('category IS NOT NULL')
+            ->distinct()
+            ->orderBy('category', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $categories = array_column($results, 'category');
+        return array_combine($categories, $categories);
+    }
+
     /**
      * Gets information about a particular item
      */
