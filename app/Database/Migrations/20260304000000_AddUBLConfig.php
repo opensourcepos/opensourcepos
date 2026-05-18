@@ -4,16 +4,16 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AddUblConfig extends Migration
+class AddUBLConfig extends Migration
 {
     public function up(): void
     {
         log_message('info', 'Adding UBL configuration.');
-        
+
         $config_values = [
-            ['key' => 'invoice_format', 'value' => 'pdf_only']
+            ['key' => 'invoice_format', 'value' => 'pdf_only'],
         ];
-        
+
         $this->db->table('app_config')->ignore(true)->insertBatch($config_values);
     }
 

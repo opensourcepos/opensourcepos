@@ -31,6 +31,7 @@
         "dompdf/dompdf": "^2.0.3",
         "ezyang/htmlpurifier": "^4.17",
         "laminas/laminas-escaper": "2.18.0",
+        "nesbot/carbon": "^2.72",
         "num-num/ubl-invoice": "^2.4",
         "paragonie/random_compat": "^2.0.21",
         "picqer/php-barcode-generator": "^2.4.0",
