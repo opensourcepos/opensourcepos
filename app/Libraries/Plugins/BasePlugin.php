@@ -63,6 +63,11 @@ abstract class BasePlugin implements PluginInterface
         return $this->configModel->batchSave($prefixedSettings);
     }
 
+    public function getConfigViewData(): array
+    {
+        return [];
+    }
+
     protected function log(string $level, string $message): void
     {
         log_message($level, "[Plugin:{$this->getPluginName()}] {$message}");

@@ -130,13 +130,14 @@ class Plugins extends Secure_Controller
         }
 
         $settings = $plugin->getSettings();
+        $data     = array_merge(['settings' => $settings, 'plugin' => $plugin], $plugin->getConfigViewData());
 
         // Plugin views may live outside app/Views/ (absolute path from plugin's __DIR__)
         if (is_file($configView . '.php')) {
             $renderer = \Config\Services::renderer(dirname($configView) . DIRECTORY_SEPARATOR, null, false);
-            echo $renderer->setData(['settings' => $settings, 'plugin' => $plugin])->render(basename($configView));
+            echo $renderer->setData($data)->render(basename($configView));
         } else {
-            echo view($configView, ['settings' => $settings, 'plugin' => $plugin]);
+            echo view($configView, $data);
         }
 
         return $this->response;

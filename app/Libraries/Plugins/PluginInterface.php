@@ -53,4 +53,11 @@ interface PluginInterface
     public function getSettings(): array;
 
     public function saveSettings(array $settings): bool;
+
+    /**
+     * Return extra data merged into the config view alongside $settings and $plugin.
+     * Override in a plugin to pass view-only data (e.g. dropdown option lists) without
+     * polluting getSettings() with non-persisted values.
+     */
+    public function getConfigViewData(): array;
 }
