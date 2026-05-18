@@ -572,7 +572,7 @@ class Sale extends Model
                 $cur_giftcard_value = $giftcard->get_giftcard_value($splitpayment[1]);    // TODO: this should be refactored to $current_giftcard_value
                 $giftcard->update_giftcard_value($splitpayment[1], $cur_giftcard_value - $payment['payment_amount']);
             } elseif (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
-                $cur_rewards_value = $customer->get_info($customer_id)->points;
+                $cur_rewards_value = $customer->getInfo($customer_id)->points;
                 $customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount']);
                 $total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
             }
@@ -594,7 +594,7 @@ class Sale extends Model
 
         $this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
 
-        $customer = $customer->get_info($customer_id);
+        $customer = $customer->getInfo($customer_id);
 
         foreach ($items as $line => $item_data) {
             $cur_item_info = $item->get_info($item_data['item_id']);
@@ -937,7 +937,7 @@ class Sale extends Model
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
 
-        return $customer->get_info($builder->get()->getRow()->customer_id);
+        return $customer->getInfo($builder->get()->getRow()->customer_id);
     }
 
     /**
@@ -950,7 +950,7 @@ class Sale extends Model
 
         $employee = model(Employee::class);
 
-        return $employee->get_info($builder->get()->getRow()->employee_id);
+        return $employee->getInfo($builder->get()->getRow()->employee_id);
     }
 
     /**
@@ -1372,11 +1372,11 @@ class Sale extends Model
             $customer_rewards = model(Customer_rewards::class);
             $rewards = model(Rewards::class);
 
-            $package_id = $customer->get_info($customer_id)->package_id;
+            $package_id = $customer->getInfo($customer_id)->package_id;
 
             if (!empty($package_id)) {
                 $points_percent = $customer_rewards->get_points_percent($package_id);
-                $points = $customer->get_info($customer_id)->points;
+                $points = $customer->getInfo($customer_id)->points;
                 $points = ($points == null ? 0 : $points);
                 $points_percent = ($points_percent == null ? 0 : $points_percent);
                 $total_amount_earned = ($total_amount * $points_percent / 100);

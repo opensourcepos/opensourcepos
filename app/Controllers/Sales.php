@@ -229,8 +229,8 @@ class Sales extends Secure_Controller
         $customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
         if ($this->customer->exists($customer_id)) {
             $this->sale_lib->set_customer($customer_id);
-            $discount = $this->customer->get_info($customer_id)->discount;
-            $discount_type = $this->customer->get_info($customer_id)->discount_type;
+            $discount = $this->customer->getInfo($customer_id)->discount;
+            $discount_type = $this->customer->getInfo($customer_id)->discount_type;
 
             // Apply customer default discount to items that have 0 discount
             if ($discount != '') {
@@ -433,9 +433,9 @@ class Sales extends Secure_Controller
                 }
             } elseif ($payment_type === lang('Sales.rewards')) {
                 $customer_id = $this->sale_lib->get_customer();
-                $package_id = $this->customer->get_info($customer_id)->package_id;
+                $package_id = $this->customer->getInfo($customer_id)->package_id;
                 if (!empty($package_id)) {
-                    $points = $this->customer->get_info($customer_id)->points;
+                    $points = $this->customer->getInfo($customer_id)->points;
                     $points = ($points == null ? 0 : $points);
 
                     $payments = $this->sale_lib->get_payments();
@@ -507,8 +507,8 @@ class Sales extends Secure_Controller
         $customer_id = $this->sale_lib->get_customer();
         if ($customer_id != NEW_ENTRY) {
             // Load the customer discount if any
-            $customer_discount = $this->customer->get_info($customer_id)->discount;
-            $customer_discount_type = $this->customer->get_info($customer_id)->discount_type;
+            $customer_discount = $this->customer->getInfo($customer_id)->discount;
+            $customer_discount_type = $this->customer->getInfo($customer_id)->discount_type;
             if ($customer_discount != '') {
                 $discount = $customer_discount;
                 $discount_type = $customer_discount_type;
@@ -699,7 +699,7 @@ class Sales extends Secure_Controller
         $data['show_stock_locations'] = $this->stock_location->show_locations('sales');
         $data['comments'] = $this->sale_lib->get_comment();
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-        $employee_info = $this->employee->get_info($employee_id);
+        $employee_info = $this->employee->getInfo($employee_id);
         $data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
         $data['company_info'] = implode("\n", [$this->config['address'], $this->config['phone']]);
@@ -1006,7 +1006,7 @@ class Sales extends Secure_Controller
         $customer_info = '';
 
         if ($customer_id != NEW_ENTRY) {
-            $customer_info = $this->customer->get_info($customer_id);
+            $customer_info = $this->customer->getInfo($customer_id);
             $data['customer_id'] = $customer_id;
 
             if (!empty($customer_info->company_name)) {
@@ -1029,11 +1029,11 @@ class Sales extends Secure_Controller
             $data['customer_account_number'] = $customer_info->account_number;
             $data['customer_discount'] = $customer_info->discount;
             $data['customer_discount_type'] = $customer_info->discount_type;
-            $package_id = $this->customer->get_info($customer_id)->package_id;
+            $package_id = $this->customer->getInfo($customer_id)->package_id;
 
             if ($package_id != null) {
                 $package_name = $this->customer_rewards->get_name($package_id);
-                $points = $this->customer->get_info($customer_id)->points;
+                $points = $this->customer->getInfo($customer_id)->points;
                 $data['customer_rewards']['package_id'] = $package_id;
                 $data['customer_rewards']['points'] = empty($points) ? 0 : $points;
                 $data['customer_rewards']['package_name'] = $package_name;
@@ -1112,7 +1112,7 @@ class Sales extends Secure_Controller
 
         $data['amount_change'] = $data['amount_due'] * -1;
 
-        $employee_info = $this->employee->get_info($this->sale_lib->get_employee());
+        $employee_info = $this->employee->getInfo($this->sale_lib->get_employee());
         $data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
         $this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
@@ -1319,7 +1319,7 @@ class Sales extends Secure_Controller
         $sale_info = $this->sale->get_info($sale_id)->getRowArray();
         $data['selected_customer_id'] = $sale_info['customer_id'];
         $data['selected_customer_name'] = $sale_info['customer_name'];
-        $employee_info = $this->employee->get_info($sale_info['employee_id']);
+        $employee_info = $this->employee->getInfo($sale_info['employee_id']);
         $data['selected_employee_id'] = $sale_info['employee_id'];
         $data['selected_employee_name'] = $employee_info->first_name . ' ' . $employee_info->last_name;
         $data['sale_info'] = $sale_info;

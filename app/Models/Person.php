@@ -81,7 +81,7 @@ class Person extends Model
      *
      * @return object containing all the fields of the table row
      */
-    public function get_info(int $person_id): object
+    public function getInfo(int $person_id): object
     {
         $builder = $this->db->table('people');
         $query = $builder->getWhere(['person_id' => $person_id], 1);

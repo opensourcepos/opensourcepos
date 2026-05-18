@@ -1341,7 +1341,7 @@ class Reports extends Secure_Controller
             }
         }
 
-        $customer_info = $this->customer->get_info($customer_id);
+        $customer_info = $this->customer->getInfo($customer_id);
         $customer_name = !empty($customer_info->company_name)    // TODO: This variable is not used anywhere in the code. Should it be or can it be deleted?
             ? "[ $customer_info->company_name ]"
             : $customer_info->company_name;
@@ -1468,7 +1468,7 @@ class Reports extends Secure_Controller
             }
         }
 
-        $employee_info = $this->employee->get_info($employee_id);
+        $employee_info = $this->employee->getInfo($employee_id);
         // TODO: Duplicated Code
         $data = [
             'title'                => $employee_info->first_name . ' ' . $employee_info->last_name . ' ' . lang('Reports.report'),
@@ -1734,7 +1734,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        $supplier_info = $this->supplier->get_info((int) $supplier_id);
+        $supplier_info = $this->supplier->getInfo((int) $supplier_id);
         $data = [
             'title'        => $supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . lang('Reports.report'),
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
