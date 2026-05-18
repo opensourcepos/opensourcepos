@@ -33,6 +33,22 @@ SSL_EMAIL="${SSL_EMAIL:-}"
 SSL_DOMAIN="${SSL_DOMAIN:-}"
 MYSQL_ROOT_PASS="${MYSQL_ROOT_PASS:-}"
 
+# Validate database variables contain only safe characters (alphanumeric, underscore, hyphen, dot)
+validate_db_vars() {
+    local var_name="$1"
+    local var_value="$2"
+    local pattern='^[a-zA-Z0-9_\-\.]+$'
+    if [[ ! "$var_value" =~ $pattern ]]; then
+        echo -e "${COLOR_RED}Error: ${var_name} contains invalid characters. Only alphanumeric, underscore, hyphen, and dot are allowed.${COLOR_RESET}"
+        exit 1
+    fi
+}
+
+# Validate critical database variables
+validate_db_vars "DB_NAME" "$DB_NAME"
+validate_db_vars "DB_USER" "$DB_USER"
+validate_db_vars "DB_HOST" "$DB_HOST"
+
 # Check if running interactively
 INTERACTIVE=false
 if [ -t 0 ]; then
@@ -121,8 +137,8 @@ EOF
 fi
 
 echo -e "${COLOR_GREEN}[5/9] Downloading OSPOS...${COLOR_RESET}"
-mkdir -p /var/www
-cd /var/www
+mkdir -p "$(dirname "$OSPOS_DIR")"
+cd "$(dirname "$OSPOS_DIR")"
 
 if [ -z "$OSPOS_VERSION" ]; then
     OSPOS_VERSION=$(curl -sS https://api.github.com/repos/opensourcepos/opensourcepos/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
@@ -149,14 +165,14 @@ if [ ! -f ospos.zip ] || [ ! -s ospos.zip ]; then
 fi
 
 unzip -q ospos.zip -d ospos-temp
-mkdir -p ${OSPOS_DIR}
-cp -r ospos-temp/. ${OSPOS_DIR}/
+mkdir -p "${OSPOS_DIR}"
+cp -r ospos-temp/. "${OSPOS_DIR}/"
 rm -rf ospos-temp ospos.zip
 
 echo -e "${COLOR_GREEN}Downloaded OSPOS ${OSPOS_VERSION}${COLOR_RESET}"
 
 echo -e "${COLOR_GREEN}[6/9] Setting up OSPOS...${COLOR_RESET}"
-cd ${OSPOS_DIR}
+cd "${OSPOS_DIR}"
 
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer 2>/dev/null
 
@@ -228,6 +244,11 @@ if [ -z "$APACHE_SERVER_NAME" ]; then
     APACHE_SERVER_NAME="localhost"
 fi
 
+# If SSL_EMAIL is set without SSL_DOMAIN, use APACHE_SERVER_NAME
+if [ -n "$SSL_EMAIL" ] && [ -z "$SSL_DOMAIN" ] && [ "$APACHE_SERVER_NAME" != "localhost" ]; then
+    SSL_DOMAIN="$APACHE_SERVER_NAME"
+fi
+
 echo -e "${COLOR_GREEN}[9/9] Configuring Apache...${COLOR_RESET}"
 cat > /etc/apache2/sites-available/ospos.conf <<EOF
 <VirtualHost *:80>
@@ -249,8 +270,8 @@ a2enmod rewrite
 a2dissite 000-default.conf
 a2ensite ospos.conf
 
-chown -R www-data:www-data ${OSPOS_DIR}
-chmod -R 750 ${OSPOS_DIR}/writable
+chown -R www-data:www-data "${OSPOS_DIR}"
+chmod -R 750 "${OSPOS_DIR}/writable"
 
 systemctl restart apache2
 systemctl enable apache2
