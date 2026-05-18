@@ -150,15 +150,19 @@ curl -sSL https://opensourcepos.org/install | DB_PASS=securepassword APACHE_SERV
 ```
 
 **Environment variables:**
+- `DB_HOST` - Database host (default: localhost)
 - `DB_NAME` - Database name (default: ospos)
 - `DB_USER` - Database user (default: ospos)
 - `DB_PASS` - Database password (default: auto-generated)
+- `MYSQL_ROOT_PASS` - MariaDB root password (default: empty/no password)
 - `OSPOS_DIR` - Installation directory (default: /var/www/ospos)
 - `OSPOS_VERSION` - OSPOS version to install (default: latest stable release)
 - `PHP_VERSION` - PHP version (default: 8.2)
 - `APACHE_SERVER_NAME` - Server hostname (default: localhost, or set interactively)
 - `SSL_EMAIL` - Email for Let's Encrypt. When set, enables production SSL with auto-renewal
 - `SSL_DOMAIN` - Alternative to `APACHE_SERVER_NAME` for SSL certificate domain
+
+> **Testing:** This installer is tested with each commit via our CI workflow. A fresh Ubuntu container is spawned, the script runs to completion, and basic sanity checks verify the installation. For production deployments, we recommend testing on a staging server first. If you encounter issues, please [open an issue](https://github.com/opensourcepos/opensourcepos/issues/new?template=bug_report.yml) with your server version and error output.
 
 > **Note:** If the short URL is unavailable, use the direct GitHub URL:
 > ```bash
