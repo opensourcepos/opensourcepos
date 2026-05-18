@@ -48,7 +48,8 @@ class OSPOS extends BaseConfig
                 $this->settings = [
                     'language' => 'english',
                     'language_code' => 'en',
-                    'company' => 'Home'
+                    'company' => 'Home',
+                    'barcode_type' => 'Code39'
                 ];
             }
         }

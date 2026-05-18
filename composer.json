@@ -2,24 +2,18 @@
     "name": "opensourcepos/opensourcepos",
     "description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
     "license": "MIT",
+    "type": "project",
+    "keywords": [
+        "point-of-sale",
+        "POS"
+    ],
     "authors": [
         {
             "name": "jekkos"
         },
         {
-            "name": "FrancescoUK"
-        },
-        {
             "name": "objecttothis"
-        },
-        {
-            "name": "steveireland"
         }
-    ],
-    "type": "project",
-    "keywords": [
-        "point-of-sale",
-        "POS"
     ],
     "homepage": "https://opensourcepos.org",
     "support": {
@@ -31,8 +25,8 @@
         "matrix": "https://matrix.to/#/#opensourcepos_Lobby:gitter.im"
     },
     "require": {
-        "ext-intl": "*",
         "php": "^8.2",
+        "ext-intl": "*",
         "codeigniter4/framework": "4.7.2",
         "dompdf/dompdf": "^2.0.3",
         "ezyang/htmlpurifier": "^4.17",
@@ -56,7 +50,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\":  "app/",
+            "App\\": "app/",
             "CodeIgniter\\": "vendor/codeigniter4/framework/system/"
         },
         "exclude-from-classmap": [
@@ -73,5 +67,8 @@
     },
     "scripts": {
         "test": "phpunit"
+    },
+    "scripts-descriptions": {
+        "test": "Run unit tests"
     }
 }

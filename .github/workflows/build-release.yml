@@ -123,6 +123,7 @@ jobs:
             .
             !.git
             !node_modules
+          include-hidden-files: true
           retention-days: 1
 
   docker:
