@@ -1,7 +1,6 @@
 <?php
 /**
  * @var array $settings
- * @var string $controller_name
  */
 ?>
 
@@ -9,7 +8,7 @@
 <div id="config_wrapper">
     <fieldset id="config_info">
 
-        <div id="required_fields_message"><?= lang('MailchimpPlugin.fields_required_message') ?></div>
+        <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
         <div id="plugins_header"><?= lang('MailchimpPlugin.configuration') ?></div>
         <ul id="error_message_box" class="error_message_box"></ul>
 

@@ -302,6 +302,8 @@ app/Plugins/
     │   └── ApiClient.php
     ├── Models/                   # Plugin models
     │   └── ExampleModel.php
+    ├── Traits/                   # Shared PHP traits for plugin classes
+    │   └── ExampleTrait.php
     ├── Views/                    # Plugin views
     │   ├── config.php
     │   └── dashboard.php
@@ -503,6 +505,7 @@ Settings are prefixed with the plugin ID (e.g., `example_api_key`) and stored in
 | `app/Plugins/ExamplePlugin/Models/ExampleModel.php`           | `App\Plugins\ExamplePlugin\Models\ExampleModel`           |
 | `app/Plugins/ExamplePlugin/Controllers/ExampleController.php` | `App\Plugins\ExamplePlugin\Controllers\ExampleController` |
 | `app/Plugins/ExamplePlugin/Libraries/ApiClient.php`           | `App\Plugins\ExamplePlugin\Libraries\ApiClient`           |
+| `app/Plugins/ExamplePlugin/Traits/ExampleTrait.php`           | `App\Plugins\ExamplePlugin\Traits\ExampleTrait`           |
 | `app/Plugins/ExamplePlugin/Language/en/ExamplePlugin.php`     | *(Language file - returns array, no namespace)*           |
 
 ## Database
@@ -562,6 +565,7 @@ ExamplePlugin-1.0.0.zip
     ├── Libraries/
     │   └── ApiClient.php
     ├── Models/
+    ├── Traits/
     ├── Views/
     ├── ExamplePlugin.php
     └── LICENSE
