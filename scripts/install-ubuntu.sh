@@ -187,15 +187,19 @@ if [ -f ".env.example" ]; then
 fi
 
 if [ -f ".env" ]; then
+    # Escape special characters in password for sed
+    ESCAPED_DB_PASS=$(printf '%s\n' "$DB_PASS" | sed 's/[&/\]/\\&/g')
+    
     sed -i "s|database\.default\.hostname = 'localhost'|database.default.hostname = '${DB_HOST}'|" .env
     sed -i "s|database\.default\.database = 'ospos'|database.default.database = '${DB_NAME}'|" .env
     sed -i "s|database\.default\.username = 'admin'|database.default.username = '${DB_USER}'|" .env
-    sed -i "s|database\.default\.password = 'pointofsale'|database.default.password = '${DB_PASS}'|" .env
+    sed -i "s|database\.default\.password = 'pointofsale'|database.default.password = '${ESCAPED_DB_PASS}'|" .env
     sed -i "s|CI_ENVIRONMENT = development|CI_ENVIRONMENT = production|" .env
     
     if grep -q "encryption\.key = ''" .env; then
         ENCRYPTION_KEY=$(openssl rand -base64 32)
-        sed -i "s|encryption\.key = ''|encryption.key = '${ENCRYPTION_KEY}'|" .env
+        ESCAPED_KEY=$(printf '%s\n' "$ENCRYPTION_KEY" | sed 's/[&/\]/\\&/g')
+        sed -i "s|encryption\.key = ''|encryption.key = '${ESCAPED_KEY}'|" .env
     fi
 fi
 
