@@ -86,7 +86,6 @@ apt-get install -y -qq \
     php${PHP_VERSION}-curl \
     php${PHP_VERSION}-xml \
     php${PHP_VERSION}-zip \
-    php${PHP_VERSION}-gd \
     git \
     curl \
     unzip \
@@ -105,12 +104,21 @@ else
 fi
 
 echo -e "${COLOR_GREEN}[4/9] Creating database and user...${COLOR_RESET}"
-mysql -u root <<EOF
+if [ -n "$MYSQL_ROOT_PASS" ]; then
+    mysql -u root -p"${MYSQL_ROOT_PASS}" <<EOF
 CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS '${DB_USER}'@'${DB_HOST}' IDENTIFIED BY '${DB_PASS}';
 GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'${DB_HOST}';
 FLUSH PRIVILEGES;
 EOF
+else
+    mysql -u root <<EOF
+CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS '${DB_USER}'@'${DB_HOST}' IDENTIFIED BY '${DB_PASS}';
+GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'${DB_HOST}';
+FLUSH PRIVILEGES;
+EOF
+fi
 
 echo -e "${COLOR_GREEN}[5/9] Downloading OSPOS...${COLOR_RESET}"
 mkdir -p /var/www
@@ -176,7 +184,11 @@ if [ -f ".env" ]; then
 fi
 
 echo -e "${COLOR_GREEN}[8/9] Importing database schema...${COLOR_RESET}"
-mysql -u root ${DB_NAME} < app/Database/database.sql
+if [ -n "$MYSQL_ROOT_PASS" ]; then
+    mysql -u root -p"${MYSQL_ROOT_PASS}" ${DB_NAME} < app/Database/database.sql
+else
+    mysql -u root ${DB_NAME} < app/Database/database.sql
+fi
 
 # Interactive SSL configuration
 if $INTERACTIVE && [ -z "$SSL_EMAIL" ] && [ -z "$APACHE_SERVER_NAME" ]; then
@@ -223,7 +235,7 @@ cat > /etc/apache2/sites-available/ospos.conf <<EOF
     DocumentRoot ${OSPOS_DIR}/public
 
     <Directory ${OSPOS_DIR}/public>
-        Options Indexes FollowSymLinks
+        Options -Indexes +FollowSymLinks
         AllowOverride All
         Require all granted
     </Directory>
@@ -276,7 +288,7 @@ elif [ -n "$SSL_DOMAIN" ]; then
     SSLCertificateKeyFile /etc/ssl/private/ospos-selfsigned.key
 
     <Directory ${OSPOS_DIR}/public>
-        Options Indexes FollowSymLinks
+        Options -Indexes +FollowSymLinks
         AllowOverride All
         Require all granted
     </Directory>
@@ -313,7 +325,7 @@ systemctl restart apache2
 
 # Configure allowed hostnames
 if [ -f "${OSPOS_DIR}/.env" ]; then
-    sed -i "s/app\.allowedHostnames\.0 = 'localhost'/app.allowedHostnames.0 = '${APACHE_SERVER_NAME}'/" ${OSPOS_DIR}/.env
+    sed -i "s|app\.allowedHostnames = ''|app.allowedHostnames = '${APACHE_SERVER_NAME}'|" ${OSPOS_DIR}/.env
 fi
 
 echo ""
