@@ -2,6 +2,7 @@
 
 namespace App\Database\Migrations;
 
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Migration;
 
 class Migration_Upgrade_To_3_1_1 extends Migration
@@ -41,7 +42,9 @@ class Migration_Upgrade_To_3_1_1 extends Migration
             }
         }
 
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.0.2_to_3.1.1.sql');
+        if (!execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.0.2_to_3.1.1.sql')) {
+            throw new DatabaseException('Migration script 3.0.2_to_3.1.1.sql failed. Check logs for details.');
+        }
 
         $droppedTables = ['sales_suspended', 'sales_suspended_items', 'sales_suspended_items_taxes', 'sales_suspended_payments'];
         $toRecreate = array_filter($constraints, fn($c) => !in_array($c['tableName'], $droppedTables, true));

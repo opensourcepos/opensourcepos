@@ -37,26 +37,25 @@ class OSPOS extends BaseConfig
             return;
         }
 
-        $db = Database::connect();
-
-        if (!$db->tableExists('app_config')) {
-            $this->settings = [
-                'language'      => 'english',
-                'language_code' => 'en',
-                'company'       => 'Home',
-                'barcode_type'  => 'Code39'
-            ];
-            return;
-        }
-
         try {
+            $db = Database::connect();
+
+            if (!$db->tableExists('app_config')) {
+                $this->settings = [
+                    'language'      => 'english',
+                    'language_code' => 'en',
+                    'company'       => 'Home',
+                    'barcode_type'  => 'Code39'
+                ];
+                return;
+            }
+
             $appconfig = model(Appconfig::class);
             foreach ($appconfig->get_all()->getResult() as $app_config) {
                 $this->settings[$app_config->key] = $app_config->value;
             }
             $this->cache->save('settings', encode_array($this->settings));
         } catch (\Exception $e) {
-            // Database connection failed (table-missing case handled above).
             $this->settings = [
                 'language'      => 'english',
                 'language_code' => 'en',
