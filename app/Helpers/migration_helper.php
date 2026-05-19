@@ -172,6 +172,7 @@ function dropAllForeignKeyConstraints(string $table, string $column): array {
             WHERE kcu.TABLE_SCHEMA = DATABASE()
                 AND ((kcu.REFERENCED_TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.REFERENCED_COLUMN_NAME = '$column')
                 OR (kcu.TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.COLUMN_NAME = '$column'))
+                AND rc.CONSTRAINT_NAME IS NOT NULL
         ");
 
     $deletedConstraints = [];
