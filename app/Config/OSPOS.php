@@ -5,6 +5,7 @@ namespace Config;
 use App\Models\Appconfig;
 use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\Config\BaseConfig;
+use Config\Database;
 
 /**
  * This class holds the configuration options stored from the database so that on launch those settings can be cached
@@ -33,25 +34,35 @@ class OSPOS extends BaseConfig
 
         if ($cache) {
             $this->settings = decode_array($cache);
-        } else {
-            try {
-                $appconfig = model(Appconfig::class);
-                foreach ($appconfig->get_all()->getResult() as $app_config) {
-                    $this->settings[$app_config->key] = $app_config->value;
-                }
-                $this->cache->save('settings', encode_array($this->settings));
-            } catch (\Exception $e) {
-                // Database table doesn't exist yet (migrations haven't run)
-                // or database connection failed. Return empty settings to
-                // allow migration page to display. Catches mysqli_sql_exception
-                // which is not a subclass of DatabaseException.
-                $this->settings = [
-                    'language' => 'english',
-                    'language_code' => 'en',
-                    'company' => 'Home',
-                    'barcode_type' => 'Code39'
-                ];
+            return;
+        }
+
+        $db = Database::connect();
+
+        if (!$db->tableExists('app_config')) {
+            $this->settings = [
+                'language'      => 'english',
+                'language_code' => 'en',
+                'company'       => 'Home',
+                'barcode_type'  => 'Code39'
+            ];
+            return;
+        }
+
+        try {
+            $appconfig = model(Appconfig::class);
+            foreach ($appconfig->get_all()->getResult() as $app_config) {
+                $this->settings[$app_config->key] = $app_config->value;
             }
+            $this->cache->save('settings', encode_array($this->settings));
+        } catch (\Exception $e) {
+            // Database connection failed (table-missing case handled above).
+            $this->settings = [
+                'language'      => 'english',
+                'language_code' => 'en',
+                'company'       => 'Home',
+                'barcode_type'  => 'Code39'
+            ];
         }
     }
 
