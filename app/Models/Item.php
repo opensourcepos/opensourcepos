@@ -1067,6 +1067,8 @@ class Item extends Model
      */
     public function change_cost_price(int $item_id, float $items_received, float $new_price, ?float $old_price = null): bool
     {
+        $config = config(OSPOS::class)->settings;
+
         if ($old_price === null) {
             $item_info = $this->get_info($item_id);
             $old_price = $item_info->cost_price;
@@ -1080,9 +1082,12 @@ class Item extends Model
         $old_total_quantity = $builder->get()->getRow()->quantity;
 
         $total_quantity = $old_total_quantity + $items_received;
-        $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
-
-        $data = ['cost_price' => $average_price];
+        if (($config['receiving_cost_price_method'] ?? (($config['receiving_calculate_average_price'] ?? 1) ? 'average' : 'new')) === 'new') {
+            $data = ['cost_price' => $new_price];
+        } else {
+            $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
+            $data = ['cost_price' => $average_price];
+        }
 
         return $this->save_value($data, $item_id);
     }
