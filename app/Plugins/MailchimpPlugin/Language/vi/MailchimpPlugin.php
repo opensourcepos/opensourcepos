@@ -12,7 +12,6 @@ return [
     'customer_status'                   => 'Trạng thái tài khoản Mailchimp',
     'description'                       => 'Tích hợp với Mailchimp để đồng bộ hóa khách hàng với danh sách gửi thư khi họ được tạo hoặc cập nhật.',
     'email_client'                      => 'Trình khách nhận thư',
-
     'info'                              => 'Mailchimp',
     'key_successfully'                  => 'Khóa API hợp lệ.',
     'key_unsuccessfully'                => 'Khóa API không hợp lệ.',

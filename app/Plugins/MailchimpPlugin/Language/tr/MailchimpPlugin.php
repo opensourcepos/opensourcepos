@@ -12,7 +12,6 @@ return [
     'customer_status'                   => 'MailChimp durumu',
     'description'                       => 'Mailchimp ile entegre olarak, müşteriler oluşturulduğunda veya güncellendiğinde onları posta listeleriyle senkronize edin.',
     'email_client'                      => 'E-posta istemcisi',
-
     'info'                              => 'MailChimp',
     'key_successfully'                  => 'API anahtarı geçerli.',
     'key_unsuccessfully'                => 'API anahtarı geçersiz.',

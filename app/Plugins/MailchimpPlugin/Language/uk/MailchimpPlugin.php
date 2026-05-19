@@ -13,7 +13,6 @@ return [
     'description'                       => 'Інтегруйте Mailchimp для синхронізації клієнтів зі списками розсилки при їх створенні або оновленні.',
     'email_client'                      => 'Поштовий клієнт',
 
-
     'info'                              => 'MailChimp',
     'key_successfully'                  => 'API-ключ дійсний.',
     'key_unsuccessfully'                => 'API-ключ недійсний.',
