@@ -61,19 +61,6 @@ if (isset($success)) {
 helper('url');
 ?>
 
-<?php if ($secondaryCurrency['show']): ?>
-    <?php $secondaryCurrencyLabel = $secondaryCurrency['symbol'] ?: $secondaryCurrency['code']; ?>
-    <table align="center" style="font-size: 22px; font-weight: 600; background-color: rgb(221, 221, 221); width: 25%; margin: 0 auto 0.5em; border: dashed 1px;">
-        <tr>
-            <td style="text-align: center; padding-right: 5%;"><?= lang(ucfirst($controller_name) . '.total') ?>:</td>
-            <td style="text-align: center;"><?= to_currency($total) ?></td>
-        </tr>
-        <tr>
-            <td style="text-align: center; padding-right: 5%;"><?= lang(ucfirst($controller_name) . '.total') ?> <?= esc($secondaryCurrencyLabel) ?>:</td>
-            <td style="text-align: center;"><?= $secondaryTotalDisplay ?? to_secondary_currency((float) $total, $secondaryCurrency) ?></td>
-        </tr>
-    </table>
-<?php endif; ?>
 
 <div id="register_wrapper">
 
@@ -215,7 +202,7 @@ helper('url');
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
-                                    echo $secondaryCurrency['show'] ? to_secondary_currency_dual((float) $item['price'], $secondaryCurrency) : to_currency($item['price']);
+                                    echo to_currency($item['price']);
                                     echo form_hidden('price', to_currency_no_money($item['price']));
                                 }
                                 ?>
@@ -409,12 +396,6 @@ helper('url');
                 <th style="width: 55%; font-size: 150%"><?= lang(ucfirst($controller_name) . '.total') ?></th>
                 <th style="width: 45%; font-size: 150%; text-align: right;"><span id="sale_total"><?= to_currency($total) ?></span></th>
             </tr>
-            <?php if ($secondaryCurrency['show']) { ?>
-                <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.total') ?> <?= esc($secondaryCurrencyLabel) ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= $secondaryTotalDisplay ?? to_secondary_currency((float) $total, $secondaryCurrency) ?></span></th>
-                </tr>
-            <?php } ?>
         </table>
 
         <?php if (count($cart) > 0) { // Only show this part if there are Items already in the register ?>
@@ -427,12 +408,6 @@ helper('url');
                 <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
                 <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
             </tr>
-            <?php if ($secondaryCurrency['show']) { ?>
-                <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?> <?= esc($secondaryCurrencyLabel) ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= $secondaryAmountDueDisplay ?? to_secondary_currency((float) $amount_due, $secondaryCurrency) ?></span></th>
-                </tr>
-            <?php } ?>
         </table>
 
             <div id="payment_details">
@@ -668,14 +643,6 @@ helper('url');
     window.notifyCustomerDisplay = function() {
         window.refreshCustomerDisplay();
     };
-
-    const secondaryAmounts = <?= json_encode([
-        'total' => $secondaryTotalDisplay ?? null,
-        'amountDue' => $secondaryAmountDueDisplay ?? null,
-        'cashAmountDue' => $secondaryCashAmountDueDisplay ?? null,
-        'nonCashTotal' => $secondaryNonCashTotalDisplay ?? null,
-        'nonCashAmountDue' => $secondaryNonCashAmountDueDisplay ?? null
-    ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
 
     $(document).ready(function() {
         setTimeout(function() {
@@ -948,17 +915,9 @@ helper('url');
 
     function check_payment_type() {
         var cash_mode = <?= json_encode($cash_mode) ?>;
-        const updateSecondaryRows = function(totalDisplay, amountDueDisplay) {
-            if (totalDisplay !== null && amountDueDisplay !== null) {
-                $("#sale_total_secondary_currency").html(totalDisplay);
-                $("#sale_amount_due_secondary_currency").html(amountDueDisplay);
-            }
-        };
-
         if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
-            updateSecondaryRows(secondaryAmounts.total, secondaryAmounts.amountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
             $("#amount_tendered:enabled").val('').focus();
             $(".giftcard-input").attr('disabled', false);
@@ -967,7 +926,6 @@ helper('url');
         } else if (($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.cash') ?>" && cash_mode == '1')) {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
-            updateSecondaryRows(secondaryAmounts.nonCashTotal, secondaryAmounts.cashAmountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
@@ -975,7 +933,6 @@ helper('url');
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
-            updateSecondaryRows(secondaryAmounts.nonCashTotal, secondaryAmounts.nonCashAmountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);

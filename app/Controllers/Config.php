@@ -241,28 +241,6 @@ class Config extends Secure_Controller
         $data['show_office_group'] = $this->module->get_show_office_group();
         $data['currency_code'] = $this->config['currency_code'] ?? '';
         $data['dbVersion'] = mysqli_get_server_info($this->db->getConnection());
-        $data['scale_export_formats'] = [
-            'txt' => 'TXT',
-            'csv' => 'CSV',
-        ];
-        $data['scale_export_charsets'] = [
-            'windows-1256' => 'Windows-1256',
-            'utf-8' => 'UTF-8',
-            'windows-1252' => 'Windows-1252',
-        ];
-        $data['scale_export_delimiters'] = [
-            ';' => ';',
-            ',' => ',',
-            "\t" => 'Tab',
-        ];
-        $data['scale_export_fields_options'] = [
-            'legacy_code' => lang('Items.item_number'),
-            'item_number' => lang('Items.item_number'),
-            'repeat_item_number' => lang('Items.item_number'),
-            'name' => lang('Items.name'),
-            'unit_price' => lang('Items.unit_price'),
-            'legacy_tail' => lang('Items.item_number'),
-        ];
 
         // Load all the license statements, they are already XSS cleaned in the private function
         $data['licenses'] = $this->_licenses();
