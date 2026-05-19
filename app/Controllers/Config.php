@@ -82,7 +82,7 @@ class Config extends Secure_Controller
         $npmDev = false;
         $license = [];
 
-        $license[$i]['title'] = 'Open Source Point of Sale ' . config('App')->application_version;
+        $license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
 
         if (file_exists('license/LICENSE')) {
             $license[$i]['text'] = file_get_contents('license/LICENSE', false, null, 0, 3000);
@@ -241,6 +241,28 @@ class Config extends Secure_Controller
         $data['show_office_group'] = $this->module->get_show_office_group();
         $data['currency_code'] = $this->config['currency_code'] ?? '';
         $data['dbVersion'] = mysqli_get_server_info($this->db->getConnection());
+        $data['scale_export_formats'] = [
+            'txt' => 'TXT',
+            'csv' => 'CSV',
+        ];
+        $data['scale_export_charsets'] = [
+            'windows-1256' => 'Windows-1256',
+            'utf-8' => 'UTF-8',
+            'windows-1252' => 'Windows-1252',
+        ];
+        $data['scale_export_delimiters'] = [
+            ';' => ';',
+            ',' => ',',
+            "\t" => 'Tab',
+        ];
+        $data['scale_export_fields_options'] = [
+            'legacy_code' => lang('Items.item_number'),
+            'item_number' => lang('Items.item_number'),
+            'repeat_item_number' => lang('Items.item_number'),
+            'name' => lang('Items.name'),
+            'unit_price' => lang('Items.unit_price'),
+            'legacy_tail' => lang('Items.item_number'),
+        ];
 
         // Load all the license statements, they are already XSS cleaned in the private function
         $data['licenses'] = $this->_licenses();
@@ -394,6 +416,7 @@ class Config extends Secure_Controller
             'suggestions_third_column'          => $this->validateSuggestionsColumn($this->request->getPost('suggestions_third_column'), 'other'),
             'giftcard_number'                   => $this->request->getPost('giftcard_number'),
             'derive_sale_quantity'              => $this->request->getPost('derive_sale_quantity') != null,
+            'customer_display_enabled'          => $this->request->getPost('customer_display_enabled') != null,
             'multi_pack_enabled'                => $this->request->getPost('multi_pack_enabled') != null,
             'include_hsn'                       => $this->request->getPost('include_hsn') != null,
             'category_dropdown'                 => $this->request->getPost('category_dropdown') != null
@@ -476,9 +499,20 @@ class Config extends Secure_Controller
     {
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
+        $secondaryCurrencyCode = strtoupper(trim((string) $this->request->getPost('secondary_currency_code')));
+
+        if (!preg_match('/^[A-Z]{3}$/', $secondaryCurrencyCode)) {
+            $secondaryCurrencyCode = '';
+        }
+
         $batch_save_data = [
             'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
             'currency_code'         => $this->request->getPost('currency_code'),
+            'secondary_currency_enabled'  => $this->request->getPost('secondary_currency_enabled') != null,
+            'secondary_currency_symbol'   => htmlspecialchars($this->request->getPost('secondary_currency_symbol') ?? ''),
+            'secondary_currency_code'     => $secondaryCurrencyCode,
+            'secondary_currency_rate'     => $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
             'timezone'              => $this->request->getPost('timezone'),
@@ -924,9 +958,7 @@ class Config extends Secure_Controller
     public function postSaveReceipt(): ResponseInterface
     {
         $batch_save_data = [
-            'receipt_template'              => Sale_lib::isValidReceiptTemplate($this->request->getPost('receipt_template'))
-                ? $this->request->getPost('receipt_template')
-                : 'receipt_default',
+            'receipt_template'              => $this->request->getPost('receipt_template'),
             'receipt_font_size'             => $this->request->getPost('receipt_font_size', FILTER_SANITIZE_NUMBER_INT),
             'print_delay_autoreturn'        => $this->request->getPost('print_delay_autoreturn', FILTER_SANITIZE_NUMBER_INT),
             'email_receipt_check_behaviour' => $this->request->getPost('email_receipt_check_behaviour'),
@@ -936,6 +968,7 @@ class Config extends Secure_Controller
             'receipt_show_tax_ind'          => $this->request->getPost('receipt_show_tax_ind') != null,
             'receipt_show_total_discount'   => $this->request->getPost('receipt_show_total_discount') != null,
             'receipt_show_description'      => $this->request->getPost('receipt_show_description') != null,
+            'receipt_show_secondary_currency' => $this->request->getPost('receipt_show_secondary_currency') != null,
             'receipt_show_serialnumber'     => $this->request->getPost('receipt_show_serialnumber') != null,
             'print_silently'                => $this->request->getPost('print_silently') != null,
             'print_header'                  => $this->request->getPost('print_header') != null,
@@ -964,7 +997,7 @@ class Config extends Secure_Controller
         $batchSaveData = [];
 
         foreach ($currentShortcuts as $name => $shortcut) {
-            $postedValue = trim((string)$this->request->getPost('key_' . $name));
+            $postedValue = trim((string) $this->request->getPost('key_' . $name));
 
             if (!in_array($postedValue, $allowedShortcuts, true)) {
                 $postedValue = $shortcut['value'];
@@ -1068,3 +1101,6 @@ class Config extends Secure_Controller
         return in_array($column, $allowed, true) ? $column : $fallback;
     }
 }
+
+
+

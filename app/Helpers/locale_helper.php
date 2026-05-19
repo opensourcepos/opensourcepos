@@ -272,9 +272,6 @@ function get_payment_options(): array
         $payments[lang('Sales.upi')] = lang('Sales.upi');
     }
 
-    $payments[lang('Sales.bank_transfer')] = lang('Sales.bank_transfer');
-    $payments[lang('Sales.wallet')]        = lang('Sales.wallet');
-
     return $payments;
 }
 
@@ -366,6 +363,74 @@ function to_currency(?string $number): string
 function to_currency_no_money(?string $number): string
 {
     return to_decimals($number, 'currency_decimals');
+}
+
+/**
+ * Build the secondary currency rendering context from app config values.
+ *
+ * @param array $config
+ * @return array{show:bool,rate:float,symbol:string,code:string,decimals:int}
+ */
+function secondary_currency_context(array $config): array
+{
+    $rate = (float) ($config['secondary_currency_rate'] ?? 0);
+    $symbol = trim((string) ($config['secondary_currency_symbol'] ?? ''));
+    $code = trim((string) ($config['secondary_currency_code'] ?? ''));
+    $decimals = (int) ($config['secondary_currency_decimals'] ?? ($config['currency_decimals'] ?? DEFAULT_PRECISION));
+
+    return [
+        'show'     => (($config['secondary_currency_enabled'] ?? false) == 1) && $rate > 0,
+        'rate'     => $rate,
+        'symbol'   => $symbol,
+        'code'     => $code,
+        'decimals' => $decimals,
+    ];
+}
+
+/**
+ * Render a value in the secondary currency.
+ *
+ * @param float|int|string|null $number
+ * @param array{show:bool,rate:float,symbol:string,code:string,decimals:int} $secondaryCurrency
+ * @return string
+ */
+function to_secondary_currency(float|int|string|null $number, array $secondaryCurrency): string
+{
+    if (!isset($number) || !$secondaryCurrency['show']) {
+        return '';
+    }
+
+    $config = config(OSPOS::class)->settings;
+    $amount = (float) $number * (float) $secondaryCurrency['rate'];
+    $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::CURRENCY);
+    $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $secondaryCurrency['decimals']);
+    $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $secondaryCurrency['decimals']);
+
+    if (empty($config['thousands_separator'])) {
+        $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+    }
+
+    $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $secondaryCurrency['symbol'] !== '' ? $secondaryCurrency['symbol'] : ($secondaryCurrency['code'] !== '' ? $secondaryCurrency['code'] : ''));
+
+    return $fmt->format($amount);
+}
+
+/**
+ * Render the secondary and primary currency amounts together.
+ *
+ * @param float|int|string|null $number
+ * @param array{show:bool,rate:float,symbol:string,code:string,decimals:int} $secondaryCurrency
+ * @return string
+ */
+function to_secondary_currency_dual(float|int|string|null $number, array $secondaryCurrency): string
+{
+    $secondary = to_secondary_currency($number, $secondaryCurrency);
+
+    if ($secondary === '') {
+        return to_currency((string) $number);
+    }
+
+    return $secondary . '<br>' . to_currency((string) $number);
 }
 
 /**

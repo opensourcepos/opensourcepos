@@ -66,10 +66,166 @@ class Sales extends Secure_Controller
         $this->employee = model(Employee::class);
     }
 
+    /**
+     * Adds the shared secondary currency context to a view data array.
+     *
+     * @param array $data
+     * @return void
+     */
+    private function _append_secondary_currency(array &$data): void
+    {
+        $secondaryCurrency = secondary_currency_context($this->config);
+        $data['secondaryCurrency'] = $secondaryCurrency;
+
+        if (!$secondaryCurrency['show']) {
+            return;
+        }
+
+        $displayFields = [
+            'total' => 'secondaryTotalDisplay',
+            'amount_due' => 'secondaryAmountDueDisplay',
+            'cash_amount_due' => 'secondaryCashAmountDueDisplay',
+            'non_cash_total' => 'secondaryNonCashTotalDisplay',
+            'non_cash_amount_due' => 'secondaryNonCashAmountDueDisplay'
+        ];
+
+        foreach ($displayFields as $sourceField => $targetField) {
+            if (array_key_exists($sourceField, $data)) {
+                $data[$targetField] = to_secondary_currency((float) $data[$sourceField], $secondaryCurrency);
+            }
+        }
+    }
+
     public function getIndex(): ResponseInterface|string
     {
         $this->session->set('allow_temp_items', 1);
         return $this->_reload();    // TODO: Hungarian Notation
+    }
+
+    /**
+     * Load the customer display popup.
+     *
+     * @return ResponseInterface|string
+     * @noinspection PhpUnused
+     */
+    public function getCustomerDisplay(): ResponseInterface|string
+    {
+        if (($this->config['customer_display_enabled'] ?? false) != 1) {
+            return $this->response->setStatusCode(404)->setBody('');
+        }
+
+        if ($this->session->get('sale_id') == '') {
+            $this->session->set('sale_id', NEW_ENTRY);
+        }
+
+        $secondaryCurrency = secondary_currency_context($this->config);
+        $secondaryCurrencyEnabled = (($this->config['secondary_currency_enabled'] ?? false) == 1);
+        $cashRounding = $this->sale_lib->reset_cash_rounding();
+        $showCustomerDisplay = $secondaryCurrencyEnabled && !empty($secondaryCurrency['rate']) && (float) $secondaryCurrency['rate'] > 0;
+        $companyLines = preg_split("/\r\n|\r|\n/", (string) ($this->config['company'] ?? '')) ?: [];
+        $companyName = array_shift($companyLines) ?? '';
+        $companyDetails = trim(implode("\n", $companyLines));
+        $secondaryCurrencySymbol = trim((string) ($this->config['secondary_currency_symbol'] ?? ''));
+        $secondaryCurrencyCode = trim((string) ($this->config['secondary_currency_code'] ?? ''));
+        $originalCurrencySymbol = trim((string) ($this->config['currency_symbol'] ?? ''));
+        $customerDisplayCurrencyLabel = $secondaryCurrencyCode !== '' ? $secondaryCurrencyCode : ($secondaryCurrencySymbol !== '' ? $secondaryCurrencySymbol : 'LBP');
+        $originalCurrencyLabel = $originalCurrencySymbol !== '' ? $originalCurrencySymbol : '$';
+        $cartHasCustomerDisplay = $showCustomerDisplay;
+        $cartColspan = $cartHasCustomerDisplay ? 6 : 5;
+        $cartItemWidth = $cartHasCustomerDisplay ? 32 : 44;
+        $cartPriceWidth = $cartHasCustomerDisplay ? 18 : 0;
+        $cartOriginalWidth = $cartHasCustomerDisplay ? 18 : 26;
+        $cartQuantityWidth = $cartHasCustomerDisplay ? 12 : 10;
+        $cartDiscountWidth = $cartHasCustomerDisplay ? 10 : 9;
+        $cartTotalWidth = $cartHasCustomerDisplay ? 10 : 11;
+
+        $data = [
+            'cash_rounding' => $cashRounding,
+            'cart' => $this->sale_lib->get_cart()
+        ];
+        $customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, true);
+        $data += [
+            'customer_name' => $data['customer'] ?? lang('Sales.walk_in_customer'),
+            'customer_reward_points' => (int) ($data['customer_rewards']['points'] ?? 0),
+            'customer_reward_package' => $data['customer_rewards']['package_name'] ?? '',
+            'giftcard_remainder' => $this->sale_lib->get_giftcard_remainder(),
+            'rewards_remainder' => $this->sale_lib->get_rewards_remainder(),
+            'customerName' => $data['customer'] ?? lang('Sales.walk_in_customer'),
+            'customerRewardPoints' => (int) ($data['customer_rewards']['points'] ?? 0),
+            'giftcardRemainder' => $this->sale_lib->get_giftcard_remainder()
+        ];
+
+        $tax_details = $this->tax_lib->get_taxes($data['cart']);
+        $data += [
+            'tax_exclusive_subtotal' => $this->sale_lib->get_subtotal(true, true),
+            'taxes' => $tax_details[0],
+            'discount' => $this->sale_lib->get_discount(),
+            'payments' => $this->sale_lib->get_payments()
+        ];
+
+        $totals = $this->sale_lib->get_totals($tax_details[0]);
+        $data += [
+            'item_count' => $totals['item_count'],
+            'total_units' => $totals['total_units'],
+            'subtotal' => $totals['subtotal'],
+            'total' => $totals['total'],
+            'payments_total' => $totals['payment_total'],
+            'payments_cover_total' => $totals['payments_cover_total'],
+            'prediscount_subtotal' => $totals['prediscount_subtotal'],
+            'cash_total' => $totals['cash_total'],
+            'non_cash_total' => $totals['total'],
+            'cash_amount_due' => $totals['cash_amount_due'],
+            'non_cash_amount_due' => $totals['amount_due'],
+            'cash_mode' => $this->session->get('cash_mode'),
+            'selected_payment_type' => $this->sale_lib->get_payment_type(),
+            'comment' => $this->sale_lib->get_comment(),
+            'email_receipt' => $this->sale_lib->is_email_receipt(),
+            'config' => $this->config,
+            'mode' => $this->sale_lib->get_mode(),
+            'rate' => (float) ($secondaryCurrency['rate'] ?? $this->config['secondary_currency_rate'] ?? 0),
+            'secondaryCurrency' => $secondaryCurrency,
+            'secondaryCurrencyEnabled' => $secondaryCurrencyEnabled,
+            'showCustomerDisplay' => $showCustomerDisplay,
+            'companyName' => $companyName,
+            'companyDetails' => $companyDetails,
+            'secondaryCurrencySymbol' => $secondaryCurrencySymbol,
+            'secondaryCurrencyCode' => $secondaryCurrencyCode,
+            'originalCurrencySymbol' => $originalCurrencySymbol,
+            'customerDisplayCurrencyLabel' => $customerDisplayCurrencyLabel,
+            'originalCurrencyLabel' => $originalCurrencyLabel,
+            'cartHasCustomerDisplay' => $cartHasCustomerDisplay,
+            'cartColspan' => $cartColspan,
+            'cartItemWidth' => $cartItemWidth,
+            'cartPriceWidth' => $cartPriceWidth,
+            'cartOriginalWidth' => $cartOriginalWidth,
+            'cartQuantityWidth' => $cartQuantityWidth,
+            'cartDiscountWidth' => $cartDiscountWidth,
+            'cartTotalWidth' => $cartTotalWidth,
+            'items_module_allowed' => $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id),
+            'change_price' => $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id)
+        ];
+
+        $invoice_number = $this->sale_lib->get_invoice_number();
+        if ($invoice_number == null || $invoice_number == '') {
+            $invoice_number = $this->token_lib->render($this->config['sales_invoice_format'], [], false);
+        }
+
+        $data += [
+            'invoice_number' => $invoice_number,
+            'print_after_sale' => $this->sale_lib->is_print_after_sale(),
+            'price_work_orders' => $this->sale_lib->is_price_work_orders(),
+            'pos_mode' => $data['mode'] == 'sale' || $data['mode'] == 'return',
+            'quote_number' => $this->sale_lib->get_quote_number(),
+            'work_order_number' => $this->sale_lib->get_work_order_number(),
+            'amount_due' => $data['cash_mode'] && ($data['selected_payment_type'] === lang('Sales.cash') || $data['payments_total'] > 0) ? $totals['cash_amount_due'] : $totals['amount_due']
+        ];
+        $data['amount_change'] = $data['amount_due'] * -1;
+        $data['payment_change_due'] = ((float) $data['amount_due'] < 0)
+            ? abs((float) $data['amount_due'])
+            : max(((float) $data['payments_total']) - ((float) $data['amount_due']), 0);
+        $data['paymentChangeDue'] = $data['payment_change_due'];
+
+        return view('sales/customer_display', $data);
     }
 
     /**
@@ -93,8 +249,6 @@ class Sales extends Secure_Controller
                 'only_check'        => lang('Sales.check_filter'),
                 'only_creditcard'   => lang('Sales.credit_filter'),
                 'only_debit'        => lang('Sales.debit'),
-                'only_bank_transfer'=> lang('Sales.bank_transfer'),
-                'only_wallet'       => lang('Sales.wallet'),
                 'only_invoices'     => lang('Sales.invoice_filter'),
                 'selected_customer' => lang('Sales.selected_customer')
             ];
@@ -158,8 +312,6 @@ class Sales extends Secure_Controller
             'selected_customer' => false,
             'only_creditcard'   => false,
             'only_debit'        => false,
-            'only_bank_transfer'=> false,
-            'only_wallet'       => false,
             'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
             'is_valid_receipt'  => $this->sale->is_valid_receipt($search)
         ];
@@ -818,6 +970,7 @@ class Sales extends Secure_Controller
 
                 // Resort and filter cart lines for printing
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+                $this->_append_secondary_currency($data);
 
                 if ($data['sale_id_num'] == NEW_ENTRY) {
                     $data['error_message'] = lang('Sales.transaction_failed');
@@ -857,6 +1010,7 @@ class Sales extends Secure_Controller
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
                 $data['barcode'] = null;
+                $this->_append_secondary_currency($data);
 
                 $this->sale_lib->clear_all();
                 return view('sales/work_order', $data);
@@ -884,6 +1038,7 @@ class Sales extends Secure_Controller
 
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
                 $data['barcode'] = null;
+                $this->_append_secondary_currency($data);
 
                 $this->sale_lib->clear_all();
                 return view('sales/quote', $data);
@@ -902,20 +1057,13 @@ class Sales extends Secure_Controller
             $data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
             $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+            $this->_append_secondary_currency($data);
 
             if ($data['sale_id_num'] == NEW_ENTRY) {
                 $data['error_message'] = lang('Sales.transaction_failed');
                 return $this->_reload($data);
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-
-                // Validate receipt template to prevent path traversal
-                $receipt_template = $this->config['receipt_template'] ?? '';
-                if (!Sale_lib::isValidReceiptTemplate($receipt_template)) {
-                    $receipt_template = 'receipt_default';
-                }
-                $data['receipt_template_view'] = $receipt_template;
-
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);
             }
@@ -1170,13 +1318,7 @@ class Sales extends Secure_Controller
             $invoice_type = 'invoice';
         }
         $data['invoice_view'] = $invoice_type;
-
-        // Validate receipt template to prevent path traversal
-        $receipt_template = $this->config['receipt_template'] ?? '';
-        if (!Sale_lib::isValidReceiptTemplate($receipt_template)) {
-            $receipt_template = 'receipt_default';
-        }
-        $data['receipt_template_view'] = $receipt_template;
+        $this->_append_secondary_currency($data);
 
         return $data;
     }
@@ -1243,6 +1385,7 @@ class Sales extends Secure_Controller
         }
 
         $data['amount_change'] = $data['amount_due'] * -1;
+        $this->_append_secondary_currency($data);
 
         $data['comment'] = $this->sale_lib->get_comment();
         $data['email_receipt'] = $this->sale_lib->is_email_receipt();
@@ -1272,7 +1415,6 @@ class Sales extends Secure_Controller
 
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
-        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
 
         // TODO: the if/else set below should be converted to a switch
         if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
@@ -1661,9 +1803,7 @@ class Sales extends Secure_Controller
      */
     public function getSalesKeyboardHelp(): string
     {
-        return view('sales/help', [
-            'keyboardShortcuts' => $this->sale_lib->getKeyShortcuts()
-        ]);
+        return view('sales/help');
     }
 
     /**
@@ -1785,3 +1925,5 @@ class Sales extends Secure_Controller
         return null;
     }
 }
+
+

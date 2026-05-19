@@ -29,7 +29,7 @@
                             ) ?>
                         </div>
                         <div class="col-sm-7">
-                            <a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
+                            <a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel="noopener">
                                 <span><?= lang('Config.theme_preview') . ' ' . ucfirst(esc($config['theme'])) . ' ' ?></span>
                                 <span class="glyphicon glyphicon-new-window"></span>
                             </a>
@@ -130,14 +130,17 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.receiving_calculate_average_price'), 'receiving_calculate_average_price', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_checkbox([
-                        'name'    => 'receiving_calculate_average_price',
-                        'id'      => 'receiving_calculate_average_price',
-                        'value'   => 'receiving_calculate_average_price',
-                        'checked' => $config['receiving_calculate_average_price'] == 1
-                    ]) ?>
+                <?= form_label(lang('Config.receiving_cost_price_method'), 'receiving_cost_price_method', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-3">
+                    <?= form_dropdown(
+                        'receiving_cost_price_method',
+                        [
+                            'average' => lang('Config.receiving_cost_price_method_average'),
+                            'new'     => lang('Config.receiving_cost_price_method_new'),
+                        ],
+                        (($config['receiving_cost_price_method'] ?? (($config['receiving_calculate_average_price'] ?? 1) ? 'average' : 'new'))),
+                        ['id' => 'receiving_cost_price_method', 'class' => 'form-control']
+                    ) ?>
                 </div>
             </div>
 
@@ -278,7 +281,7 @@
                         'checked' => $config['gcaptcha_enable'] == 1
                     ]) ?>
                     <label class="control-label">
-                        <a href="https://www.google.com/recaptcha/admin" target="_blank">
+                        <a href="https://www.google.com/recaptcha/admin" target="_blank" rel="noopener noreferrer">
                             <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.gcaptcha_tooltip') ?>"></span>
                         </a>
                     </label>
@@ -406,6 +409,18 @@
             </div>
 
             <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.customer_display'), 'customer_display_enabled', ['class' => 'control-label col-xs-2']) ?>
+                <div class="col-xs-1">
+                    <?= form_checkbox([
+                        'name'    => 'customer_display_enabled',
+                        'id'      => 'customer_display_enabled',
+                        'value'   => 'customer_display_enabled',
+                        'checked' => ($config['customer_display_enabled'] ?? 1) == 1
+                    ]) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.show_office_group'), 'show_office_group', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_checkbox([
@@ -440,6 +455,7 @@
                     ]) ?>
                 </div>
             </div>
+
 
             <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.category_dropdown'), 'category_dropdown', ['class' => 'control-label col-xs-2']) ?>
@@ -541,3 +557,6 @@
         }));
     });
 </script>
+
+
+
