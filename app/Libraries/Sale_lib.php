@@ -108,6 +108,11 @@ class Sale_lib
         'custom_tax_invoice'
     ];
 
+    private const ALLOWED_RECEIPT_TEMPLATES = [
+        'receipt_default',
+        'receipt_short'
+    ];
+
     public function get_invoice_type_options(): array
     {
         $invoice_types = [];
@@ -159,6 +164,11 @@ class Sale_lib
     public static function isValidInvoiceType(string $invoice_type): bool
     {
         return in_array($invoice_type, self::ALLOWED_INVOICE_TYPES, true);
+    }
+
+    public static function isValidReceiptTemplate(string $receipt_template): bool
+    {
+        return in_array($receipt_template, self::ALLOWED_RECEIPT_TEMPLATES, true);
     }
 
     /**

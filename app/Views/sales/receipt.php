@@ -2,10 +2,13 @@
 /**
  * @var int $sale_id_num
  * @var bool $print_after_sale
+ * @var string $receipt_template_view
  * @var array $config
  */
 
 use App\Models\Employee;
+
+$template = $receipt_template_view ?? 'receipt_default';
 
 ?>
 
@@ -61,6 +64,6 @@ if (isset($error_message)) {
     <?php endif; ?>
 </div>
 
-<?= view('sales/' . $config['receipt_template']) ?>
+<?= view('sales/' . $template) ?>
 
 <?= view('partial/footer') ?>
