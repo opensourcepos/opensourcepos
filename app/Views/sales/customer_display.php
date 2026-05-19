@@ -11,7 +11,7 @@
  * @var float $amount_change
  */
 
-$priceWithCurrencyLabel = lang('Sales.price_with_currency');
+$priceWithCurrencyLabel = lang('Sales.price');
 
 ?>
 

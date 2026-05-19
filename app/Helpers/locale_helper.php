@@ -682,3 +682,44 @@ function decode_array(array $data): array
 
     return $data;
 }
+
+/**
+ * Provides a disabled secondary-currency context when the feature is not installed.
+ *
+ * @param array $config
+ * @return array
+ */
+function secondary_currency_context(array $config): array
+{
+    return [
+        'show' => false,
+        'rate' => 0.0,
+        'symbol' => '',
+        'code' => '',
+        'decimals' => (int) ($config['currency_decimals'] ?? totals_decimals()),
+    ];
+}
+
+/**
+ * Fallback secondary-currency formatter that keeps the customer display shell independent.
+ *
+ * @param float|int|string $number
+ * @param array $secondaryCurrency
+ * @return string
+ */
+function to_secondary_currency(float|int|string $number, array $secondaryCurrency = []): string
+{
+    return to_currency((string) $number);
+}
+
+/**
+ * Fallback dual-currency formatter that keeps the customer display shell independent.
+ *
+ * @param float|int|string $number
+ * @param array $secondaryCurrency
+ * @return string
+ */
+function to_secondary_currency_dual(float|int|string $number, array $secondaryCurrency = []): string
+{
+    return to_currency((string) $number);
+}
