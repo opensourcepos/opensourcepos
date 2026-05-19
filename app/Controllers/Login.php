@@ -49,6 +49,13 @@ class Login extends BaseController
                 return view('login', $data);
             }
 
+            if (!$data['is_latest'] || $data['is_new_install']) {
+                set_time_limit(3600);
+
+                $migration->setNamespace('App')->latest();
+                return redirect()->to('login');
+            }
+
             $rules = ['username' => 'required|login_check[data]'];
             $messages = [
                 'username' => [
@@ -62,13 +69,6 @@ class Login extends BaseController
 
                 return view('login', $data);
             }
-
-            if (!$data['is_latest']) {
-                set_time_limit(3600);
-
-                $migration->setNamespace('App')->latest();
-                return redirect()->to('login');
-            }
         }
 
         return redirect()->to('home');
@@ -79,18 +79,18 @@ class Login extends BaseController
         try {
             $migration = new MY_Migration(config('Migrations'));
             $migration->migrate_to_ci4();
-            
+
             set_time_limit(3600);
             $migration->setNamespace('App')->latest();
-            
+
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Migration completed successfully'
             ]);
-            
+
         } catch (\Exception $e) {
             log_message('error', 'Migration failed: ' . $e->getMessage());
-            
+
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Migration failed: ' . $e->getMessage()
