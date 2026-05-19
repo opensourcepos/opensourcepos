@@ -159,7 +159,13 @@ $request = Services::request();
         </div>
     </footer>
 
-    <script src="resources/jquery-2c872dbe60.min.js"></script>
+    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+        <!-- inject:login:debug:js -->
+        <!-- endinject -->
+    <?php else : ?>
+        <!-- inject:login:prod:js -->
+        <!-- endinject -->
+    <?php endif; ?>
     <script>
         const APP_STATE = {
             isNewInstall: <?= $is_new_install ? 'true' : 'false' ?>,

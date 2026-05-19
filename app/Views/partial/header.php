@@ -22,12 +22,23 @@ $request = Services::request();
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <?php $theme = (empty($config['theme']) ? 'flatly' : esc($config['theme'])); ?>
     <link rel="stylesheet" href="resources/bootswatch/<?= "$theme" ?>/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/opensourcepos-8f45024eca.min.css">
-    <?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
-        <link rel="stylesheet" href="<?= 'css/' . esc($config['theme']) . '.css' ?>">
-    <?php } ?>
-    <script src="resources/jquery-2c872dbe60.min.js"></script>
-    <script src="resources/opensourcepos-0c4b48a0bf.min.js"></script>
+
+    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+        <!-- inject:debug:css -->
+        <!-- endinject -->
+        <!-- inject:debug:js -->
+        <!-- endinject -->
+    <?php else : ?>
+        <!--inject:prod:css -->
+        <!-- endinject -->
+
+        <!-- Tweaks to the UI for a particular theme should drop here  -->
+        <?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
+            <link rel="stylesheet" href="<?= 'css/' . esc($config['theme']) . '.css' ?>">
+        <?php } ?>
+        <!-- inject:prod:js -->
+        <!-- endinject -->
+    <?php endif; ?>
 
     <?= view('partial/header_js') ?>
     <?= view('partial/lang_lines') ?>
