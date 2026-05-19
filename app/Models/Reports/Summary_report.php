@@ -41,30 +41,6 @@ abstract class Summary_report extends Report
             $sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
         }
 
-        $secondary_rate_where = $where;
-        if ($inputs['location_id'] != 'all') {
-            $secondary_rate_where .= ' AND sales_items.item_location = ' . $this->db->escape($inputs['location_id']);
-        }
-
-        if ($inputs['sale_type'] == 'complete') {
-            $secondary_rate_where .= ' AND sales.sale_status = ' . COMPLETED;
-            $secondary_rate_where .= ' AND (sales.sale_type = ' . SALE_TYPE_POS . ' OR sales.sale_type = ' . SALE_TYPE_INVOICE . ' OR sales.sale_type = ' . SALE_TYPE_RETURN . ')';
-        } elseif ($inputs['sale_type'] == 'sales') {
-            $secondary_rate_where .= ' AND sales.sale_status = ' . COMPLETED;
-            $secondary_rate_where .= ' AND (sales.sale_type = ' . SALE_TYPE_POS . ' OR sales.sale_type = ' . SALE_TYPE_INVOICE . ')';
-        } elseif ($inputs['sale_type'] == 'quotes') {
-            $secondary_rate_where .= ' AND sales.sale_status = ' . SUSPENDED;
-            $secondary_rate_where .= ' AND sales.sale_type = ' . SALE_TYPE_QUOTE;
-        } elseif ($inputs['sale_type'] == 'work_orders') {
-            $secondary_rate_where .= ' AND sales.sale_status = ' . SUSPENDED;
-            $secondary_rate_where .= ' AND sales.sale_type = ' . SALE_TYPE_WORK_ORDER;
-        } elseif ($inputs['sale_type'] == 'canceled') {
-            $secondary_rate_where .= ' AND sales.sale_status = ' . CANCELED;
-        } elseif ($inputs['sale_type'] == 'returns') {
-            $secondary_rate_where .= ' AND sales.sale_status = ' . COMPLETED;
-            $secondary_rate_where .= ' AND sales.sale_type = ' . SALE_TYPE_RETURN;
-        }
-
         // Create a temporary table to contain all the sum of taxes per sale item
         $this->db->query(
             'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
@@ -108,16 +84,6 @@ abstract class Summary_report extends Report
                 $sale_cost AS cost,
                 (IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit
         ");
-
-        $builder->select('(SELECT AVG(sale_rates.secondary_currency_rate)
-            FROM (
-                SELECT sales.sale_id, MAX(sales.secondary_currency_rate) AS secondary_currency_rate
-                FROM ' . $this->db->prefixTable('sales_items') . ' AS sales_items
-                INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
-                    ON sales.sale_id = sales_items.sale_id
-                WHERE ' . $secondary_rate_where . '
-                GROUP BY sales.sale_id
-            ) AS sale_rates) AS secondary_currency_rate', false);
     }
 
     /**
