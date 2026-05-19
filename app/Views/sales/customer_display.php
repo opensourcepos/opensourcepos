@@ -1,17 +1,19 @@
 <?php
 /**
  * @var array $cart
- * @var array $config
- * @var float $rate
  * @var float $total
  * @var float $subtotal
- * @var float $prediscount_subtotal
  * @var array $taxes
  * @var array $payments
- * @var float $amount_change
+ * @var float $amount_due
+ * @var float $payments_total
+ * @var float $paymentChangeDue
+ * @var string $customerName
+ * @var int $customerRewardPoints
+ * @var float $giftcardRemainder
  */
 
-$priceWithCurrencyLabel = lang('Sales.price');
+$priceLabel = lang('Sales.price');
 
 ?>
 
@@ -25,20 +27,17 @@ $priceWithCurrencyLabel = lang('Sales.price');
                             <table class="table table-striped table-condensed" id="register">
                                 <thead>
                                     <tr>
-                                        <th style="width: <?= (int) $cartItemWidth ?>%;"><?= lang('Sales.item_name') ?></th>
-                                        <?php if ($cartHasCustomerDisplay) { ?>
-                                            <th style="width: <?= (int) $cartPriceWidth ?>%;"><?= sprintf($priceWithCurrencyLabel, esc($customerDisplayCurrencyLabel)) ?></th>
-                                        <?php } ?>
-                                        <th style="width: <?= (int) $cartOriginalWidth ?>%;"><?= sprintf($priceWithCurrencyLabel, esc($originalCurrencyLabel)) ?></th>
-                                        <th style="width: <?= (int) $cartQuantityWidth ?>%;"><?= lang('Sales.quantity') ?></th>
-                                        <th style="width: <?= (int) $cartDiscountWidth ?>%;"><?= lang('Sales.discount') ?></th>
-                                        <th style="width: <?= (int) $cartTotalWidth ?>%;"><?= lang('Sales.total') ?></th>
+                                        <th style="width: 45%;"><?= lang('Sales.item_name') ?></th>
+                                        <th style="width: 15%;"><?= esc($priceLabel) ?></th>
+                                        <th style="width: 15%;"><?= lang('Sales.quantity') ?></th>
+                                        <th style="width: 10%;"><?= lang('Sales.discount') ?></th>
+                                        <th style="width: 15%;"><?= lang('Sales.total') ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="cart_contents">
                                     <?php if (count($cart) == 0) { ?>
                                         <tr>
-                                            <td colspan="<?= (int) $cartColspan ?>">
+                                            <td colspan="5">
                                                 <div class="alert alert-dismissible alert-info"><?= lang('Sales.no_items_in_cart') ?></div>
                                             </td>
                                         </tr>
@@ -49,11 +48,6 @@ $priceWithCurrencyLabel = lang('Sales.price');
                                                     <?= esc($item['name']) ?><br>
                                                     <?= !empty($item['attribute_values']) ? esc($item['attribute_values']) : '' ?>
                                                 </td>
-                                                <?php if ($cartHasCustomerDisplay) { ?>
-                                                    <td class="price-cell">
-                                                        <?= to_secondary_currency((float)$item['price'], $secondaryCurrency) ?>
-                                                    </td>
-                                                <?php } ?>
                                                 <td class="price-cell">
                                                     <?= to_currency($item['price']) ?>
                                                 </td>
@@ -68,7 +62,7 @@ $priceWithCurrencyLabel = lang('Sales.price');
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="<?= $cartHasCustomerDisplay ? 3 : 2 ?>"></td>
+                                                <td colspan="2"></td>
                                                 <td class="serial-cell">
                                                     <?= $item['is_serialized'] == 1 ? lang('Sales.serial') : '' ?>
                                                 </td>
@@ -96,16 +90,6 @@ $priceWithCurrencyLabel = lang('Sales.price');
                                     <th><?= lang('Sales.total') ?></th>
                                     <td><?= to_currency($total) ?></td>
                                 </tr>
-                                <?php if ($showCustomerDisplay): ?>
-                                    <tr>
-                                        <th><?= lang('Sales.total') ?> <?= esc($customerDisplayCurrencyLabel) ?></th>
-                                        <td><?= to_secondary_currency((float)$total, $secondaryCurrency) ?></td>
-                                    </tr>
-                                    <tr class="rate-row">
-                                        <th><?= lang('Sales.rate') ?></th>
-                                        <td><?= number_format((float) $rate, 2) ?></td>
-                                    </tr>
-                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -142,22 +126,10 @@ $priceWithCurrencyLabel = lang('Sales.price');
                                     <th><?= lang('Sales.amount_due') ?></th>
                                     <td><?= to_currency($amount_due) ?></td>
                                 </tr>
-                                <?php if ($showCustomerDisplay): ?>
-                                    <tr>
-                                        <th><?= lang('Sales.amount_due') ?> <?= esc($customerDisplayCurrencyLabel) ?></th>
-                                        <td><?= to_secondary_currency((float)$amount_due, $secondaryCurrency) ?></td>
-                                    </tr>
-                                <?php endif; ?>
                                 <tr>
                                     <th><?= lang('Sales.change_due') ?></th>
                                     <td><?= to_currency($paymentChangeDue ?? 0) ?></td>
                                 </tr>
-                                <?php if ($showCustomerDisplay): ?>
-                                    <tr>
-                                        <th><?= lang('Sales.change_due') ?> <?= esc($customerDisplayCurrencyLabel) ?></th>
-                                        <td><?= to_secondary_currency((float)($paymentChangeDue ?? 0), $secondaryCurrency) ?></td>
-                                    </tr>
-                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -217,8 +189,4 @@ $priceWithCurrencyLabel = lang('Sales.price');
             localStorage.removeItem(customerDisplayStorageKeys.open);
         });
     </script>
-
-</body>
-</html>
-
 

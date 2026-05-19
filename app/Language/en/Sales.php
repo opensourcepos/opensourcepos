@@ -164,7 +164,6 @@ return [
     "receipt_number"                   => "Sale #",
     "receipt_sent"                     => "Receipt sent to",
     "receipt_unsent"                   => "Receipt failed to be sent to",
-    "rate"                             => "Rate",
     "refund"                           => "Refund Type",
     "register"                         => "Sales Register",
     "remove_customer"                  => "Remove Customer",

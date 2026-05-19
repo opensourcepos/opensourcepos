@@ -66,36 +66,6 @@ class Sales extends Secure_Controller
         $this->employee = model(Employee::class);
     }
 
-    /**
-     * Adds the shared secondary currency context to a view data array.
-     *
-     * @param array $data
-     * @return void
-     */
-    private function _append_secondary_currency(array &$data): void
-    {
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $data['secondaryCurrency'] = $secondaryCurrency;
-
-        if (!$secondaryCurrency['show']) {
-            return;
-        }
-
-        $displayFields = [
-            'total' => 'secondaryTotalDisplay',
-            'amount_due' => 'secondaryAmountDueDisplay',
-            'cash_amount_due' => 'secondaryCashAmountDueDisplay',
-            'non_cash_total' => 'secondaryNonCashTotalDisplay',
-            'non_cash_amount_due' => 'secondaryNonCashAmountDueDisplay'
-        ];
-
-        foreach ($displayFields as $sourceField => $targetField) {
-            if (array_key_exists($sourceField, $data)) {
-                $data[$targetField] = to_secondary_currency((float) $data[$sourceField], $secondaryCurrency);
-            }
-        }
-    }
-
     public function getIndex(): ResponseInterface|string
     {
         $this->session->set('allow_temp_items', 1);
@@ -118,26 +88,16 @@ class Sales extends Secure_Controller
             $this->session->set('sale_id', NEW_ENTRY);
         }
 
-        $secondaryCurrency = secondary_currency_context($this->config);
-        $secondaryCurrencyEnabled = (($this->config['secondary_currency_enabled'] ?? false) == 1);
         $cashRounding = $this->sale_lib->reset_cash_rounding();
-        $showCustomerDisplay = $secondaryCurrencyEnabled && !empty($secondaryCurrency['rate']) && (float) $secondaryCurrency['rate'] > 0;
         $companyLines = preg_split("/\r\n|\r|\n/", (string) ($this->config['company'] ?? '')) ?: [];
         $companyName = array_shift($companyLines) ?? '';
         $companyDetails = trim(implode("\n", $companyLines));
-        $secondaryCurrencySymbol = trim((string) ($this->config['secondary_currency_symbol'] ?? ''));
-        $secondaryCurrencyCode = trim((string) ($this->config['secondary_currency_code'] ?? ''));
-        $originalCurrencySymbol = trim((string) ($this->config['currency_symbol'] ?? ''));
-        $customerDisplayCurrencyLabel = $secondaryCurrencyCode !== '' ? $secondaryCurrencyCode : ($secondaryCurrencySymbol !== '' ? $secondaryCurrencySymbol : 'LBP');
-        $originalCurrencyLabel = $originalCurrencySymbol !== '' ? $originalCurrencySymbol : '$';
-        $cartHasCustomerDisplay = $showCustomerDisplay;
-        $cartColspan = $cartHasCustomerDisplay ? 6 : 5;
-        $cartItemWidth = $cartHasCustomerDisplay ? 32 : 44;
-        $cartPriceWidth = $cartHasCustomerDisplay ? 18 : 0;
-        $cartOriginalWidth = $cartHasCustomerDisplay ? 18 : 26;
-        $cartQuantityWidth = $cartHasCustomerDisplay ? 12 : 10;
-        $cartDiscountWidth = $cartHasCustomerDisplay ? 10 : 9;
-        $cartTotalWidth = $cartHasCustomerDisplay ? 10 : 11;
+        $cartColspan = 5;
+        $cartItemWidth = 45;
+        $cartPriceWidth = 15;
+        $cartQuantityWidth = 15;
+        $cartDiscountWidth = 10;
+        $cartTotalWidth = 15;
 
         $data = [
             'cash_rounding' => $cashRounding,
@@ -182,22 +142,11 @@ class Sales extends Secure_Controller
             'email_receipt' => $this->sale_lib->is_email_receipt(),
             'config' => $this->config,
             'mode' => $this->sale_lib->get_mode(),
-            'rate' => (float) ($secondaryCurrency['rate'] ?? $this->config['secondary_currency_rate'] ?? 0),
-            'secondaryCurrency' => $secondaryCurrency,
-            'secondaryCurrencyEnabled' => $secondaryCurrencyEnabled,
-            'showCustomerDisplay' => $showCustomerDisplay,
             'companyName' => $companyName,
             'companyDetails' => $companyDetails,
-            'secondaryCurrencySymbol' => $secondaryCurrencySymbol,
-            'secondaryCurrencyCode' => $secondaryCurrencyCode,
-            'originalCurrencySymbol' => $originalCurrencySymbol,
-            'customerDisplayCurrencyLabel' => $customerDisplayCurrencyLabel,
-            'originalCurrencyLabel' => $originalCurrencyLabel,
-            'cartHasCustomerDisplay' => $cartHasCustomerDisplay,
             'cartColspan' => $cartColspan,
             'cartItemWidth' => $cartItemWidth,
             'cartPriceWidth' => $cartPriceWidth,
-            'cartOriginalWidth' => $cartOriginalWidth,
             'cartQuantityWidth' => $cartQuantityWidth,
             'cartDiscountWidth' => $cartDiscountWidth,
             'cartTotalWidth' => $cartTotalWidth,
@@ -970,8 +919,6 @@ class Sales extends Secure_Controller
 
                 // Resort and filter cart lines for printing
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
-                $this->_append_secondary_currency($data);
-
                 if ($data['sale_id_num'] == NEW_ENTRY) {
                     $data['error_message'] = lang('Sales.transaction_failed');
                     return $this->_reload($data);
@@ -1010,8 +957,6 @@ class Sales extends Secure_Controller
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
                 $data['barcode'] = null;
-                $this->_append_secondary_currency($data);
-
                 $this->sale_lib->clear_all();
                 return view('sales/work_order', $data);
             }
@@ -1038,8 +983,6 @@ class Sales extends Secure_Controller
 
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
                 $data['barcode'] = null;
-                $this->_append_secondary_currency($data);
-
                 $this->sale_lib->clear_all();
                 return view('sales/quote', $data);
             }
@@ -1057,8 +1000,6 @@ class Sales extends Secure_Controller
             $data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
             $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
-            $this->_append_secondary_currency($data);
-
             if ($data['sale_id_num'] == NEW_ENTRY) {
                 $data['error_message'] = lang('Sales.transaction_failed');
                 return $this->_reload($data);
@@ -1318,8 +1259,6 @@ class Sales extends Secure_Controller
             $invoice_type = 'invoice';
         }
         $data['invoice_view'] = $invoice_type;
-        $this->_append_secondary_currency($data);
-
         return $data;
     }
 
@@ -1385,7 +1324,6 @@ class Sales extends Secure_Controller
         }
 
         $data['amount_change'] = $data['amount_due'] * -1;
-        $this->_append_secondary_currency($data);
 
         $data['comment'] = $this->sale_lib->get_comment();
         $data['email_receipt'] = $this->sale_lib->is_email_receipt();
