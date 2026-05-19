@@ -41,12 +41,7 @@ class OSPOS extends BaseConfig
             $db = Database::connect();
 
             if (!$db->tableExists('app_config')) {
-                $this->settings = [
-                    'language'      => 'english',
-                    'language_code' => 'en',
-                    'company'       => 'Home',
-                    'barcode_type'  => 'Code39'
-                ];
+                $this->settings = $this->getDefaultSettings();
                 return;
             }
 
@@ -56,13 +51,18 @@ class OSPOS extends BaseConfig
             }
             $this->cache->save('settings', encode_array($this->settings));
         } catch (\Exception $e) {
-            $this->settings = [
-                'language'      => 'english',
-                'language_code' => 'en',
-                'company'       => 'Home',
-                'barcode_type'  => 'Code39'
-            ];
+            $this->settings = $this->getDefaultSettings();
         }
+    }
+
+    private function getDefaultSettings(): array
+    {
+        return [
+            'language'      => 'english',
+            'language_code' => 'en',
+            'company'       => 'Home',
+            'barcode_type'  => 'Code39'
+        ];
     }
 
     /**
