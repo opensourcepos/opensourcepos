@@ -497,7 +497,19 @@ class Config extends Secure_Controller
      */
     public function postSaveLocale(): ResponseInterface
     {
-        $exploded = explode(":", $this->request->getPost('language'));
+        $language = trim((string) $this->request->getPost('language'));
+        $languageCode = 'en';
+        $languageName = 'english';
+
+        if ($language !== '' && str_contains($language, ':')) {
+            $exploded = array_map('trim', explode(':', $language, 2));
+
+            if (count($exploded) === 2) {
+                $languageCode = htmlspecialchars($exploded[0]);
+                $languageName = htmlspecialchars($exploded[1]);
+            }
+        }
+
         $currency_symbol = $this->request->getPost('currency_symbol');
         $secondaryCurrencyCode = strtoupper(trim((string) $this->request->getPost('secondary_currency_code')));
 
@@ -513,8 +525,8 @@ class Config extends Secure_Controller
             'secondary_currency_code'     => $secondaryCurrencyCode,
             'secondary_currency_rate'     => $this->request->getPost('secondary_currency_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
             'secondary_currency_decimals' => $this->request->getPost('secondary_currency_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'language_code'         => $exploded[0],
-            'language'              => $exploded[1],
+            'language_code'         => $languageCode,
+            'language'              => $languageName,
             'timezone'              => $this->request->getPost('timezone'),
             'dateformat'            => $this->request->getPost('dateformat'),
             'timeformat'            => $this->request->getPost('timeformat'),
