@@ -177,7 +177,7 @@ helper('url');
                         <tr>
                             <td>
                                 <?php
-                                echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
+                                echo anchor('#', '<span class="glyphicon glyphicon-trash"></span>', ['class' => 'delete_item_button', 'data-item-id' => $line]);
                                 echo form_hidden('location', (string)$item['item_location']);
                                 echo form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]);
                                 ?>
@@ -661,7 +661,8 @@ helper('url');
             $.post("<?= site_url('sales/removeCustomer'); ?>", redirect);
         });
 
-        $(".delete_item_button").click(function() {
+        $(".delete_item_button").click(function(event) {
+            event.preventDefault();
             const item_id = $(this).data('item-id');
             $.post("<?= site_url('sales/deleteItem/'); ?>" + item_id, redirect);
         });
