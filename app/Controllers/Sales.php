@@ -20,6 +20,7 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Config\OSPOS;
@@ -915,6 +916,8 @@ class Sales extends Secure_Controller
                     $receipt_template = 'receipt_default';
                 }
                 $data['receipt_template_view'] = $receipt_template;
+
+                Events::trigger('sale_complete', $data['sale_id_num'], $sale_type);
 
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);
