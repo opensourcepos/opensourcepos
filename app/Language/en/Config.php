@@ -272,6 +272,9 @@ return [
     "receipt_show_taxes"                        => "Show Taxes",
     "receipt_show_total_discount"               => "Show Total Discount",
     "receipt_template"                          => "Receipt Template",
+    "receiving_cost_price_method"               => "Receiving Cost Price Method",
+    "receiving_cost_price_method_average"       => "Average Price",
+    "receiving_cost_price_method_new"           => "New Price",
     "receiving_calculate_average_price"         => "Calc avg. Price (Receiving)",
     "recv_invoice_format"                       => "Receivings Invoice Format",
     "register_mode_default"                     => "Default Register Mode",
@@ -288,6 +291,7 @@ return [
     "security_issue"                            => "Security Vulnerability Warning",
     "server_notice"                             => "Please use the below info for issue reporting.",
     "service_charge"                            => "",
+    "customer_display"                          => "Customer Display",
     "show_due_enable"                           => "",
     "show_office_group"                         => "Show office icon",
     "statistics"                                => "Send Statistics",
@@ -302,10 +306,6 @@ return [
     "suggestions_layout"                        => "Search Suggestions Layout",
     "suggestions_second_column"                 => "Column 2",
     "suggestions_third_column"                  => "Column 3",
-    "shortcuts"                                 => "Shortcuts",
-    "shortcuts_configuration"                   => "Sales Keyboard Shortcut Configuration",
-    "shortcuts_duplicate_bindings"              => "Shortcut bindings must be unique.",
-    "shortcuts_save_error"                       => "Unable to save shortcut settings.",
     "system_conf"                               => "Setup & Conf",
     "system_info"                               => "System Info",
     "table"                                     => "Table",
@@ -334,3 +334,5 @@ return [
     "work_order_enable"                         => "Work Order Support",
     "work_order_format"                         => "Work Order Format",
 ];
+
+

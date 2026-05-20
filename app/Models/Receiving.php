@@ -153,8 +153,11 @@ class Receiving extends Model
 
             $items_received = $item_data['receiving_quantity'] != 0 ? $item_data['quantity'] * $item_data['receiving_quantity'] : $item_data['quantity'];
 
-            // Update cost price, if changed AND is set in config as wanted
-            if ($cur_item_info->cost_price != $item_data['price'] && $config['receiving_calculate_average_price']) {
+            $receiving_cost_price_method = $config['receiving_cost_price_method']
+                ?? (($config['receiving_calculate_average_price'] ?? 1) ? 'average' : 'new');
+
+            // Update cost price, if changed AND the configured method supports it.
+            if ($cur_item_info->cost_price != $item_data['price'] && in_array($receiving_cost_price_method, ['average', 'new'], true)) {
                 $item->change_cost_price($item_data['item_id'], $items_received, $item_data['price'], $cur_item_info->cost_price);
             }
 

@@ -82,7 +82,7 @@ class Config extends Secure_Controller
         $npmDev = false;
         $license = [];
 
-        $license[$i]['title'] = 'Open Source Point of Sale ' . config('App')->application_version;
+        $license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
 
         if (file_exists('license/LICENSE')) {
             $license[$i]['text'] = file_get_contents('license/LICENSE', false, null, 0, 3000);
@@ -370,6 +370,16 @@ class Config extends Secure_Controller
      */
     public function postSaveGeneral(): ResponseInterface
     {
+        $receiving_cost_price_method = (string) $this->request->getPost('receiving_cost_price_method');
+
+        if (!in_array($receiving_cost_price_method, ['average', 'new'], true)) {
+            $receiving_cost_price_method = '';
+        }
+
+        if ($receiving_cost_price_method === null || $receiving_cost_price_method === '') {
+            $receiving_cost_price_method = $this->request->getPost('receiving_calculate_average_price') != null ? 'average' : 'new';
+        }
+
         $batchSaveData = [
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),
@@ -378,14 +388,15 @@ class Config extends Secure_Controller
             'default_receivings_discount_type'  => $this->request->getPost('default_receivings_discount_type') != null,
             'default_receivings_discount'       => parse_decimals($this->request->getPost('default_receivings_discount')),
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
-            'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
+            'receiving_cost_price_method'       => $receiving_cost_price_method,
+            'receiving_calculate_average_price' => $receiving_cost_price_method === 'average',
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
             'notify_horizontal_position'        => $this->request->getPost('notify_horizontal_position'),
             'notify_vertical_position'          => $this->request->getPost('notify_vertical_position'),
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
             'image_max_height'                  => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
             'image_max_size'                    => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
-            'image_allowed_types'               => implode(',', $this->request->getPost('image_allowed_types')),
+            'image_allowed_types'               => implode(',', (array) ($this->request->getPost('image_allowed_types') ?? [])),
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),
@@ -394,6 +405,7 @@ class Config extends Secure_Controller
             'suggestions_third_column'          => $this->validateSuggestionsColumn($this->request->getPost('suggestions_third_column'), 'other'),
             'giftcard_number'                   => $this->request->getPost('giftcard_number'),
             'derive_sale_quantity'              => $this->request->getPost('derive_sale_quantity') != null,
+            'customer_display_enabled'          => $this->request->getPost('customer_display_enabled') != null,
             'multi_pack_enabled'                => $this->request->getPost('multi_pack_enabled') != null,
             'include_hsn'                       => $this->request->getPost('include_hsn') != null,
             'category_dropdown'                 => $this->request->getPost('category_dropdown') != null
@@ -405,11 +417,13 @@ class Config extends Secure_Controller
 
         $attributeSuccess = true;
         if ($batchSaveData['category_dropdown']) {
-            $definitionData['definition_name'] = 'ospos_category';
-            $definitionData['definition_flags'] = 0;
-            $definitionData['definition_type'] = 'DROPDOWN';
-            $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
-            $definitionData['deleted'] = 0;
+            $definitionData = [
+                'definition_name'  => 'ospos_category',
+                'definition_flags' => 0,
+                'definition_type'  => 'DROPDOWN',
+                'definition_id'    => CATEGORY_DEFINITION_ID,
+                'deleted'          => 0,
+            ];
 
             $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
         } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
@@ -476,9 +490,13 @@ class Config extends Secure_Controller
     {
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
+        $currencyCode = strtoupper(substr(trim((string) $this->request->getPost('currency_code')), 0, 3));
+        if (!preg_match('/^[A-Z]{3}$/', $currencyCode)) {
+            $currencyCode = '';
+        }
         $batch_save_data = [
             'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
-            'currency_code'         => $this->request->getPost('currency_code'),
+            'currency_code'         => $currencyCode,
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
             'timezone'              => $this->request->getPost('timezone'),
@@ -964,7 +982,7 @@ class Config extends Secure_Controller
         $batchSaveData = [];
 
         foreach ($currentShortcuts as $name => $shortcut) {
-            $postedValue = trim((string)$this->request->getPost('key_' . $name));
+            $postedValue = trim((string) $this->request->getPost('key_' . $name));
 
             if (!in_array($postedValue, $allowedShortcuts, true)) {
                 $postedValue = $shortcut['value'];
@@ -998,8 +1016,9 @@ class Config extends Secure_Controller
      */
     public function postSaveInvoice(): ResponseInterface
     {
+        $invoiceEnabled = $this->request->getPost('invoice_enable') != null;
         $batch_save_data = [
-            'invoice_enable'              => $this->request->getPost('invoice_enable') != null,
+            'invoice_enable'              => $invoiceEnabled,
             'sales_invoice_format'        => $this->request->getPost('sales_invoice_format'),
             'sales_quote_format'          => $this->request->getPost('sales_quote_format'),
             'recv_invoice_format'         => $this->request->getPost('recv_invoice_format'),
@@ -1022,7 +1041,7 @@ class Config extends Secure_Controller
         // Update the register mode with the latest change so that if the user
         // switches immediately back to the register the mode reflects the change
         if ($success) {
-            if ($this->config['invoice_enable']) {
+            if ($invoiceEnabled) {
                 $this->sale_lib->set_mode($this->config['default_register_mode']);
             } else {
                 $this->sale_lib->set_mode('sale');
@@ -1068,3 +1087,6 @@ class Config extends Secure_Controller
         return in_array($column, $allowed, true) ? $column : $fallback;
     }
 }
+
+
+

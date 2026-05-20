@@ -102,10 +102,22 @@ jobs:
       - name: Create .env file
         run: cp .env.example .env
 
+      - name: Run migrations
+        env:
+          CI_ENVIRONMENT: testing
+          MYSQL_HOST_NAME: 127.0.0.1
+          MYSQL_USERNAME: admin
+          MYSQL_PASSWORD: pointofsale
+          MYSQL_DB_NAME: ospos
+        run: php spark migrate --all --no-interaction
+
       - name: Run PHPUnit tests
         env:
           CI_ENVIRONMENT: testing
           MYSQL_HOST_NAME: 127.0.0.1
+          MYSQL_USERNAME: admin
+          MYSQL_PASSWORD: pointofsale
+          MYSQL_DB_NAME: ospos
         run: composer test -- --log-junit test-results/junit.xml
 
       - name: Upload test results

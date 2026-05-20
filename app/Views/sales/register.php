@@ -61,6 +61,7 @@ if (isset($success)) {
 helper('url');
 ?>
 
+
 <div id="register_wrapper">
 
     <!-- Top register controls -->
@@ -87,6 +88,16 @@ helper('url');
                     </li>
                     <li class="pull-left">
                         <?= form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                    </li>
+                <?php } ?>
+
+                <?php if (($config['customer_display_enabled'] ?? true) == 1) { ?>
+                    <li class="pull-right">
+                        <?= anchor(
+                            "$controller_name/customerDisplay",
+                            '<span class="glyphicon glyphicon-blackboard">&nbsp;</span>' . lang(ucfirst($controller_name) . '.customer_display'),
+                            ['class' => 'btn btn-success btn-sm', 'id' => 'show_customer_display', 'title' => lang(ucfirst($controller_name) . '.customer_display'), 'onclick' => 'return openCustomerDisplay(this.href);']
+                        ) ?>
                     </li>
                 <?php } ?>
 
@@ -166,7 +177,7 @@ helper('url');
                         <tr>
                             <td>
                                 <?php
-                                echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
+                                echo anchor('#', '<span class="glyphicon glyphicon-trash"></span>', ['class' => 'delete_item_button', 'data-item-id' => $line]);
                                 echo form_hidden('location', (string)$item['item_location']);
                                 echo form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]);
                                 ?>
@@ -362,9 +373,6 @@ helper('url');
                     <button class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "customers/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_customer") ?>">
                         <span class="glyphicon glyphicon-user">&nbsp;</span><?= lang(ucfirst($controller_name) . ".new_customer") ?>
                     </button>
-                    <button class="btn btn-default btn-sm modal-dlg" id="show_keyboard_help" data-href="<?= esc("$controller_name/salesKeyboardHelp") ?>" title="<?= lang(ucfirst($controller_name) . '.key_title') ?>">
-                        <span class="glyphicon glyphicon-share-alt">&nbsp;</span><?= lang(ucfirst($controller_name) . '.key_help') ?>
-                    </button>
                 </div>
             <?php } ?>
         <?= form_close() ?>
@@ -380,7 +388,7 @@ helper('url');
             </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
-                    <th style="width: 55%;"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></th>
+                <th style="width: 55%;"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></th>
                     <th style="width: 45%; text-align: right;"><?= to_currency_tax($tax['sale_tax_amount']) ?></th>
                 </tr>
             <?php } ?>
@@ -396,16 +404,15 @@ helper('url');
                     <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.payments_total') ?></th>
                     <th style="width: 45%; text-align: right;"><?= to_currency($payments_total) ?></th>
                 </tr>
-                <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
-                </tr>
-            </table>
+            <tr>
+                <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
+                <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
+            </tr>
+        </table>
 
             <div id="payment_details">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
-                        <input type="hidden" name="complete_after_payment" value="0">
                         <table class="sales_table_100">
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
@@ -457,8 +464,8 @@ helper('url');
                             <tr>
                                 <td><span id="amount_tendered_label"><?= lang(ucfirst($controller_name) . '.amount_tendered') ?></span></td>
                                 <td>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-control input-sm non-giftcard-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-control input-sm giftcard-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
+                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered_non_giftcard', 'class' => 'form-control input-sm non-giftcard-input amount-tendered-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered_giftcard', 'class' => 'form-control input-sm giftcard-input amount-tendered-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
                                 </td>
                             </tr>
                         </table>
@@ -582,8 +589,71 @@ helper('url');
         cancel: keyboardShortcuts?.cancel?.code ?? null
     };
 
+    window.customerDisplayWindow = window.customerDisplayWindow || null;
+    window.customerDisplayDisplayId = window.customerDisplayDisplayId || sessionStorage.getItem('customerDisplayId') || '';
+    if (window.customerDisplayDisplayId === '') {
+        window.customerDisplayDisplayId = 'display_' + Date.now() + Math.random().toString(36).slice(2);
+        sessionStorage.setItem('customerDisplayId', window.customerDisplayDisplayId);
+    }
+
+    window.customerDisplayStorageSuffix = function() {
+        return window.customerDisplayDisplayId ? '_' + window.customerDisplayDisplayId : '';
+    };
+
+    window.customerDisplayStorageKeys = function() {
+        const suffix = window.customerDisplayStorageSuffix();
+
+        return {
+            open: 'customerDisplayOpen' + suffix,
+            dirtyAt: 'customerDisplayDirtyAt' + suffix
+        };
+    };
+
+    window.openCustomerDisplay = function(url) {
+        if (window.customerDisplayDisplayId === '') {
+            window.customerDisplayDisplayId = String(Date.now()) + Math.random().toString(36).slice(2);
+        }
+
+        const keys = window.customerDisplayStorageKeys();
+        const displayUrl = new URL(url, window.location.href);
+        displayUrl.searchParams.set('displayId', window.customerDisplayDisplayId);
+
+        sessionStorage.setItem('customerDisplayId', window.customerDisplayDisplayId);
+        localStorage.setItem(keys.open, '1');
+        localStorage.setItem(keys.dirtyAt, String(Date.now()));
+        window.customerDisplayWindow = window.open(displayUrl.toString(), 'customer_display_' + window.customerDisplayDisplayId, 'width=1280,height=720,resizable=yes,scrollbars=yes');
+        if (window.customerDisplayWindow && !window.customerDisplayWindow.closed) {
+            window.customerDisplayWindow.focus();
+        }
+
+        return false;
+    };
+
+    window.refreshCustomerDisplay = function() {
+        const keys = window.customerDisplayStorageKeys();
+
+        if (localStorage.getItem(keys.open) !== '1') {
+            return;
+        }
+
+        localStorage.setItem(keys.dirtyAt, String(Date.now()));
+        if (window.customerDisplayWindow && !window.customerDisplayWindow.closed) {
+            window.customerDisplayWindow.location.reload();
+            window.customerDisplayWindow.focus();
+        }
+    };
+
+    window.notifyCustomerDisplay = function() {
+        window.refreshCustomerDisplay();
+    };
+
     $(document).ready(function() {
+        setTimeout(function() {
+            window.notifyCustomerDisplay();
+        }, 300);
+
         const redirect = function() {
+            window.notifyCustomerDisplay();
             window.location.href = "<?= site_url('sales'); ?>";
         };
 
@@ -591,7 +661,8 @@ helper('url');
             $.post("<?= site_url('sales/removeCustomer'); ?>", redirect);
         });
 
-        $(".delete_item_button").click(function() {
+        $(".delete_item_button").click(function(event) {
+            event.preventDefault();
             const item_id = $(this).data('item-id');
             $.post("<?= site_url('sales/deleteItem/'); ?>" + item_id, redirect);
         });
@@ -611,7 +682,10 @@ helper('url');
                     'item_id': item_id,
                     'item_number': item_number,
                 },
-                dataType: 'json'
+                dataType: 'json',
+                success: function() {
+                    window.notifyCustomerDisplay();
+                }
             });
         });
 
@@ -625,7 +699,10 @@ helper('url');
                     'item_id': item_id,
                     'item_name': item_name,
                 },
-                dataType: 'json'
+                dataType: 'json',
+                success: function() {
+                    window.notifyCustomerDisplay();
+                }
             });
         });
 
@@ -639,7 +716,10 @@ helper('url');
                     'item_id': item_id,
                     'item_description': item_description,
                 },
-                dataType: 'json'
+                dataType: 'json',
+                success: function() {
+                    window.notifyCustomerDisplay();
+                }
             });
         });
 
@@ -688,6 +768,7 @@ helper('url');
             delay: 10,
             select: function(a, ui) {
                 $(this).val(ui.item.value);
+                window.notifyCustomerDisplay();
                 $('#select_customer_form').submit();
                 return false;
             }
@@ -706,6 +787,7 @@ helper('url');
             delay: 10,
             select: function(a, ui) {
                 $(this).val(ui.item.value);
+                window.notifyCustomerDisplay();
                 $('#add_payment_form').submit();
                 return false;
             }
@@ -745,28 +827,33 @@ helper('url');
         });
 
         $('#finish_sale_button').click(function() {
+            window.notifyCustomerDisplay();
             $('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
             $('#buttons_form').submit();
         });
 
         $('#finish_invoice_quote_button').click(function() {
+            window.notifyCustomerDisplay();
             $('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
             $('#buttons_form').submit();
         });
 
         $('#suspend_sale_button').click(function() {
+            window.notifyCustomerDisplay();
             $('#buttons_form').attr('action', "<?= site_url("$controller_name/suspend") ?>");
             $('#buttons_form').submit();
         });
 
         $('#cancel_sale_button').click(function() {
             if (confirm("<?= lang(ucfirst($controller_name) . '.confirm_cancel_sale') ?>")) {
+                window.notifyCustomerDisplay();
                 $('#buttons_form').attr('action', "<?= site_url("$controller_name/cancel") ?>");
                 $('#buttons_form').submit();
             }
         });
 
         $('#add_payment_button').click(function() {
+            window.notifyCustomerDisplay();
             $('#add_payment_form').find('input[name="complete_after_payment"]').val('0');
             $('#add_payment_form').submit();
         });
@@ -779,7 +866,7 @@ helper('url');
             }
         });
 
-        $('#amount_tendered').keypress(function(event) {
+        $('.amount-tendered-input').keypress(function(event) {
             if (event.which == 13) {
                 $('#add_payment_form').submit();
             }
@@ -803,11 +890,13 @@ helper('url');
             if (response.success) {
                 if (resource.match(/customers$/)) {
                     $('#customer').val(response.id);
+                    window.notifyCustomerDisplay();
                     $('#select_customer_form').submit();
                 } else {
                     var $stock_location = $("select[name='stock_location']").val();
                     $('#item_location').val($stock_location);
                     $('#item').val(response.id);
+                    window.notifyCustomerDisplay();
                     if (stay_open) {
                         $('#add_item_form').ajaxSubmit();
                     } else {
@@ -830,12 +919,11 @@ helper('url');
 
     function check_payment_type() {
         var cash_mode = <?= json_encode($cash_mode) ?>;
-
         if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
-            $("#amount_tendered:enabled").val('').focus();
+            $(".amount-tendered-input:enabled").val('').focus();
             $(".giftcard-input").attr('disabled', false);
             $(".non-giftcard-input").attr('disabled', true);
             $(".giftcard-input:enabled").val('').focus();
@@ -843,14 +931,14 @@ helper('url');
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
-            $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
+            $(".amount-tendered-input:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
-            $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
+            $(".amount-tendered-input:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
         }
@@ -861,6 +949,7 @@ helper('url');
         if ($(event.target).closest('.modal').length || $('.modal.in').length) {
             return;
         }
+
         if (event.altKey) {
             switch (event.keyCode) {
                 case shortcutCodes.items:
@@ -878,8 +967,7 @@ helper('url');
                     $("#show_suspended_sales_button").click();
                     break;
                 case shortcutCodes.amount:
-                    $("#amount_tendered").focus();
-                    $("#amount_tendered").select();
+                    $(".amount-tendered-input:enabled").focus().select();
                     break;
                 case shortcutCodes.payment:
                     $("#add_payment_button").click();
@@ -909,3 +997,6 @@ helper('url');
 </script>
 
 <?= view('partial/footer') ?>
+
+
+
