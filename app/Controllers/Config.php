@@ -370,7 +370,11 @@ class Config extends Secure_Controller
      */
     public function postSaveGeneral(): ResponseInterface
     {
-        $receiving_cost_price_method = $this->request->getPost('receiving_cost_price_method');
+        $receiving_cost_price_method = (string) $this->request->getPost('receiving_cost_price_method');
+
+        if (!in_array($receiving_cost_price_method, ['average', 'new'], true)) {
+            $receiving_cost_price_method = '';
+        }
 
         if ($receiving_cost_price_method === null || $receiving_cost_price_method === '') {
             $receiving_cost_price_method = $this->request->getPost('receiving_calculate_average_price') != null ? 'average' : 'new';
@@ -413,11 +417,13 @@ class Config extends Secure_Controller
 
         $attributeSuccess = true;
         if ($batchSaveData['category_dropdown']) {
-            $definitionData['definition_name'] = 'ospos_category';
-            $definitionData['definition_flags'] = 0;
-            $definitionData['definition_type'] = 'DROPDOWN';
-            $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
-            $definitionData['deleted'] = 0;
+            $definitionData = [
+                'definition_name'  => 'ospos_category',
+                'definition_flags' => 0,
+                'definition_type'  => 'DROPDOWN',
+                'definition_id'    => CATEGORY_DEFINITION_ID,
+                'deleted'          => 0,
+            ];
 
             $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
         } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {

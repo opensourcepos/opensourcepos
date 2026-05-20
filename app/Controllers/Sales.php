@@ -755,7 +755,7 @@ class Sales extends Secure_Controller
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function getDeleteItem(int $item_id): ResponseInterface|string
+    public function postDeleteItem(int $item_id): ResponseInterface|string
     {
         $this->sale_lib->delete_item($item_id);
 
