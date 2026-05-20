@@ -95,15 +95,15 @@ The `PluginManager` class handles:
 
 OSPOS fires these events that plugins can listen to:
 
-| Event                  | Arguments              | Description                                      |
-|------------------------|------------------------|--------------------------------------------------|
-| `item_sale`            | `array $saleData`      | Fired when a sale is completed                   |
-| `item_return`          | `array $returnData`    | Fired when a return is processed                 |
-| `item_change`          | `int $itemId`          | Fired when an item is created/updated/deleted    |
-| `item_inventory`       | `array $inventoryData` | Fired on inventory changes                       |
-| `items_csv_import`     | `array $importData`    | Fired after items CSV import                     |
-| `customers_csv_import` | `array $importData`    | Fired after customers CSV import                 |
-| `customer_load`        | `array $customerData`  | Fired during customer form view data preparation |
+| Event              | Arguments                          | Fired when                                              |
+|--------------------|------------------------------------|---------------------------------------------------------|
+| `customer_loaded`  | `int $customerId`                  | Customer form view is rendered (`Customers::getView()`) |
+| `customer_saved`   | `array $customerIds`               | Customer created/updated via form save or CSV import    |
+| `customer_deleted` | `int $personId, string $email`     | Customer deleted                                        |
+| `item_saved`       | `array $itemIds`                   | Item created/updated via form save or CSV import        |
+| `sale_complete`    | `int $saleIdNum, string $saleType` | Sale finalized and receipt rendered                     |
+
+> **Note:** `customer_saved` and `item_saved` always receive an array of IDs. Single-record saves wrap the one ID in an array; CSV imports pass all successfully saved IDs.
 
 ## View Hooks (Injecting Plugin Content into Views)
 
@@ -183,15 +183,12 @@ pluginContentExists(string $section): bool
 
 ### Standard Hook Points
 
-Core views should define these standard hook points:
+These hook points are currently defined in core views:
 
-| Hook Name | Location | Usage |
-|-----------|----------|-------|
-| `view:receipt_actions` | Receipt view action buttons | Add receipt-related buttons |
-| `view:customer_tabs` | Customer form tabs | Add customer-related tabs |
-| `view:item_form_buttons` | Item form action buttons | Add item-related buttons |
-| `view:sales_complete` | Sale complete screen | Post-sale integration UI |
-| `view:reports_menu` | Reports menu | Add custom report links |
+| Hook (event key)         | View file                          | Data passed                       | Usage                                          |
+|--------------------------|------------------------------------|-----------------------------------|------------------------------------------------|
+| `view:customer_tab_nav`  | `app/Views/customers/form.php:28`  | `['customer' => $person_info]`    | Add `<li>` tab navigation entries to customer form  |
+| `view:customer_tab_panels` | `app/Views/customers/form.php:326` | `['customer' => $person_info]` | Add `<div>` tab panel content to customer form |
 
 ### Benefits
 
@@ -254,18 +251,18 @@ class MyPlugin extends BasePlugin
 
     public function registerEvents(): void
     {
-        Events::on('item_sale', [$this, 'onItemSale']);
-        Events::on('item_change', [$this, 'onItemChange']);
+        Events::on('sale_complete', [$this, 'onSaleComplete']);
+        Events::on('item_saved', [$this, 'onItemSaved']);
     }
 
-    public function onItemSale(array $saleData): void
+    public function onSaleComplete(int $saleIdNum, string $saleType): void
     {
-        log_message('info', "Processing sale: {$saleData['sale_id_num']}");
+        log_message('info', "Sale completed: #{$saleIdNum} ({$saleType})");
     }
 
-    public function onItemChange(int $itemId): void
+    public function onItemSaved(array $itemIds): void
     {
-        log_message('info', "Item changed: {$itemId}");
+        log_message('info', 'Items saved: ' . implode(', ', $itemIds));
     }
 
     public function install(): bool
@@ -526,7 +523,7 @@ For custom tables, plugins can create them during `install()` and drop them duri
 
 ## Event Flow
 
-1. Application triggers event: `Events::trigger('item_sale', $data)`
+1. Application triggers event: `Events::trigger('sale_complete', $saleIdNum, $saleType)`
 2. PluginManager recursively scans `app/Plugins/` directory
 3. Each enabled plugin registers its listeners via `registerEvents()`
 4. Events::on() callbacks are invoked automatically
