@@ -14,7 +14,7 @@
 
         <div class="form-group form-group-sm">
             <?= form_label(lang('MailchimpPlugin.api_key'), 'api_key', ['class' => 'control-label col-xs-2']) ?>
-            <div class="col-xs-4">
+            <div class="col-xs-8">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-cloud"></span>
@@ -25,20 +25,18 @@
                         'class' => 'form-control input-sm',
                         'value' => esc($settings['api_key'] ?? '')
                     ]) ?>
+                    <span class="input-group-addon input-sm">
+                        <a href="https://eepurl.com/b9a05b" target="_blank">
+                            <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('MailchimpPlugin.tooltip') ?>"></span>
+                        </a>
+                    </span>
                 </div>
-            </div>
-            <div class="col-xs-1">
-                <label class="control-label">
-                    <a href="https://eepurl.com/b9a05b" target="_blank">
-                        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('MailchimpPlugin.tooltip') ?>"></span>
-                    </a>
-                </label>
             </div>
         </div>
 
         <div class="form-group form-group-sm">
             <?= form_label(lang('MailchimpPlugin.lists'), 'list_id', ['class' => 'control-label col-xs-2']) ?>
-            <div class="col-xs-4">
+            <div class="col-xs-8">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-user"></span>
