@@ -27,11 +27,11 @@ This document provides guidance for AI agents working on the Open Source Point o
 
 ## Conventions
 
-- Controllers go in `app/Controllers/`
-- Models go in `app/Models/`
-- Views go in `app/Views/`
-- Database migrations in `app/Database/Migrations/`
-- Plugins go in `app/Plugins/` (see `app/Plugins/README.md` for plugin structure, event hooks, and LICENSE requirements)
+- Controllers → `app/Controllers/`
+- Models → `app/Models/`
+- Views → `app/Views/`
+- Migrations → `app/Database/Migrations/`
+- Plugins → `app/Plugins/` (see `app/Plugins/README.md` for plugin structure, event hooks, and LICENSE requirements)
 - Use CodeIgniter 4 framework patterns and helpers
 - Sanitize user input; escape output using `esc()` helper
 
