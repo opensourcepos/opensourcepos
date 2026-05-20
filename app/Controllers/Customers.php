@@ -180,7 +180,7 @@ class Customers extends Persons
             $data['stats'] = $stats;
         }
 
-        Events::trigger('customer_loaded', $info);
+        Events::trigger('customer_loaded', $customerId);
 
         return view("customers/form", $data);
     }

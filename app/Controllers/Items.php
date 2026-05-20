@@ -276,7 +276,7 @@ class Items extends Secure_Controller
      */
     public function getRow(string $item_ids): ResponseInterface    // TODO: An array would be better for parameter.
     {
-        $item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
+        $item_infos = $this->item->getMultipleInfo(explode(':', $item_ids), $this->item_lib->get_item_location());
 
         $result = [];
 
@@ -492,7 +492,7 @@ class Items extends Secure_Controller
     public function getGenerateBarcodes(string $item_ids): string    // TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
     {
         $item_ids = explode(':', $item_ids);
-        $result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
+        $result = $this->item->getMultipleInfo($item_ids, $this->item_lib->get_item_location())->getResultArray();
         $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 
         foreach ($result as &$item) {
@@ -744,7 +744,7 @@ class Items extends Secure_Controller
             $success = $success && $this->saveItemAttributes($itemId);
 
             if ($success && $uploadSuccess) {
-                Events::trigger('item_saved', $itemData);
+                Events::trigger('item_saved', [$itemId]);
 
                 $message = lang('Items.successful_' . ($newItem ? 'adding' : 'updating')) . ' ' . $itemData['name'];
                 return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $itemId]);
@@ -974,7 +974,7 @@ class Items extends Secure_Controller
     }
 
     /**
-     * Imports items from a CSV formatted file.
+     * Imports items from a CSV-formatted file.
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
@@ -1008,6 +1008,7 @@ class Items extends Secure_Controller
                     $db = db_connect();
                     $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
 
+                    $itemIds = [];
                     foreach ($csvRows as $key => $row) {
                         $isFailedRow = false;
                         $itemId = (int)$row['Id'];
@@ -1077,6 +1078,8 @@ class Items extends Secure_Controller
                             if ($isUpdate) {
                                 $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
                             }
+
+                            $itemIds[] = $itemData['item_id'];
                         } else {
                             $failedRow = $key + 2;
                             $failCodes[] = $failedRow;
@@ -1095,6 +1098,8 @@ class Items extends Secure_Controller
                     } else {
                         $db->transCommit();
                         $this->attribute->deleteOrphanedValues();
+
+                        Events::trigger('item_saved', [$itemIds]);
 
                         return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }
