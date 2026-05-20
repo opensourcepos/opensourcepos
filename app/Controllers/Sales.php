@@ -1649,7 +1649,7 @@ class Sales extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getDiscardSuspendedSale(): ResponseInterface|string
+    public function discardSuspendedSale(): ResponseInterface|string
     {
         $suspended_id = $this->sale_lib->get_suspended_id();
         $this->sale_lib->clear_all();

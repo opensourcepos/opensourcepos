@@ -464,8 +464,8 @@ helper('url');
                             <tr>
                                 <td><span id="amount_tendered_label"><?= lang(ucfirst($controller_name) . '.amount_tendered') ?></span></td>
                                 <td>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-control input-sm non-giftcard-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-control input-sm giftcard-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
+                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered_non_giftcard', 'class' => 'form-control input-sm non-giftcard-input amount-tendered-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered_giftcard', 'class' => 'form-control input-sm giftcard-input amount-tendered-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
                                 </td>
                             </tr>
                         </table>
@@ -590,7 +590,11 @@ helper('url');
     };
 
     window.customerDisplayWindow = window.customerDisplayWindow || null;
-    window.customerDisplayDisplayId = window.customerDisplayDisplayId || sessionStorage.getItem('customerDisplayId') || localStorage.getItem('customerDisplayId') || '';
+    window.customerDisplayDisplayId = window.customerDisplayDisplayId || sessionStorage.getItem('customerDisplayId') || '';
+    if (window.customerDisplayDisplayId === '') {
+        window.customerDisplayDisplayId = 'display_' + Date.now() + Math.random().toString(36).slice(2);
+        sessionStorage.setItem('customerDisplayId', window.customerDisplayDisplayId);
+    }
 
     window.customerDisplayStorageSuffix = function() {
         return window.customerDisplayDisplayId ? '_' + window.customerDisplayDisplayId : '';
@@ -615,7 +619,6 @@ helper('url');
         displayUrl.searchParams.set('displayId', window.customerDisplayDisplayId);
 
         sessionStorage.setItem('customerDisplayId', window.customerDisplayDisplayId);
-        localStorage.setItem('customerDisplayId', window.customerDisplayDisplayId);
         localStorage.setItem(keys.open, '1');
         localStorage.setItem(keys.dirtyAt, String(Date.now()));
         window.customerDisplayWindow = window.open(displayUrl.toString(), 'customer_display_' + window.customerDisplayDisplayId, 'width=1280,height=720,resizable=yes,scrollbars=yes');
@@ -862,7 +865,7 @@ helper('url');
             }
         });
 
-        $('#amount_tendered').keypress(function(event) {
+        $('.amount-tendered-input').keypress(function(event) {
             if (event.which == 13) {
                 $('#add_payment_form').submit();
             }
@@ -919,7 +922,7 @@ helper('url');
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
-            $("#amount_tendered:enabled").val('').focus();
+            $(".amount-tendered-input:enabled").val('').focus();
             $(".giftcard-input").attr('disabled', false);
             $(".non-giftcard-input").attr('disabled', true);
             $(".giftcard-input:enabled").val('').focus();
@@ -927,14 +930,14 @@ helper('url');
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
-            $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
+            $(".amount-tendered-input:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
-            $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
+            $(".amount-tendered-input:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
         }
@@ -963,8 +966,7 @@ helper('url');
                     $("#show_suspended_sales_button").click();
                     break;
                 case shortcutCodes.amount:
-                    $("#amount_tendered").focus();
-                    $("#amount_tendered").select();
+                    $(".amount-tendered-input:enabled").focus().select();
                     break;
                 case shortcutCodes.payment:
                     $("#add_payment_button").click();

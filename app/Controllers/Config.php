@@ -392,7 +392,7 @@ class Config extends Secure_Controller
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
             'image_max_height'                  => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
             'image_max_size'                    => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
-            'image_allowed_types'               => implode(',', $this->request->getPost('image_allowed_types')),
+            'image_allowed_types'               => implode(',', (array) ($this->request->getPost('image_allowed_types') ?? [])),
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),
@@ -484,9 +484,13 @@ class Config extends Secure_Controller
     {
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
+        $currencyCode = strtoupper(substr(trim((string) $this->request->getPost('currency_code')), 0, 3));
+        if (!preg_match('/^[A-Z]{3}$/', $currencyCode)) {
+            $currencyCode = '';
+        }
         $batch_save_data = [
             'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
-            'currency_code'         => $this->request->getPost('currency_code'),
+            'currency_code'         => $currencyCode,
             'language_code'         => $exploded[0],
             'language'              => $exploded[1],
             'timezone'              => $this->request->getPost('timezone'),
@@ -1006,8 +1010,9 @@ class Config extends Secure_Controller
      */
     public function postSaveInvoice(): ResponseInterface
     {
+        $invoiceEnabled = $this->request->getPost('invoice_enable') != null;
         $batch_save_data = [
-            'invoice_enable'              => $this->request->getPost('invoice_enable') != null,
+            'invoice_enable'              => $invoiceEnabled,
             'sales_invoice_format'        => $this->request->getPost('sales_invoice_format'),
             'sales_quote_format'          => $this->request->getPost('sales_quote_format'),
             'recv_invoice_format'         => $this->request->getPost('recv_invoice_format'),
@@ -1030,7 +1035,7 @@ class Config extends Secure_Controller
         // Update the register mode with the latest change so that if the user
         // switches immediately back to the register the mode reflects the change
         if ($success) {
-            if ($this->config['invoice_enable']) {
+            if ($invoiceEnabled) {
                 $this->sale_lib->set_mode($this->config['default_register_mode']);
             } else {
                 $this->sale_lib->set_mode('sale');

@@ -14,6 +14,10 @@
  */
 
 $priceLabel = lang('Sales.price');
+$customerDisplayName = trim((string) ($customerName ?? ''));
+if ($customerDisplayName === '') {
+    $customerDisplayName = lang('Sales.walk_in_customer');
+}
 
 ?>
 
@@ -100,7 +104,7 @@ $priceLabel = lang('Sales.price');
                                 </tr>
                                 <tr>
                                     <th><?= lang('Sales.customer_name') ?></th>
-                                    <td class="customer-name-value"><?= esc($customerName ?? lang('Sales.walk_in_customer')) ?></td>
+                                    <td class="customer-name-value"><?= esc($customerDisplayName) ?></td>
                                 </tr>
                                 <tr>
                                     <th><?= lang('Sales.giftcard_balance') ?></th>
@@ -141,8 +145,12 @@ $priceLabel = lang('Sales.price');
     </div>
 
 <script>
-        const customerDisplayId = new URLSearchParams(window.location.search).get('displayId') || '';
-        const customerDisplayStorageSuffix = customerDisplayId !== '' ? '_' + customerDisplayId : '';
+        let customerDisplayId = new URLSearchParams(window.location.search).get('displayId') || '';
+        if (customerDisplayId === '') {
+            customerDisplayId = 'display_' + Date.now() + Math.random().toString(36).slice(2);
+        }
+
+        const customerDisplayStorageSuffix = '_' + customerDisplayId;
         const customerDisplayStorageKeys = {
             open: 'customerDisplayOpen' + customerDisplayStorageSuffix,
             dirtyAt: 'customerDisplayDirtyAt' + customerDisplayStorageSuffix
@@ -189,4 +197,3 @@ $priceLabel = lang('Sales.price');
             localStorage.removeItem(customerDisplayStorageKeys.open);
         });
     </script>
-

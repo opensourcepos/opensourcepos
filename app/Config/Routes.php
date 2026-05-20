@@ -38,7 +38,7 @@ $routes->post('sales/changeItemNumber', 'Sales::postChangeItemNumber');
 $routes->post('sales/changeItemName', 'Sales::postChangeItemName');
 $routes->post('sales/changeItemDescription', 'Sales::postChangeItemDescription');
 $routes->get('sales/suspended', 'Sales::getSuspended');
-$routes->get('sales/discardSuspendedSale', 'Sales::getDiscardSuspendedSale');
+$routes->post('sales/discardSuspendedSale', 'Sales::discardSuspendedSale');
 $routes->get('sales/sales_keyboard_help', 'Sales::getSalesKeyboardHelp');
 $routes->get('sales/receipt/(:num)', 'Sales::getReceipt/$1');
 $routes->get('sales/invoice/(:num)', 'Sales::getInvoice/$1');
