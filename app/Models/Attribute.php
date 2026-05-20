@@ -822,6 +822,38 @@ class Attribute extends Model
     }
 
     /**
+     * Gets all attribute values for multiple items in bulk. Used by plugins, do not remove.
+     *
+     * @param array $itemIds Array of item IDs
+     * @return array A nested array keyed by [item_id][definition_id] with attribute value arrays
+     */
+    public function getAttributeValuesBulk(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $builder = $this->db->table('attribute_links');
+        $builder->select('attribute_links.item_id, attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
+        $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
+        $builder->whereIn('item_id', $itemIds);
+
+        $results = $builder->get()->getResultArray();
+
+        $map = [];
+        foreach ($results as $row) {
+            $itemId = $row['item_id'];
+            $defId = $row['definition_id'];
+            $map[$itemId][$defId] = [
+                'attribute_value'   => $row['attribute_value'],
+                'attribute_decimal' => $row['attribute_decimal'],
+                'attribute_date'    => $row['attribute_date'],
+            ];
+        }
+        return $map;
+    }
+
+    /**
      * @param int $item_id
      * @param string $sale_receiving_fk
      * @param int $id

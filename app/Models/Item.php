@@ -453,6 +453,14 @@ class Item extends Model
         return $builder->get();
     }
 
+    public function getItems(array $itemIds): array
+    {
+        return $this->db->table('items')
+            ->whereIn('item_id', $itemIds)
+            ->get()
+            ->getResultArray();
+    }
+
     /**
      * Inserts or updates an item
      */
