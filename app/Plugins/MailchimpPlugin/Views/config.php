@@ -13,7 +13,7 @@
         <ul id="error_message_box" class="error_message_box"></ul>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('MailchimpPlugin.api_key'), 'api_key', ['class' => 'control-label col-xs-2']) ?>
+            <?= form_label(lang('MailchimpPlugin.api_key'), 'api_key', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('MailchimpPlugin.lists'), 'list_id', ['class' => 'control-label col-xs-2']) ?>
+            <?= form_label(lang('MailchimpPlugin.lists'), 'list_id', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
                         <span class="input-group-addon input-sm">
@@ -62,12 +62,20 @@
 </div>
 <?= form_close() ?>
 
+<style>
+    .form-group.has-error .input-group-addon .glyphicon-info-sign {
+        color: #fff;
+    }
+</style>
+
 <script type="text/javascript">
-    // Validation and submit handling
     $(document).ready(function() {
-        $('#api_key').change(function() {
-            const apiKey = $('#api_key').val();
+        let apiKeyValid = <?= !empty($settings['api_key']) ? 'true' : 'false' ?>;
+
+        $('#api_key').on('change', function() {
+            const apiKey = $(this).val();
             if (!apiKey) {
+                apiKeyValid = true;
                 return;
             }
 
@@ -75,16 +83,21 @@
                     'api_key': apiKey
                 },
                 function(response) {
-                    $.notify({
-                        message: response.message
-                    }, {
-                        type: response.success ? 'success' : 'danger'
-                    });
-                    $('#list_id').empty();
-                    $.each(response.lists, function(val, text) {
-                        $('#list_id').append(new Option(text, val));
-                    });
-                    $('#list_id').prop('selectedIndex', 0);
+                    const validator = $('#config_form').data('validator');
+                    $.notify({ message: response.message }, { type: response.success ? 'success' : 'danger' });
+
+                    if (!response.success) {
+                        apiKeyValid = false;
+                        validator.showErrors({ 'api_key': response.message });
+                    } else {
+                        apiKeyValid = true;
+                        validator.element('#api_key');
+                        $('#list_id').empty();
+                        $.each(response.lists, function(val, text) {
+                            $('#list_id').append(new Option(text, val));
+                        });
+                        $('#list_id').prop('selectedIndex', 0);
+                    }
                 },
                 'json'
             );
@@ -92,13 +105,15 @@
 
         $('#config_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
+                if (!apiKeyValid) {
+                    $('#config_form').data('validator').showErrors({
+                        'api_key': '<?= lang('MailchimpPlugin.key_unsuccessfully') ?>'
+                    });
+                    return;
+                }
                 $(form).ajaxSubmit({
                     success: function(response) {
-                        $.notify({
-                            message: response.message
-                        }, {
-                            type: response.success ? 'success' : 'danger'
-                        });
+                        $.notify({ message: response.message }, { type: response.success ? 'success' : 'danger' });
                         if (response.success) {
                             $('#plugin-config-modal').modal('hide');
                         }
@@ -106,7 +121,6 @@
                     dataType: 'json'
                 });
             },
-
             errorLabelContainer: '#error_message_box'
         }));
     });
