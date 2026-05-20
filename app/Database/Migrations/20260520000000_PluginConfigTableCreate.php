@@ -10,7 +10,7 @@ class PluginConfigTableCreate extends Migration
     {
         log_message('info', 'Migrating plugin_config table started');
 
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_PluginConfigTableCreate.sql');
+        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.5.0_PluginConfigTableCreate.sql');
     }
 
     public function down(): void

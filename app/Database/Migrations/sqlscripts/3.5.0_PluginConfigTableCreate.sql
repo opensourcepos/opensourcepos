@@ -1,9 +1,14 @@
 CREATE TABLE IF NOT EXISTS `ospos_plugin_config` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `plugin_id` varchar(100) NOT NULL,
     `key` varchar(100) NOT NULL,
     `value` text NOT NULL,
+    `is_control` tinyint(1) NOT NULL DEFAULT 0,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    PRIMARY KEY (`key`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_plugin_key` (`plugin_id`, `key`),
+    KEY `idx_plugin_id` (`plugin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT IGNORE INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES

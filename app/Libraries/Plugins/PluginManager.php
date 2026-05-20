@@ -110,7 +110,7 @@ class PluginManager
 
     public function isPluginEnabled(string $pluginId): bool
     {
-        $enabled = $this->configModel->getValue($this->getEnabledKey($pluginId));
+        $enabled = $this->configModel->getValue($pluginId, 'enabled');
         return $enabled === '1' || $enabled === 'true';
     }
 
@@ -128,15 +128,15 @@ class PluginManager
             return false;
         }
 
-        if (!$this->configModel->exists($this->getInstalledKey($pluginId))) {
+        if (!$this->configModel->exists($pluginId, 'installed')) {
             if (!$plugin->install()) {
                 log_message('error', "Failed to install plugin: {$pluginId}");
                 return false;
             }
-            $this->configModel->setValue($this->getInstalledKey($pluginId), '1');
+            $this->configModel->setValue($pluginId, 'installed', '1', true);
         }
 
-        $this->configModel->setValue($this->getEnabledKey($pluginId), '1');
+        $this->configModel->setValue($pluginId, 'enabled', '1', true);
 
         $this->registerNamespace($pluginId);
 
@@ -152,7 +152,7 @@ class PluginManager
             return false;
         }
 
-        $this->configModel->setValue($this->getEnabledKey($pluginId), '0');
+        $this->configModel->setValue($pluginId, 'enabled', '0', true);
         log_message('info', "Plugin disabled: {$pluginId}");
 
         return true;
@@ -173,19 +173,19 @@ class PluginManager
             return false;
         }
 
-        $this->configModel->deleteAllStartingWith($pluginId . '_');
+        $this->configModel->deleteAllForPlugin($pluginId);
 
         return true;
     }
 
     public function getSetting(string $pluginId, string $key, mixed $default = null): mixed
     {
-        return $this->configModel->getValue("{$pluginId}_{$key}") ?? $default;
+        return $this->configModel->getValue($pluginId, $key) ?? $default;
     }
 
     public function setSetting(string $pluginId, string $key, mixed $value): bool
     {
-        return $this->configModel->setValue("{$pluginId}_{$key}", $value);
+        return $this->configModel->setValue($pluginId, $key, $value);
     }
 
     /**
@@ -240,15 +240,5 @@ class PluginManager
             self::$registeredNamespaces[] = $namespace;
             log_message('debug', "Registered namespace for plugin dir: {$pluginDirName}");
         }
-    }
-
-    private function getEnabledKey(string $pluginId): string
-    {
-        return "{$pluginId}__enabled";
-    }
-
-    private function getInstalledKey(string $pluginId): string
-    {
-        return "{$pluginId}__installed";
     }
 }

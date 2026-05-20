@@ -7,26 +7,28 @@ use CodeIgniter\Model;
 class PluginConfig extends Model
 {
     protected $table = 'plugin_config';
-    protected $primaryKey = 'key';
-    protected $useAutoIncrement = false;
+    protected $primaryKey = 'id';
+    protected $useAutoIncrement = true;
     protected $useSoftDeletes = false;
     protected $allowedFields = [
+        'plugin_id',
         'key',
-        'value'
+        'value',
+        'is_control',
     ];
 
-    public function exists(string $key): bool
+    public function exists(string $pluginId, string $key): bool
     {
         $builder = $this->db->table('plugin_config');
-        $builder->where('key', $key);
+        $builder->where('plugin_id', $pluginId)->where('key', $key);
 
         return ($builder->get()->getNumRows() === 1);
     }
 
-    public function getValue(string $key): ?string
+    public function getValue(string $pluginId, string $key): ?string
     {
         $builder = $this->db->table('plugin_config');
-        $query = $builder->getWhere(['key' => $key], 1);
+        $query = $builder->getWhere(['plugin_id' => $pluginId, 'key' => $key], 1);
 
         if ($query->getNumRows() === 1) {
             return $query->getRow()->value;
@@ -35,55 +37,57 @@ class PluginConfig extends Model
         return null;
     }
 
-    public function setValue(string $key, string $value): bool
+    public function setValue(string $pluginId, string $key, string $value, bool $isControl = false): bool
     {
         $builder = $this->db->table('plugin_config');
 
-        if ($this->exists($key)) {
-            return $builder->update(['value' => $value], ['key' => $key]);
+        if ($this->exists($pluginId, $key)) {
+            return $builder->update(
+                ['value' => $value],
+                ['plugin_id' => $pluginId, 'key' => $key]
+            );
         }
 
-        return $builder->insert(['key' => $key, 'value' => $value]);
+        return $builder->insert([
+            'plugin_id'  => $pluginId,
+            'key'        => $key,
+            'value'      => $value,
+            'is_control' => $isControl ? 1 : 0,
+        ]);
     }
 
     public function getPluginSettings(string $pluginId): array
     {
         $builder = $this->db->table('plugin_config');
-        $builder->like('key', $pluginId . '_', 'after')
-                ->notLike('key', $pluginId . '__', 'after');
+        $builder->where('plugin_id', $pluginId)->where('is_control', 0);
         $query = $builder->get();
 
         $settings = [];
-        $prefix = $pluginId . '_';
         foreach ($query->getResult() as $row) {
-            $key = str_starts_with($row->key, $prefix)
-                ? substr($row->key, strlen($prefix))
-                : $row->key;
-            $settings[$key] = $row->value;
+            $settings[$row->key] = $row->value;
         }
 
         return $settings;
     }
 
-    public function deleteKey(string $key): bool
+    public function deleteKey(string $pluginId, string $key): bool
     {
         $builder = $this->db->table('plugin_config');
-        return $builder->delete(['key' => $key]);
+        return $builder->delete(['plugin_id' => $pluginId, 'key' => $key]);
     }
 
-    public function deleteAllStartingWith(string $prefix): bool
+    public function deleteAllForPlugin(string $pluginId): bool
     {
         $builder = $this->db->table('plugin_config');
-        $builder->like('key', $prefix, 'after');
-        return $builder->delete();
+        return $builder->delete(['plugin_id' => $pluginId]);
     }
 
-    public function batchSave(array $data): bool
+    public function batchSave(string $pluginId, array $data): bool
     {
         $this->db->transBegin();
 
         foreach ($data as $key => $value) {
-            if (!$this->setValue($key, $value)) {
+            if (!$this->setValue($pluginId, $key, $value)) {
                 $this->db->transRollback();
                 return false;
             }
@@ -100,7 +104,7 @@ class PluginConfig extends Model
 
         $configs = [];
         foreach ($query->getResult() as $row) {
-            $configs[$row->key] = $row->value;
+            $configs[$row->plugin_id][$row->key] = $row->value;
         }
 
         return $configs;

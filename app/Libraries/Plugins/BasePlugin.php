@@ -25,13 +25,13 @@ abstract class BasePlugin implements PluginInterface
 
     public function isEnabled(): bool
     {
-        $enabled = $this->configModel->getValue("{$this->getPluginId()}__enabled");
+        $enabled = $this->configModel->getValue($this->getPluginId(), 'enabled');
         return $enabled === '1' || $enabled === 'true';
     }
 
     protected function getSetting(string $key, mixed $default = null): mixed
     {
-        $value = $this->configModel->getValue("{$this->getPluginId()}_{$key}");
+        $value = $this->configModel->getValue($this->getPluginId(), $key);
         return $value ?? $default;
     }
 
@@ -41,7 +41,7 @@ abstract class BasePlugin implements PluginInterface
             ? json_encode($value)
             : (string)$value;
 
-        return $this->configModel->setValue("{$this->getPluginId()}_{$key}", $stringValue);
+        return $this->configModel->setValue($this->getPluginId(), $key, $stringValue);
     }
 
     public function getSettings(): array
@@ -51,16 +51,14 @@ abstract class BasePlugin implements PluginInterface
 
     public function saveSettings(array $settings): bool
     {
-        $prefixedSettings = [];
+        $normalized = [];
         foreach ($settings as $key => $value) {
-            if (is_array($value) || is_object($value)) {
-                $prefixedSettings["{$this->getPluginId()}_{$key}"] = json_encode($value);
-            } else {
-                $prefixedSettings["{$this->getPluginId()}_{$key}"] = (string)$value;
-            }
+            $normalized[$key] = is_array($value) || is_object($value)
+                ? json_encode($value)
+                : (string)$value;
         }
 
-        return $this->configModel->batchSave($prefixedSettings);
+        return $this->configModel->batchSave($this->getPluginId(), $normalized);
     }
 
     public function getConfigViewData(): array
