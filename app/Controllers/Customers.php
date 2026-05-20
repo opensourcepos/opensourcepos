@@ -232,7 +232,7 @@ class Customers extends Persons
         ];
 
         if ($this->customer->saveCustomer($personData, $customerData, $customerId)) {
-            Events::trigger('customer_saved', $personData, $customerData, $this->request->getPost());
+            Events::trigger('customer_saved', $customerData['person_id']);
 
             // New customer
             if ($customerId == NEW_ENTRY) {
@@ -298,7 +298,7 @@ class Customers extends Persons
         $count = 0;
         foreach ($customers->getResult() as $customer) {
             if ($this->customer->delete($customer->person_id)) {
-                Events::trigger('customer_deleted', $customer);
+                Events::trigger('customer_deleted', (int)$customer->person_id, (string)$customer->email);
                 $count++;
             }
         }
@@ -401,7 +401,7 @@ class Customers extends Persons
                         $failCodes[] = $rowNumber;
                         log_message('error', "Row $rowNumber was not imported: Either email or account number already exist or data was invalid.");
                     } elseif ($this->customer->saveCustomer($personData, $customerData)) {
-                        Events::trigger('customer_saved', $personData, $customerData);
+                        Events::trigger('customer_saved', $customerData['person_id']);
 
                     } else {
                         $failCodes[] = $rowNumber;
