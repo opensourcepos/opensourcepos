@@ -232,7 +232,7 @@ class Customers extends Persons
         ];
 
         if ($this->customer->saveCustomer($personData, $customerData, $customerId)) {
-            Events::trigger('customer_saved', $customerData['person_id']);
+            Events::trigger('customer_saved', [$customerData['person_id']]);
 
             // New customer
             if ($customerId == NEW_ENTRY) {
@@ -287,7 +287,7 @@ class Customers extends Persons
     }
 
     /**
-     * This deletes customers from the customers table
+     * This deletes customers from the customer's table
      * @return ResponseInterface
      */
     public function postDelete(): ResponseInterface
@@ -354,6 +354,7 @@ class Customers extends Persons
                 $rowNumber = 1;
 
                 $failCodes = [];
+                $customerIds = [];
 
                 while (($data = fgetcsv($handle)) !== false) {
                     $consent = $data[3] == '' ? 0 : 1;
@@ -401,8 +402,7 @@ class Customers extends Persons
                         $failCodes[] = $rowNumber;
                         log_message('error', "Row $rowNumber was not imported: Either email or account number already exist or data was invalid.");
                     } elseif ($this->customer->saveCustomer($personData, $customerData)) {
-                        Events::trigger('customer_saved', $customerData['person_id']);
-
+                        $customerIds[] = $customerData['person_id'];
                     } else {
                         $failCodes[] = $rowNumber;
                     }
@@ -415,6 +415,8 @@ class Customers extends Persons
 
                     return $this->response->setJSON(['success' => false, 'message' => $message]);
                 } else {
+                    Events::trigger('customer_saved', $customerIds);
+
                     return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_success')]);
                 }
             } else {

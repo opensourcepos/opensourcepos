@@ -190,29 +190,31 @@ class MailchimpPlugin extends BasePlugin
         echo $this->renderView('customer_tab', $viewData);
     }
 
-    public function onCustomerSaved(int $customerId): void
+    public function onCustomerSaved(array $customerIds): void
     {
         if (!$this->shouldSyncOnSave()) {
             return;
         }
 
-        log_message('debug', "Customer saved event received for ID: {$customerId}");
-
         $customerModel = new Customer();
-        $customer = $customerModel->getInfo($customerId);
 
-        $subscriptionStatus = !empty($customer->consent)
-            ? strtolower(SubscriptionStatus::SUBSCRIBED->name)
-            : strtolower(SubscriptionStatus::UNSUBSCRIBED->name);
+        foreach ($customerIds as $customerId) {
+            log_message('debug', "Customer saved event received for ID: {$customerId}");
 
-        $personData = [
-            'email'      => $customer->email ?? '',
-            'first_name' => $customer->first_name ?? '',
-            'last_name'  => $customer->last_name ?? '',
-        ];
-        $customerData = ['person_id' => $customerId];
+            $customer = $customerModel->getInfo($customerId);
 
-        $this->mailchimpLibrary->synchronizeSubscription($personData, $customerData, $subscriptionStatus);
+            $subscriptionStatus = !empty($customer->consent)
+                ? strtolower(SubscriptionStatus::SUBSCRIBED->name)
+                : strtolower(SubscriptionStatus::UNSUBSCRIBED->name);
+
+            $personData = [
+                'email'      => $customer->email ?? '',
+                'first_name' => $customer->first_name ?? '',
+                'last_name'  => $customer->last_name ?? '',
+            ];
+
+            $this->mailchimpLibrary->synchronizeSubscription($personData, ['person_id' => $customerId], $subscriptionStatus);
+        }
     }
 
     public function onCustomerDeleted(int $customerId, string $email): void
