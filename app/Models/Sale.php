@@ -416,7 +416,7 @@ class Sale extends Model
             // POS #
             $pieces = explode(' ', trim($receiptSaleId));
 
-            if (count($pieces) == 2 && preg_match('/(POS)/i', $pieces[0]) && ctype_digit($pieces[1])) {
+            if (count($pieces) == 2 && strtoupper($pieces[0]) === 'POS' && ctype_digit($pieces[1])) {
                 return $this->exists((int)$pieces[1]);
             } elseif ($config['invoice_enable']) {
                 $saleInfo = $this->get_sale_by_invoice_number($receiptSaleId);
