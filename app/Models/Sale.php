@@ -327,7 +327,7 @@ class Sale extends Model
     {
         $suggestions = [];
 
-        if (!$this->is_valid_receipt($search)) {
+        if (!$this->isValidReceipt($search)) {
             $builder = $this->db->table('sales');
             $builder->distinct()->select('first_name, last_name');
             $builder->join('people', 'people.person_id = sales.customer_id');
@@ -408,21 +408,21 @@ class Sale extends Model
     /**
      * Checks if valid receipt
      */
-    public function is_valid_receipt(string|null &$receipt_sale_id): bool    // TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
+    public function isValidReceipt(string|null &$receiptSaleId): bool    // TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
     {
         $config = config(OSPOS::class)->settings;
 
-        if (!empty($receipt_sale_id)) {
+        if (!empty($receiptSaleId)) {
             // POS #
-            $pieces = explode(' ', $receipt_sale_id);
+            $pieces = explode(' ', trim($receiptSaleId));
 
-            if (count($pieces) == 2 && preg_match('/(POS)/i', $pieces[0])) {
-                return $this->exists($pieces[1]);
+            if (count($pieces) == 2 && preg_match('/(POS)/i', $pieces[0]) && ctype_digit($pieces[1])) {
+                return $this->exists((int)$pieces[1]);
             } elseif ($config['invoice_enable']) {
-                $sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
+                $saleInfo = $this->get_sale_by_invoice_number($receiptSaleId);
 
-                if ($sale_info->getNumRows() > 0) {
-                    $receipt_sale_id = 'POS ' . $sale_info->getRow()->sale_id;
+                if ($saleInfo->getNumRows() > 0) {
+                    $receiptSaleId = 'POS ' . $saleInfo->getRow()->sale_id;
 
                     return true;
                 }
