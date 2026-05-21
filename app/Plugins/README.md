@@ -102,11 +102,11 @@ OSPOS fires these events that plugins can listen to:
 | `customer_deleted` | `int $personId, string $email`     | Customer deleted                                        |
 | `item_saved`       | `array $itemIds`                   | Item created/updated via form save or CSV import        |
 | `sale_complete`      | `int $saleIdNum, string $saleType` | Sale finalized and receipt rendered                     |
-| `receiving_complete` | `int $receivingId`                 | Receiving finalized and items added to inventory        |
+| `receiving_complete` | `int $receivingId, string $mode`   | Receiving finalized and items added to inventory        |
 
 > **Note:** `customer_saved` and `item_saved` always receive an array of IDs.
 
-> **Note:** With `$receivingId` plugins can call `model(Receiving::class)->get_receiving_items($receivingId)` to get all line items, or `get_info($receivingId)` for header and supplier details. Single-record saves wrap the one ID in an array; CSV imports pass all successfully saved IDs.
+> **Note:** With `$receivingId` plugins can call `model(Receiving::class)->get_receiving_items($receivingId)` to get all line items, or `get_info($receivingId)` for header and supplier details. `$mode` is `'receive'`, `'return'`, or `'requisition'` — mode is NOT stored in the database, so this argument is the only way to distinguish modes at event time. Single-record saves wrap the one ID in an array; CSV imports pass all successfully saved IDs.
 
 ## View Hooks (Injecting Plugin Content into Views)
 
@@ -269,9 +269,9 @@ class MyPlugin extends BasePlugin
         log_message('info', 'Items saved: ' . implode(', ', $itemIds));
     }
 
-    public function onReceivingComplete(int $receivingId): void
+    public function onReceivingComplete(int $receivingId, string $mode): void
     {
-        log_message('info', "Receiving completed: #{$receivingId}");
+        log_message('info', "Receiving completed: #{$receivingId} ({$mode})");
     }
 
     public function install(): bool
