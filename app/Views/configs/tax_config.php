@@ -58,7 +58,7 @@
                         'name'  => 'default_tax_1_rate',
                         'id'    => 'default_tax_1_rate',
                         'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_1_rate'])
+                        'value' => $config['default_tax_1_rate'] !== '' ? (float) $config['default_tax_1_rate'] : ''
                     ]) ?>
                     <span class="input-group-addon input-sm">%</span>
                 </div>
@@ -83,7 +83,7 @@
                         'name'  => 'default_tax_2_rate',
                         'id'    => 'default_tax_2_rate',
                         'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_2_rate'])
+                        'value' => $config['default_tax_2_rate'] !== '' ? (float) $config['default_tax_2_rate'] : ''
                     ]) ?>
                     <span class="input-group-addon input-sm">%</span>
                 </div>
