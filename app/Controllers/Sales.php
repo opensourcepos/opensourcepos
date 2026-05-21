@@ -162,7 +162,7 @@ class Sales extends Secure_Controller
             'only_bank_transfer'=> false,
             'only_wallet'       => false,
             'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
-            'is_valid_receipt'  => $this->sale->is_valid_receipt($search)
+            'is_valid_receipt'  => $this->sale->isValidReceipt($search)
         ];
 
         // Check if any filter is set in the multiselect dropdown
@@ -199,7 +199,7 @@ class Sales extends Secure_Controller
             ? $this->request->getGet('term')
             : null;
 
-        if ($this->sale_lib->get_mode() == 'return' && $this->sale->is_valid_receipt($receipt)) {
+        if ($this->sale_lib->get_mode() == 'return' && $this->sale->isValidReceipt($receipt)) {
             // If a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
             $suggestions[] = $receipt;
         }
@@ -526,7 +526,7 @@ class Sales extends Secure_Controller
         $quantity = ($mode == 'return') ? -$quantity : $quantity;
         $item_location = $this->sale_lib->get_sale_location();
 
-        if ($mode == 'return' && $this->sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt)) {
+        if ($mode == 'return' && $this->sale->isValidReceipt($item_id_or_number_or_item_kit_or_receipt)) {
             $this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
         } elseif ($this->item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt)) {
             // Add kit item to order if one is assigned
