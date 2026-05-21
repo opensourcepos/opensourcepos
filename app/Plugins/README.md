@@ -101,9 +101,12 @@ OSPOS fires these events that plugins can listen to:
 | `customer_saved`   | `array $customerIds`               | Customer created/updated via form save or CSV import    |
 | `customer_deleted` | `int $personId, string $email`     | Customer deleted                                        |
 | `item_saved`       | `array $itemIds`                   | Item created/updated via form save or CSV import        |
-| `sale_complete`    | `int $saleIdNum, string $saleType` | Sale finalized and receipt rendered                     |
+| `sale_complete`      | `int $saleIdNum, string $saleType` | Sale finalized and receipt rendered                     |
+| `receiving_complete` | `int $receivingId`                 | Receiving finalized and items added to inventory        |
 
-> **Note:** `customer_saved` and `item_saved` always receive an array of IDs. Single-record saves wrap the one ID in an array; CSV imports pass all successfully saved IDs.
+> **Note:** `customer_saved` and `item_saved` always receive an array of IDs.
+
+> **Note:** With `$receivingId` plugins can call `model(Receiving::class)->get_receiving_items($receivingId)` to get all line items, or `get_info($receivingId)` for header and supplier details. Single-record saves wrap the one ID in an array; CSV imports pass all successfully saved IDs.
 
 ## View Hooks (Injecting Plugin Content into Views)
 
@@ -253,6 +256,7 @@ class MyPlugin extends BasePlugin
     {
         Events::on('sale_complete', [$this, 'onSaleComplete']);
         Events::on('item_saved', [$this, 'onItemSaved']);
+        Events::on('receiving_complete', [$this, 'onReceivingComplete']);
     }
 
     public function onSaleComplete(int $saleIdNum, string $saleType): void
@@ -263,6 +267,11 @@ class MyPlugin extends BasePlugin
     public function onItemSaved(array $itemIds): void
     {
         log_message('info', 'Items saved: ' . implode(', ', $itemIds));
+    }
+
+    public function onReceivingComplete(int $receivingId): void
+    {
+        log_message('info', "Receiving completed: #{$receivingId}");
     }
 
     public function install(): bool

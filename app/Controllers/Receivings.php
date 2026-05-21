@@ -11,6 +11,7 @@ use App\Models\Item_kit;
 use App\Models\Receiving;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
@@ -367,6 +368,7 @@ class Receivings extends Secure_Controller
             $data['error_message'] = lang('Receivings.transaction_failed');
         } else {
             $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
+            Events::trigger('receiving_complete', (int) substr($data['receiving_id'], 5));
         }
 
         $data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
