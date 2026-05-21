@@ -2,10 +2,7 @@
 
 namespace app\Libraries;
 
-use CodeIgniter\Encryption\Encryption;
-use CodeIgniter\Encryption\EncrypterInterface;
 use Config\OSPOS;
-use Config\Services;
 
 
 /**
@@ -24,12 +21,7 @@ class Sms_lib
     {
         $config = config(OSPOS::class)->settings;
 
-        $encrypter = Services::encrypter();
-
-        $password = $config['msg_pwd'];
-        if (!empty($password)) {
-            $password = $encrypter->decrypt($password);
-        }
+        $password = decryptValue($config['msg_pwd'] ?? null);
 
         $username = $config['msg_uid'];
         $originator = $config['msg_src'];

@@ -2,9 +2,7 @@
 
 namespace app\Libraries;
 
-use CodeIgniter\Encryption\EncrypterInterface;
 use Config\OSPOS;
-use Config\Services;
 
 /**
  * MailChimp API v3 REST client Connector
@@ -14,8 +12,6 @@ use Config\Services;
  * Inspired by the work of:
  *   - Rajitha Bandara: https://github.com/rajitha-bandara/ci-mailchimp-v3-rest-client
  *   - Stefan Ashwell: https://github.com/stef686/codeigniter-mailchimp-api-v3
- *
- * @property encrypterinterface encrypter
  */
 class MailchimpConnector
 {
@@ -40,23 +36,19 @@ class MailchimpConnector
     {
         $config = config(OSPOS::class)->settings;
 
-        $encrypter = Services::encrypter();
-
-        $mailchimp_api_key = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
-            ? $this->config['mailchimp_api_key']
-            : '';
+        $mailchimp_api_key = $config['mailchimp_api_key'] ?? '';
 
         if (!empty($mailchimp_api_key)) {
             $this->_api_key = empty($api_key)
-                ? $encrypter->decrypt($mailchimp_api_key)    // TODO: Hungarian notation
-                : $api_key;    // TODO: Hungarian notation
+                ? decryptValue($mailchimp_api_key)
+                : $api_key;
         }
 
-        if (!empty($this->_api_key)) {    // TODO: Hungarian notation
+        if (!empty($this->_api_key)) {
             // Replace <dc> with correct datacenter obtained from the last part of the api key
-            $strings = explode('-', $this->_api_key);    // TODO: Hungarian notation
+            $strings = explode('-', $this->_api_key);
             if (is_array($strings) && !empty($strings[1])) {
-                $this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);    // TODO: Hungarian notation
+                $this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);
             }
         }
     }
