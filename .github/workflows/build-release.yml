@@ -22,6 +22,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
       version-tag: ${{ steps.version.outputs.version-tag }}
       short-sha: ${{ steps.version.outputs.short-sha }}
+      branch: ${{ steps.version.outputs.branch }}
 
     steps:
       - name: Checkout
@@ -127,7 +128,7 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-22.04
     needs: build
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
 
     steps:
       - name: Download build context
@@ -191,7 +192,7 @@ jobs:
         id: version
         run: |
           VERSION="${{ needs.build.outputs.version }}"
-          SHORT_SHA=$(git rev-parse --short=6 HEAD)
+          SHORT_SHA="${{ needs.build.outputs.short-sha }}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
 

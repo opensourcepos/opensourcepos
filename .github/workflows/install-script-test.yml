@@ -44,6 +44,7 @@ jobs:
         env:
           DB_PASS: ${{ matrix.db_pass }}
         run: |
+          set -o pipefail
           echo "Running install script with scenario: ${{ matrix.scenario }}"
           sudo -E bash scripts/install-ubuntu.sh 2>&1 | tee install-output.log
           echo "Install completed successfully"
