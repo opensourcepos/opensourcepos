@@ -25,7 +25,7 @@ class MY_Migration extends MigrationRunner
     public function get_latest_migration(): int
     {
         $migrations = $this->findMigrations();
-        return basename(end($migrations)->version);
+        return (int) basename(end($migrations)->version);
     }
 
     /**
@@ -41,7 +41,7 @@ class MY_Migration extends MigrationRunner
                 $builder = $db->table('migrations');
                 $builder->select('version')->orderBy('version', 'DESC')->limit(1);
                 $result = $builder->get()->getRow();
-                return $result ? $result->version : 0;
+                return $result ? (int) $result->version : 0;
             }
         } catch (\Exception $e) {
             // Database not available yet (e.g. fresh install before schema).
