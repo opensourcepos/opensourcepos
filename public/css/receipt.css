@@ -62,3 +62,31 @@
 .discount {
     font-weight: bold;
 }
+/** 58mm **/
+.receipt_wrapper_58 {
+    font-size: 10px;
+    width: 58mm;
+    max-width: 384px;
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+.items_58 {
+    width: 100%;
+}
+
+.items_58 th, .items td {
+    text-align: left;
+    padding: 2px 0;
+}
+        
+.totals_58 {
+    border-top: 1px dashed #000;
+    margin-top: 5px;
+    padding-top: 5px;
+}
+
+.center_58 {
+    text-align: center;
+}

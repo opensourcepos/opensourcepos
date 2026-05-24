@@ -265,6 +265,7 @@ return [
     "receipt_info"                              => "Receipt Configuration Information",
     "receipt_printer"                           => "Ticket Printer",
     "receipt_short"                             => "Short",
+    "receipt_58mm"                              => "58mm",
     "receipt_show_company_name"                 => "Show Company Name",
     "receipt_show_description"                  => "Show Description",
     "receipt_show_serialnumber"                 => "Show Serial Number",
