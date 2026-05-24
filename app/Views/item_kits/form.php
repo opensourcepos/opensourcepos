@@ -235,7 +235,7 @@
             }
         });
 
-        var fill_value = function(event, ui) {
+        const fill_value = function(event, ui) {
             event.preventDefault();
             $("input[name='kit_item_id']").val(ui.item.value);
             $("input[name='item_name']").val(DOMPurify.sanitize(ui.item.label));

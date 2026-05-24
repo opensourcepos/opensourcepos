@@ -292,7 +292,7 @@
         $('span').tooltip();
 
         $('#currency_symbol, #thousands_separator, #currency_code').change(function() {
-            var data = {
+            const data = {
                 number_locale: $('#number_locale').val()
             };
             data['save_number_locale'] = $("input[name='save_number_locale']").val();
@@ -336,7 +336,7 @@
                             }
                         },
                         dataFilter: function(data) {
-                            var response = JSON.parse(data);
+                            const response = JSON.parse(data);
                             $("input[name='save_number_locale']").val(response.save_number_locale);
                             $('#number_locale_example').text(response.number_locale_example);
                             $('#currency_symbol').val(response.currency_symbol);

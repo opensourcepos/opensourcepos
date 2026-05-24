@@ -136,7 +136,7 @@
     });
 
     function fill_quantity(val) {
-        var item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
+        const item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
         document.getElementById('quantity').value = parseFloat(item_quantities[val]).toFixed(<?= quantity_decimals() ?>);
     }
 </script>

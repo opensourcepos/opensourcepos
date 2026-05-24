@@ -27,14 +27,14 @@
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
+    // Validation and submit Handling
     $(document).ready(function() {
-        var tax_code_count = <?= sizeof($tax_codes) ?>;
+        let tax_code_count = <?= sizeof($tax_codes) ?>;
         if (tax_code_count == 0) {
             tax_code_count = 1;
         }
 
-        var hide_show_remove_tax_code = function() {
+        const hide_show_remove_tax_code = function() {
             if ($("input[name*='tax_code']:enabled").length > 1) {
                 $(".remove_tax_code").show();
             } else {
@@ -42,14 +42,14 @@
             }
         };
 
-        var add_tax_code = function() {
-            var id = $(this).parent().find("input[name='tax_code[]']").attr('id');
+        const add_tax_code = function() {
+            let id = $(this).parent().find("input[name='tax_code[]']").attr('id');
             id = id.replace(/.*?_(\d+)$/g, "$1");
-            var previous_tax_code_id = 'tax_code_' + id;
-            var block = $(this).parent().clone(true);
-            var new_block = block.insertAfter($(this).parent());
+            const previous_tax_code_id = 'tax_code_' + id;
+            const block = $(this).parent().clone(true);
+            const new_block = block.insertAfter($(this).parent());
             ++tax_code_count;
-            var new_tax_code_id = 'tax_code_' + tax_code_count;
+            const new_tax_code_id = 'tax_code_' + tax_code_count;
 
             $(new_block).find('label').html("<?= lang('Taxes.tax_code') ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
             $(new_block).find("input[name='tax_code[]']").attr('id', new_tax_code_id).removeAttr('disabled').attr('class', 'form-control text-uppercase required input-sm').val('');
@@ -61,12 +61,12 @@
             hide_show_remove_tax_code();
         };
 
-        var remove_tax_code = function() {
+        const remove_tax_code = function() {
             $(this).parent().remove();
             hide_show_remove_tax_code();
         };
 
-        var init_add_remove_tax_codes = function() {
+        const init_add_remove_tax_codes = function() {
             $('.add_tax_code').click(add_tax_code);
             $('.remove_tax_code').click(remove_tax_code);
             hide_show_remove_tax_code();
@@ -75,7 +75,7 @@
 
         // Run validator once for all fields
         $.validator.addMethod('check4TaxCodeDups', function(value, element) {
-            var value_count = 0;
+            let value_count = 0;
             $("input[name='tax_code[]']").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });

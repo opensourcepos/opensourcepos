@@ -26,8 +26,8 @@ function safeRemoveItem(key) {
 }
 
 // Load saved column visibility from localStorage
-var savedVisibility = JSON.parse(safeGetItem('columnVisibility')) || { cost: false, profit: false };
-var visibleColumns = savedVisibility;
+const savedVisibility = JSON.parse(safeGetItem('columnVisibility')) || { cost: false, profit: false };
+let visibleColumns = savedVisibility;
 
 // Function to save column visibility to localStorage
 function saveColumnVisibility(visibility) {
@@ -56,13 +56,13 @@ $('#table').bootstrapTable('refreshOptions', {
 });
 
 // Initialize visibility settings from localStorage
-var summaryVisibility = JSON.parse(safeGetItem('summaryVisibility')) || { cost: false, profit: false };
+let summaryVisibility = JSON.parse(safeGetItem('summaryVisibility')) || { cost: false, profit: false };
 
 // Function to apply visibility for cost and profit rows
 function applySummaryVisibility() {
-    var rows = $('#report_summary .summary_row');
-    var costRow = rows.eq(rows.length - 2); // Second-to-last row
-    var profitRow = rows.eq(rows.length - 1); // Last row
+    const rows = $('#report_summary .summary_row');
+    const costRow = rows.eq(rows.length - 2); // Second-to-last row
+    const profitRow = rows.eq(rows.length - 1); // Last row
 
     if (summaryVisibility.cost === false) {
         costRow.hide(); // Hide the cost row
@@ -90,7 +90,7 @@ $('#toggleCostProfitButton').click(function () {
 applySummaryVisibility();
 
 // Initialize dialog (if editable)
-var init_dialog = function () {
+const init_dialog = function () {
 <?php if (isset($editable)): ?>
         table_support.submit_handler('<?php echo site_url("reports/get_detailed_{$editable}_row") ?>');
     dialog_support.init("a.modal-dlg");

@@ -198,7 +198,7 @@ use Config\OSPOS;
 <div style="text-align: center;">
     <a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= lang('Config.report_an_issue') ?></a>
     <script type="text/javascript">
-        var clipboard = new ClipboardJS('.copy');
+        const clipboard = new ClipboardJS('.copy');
 
         clipboard.on('success', function(e) {
             document.getSelection().removeAllRanges();

@@ -29,9 +29,9 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        var location_count = <?= sizeof($stock_locations) ?>;
+        let location_count = <?= sizeof($stock_locations) ?>;
 
-        var hide_show_remove = function() {
+        const hide_show_remove = function() {
             if ($("input[name*='stock_location']:enabled").length > 1) {
                 $(".remove_stock_location").show();
             } else {
@@ -39,31 +39,31 @@
             }
         };
 
-        var add_stock_location = function() {
-            var block = $(this).parent().clone(true);
-            var new_block = block.insertAfter($(this).parent());
-            var new_block_id = 'stock_location[]';
+        const add_stock_location = function() {
+            const block = $(this).parent().clone(true);
+            const new_block = block.insertAfter($(this).parent());
+            const new_block_id = 'stock_location[]';
             $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
             $(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
             hide_show_remove();
         };
 
-        var remove_stock_location = function() {
+        const remove_stock_location = function() {
             $(this).parent().remove();
             hide_show_remove();
         };
 
-        var init_add_remove_locations = function() {
+        const init_add_remove_locations = function() {
             $('.add_stock_location').click(add_stock_location);
             $('.remove_stock_location').click(remove_stock_location);
             hide_show_remove();
         };
         init_add_remove_locations();
 
-        var duplicate_found = false;
+        const duplicate_found = false;
         // Run validator once for all fields
         $.validator.addMethod('stock_location', function(value, element) {
-            var value_count = 0;
+            let value_count = 0;
             $("input[name*='stock_location']").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });

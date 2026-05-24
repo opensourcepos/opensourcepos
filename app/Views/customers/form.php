@@ -453,7 +453,7 @@
             }
         });
 
-        var fill_value = function(event, ui) {
+        const fill_value = function(event, ui) {
             event.preventDefault();
             $("input[name='sales_tax_code_id']").val(ui.item.value);
             $("input[name='sales_tax_code_name']").val(ui.item.label);

@@ -39,13 +39,13 @@
     $(document).ready(function () {
         <?= view('partial/bootstrap_tables_locale') ?>
 
-        var details_data = <?= json_encode(esc($details_data)) ?>;
+        const details_data = <?= json_encode(esc($details_data)) ?>;
         <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
-            var details_data_rewards = <?= json_encode(esc($details_data_rewards)) ?>;
+            const details_data_rewards = <?= json_encode(esc($details_data_rewards)) ?>;
         <?php } ?>
         <?= view('partial/visibility_js') ?>
 
-        var init_dialog = function () {
+        const init_dialog = function () {
             <?php if (isset($editable)) { ?>
                 table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row')) ?>');
                 dialog_support.init("a.modal-dlg");

@@ -27,14 +27,14 @@
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
+    // Validation and submit Handling
     $(document).ready(function() {
-        var tax_categories_count = <?= sizeof($tax_categories) ?>;
+        let tax_categories_count = <?= sizeof($tax_categories) ?>;
         if (tax_categories_count == 0) {
             tax_categories_count = 1;
         }
 
-        var hide_show_remove_tax_category = function() {
+        const hide_show_remove_tax_category = function() {
             if ($("input[name*='tax_category']:enabled").length > 1) {
                 $(".remove_tax_category").show();
             } else {
@@ -42,15 +42,15 @@
             }
         };
 
-        var add_tax_category = function() {
-            var id = $(this).parent().find('input').attr('id');
+        const add_tax_category = function() {
+            let id = $(this).parent().find('input').attr('id');
             id = id.replace(/.*?_(\d+)$/g, "$1");
 
-            var previous_tax_category_id = 'tax_category_' + id;
-            var block = $(this).parent().clone(true);
-            var new_block = block.insertAfter($(this).parent());
+            const previous_tax_category_id = 'tax_category_' + id;
+            const block = $(this).parent().clone(true);
+            const new_block = block.insertAfter($(this).parent());
             ++tax_categories_count;
-            var new_tax_category_id = 'tax_category_' + tax_categories_count;
+            const new_tax_category_id = 'tax_category_' + tax_categories_count;
 
             $(new_block).find('label').html("<?= lang('Taxes.tax_category') ?> " + tax_categories_count).attr('for', new_tax_category_id).attr('class', 'control-label col-xs-2');
             $(new_block).find("input[name='tax_category[]']").attr('id', new_tax_category_id).removeAttr('disabled').attr('class', 'form-control input-sm required').val('');
@@ -59,23 +59,23 @@
             hide_show_remove_tax_category();
         };
 
-        var remove_tax_category = function() {
+        const remove_tax_category = function() {
             $(this).parent().remove();
             hide_show_remove_tax_category();
         };
 
-        var init_add_remove_tax_categories = function() {
+        const init_add_remove_tax_categories = function() {
             $('.add_tax_category').click(add_tax_category);
             $('.remove_tax_category').click(remove_tax_category);
             hide_show_remove_tax_category();
         };
         init_add_remove_tax_categories();
 
-        var duplicate_found = false;
+        let duplicate_found = false;
 
         // Run validator once for all fields
         $.validator.addMethod("check4TaxCategoryDups", function(value, element) {
-            var value_count = 0;
+            let value_count = 0;
             $('input[name="tax_category[]"]').each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });
