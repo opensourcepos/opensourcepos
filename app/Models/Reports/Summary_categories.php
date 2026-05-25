@@ -55,4 +55,27 @@ class Summary_categories extends Summary_report
         $builder->groupBy('category');
         $builder->orderBy('category');
     }
+
+    /**
+     * @param array $inputs
+     * @return array
+     */
+    public function getData(array $inputs): array
+    {
+        $builder = $this->db->table('sales_items AS sales_items');
+
+        $this->_select($inputs, $builder);
+        $this->_from($builder);
+        $this->_where($inputs, $builder);
+
+        if (isset($inputs['top_50']) && $inputs['top_50']) {
+            $builder->groupBy('category');
+            $builder->orderBy('quantity_purchased', 'DESC');
+            $builder->limit(50);
+        } else {
+            $this->_group_order($builder);
+        }
+
+        return $builder->get()->getResultArray();
+    }
 }
