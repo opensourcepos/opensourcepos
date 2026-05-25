@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Supplier;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
@@ -17,9 +18,6 @@ class Suppliers extends Persons
         $this->supplier = model(Supplier::class);
     }
 
-    /**
-     * @return string
-     */
     public function getIndex(): string
     {
         $data['table_headers'] = get_suppliers_manage_table_headers();
@@ -27,23 +25,14 @@ class Suppliers extends Persons
         return view('people/manage', $data);
     }
 
-    /**
-     * Gets one row for a supplier manage table. This is called using AJAX to update one row.
-     * @param $row_id
-     * @return ResponseInterface
-     */
-    public function getRow($row_id): ResponseInterface
+    public function getRow($rowId): ResponseInterface
     {
-        $data_row = get_supplier_data_row($this->supplier->get_info($row_id));
-        $data_row['category'] = $this->supplier->get_category_name($data_row['category']);
+        $dataRow = get_supplier_data_row($this->supplier->get_info($rowId));
+        $dataRow['category'] = $this->supplier->get_category_name($dataRow['category']);
 
-        return $this->response->setJSON($data_row);
+        return $this->response->setJSON($dataRow);
     }
 
-    /**
-     * Returns Supplier table data rows. This will be called with AJAX.
-     * @return void
-     **/
     public function getSearch(): ResponseInterface
     {
         $search = $this->request->getGet('search');
@@ -53,23 +42,19 @@ class Suppliers extends Persons
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $suppliers = $this->supplier->search($search, $limit, $offset, $sort, $order);
-        $total_rows = $this->supplier->get_found_rows($search);
+        $totalRows = $this->supplier->get_found_rows($search);
 
-        $data_rows = [];
+        $dataRows = [];
 
         foreach ($suppliers->getResult() as $supplier) {
             $row = get_supplier_data_row($supplier);
             $row['category'] = $this->supplier->get_category_name($row['category']);
-            $data_rows[] = $row;
+            $dataRows[] = $row;
         }
 
-        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
     }
 
-    /**
-     * Gives search suggestions based on what is being searched for
-     * @return ResponseInterface
-     **/
     public function getSuggest(): ResponseInterface
     {
         $search = $this->request->getGet('term');
@@ -78,10 +63,7 @@ class Suppliers extends Persons
         return $this->response->setJSON($suggestions);
     }
 
-    /**
-     * @return ResponseInterface
-     */
-    public function suggest_search(): ResponseInterface
+    public function suggestSearch(): ResponseInterface
     {
         $search = $this->request->getPost('term');
         $suggestions = $this->supplier->get_search_suggestions($search, false);
@@ -89,15 +71,9 @@ class Suppliers extends Persons
         return $this->response->setJSON($suggestions);
     }
 
-    /**
-     * Loads the supplier edit form
-     *
-     * @param int $supplier_id
-     * @return string
-     */
-    public function getView(int $supplier_id = NEW_ENTRY): string
+    public function getView(int $supplierId = NEW_ENTRY): string
     {
-        $info = $this->supplier->get_info($supplier_id);
+        $info = $this->supplier->get_info($supplierId);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
@@ -107,25 +83,23 @@ class Suppliers extends Persons
         return view("suppliers/form", $data);
     }
 
-    /**
-     * Inserts/updates a supplier
-     *
-     * @param int $supplier_id
-     * @return ResponseInterface
-     */
-    public function postSave(int $supplier_id = NEW_ENTRY): ResponseInterface
+    public function getAttributes(int $supplierId = NEW_ENTRY): string
     {
-        $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: Duplicate code
-        $last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        return $this->getPersonAttributes($supplierId, Attribute::SHOW_IN_SUPPLIERS);
+    }
+
+    public function postSave(int $supplierId = NEW_ENTRY): ResponseInterface
+    {
+        $firstName = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $lastName = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
-        // Format first and last name properly
-        $first_name = $this->nameize($first_name);
-        $last_name = $this->nameize($last_name);
+        $firstName = $this->nameize($firstName);
+        $lastName = $this->nameize($lastName);
 
-        $person_data = [
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
+        $personData = [
+            'first_name'   => $firstName,
+            'last_name'    => $lastName,
             'gender'       => $this->request->getPost('gender'),
             'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -138,7 +112,7 @@ class Suppliers extends Persons
             'comments'     => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        $supplier_data = [
+        $supplierData = [
             'company_name'   => $this->request->getPost('company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'agency_name'    => $this->request->getPost('agency_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category'       => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -146,44 +120,40 @@ class Suppliers extends Persons
             'tax_id'         => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        if ($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id)) {
-            // New supplier
-            if ($supplier_id == NEW_ENTRY) {
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => lang('Suppliers.successful_adding') . ' ' . $supplier_data['company_name'],
-                    'id'      => $supplier_data['person_id']
-                ]);
-            } else { // Existing supplier
+        if ($this->supplier->save_supplier($personData, $supplierData, $supplierId)) {
+            $personId = $supplierId == NEW_ENTRY ? $supplierData['person_id'] : $supplierId;
+            $this->savePersonAttributes($personId, Attribute::SHOW_IN_SUPPLIERS);
 
+            if ($supplierId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Suppliers.successful_updating') . ' ' . $supplier_data['company_name'],
-                    'id'      => $supplier_id
+                    'message' => lang('Suppliers.successful_adding') . ' ' . $supplierData['company_name'],
+                    'id'      => $supplierData['person_id']
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => lang('Suppliers.successful_updating') . ' ' . $supplierData['company_name'],
+                    'id'      => $supplierId
                 ]);
             }
-        } else { // Failure
+        } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Suppliers.error_adding_updating') . ' ' .     $supplier_data['company_name'],
+                'message' => lang('Suppliers.error_adding_updating') . ' ' . $supplierData['company_name'],
                 'id'      => NEW_ENTRY
             ]);
         }
     }
 
-    /**
-     * This deletes suppliers from the suppliers table
-     *
-     * @return ResponseInterface
-     */
     public function postDelete(): ResponseInterface
     {
-        $suppliers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
+        $suppliersToDelete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
-        if ($this->supplier->delete_list($suppliers_to_delete)) {
+        if ($this->supplier->delete_list($suppliersToDelete)) {
             return $this->response->setJSON([
                 'success' => true,
-                'message' => lang('Suppliers.successful_deleted') . ' ' . count($suppliers_to_delete) . ' ' . lang('Suppliers.one_or_multiple')
+                'message' => lang('Suppliers.successful_deleted') . ' ' . count($suppliersToDelete) . ' ' . lang('Suppliers.one_or_multiple')
             ]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => lang('Suppliers.cannot_be_deleted')]);

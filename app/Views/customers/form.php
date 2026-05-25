@@ -44,6 +44,12 @@
 
                 <?= view('people/form_basic_info') ?>
 
+                <div id="person_attributes">
+                    <script type="text/javascript">
+                        $('#person_attributes').load('<?= "customers/attributes/$person_info->person_id" ?>');
+                    </script>
+                </div>
+
                 <div class="form-group form-group-sm">
                     <?= form_label(lang('Customers.discount_type'), 'discount_type', ['class' => 'control-label col-xs-3']) ?>
                     <div class="col-xs-8">
