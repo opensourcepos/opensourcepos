@@ -3,16 +3,10 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * Appconfig class
- *
- *
- */
-class Appconfig extends Model
+class Appconfig extends BaseModel
 {
     protected $table = 'app_config';
     protected $primaryKey = 'key';

@@ -3,12 +3,8 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 
-/**
- * Dinner_table class
- */
-class Dinner_table extends Model
+class Dinner_table extends BaseModel
 {
     protected $table = 'dinner_tables';
     protected $primaryKey = 'dinner_table_id';

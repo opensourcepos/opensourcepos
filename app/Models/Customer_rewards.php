@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 
-/**
- * Customer_rewards class
- */
-class Customer_rewards extends Model
+class Customer_rewards extends BaseModel
 {
-    protected $table = 'customer_packages';
+    protected $table = 'customers_packages';
     protected $primaryKey = 'package_id';
     protected $useAutoIncrement = true;
     protected $useSoftDeletes = false;

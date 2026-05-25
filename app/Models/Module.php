@@ -3,12 +3,8 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 
-/**
- * Module class
- */
-class Module extends Model
+class Module extends BaseModel
 {
     protected $table = 'modules';
     protected $primaryKey = 'module_id';

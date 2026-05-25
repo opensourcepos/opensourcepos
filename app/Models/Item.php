@@ -3,18 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use ReflectionException;
 use stdClass;
 
-/**
- * Item class
- *
- * @property inventory inventory
- * @property item_quantity item_quantity
- */
-class Item extends Model
+class Item extends BaseModel
 {
 
     public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];

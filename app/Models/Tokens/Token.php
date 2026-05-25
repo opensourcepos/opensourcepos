@@ -9,7 +9,7 @@ use CodeIgniter\Model;
  */
 abstract class Token extends Model
 {
-    protected string $value = '';
+    protected $value = '';
 
     /**
      * @param string $value
