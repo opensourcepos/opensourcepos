@@ -101,7 +101,7 @@ OSPOS fires these events that plugins can listen to:
 | `customer_saved`   | `array $customerIds`               | Customer created/updated via form save or CSV import    |
 | `customer_deleted` | `int $personId, string $email`     | Customer deleted                                        |
 | `item_saved`       | `array $itemIds`                   | Item created/updated via form save or CSV import        |
-| `sale_complete`      | `int $saleIdNum, string $saleType` | Sale finalized and receipt rendered                     |
+| `sale_completed`      | `int $saleIdNum, string $saleType` | Sale finalized and receipt rendered                     |
 | `receiving_complete` | `int $receivingId, string $mode`   | Receiving finalized and items added to inventory        |
 
 > **Note:** `customer_saved` and `item_saved` always receive an array of IDs.
@@ -254,7 +254,7 @@ class MyPlugin extends BasePlugin
 
     public function registerEvents(): void
     {
-        Events::on('sale_complete', [$this, 'onSaleComplete']);
+        Events::on('sale_completed', [$this, 'onSaleComplete']);
         Events::on('item_saved', [$this, 'onItemSaved']);
         Events::on('receiving_complete', [$this, 'onReceivingComplete']);
     }
@@ -532,7 +532,7 @@ For custom tables, plugins can create them during `install()` and drop them duri
 
 ## Event Flow
 
-1. Application triggers event: `Events::trigger('sale_complete', $saleIdNum, $saleType)`
+1. Application triggers event: `Events::trigger('sale_completed', $saleIdNum, $saleType)`
 2. PluginManager recursively scans `app/Plugins/` directory
 3. Each enabled plugin registers its listeners via `registerEvents()`
 4. Events::on() callbacks are invoked automatically
