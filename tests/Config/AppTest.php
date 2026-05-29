@@ -391,4 +391,52 @@ class AppTest extends CIUnitTestCase
         // Clean up
         putenv('ALLOWED_HOSTNAMES');
     }
+
+    public function testEnvAllowedHostnamesLiteralFalse(): void
+    {
+        putenv('app.allowedHostnames=false');
+
+        $_SERVER['HTTP_HOST'] = 'false';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals(['false'], $app->allowedHostnames);
+
+        putenv('app.allowedHostnames');
+    }
+
+    public function testEnvAllowedHostnamesLiteralNull(): void
+    {
+        putenv('app.allowedHostnames=null');
+
+        $_SERVER['HTTP_HOST'] = 'null';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals(['null'], $app->allowedHostnames);
+
+        putenv('app.allowedHostnames');
+    }
+
+    public function testEnvAllowedHostnamesWhitespaceOnly(): void
+    {
+        putenv('app.allowedHostnames=   ');
+        putenv('CI_ENVIRONMENT=development');
+
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals([], $app->allowedHostnames);
+        $this->assertStringContainsString('localhost', $app->baseURL);
+
+        putenv('app.allowedHostnames');
+        putenv('CI_ENVIRONMENT');
+    }
 }
