@@ -60,7 +60,7 @@ class App extends BaseConfig
      *
      * Or via environment variable (useful for Docker/Compose):
      *   ALLOWED_HOSTNAMES=example.com,www.example.com
-     * 
+     *
      *     ['media.example.com', 'accounts.example.com']
      *
      * @var list<string>
@@ -289,7 +289,13 @@ class App extends BaseConfig
         // Support both: app.allowedHostnames (from .env) and ALLOWED_HOSTNAMES (from environment/Docker)
         $envAllowedHostnames = getenv('ALLOWED_HOSTNAMES');
         if ($envAllowedHostnames === false || trim($envAllowedHostnames) === '') {
+            $envAllowedHostnames = $_ENV['ALLOWED_HOSTNAMES'] ?? $_SERVER['ALLOWED_HOSTNAMES'] ?? false;
+        }
+        if ($envAllowedHostnames === false || trim($envAllowedHostnames) === '') {
             $envAllowedHostnames = getenv('app.allowedHostnames');
+        }
+        if ($envAllowedHostnames === false || trim($envAllowedHostnames) === '') {
+            $envAllowedHostnames = $_ENV['app.allowedHostnames'] ?? $_SERVER['app.allowedHostnames'] ?? false;
         }
         if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
             $this->allowedHostnames = array_values(array_filter(
