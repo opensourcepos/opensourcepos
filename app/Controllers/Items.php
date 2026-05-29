@@ -940,6 +940,7 @@ class Items extends Secure_Controller
         $items_to_delete = $this->request->getPost('ids');
 
         if ($this->item->delete_list($items_to_delete)) {
+            Events::trigger('item_deleted', $items_to_delete);
             $message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
             return $this->response->setJSON(['success' => true, 'message' => $message]);
         } else {
