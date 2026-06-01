@@ -461,7 +461,7 @@ class Sale extends Model
             
             // Get customer_id for reward point adjustment
             $sale_info = $this->db->table('sales')->where('sale_id', $sale_id)->get()->getRow();
-            $customer_id = $sale_info->customer_id ?? null;
+            $customer_id = $sale_info?->customer_id;
 
             // Run these queries as a transaction, we want to make sure we do all or nothing
             $this->db->transStart();
@@ -810,7 +810,7 @@ class Sale extends Model
 
         // Get sale info for reward point restoration
         $sale_info = $this->db->table('sales')->where('sale_id', $sale_id)->get()->getRow();
-        $customer_id = $sale_info->customer_id ?? null;
+        $customer_id = $sale_info?->customer_id;
 
         if ($update_inventory && $sale_status == COMPLETED) {
             // Defect, not all item deletions will be undone?
