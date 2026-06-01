@@ -456,6 +456,13 @@ class Sale extends Model
 
         // Touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
         if ($success && !empty($sale_data['payments'])) {
+            // Get the original payments for reward point adjustment
+            $original_payments = $this->get_sale_payments($sale_id)->getResultArray();
+            
+            // Get customer_id for reward point adjustment
+            $sale_info = $this->db->table('sales')->where('sale_id', $sale_id)->get()->getRow();
+            $customer_id = $sale_info->customer_id ?? null;
+
             // Run these queries as a transaction, we want to make sure we do all or nothing
             $this->db->transStart();
 
@@ -502,6 +509,11 @@ class Sale extends Model
 
             $this->db->transComplete();
             $success &= $this->db->transStatus();
+
+            // Adjust reward points if customer_id is not null and transaction was successful
+            if ($success && !empty($customer_id)) {
+                $this->adjust_reward_points($customer_id, $sale_id, $original_payments, $sale_data['payments'], false);
+            }
         }
 
         return $success;
@@ -796,6 +808,10 @@ class Sale extends Model
 
         $sale_status = $this->get_sale_status($sale_id);
 
+        // Get sale info for reward point restoration
+        $sale_info = $this->db->table('sales')->where('sale_id', $sale_id)->get()->getRow();
+        $customer_id = $sale_info->customer_id ?? null;
+
         if ($update_inventory && $sale_status == COMPLETED) {
             // Defect, not all item deletions will be undone?
             // Get array with all the items involved in the sale to update the inventory tracking
@@ -832,7 +848,14 @@ class Sale extends Model
         // Execute transaction
         $this->db->transComplete();
 
-        return $this->db->transStatus();
+        $success = $this->db->transStatus();
+
+        // Adjust reward points after successful deletion (restore points that were used/earned)
+        if ($success && !empty($customer_id)) {
+            $this->adjust_reward_points($customer_id, $sale_id, [], [], true);
+        }
+
+        return $success;
     }
 
     /**
@@ -1396,6 +1419,78 @@ class Sale extends Model
 
                 $rewards->save_value($rewards_data);
             }
+        }
+    }
+
+    /**
+     * Adjusts customer reward points when a sale is updated or deleted
+     * Handles changes in reward payment amounts and payment type changes to/from reward
+     *
+     * @param int $customer_id
+     * @param int $sale_id
+     * @param array $old_payments Old payment data from the original sale
+     * @param array $new_payments New payment data from the updated sale
+     * @param bool $is_deletion True if this is being called during deletion (to reverse all changes)
+     * @return void
+     */
+    private function adjust_reward_points(int $customer_id, int $sale_id, array $old_payments = [], array $new_payments = [], bool $is_deletion = false): void
+    {
+        $config = config(OSPOS::class)->settings;
+
+        if (empty($customer_id) || !$config['customer_reward_enable']) {
+            return;
+        }
+
+        $customer = model(Customer::class);
+        $customer_info = $customer->get_info($customer_id);
+
+        if (empty($customer_info) || !isset($customer_info->points)) {
+            return;
+        }
+
+        $current_points = $customer_info->points ?? 0;
+        $adjustment = 0;
+
+        if ($is_deletion) {
+            // For deletion, reverse all rewards that were used and earned from this sale
+            $rewards = model(Rewards::class);
+            $builder = $this->db->table('sales_reward_points');
+            $builder->where('sale_id', $sale_id);
+            $reward_record = $builder->get()->getRow();
+
+            if ($reward_record) {
+                // Restore used points (add back what was deducted)
+                $adjustment += floatval($reward_record->used);
+                // Remove earned points (subtract what was earned)
+                $adjustment -= floatval($reward_record->earned);
+            }
+        } else {
+            // For updates, calculate the difference between old and new reward payments
+            $old_reward_amount = 0;
+            $new_reward_amount = 0;
+
+            // Sum up reward payments from old data
+            foreach ($old_payments as $payment) {
+                if (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
+                    $old_reward_amount += floatval($payment['payment_amount']);
+                }
+            }
+
+            // Sum up reward payments from new data
+            foreach ($new_payments as $payment) {
+                if (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
+                    $new_reward_amount += floatval($payment['payment_amount']);
+                }
+            }
+
+            // Calculate adjustment: if new is less than old, we're restoring points
+            // If new is more than old, we're deducting more points
+            $adjustment = $old_reward_amount - $new_reward_amount;
+        }
+
+        if ($adjustment != 0) {
+            $new_points = max(0, $current_points + $adjustment);
+            $customer->update_reward_points_value($customer_id, $new_points);
         }
     }
 
