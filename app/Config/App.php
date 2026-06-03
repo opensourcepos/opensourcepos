@@ -60,7 +60,7 @@ class App extends BaseConfig
      *
      * Or via environment variable (useful for Docker/Compose):
      *   ALLOWED_HOSTNAMES=example.com,www.example.com
-     * 
+     *
      *     ['media.example.com', 'accounts.example.com']
      *
      * @var list<string>
@@ -286,12 +286,10 @@ class App extends BaseConfig
 
         // Solution for CodeIgniter 4 limitation: arrays cannot be set from .env
         // See: https://github.com/codeigniter4/CodeIgniter4/issues/7311
-        // Support both: app.allowedHostnames (from .env) and ALLOWED_HOSTNAMES (from environment/Docker)
-        $envAllowedHostnames = getenv('ALLOWED_HOSTNAMES');
-        if ($envAllowedHostnames === false || trim($envAllowedHostnames) === '') {
-            $envAllowedHostnames = getenv('app.allowedHostnames');
-        }
-        if ($envAllowedHostnames !== false && trim($envAllowedHostnames) !== '') {
+        $envAllowedHostnames = $this->getEnvString('ALLOWED_HOSTNAMES')
+            ?? $this->getEnvString('app.allowedHostnames');
+
+        if ($envAllowedHostnames !== null) {
             $this->allowedHostnames = array_values(array_filter(
                 array_map('trim', explode(',', $envAllowedHostnames)),
                 static fn (string $hostname): bool => $hostname !== ''
@@ -356,5 +354,21 @@ class App extends BaseConfig
         );
 
         return $this->allowedHostnames[0];
+    }
+
+    private function getEnvString(string $key): ?string
+    {
+        $value = env($key);
+
+        if (is_string($value) && trim($value) !== '') {
+            return $value;
+        }
+
+        $raw = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
+        if (is_string($raw) && trim($raw) !== '') {
+            return $raw;
+        }
+
+        return null;
     }
 }
