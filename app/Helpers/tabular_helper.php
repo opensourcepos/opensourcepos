@@ -226,7 +226,7 @@ function get_person_data_row(object $person): array
         'people.person_id' => $person->person_id,
         'last_name'        => $person->last_name,
         'first_name'       => $person->first_name,
-        'email'            => empty($person->email) ? '' : mailto($person->email, $person->email),
+        'email'            => empty($person->email) ? '' : mailto(esc($person->email), esc($person->email)),
         'phone_number'     => $person->phone_number,
         'messages'         => empty($person->phone_number)
             ? ''
@@ -292,7 +292,7 @@ function get_customer_data_row(object $person, object $stats): array
         'people.person_id' => $person->person_id,
         'last_name'        => $person->last_name,
         'first_name'       => $person->first_name,
-        'email'            => empty($person->email) ? '' : mailto($person->email, $person->email),
+        'email'            => empty($person->email) ? '' : mailto(esc($person->email), esc($person->email)),
         'phone_number'     => $person->phone_number,
         'total'            => to_currency($stats->total),
         'messages'         => empty($person->phone_number)
@@ -363,7 +363,7 @@ function get_supplier_data_row(object $supplier): array
         'category'         => $supplier->category,
         'last_name'        => $supplier->last_name,
         'first_name'       => $supplier->first_name,
-        'email'            => empty($supplier->email) ? '' : mailto($supplier->email, $supplier->email),
+        'email'            => empty($supplier->email) ? '' : mailto(esc($supplier->email), esc($supplier->email)),
         'phone_number'     => $supplier->phone_number,
         'messages'         => empty($supplier->phone_number)
             ? ''
