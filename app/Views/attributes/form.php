@@ -10,93 +10,75 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("attributes/saveDefinition/$definition_id", ['id' => 'attribute_form']) ?>
 
-<?= form_open("attributes/saveDefinition/$definition_id", ['id' => 'attribute_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="attribute_basic_info">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'definition_name',
-                    'id'    => 'definition_name',
-                    'class' => 'form-control input-sm',
-                    'value' => esc($definition_info->definition_name)
-                ]) ?>
-            </div>
+    <label for="definition_name" class="form-label"><?= lang('Attributes.definition_name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="definition_name-icon"><i class="bi bi-star"></i></span>
+        <input type="text" class="form-control" name="definition_name" id="definition_name" aria-describedby="definition_name-icon" value="<?= esc($definition_info->definition_name); ?>">
+    </div>
+
+    <label for="definition_type" class="form-label"><?= lang('Attributes.definition_type'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="definition_type-icon"><i class="bi bi-list"></i></span>
+        <select class="form-select" name="definition_type" id="definition_type" aria-describedby="definition_type-icon">
+            <?php foreach (DEFINITION_TYPES as $key => $label): ?>
+                <option value="<?= $key ?>" <?= ($key === array_search($definition_info->definition_type, DEFINITION_TYPES)) ? 'selected' : '' ?>>
+                    <?= $label ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <label for="definition_group" class="form-label"><?= lang('Attributes.definition_group'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="definition_group-icon"><i class="bi bi-collection"></i></span>
+        <select class="form-select" name="definition_group" id="definition_group" aria-describedby="definition_group-icon" <?= empty($definition_group) ? 'disabled' : '' ?>>
+            <?php foreach ($definition_group as $key => $label): ?>
+                <option value="<?= $key ?>" <?= ($key == $definition_info->definition_fk) ? 'selected' : '' ?>>
+                    <?= $label ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="toggle-hide d-none">
+        <label for="definition_flags" class="form-label"><?= lang('Attributes.definition_flags'); ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="definition_flags-icon"><i class="bi bi-eyeglasses"></i></span>
+            <select class="form-select" name="definition_flags[]" id="definition_flags" aria-describedby="definition_flags-icon" multiple>
+                <?php foreach ($definition_flags as $key => $label): ?>
+                    <option value="<?= $key ?>" <?= in_array($key, array_keys($selected_definition_flags)) ? 'selected' : '' ?>>
+                        <?= $label ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"') ?>
-            </div>
+    <div class="toggle-hide d-none">
+        <label for="definition_unit" class="form-label"><?= lang('Attributes.definition_unit'); ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="definition_unit-icon"><i class="bi bi-flask"></i></span>
+            <input type="text" class="form-control" name="definition_unit" id="definition_unit" aria-describedby="definition_unit-icon" value="<?= esc($definition_info->definition_unit); ?>">
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_group'), 'definition_group', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown(
-                    'definition_group',
-                    $definition_group,
-                    $definition_info->definition_fk,
-                    'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : '')
-                ) ?>
-            </div>
+    <div class="toggle-hide d-none">
+        <label for="definition_value" class="form-label"><?= lang('Attributes.definition_values'); ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="definition_value-icon"><i class="bi bi-list"></i></span>
+            <input type="text" class="form-control" name="definition_value" id="definition_value" aria-describedby="definition_value-icon">
+            <button type="button" class="btn btn-outline-secondary" id="add_attribute_value"><i class="bi bi-plus-circle"></i></button>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm hidden">
-            <?= form_label(lang('Attributes.definition_flags'), 'definition_flags', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <?= form_multiselect('definition_flags[]', $definition_flags, array_keys($selected_definition_flags), [
-                        'id'                        => 'definition_flags',
-                        'class'                     => 'selectpicker show-menu-arrow',
-                        'data-none-selected-text'   => lang('Common.none_selected_text'),
-                        'data-selected-text-format' => 'count > 1',
-                        'data-style'                => 'btn-default btn-sm',
-                        'data-width'                => 'fit'
-                    ]) ?>
-                </div>
-            </div>
-        </div>
+    <div class="toggle-hide d-none">
+        <ul class="list-group" id="definition_list_group"></ul>
+    </div>
 
-        <div class="form-group form-group-sm hidden">
-            <?= form_label(lang('Attributes.definition_unit'), 'definition_units', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <?= form_input([
-                        'name'  => 'definition_unit',
-                        'value' => esc($definition_info->definition_unit),
-                        'class' => 'form-control input-sm',
-                        'id'    => 'definition_unit'
-                    ]) ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm hidden">
-            <?= form_label(lang('Attributes.definition_values'), 'definition_value', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <?= form_input(['name' => 'definition_value', 'class' => 'form-control input-sm', 'id' => 'definition_value']) ?>
-                    <span id="add_attribute_value" class="input-group-addon input-sm btn btn-default">
-                        <i class="bi bi-plus-circle"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm hidden">
-            <?= form_label('&nbsp;', 'definition_list_group', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <ul id="definition_list_group" class="list-group"></ul>
-            </div>
-        </div>
-
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">
@@ -125,8 +107,8 @@
             if (definition_id == -1) {
                 $('#definition_name').prop("disabled", true);
                 $('#definition_type').prop("disabled", true);
-                $('#definition_group').parents('.form-group').toggleClass("hidden", true);
-                $('#definition_flags').parents('.form-group').toggleClass('hidden', true);
+                $('#definition_group').parents('.toggle-hide').toggleClass("d-none", true);
+                $('#definition_flags').parents('.toggle-hide').toggleClass("d-none", true);
             }
         }
         disable_category_dropdown();
@@ -137,21 +119,23 @@
             var is_no_group = $('#definition_type').val() !== '0';
             var is_category_dropdown = definition_id == -1;
 
-            $('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
-            $('#definition_unit').parents('.form-group').toggleClass('hidden', is_decimal);
+            $('#definition_value, #definition_list_group').parents('.toggle-hide').toggleClass('d-none', is_dropdown);
+            $('#definition_unit').parents('.toggle-hide').toggleClass('d-none', is_decimal);
 
             // Appropriately show definition flags if not category_dropdown
             if (definition_id != -1) {
-                $('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
+                $('#definition_flags').parents('.toggle-hide').toggleClass('d-none', !is_no_group);
             }
         };
 
         $('#definition_type').change(show_hide_fields);
         show_hide_fields();
 
-        $('.selectpicker').each(function() {
-            var $selectpicker = $(this);
-            $.fn.selectpicker.call($selectpicker, $selectpicker.data());
+        new TomSelect('#definition_flags', {
+            plugins: ['checkbox_options', 'remove_button'],
+            placeholder: '<?= lang('Common.none_selected_text') ?>',
+            hidePlaceholder: true,
+            closeAfterSelect: false,
         });
 
         var remove_attribute_value = function() {
@@ -192,7 +176,7 @@
                 }
             }
 
-            $('#definition_list_group').append('<li class="list-group-item">' + DOMPurify.sanitize(value) + '<a href="javascript:void(0);"><i class="bi bi-trash pull-right"></i></a></li>')
+            $('#definition_list_group').append('<li class="list-group-item list-group-item-action d-flex justify-content-between">' + DOMPurify.sanitize(value) + '<a href="javascript:void(0);"><span class="text-danger"><i class="bi bi-trash"></i></span></a></li>')
                 .find(':last-child a').click(remove_attribute_value);
             $('#definition_value').val('');
         };

@@ -7,96 +7,98 @@
  */
 ?>
 
-<div class="form-group form-group-sm">
-    <?= form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']) ?>
-    <div class="col-xs-8">
-        <?= form_dropdown([
-            'name'     => 'definition_name',
-            'options'  => $definition_names,
-            'selected' => -1,
-            'class'    => 'form-control',
-            'id'       => 'definition_name'
-        ]) ?>
-    </div>
+<label for="definition_name" class="form-label"><?= lang('Attributes.definition_name'); ?></label>
+<div class="input-group mb-3">
+    <span class="input-group-text"><i class="bi bi-star"></i></span>
+    <select class="form-select" name="definition_name" id="definition_name">
+        <option value="-1" selected></option>
+        <?php foreach ($definition_names as $key => $value): ?>
+            <option value="<?= $key ?>"><?= $value ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
 
 <?php foreach ($definition_values as $definition_id => $definition_value) { ?>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(esc($definition_value['definition_name']), esc($definition_value['definition_name']), ['class' => 'control-label col-xs-3']) ?>
-        <div class="col-xs-8">
-            <div class="input-group">
-                <?php
-                echo form_hidden("attribute_ids[$definition_id]", strval($definition_value['attribute_id']));
-                $attribute_value = $definition_value['attribute_value'];
+<span class="attribute_added">
+    <?php
+    $attribute_value = $definition_value['attribute_value'];
 
-                switch ($definition_value['definition_type']) {
-                    case DATE:
-                        $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
-                        echo form_input([
-                            'name'               => "attribute_links[$definition_id]",
-                            'value'              => to_date($value),
-                            'class'              => 'form-control input-sm datetime',
-                            'data-definition-id' => $definition_id,
-                            'readonly'           => 'true'
-                        ]);
-                        break;
-                    case DROPDOWN:
-                        $selected_value = $definition_value['selected_value'];
-                        echo form_dropdown([
-                            'name'               => "attribute_links[$definition_id]",
-                            'options'            => $definition_value['values'],
-                            'selected'           => $selected_value,
-                            'class'              => 'form-control',
-                            'data-definition-id' => $definition_id
-                        ]);
-                        break;
-                    case TEXT:
-                        $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
-                        echo form_input([
-                            'name'               => "attribute_links[$definition_id]",
-                            'value'              => esc($value),
-                            'class'              => 'form-control valid_chars',
-                            'data-definition-id' => $definition_id
-                        ]);
-                        break;
-                    case DECIMAL:
-                        $value = (empty($attribute_value) || empty($attribute_value->attribute_decimal)) ? $definition_value['selected_value'] : $attribute_value->attribute_decimal;
-                        echo form_input([
-                            'name'               => "attribute_links[$definition_id]",
-                            'value'              => to_decimals((float)$value),
-                            'class'              => 'form-control valid_chars',
-                            'data-definition-id' => $definition_id
-                        ]);
-                        break;
-                    case CHECKBOX:
-                        $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
+    switch ($definition_value['definition_type']) {
 
-                        // Sends 0 if the box is unchecked instead of not sending anything.
-                        echo form_input([
-                            'type'               => 'hidden',
-                            'name'               => "attribute_links[$definition_id]",
-                            'id'                 => "attribute_links[$definition_id]",
-                            'value'              => 0,
-                            'data-definition-id' => $definition_id
-                        ]);
-                        echo form_checkbox([
-                            'name'               => "attribute_links[$definition_id]",
-                            'id'                 => "attribute_links[$definition_id]",
-                            'value'              => 1,
-                            'checked'            => $value == 1,
-                            'class'              => 'checkbox-inline',
-                            'data-definition-id' => $definition_id
-                        ]);
-                        break;
-                }
-                ?>
-                <span class="input-group-addon input-sm btn btn-default remove_attribute_btn">
-                    <i class="bi bi-trash"></i>
-                </span>
+        case DATE:
+            $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
+            ?>
+            <label for="attribute_links[<?= $definition_id ?>]" class="form-label"><?= esc($definition_value['definition_name']) ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="attribute_links[<?= $definition_id ?>]-icon"><i class="bi bi-calendar2"></i></span>
+                <input type="hidden" name="attribute_ids[<?= $definition_id ?>]" value="<?= strval($definition_value['attribute_id']) ?>">
+                <input type="text" class="form-select datetime" name="attribute_links[<?= $definition_id ?>]" id="attribute_links[<?= $definition_id ?>]" aria-describedby="attribute_links[<?= $definition_id ?>]-icon" value="<?= to_date($value) ?>"  data-definition-id="<?= $definition_id ?>" readonly>
+                <button type="button" class="btn btn-outline-danger remove_attribute_btn"><i class="bi bi-trash"></i></button>
             </div>
-        </div>
-    </div>
+            <?php
+            break;
+
+        case DROPDOWN:
+            $selected_value = $definition_value['selected_value'];
+            ?>
+            <label for="attribute_links[<?= $definition_id ?>]" class="form-label"><?= esc($definition_value['definition_name']) ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="attribute_links[<?= $definition_id ?>]-icon"><i class="bi bi-menu-down"></i></span>
+                <input type="hidden" name="attribute_ids[<?= $definition_id ?>]" value="<?= strval($definition_value['attribute_id']) ?>">
+                <select class="form-select" name="attribute_links[<?= $definition_id ?>]" id="attribute_links[<?= $definition_id ?>]" data-definition-id="<?= $definition_id ?>">
+                    <?php foreach ($definition_value['values'] as $key => $val): ?>
+                        <option value="<?= $key ?>" <?= $selected_value == $key ? 'selected' : '' ?>><?= $val ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="button" class="btn btn-outline-danger remove_attribute_btn"><i class="bi bi-trash"></i></button>
+            </div>
+            <?php
+            break;
+
+        case TEXT:
+            $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
+            ?>
+            <label for="attribute_links[<?= $definition_id ?>]" class="form-label"><?= esc($definition_value['definition_name']) ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="attribute_links[<?= $definition_id ?>]-icon"><i class="bi bi-type"></i></span>
+                <input type="hidden" name="attribute_ids[<?= $definition_id ?>]" value="<?= strval($definition_value['attribute_id']) ?>">
+                <input type="text" name="attribute_links[<?= $definition_id ?>]" id="attribute_links[<?= $definition_id ?>]" value="<?= esc($value) ?>" class="form-control valid_chars" data-definition-id="<?= $definition_id ?>">
+                <button type="button" class="btn btn-outline-danger remove_attribute_btn"><i class="bi bi-trash"></i></button>
+            </div>
+            <?php
+            break;
+
+        case DECIMAL:
+            $value = (empty($attribute_value) || empty($attribute_value->attribute_decimal)) ? $definition_value['selected_value'] : $attribute_value->attribute_decimal;
+            ?>
+            <label for="attribute_links[<?= $definition_id ?>]" class="form-label"><?= esc($definition_value['definition_name']) ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="attribute_links[<?= $definition_id ?>]-icon"><i class="bi bi-dot"></i></span>
+                <input type="hidden" name="attribute_ids[<?= $definition_id ?>]" value="<?= strval($definition_value['attribute_id']) ?>">
+                <input type="text" name="attribute_links[<?= $definition_id ?>]" id="attribute_links[<?= $definition_id ?>]" value="<?= to_decimals((float)$value) ?>" class="form-control valid_chars" data-definition-id="<?= $definition_id ?>">
+                <button type="button" class="btn btn-outline-danger remove_attribute_btn"><i class="bi bi-trash"></i></button>
+            </div>
+            <?php
+            break;
+
+        case CHECKBOX:
+            $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
+            ?>
+            <div class="d-flex justify-content-between">
+                <div class="form-check form-check-inline mb-3">
+                    <input type="hidden" name="attribute_ids[<?= $definition_id ?>]" value="<?= strval($definition_value['attribute_id']) ?>">
+                    <input type="hidden" name="attribute_links_h1[<?= $definition_id ?>]" id="attribute_links_h1<?= $definition_id ?>" value="0" data-definition-id="<?= $definition_id ?>">
+                    <input type="checkbox" class="form-check-input" name="attribute_links[<?= $definition_id ?>]" id="attribute_links[<?= $definition_id ?>]" value="1" <?= $value == 1 ? 'checked' : '' ?> data-definition-id="<?= $definition_id ?>">
+                    <label class="form-check-label" for="attribute_links[<?= $definition_id ?>]"><?= esc($definition_value['definition_name']) ?></label>
+                </div>
+                <button type="button" class="btn btn-outline-danger remove_attribute_btn"><i class="bi bi-trash"></i></button>
+            </div>
+            <?php
+            break;
+    }
+    ?>
+</span>
 
 <?php } ?>
 
@@ -106,7 +108,7 @@
 
         var enable_delete = function() {
             $('.remove_attribute_btn').click(function() {
-                $(this).parents('.form-group').remove();
+                $(this).parents('.attribute_added').remove();
             });
         };
 
@@ -134,13 +136,13 @@
             $("[name*='attribute_links'").each(function() {
                 var definition_id = $(this).data('definition-id');
                 var element = $(this);
-                
+
                 // For checkboxes, use the visible checkbox, not the hidden input
                 if (element.attr('type') === 'hidden' && element.siblings('input[type="checkbox"]').length > 0) {
                     // Skip hidden inputs that have a corresponding checkbox
                     return;
                 }
-                
+
                 // For checkboxes, get the checked state
                 if (element.attr('type') === 'checkbox') {
                     result[definition_id] = element.prop('checked') ? '1' : '0';

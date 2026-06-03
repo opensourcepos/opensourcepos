@@ -158,8 +158,9 @@
                 if (confirm("<?= lang('Sales.invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
                     $.get("<?= esc("$controller_name/sendPdf/" . $sale_info['sale_id']) ?>",
                         function(response) {
-                            BootstrapDialog.closeAll();
+                            dialog_support.hide();
                             $.notify({
+                                icon: 'bi bi-bell-fill',
                                 message: response.message
                             }, {
                                 type: response.success ? 'success' : 'danger'

@@ -6,44 +6,34 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("messages/send_form/$person_info->person_id", ['id' => 'send_sms_form']) ?>
 
-<?= form_open("messages/send_form/$person_info->person_id", ['id' => 'send_sms_form', 'class' => 'form-horizontal']) ?>
-    <fieldset>
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Messages.first_name'), 'first_name_label', ['for' => 'first_name', 'class' => 'control-label col-xs-2']) ?>
-            <div class="col-xs-10">
-                <?= form_input(['class' => 'form-control input-sm', 'type' => 'text', 'name' => 'first_name', 'value' => $person_info->first_name, 'readonly' => 'true']) ?>
-            </div>
-        </div>
+    <label for="first_name" class="form-label"><?= lang('Messages.first_name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="first_name-icon"><i class="bi bi-person-square"></i></span>
+        <input type="text" class="form-control" name="first_name" id="first_name" aria-describedby="first_name-icon" value="<?= $person_info->first_name; ?>" disabled readonly>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Messages.last_name'), 'last_name_label', ['for' => 'last_name', 'class' => 'control-label col-xs-2']) ?>
-            <div class="col-xs-10">
-                <?= form_input(['class' => 'form-control input-sm', 'type' => 'text', 'name' => 'last_name', 'value' => $person_info->last_name, 'readonly' => 'true']) ?>
-            </div>
-        </div>
+    <label for="last_name" class="form-label"><?= lang('Messages.last_name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="last_name-icon"><i class="bi bi-person-square"></i></span>
+        <input type="text" class="form-control" name="last_name" id="last_name" aria-describedby="last_name-icon" value="<?= $person_info->last_name; ?>" disabled readonly>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Messages.phone'), 'phone_label', ['for' => 'phone', 'class' => 'control-label col-xs-2 required']) ?>
-            <div class="col-xs-10">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><i class="bi bi-telephone"></i></span>
-                    <?= form_input(['class' => 'form-control input-sm required', 'type' => 'text', 'name' => 'phone', 'value' => $person_info->phone_number]) ?>
-                </div>
-            </div>
-        </div>
+    <label for="phone" class="form-label"><?= lang('Messages.phone'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="phone-icon"><i class="bi bi-telephone"></i></span>
+        <input type="text" class="form-control" name="phone" id="phone" aria-describedby="phone-icon" value="<?= $person_info->phone_number; ?>">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Messages.message'), 'message_label', ['for' => 'message', 'class' => 'control-label col-xs-2 required']) ?>
-            <div class="col-xs-10">
-                <?= form_textarea(['class' => 'form-control input-sm required', 'name' => 'message', 'id' => 'message', 'value' => $config['msg_msg']]) ?>
-            </div>
-        </div>
+    <label for="message" class="form-label"><?= lang('Messages.message'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="message-icon"><i class="bi bi-chat-dots"></i></span>
+        <textarea class="form-control" name="message" id="message" rows="10" aria-describedby="message-icon"><?= $config['msg_msg'] ?></textarea>
+    </div>
 
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">
