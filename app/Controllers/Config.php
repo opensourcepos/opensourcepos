@@ -808,14 +808,10 @@ class Config extends Secure_Controller
         $default_tax_1_rate = $this->request->getPost('default_tax_1_rate');
         $default_tax_2_rate = $this->request->getPost('default_tax_2_rate');
 
-        // Note: parse_tax() is not used here because these inputs use type="number"
-        // which always submits dot-decimal values regardless of locale. Using parse_tax()
-        // with a comma-decimal locale (e.g., de_DE) would incorrectly interpret the dot
-        // as a thousands separator, causing 5.5 to be saved as 5.
         $batch_save_data = [
-            'default_tax_1_rate'        => (float) filter_var($default_tax_1_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'default_tax_1_rate'        => parse_tax(filter_var($default_tax_1_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
             'default_tax_1_name'        => $this->request->getPost('default_tax_1_name'),
-            'default_tax_2_rate'        => (float) filter_var($default_tax_2_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'default_tax_2_rate'        => parse_tax(filter_var($default_tax_2_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
             'default_tax_2_name'        => $this->request->getPost('default_tax_2_name'),
             'tax_included'              => $this->request->getPost('tax_included') != null,
             'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != null,

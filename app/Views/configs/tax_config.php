@@ -51,14 +51,10 @@
                 </div>
                 <div class="col-xs-1 input-group">
                     <?= form_input([
-                        'type'  => 'number',
-                        'step'  => 'any',
-                        'min'   => '0',
-                        'max'   => '100',
                         'name'  => 'default_tax_1_rate',
                         'id'    => 'default_tax_1_rate',
                         'class' => 'form-control input-sm',
-                        'value' => $config['default_tax_1_rate'] !== '' ? (float) $config['default_tax_1_rate'] : ''
+                        'value' => to_tax_decimals($config['default_tax_1_rate'])
                     ]) ?>
                     <span class="input-group-addon input-sm">%</span>
                 </div>
@@ -76,14 +72,10 @@
                 </div>
                 <div class="col-xs-1 input-group">
                     <?= form_input([
-                        'type'  => 'number',
-                        'step'  => 'any',
-                        'min'   => '0',
-                        'max'   => '100',
                         'name'  => 'default_tax_2_rate',
                         'id'    => 'default_tax_2_rate',
                         'class' => 'form-control input-sm',
-                        'value' => $config['default_tax_2_rate'] !== '' ? (float) $config['default_tax_2_rate'] : ''
+                        'value' => to_tax_decimals($config['default_tax_2_rate'])
                     ]) ?>
                     <span class="input-group-addon input-sm">%</span>
                 </div>
