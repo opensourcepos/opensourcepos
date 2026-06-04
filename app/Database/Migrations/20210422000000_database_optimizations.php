@@ -131,7 +131,7 @@ class Migration_database_optimizations extends Migration
             $builder->where("attribute_id IN ($subquery)", null, false);
             $attributeIdsToFix = $builder->get();
 
-            $this->reassignDuplicateAttributeValues($attributeIdsToFix, $duplicatedValue);
+            $this->reassignDuplicateAttributeValues($attributeIdsToFix);
         }
 
         $this->db->transComplete();
@@ -141,9 +141,8 @@ class Migration_database_optimizations extends Migration
      * Updates the attribute_id in all attribute_link rows with duplicated attributeIds then deletes unneeded rows from attributeValues
      *
      * @param ResultInterface $attributeIdsToFix All attributeIds that need to parsed
-     * @param array $attributeValue The attribute value in question.
      */
-    private function reassignDuplicateAttributeValues(ResultInterface $attributeIdsToFix, array $attributeValue): void
+    private function reassignDuplicateAttributeValues(ResultInterface $attributeIdsToFix): void
     {
         $attributeIds = $attributeIdsToFix->getResultArray();
         $retainAttributeId = $attributeIds[0]['attribute_id'];
