@@ -8,6 +8,7 @@ use App\Models\Attribute;
 use Config\Database;
 use Config\OSPOS;
 use DateTime;
+use RuntimeException;
 
 class Migration_database_optimizations extends Migration
 {
@@ -89,7 +90,12 @@ class Migration_database_optimizations extends Migration
                             break;
                         case DATE:
                             $config = config(OSPOS::class)->settings;
-                            $attributeDate = DateTime::createFromFormat('Y-m-d', $attributeValue['attribute_date']);
+                            $attributeDate = DateTime::createFromFormat('Y-m-d', (string) $attributeValue['attribute_date']);
+
+                            if ($attributeDate === false || empty($config['dateformat'])) {
+                                throw new RuntimeException('Invalid DATE attribute encountered during 20210422000000_database_optimizations migration.');
+                            }
++
                             $value = $attributeDate->format($config['dateformat']);
                             break;
                         default:
