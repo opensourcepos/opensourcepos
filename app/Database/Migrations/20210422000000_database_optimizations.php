@@ -37,6 +37,10 @@ class Migration_database_optimizations extends Migration
         dropForeignKeyConstraints(['ospos_receivings_ibfk_2'], 'receivings');
         dropForeignKeyConstraints(['ospos_suppliers_ibfk_1'], 'suppliers');
 
+        createPrimaryKey('customers', 'person_id');
+        createPrimaryKey('employees', 'person_id');
+        createPrimaryKey('suppliers', 'person_id');
+
         $attribute = model(Attribute::class);
 
         $attribute->deleteOrphanedValues();
