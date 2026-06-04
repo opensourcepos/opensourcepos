@@ -35,7 +35,7 @@
         <div id="header"><?= lang('Sales.quote') ?></div>
         <table id="info">
             <tr>
-                <td id="logo">
+                        <td id="logo">
                     <?php if ($config['company_logo'] != '') { ?>
                         <img id="image" src="<?= 'uploads/' . esc($config['company_logo'], 'url') ?>" alt="company_logo">
                     <?php } ?>
@@ -103,7 +103,7 @@
                         <td><?= esc($item['item_number']) ?></td>
                         <td class="item-name"><?= esc($item['name']) ?></td>
                         <td><?= to_quantity_decimals($item['quantity']) ?></td>
-                        <td><?= to_currency($item['price']) ?></td>
+                    <td><?= esc($item['secondaryPriceDisplay'] ?? secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true)) ?></td>
                         <td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                         <?php if ($discount > 0): ?>
                             <td><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
@@ -133,11 +133,23 @@
                 </tr>
             <?php } ?>
 
-            <tr>
-                <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
-                <td id="total" class="total-value"><?= to_currency($total) ?></td>
-            </tr>
+                <tr>
+                    <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
+                    <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
+                    <td id="total" class="total-value"><?= to_currency($total) ?></td>
+                </tr>
+                <?php if (!empty($secondaryCurrency['show'])) { ?>
+                    <tr>
+                        <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= esc(secondary_currency_display_label(lang('Sales.total'), $secondaryCurrency)) ?></td>
+                        <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
+                        <td colspan="2" class="total-line"><?= esc(lang('Config.secondary_currency_rate')) ?></td>
+            <td class="total-value" id="currency_rate"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display((float) ($secondaryCurrency['rate'] ?? 0))) ?></td>
+                    </tr>
+                <?php } ?>
         </table>
 
         <div id="terms">

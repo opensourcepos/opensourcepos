@@ -15,6 +15,10 @@
  */
 ?>
 
+<?php
+$secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['receipt_show_secondary_currency']);
+?>
+
 <div id="receipt_wrapper" style="font-size: <?= esc($config['receipt_font_size']) ?>px;">
     <div id="receipt_header">
         <?php if ($config['company_logo'] != '') { ?>
@@ -115,6 +119,12 @@
             <td colspan="2" style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= lang('Sales.total') ?></td>
             <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= to_currency($total) ?></td>
         </tr>
+        <?php if ($secondaryCurrency['show']) { ?>
+        <tr>
+            <td colspan="2" style="text-align: right;"><?= esc(secondary_currency_display_label(lang('Sales.total'), $secondaryCurrency)) ?></td>
+                    <td class="total-value"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></td>
+        </tr>
+        <?php } ?>
 
 
         <?php
@@ -126,7 +136,7 @@
             $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
         ?>
             <tr>
-                <td colspan="2" style="text-align: right;"><?= $splitpayment[0] ?> </td>
+                <td colspan="2" style="text-align: right;"><?= esc($splitpayment[0]) ?> </td>
                 <td class="total-value"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>
@@ -141,6 +151,12 @@
             <td colspan="2" style="text-align: right;"> <?= lang($amount_change >= 0 ? ($only_sale_check ? 'Sales.check_balance' : 'Sales.change_due') : 'Sales.amount_due') ?> </td>
             <td class="total-value"><?= to_currency($amount_change) ?></td>
         </tr>
+        <?php if ($secondaryCurrency['show']) { ?>
+        <tr>
+            <td colspan="2" style="text-align: right;"><?= esc(lang('Config.currency_rate')) ?></td>
+            <td class="total-value"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></td>
+        </tr>
+        <?php } ?>
     </table>
 
     <div id="sale_return_policy">

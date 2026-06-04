@@ -3,6 +3,7 @@
 namespace App\Models\Reports;
 
 use App\Models\Sale;
+use Config\OSPOS;
 
 /**
  *
@@ -28,21 +29,29 @@ class Specific_employee extends Report
      */
     public function getDataColumns(): array
     {
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $summaryColumns = [
+            ['id'            => lang('Reports.sale_id')],
+            ['type_code'     => lang('Reports.code_type')],
+            ['sale_time'     => lang('Reports.date'), 'sortable' => false],
+            ['quantity'      => lang('Reports.quantity')],
+            ['customer_name' => lang('Reports.sold_to')],
+            ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+            ['tax'           => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+            ['total'         => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+            ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+            ['payment_type'  => lang('Reports.payment_type'), 'sortable' => false],
+            ['comment'       => lang('Reports.comments')]
+        ];
+
+        if ($secondaryCurrency['show']) {
+            $summaryColumns[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+            $summaryColumns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+        }
+
         return [
-            'summary' => [
-                ['id'            => lang('Reports.sale_id')],
-                ['type_code'     => lang('Reports.code_type')],
-                ['sale_time'     => lang('Reports.date'), 'sortable' => false],
-                ['quantity'      => lang('Reports.quantity')],
-                ['customer_name' => lang('Reports.sold_to')],
-                ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-                ['tax'           => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-                ['total'         => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-                ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter'],
-                ['payment_type'  => lang('Reports.payment_type'), 'sortable' => false],
-                ['comment'       => lang('Reports.comments')]
-            ],
+            'summary' => $summaryColumns,
             'details' => [
                 lang('Reports.name'),
                 lang('Reports.category'),
@@ -91,7 +100,8 @@ class Specific_employee extends Report
             SUM(cost) AS cost,
             SUM(profit) AS profit,
             MAX(payment_type) AS payment_type,
-            MAX(comment) AS comment');
+            MAX(comment) AS comment,
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
 
         $builder->where('employee_id', $inputs['employee_id']);    // TODO: Duplicated code
 

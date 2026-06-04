@@ -3,6 +3,7 @@
 namespace App\Models\Reports;
 
 use App\Models\Receiving;
+use Config\OSPOS;
 
 /**
  *
@@ -28,18 +29,26 @@ class Detailed_receivings extends Report
      */
     public function getDataColumns(): array
     {
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $summaryColumns = [
+            ['id'             => lang('Reports.receiving_id')],
+            ['receiving_time' => lang('Reports.date'), 'sortable' => false],
+            ['quantity'       => lang('Reports.quantity')],
+            ['employee_name'  => lang('Reports.received_by')],
+            ['supplier_name'  => lang('Reports.supplied_by')],
+            ['total'          => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['payment_type'   => lang('Reports.payment_type')],
+            ['comment'        => lang('Reports.comments')],
+            ['reference'      => lang('Receivings.reference')]
+        ];
+
+        if ($secondaryCurrency['show']) {
+            $summaryColumns[] = ['secondary_currency_rate' => lang('Reports.rate'), 'sorter' => 'number_sorter'];
+            $summaryColumns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+        }
+
         return [
-            'summary' => [
-                ['id'             => lang('Reports.receiving_id')],
-                ['receiving_time' => lang('Reports.date'), 'sortable' => false],
-                ['quantity'       => lang('Reports.quantity')],
-                ['employee_name'  => lang('Reports.received_by')],
-                ['supplier_name'  => lang('Reports.supplied_by')],
-                ['total'          => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['payment_type'   => lang('Reports.payment_type')],
-                ['comment'        => lang('Reports.comments')],
-                ['reference'      => lang('Receivings.reference')]
-            ],
+            'summary' => $summaryColumns,
             'details' => [
                 lang('Reports.item_number'),
                 lang('Reports.name'),
@@ -68,11 +77,12 @@ class Detailed_receivings extends Report
             SUM(profit) AS profit,
             MAX(payment_type) as payment_type,
             MAX(comment) as comment,
-            MAX(reference) as reference');
+            MAX(reference) as reference,
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
         $builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
         $builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-        $builder->where('receiving_id', $receiving_id);
-        $builder->groupBy('receiving_id');
+        $builder->where('receivings_items_temp.receiving_id', $receiving_id);
+        $builder->groupBy('receivings_items_temp.receiving_id');
 
         return $builder->get()->getRowArray();
     }
@@ -93,7 +103,8 @@ class Detailed_receivings extends Report
             SUM(profit) AS profit,
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment,
-            MAX(reference) AS reference');
+            MAX(reference) AS reference,
+            MAX(secondary_currency_rate) AS secondary_currency_rate');
         $builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
         $builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 
@@ -109,7 +120,7 @@ class Detailed_receivings extends Report
             $builder->having('items_purchased = 0');
         }
 
-        $builder->groupBy('receiving_id', 'receiving_time');
+        $builder->groupBy(['receivings_items_temp.receiving_id', 'receivings_items_temp.receiving_time']);
         $builder->orderBy('MAX(receiving_id)');
 
         $data = [];

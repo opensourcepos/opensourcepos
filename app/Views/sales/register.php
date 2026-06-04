@@ -61,6 +61,32 @@ if (isset($success)) {
 helper('url');
 ?>
 
+<?php if ($secondaryCurrency['show']): ?>
+    <table align="center" style="font-size: 16px; font-weight: 600; background-color: rgb(221, 221, 221); width: 25%; margin: 0 auto 0.5em; border: dashed 1px;">
+        <tr>
+            <td style="text-align: center; padding-right: 5%;"><?= lang(ucfirst($controller_name) . '.total') ?>:</td>
+            <td style="text-align: center;"><?= to_currency($total) ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: center; padding-right: 5%;"><?= esc($secondaryTotalLabel ?? secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?>:</td>
+            <td style="text-align: center;"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: center; padding-right: 5%;"><?= esc(lang('Sales.rate')) ?>:</td>
+            <td style="text-align: center;">
+                <span id="secondary_currency_rate_display"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></span>
+                <a href="javascript:void(0);"
+                    id="secondary_currency_refresh_button"
+                    title="<?= esc(lang('Sales.secondary_currency_update_live_rate_tooltip')) ?>"
+                    aria-label="<?= esc(lang('Sales.secondary_currency_update_live_rate_tooltip')) ?>"
+                    style="margin-left: 0.5em; color: inherit; text-decoration: none;">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </a>
+            </td>
+        </tr>
+    </table>
+<?php endif; ?>
+
 <div id="register_wrapper">
 
     <!-- Top register controls -->
@@ -191,7 +217,7 @@ helper('url');
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
-                                    echo to_currency($item['price']);
+                                    echo esc($item['secondaryPriceDisplay'] ?? to_currency($item['price']));
                                     echo form_hidden('price', to_currency_no_money($item['price']));
                                 }
                                 ?>
@@ -362,9 +388,6 @@ helper('url');
                     <button class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "customers/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_customer") ?>">
                         <span class="glyphicon glyphicon-user">&nbsp;</span><?= lang(ucfirst($controller_name) . ".new_customer") ?>
                     </button>
-                    <button class="btn btn-default btn-sm modal-dlg" id="show_keyboard_help" data-href="<?= esc("$controller_name/salesKeyboardHelp") ?>" title="<?= lang(ucfirst($controller_name) . '.key_title') ?>">
-                        <span class="glyphicon glyphicon-share-alt">&nbsp;</span><?= lang(ucfirst($controller_name) . '.key_help') ?>
-                    </button>
                 </div>
             <?php } ?>
         <?= form_close() ?>
@@ -380,7 +403,7 @@ helper('url');
             </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
-                    <th style="width: 55%;"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></th>
+                <th style="width: 55%;"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></th>
                     <th style="width: 45%; text-align: right;"><?= to_currency_tax($tax['sale_tax_amount']) ?></th>
                 </tr>
             <?php } ?>
@@ -388,6 +411,12 @@ helper('url');
                 <th style="width: 55%; font-size: 150%"><?= lang(ucfirst($controller_name) . '.total') ?></th>
                 <th style="width: 45%; font-size: 150%; text-align: right;"><span id="sale_total"><?= to_currency($total) ?></span></th>
             </tr>
+            <?php if ($secondaryCurrency['show']) { ?>
+                <tr>
+                    <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.total'), $secondaryCurrency)) ?></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_total_secondary_currency"><?= esc($secondaryTotalDisplay ?? to_currency($total)) ?></span></th>
+                </tr>
+            <?php } ?>
         </table>
 
         <?php if (count($cart) > 0) { // Only show this part if there are Items already in the register ?>
@@ -396,11 +425,17 @@ helper('url');
                     <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.payments_total') ?></th>
                     <th style="width: 45%; text-align: right;"><?= to_currency($payments_total) ?></th>
                 </tr>
+            <tr>
+                <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
+                <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
+            </tr>
+            <?php if ($secondaryCurrency['show']) { ?>
                 <tr>
-                    <th style="width: 55%; font-size: 120%"><?= lang(ucfirst($controller_name) . '.amount_due') ?></th>
-                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?= to_currency($amount_due) ?></span></th>
+                    <th style="width: 55%; font-size: 120%"><?= esc(secondary_currency_display_label(lang(ucfirst($controller_name) . '.amount_due'), $secondaryCurrency)) ?></th>
+                    <th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due_secondary_currency"><?= esc($secondaryAmountDueDisplay ?? to_currency($amount_due)) ?></span></th>
                 </tr>
-            </table>
+            <?php } ?>
+        </table>
 
             <div id="payment_details">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
@@ -481,8 +516,9 @@ helper('url');
 
                         <tbody id="payment_contents">
                             <?php foreach ($payments as $payment_id => $payment) { ?>
+                                <?php $encodedPaymentId = rtrim(strtr(base64_encode((string) $payment_id), '+/', '-_'), '='); ?>
                                 <tr>
-                                    <td><?= anchor("$controller_name/deletePayment/". esc(base64url_encode($payment_id), 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+                                    <td><?= anchor("$controller_name/deletePayment/" . esc($encodedPaymentId, 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
                                     <td><?= $payment['payment_type'] ?></td>
                                     <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
                                 </tr>
@@ -581,6 +617,7 @@ helper('url');
         help: keyboardShortcuts?.help?.code ?? null,
         cancel: keyboardShortcuts?.cancel?.code ?? null
     };
+    const secondaryAmounts = <?= json_encode($secondaryAmounts ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
 
     $(document).ready(function() {
         const redirect = function() {
@@ -766,10 +803,10 @@ helper('url');
             }
         });
 
-        $('#add_payment_button').click(function() {
-            $('#add_payment_form').find('input[name="complete_after_payment"]').val('0');
-            $('#add_payment_form').submit();
-        });
+          $('#add_payment_button').click(function() {
+              $('#add_payment_form').find('input[name="complete_after_payment"]').val('0');
+              $('#add_payment_form').submit();
+          });
 
         $('#payment_types').change(check_payment_type).ready(check_payment_type);
 
@@ -785,13 +822,64 @@ helper('url');
             }
         });
 
-        $('#finish_sale_button').keypress(function(event) {
-            if (event.which == 13) {
-                $('#finish_sale_form').submit();
-            }
-        });
+          $('#finish_sale_button').keypress(function(event) {
+              if (event.which == 13) {
+                  $('#finish_sale_form').submit();
+              }
+          });
 
-        dialog_support.init('a.modal-dlg, button.modal-dlg');
+          // Add Keyboard Shortcuts/Hotkeys to Sale Register
+          document.body.onkeyup = function(event) {
+              if ($(event.target).closest('.modal').length || $('.modal.in').length) {
+                  return;
+              }
+              if (event.altKey) {
+                  switch (event.keyCode) {
+                      case shortcutCodes.items:
+                          $("#item").focus();
+                          $("#item").select();
+                          break;
+                      case shortcutCodes.customers:
+                          $("#customer").focus();
+                          $("#customer").select();
+                          break;
+                      case shortcutCodes.suspend:
+                          $("#suspend_sale_button").click();
+                          break;
+                      case shortcutCodes.suspended:
+                          $("#show_suspended_sales_button").click();
+                          break;
+                      case shortcutCodes.amount:
+                          $("#amount_tendered").focus();
+                          $("#amount_tendered").select();
+                          break;
+                      case shortcutCodes.payment:
+                          $("#add_payment_button").click();
+                          break;
+                      case shortcutCodes.complete:
+                          if (paymentsCoverTotal && $("#finish_sale_button").length) {
+                              $("#finish_sale_button").click();
+                          } else {
+                              $("#add_payment_button").click();
+                          }
+                          break;
+                      case shortcutCodes.finish:
+                          $("#finish_invoice_quote_button").click();
+                          break;
+                      case shortcutCodes.help:
+                          $("#show_keyboard_help").click();
+                          break;
+                  }
+              }
+
+              switch (event.keyCode) {
+                  case shortcutCodes.cancel:
+                      $("#cancel_sale_button").click();
+                      break;
+              }
+          }
+
+          dialog_support.init('a.modal-dlg, button.modal-dlg');
 
         table_support.handle_submit = function(resource, response, stay_open) {
             $.notify({
@@ -826,14 +914,41 @@ helper('url');
             $('#cart_' + $(this).attr('data-line')).append($(input));
             $('#cart_' + $(this).attr('data-line')).submit();
         });
+
+        $('#secondary_currency_refresh_button').click(function(event) {
+            event.preventDefault();
+            const $button = $(this);
+            $button.css('pointer-events', 'none');
+
+            $.post("<?= esc(site_url("$controller_name/refreshSecondaryCurrency")) ?>", {}, function(response) {
+                $.notify({
+                    message: response.message
+                }, {
+                    type: response.success ? 'success' : 'danger'
+                });
+
+                if (response.success) {
+                    window.location.reload();
+                }
+            }, 'json').always(function() {
+                $button.css('pointer-events', '');
+            });
+        });
     });
 
     function check_payment_type() {
         var cash_mode = <?= json_encode($cash_mode) ?>;
+        const updateSecondaryRows = function(totalDisplay, amountDueDisplay) {
+            if (totalDisplay !== null && amountDueDisplay !== null) {
+                $("#sale_total_secondary_currency").text(totalDisplay);
+                $("#sale_amount_due_secondary_currency").text(amountDueDisplay);
+            }
+        };
 
         if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
+            updateSecondaryRows(secondaryAmounts.total, secondaryAmounts.amountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
             $("#amount_tendered:enabled").val('').focus();
             $(".giftcard-input").attr('disabled', false);
@@ -842,6 +957,7 @@ helper('url');
         } else if (($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.cash') ?>" && cash_mode == '1')) {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
+            updateSecondaryRows(secondaryAmounts.nonCashTotal, secondaryAmounts.cashAmountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
@@ -849,61 +965,11 @@ helper('url');
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
+            updateSecondaryRows(secondaryAmounts.nonCashTotal, secondaryAmounts.nonCashAmountDue);
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
-        }
-    }
-
-    // Add Keyboard Shortcuts/Hotkeys to Sale Register
-    document.body.onkeyup = function(event) {
-        if ($(event.target).closest('.modal').length || $('.modal.in').length) {
-            return;
-        }
-        if (event.altKey) {
-            switch (event.keyCode) {
-                case shortcutCodes.items:
-                    $("#item").focus();
-                    $("#item").select();
-                    break;
-                case shortcutCodes.customers:
-                    $("#customer").focus();
-                    $("#customer").select();
-                    break;
-                case shortcutCodes.suspend:
-                    $("#suspend_sale_button").click();
-                    break;
-                case shortcutCodes.suspended:
-                    $("#show_suspended_sales_button").click();
-                    break;
-                case shortcutCodes.amount:
-                    $("#amount_tendered").focus();
-                    $("#amount_tendered").select();
-                    break;
-                case shortcutCodes.payment:
-                    $("#add_payment_button").click();
-                    break;
-                case shortcutCodes.complete:
-                    if (paymentsCoverTotal && $("#finish_sale_button").length) {
-                        $("#finish_sale_button").click();
-                    } else {
-                        $("#add_payment_button").click();
-                    }
-                    break;
-                case shortcutCodes.finish:
-                    $("#finish_invoice_quote_button").click();
-                    break;
-                case shortcutCodes.help:
-                    $("#show_keyboard_help").click();
-                    break;
-            }
-        }
-
-        switch (event.keyCode) {
-            case shortcutCodes.cancel:
-                $("#cancel_sale_button").click();
-                break;
         }
     }
 </script>

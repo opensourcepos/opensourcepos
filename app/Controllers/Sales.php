@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Email_lib;
+use App\Libraries\SecondaryCurrencyFeedLib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
 use App\Libraries\Token_lib;
+use App\Models\Appconfig;
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Dinner_table;
@@ -28,7 +30,7 @@ use stdClass;
 
 class Sales extends Secure_Controller
 {
-    protected $helpers = ['file'];
+    protected $helpers = ['file', 'tabular'];
     private Barcode_lib $barcode_lib;
     private Email_lib $email_lib;
     private Sale_lib $sale_lib;
@@ -64,6 +66,71 @@ class Sales extends Secure_Controller
         $this->customer_rewards = model(Customer_rewards::class);
         $this->dinner_table = model(Dinner_table::class);
         $this->employee = model(Employee::class);
+    }
+
+    /**
+     * Adds the shared secondary currency context to a view data array.
+     *
+     * @param array $data
+     * @return void
+     */
+    private function _append_secondary_currency(array &$data): void
+    {
+        $secondaryCurrency = $data['secondaryCurrency'] ?? secondary_currency_context(
+            $this->config,
+            $data['secondary_currency_rate'] ?? null
+        );
+        $data['secondaryCurrency'] = $secondaryCurrency;
+        $data['secondaryTotalLabel'] = secondary_currency_display_label(lang(ucfirst($data['controller_name'] ?? 'Sales') . '.total'), $secondaryCurrency);
+        $data['secondaryAmountDueLabel'] = secondary_currency_display_label(lang(ucfirst($data['controller_name'] ?? 'Sales') . '.amount_due'), $secondaryCurrency);
+        $data['secondaryRateDisplay'] = secondary_currency_render_rate($secondaryCurrency);
+
+        $displayFields = [
+            'prediscount_subtotal' => 'secondaryPrediscountSubtotalDisplay',
+            'subtotal' => 'secondarySubtotalDisplay',
+            'total' => 'secondaryTotalDisplay',
+            'amount_due' => 'secondaryAmountDueDisplay',
+            'cash_amount_due' => 'secondaryCashAmountDueDisplay',
+            'non_cash_total' => 'secondaryNonCashTotalDisplay',
+            'non_cash_amount_due' => 'secondaryNonCashAmountDueDisplay'
+        ];
+
+        foreach ($displayFields as $sourceField => $targetField) {
+            if (array_key_exists($sourceField, $data)) {
+                $data[$targetField] = secondary_currency_render_amount((float) $data[$sourceField], $secondaryCurrency);
+            }
+        }
+
+        if (array_key_exists('discount', $data)) {
+            $data['secondaryDiscountDisplay'] = secondary_currency_render_amount((float) $data['discount'] * -1, $secondaryCurrency);
+        }
+
+        if (array_key_exists('taxes', $data) && is_array($data['taxes'])) {
+            foreach ($data['taxes'] as $tax_group_index => $tax) {
+                $data['taxes'][$tax_group_index]['secondarySaleTaxAmountDisplay'] = secondary_currency_render_amount((float) $tax['sale_tax_amount'], $secondaryCurrency);
+            }
+        }
+
+        if (array_key_exists('cart', $data) && is_array($data['cart'])) {
+            foreach ($data['cart'] as $line => $item) {
+                $data['cart'][$line]['secondaryPriceDisplay'] = secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true);
+                $data['cart'][$line]['secondaryDiscountedTotalDisplay'] = secondary_currency_render_amount((float) $item['discounted_total'], $secondaryCurrency);
+
+                if (!empty($item['discount']) && ($item['discount_type'] ?? null) === FIXED) {
+                    $data['cart'][$line]['secondaryDiscountDisplay'] = secondary_currency_render_amount((float) $item['discount'], $secondaryCurrency) . ' ' . lang('Sales.discount');
+                } elseif (($item['discount_type'] ?? null) === PERCENT) {
+                    $data['cart'][$line]['secondaryDiscountDisplay'] = to_decimals($item['discount']) . ' ' . lang('Sales.discount_included');
+                }
+            }
+        }
+
+        $data['secondaryAmounts'] = [
+            'total' => $data['secondaryTotalDisplay'] ?? null,
+            'amountDue' => $data['secondaryAmountDueDisplay'] ?? null,
+            'cashAmountDue' => $data['secondaryCashAmountDueDisplay'] ?? null,
+            'nonCashTotal' => $data['secondaryNonCashTotalDisplay'] ?? null,
+            'nonCashAmountDue' => $data['secondaryNonCashAmountDueDisplay'] ?? null
+        ];
     }
 
     public function getIndex(): ResponseInterface|string
@@ -107,8 +174,12 @@ class Sales extends Secure_Controller
                 $selectedFilters = [];
             }
 
-            // Restore filters from URL query string
-            $filters = restoreTableFilters($this->request);
+            // Restore filters from URL query string.
+            $filters = [
+                'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null,
+                'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null,
+                'selected_filters' => $this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? []
+            ];
             if (!empty($filters['selected_filters'])) {
                 $selectedFilters = array_merge($selectedFilters, $filters['selected_filters']);
             }
@@ -487,9 +558,13 @@ class Sales extends Secure_Controller
      */
     public function getDeletePayment(string $payment_id): ResponseInterface|string
     {
-        helper('url');
+        $remainder = strlen($payment_id) % 4;
+        if ($remainder) {
+            $payment_id .= str_repeat('=', 4 - $remainder);
+        }
 
-        $this->sale_lib->delete_payment(base64url_decode($payment_id));
+        $decoded_payment_id = base64_decode(strtr($payment_id, '-_', '+/'));
+        $this->sale_lib->delete_payment($decoded_payment_id);
 
         return $this->_reload();
     }
@@ -818,6 +893,7 @@ class Sales extends Secure_Controller
 
                 // Resort and filter cart lines for printing
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+                $this->_append_secondary_currency($data);
 
                 if ($data['sale_id_num'] == NEW_ENTRY) {
                     $data['error_message'] = lang('Sales.transaction_failed');
@@ -857,6 +933,7 @@ class Sales extends Secure_Controller
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
                 $data['barcode'] = null;
+                $this->_append_secondary_currency($data);
 
                 $this->sale_lib->clear_all();
                 return view('sales/work_order', $data);
@@ -884,6 +961,7 @@ class Sales extends Secure_Controller
 
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
                 $data['barcode'] = null;
+                $this->_append_secondary_currency($data);
 
                 $this->sale_lib->clear_all();
                 return view('sales/quote', $data);
@@ -902,6 +980,7 @@ class Sales extends Secure_Controller
             $data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
             $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+            $this->_append_secondary_currency($data);
 
             if ($data['sale_id_num'] == NEW_ENTRY) {
                 $data['error_message'] = lang('Sales.transaction_failed');
@@ -1088,6 +1167,7 @@ class Sales extends Secure_Controller
         $sale_info = $this->sale->get_info($sale_id)->getRowArray();
         $this->sale_lib->copy_entire_sale($sale_id);
         $data = [];
+        $data['secondary_currency_rate'] = $sale_info['secondary_currency_rate'] ?? null;
         $data['cart'] = $this->sale_lib->get_cart();
         $data['payments'] = $this->sale_lib->get_payments();
         $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
@@ -1170,6 +1250,7 @@ class Sales extends Secure_Controller
             $invoice_type = 'invoice';
         }
         $data['invoice_view'] = $invoice_type;
+        $this->_append_secondary_currency($data);
 
         // Validate receipt template to prevent path traversal
         $receipt_template = $this->config['receipt_template'] ?? '';
@@ -1187,6 +1268,8 @@ class Sales extends Secure_Controller
      */
     private function _reload(array $data = []): ResponseInterface|string    // TODO: Hungarian notation
     {
+        helper('url');
+
         $sale_id = $this->session->get('sale_id');    // TODO: This variable is never used
 
         if ($sale_id == '') {
@@ -1243,6 +1326,7 @@ class Sales extends Secure_Controller
         }
 
         $data['amount_change'] = $data['amount_due'] * -1;
+        $this->_append_secondary_currency($data);
 
         $data['comment'] = $this->sale_lib->get_comment();
         $data['email_receipt'] = $this->sale_lib->is_email_receipt();
@@ -1272,7 +1356,6 @@ class Sales extends Secure_Controller
 
         $data['quote_number'] = $this->sale_lib->get_quote_number();
         $data['work_order_number'] = $this->sale_lib->get_work_order_number();
-        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
 
         // TODO: the if/else set below should be converted to a switch
         if ($this->sale_lib->get_mode() == 'sale_invoice') {    // TODO: Duplicated code.
@@ -1661,8 +1744,40 @@ class Sales extends Secure_Controller
      */
     public function getSalesKeyboardHelp(): string
     {
-        return view('sales/help', [
-            'keyboardShortcuts' => $this->sale_lib->getKeyShortcuts()
+        return view('sales/help');
+    }
+
+    /**
+     * Refresh the secondary currency rate from the configured feed.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postRefreshSecondaryCurrency(): ResponseInterface
+    {
+        $service = new SecondaryCurrencyFeedLib();
+        $result = $service->refreshRate($this->config, true);
+        $syncedAt = date('Y-m-d H:i:s');
+
+        if (empty($result['success'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $result['message'] ?? lang('Config.secondary_currency_refresh_failed')
+            ]);
+        }
+
+        $appconfig = model(Appconfig::class);
+        $appconfig->batch_save([
+            'secondary_currency_rate' => $result['rate'],
+            'secondary_currency_last_synced_at' => $syncedAt,
+            'secondary_currency_last_error' => ''
+        ]);
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Config.secondary_currency_refresh_successful'),
+            'rate' => $result['rate'],
+            'synced_at' => $syncedAt
         ]);
     }
 

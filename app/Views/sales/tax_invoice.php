@@ -145,7 +145,7 @@ if (isset($error_message)) {
                     <?php endif; ?>
                     <td class="item-name"><?= esc($item['name']) ?></td>
                     <td style="text-align: center;"><?= to_quantity_decimals($item['quantity']) ?></td>
-                    <td><?= to_currency($item['price']) ?></td>
+                <td><?= esc($item['secondaryPriceDisplay'] ?? secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true)) ?></td>
                     <td style="text-align: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
                     <?php if ($discount > 0): ?>
                         <td style="text-align: center;"><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
@@ -179,7 +179,7 @@ if (isset($error_message)) {
         <?php foreach ($taxes as $tax_group_index => $tax) { ?>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
                 <td class="total-value" id="taxes"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
             </tr>
         <?php } ?>
@@ -189,6 +189,18 @@ if (isset($error_message)) {
             <td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
             <td class="total-value" id="total"><?= to_currency($total) ?></td>
         </tr>
+        <?php if ($secondaryCurrency['show']) { ?>
+            <tr>
+                <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                <td colspan="2" class="total-line"><?= esc(secondary_currency_display_label(lang('Sales.total'), $secondaryCurrency)) ?></td>
+            <td class="total-value" id="total_secondary_currency"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) ?></td>
+            </tr>
+            <tr>
+                <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                <td colspan="2" class="total-line"><?= esc(lang('Config.secondary_currency_rate')) ?></td>
+                <td class="total-value" id="currency_rate"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></td>
+            </tr>
+        <?php } ?>
 
         <?php
         $only_sale_check = false;
@@ -200,7 +212,7 @@ if (isset($error_message)) {
         ?>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
+                <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
                 <td class="total-value" id="paid"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>

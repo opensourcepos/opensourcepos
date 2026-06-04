@@ -23,7 +23,8 @@ class Receiving extends Model
         'comment',
         'receiving_id',
         'payment_type',
-        'reference'
+        'reference',
+        'secondary_currency_rate'
     ];
 
     /**
@@ -33,6 +34,7 @@ class Receiving extends Model
     public function get_info(int $receiving_id): ResultInterface
     {
         $builder = $this->db->table('receivings');
+        $builder->select('receivings.*, people.*, suppliers.*, receivings.secondary_currency_rate AS secondary_currency_rate');
         $builder->join('people', 'people.person_id = receivings.supplier_id', 'LEFT');
         $builder->join('suppliers', 'suppliers.person_id = receivings.supplier_id', 'LEFT');
         $builder->where('receiving_id', $receiving_id);
@@ -118,7 +120,8 @@ class Receiving extends Model
             'employee_id'    => $employee_id,
             'payment_type'   => $payment_type,
             'comment'        => $comment,
-            'reference'      => $reference
+            'reference'      => $reference,
+            'secondary_currency_rate' => (float) (config(OSPOS::class)->settings['secondary_currency_rate'] ?? 0)
         ];
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
@@ -326,6 +329,7 @@ class Receiving extends Model
             'MAX(`reference`) AS reference',
             'MAX(`payment_type`) AS payment_type',
             'MAX(`employee_id`) AS employee_id',
+            'MAX(`' . $db_prefix . 'receivings`.`secondary_currency_rate`) AS secondary_currency_rate',
             'items.item_id AS item_id',
             'MAX(`' . $db_prefix . 'receivings`.`supplier_id`) AS supplier_id',
             'MAX(`quantity_purchased`) AS quantity_purchased',
