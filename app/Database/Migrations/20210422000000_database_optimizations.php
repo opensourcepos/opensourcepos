@@ -18,6 +18,25 @@ class Migration_database_optimizations extends Migration
     {
         log_message('info', 'Migrating database optimizations.');
 
+        helper('migration');
+
+        dropForeignKeyConstraints(['ospos_customers_ibfk_1'], 'customers');
+        dropForeignKeyConstraints(['ospos_customers_points_ibfk_1'], 'customers_points');
+        dropForeignKeyConstraints(['ospos_sales_ibfk_2'], 'sales');
+        dropForeignKeyConstraints(['ospos_sales_payments_ibfk_2'], 'sales_payments');
+        dropForeignKeyConstraints(['ospos_sales_ibfk_1'], 'sales');
+        dropForeignKeyConstraints(['ospos_receivings_ibfk_1'], 'receivings');
+        dropForeignKeyConstraints(['ospos_inventory_ibfk_2'], 'inventory');
+        dropForeignKeyConstraints(['ospos_grants_ibfk_2'], 'grants');
+        dropForeignKeyConstraints(['ospos_expenses_ibfk_2'], 'expenses');
+        dropForeignKeyConstraints(['ospos_employees_ibfk_1'], 'employees');
+        dropForeignKeyConstraints(['ospos_cash_up_ibfk_1'], 'cash_up');
+        dropForeignKeyConstraints(['ospos_cash_up_ibfk_2'], 'cash_up');
+        dropForeignKeyConstraints(['ospos_items_ibfk_1'], 'items');
+        dropForeignKeyConstraints(['ospos_expenses_ibfk_3'], 'expenses');
+        dropForeignKeyConstraints(['ospos_receivings_ibfk_2'], 'receivings');
+        dropForeignKeyConstraints(['ospos_suppliers_ibfk_1'], 'suppliers');
+
         $attribute = model(Attribute::class);
 
         $attribute->deleteOrphanedValues();
@@ -80,7 +99,6 @@ class Migration_database_optimizations extends Migration
         }
         $this->db->transComplete();
 
-        helper('migration');
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
         log_message('info', 'Finished migrating database optimizations.');
     }

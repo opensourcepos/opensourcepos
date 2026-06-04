@@ -88,7 +88,7 @@ function executeScriptWithTransaction(string $path): bool
 }
 
 /**
- * Drops provided foreign key constraints from given table.
+ * Drops provided foreign key constraints from a given table if the constraint exists.
  * This is required to successfully create the generated unique constraint.
  *
  * @param array $foreignKeys names of the foreign key constraints to drop
