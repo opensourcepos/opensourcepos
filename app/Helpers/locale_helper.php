@@ -272,6 +272,9 @@ function get_payment_options(): array
         $payments[lang('Sales.upi')] = lang('Sales.upi');
     }
 
+    $payments[lang('Sales.bank_transfer')] = lang('Sales.bank_transfer');
+    $payments[lang('Sales.wallet')]        = lang('Sales.wallet');
+
     return $payments;
 }
 
