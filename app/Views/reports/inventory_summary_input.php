@@ -7,11 +7,10 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
-
-<div id="page_title"><?= lang('Reports.report_input') ?></div>
+<?php
+$title_info['config_title'] = lang('Reports.report_input');
+echo view('configs/config_header', $title_info);
+?>
 
 <?php
 if (isset($error)) {
@@ -19,29 +18,37 @@ if (isset($error)) {
 }
 ?>
 
-<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data']) ?>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
-        <div id="report_stock_location" class="col-xs-3">
-            <?= form_dropdown('stock_location', $stock_locations, 'all', 'id="location_id" class="form-control"') ?>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="reports_stock_location_label" class="form-label"><?= lang('Reports.stock_location') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3" id="report_stock_location">
+                <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+                <select class="form-select" name="stock_location" id="location_id" required>
+                    <?php foreach ($stock_locations as $value => $label) { ?>
+                        <option value="<?= $value ?>" <?= $value === 'all' ? 'selected' : '' ?>><?= $label ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <label for="reports_item_count_label" class="form-label"><?= lang('Reports.item_count') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3" id="report_item_count">
+                <span class="input-group-text"><i class="bi bi-funnel"></i></span>
+                <select class="form-select" name="item_count" id="item_count" required>
+                    <?php foreach ($item_count as $value => $label) { ?>
+                        <option value="<?= $value ?>" <?= $value === 'all' ? 'selected' : '' ?>><?= $label ?></option>
+                    <?php } ?>
+                </select>
+            </div>
         </div>
     </div>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.item_count'), 'reports_item_count_label', ['class' => 'required control-label col-xs-2']) ?>
-        <div id="report_item_count" class="col-xs-3">
-            <?= form_dropdown('item_count', $item_count, 'all', 'id="item_count" class="form-control"') ?>
-        </div>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" name="generate_report" id="generate_report"><?= lang('Common.submit'); ?></button>
     </div>
-
-    <?php
-    echo form_button([
-        'name'    => 'generate_report',
-        'id'      => 'generate_report',
-        'content' => lang('Common.submit'),
-        'class'   => 'btn btn-primary btn-sm'
-    ]) ?>
 
 <?= form_close() ?>
 

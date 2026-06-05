@@ -9,11 +9,10 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
-
-<div id="page_title"><?= lang('Reports.report_input') ?></div>
+<?php
+$title_info['config_title'] = lang('Reports.report_input');
+echo view('configs/config_header', $title_info);
+?>
 
 <?php
 if (isset($error)) {
@@ -21,58 +20,65 @@ if (isset($error)) {
 }
 ?>
 
-<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data']) ?>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
-        <div class="col-xs-3">
-            <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-        </div>
-    </div>
-
-    <?php if (isset($discount_type_options)) { ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
-            <div id="report_discount_type" class="col-xs-3">
-                <?= form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="daterangepicker" class="form-label"><?= lang('Reports.date_range') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="daterangepicker-icon"><i class="bi bi-calendar2-range"></i></span>
+                <input type="text" class="form-select" name="daterangepicker" id="daterangepicker" aria-describedby="daterangepicker-icon" required>
             </div>
-        </div>
-    <?php } ?>
-
-    <div class="form-group form-group-sm" id="report_specific_input_data">
-        <?= form_label($specific_input_name, 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
-        <div class="col-xs-3 discount_percent">
-            <?= form_dropdown('specific_input_data', $specific_input_data, '', 'id="specific_input_data" class="form-control"') ?>
         </div>
 
         <?php if (isset($discount_type_options)) { ?>
-            <div class="col-xs-3 discount_fixed">
-                <?= form_input([
-                    'name'  => 'discount_fixed',
-                    'id'    => 'discount_fixed',
-                    'class' => 'form-control input-sm required',
-                    'type'  => 'number',
-                    'min'   => 0,
-                    'value' => $config['default_sales_discount']
-                ]) ?>
+            <div class="col-12 col-lg-6">
+                <label for="reports_discount_type_label" class="form-label"><?= lang('Reports.discount_type') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+                <div class="input-group mb-3" id="report_discount_type">
+                    <span class="input-group-text"><i class="bi bi-patch-minus"></i></span>
+                    <select class="form-select" name="discount_type" id="discount_type_id" required>
+                        <?php foreach ($discount_type_options as $value => $label) { ?>
+                            <option value="<?= $value ?>" <?= $value == $config['default_sales_discount_type'] ? 'selected' : '' ?>><?= $label ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
             </div>
         <?php } ?>
-    </div>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
-        <div id="report_sale_type" class="col-xs-3">
-            <?= form_dropdown('sale_type', $sale_type_options, 'complete', 'id="input_type" class="form-control"') ?>
+        <div class="col-12 col-lg-6">
+            <label for="specific_input_name_label" class="form-label"><?= $specific_input_name ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3 discount_percent">
+                <span class="input-group-text"><i class="bi bi-dot"></i></span>
+                <select class="form-select w-25" name="specific_input_data" id="specific_input_data" required>
+                    <?php foreach ($specific_input_data as $value => $label) { ?>
+                        <option value="<?= $value ?>"><?= $label ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <?php if (isset($discount_type_options)) { ?>
+                <div class="input-group mb-3 discount_fixed">
+                    <span class="input-group-text"><i class="bi bi-cash"></i></span>
+                    <input type="number" min="0" name="discount_fixed" id="discount_fixed" class="form-control" value="<?= $config['default_sales_discount'] ?>" required>
+                </div>
+            <?php } ?>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <label for="reports_sale_type_label" class="form-label"><?= lang('Reports.sale_type') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3" id="report_sale_type">
+                <span class="input-group-text"><i class="bi bi-receipt"></i></span>
+                <select class="form-select" name="sale_type" id="input_type" required>
+                        <?php foreach ($sale_type_options as $value => $label) { ?>
+                            <option value="<?= $value ?>" <?= $value === 'complete' ? 'selected' : '' ?>><?= $label ?></option>
+                        <?php } ?>
+                </select>
+            </div>
         </div>
     </div>
 
-    <?php
-    echo form_button([
-        'name'    => 'generate_report',
-        'id'      => 'generate_report',
-        'content' => lang('Common.submit'),
-        'class'   => 'btn btn-primary btn-sm'
-    ]) ?>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" name="generate_report" id="generate_report"><?= lang('Common.submit'); ?></button>
+    </div>
 
 <?= form_close() ?>
 
@@ -88,7 +94,7 @@ if (isset($error)) {
 
         $("#generate_report").click(function() {
             var specific_input_data = $('#specific_input_data').val();
-            if (!$(".discount_percent").is(":visible")) {
+            if ($('#discount_fixed').length && !$("#discount_percent").is(":visible")) {
                 specific_input_data = $('#discount_fixed').val();
             }
 

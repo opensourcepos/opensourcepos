@@ -3,7 +3,7 @@
     var btn_id, dialog_ref;
 
     var hide = function() {
-        dialog_ref && dialog_ref.close();
+        dialog_ref && dialog_ref.hide();
     };
 
     var clicked_id = function() {
@@ -11,13 +11,13 @@
     };
 
     var submit = function(button_id) {
-        return function(dlog_ref) {
-            const form = $('form', dlog_ref.$modalBody).first();
+        return function() {
+            const $modalBody = $(dialog_ref._element).find('.modal-body');
+            const form = $('form', $modalBody).first();
             const validator = form.data('validator');
             const submitted = validator && validator.formSubmitted;
 
             btn_id = button_id;
-            dialog_ref = dlog_ref;
 
             if (button_id == 'submit' && (!submitted && btn_id != "btnNew")) {
                 form.submit();
@@ -36,28 +36,14 @@
 
         var buttons = function(event) {
             var buttons = [];
-            var dialog_class = 'modal-dlg';
-            $.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
-                var width_class = className.split("modal-dlg-");
-                if (width_class && width_class.length > 1) {
-                    dialog_class = className;
-                }
-            });
-
-            var has_new_btn = "btnNew" in $(this).data();
             $.each($(this).data(), function(name, value) {
                 var btn_class = name.split("btn");
                 if (btn_class && btn_class.length > 1) {
                     var btn_name = btn_class[1].toLowerCase();
-                    var is_submit = btn_name == 'submit';
-                    var is_new = btn_name === 'new';
-                    var is_enter = has_new_btn ? is_new: is_submit;
                     buttons.push({
                         id: btn_name,
                         label: value,
-                        cssClass: button_class[btn_name],
-                        hotkey: is_enter ? 13 : undefined, // Enter
-                        action: submit(btn_name)
+                        cssClass: button_class[btn_name] || 'btn-secondary'
                     });
                 }
             });
@@ -65,32 +51,85 @@
             !buttons.length && buttons.push({
                 id: 'close',
                 label: lang.line('common_close'),
-                cssClass: 'btn-primary',
-                action: function(dialog_ref) {
-                    dialog_ref.close();
-                }
+                cssClass: 'btn-secondary'
             });
-            return { buttons: buttons.sort(function(a, b) {
-                return ($(b).text()) < ($(a).text()) ? -1 : 1;
-            }), cssClass: dialog_class};
+            return buttons;
         };
 
         $(selector).each(function(index, $element) {
 
             return $(selector).off('click').on('click', function(event) {
                 var $link = $(event.target);
-                $link = !$link.is("a, button") ? $link.parents("a, button") : $link ;
-                BootstrapDialog.show($.extend({
-                    title: $link.attr('title'),
-                    message: (function() {
-                        var node = $('<div></div>');
-                        $.get($link.attr('href') || $link.data('href'), function(data) {
-                            node.html(data);
-                        });
-                        return node;
-                    })
-                }, buttons.call(this, event)));
+                $link = !$link.is("a, button") ? $link.parents("a, button") : $link;
 
+                // Build modal HTML
+                var modalId = 'dynamicModal';
+                var $existing = $('#' + modalId);
+                $existing.length && $existing.remove();
+
+                var btns = buttons.call(this, event);
+                var btnHtml = btns.map(function(b) {
+                    return '<button type="button" class="btn ' + b.cssClass + '" data-btn-id="' + b.id + '">' + b.label + '</button>';
+                }).join('');
+
+                // Determine modal size from class (e.g. modal-launch-lg → modal-lg)
+                var sizeClass = '';
+                $.each($link[0].classList || [], function(i, cls) {
+                    var m = cls.match(/^modal-launch-(.+)$/);
+                    if (m) sizeClass = 'modal-' + m[1];
+                });
+
+                var $modal = $([
+                    '<div class="modal fade" id="' + modalId + '" tabindex="-1">',
+                    '  <div class="modal-dialog' + sizeClass + '">',
+                    '    <div class="modal-content">',
+                    '      <div class="modal-header">',
+                    '        <h1 class="modal-title fs-5">' + ($link.attr('title') || '') + '</h1>',
+                    '        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
+                    '      </div>',
+                    '      <div class="modal-body"></div>',
+                    '      <div class="modal-footer">' + btnHtml + '</div>',
+                    '    </div>',
+                    '  </div>',
+                    '</div>'
+                ].join(''));
+
+                $('body').append($modal);
+
+                // Load remote content into body
+                $.get($link.attr('href') || $link.data('href'), function(data) {
+                    $modal.find('.modal-body').html(data);
+                    dialog_support.init("a.modal-launch");
+                });
+
+                var modal = new bootstrap.Modal($modal[0]);
+                dialog_ref = modal;
+
+                // Wire up footer buttons
+                $modal.on('click', '[data-btn-id]', function() {
+                    btn_id = $(this).data('btn-id');
+                    if (btn_id === 'close') {
+                        modal.hide();
+                    } else {
+                        submit(btn_id)();
+                    }
+                });
+
+                // Enter key support: find the "primary" button
+                $modal.on('keypress', function(e) {
+                    if (e.which === 13) {
+                        var has_new_btn = btns.some(function(b) { return b.id === 'new'; });
+                        var enter_btn = has_new_btn ? 'new' : 'submit';
+                        $modal.find('[data-btn-id="' + enter_btn + '"]').trigger('click');
+                    }
+                });
+
+                // Cleanup on close
+                $modal.on('hidden.bs.modal', function() {
+                    $modal.remove();
+                });
+
+                modal.show();
                 return false;
             });
         });
@@ -187,7 +226,7 @@
         return function(response) {
             typeof options.load_callback == 'function' && options.load_callback();
             options.load_callback = undefined;
-            dialog_support.init("a.modal-dlg");
+            dialog_support.init("a.modal-launch");
             typeof callback == 'function' && callback.call(this, response);
         }
     };
@@ -249,10 +288,13 @@
                 user_settings[options.resource] = user_settings[options.resource] || {};
                 user_settings[options.resource][field] = checked;
                 localStorage[options.employee_id] = JSON.stringify(user_settings);
-                dialog_support.init("a.modal-dlg");
+                dialog_support.init("a.modal-launch");
             },
+            loadingTemplate: function (loadingMessage) {
+                return '<div class="w-100 h-100 bg-body text-center pt-2"><div class="spinner-grow spinner-grow-sm"></div><span class="ps-1" role="status">' + loadingMessage + '</span></div>'
+            },
+            loadingFontSize: '1em',
             queryParamsType: 'limit',
-            iconSize: 'sm',
             silentSort: true,
             paginationVAlign: 'bottom',
             escape: true
@@ -261,7 +303,7 @@
         init_delete();
         init_restore();
         toggle_column_visibility();
-        dialog_support.init("button.modal-dlg");
+        dialog_support.init("button.modal-launch");
     };
 
     var init_delete = function (confirmMessage) {
@@ -296,7 +338,7 @@
                             var id = $(element).data('uniqueid');
                             table().updateByUniqueId({id: id, row: response[id] || response});
                         });
-                        dialog_support.init("a.modal-dlg");
+                        dialog_support.init("a.modal-launch");
                         highlight_row(ids);
                     }, 'json');
                 } else {
@@ -336,10 +378,14 @@
         errorLabelContainer: "#error_message_box",
         wrapper: "li",
         highlight: function (e) {
-            $(e).closest('.form-group').addClass('has-error');
+            $(e).closest('.input-group').addClass('has-error');
+            $("#error_message_box").removeClass('d-none');
         },
         unhighlight: function (e) {
-            $(e).closest('.form-group').removeClass('has-error');
+            $(e).closest('.input-group').removeClass('has-error');
+            if ($("#error_message_box li").length === 0) {
+                $("#error_message_box").addClass('d-none');
+            }
         }
     };
 

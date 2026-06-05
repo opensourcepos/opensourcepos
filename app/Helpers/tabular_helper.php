@@ -118,21 +118,21 @@ function get_sale_data_row(object $sale): array
             ? '-'
             : anchor(
                 "$controller/invoice/$sale->sale_id",
-                '<span class="glyphicon glyphicon-list-alt"></span>',
+                '<i class="bi bi-file-text"></i>',
                 ['title' => lang('Sales.show_invoice')]
             );
     }
 
     $row['receipt'] = anchor(
         "$controller/receipt/$sale->sale_id",
-        '<span class="glyphicon glyphicon-usd"></span>',
+        '<i class="bi bi-receipt"></i>',
         ['title' => lang('Sales.show_receipt')]
     );
     $row['edit'] = anchor(
         "$controller/edit/$sale->sale_id",
-        '<span class="glyphicon glyphicon-edit"></span>',
+        '<i class="bi bi-pencil-square"></i>',
         [
-            'class'           => 'modal-dlg print_hide',
+            'class'           => 'modal-launch print_hide',
             'data-btn-delete' => lang('Common.delete'),
             'data-btn-submit' => lang('Common.submit'),
             'title'           => lang(ucfirst($controller) . ".update")
@@ -232,18 +232,18 @@ function get_person_data_row(object $person): array
             ? ''
             : anchor(
                 "Messages/view/$person->person_id",
-                '<span class="glyphicon glyphicon-phone"></span>',
+                '<i class="bi bi-telephone"></i>',
                 [
-                    'class'           => 'modal-dlg',
+                    'class'           => 'modal-launch',
                     'data-btn-submit' => lang('Common.submit'),
                     'title'           => lang('Messages.sms_send')
                 ]
             ),
         'edit'             => anchor(
             "$controller/view/$person->person_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . '.update')    // TODO: String interpolation
             ]
@@ -299,18 +299,18 @@ function get_customer_data_row(object $person, object $stats): array
             ? ''
             : anchor(
                 "Messages/view/$person->person_id",
-                '<span class="glyphicon glyphicon-phone"></span>',
+                '<i class="bi bi-telephone"></i>',
                 [
-                    'class'           => 'modal-dlg',
+                    'class'           => 'modal-launch',
                     'data-btn-submit' => lang('Common.submit'),
                     'title'           => lang('Messages.sms_send')
                 ]
             ),
         'edit'             => anchor(
             "$controller/view/$person->person_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -369,18 +369,18 @@ function get_supplier_data_row(object $supplier): array
             ? ''
             : anchor(
                 "Messages/view/$supplier->person_id",
-                '<span class="glyphicon glyphicon-phone"></span>',
+                '<i class="bi bi-telephone"></i>',
                 [
-                    'class'           => "modal-dlg",
+                    'class'           => "modal-launch",
                     'data-btn-submit' => lang('Common.submit'),
                     'title'           => lang('Messages.sms_send')
                 ]
             ),
         'edit'             => anchor(
             "$controller/view/$supplier->person_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => "modal-dlg",
+                'class'           => "modal-launch",
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -498,26 +498,26 @@ function get_item_data_row(object $item): array
     $icons = [
         'inventory' => anchor(
             "$controller/inventory/$item->item_id",
-            '<span class="glyphicon glyphicon-pushpin"></span>',
+            '<i class="bi bi-box"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".count")
             ]
         ),
         'stock'     => anchor(
             "$controller/countDetails/$item->item_id",
-            '<span class="glyphicon glyphicon-list-alt"></span>',
+            '<i class="bi bi-info-square"></i>',
             [
-                'class' => 'modal-dlg',
+                'class' => 'modal-launch',
                 'title' => lang(ucfirst($controller) . ".details_count")
             ]
         ),
         'edit'      => anchor(
             "$controller/view/$item->item_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -561,9 +561,9 @@ function get_giftcard_data_row(object $giftcard): array
         'value'           => to_currency($giftcard->value),
         'edit'            => anchor(
             "$controller/view/$giftcard->giftcard_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -607,9 +607,9 @@ function get_item_kit_data_row(object $item_kit): array
         'total_unit_price' => to_currency($item_kit->total_unit_price),
         'edit'             => anchor(
             "$controller/view/$item_kit->item_kit_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -715,9 +715,9 @@ function get_attribute_definition_data_row(object $attribute_row): array
         'definition_flags' => $definition_flags,
         'edit'             => anchor(
             "$controller/view/$attribute_row->definition_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -755,9 +755,9 @@ function get_expense_category_data_row(object $expense_category): array
         'category_description' => $expense_category->category_description,
         'edit'                 => anchor(
             "$controller/view/$expense_category->expense_category_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -809,9 +809,9 @@ function get_expenses_data_row(object $expense): array
         'created_by'        => $expense->first_name . ' ' . $expense->last_name,
         'edit'              => anchor(
             "$controller/view/$expense->expense_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -904,16 +904,16 @@ function get_cash_up_data_row(object $cash_up): array
         'close_date'           => to_datetime(strtotime($cash_up->close_date)),
         'close_employee_id'    => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
         'closed_amount_cash'   => to_currency($cash_up->closed_amount_cash),
-        'note'                 => $cash_up->note ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>',
+        'note'                 => $cash_up->note ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>',
         'closed_amount_due'    => to_currency($cash_up->closed_amount_due),
         'closed_amount_card'   => to_currency($cash_up->closed_amount_card),
         'closed_amount_check'  => to_currency($cash_up->closed_amount_check),
         'closed_amount_total'  => to_currency($cash_up->closed_amount_total),
         'edit'                 => anchor(
             "$controller/view/$cash_up->cashup_id",
-            '<span class="glyphicon glyphicon-edit"></span>',
+            '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]

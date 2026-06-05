@@ -93,6 +93,6 @@ applySummaryVisibility();
 var init_dialog = function () {
 <?php if (isset($editable)): ?>
         table_support.submit_handler('<?php echo site_url("reports/get_detailed_{$editable}_row") ?>');
-    dialog_support.init("a.modal-dlg");
+    dialog_support.init("a.modal-launch");
 <?php endif; ?>
 };
