@@ -421,7 +421,8 @@ class Customers extends Persons
                     if (sizeof($data) >= 16 && $consent) {
                         $email = filter_var(strtolower($data[4]), FILTER_SANITIZE_EMAIL);
                         
-                        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        // Empty email is allowed, but if provided it must be valid
+                        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
                             $failCodes[] = 'Row ' . $i . ': Invalid email format';
                             $i++;
                             continue;

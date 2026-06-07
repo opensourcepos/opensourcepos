@@ -223,4 +223,44 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         unlink($tempFile);
     }
+
+    public function testEmptyEmailIsAccepted(): void
+    {
+        $this->loginAsEmployee();
+
+        // Empty email should be allowed - customers may not have email addresses
+        $csvContent = [
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['John', 'Doe', '1', '1', '', '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', '', '', '', '']
+        ];
+
+        $tempFile = $this->createCsvFile($csvContent);
+
+        $_FILES['file_path'] = [
+            'name' => 'test.csv',
+            'type' => 'text/csv',
+            'tmp_name' => $tempFile,
+            'error' => UPLOAD_ERR_OK,
+            'size' => filesize($tempFile)
+        ];
+
+        $result = $this->post('/customers/importCsvFile');
+
+        $result->assertOK();
+
+        $resultBody = json_decode($result->getJSON(), true);
+        $this->assertTrue($resultBody['success'], 'Import should succeed with empty email');
+
+        // Find customer by name since email is empty
+        $importedCustomer = $this->customer->select('customers.*, people.*')
+            ->join('people', 'people.person_id = customers.person_id')
+            ->where('first_name', 'John')
+            ->where('last_name', 'Doe')
+            ->first();
+        
+        $this->assertNotNull($importedCustomer, 'Customer with empty email should be imported');
+        $this->assertEquals('', $importedCustomer->email, 'Email should be empty string');
+
+        unlink($tempFile);
+    }
 }
