@@ -246,7 +246,7 @@ class Attributes extends Secure_Controller
         $data['definition_group'][''] = lang('Common.none_selected_text');
         $data['definition_info'] = $info;
 
-        $show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES;
+        $show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES | Attribute::SHOW_IN_SEARCH;
         $data['definition_flags'] = $this->get_attributes($show_all);
         $selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
         $data['selected_definition_flags'] = $this->get_attributes($selected_flags);

@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Receivings",
     "show_in_sales"                    => "Show in sales",
     "show_in_sales_visibility"         => "Sales",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Update Attribute",
 ];

@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "收据",
     "show_in_sales"                    => "在销售中显示",
     "show_in_sales_visibility"         => "销售",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "更新属性",
 ];
