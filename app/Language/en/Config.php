@@ -122,6 +122,7 @@ return [
     "email_smtp_port"                           => "SMTP Port",
     "email_smtp_timeout"                        => "SMTP Timeout (s)",
     "email_smtp_user"                           => "SMTP Username",
+    "encryption_failed"                          => "Failed to encrypt data. Please check encryption configuration.",
     "enable_avatar"                             => "",
     "enable_avatar_tooltip"                     => "",
     "enable_dropdown_tooltip"                   => "",
