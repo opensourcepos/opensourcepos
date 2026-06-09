@@ -419,7 +419,15 @@ class Customers extends Persons
                     $consent = $data[3] == '' ? 0 : 1;
 
                     if (sizeof($data) >= 16 && $consent) {
-                        $email = strtolower($data[4]);
+                        $email = filter_var(strtolower($data[4]), FILTER_SANITIZE_EMAIL);
+                        
+                        // Empty email is allowed, but if provided it must be valid
+                        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $failCodes[] = 'Row ' . $i . ': Invalid email format';
+                            $i++;
+                            continue;
+                        }
+                        
                         $person_data = [
                             'first_name'   => $data[0],
                             'last_name'    => $data[1],
