@@ -837,6 +837,8 @@ class Attribute extends Model
         $builder->select('attribute_links.item_id, attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
         $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
         $builder->whereIn('item_id', $itemIds);
+        $builder->where('attribute_links.sale_id', null);
+        $builder->where('attribute_links.receiving_id', null);
 
         $results = $builder->get()->getResultArray();
 
