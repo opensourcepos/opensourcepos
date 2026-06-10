@@ -1100,7 +1100,7 @@ class Items extends Secure_Controller
                         $db->transCommit();
                         $this->attribute->deleteOrphanedValues();
 
-                        Events::trigger('item_saved', [$itemIds]);
+                        Events::trigger('item_saved', $itemIds);
 
                         return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }
