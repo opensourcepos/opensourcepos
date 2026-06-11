@@ -639,13 +639,14 @@ function dateformat_bootstrap(string $php_format): string
 }
 
 /**
- * @param string $date
+ * @param string $candidate
  * @return bool
  */
-function valid_date(string $date): bool    // TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
+function isValidDate(string $candidate): bool
 {
     $config = config(OSPOS::class)->settings;
-    return (DateTime::createFromFormat($config['dateformat'], $date));
+    $parsed = DateTime::createFromFormat($config['dateformat'], $candidate);
+    return $parsed !== false && $parsed->format($config['dateformat']) === $candidate;
 }
 
 /**

@@ -388,7 +388,7 @@ class Attribute extends Model
             foreach ($builder->get()->getResult() as $attribute) {
                 switch ($to) {
                     case DATE:
-                        $success = valid_date($attribute->attribute_value);
+                        $success = isValidDate($attribute->attribute_value);
                         break;
                     case DECIMAL:
                         $success = valid_decimal($attribute->attribute_value);

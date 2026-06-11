@@ -1247,7 +1247,7 @@ class Items extends Secure_Controller
                         }
                         break;
                     case DATE:
-                        if (!valid_date($attributeValue) && !empty($attributeValue)) {
+                        if (!isValidDate($attributeValue) && !empty($attributeValue)) {
                             log_message('error', "'$attributeValue' is not an acceptable DATE value. The value must match the set locale.");
                             return true;
                         }
