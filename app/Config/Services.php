@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Libraries\MY_Language;
+use App\Libraries\Plugins\PluginLogger;
 use App\Libraries\Plugins\PluginManager;
 use Locale;
 use HTMLPurifier;
@@ -60,6 +61,15 @@ class Services extends BaseService
         $locale = $locale ?: $requestLocale;
 
         return new MY_Language($locale);
+    }
+
+    public static function pluginLogger(bool $getShared = true): PluginLogger
+    {
+        if ($getShared) {
+            return static::getSharedInstance('pluginLogger');
+        }
+
+        return new PluginLogger();
     }
 
     public static function pluginManager(bool $getShared = true): PluginManager

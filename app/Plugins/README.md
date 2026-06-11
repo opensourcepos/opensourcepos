@@ -68,7 +68,8 @@ class MyPlugin extends BasePlugin
 |--------|-----------|-------------|
 | `getSetting` | `(string $key, mixed $default = null): mixed` | Read one plugin setting |
 | `setSetting` | `(string $key, mixed $value): bool` | Write one plugin setting |
-| `log` | `(string $level, string $message): void` | Write to CI4 log with plugin prefix |
+| `log` | `(string $level, string $message): void` | Write to plugin-specific log file (`writable/logs/plugin-{id}-{date}.log`) |
+| `logTo` | `(string $logName, string $level, string $message): void` | Write to a named plugin log file (`writable/logs/plugin-{id}-{logName}-{date}.log`) |
 | `renderView` | `(string $viewName, array $data = []): string` | Render a view from the plugin's own `Views/` directory |
 
 #### `renderView()`
@@ -543,14 +544,30 @@ added as a feature. Specify the event, where it should be triggered, and what da
 If a plugin event trigger exists but the data you need is not passed to the callback, please open an issue in the
 opensourcepos repository requesting the data to be added as a feature.
 
-## Testing
+## Logging
 
-Enable plugin logging to debug:
+Plugins have two logging paths:
+
+**Standard CI4 log** — use `log_message()` directly; goes to `writable/logs/log-{date}.log` only:
 
 ```php
 log_message('debug', 'Debug message');
-log_message('info', 'Info message');
-log_message('error', 'Error message');
+```
+
+**Plugin-specific log** — goes to a dedicated plugin file in `writable/logs/`, NOT the CI4 log:
+
+```php
+// From inside a plugin class (pluginId inferred automatically):
+$this->log('debug', 'Debug message');
+// → writable/logs/plugin-{id}-{date}.log
+
+// Named log channel (useful for separating API calls, sync events, etc.):
+$this->logTo('api', 'debug', 'API response received');
+// → writable/logs/plugin-{id}-api-{date}.log
+
+// From library classes inside a plugin (pass pluginId explicitly):
+log_plugin_message('myplugin', 'debug', 'Sync started');
+log_plugin_message('myplugin', 'debug', 'API call', 'api');
 ```
 
 Check logs in `writable/logs/`.

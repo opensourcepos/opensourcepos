@@ -68,7 +68,12 @@ abstract class BasePlugin implements PluginInterface
 
     protected function log(string $level, string $message): void
     {
-        log_message($level, "[Plugin:{$this->getPluginName()}] {$message}");
+        log_plugin_message($this->getPluginId(), $level, $message);
+    }
+
+    protected function logTo(string $logName, string $level, string $message): void
+    {
+        log_plugin_message($this->getPluginId(), $level, $message, $logName);
     }
 
     protected function renderView(string $viewName, array $data = []): string
