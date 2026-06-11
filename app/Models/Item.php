@@ -302,6 +302,14 @@ class Item extends Model
         return $builder->get();
     }
 
+    public function getAllItemIds(): array
+    {
+        return array_column(
+            $this->select('item_id')->where('deleted', 0)->findAll(),
+            'item_id'
+        );
+    }
+
     public function getDistinctCategories(): array
     {
         $results = $this->db->table('items')
@@ -452,12 +460,13 @@ class Item extends Model
         return $builder->get();
     }
 
-    public function getItems(array $itemIds): array
+    public function getItems(array $itemIds, array $columns = []): array
     {
-        return $this->db->table($this->table)
-            ->whereIn('item_id', $itemIds)
-            ->get()
-            ->getResultArray();
+        $builder = $this->db->table($this->table)->whereIn('item_id', $itemIds);
+        if (!empty($columns)) {
+            $builder->select(implode(', ', $columns));
+        }
+        return $builder->get()->getResultArray();
     }
 
     /**
@@ -504,7 +513,7 @@ class Item extends Model
     /**
      * Deletes one item
      */
-    public function delete($item_id = null, bool $purge = false): bool|int|string
+    public function delete($item_id = null, bool $purge = false): bool
     {
         $this->db->transStart();
 
@@ -514,16 +523,14 @@ class Item extends Model
 
         $builder = $this->db->table('items');
         $builder->where('item_id', $item_id);
-        $success = $builder->update(['deleted' => 1]);
+        $builder->update(['deleted' => 1]);
 
         $inventory = model(Inventory::class);
-        $success &= $inventory->reset_quantity($item_id);
+        $inventory->reset_quantity($item_id);
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $this->db->transStatus();
     }
 
     /**
@@ -551,19 +558,17 @@ class Item extends Model
 
         $builder = $this->db->table('items');
         $builder->whereIn('item_id', $item_ids);
-        $success = $builder->update(['deleted' => 1]);
+        $builder->update(['deleted' => 1]);
 
         $inventory = model(Inventory::class);
 
         foreach ($item_ids as $item_id) {
-            $success &= $inventory->reset_quantity($item_id);
+            $inventory->reset_quantity($item_id);
         }
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $this->db->transStatus();
     }
 
     /**
