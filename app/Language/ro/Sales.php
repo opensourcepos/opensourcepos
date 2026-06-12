@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Reducere",
     "customer_email"                   => "Email",
     "customer_location"                => "Amplasare",
-    "customer_mailchimp_status"        => "Situatie Mailchimp",
     "customer_optional"                => "(Optional)",
     "customer_required"                => "(Necesar)",
     "customer_total"                   => "Total",

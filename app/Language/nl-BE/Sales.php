@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Korting",
     "customer_email"                   => "Customer Email",
     "customer_location"                => "Customer Location",
-    "customer_mailchimp_status"        => "MailChimp staat",
     "customer_optional"                => "(Optioneel)",
     "customer_required"                => "(Vereist)",
     "customer_total"                   => "Totaal",

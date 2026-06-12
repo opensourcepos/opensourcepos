@@ -340,7 +340,7 @@ helper('url');
                     </tr>
                     <?php if (!empty($mailchimp_info)) { ?>
                         <tr>
-                            <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.customer_mailchimp_status') ?></th>
+                            <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.mailchimp_customer_status') ?></th>
                             <th style="width: 45%; text-align: right;"><?= esc($mailchimp_info['status']) ?></th>
                         </tr>
                     <?php } ?>

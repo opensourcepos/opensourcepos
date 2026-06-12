@@ -8,6 +8,7 @@ use CodeIgniter\HotReloader\HotReloader;
 use App\Events\Db_log;
 use App\Events\Load_config;
 use App\Events\Method;
+use App\Libraries\Plugins\PluginManager;
 
 /*
  * --------------------------------------------------------------------
@@ -25,6 +26,9 @@ use App\Events\Method;
  * Example:
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
+Events::on('pre_system', static function (): void {
+    PluginManager::registerAllNamespaces();
+});
 
 Events::on('pre_system', static function (): void {
     if (ENVIRONMENT !== 'testing') {
@@ -48,7 +52,6 @@ Events::on('pre_system', static function (): void {
     if (CI_DEBUG && ! is_cli()) {
         Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
         service('toolbar')->respond();
-        // Hot Reload route - for framework use on the hot reloader.
         if (ENVIRONMENT === 'development') {
             service('routes')->get('__hot-reload', static function (): void {
                 (new HotReloader())->run();
@@ -57,8 +60,12 @@ Events::on('pre_system', static function (): void {
     }
 });
 
+Events::on('post_controller_constructor', static function (): void {
+    service('pluginManager');
+}, 10);
+
 $config = new Load_config();
-Events::on('post_controller_constructor', [$config, 'load_config']);
+Events::on('post_controller_constructor', [$config, 'load_config'], 1);
 
 $db_log = new Db_log();
 Events::on('DBQuery', [$db_log, 'db_log_queries']);

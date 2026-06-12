@@ -16,7 +16,6 @@ use stdClass;
  */
 class Item extends Model
 {
-
     public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
     public const ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
 
@@ -303,6 +302,30 @@ class Item extends Model
         return $builder->get();
     }
 
+    public function getAllItemIds(): array
+    {
+        return array_column(
+            $this->select('item_id')->where('deleted', 0)->findAll(),
+            'item_id'
+        );
+    }
+
+    public function getDistinctCategories(): array
+    {
+        $results = $this->db->table('items')
+            ->select('category')
+            ->where('deleted', 0)
+            ->where('category !=', '')
+            ->where('category IS NOT NULL')
+            ->distinct()
+            ->orderBy('category', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $categories = array_column($results, 'category');
+        return array_combine($categories, $categories);
+    }
+
     /**
      * Gets information about a particular item
      */
@@ -412,11 +435,11 @@ class Item extends Model
     /**
      * Gets information about multiple items
      */
-    public function get_multiple_info(array $item_ids, int $location_id): ResultInterface
+    public function getMultipleInfo(array $itemIds, int $locationId): ResultInterface
     {
         $format = $this->db->escape(dateformat_mysql());
 
-        $builder = $this->db->table('items');
+        $builder = $this->db->table($this->table);
         $builder->select('items.*');
         $builder->select('MAX(company_name) AS company_name');
         $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
@@ -429,12 +452,21 @@ class Item extends Model
         $builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND sale_id IS NULL AND receiving_id IS NULL', 'left');
         $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 
-        $builder->where('location_id', $location_id);
-        $builder->whereIn('items.item_id', $item_ids);
+        $builder->where('location_id', $locationId);
+        $builder->whereIn('items.item_id', $itemIds);
 
         $builder->groupBy('items.item_id');
 
         return $builder->get();
+    }
+
+    public function getItems(array $itemIds, array $columns = []): array
+    {
+        $builder = $this->db->table($this->table)->whereIn('item_id', $itemIds);
+        if (!empty($columns)) {
+            $builder->select(implode(', ', $columns));
+        }
+        return $builder->get()->getResultArray();
     }
 
     /**
@@ -481,7 +513,7 @@ class Item extends Model
     /**
      * Deletes one item
      */
-    public function delete($item_id = null, bool $purge = false): bool|int|string
+    public function delete($item_id = null, bool $purge = false): bool
     {
         $this->db->transStart();
 
@@ -491,16 +523,14 @@ class Item extends Model
 
         $builder = $this->db->table('items');
         $builder->where('item_id', $item_id);
-        $success = $builder->update(['deleted' => 1]);
+        $builder->update(['deleted' => 1]);
 
         $inventory = model(Inventory::class);
-        $success &= $inventory->reset_quantity($item_id);
+        $inventory->reset_quantity($item_id);
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $this->db->transStatus();
     }
 
     /**
@@ -528,19 +558,17 @@ class Item extends Model
 
         $builder = $this->db->table('items');
         $builder->whereIn('item_id', $item_ids);
-        $success = $builder->update(['deleted' => 1]);
+        $builder->update(['deleted' => 1]);
 
         $inventory = model(Inventory::class);
 
         foreach ($item_ids as $item_id) {
-            $success &= $inventory->reset_quantity($item_id);
+            $inventory->reset_quantity($item_id);
         }
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $this->db->transStatus();
     }
 
     /**

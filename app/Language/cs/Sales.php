@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Sleva",
     "customer_email"                   => "Email",
     "customer_location"                => "Místo",
-    "customer_mailchimp_status"        => "Stav mailchimp",
     "customer_optional"                => "(Volitelné)",
     "customer_required"                => "(Vyžadováno)",
     "customer_total"                   => "Celkem",

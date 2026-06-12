@@ -933,6 +933,50 @@ function get_controller(): string
     return end($controller_name_parts);
 }
 
+function plugin_headers(): array
+{
+    return [
+        ['name'        => lang('Plugins.name'),    'escape' => false],
+        ['description' => lang('Plugins.description')],
+        ['version'     => lang('Plugins.version'), 'escape' => false],
+        ['status'      => lang('Plugins.status'),  'escape' => false],
+    ];
+}
+
+function get_plugin_manage_table_headers(): string
+{
+    return transform_headers(plugin_headers(), false, true);
+}
+
+function get_plugin_data_row(array $plugin): array
+{
+    $pluginId = $plugin['id'];
+
+    $statusHtml = $plugin['enabled']
+        ? '<span class="label label-success">' . lang('Plugins.active') . '</span>'
+        : '<span class="label label-default">' . lang('Plugins.inactive') . '</span>';
+
+    $editHtml = $plugin['enabled']
+        ? '<button class="btn btn-warning btn-xs plugin-action" data-action="disable" data-plugin-id="' . esc($pluginId) . '">'
+          . '<span class="glyphicon glyphicon-pause"></span> ' . lang('Plugins.disable') . '</button>'
+        : '<button class="btn btn-success btn-xs plugin-action" data-action="enable" data-plugin-id="' . esc($pluginId) . '">'
+          . '<span class="glyphicon glyphicon-play"></span> ' . lang('Plugins.enable') . '</button>';
+
+    if ($plugin['has_config'] && $plugin['enabled']) {
+        $editHtml .= ' <button class="btn btn-primary btn-xs plugin-config" data-plugin-id="' . esc($pluginId) . '">'
+            . '<span class="glyphicon glyphicon-cog"></span> ' . lang('Plugins.configure') . '</button>';
+    }
+
+    return [
+        'plugin_id'   => $pluginId,
+        'name'        => '<strong>' . esc($plugin['name']) . '</strong><br><small class="text-muted">' . esc($pluginId) . '</small>',
+        'description' => esc($plugin['description']),
+        'version'     => '<span class="label label-default">' . esc($plugin['version']) . '</span>',
+        'status'      => $statusHtml,
+        'edit'        => $editHtml,
+    ];
+}
+
 /**
  * Restores filter values from the URL query string.
  *
