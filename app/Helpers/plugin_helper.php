@@ -3,9 +3,9 @@
 use CodeIgniter\Events\Events;
 
 if (!function_exists('log_plugin_message')) {
-    function log_plugin_message(string $pluginId, string $level, string $message, ?string $logName = null): void
+    function log_plugin_message(string $level, string $message, string $pluginId, ?string $logName = null): void
     {
-        service('pluginLogger')->log($pluginId, $level, $message, $logName);
+        service('pluginLogger')->log($level, $message, $pluginId,  $logName);
     }
 }
 

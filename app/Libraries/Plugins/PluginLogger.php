@@ -13,15 +13,10 @@ class PluginLogger
         $this->dateFormat = $dateFormat;
     }
 
-    public function log(string $pluginId, string $level, string $message, ?string $logName = null): void
+    public function log(string $level, string $message, string $pluginId, ?string $logName = null): void
     {
         $filepath = $this->basePath . $this->buildFilename($pluginId, $logName);
         $this->write($filepath, $level, $message);
-    }
-
-    public function getLogPath(string $pluginId, ?string $logName = null): string
-    {
-        return $this->basePath . $this->buildFilename($pluginId, $logName);
     }
 
     private function sanitize(string $id): string
