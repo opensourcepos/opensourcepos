@@ -29,6 +29,7 @@ return [
     "date"                                    => "Дата",
     "date_range"                              => "Диапазон дат",
     "description"                             => "Описание",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Детальный отчет о закупках",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Подробные отчеты",

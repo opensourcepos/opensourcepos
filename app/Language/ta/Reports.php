@@ -29,6 +29,7 @@ return [
     "date"                                    => "Date",
     "date_range"                              => "தேதி வரம்பு",
     "description"                             => "Description",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "விரிவான பெறுதல் அறிக்கை",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "விரிவான அறிக்கைகள்",

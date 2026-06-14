@@ -29,6 +29,7 @@ return [
     "date"                                    => "təsvir",
     "date_range"                              => "detallı göndərilən hesabatlar",
     "description"                             => "detallı hesabatlar",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Ətraflı satınalma hesabatı",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "etraflı məlumat",
