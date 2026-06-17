@@ -25,434 +25,226 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("items/save/$item_info->item_id", ['id' => 'item_form', 'enctype' => 'multipart/form-data']) ?>
 
-<?= form_open("items/save/$item_info->item_id", ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
-    <fieldset id="item_basic_info">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.item_number'), 'item_number', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm">
-                        <i class="bi bi-upc-scan"></i>
-                    </span>
-                    <?= form_input([
-                        'name'  => 'item_number',
-                        'id'    => 'item_number',
-                        'class' => 'form-control input-sm',
-                        'value' => $item_info->item_number
-                    ]) ?>
-                </div>
-            </div>
-        </div>
+    <label for="item_number" class="form-label"><?= lang('Items.item_number'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="item_number-icon"><i class="bi bi-upc-scan"></i></span>
+        <input type="text" class="form-control" name="item_number" id="item_number" aria-describedby="item_number-icon" value="<?= $item_info->item_number ?>">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'name',
-                    'id'    => 'name',
-                    'class' => 'form-control input-sm',
-                    'value' => $item_info->name
-                ]) ?>
-            </div>
-        </div>
+    <label for="name" class="form-label"><?= lang('Items.name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="name-icon"><i class="bi bi-tag"></i></span>
+        <input type="text" class="form-control" name="name" id="name" aria-describedby="name-icon" value="<?= $item_info->name ?>">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm">
-                        <i class="bi bi-bookmark"></i>
-                    </span>
-                    <?php
-                    if ($config['category_dropdown']) {
-                        echo form_dropdown('category', $categories, $selected_category, ['class' => 'form-control']);
-                    } else {
-                        echo form_input([
-                            'name'  => 'category',
-                            'id'    => 'category',
-                            'class' => 'form-control input-sm',
-                            'value' => $item_info->category
-                        ]);
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-
-        <div id="attributes">
-            <script type="text/javascript">
-                $('#attributes').load('<?= "items/attributes/$item_info->item_id" ?>');
-            </script>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'stock_type',
-                        'type'    => 'radio',
-                        'id'      => 'stock_type',
-                        'value'   => 0,
-                        'checked' => $item_info->stock_type == HAS_STOCK
-                    ]) ?> <?= lang('Items.stock') ?>
-                </label>
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'stock_type',
-                        'type'    => 'radio',
-                        'id'      => 'stock_type',
-                        'value'   => 1,
-                        'checked' => $item_info->stock_type == HAS_NO_STOCK
-                    ]) ?><?= lang('Items.nonstock') ?>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <label class="radio-inline">
-                    <?php
-                    $radio_button = [
-                        'name'    => 'item_type',
-                        'type'    => 'radio',
-                        'id'      => 'item_type',
-                        'value'   => 0,
-                        'checked' => $item_info->item_type == ITEM
-                    ];
-
-                    if ($standard_item_locked) {
-                        $radio_button['disabled'] = true;
-                    }
-                    echo form_radio($radio_button) ?> <?= lang('Items.standard') ?>
-                </label>
-                <label class="radio-inline">
-                    <?php
-                    $radio_button = [
-                        'name'    => 'item_type',
-                        'type'    => 'radio',
-                        'id'      => 'item_type',
-                        'value'   => 1,
-                        'checked' => $item_info->item_type == ITEM_KIT
-                    ];
-
-                    if ($item_kit_disabled) {
-                        $radio_button['disabled'] = true;
-                    }
-                    echo form_radio($radio_button) ?> <?= lang('Items.kit') ?>
-                </label>
-                <?php if ($config['derive_sale_quantity'] == '1') { ?>
-                    <label class="radio-inline">
-                        <?= form_radio([
-                            'name'    => 'item_type',
-                            'type'    => 'radio',
-                            'id'      => 'item_type',
-                            'value'   => 2,
-                            'checked' => $item_info->item_type == ITEM_AMOUNT_ENTRY
-                        ]) ?><?= lang('Items.amount_entry') ?>
-                    </label>
+    <label for="category" class="form-label"><?= lang('Items.category'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="category-icon"><i class="bi bi-bookmark"></i></span>
+        <?php if ($config['category_dropdown']) { ?>
+            <select class="form-select" name="category" id="category" required>
+                <?php foreach ($categories as $key => $value) { ?>
+                    <option value="<?= $key ?>" <?= $selected_category == $key ? 'selected' : '' ?>><?= $value ?></option>
                 <?php } ?>
-                <?php if ($allow_temp_item == 1) { ?>
-                    <label class="radio-inline">
-                        <?= form_radio([
-                            'name'    => 'item_type',
-                            'type'    => 'radio',
-                            'id'      => 'item_type',
-                            'value'   => 3,
-                            'checked' => $item_info->item_type == ITEM_TEMP
-                        ]) ?> <?= lang('Items.temp') ?>
-                    </label>
-                <?php } ?>
-            </div>
+            </select>
+        <?php } else { ?>
+            <input type="text" class="form-control" name="category" id="category" aria-describedby="category-icon" value="<?= $item_info->category ?>" required>
+        <?php } ?>
+    </div>
+
+    <div id="attributes">
+        <script type="text/javascript">
+            $('#attributes').load('<?= "items/attributes/$item_info->item_id" ?>');
+        </script>
+    </div>
+
+    <label for="stock_type" class="form-label"><?= lang('Items.stock_type') ?><?= !empty($basic_version) ? '<sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup>' : '' ?></label>
+    <div class="mb-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="stock_type" id="stock_type_stock" value="0" <?= $item_info->stock_type == HAS_STOCK ? 'checked' : '' ?> <?= !empty($basic_version) ? 'required' : '' ?>>
+            <label class="form-check-label" for="stock_type_stock"><?= lang('Items.stock') ?></label>
         </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class' => 'form-control']) ?>
-            </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="stock_type" id="stock_type_nonstock" value="1" <?= $item_info->stock_type == HAS_NO_STOCK ? 'checked' : '' ?> <?= !empty($basic_version) ? 'required' : '' ?>>
+            <label class="form-check-label" for="stock_type_nonstock"><?= lang('Items.nonstock') ?></label>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'    => 'cost_price',
-                        'id'      => 'cost_price',
-                        'class'   => 'form-control input-sm',
-                        'onClick' => 'this.select();',
-                        'value'   => to_currency_no_money($item_info->cost_price)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
-            </div>
+    <label for="item_type" class="form-label"><?= lang('Items.type') ?><?= !empty($basic_version) ? '<sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup>' : '' ?></label>
+    <div class="mb-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="item_type" id="item_type_standard" value="0" <?= $item_info->item_type == ITEM ? 'checked' : '' ?> <?= $standard_item_locked ? 'disabled readonly' : '' ?> <?= !empty($basic_version) ? 'required' : '' ?>>
+            <label class="form-check-label" for="item_type_standard"><?= lang('Items.standard') ?></label>
         </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'    => 'unit_price',
-                        'id'      => 'unit_price',
-                        'class'   => 'form-control input-sm',
-                        'onClick' => 'this.select();',
-                        'value'   => to_currency_no_money($item_info->unit_price)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
-            </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="item_type" id="item_type_kit" value="1" <?= $item_info->item_type == ITEM_KIT ? 'checked' : '' ?> <?= $item_kit_disabled ? 'disabled readonly' : '' ?> <?= !empty($basic_version) ? 'required' : '' ?>>
+            <label class="form-check-label" for="item_type_kit"><?= lang('Items.kit') ?></label>
         </div>
-
-        <?php if (!$use_destination_based_tax) { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
-                    <?= form_input([
-                        'name'  => 'tax_names[]',
-                        'id'    => 'tax_name_1',
-                        'class' => 'form-control input-sm',
-                        'value' => $item_tax_info[0]['name'] ?? $config['default_tax_1_name']
-                    ]) ?>
-                </div>
-                <div class="col-xs-4">
-                    <div class="input-group input-group-sm">
-                        <?= form_input([
-                            'name'  => 'tax_percents[]',
-                            'id'    => 'tax_percent_name_1',
-                            'class' => 'form-control input-sm',
-                            'value' => isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate)
-                        ]) ?>
-                        <span class="input-group-addon input-sm"><b>%</b></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
-                    <?= form_input([
-                        'name'  => 'tax_names[]',
-                        'id'    => 'tax_name_2',
-                        'class' => 'form-control input-sm',
-                        'value' => $item_tax_info[1]['name'] ?? $config['default_tax_2_name']
-                    ]) ?>
-                </div>
-                <div class="col-xs-4">
-                    <div class="input-group input-group-sm">
-                        <?= form_input([
-                            'name'  => 'tax_percents[]',
-                            'class' => 'form-control input-sm',
-                            'id'    => 'tax_percent_name_2',
-                            'value' => isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate)
-                        ]) ?>
-                        <span class="input-group-addon input-sm"><b>%</b></span>
-                    </div>
-                </div>
+        <?php if ($config['derive_sale_quantity'] == '1') { ?>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="item_type" id="item_type_amount_entry" value="2" <?= $item_info->item_type == ITEM_AMOUNT_ENTRY ? 'checked' : '' ?> <?= !empty($basic_version) ? 'required' : '' ?>>
+                <label class="form-check-label" for="item_type_amount_entry"><?= lang('Items.amount_entry') ?></label>
             </div>
         <?php } ?>
-
-        <?php if ($use_destination_based_tax): ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
-                    <div class="input-group input-group-sm">
-                        <?= form_input([
-                            'name'  => 'tax_category',
-                            'id'    => 'tax_category',
-                            'class' => 'form-control input-sm',
-                            'size'  => '50',
-                            'value' => $tax_category
-                        ]) ?>
-                        <?= form_hidden('tax_category_id', $tax_category_id) ?>
-                    </div>
-                </div>
+        <?php if ($allow_temp_item == 1) { ?>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="item_type" id="item_type_temp" value="3" <?= $item_info->item_type == ITEM_TEMP ? 'checked' : '' ?> <?= !empty($basic_version) ? 'required' : '' ?>>
+                <label class="form-check-label" for="item_type_temp"><?= lang('Items.temp') ?></label>
             </div>
+        <?php } ?>
+    </div>
+
+    <label for="supplier_id" class="form-label"><?= lang('Items.supplier'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-truck"></i></span>
+        <select class="form-select" name="supplier_id" id="supplier_id">
+            <?php foreach ($suppliers as $key => $value) { ?>
+                <option value="<?= $key ?>" <?= $selected_supplier == $key ? 'selected' : '' ?>><?= $value ?></option>
+            <?php } ?>
+        </select>
+    </div>
+
+    <label for="cost_price" class="form-label"><?= lang('Items.cost_price') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <?php if (!is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="cost_price-icon"><?= esc($config['currency_symbol']) ?></span>
         <?php endif; ?>
-
-        <?php if ($include_hsn): ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.hsn_code'), 'category', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
-                    <div class="input-group">
-                        <?= form_input([
-                            'name'  => 'hsn_code',
-                            'id'    => 'hsn_code',
-                            'class' => 'form-control input-sm',
-                            'value' => $hsn_code
-                        ]) ?>
-                    </div>
-                </div>
-            </div>
+        <input type="number" step="any" class="form-control" name="cost_price" id="cost_price" aria-describedby="cost_price-icon" value="<?= to_currency_no_money($item_info->cost_price) ?>" required>
+        <?php if (is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="cost_price-icon"><?= esc($config['currency_symbol']) ?></span>
         <?php endif; ?>
+    </div>
 
-        <?php foreach ($stock_locations as $key => $location_detail) { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required control-label col-xs-3']) ?>
-                <div class="col-xs-4">
-                    <?= form_input([
-                        'name'    => "quantity_$key",
-                        'id'      => "quantity_$key",
-                        'class'   => 'required quantity form-control',
-                        'onClick' => 'this.select();',
-                        'value'   => isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0)
-                    ]) ?>
-                </div>
-            </div>
-        <?php } ?>
+    <label for="unit_price" class="form-label"><?= lang('Items.unit_price') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <?php if (!is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="unit_price-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+        <input type="number" step="any" class="form-control" name="unit_price" id="unit_price" aria-describedby="unit_price-icon" value="<?= to_currency_no_money($item_info->unit_price) ?>" required>
+        <?php if (is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="unit_price-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'    => 'receiving_quantity',
-                    'id'      => 'receiving_quantity',
-                    'class'   => 'required form-control input-sm',
-                    'onClick' => 'this.select();',
-                    'value'   => isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0)
-                ]) ?>
-            </div>
+    <?php if (!$use_destination_based_tax): ?>
+        <label for="tax_name_1" class="form-label"><?= lang('Items.tax_1') ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="tax_name_1-icon"><i class="bi bi-piggy-bank"></i></span>
+            <input type="text" class="form-control w-25" name="tax_names[]" id="tax_name_1" aria-describedby="tax_name_1-icon" value="<?= $item_tax_info[0]['name'] ?? $config['default_tax_1_name'] ?>">
+            <input type="number" step="any" min="0" max="100" class="form-control" name="tax_percents[]" id="tax_percent_name_1" aria-describedby="tax_percent_name_1-icon" value="<?= isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate) ?>">
+            <span class="input-group-text" id="tax_percent_name_1-icon"><i class="bi bi-percent"></i></span>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'    => 'reorder_level',
-                    'id'      => 'reorder_level',
-                    'class'   => 'form-control input-sm',
-                    'onClick' => 'this.select();',
-                    'value'   => isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0)
-                ]) ?>
+        <label for="tax_name_2" class="form-label"><?= lang('Items.tax_2') ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="tax_name_2-icon"><i class="bi bi-piggy-bank"></i></span>
+            <input type="text" class="form-control w-25" name="tax_names[]" id="tax_name_2" aria-describedby="tax_name_2-icon" value="<?= $item_tax_info[1]['name'] ?? $config['default_tax_2_name'] ?>">
+            <input type="number" step="any" min="0" max="100" class="form-control" name="tax_percents[]" id="tax_percent_name_2" aria-describedby="tax_percent_name_2-icon" value="<?= isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate) ?>">
+            <span class="input-group-text" id="tax_percent_name_2-icon"><i class="bi bi-percent"></i></span>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($use_destination_based_tax): ?>
+        <label for="tax_category" class="form-label"><?= lang('Taxes.tax_category') ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="tax_category-icon"><i class="bi bi-piggy-bank"></i></span>
+            <input type="hidden" name="tax_category_id" id="tax_category_id" value="<?= $tax_category_id ?>">
+            <input type="text" class="form-control" name="tax_category" id="tax_category" aria-describedby="tax_category-icon" value="<?= $tax_category ?>">
+        </div>
+    <?php endif; ?>
+
+    <?php if ($include_hsn): ?>
+        <label for="hsn_code" class="form-label"><?= lang('Items.hsn_code'); ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="hsn_code-icon"><i class="bi bi-123"></i></span>
+            <input type="text" class="form-control" name="hsn_code" id="hsn_code" aria-describedby="hsn_code-icon" value="<?= $hsn_code ?>">
+        </div>
+    <?php endif; ?>
+
+    <?php foreach ($stock_locations as $key => $location_detail): ?>
+        <label for="quantity_<?= $key ?>" class="form-label"><?= lang('Items.quantity') . ' ' . $location_detail['location_name'] ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="quantity_<?= $key ?>-icon"><i class="bi bi-boxes"></i></span>
+            <input type="text" class="form-control" name="quantity_<?= $key ?>" id="quantity_<?= $key ?>" aria-describedby="quantity_<?= $key ?>-icon" value="<?= isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0) ?>" required>
+        </div>
+    <?php endforeach; ?>
+
+    <label for="receiving_quantity" class="form-label"><?= lang('Items.receiving_quantity') ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="receiving_quantity-icon"><i class="bi bi-truck"></i></span>
+        <input type="text" class="form-control" name="receiving_quantity" id="receiving_quantity" aria-describedby="receiving_quantity-icon" value="<?= isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0) ?>">
+    </div>
+
+    <label for="reorder_level" class="form-label"><?= lang('Items.reorder_level') ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="reorder_level-icon"><i class="bi bi-list-ol"></i></span>
+        <input type="text" class="form-control" name="reorder_level" id="reorder_level" aria-describedby="reorder_level-icon" value="<?= isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0) ?>">
+    </div>
+
+    <label for="description" class="form-label"><?= lang('Items.description'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-chat"></i></span>
+        <textarea class="form-control" name="description" id="description" rows="6"><?= $item_info->description ?></textarea>
+    </div>
+
+    <label for="items_image" class="form-label"><?= lang('Items.image'); ?></label>
+    <div id="items_image" class="w-100 fileinput <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new'; ?>" data-provides="fileinput">
+        <div class="input-group mb-3" aria-describedby="company-logo-desc">
+            <span class="input-group-text"><i class="bi bi-image"></i></span>
+            <div class="fileinput-new form-control rounded-end mb-0" style="height: 200px; cursor: default;"></div>
+            <div class="fileinput-exists fileinput-preview img-thumbnail form-control rounded-end mb-0 bg-light mh-100" style="height: 200px; cursor: default; background-size: 40px 40px; background-position: 0 0, 20px 20px; background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white), linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white);">
+                <img class="mh-100 mw-100" data-src="holder.js/100%x100%" alt="<?= esc(lang('Config.company_logo')) ?>" src="<?= $image_path ?>">
             </div>
         </div>
+        <div type="button" class="btn btn-secondary btn-file me-2">
+            <span class="fileinput-new"><i class="bi bi-hand-index me-2"></i><?= lang('Items.select_image') ?></span>
+            <span class="fileinput-exists"><i class="bi bi-images me-2"></i><?= lang('Items.change_image') ?></span>
+            <input type="file" name="items_image" accept="image/*">
+        </div>
+        <a type="button" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">
+            <i class="bi bi-eraser me-2"></i><?= lang('Items.remove_image') ?>
+        </a>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_textarea([
-                    'name'  => 'description',
-                    'id'    => 'description',
-                    'class' => 'form-control input-sm',
-                    'value' => $item_info->description
-                ]) ?>
-            </div>
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" name="allow_alt_description" id="allow_alt_description" value="1" <?= $item_info->allow_alt_description == 1 ? 'checked' : '' ?>>
+        <label class="form-check-label" for="allow_alt_description"><?= lang('Items.allow_alt_description') ?></label>
+    </div>
+
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" name="is_serialized" id="is_serialized" value="1" <?= $item_info->is_serialized == 1 ? 'checked' : '' ?>>
+        <label class="form-check-label" for="is_serialized"><?= lang('Items.is_serialized') ?></label>
+    </div>
+
+    <?php if ($config['multi_pack_enabled'] == '1'): ?>
+        <label for="qty_per_pack" class="form-label"><?= lang('Items.qty_per_pack') ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="qty_per_pack-icon"><i class="bi bi-123"></i></span>
+            <input type="text" class="form-control" name="qty_per_pack" id="qty_per_pack" aria-describedby="qty_per_pack-icon" value="<?= isset($item_info->item_id) ? to_quantity_decimals($item_info->qty_per_pack) : to_quantity_decimals(0) ?>">
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.image'), 'items_image', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="fileinput <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
-                    <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
-                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;">
-                        <img data-src="holder.js/100%x100%" alt="<?= lang('Items.image') ?>"
-                            src="<?= $image_path ?>"
-                            style="max-height: 100%; max-width: 100%;">
-                    </div>
-                    <div>
-                        <span class="btn btn-default btn-sm btn-file">
-                            <span class="fileinput-new"><?= lang('Items.select_image') ?></span>
-                            <span class="fileinput-exists"><?= lang('Items.change_image') ?></span>
-                            <input type="file" name="items_image" accept="image/*">
-                        </span>
-                        <a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?= lang('Items.remove_image') ?></a>
-                    </div>
-                </div>
-            </div>
+        <label for="pack_name" class="form-label"><?= lang('Items.pack_name') ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="pack_name-icon"><i class="bi bi-box2-heart"></i></span>
+            <input type="text" class="form-control" name="pack_name" id="pack_name" aria-describedby="pack_name-icon" value="<?= $item_info->pack_name ?>">
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
-                <?= form_checkbox([
-                    'name'    => 'allow_alt_description',
-                    'id'      => 'allow_alt_description',
-                    'value'   => 1,
-                    'checked' => $item_info->allow_alt_description == 1
-                ]) ?>
-            </div>
+        <label for="low_sell_item_name" class="form-label"><?= lang('Items.low_sell_item') ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="pack_name-icon"><i class="bi bi-thermometer-low"></i></span>
+            <input type="hidden" name="low_sell_item_id" value="<?= $selected_low_sell_item_id ?>">
+            <input type="text" class="form-control" name="low_sell_item_name" id="low_sell_item_name" aria-describedby="low_sell_item_name-icon" value="<?= $selected_low_sell_item ?>">
         </div>
+    <?php endif; ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
-                <?= form_checkbox([
-                    'name'    => 'is_serialized',
-                    'id'      => 'is_serialized',
-                    'value'   => 1,
-                    'checked' => $item_info->is_serialized == 1
-                ]) ?>
-            </div>
-        </div>
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" name="is_deleted" id="is_deleted" value="1" <?= $item_info->deleted == 1 ? 'checked' : '' ?>>
+        <label class="form-check-label text-danger" for="is_deleted"><?= lang('Items.is_deleted') ?></label>
+    </div>
 
-        <?php if ($config['multi_pack_enabled'] == '1') { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
-                    <?= form_input([
-                        'name'  => 'qty_per_pack',
-                        'id'    => 'qty_per_pack',
-                        'class' => 'form-control input-sm',
-                        'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->qty_per_pack) : to_quantity_decimals(0)
-                    ]) ?>
-                </div>
-            </div>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.pack_name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
-                    <?= form_input([
-                        'name'  => 'pack_name',
-                        'id'    => 'pack_name',
-                        'class' => 'form-control input-sm',
-                        'value' => $item_info->pack_name
-                    ]) ?>
-                </div>
-            </div>
-            <div class="form-group  form-group-sm">
-                <?= form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
-                    <div class="input-group input-group-sm">
-                        <?= form_input([
-                            'name'  => 'low_sell_item_name',
-                            'id'    => 'low_sell_item_name',
-                            'class' => 'form-control input-sm',
-                            'value' => $selected_low_sell_item
-                        ]) ?>
-                        <?= form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
-                <?= form_checkbox([
-                    'name'    => 'is_deleted',
-                    'id'      => 'is_deleted',
-                    'value'   => 1,
-                    'checked' => $item_info->deleted == 1
-                ]) ?>
-            </div>
-        </div>
-
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">
