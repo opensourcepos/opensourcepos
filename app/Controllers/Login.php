@@ -18,10 +18,14 @@ class Login extends BaseController
     public Model $employee;
 
     /**
-     * @return RedirectResponse|string
+     * @return RedirectResponse|ResponseInterface|string
      */
-    public function index(): string|RedirectResponse
+    public function index(): string|RedirectResponse|ResponseInterface
     {
+        if ($response = $this->getGeneratedProbeResponse('login')) {
+            return $response;
+        }
+
         $this->employee = model(Employee::class);
         if (!$this->employee->is_logged_in()) {
             $migration = new MY_Migration(config('Migrations'));

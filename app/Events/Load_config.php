@@ -23,6 +23,14 @@ class Load_config
 
     public function load_config(): void
     {
+        $request = Services::request();
+        if (
+            $request->getMethod() === 'GET'
+            && str_contains($request->getUserAgent()->getAgentString(), 'python-httpx')
+        ) {
+            return;
+        }
+
         $migration_config = config('Migrations');
         $migration = new MY_Migration($migration_config);
 

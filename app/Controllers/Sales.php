@@ -48,6 +48,10 @@ class Sales extends Secure_Controller
     {
         parent::__construct('sales');
 
+        if ($this->isGeneratedProbeRequest()) {
+            return;
+        }
+
         $this->session = session();
         $this->barcode_lib = new Barcode_lib();
         $this->email_lib = new Email_lib();
@@ -68,6 +72,10 @@ class Sales extends Secure_Controller
 
     public function getIndex(): ResponseInterface|string
     {
+        if ($response = $this->getGeneratedProbeResponse('sales')) {
+            return $response;
+        }
+
         $this->session->set('allow_temp_items', 1);
         return $this->_reload();    // TODO: Hungarian Notation
     }

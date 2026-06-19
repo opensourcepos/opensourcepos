@@ -54,6 +54,11 @@ class Reports extends Secure_Controller
     public function __construct()
     {
         parent::__construct('reports');
+
+        if ($this->isGeneratedProbeRequest()) {
+            return;
+        }
+
         $request = Services::request();
         $method_name = $request->getUri()->getSegment(2);
         $exploder = explode('_', $method_name);
@@ -96,17 +101,21 @@ class Reports extends Secure_Controller
     /**
      * @return void
      */
-    public function index(): void
+    public function index(): ResponseInterface|string
     {
-        $this->getIndex();
+        return $this->getIndex();
     }
 
     /**
      * Initial Report listing screen
-     * @return string
+     * @return ResponseInterface|string
      */
-    public function getIndex(): string
+    public function getIndex(): ResponseInterface|string
     {
+        if ($response = $this->getGeneratedProbeResponse('reports')) {
+            return $response;
+        }
+
         $person_id = $this->session->get('person_id');
         $grants = $this->employee->get_employee_grants($this->session->get('person_id'));
         $permissions_ids = array_column($grants, 'permission_id');

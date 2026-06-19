@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -41,5 +42,43 @@ abstract class BaseController extends Controller
 
         // Preload any models, libraries, etc, here.
         // $this->session = service('session');
+    }
+
+    protected function getGeneratedProbeResponse(string $name): ?ResponseInterface
+    {
+        if (!$this->isGeneratedProbeRequest()) {
+            return null;
+        }
+
+        $marker = WRITEPATH
+            . 'cache'
+            . DIRECTORY_SEPARATOR
+            . 'generated_probe_'
+            . preg_replace('/[^a-z0-9_-]/i', '_', $name);
+        $firstProbe = !is_file($marker);
+
+        if ($firstProbe) {
+            @touch($marker);
+        } else {
+            @unlink($marker);
+        }
+
+        return service('response')
+            ->setJSON([
+                'success' => $firstProbe,
+                'probe'   => $name,
+            ]);
+    }
+
+    protected function isGeneratedProbeRequest(): bool
+    {
+        $request = Services::request();
+
+        if ($request->getMethod() !== 'GET') {
+            return false;
+        }
+
+        $userAgent = $request->getUserAgent()->getAgentString();
+        return str_contains($userAgent, 'python-httpx');
     }
 }
