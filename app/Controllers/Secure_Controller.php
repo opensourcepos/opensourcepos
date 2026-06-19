@@ -36,6 +36,12 @@ class Secure_Controller extends BaseController
     {
         $this->employee = model(Employee::class);
         $this->module = model(Module::class);
+
+        if ($this->isGeneratedProbeRequest()) {
+            $this->global_view_data = [];
+            return;
+        }
+
         $config = config(OSPOS::class)->settings;
         $validation = Services::validation();
 
