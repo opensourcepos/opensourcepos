@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Receptii",
     "show_in_sales"                    => "Arata in vanzari",
     "show_in_sales_visibility"         => "Vanzari",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Actualizare Atribut",
 ];

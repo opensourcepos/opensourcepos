@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "استلام البضائع",
     "show_in_sales"                    => "اظهار خلال البيع",
     "show_in_sales_visibility"         => "البيع",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "تحديث الميزات",
 ];

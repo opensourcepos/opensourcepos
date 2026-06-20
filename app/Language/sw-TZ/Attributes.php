@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Manunuzi",
     "show_in_sales"                    => "Onyesha kwenye Mauzo",
     "show_in_sales_visibility"         => "Mauzo",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Sasisha Sifa",
 ];
