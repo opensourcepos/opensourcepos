@@ -6,9 +6,6 @@ use CodeIgniter\Database\ResultInterface;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Customer class
- */
 class Customer extends Person
 {
     protected $table = 'customers';

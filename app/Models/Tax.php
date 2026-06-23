@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Tax class
- */
-class Tax extends Model
+class Tax extends BaseModel
 {
     protected $table = 'tax_rates';
     protected $primaryKey = 'tax_rate_id';

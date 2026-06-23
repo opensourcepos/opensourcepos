@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Tax Code class
- */
-class Tax_code extends Model
+class Tax_code extends BaseModel
 {
     protected $table = 'tax_codes';
     protected $primaryKey = 'tax_code_id';

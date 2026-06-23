@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * Receiving class
- */
-class Receiving extends Model
+class Receiving extends BaseModel
 {
     protected $table = 'receivings';
     protected $primaryKey = 'receiving_id';

@@ -2,12 +2,7 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-/**
- * Item_taxes class
- */
-class Item_taxes extends Model
+class Item_taxes extends BaseModel
 {
     protected $table = 'item_taxes';
     protected $primaryKey = 'item_id';

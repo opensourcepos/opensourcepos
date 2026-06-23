@@ -4,9 +4,6 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 
-/**
- * Supplier class
- */
 class Supplier extends Person
 {
     protected $table = 'suppliers';
