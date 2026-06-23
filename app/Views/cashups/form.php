@@ -308,7 +308,7 @@
             );
         });
 
-        var submit_form = function() {
+        const submit_form = function() {
             $(this).ajaxSubmit({
                 success: function(response) {
                     dialog_support.hide();

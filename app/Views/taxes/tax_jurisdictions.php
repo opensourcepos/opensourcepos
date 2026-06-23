@@ -28,31 +28,31 @@
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
+    // Validation and submit Handling
     $(document).ready(function() {
-        var tax_jurisdictions_count = <?= sizeof($tax_jurisdictions) ?>;
+        let tax_jurisdictions_count = <?= sizeof($tax_jurisdictions) ?>;
         if (tax_jurisdictions_count == 0) {
             tax_jurisdictions_count = 1;
         }
-        var tax_type_options = '<?= esc($tax_type_options, 'js') ?>';
+        const tax_type_options = '<?= esc($tax_type_options, 'js') ?>';
 
-        var hide_show_remove_tax_jurisdiction = function() {
+        const hide_show_remove_tax_jurisdiction = function() {
             if ($("input[name*='tax_jurisdiction']:enabled").length > 1) {
                 $(".remove_tax_jurisdiction").show();
             } else {
-                $(".remove_tax_jurisdictions").hide();
+                $(".remove_tax_jurisdiction").hide();
             }
         };
 
-        var add_tax_jurisdiction = function() {
-            var id = $(this).parent().find('input').attr('id');
+        const add_tax_jurisdiction = function() {
+            let id = $(this).parent().find('input').attr('id');
             id = id.replace(/.*?_(\d+)$/g, "$1");
 
-            var previous_jurisdiction_name_id = 'jurisdiction_name_' + id;
-            var block = $(this).parent().clone(true);
-            var new_block = block.insertAfter($(this).parent());
+            const previous_jurisdiction_name_id = 'jurisdiction_name_' + id;
+            const block = $(this).parent().clone(true);
+            const new_block = block.insertAfter($(this).parent());
             ++tax_jurisdictions_count;
-            var new_jurisdiction_name_id = 'jurisdiction_name_' + tax_jurisdictions_count;
+            const new_jurisdiction_name_id = 'jurisdiction_name_' + tax_jurisdictions_count;
 
             $(new_block).find('label').html("<?= lang('Taxes.tax_jurisdiction') ?> " + tax_jurisdictions_count).attr('for', new_jurisdiction_name_id).attr('class', 'control-label col-xs-2');
             $(new_block).find("input[name='jurisdiction_name[]']").attr('id', new_jurisdiction_name_id).removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
@@ -65,12 +65,12 @@
             hide_show_remove_tax_jurisdiction();
         };
 
-        var remove_tax_jurisdiction = function() {
+        const remove_tax_jurisdiction = function() {
             $(this).parent().remove();
             hide_show_remove_tax_jurisdiction();
         };
 
-        var init_add_remove_tax_jurisdiction = function() {
+        const init_add_remove_tax_jurisdiction = function() {
             $('.add_tax_jurisdiction').click(add_tax_jurisdiction);
             $('.remove_tax_jurisdiction').click(remove_tax_jurisdiction);
             hide_show_remove_tax_jurisdiction();
@@ -79,7 +79,7 @@
 
         // Run validator once for all fields
         $.validator.addMethod('check4TaxJurisdictionDups', function(value, element) {
-            var value_count = 0;
+            let value_count = 0;
             $("input[name='jurisdiction_name[]']").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });

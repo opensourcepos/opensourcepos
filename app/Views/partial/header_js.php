@@ -6,14 +6,14 @@
 
 <script type="text/javascript">
     // Live clock
-    var clock_tick = function clock_tick() {
+    const clock_tick = function clock_tick() {
         setInterval('update_clock();', 1000);
     }
 
     // Start the clock immediately
     clock_tick();
 
-    var update_clock = function update_clock() {
+    const update_clock = function update_clock() {
         document.getElementById('liveclock').innerHTML = moment().format("<?= dateformat_momentjs($config['dateformat'] . ' ' . $config['timeformat']) ?>");
     }
 
@@ -32,11 +32,11 @@
         }
     });
 
-    var csrf_token = function() {
-        return "<?= csrf_hash() ?>";
+    const csrf_token = function() {
+        return "<?= esc(csrf_hash(), 'js') ?>";
     };
 
-    var csrf_form_base = function() {
+    const csrf_form_base = function() {
         return {
             <?= esc(config('Security')->tokenName, 'js') ?>: function() {
                 return csrf_token()
@@ -44,14 +44,14 @@
         }
     };
 
-    var setup_csrf_token = function() {
+    const setup_csrf_token = function() {
         $('input[name="<?= esc(config('Security')->tokenName, 'js') ?>"]').val(csrf_token());
     };
 
-    var ajax = $.ajax;
+    const ajax = $.ajax;
 
     $.ajax = function() {
-        var args = arguments[0];
+        let args = arguments[0];
         if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
             if (typeof args['data'] === 'string') {
                 args['data'] += '&' + $.param(csrf_form_base());
@@ -80,7 +80,7 @@
         });
     });
 
-    var submit = $.fn.submit;
+    const submit = $.fn.submit;
 
     $.fn.submit = function() {
         setup_csrf_token();

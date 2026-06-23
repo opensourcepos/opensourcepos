@@ -20,8 +20,8 @@ import { Stream } from 'readable-stream'
 const {finished, pipeline} = Stream.promises
 
 
-var prod0js;
-var prod1js;
+let prod0js;
+let prod1js;
 
 // Clear and remove the resources folder
 gulp.task('clean', function () {
@@ -102,7 +102,7 @@ gulp.task('copy-bootstrap', function() {
 
 
 gulp.task('debug-js', function() {
-    var debugjs = gulp.src(['./node_modules/jquery/dist/jquery.js',
+    const debugjs = gulp.src(['./node_modules/jquery/dist/jquery.js',
         './node_modules/jquery-form/src/jquery.form.js',
         './node_modules/jquery-validation/dist/jquery.validate.js',
         './node_modules/jquery-ui-dist/jquery-ui.js',
@@ -141,9 +141,9 @@ gulp.task('debug-js', function() {
 
 gulp.task('prod-js', function() {
 
-    var prod0js = gulp.src('./node_modules/jquery/dist/jquery.min.js').pipe(rev()).pipe(gulp.dest('public/resources'));
+    const prod0js = gulp.src('./node_modules/jquery/dist/jquery.min.js').pipe(rev()).pipe(gulp.dest('public/resources'));
 
-    var opensourcepos1js = gulp.src(['./node_modules/bootstrap/dist/js/bootstrap.min.js',
+    const opensourcepos1js = gulp.src(['./node_modules/bootstrap/dist/js/bootstrap.min.js',
         './node_modules/bootstrap-table/dist/bootstrap-table.min.js',
         './node_modules/moment/min/moment.min.js',
         './node_modules/jquery-ui-dist/jquery-ui.min.js',
@@ -174,13 +174,13 @@ gulp.task('prod-js', function() {
         './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
         './node_modules/tableexport.jquery.plugin/tableExport.min.js'], { allowEmpty: true });
 
-    var opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
+    const opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
         './public/js/nominatim.autocomplete.js']).pipe(uglify());
 
 
-    var prod1js = series(opensourcepos1js, opensourcepos2js).pipe(concat('opensourcepos.min.js'))
+    const prod1js = series(opensourcepos1js, opensourcepos2js).pipe(concat('opensourcepos.min.js'))
         .pipe(rev())
         .pipe(gulp.dest('./public/resources/'));
 
@@ -194,21 +194,21 @@ gulp.task('prod-js', function() {
 gulp.task('debug-login-js', function() {
     // Match only core jQuery (jquery-HASH.js), exclude jquery plugins (jquery-HASH.form.js, etc) and jquery-ui (jquery-ui-HASH.js)
     // Pattern: jquery-[hash].js where hash is alphanumeric - core jQuery only
-    var loginDebugJs = gulp.src(['./public/resources/js/jquery-*.js', '!./public/resources/js/jquery-*.form.js', '!./public/resources/js/jquery-*.validate.js', '!./public/resources/js/jquery-ui-*.js']);
+    const loginDebugJs = gulp.src(['./public/resources/js/jquery-*.js', '!./public/resources/js/jquery-*.form.js', '!./public/resources/js/jquery-*.validate.js', '!./public/resources/js/jquery-ui-*.js']);
     return gulp.src('./app/Views/login.php').pipe(inject(loginDebugJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:debug:js -->'})).pipe(gulp.dest('./app/Views'));
 });
 
 // Inject jQuery into login.php (production mode) - reuse the jQuery file already created by prod-js
 gulp.task('prod-login-js', function() {
     // jQuery prod file is already in resources/jquery-*.min.js from prod-js task
-    var loginProdJs = gulp.src('./public/resources/jquery-*.min.js');
+    const loginProdJs = gulp.src('./public/resources/jquery-*.min.js');
     return gulp.src('./app/Views/login.php').pipe(inject(loginProdJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:prod:js -->'})).pipe(gulp.dest('./app/Views'));
 });
 
 
 
 gulp.task('debug-css', function() {
-    var debugcss = gulp.src(['./node_modules/jquery-ui-dist/jquery-ui.css',
+    const debugcss = gulp.src(['./node_modules/jquery-ui-dist/jquery-ui.css',
         './node_modules/bootstrap3-dialog/dist/css/bootstrap-dialog.css',
         './node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.css',
         './node_modules/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css',
@@ -234,23 +234,23 @@ gulp.task('debug-css', function() {
 
 
 gulp.task('prod-css', function() {
-    var opensourcepos1css = gulp.src(['./node_modules/jquery-ui-dist/jquery-ui.min.css',
+    const opensourcepos1css = gulp.src(['./node_modules/jquery-ui-dist/jquery-ui.min.css',
         './node_modules/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css',
         './node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
         './node_modules/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css']);
 
-    var opensourcepos2css = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.css',
+    const opensourcepos2css = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.css',
         './node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css']).pipe(cleanCSS({compatibility: 'ie8'}));
 
-    var opensourcepos3css = gulp.src(['./node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
+    const opensourcepos3css = gulp.src(['./node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         './node_modules/bootstrap-table/dist/bootstrap-table.min.css',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.css',
         './node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css',
         './node_modules/chartist/dist/chartist.min.css']);
 
-    var opensourcepos4css = gulp.src('./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css').pipe(cleanCSS({compatibility: 'ie8'}));
+    const opensourcepos4css = gulp.src('./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css').pipe(cleanCSS({compatibility: 'ie8'}));
 
-    var opensourcepos5css = gulp.src(['./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
+    const opensourcepos5css = gulp.src(['./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
         './public/css/bootstrap.autocomplete.css',
         './public/css/invoice.css',
         './public/css/ospos.css',
@@ -261,7 +261,7 @@ gulp.task('prod-css', function() {
         './public/css/reports.css'
     ]).pipe(cleanCSS({compatibility: 'ie8'}));
 
-    var prodcss = series(opensourcepos1css, opensourcepos2css, opensourcepos3css, opensourcepos4css, opensourcepos5css)
+    const prodcss = series(opensourcepos1css, opensourcepos2css, opensourcepos3css, opensourcepos4css, opensourcepos5css)
         .pipe(concat('opensourcepos.min.css')).pipe(rev()).pipe(gulp.dest('public/resources'));
 
 

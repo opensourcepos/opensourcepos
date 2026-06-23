@@ -167,10 +167,10 @@
         });
 
         $.validator.addMethod('module', function(value, element) {
-            var result = $('#permission_list input').is(':checked');
+            let result = $('#permission_list input').is(':checked');
             $('.module').each(function(index, element) {
-                var parent = $(element).parent();
-                var checked = $(element).is(':checked');
+                const parent = $(element);
+                const checked = $(element).is(':checked');
                 if ($('ul', parent).length > 0 && result) {
                     result &= !checked || (checked && $('ul > li > input:checked', parent).length > 0);
                 }
@@ -179,10 +179,10 @@
         }, "<?= lang('Employees.subpermission_required') ?>");
 
         $('ul#permission_list > li > input.module').each(function() {
-            var $this = $(this);
+            const $this = $(this);
             $('ul > li > input,select', $this.parent()).each(function() {
-                var $that = $(this);
-                var updateInputs = function(checked) {
+                const $that = $(this);
+                const updateInputs = function(checked) {
                     $that.prop('disabled', !checked);
                     !checked && $that.prop('checked', false);
                 }

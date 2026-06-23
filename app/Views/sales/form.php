@@ -172,7 +172,7 @@
 
         <?= view('partial/datepicker_locale') ?>
 
-        var fill_value_customer = function(event, ui) {
+        const fill_value_customer = function(event, ui) {
             event.preventDefault();
             $("input[name='customer_id']").val(ui.item.value);
             $("input[name='customer_name']").val(ui.item.label);
@@ -188,7 +188,7 @@
             focus: fill_value_customer
         });
 
-        var fill_value_employee = function(event, ui) {
+        const fill_value_employee = function(event, ui) {
             event.preventDefault();
             $("input[name='employee_id']").val(ui.item.value);
             $("input[name='employee_name']").val(ui.item.label);

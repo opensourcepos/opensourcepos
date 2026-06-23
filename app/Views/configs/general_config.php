@@ -467,8 +467,8 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        var enable_disable_gcaptcha_enable = (function() {
-            var gcaptcha_enable = $("#gcaptcha_enable").is(":checked");
+        const enable_disable_gcaptcha_enable = (function() {
+            const gcaptcha_enable = $("#gcaptcha_enable").is(":checked");
             if (gcaptcha_enable) {
                 $("#gcaptcha_site_key, #gcaptcha_secret_key").prop("disabled", !gcaptcha_enable).addClass("required");
                 $("#config_gcaptcha_site_key, #config_gcaptcha_secret_key").addClass("required");
