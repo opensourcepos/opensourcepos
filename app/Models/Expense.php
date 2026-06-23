@@ -267,6 +267,10 @@ class Expense extends Model
             if ($builder->insert($expense_data)) {
                 $expense_data['expense_id'] = $this->db->insertID();
 
+                // --- ACCOUNTING MODULE INTEGRATION ---
+                $this->create_accounting_entry($expense_data);
+                // --- END ACCOUNTING MODULE INTEGRATION ---
+
                 return true;
             }
 
@@ -276,6 +280,57 @@ class Expense extends Model
         $builder->where('expense_id', $expense_id);
 
         return $builder->update($expense_data);
+    }
+
+    private function create_accounting_entry($expense_data)
+    {
+        if ($expense_data['amount'] > 0) {
+            $accounting_entry = model('App\Models\Accounting_entry');
+            $journal = model('App\Models\Journal');
+            $account = model('App\Models\Account');
+            
+            $general_journal = $journal->get_by_code('GEN');
+            $cash_account = $account->get_by_code('101.01'); // SAT: Caja
+            $expense_account = $account->get_by_code('601.01'); // SAT: Gastos
+            $iva_account = $account->get_by_code('118.01'); // SAT: IVA Acreditable
+            
+            if ($general_journal && $cash_account && $expense_account && $iva_account) {
+                $entry_data = [
+                    'date' => date('Y-m-d H:i:s'),
+                    'journal_id' => $general_journal->journal_id,
+                    'ref' => 'EXP ' . $expense_data['expense_id'],
+                    'description' => $expense_data['description'] ?: 'Expense',
+                    'employee_id' => $expense_data['employee_id']
+                ];
+                
+                // Assume 16% IVA included in total amount
+                $subtotal = $expense_data['amount'] / 1.16;
+                $iva_amount = $expense_data['amount'] - $subtotal;
+                
+                $items_data = [
+                    [
+                        'account_id' => $expense_account->account_id,
+                        'debit' => $subtotal,
+                        'credit' => 0,
+                        'description' => 'Operating Expense (Subtotal)'
+                    ],
+                    [
+                        'account_id' => $iva_account->account_id,
+                        'debit' => $iva_amount,
+                        'credit' => 0,
+                        'description' => 'IVA Acreditable (16%)'
+                    ],
+                    [
+                        'account_id' => $cash_account->account_id,
+                        'debit' => 0,
+                        'credit' => $expense_data['amount'],
+                        'description' => 'Payment'
+                    ]
+                ];
+                
+                $accounting_entry->save_entry($entry_data, $items_data);
+            }
+        }
     }
 
     /**

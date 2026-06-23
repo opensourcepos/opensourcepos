@@ -35,7 +35,7 @@ if (isset($error)) {
             </div>
             <div class="list-group">
                 <?php foreach ($permission_ids as $permission_id) {
-                    if (can_show_report($permission_id, ['inventory', 'receiving'])) {
+                    if (can_show_report($permission_id, ['inventory', 'receiving', 'top'])) {
                         $link = get_report_link($permission_id, 'graphical_summary');
                 ?>
                         <a class="list-group-item" href="<?= $link['path'] ?>"><?= esc($link['label']) ?></a>
@@ -54,7 +54,7 @@ if (isset($error)) {
             </div>
             <div class="list-group">
                 <?php foreach ($permission_ids as $permission_id) {
-                    if (can_show_report($permission_id, ['inventory', 'receiving'])) {
+                    if (can_show_report($permission_id, ['inventory', 'receiving', 'top'])) {
                         $link = get_report_link($permission_id, 'summary');
                 ?>
                         <a class="list-group-item" href="<?= $link['path'] ?>"><?= esc($link['label']) ?></a>
@@ -83,6 +83,31 @@ if (isset($error)) {
                 ?>
             </div>
         </div>
+
+        <?php if (in_array('reports_top_items', $permission_ids, true) || in_array('reports_top_categories', $permission_ids, true)) { ?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-fire">&nbsp;</span><?= lang('Reports.top_50_items') ?></h3>
+                </div>
+                <div class="list-group">
+                    <?php if (in_array('reports_top_items', $permission_ids, true)) { 
+                        $summary_link = get_report_link('reports_top_items', 'summary');
+                        $graphical_link = get_report_link('reports_top_items', 'graphical_summary');
+                    ?>
+                        <a class="list-group-item" href="<?= $summary_link['path'] ?>"><?= esc($summary_link['label']) ?> (Tabular)</a>
+                        <a class="list-group-item" href="<?= $graphical_link['path'] ?>"><?= esc($graphical_link['label']) ?> (Gráfico)</a>
+                    <?php } ?>
+
+                    <?php if (in_array('reports_top_categories', $permission_ids, true)) { 
+                        $summary_link = get_report_link('reports_top_categories', 'summary');
+                        $graphical_link = get_report_link('reports_top_categories', 'graphical_summary');
+                    ?>
+                        <a class="list-group-item" href="<?= $summary_link['path'] ?>"><?= esc($summary_link['label']) ?> (Tabular)</a>
+                        <a class="list-group-item" href="<?= $graphical_link['path'] ?>"><?= esc($graphical_link['label']) ?> (Gráfico)</a>
+                    <?php } ?>
+                </div>
+            </div>
+        <?php } ?>
 
         <?php if (in_array('reports_inventory', $permission_ids, true)) { ?>
             <div class="panel panel-primary">
