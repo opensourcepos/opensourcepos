@@ -29,6 +29,7 @@ return [
     "date"                                    => "تاریخ",
     "date_range"                              => "محدوده زمانی",
     "description"                             => "شرح",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "گزارش دریافتی دقیق",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "گزارش های تفصیلی",
