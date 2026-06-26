@@ -307,6 +307,8 @@ app/Plugins/
     │       └── ExamplePlugin.php
     │── Libraries/                # Plugin libraries
     │   └── ApiClient.php
+    ├── Migrations/               # Plugin database migrations (optional)
+    │   └── 20260627120000_CreateExampleTable.php
     ├── Models/                   # Plugin models
     │   └── ExampleModel.php
     ├── Traits/                   # Shared PHP traits for plugin classes
@@ -513,6 +515,7 @@ Settings are prefixed with the plugin ID (e.g., `example_api_key`) and stored in
 | `app/Plugins/ExamplePlugin/Controllers/ExampleController.php` | `App\Plugins\ExamplePlugin\Controllers\ExampleController` |
 | `app/Plugins/ExamplePlugin/Libraries/ApiClient.php`           | `App\Plugins\ExamplePlugin\Libraries\ApiClient`           |
 | `app/Plugins/ExamplePlugin/Traits/ExampleTrait.php`           | `App\Plugins\ExamplePlugin\Traits\ExampleTrait`           |
+| `app/Plugins/ExamplePlugin/Migrations/20260627120000_CreateExampleTable.php` | `App\Plugins\ExamplePlugin\Migrations\CreateExampleTable` |
 | `app/Plugins/ExamplePlugin/Language/en/ExamplePlugin.php`     | *(Language file - returns array, no namespace)*           |
 
 ## Database
@@ -530,6 +533,82 @@ CREATE TABLE IF NOT EXISTS `ospos_plugin_config` (
 ```
 
 For custom tables, plugins can create them during `install()` and drop them during `uninstall()`.
+
+## Plugin Migrations
+
+Plugins can ship their own database migrations. The PluginManager runs all pending migrations automatically on each request (once per session, before event listeners are registered).
+
+### How It Works
+
+1. On startup, `PluginManager::runPendingMigrations()` scans each enabled plugin's `Migrations/` directory
+2. Files are matched by the pattern `YYYYMMDDhhmmss_ClassName.php` (14-digit timestamp prefix)
+3. The last-executed timestamp is read from `ospos_plugin_migrations` for that plugin
+4. Only files with a timestamp greater than the stored version are executed, in ascending order
+5. After each successful `up()` call, the version is updated; on failure, remaining migrations are skipped
+
+### Directory Structure
+
+```text
+app/Plugins/ExamplePlugin/
+└── Migrations/
+    ├── 20260627120000_CreateExampleTable.php
+    └── 20260701090000_AddExampleColumn.php
+```
+
+### File Naming Convention
+
+```
+YYYYMMDDhhmmss_ClassName.php
+```
+
+- **Timestamp**: 14 digits — `YYYYMMDD` + `hhmmss` (e.g., `20260627120000`)
+- **ClassName**: PascalCase, becomes the class name and the last part of the FQCN
+- Files not matching this pattern are ignored
+
+### Migration Class
+
+```php
+<?php
+
+namespace App\Plugins\ExamplePlugin\Migrations;
+
+use CodeIgniter\Database\BaseConnection;
+use CodeIgniter\Database\Forge;
+
+class CreateExampleTable
+{
+    public function __construct(
+        private BaseConnection $db,
+        private Forge $forge
+    ) {}
+
+    public function up(): void
+    {
+        $this->forge->addField([
+            'id'         => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
+            'item_id'    => ['type' => 'INT', 'unsigned' => true],
+            'guid'       => ['type' => 'VARCHAR', 'constraint' => 100],
+            'created_at' => ['type' => 'DATETIME', 'null' => true],
+        ]);
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('example_items', true);
+    }
+}
+```
+
+> **Note:** `down()` is not called automatically. Roll back by writing a new migration that reverses the change.
+
+### Version Tracking
+
+Migration state is stored in `ospos_plugin_migrations`:
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `plugin_id` | varchar(100) PK | value returned by `getPluginId()` |
+| `version` | bigint unsigned | timestamp of last successful migration (0 = none run) |
+| `ran_at` | datetime | when the last migration ran |
+
+Each plugin tracks its version independently. The table is created by the core migration `20260627000000_PluginMigrationsTableCreate`.
 
 ## Event Flow
 
