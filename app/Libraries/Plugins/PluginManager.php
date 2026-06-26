@@ -3,6 +3,7 @@
 namespace App\Libraries\Plugins;
 
 use App\Models\PluginConfig;
+use App\Models\PluginMigrationModel;
 use CodeIgniter\Events\Events;
 use Config\Database;
 use Config\Services;
@@ -82,6 +83,8 @@ class PluginManager
             return;
         }
 
+        $this->runPendingMigrations();
+
         foreach ($this->plugins as $pluginId => $plugin) {
             if ($this->isPluginEnabled($pluginId)) {
                 $this->enabledPlugins[$pluginId] = $plugin;
@@ -91,6 +94,71 @@ class PluginManager
         }
 
         $this->eventsRegistered = true;
+    }
+
+    private function runPendingMigrations(): void
+    {
+        if (session()->get('plugin_migrations_ran')) {
+            return;
+        }
+
+        $migrationModel = new PluginMigrationModel();
+        $db = Database::connect();
+        $forge = Database::forge();
+
+        foreach ($this->plugins as $pluginId => $plugin) {
+            if (!$this->isPluginEnabled($pluginId)) {
+                continue;
+            }
+
+            $parts = explode('\\', get_class($plugin));
+            if (count($parts) < 4) {
+                continue;
+            }
+
+            $pluginDirName = $parts[2];
+            $migrationsPath = APPPATH . "Plugins/{$pluginDirName}/Migrations/";
+
+            if (!is_dir($migrationsPath)) {
+                continue;
+            }
+
+            $files = glob($migrationsPath . '*.php') ?: [];
+            $migrationFiles = array_filter($files, static fn($f) => preg_match('/\/\d{14}_/', $f));
+            sort($migrationFiles);
+
+            $currentVersion = $migrationModel->getVersion($pluginId);
+
+            foreach ($migrationFiles as $file) {
+                $basename = basename($file, '.php');
+                $timestamp = (int) substr($basename, 0, 14);
+
+                if ($timestamp <= $currentVersion) {
+                    continue;
+                }
+
+                $className = substr($basename, 15); // strip "20260627120000_"
+                $fqcn = "App\\Plugins\\{$pluginDirName}\\Migrations\\{$className}";
+
+                require_once $file;
+
+                if (!class_exists($fqcn)) {
+                    log_message('error', "Plugin migration class not found: {$fqcn}");
+                    break;
+                }
+
+                try {
+                    (new $fqcn($db, $forge))->up();
+                    $migrationModel->setVersion($pluginId, $timestamp);
+                    log_message('info', "Plugin migration ran: {$pluginId} v{$timestamp}");
+                } catch (Throwable $e) {
+                    log_message('error', "Plugin migration failed: {$pluginId} v{$timestamp}: " . $e->getMessage());
+                    break;
+                }
+            }
+        }
+
+        session()->set('plugin_migrations_ran', true);
     }
 
     public function getAllPlugins(): array
