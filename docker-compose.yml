@@ -1,27 +1,38 @@
-include:
-    - docker/docker-mysql.yml
-
 services:
-    sqlscript:
-        image: jekkos/opensourcepos:sql-master
-        command: /bin/sh -c 'exit 0'
-    ospos:
-        image: jekkos/opensourcepos:master
-        restart: always
-        depends_on:
-            - mysql
-        ports:
-            - "80:80"
-        networks:
-            - app_net
-        volumes:
-            - uploads:/app/writable/uploads
-            - logs:/app/writable/logs
-        environment:
-            - CI_ENVIRONMENT=production
-            - FORCE_HTTPS=false
-            - PHP_TIMEZONE=UTC
-            - MYSQL_USERNAME=admin
-            - MYSQL_PASSWORD=pointofsale
-            - MYSQL_DB_NAME=ospos
-            - MYSQL_HOST_NAME=mysql
+  sqlscript:
+    image: jekkos/opensourcepos:sql-master
+    command: /bin/sh -c 'exit 0'
+  mysql:
+    image: mariadb:10.5
+    container_name: mysql
+    restart: always
+    expose:
+      - "3306"
+    volumes_from:
+      - sqlscript
+    volumes:
+      - ./pos_data/mysql:/var/lib/mysql:rw
+    environment:
+      - MYSQL_ROOT_PASSWORD=pointofsale
+      - MYSQL_DATABASE=ospos
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=pointofsale
+  ospos:
+    image: jekkos/opensourcepos:3.4.1
+    restart: always
+    container_name: ospos
+    depends_on:
+      - mysql
+    ports:
+      - "0.0.0.0:80:80"
+    volumes:
+      - ./pos_data/uploads:/app/writable/uploads
+      - ./pos_data/logs:/app/writable/logs
+    environment:
+      - CI_ENVIRONMENT=production
+      - FORCE_HTTPS=false
+      - PHP_TIMEZONE=Asia/Manila
+      - MYSQL_USERNAME=admin
+      - MYSQL_PASSWORD=pointofsale
+      - MYSQL_DB_NAME=ospos
+      - MYSQL_HOST_NAME=mysql
