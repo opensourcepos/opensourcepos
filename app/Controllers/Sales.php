@@ -438,7 +438,7 @@ class Sales extends Secure_Controller
                     $data['warning'] = lang('Giftcards.remaining_balance', [$giftcardNumber, $newGiftcardValue]);
                     $amountTendered = min($this->sale_lib->get_amount_due(), $giftcard->get_giftcard_value($giftcardNumber));
 
-                    $this->sale_lib->add_payment($paymentType, $amountTendered);
+                    $this->sale_lib->addPayment($paymentType, $amountTendered);
                 }
             } elseif ($paymentType === lang('Sales.rewards')) {
                 $customerId = $this->sale_lib->get_customer();
@@ -461,22 +461,24 @@ class Sales extends Secure_Controller
                         $data['warning'] = lang('Sales.rewards_remaining_balance') . $newRewardValue;
                         $amountTendered = min($this->sale_lib->get_amount_due(), $points);
 
-                        $this->sale_lib->add_payment($paymentType, $amountTendered);
+                        $this->sale_lib->addPayment($paymentType, $amountTendered);
                     }
                 }
             } elseif ($paymentType === lang('Sales.cash')) {
                 $amountDue = $this->sale_lib->get_total();
                 $salesTotal = $this->sale_lib->get_total(false);
                 $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
-                $this->sale_lib->add_payment($paymentType, $amountTendered);
+                $this->sale_lib->addPayment($paymentType, $amountTendered);
                 $cashAdjustmentAmount = $amountDue - $salesTotal;
                 if ($cashAdjustmentAmount <> 0) {
                     $this->session->set('cash_mode', CASH_MODE_TRUE);
-                    $this->sale_lib->add_payment(lang('Sales.cash_adjustment'), $cashAdjustmentAmount, CASH_ADJUSTMENT_TRUE);
+                    $this->sale_lib->addPayment(lang('Sales.cash_adjustment'), $cashAdjustmentAmount, null, CASH_ADJUSTMENT_TRUE);
                 }
             } else {
                 $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
                 $this->sale_lib->add_payment($paymentType, $amountTendered);
+                $referenceCode = $this->request->getPost('reference_code');
+                $this->sale_lib->addPayment($paymentType, $amountTendered, $referenceCode);
             }
         }
 

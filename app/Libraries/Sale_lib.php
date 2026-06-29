@@ -582,20 +582,22 @@ class Sale_lib
      * @param string $payment_amount
      * @param int $cash_adjustment
      */
-    public function add_payment(string $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
+    public function addPayment(string $paymentId, string $paymentAmount, ?string $referenceCode = null, int $cashAdjustment = CASH_ADJUSTMENT_FALSE): void
     {
         $payments = $this->get_payments();
         if (isset($payments[$payment_id])) {
+        if (isset($payments[$paymentId])) {
             // payment_method already exists, add to payment_amount
-            $payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount);
+            $payments[$paymentId]['payment_amount'] = bcadd($payments[$paymentId]['payment_amount'], $paymentAmount);
         } else {
             // Add to existing array
             $payment = [
-                $payment_id => [
-                    'payment_type'    => $payment_id,
-                    'payment_amount'  => $payment_amount,
+                $paymentId => [
+                    'payment_type'    => $paymentId,
+                    'payment_amount'  => $paymentAmount,
                     'cash_refund'     => 0,
-                    'cash_adjustment' => $cash_adjustment
+                    'cash_adjustment' => $cashAdjustment,
+                    'reference_code'  => $referenceCode,
                 ]
             ];
 
@@ -603,7 +605,7 @@ class Sale_lib
         }
 
         if ($this->session->get('cash_mode')) {
-            if ($this->session->get('cash_rounding') && $payment_id != lang('Sales.cash') && $payment_id != lang('Sales.cash_adjustment')) {
+            if ($this->session->get('cash_rounding') && $paymentId != lang('Sales.cash') && $paymentId != lang('Sales.cash_adjustment')) {
                 $this->session->set('cash_mode', CASH_MODE_FALSE);
             }
         }
@@ -1386,7 +1388,7 @@ class Sale_lib
 
         // Now load payments
         foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
-            $this->add_payment($row->payment_type, $row->payment_amount, $row->cash_adjustment);
+            $this->addPayment($row->payment_type, $row->payment_amount, $row->cash_adjustment);
         }
 
         $this->set_customer($this->sale->get_customer($sale_id)->person_id);
