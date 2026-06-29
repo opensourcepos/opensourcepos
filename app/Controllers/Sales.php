@@ -401,7 +401,7 @@ class Sales extends Secure_Controller
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
         } elseif ($paymentType === lang('Sales.debit') || $paymentType === lang('Sales.credit')) {
             $rules    = ['amount_tendered' => 'trim|required'];
-            $messages = ['amount_tendered' => lang('Sales.must_enter_rrn')];
+            $messages = ['amount_tendered' => lang('Sales.must_enter_reference_code')];
         } else {
             $rules    = ['amount_tendered' => 'trim|required|decimal_locale'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
@@ -410,7 +410,7 @@ class Sales extends Secure_Controller
         if (!$this->validate($rules, $messages)) {
             $data['error'] = match(true) {
                 $paymentType === lang('Sales.giftcard') => lang('Sales.must_enter_numeric_giftcard'),
-                $paymentType === lang('Sales.debit'), $paymentType === lang('Sales.credit') => lang('Sales.must_enter_rrn'),
+                $paymentType === lang('Sales.debit'), $paymentType === lang('Sales.credit') => lang('Sales.must_enter_reference_code'),
                 default => lang('Sales.must_enter_numeric'),
             };
         } else {

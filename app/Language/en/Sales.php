@@ -135,7 +135,7 @@ return [
     "mode"                             => "Register Mode",
     "must_enter_numeric"               => "Amount Tendered must be a number.",
     "must_enter_numeric_giftcard"      => "Gift Card Number must be a number.",
-    "must_enter_rrn"                   => "Reference/Retrieval Number must be entered.",
+    "must_enter_reference_code"        => "Reference/Retrieval Number must be entered.",
     "new_customer"                     => "New Customer",
     "new_item"                         => "New Item",
     "no_description"                   => "No description",
