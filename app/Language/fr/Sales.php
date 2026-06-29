@@ -42,7 +42,6 @@ return [
     "customer_discount"                => "Rabais",
     "customer_email"                   => "Email",
     "customer_location"                => "Localisation du client",
-    "customer_mailchimp_status"        => "Statut de MailChimp",
     "customer_optional"                => "(Requis pour paiement)",
     "customer_required"                => "(Champs obligatoires)",
     "customer_total"                   => "Total",

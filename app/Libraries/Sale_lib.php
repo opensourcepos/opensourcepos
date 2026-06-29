@@ -1464,7 +1464,7 @@ class Sale_lib
     public function is_customer_taxable(): bool    // TODO: This function is never called in the code
     {
         $customer_id = $this->get_customer();
-        $customer = $this->customer->get_info($customer_id);
+        $customer = $this->customer->getInfo($customer_id);
 
         // Do not charge sales tax if we have a customer that is not taxable
         return $customer->taxable or $customer_id == -1;    // TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.

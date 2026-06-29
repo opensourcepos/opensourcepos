@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Знижка",
     "customer_email"                   => "Електронна пошта клієнта",
     "customer_location"                => "Місцезнаходження клієнта",
-    "customer_mailchimp_status"        => "Статус клієнта mailchimp",
     "customer_optional"                => "(Потрібно для належних платежів)",
     "customer_required"                => "(Обов'язково)",
     "customer_total"                   => "Всього",

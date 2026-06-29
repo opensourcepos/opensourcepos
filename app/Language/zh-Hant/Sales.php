@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "折扣",
     "customer_email"                   => "客戶電郵地址",
     "customer_location"                => "客戶所在地",
-    "customer_mailchimp_status"        => "MailChimp電子報行銷狀態",
     "customer_optional"                => "到期付款需要",
     "customer_required"                => "必需",
     "customer_total"                   => "總數",

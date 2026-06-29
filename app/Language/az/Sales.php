@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Endirim",
     "customer_email"                   => "E-poçt",
     "customer_location"                => "Yer",
-    "customer_mailchimp_status"        => "Mailchimp Statusu",
     "customer_optional"                => "(Ödənişlərdə tələb olunur)",
     "customer_required"                => "(Vacib)",
     "customer_total"                   => "Cəmi",

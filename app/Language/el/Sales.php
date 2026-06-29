@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Έκπτωση",
     "customer_email"                   => "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
     "customer_location"                => "Τοποθεσία",
-    "customer_mailchimp_status"        => "Κατάσταση Mailchimp",
     "customer_optional"                => "(Απαραίτητο για πληρωμές επί Πιστώσει)",
     "customer_required"                => "(Απαραίτητο)",
     "customer_total"                   => "Σύνολο",

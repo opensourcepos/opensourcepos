@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Rabatt",
     "customer_email"                   => "E-mail",
     "customer_location"                => "Plats",
-    "customer_mailchimp_status"        => "MailChimp status",
     "customer_optional"                => "(Krävs för förfallna betalningar)",
     "customer_required"                => "(Nödvändig)",
     "customer_total"                   => "Totalt",

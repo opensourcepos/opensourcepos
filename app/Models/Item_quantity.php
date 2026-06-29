@@ -84,6 +84,27 @@ class Item_quantity extends Model
     }
 
     /**
+     * Get all the quantities of the given items. Used by plugins. Do not remove from code.
+     *
+     * @param array $itemIds
+     * @param bool $getDeleted
+     * @return array
+     */
+    public function getBulkItemQuantities(array $itemIds, bool $getDeleted = false): array
+    {
+        $builder = $this->db->table('item_quantities');
+        $builder->whereIn('item_quantities.item_id', $itemIds);
+
+        if (!$getDeleted) {
+            $builder->join('stock_locations', 'stock_locations.location_id = item_quantities.location_id');
+            $builder->where('stock_locations.deleted', 0);
+            $builder->select('item_quantities.*');
+        }
+
+        return $builder->get()->getResultArray();
+    }
+
+    /**
      * changes to quantity of an item according to the given amount.
      * if $quantity_change is negative, it will be subtracted,
      * if it is positive, it will be added to the current quantity

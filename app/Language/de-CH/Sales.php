@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Discount",
     "customer_email"                   => "Customer Email",
     "customer_location"                => "Customer Location",
-    "customer_mailchimp_status"        => "",
     "customer_optional"                => "",
     "customer_required"                => "",
     "customer_total"                   => "Total",

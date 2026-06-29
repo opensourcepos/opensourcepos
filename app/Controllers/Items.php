@@ -13,6 +13,7 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
@@ -275,7 +276,7 @@ class Items extends Secure_Controller
      */
     public function getRow(string $item_ids): ResponseInterface    // TODO: An array would be better for parameter.
     {
-        $item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
+        $item_infos = $this->item->getMultipleInfo(explode(':', $item_ids), $this->item_lib->get_item_location());
 
         $result = [];
 
@@ -491,7 +492,7 @@ class Items extends Secure_Controller
     public function getGenerateBarcodes(string $item_ids): string    // TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
     {
         $item_ids = explode(':', $item_ids);
-        $result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
+        $result = $this->item->getMultipleInfo($item_ids, $this->item_lib->get_item_location())->getResultArray();
         $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 
         foreach ($result as &$item) {
@@ -611,148 +612,149 @@ class Items extends Secure_Controller
     }
 
     /**
-     * @param int $item_id
+     * @param int $itemId
      * @return ResponseInterface
      * @throws ReflectionException
      */
-    public function postSave(int $item_id = NEW_ENTRY): ResponseInterface
+    public function postSave(int $itemId = NEW_ENTRY): ResponseInterface
     {
-        $upload_data = $this->upload_image();
-        $upload_success = empty($upload_data['error']);
+        $uploadData = $this->upload_image();
+        $uploadSuccess = empty($uploadData['error']);
 
-        $raw_receiving_quantity = $this->request->getPost('receiving_quantity');
+        $rawReceivingQuantity = $this->request->getPost('receiving_quantity');
 
-        $receiving_quantity = parse_quantity($raw_receiving_quantity);
-        $item_type = $this->request->getPost('item_type') === null ? ITEM : intval($this->request->getPost('item_type'));
+        $receivingQuantity = parse_quantity($rawReceivingQuantity);
+        $itemType = $this->request->getPost('item_type') === null ? ITEM : intval($this->request->getPost('item_type'));
 
-        if ($receiving_quantity === 0.0 && $item_type !== ITEM_TEMP) {
-            $receiving_quantity = 1;
+        if ($receivingQuantity === 0.0 && $itemType !== ITEM_TEMP) {
+            $receivingQuantity = 1;
         }
 
-        $default_pack_name = lang('Items.default_pack_name');
+        $defaultPackName = lang('Items.default_pack_name');
 
-        $cost_price = parse_decimals($this->request->getPost('cost_price'));
-        $unit_price = parse_decimals($this->request->getPost('unit_price'));
-        $reorder_level = parse_quantity($this->request->getPost('reorder_level'));
-        $qty_per_pack = parse_quantity($this->request->getPost('qty_per_pack') ?? '');
+        $costPrice = parse_decimals($this->request->getPost('cost_price'));
+        $unitPrice = parse_decimals($this->request->getPost('unit_price'));
+        $reorderLevel = parse_quantity($this->request->getPost('reorder_level'));
+        $quantityPerPack = parse_quantity($this->request->getPost('qty_per_pack') ?? '');
 
         // Save item data
-        $item_data = [
+        $itemData = [
             'name'                  => $this->request->getPost('name'),
             'description'           => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category'              => $this->request->getPost('category'),
-            'item_type'             => $item_type,
+            'item_type'             => $itemType,
             'stock_type'            => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
             'supplier_id'           => empty($this->request->getPost('supplier_id')) ? null : intval($this->request->getPost('supplier_id')),
             'item_number'           => empty($this->request->getPost('item_number')) ? null : $this->request->getPost('item_number'),
-            'cost_price'            => $cost_price,
-            'unit_price'            => $unit_price,
-            'reorder_level'         => $reorder_level,
-            'receiving_quantity'    => $receiving_quantity,
+            'cost_price'            => $costPrice,
+            'unit_price'            => $unitPrice,
+            'reorder_level'         => $reorderLevel,
+            'receiving_quantity'    => $receivingQuantity,
             'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
             'is_serialized'         => $this->request->getPost('is_serialized') != null,
-            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($qty_per_pack),
-            'pack_name'             => $this->request->getPost('pack_name') == null ? $default_pack_name : $this->request->getPost('pack_name'),
-            'low_sell_item_id'      => $this->request->getPost('low_sell_item_id') === null ? $item_id : intval($this->request->getPost('low_sell_item_id')),
+            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($quantityPerPack),
+            'pack_name'             => $this->request->getPost('pack_name') == null ? $defaultPackName : $this->request->getPost('pack_name'),
+            'low_sell_item_id'      => $this->request->getPost('low_sell_item_id') === null ? $itemId : intval($this->request->getPost('low_sell_item_id')),
             'deleted'               => $this->request->getPost('is_deleted') != null,
             'hsn_code'              => $this->request->getPost('hsn_code') === null ? '' : $this->request->getPost('hsn_code')
         ];
 
-        if ($item_data['item_type'] == ITEM_TEMP) {
-            $item_data['stock_type'] = HAS_NO_STOCK;
-            $item_data['receiving_quantity'] = 0;
-            $item_data['reorder_level'] = 0;
+        if ($itemData['item_type'] == ITEM_TEMP) {
+            $itemData['stock_type'] = HAS_NO_STOCK;
+            $itemData['receiving_quantity'] = 0;
+            $itemData['reorder_level'] = 0;
         }
 
-        $tax_category_id = $this->request->getPost('tax_category_id');
+        $taxCategoryId = $this->request->getPost('tax_category_id');
 
-        if (!isset($tax_category_id)) {
-            $item_data['tax_category_id'] = null;
+        if (!isset($taxCategoryId)) {
+            $itemData['tax_category_id'] = null;
         } else {
-            $item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? null : intval($this->request->getPost('tax_category_id'));
+            $itemData['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? null : intval($this->request->getPost('tax_category_id'));
         }
 
-        if (!empty($upload_data['orig_name']) && $upload_data['raw_name']) {
-            $item_data['pic_filename'] = $upload_data['raw_name'] . '.' . $upload_data['file_ext'];
+        if (!empty($uploadData['orig_name']) && $uploadData['raw_name']) {
+            $itemData['pic_filename'] = $uploadData['raw_name'] . '.' . $uploadData['file_ext'];
         }
 
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
 
-        if ($this->item->save_value($item_data, $item_id)) {
+        if ($this->item->save_value($itemData, $itemId)) {
             $success = true;
-            $new_item = false;
+            $newItem = false;
 
-            if ($item_id === NEW_ENTRY) {
-                $item_id = $item_data['item_id'];
-                $new_item = true;
+            if ($itemId === NEW_ENTRY) {
+                $itemId = $itemData['item_id'];
+                $newItem = true;
             }
 
-            $use_destination_based_tax = (bool)$this->config['use_destination_based_tax'];
+            $useDestinationBasedTax = (bool)$this->config['use_destination_based_tax'];
 
-            if (!$use_destination_based_tax) {
-                $items_taxes_data = [];
-                $tax_names = $this->request->getPost('tax_names');
-                $tax_percents = $this->request->getPost('tax_percents');
+            if (!$useDestinationBasedTax) {
+                $itemsTaxesData = [];
+                $taxNames = $this->request->getPost('tax_names');
+                $taxPercents = $this->request->getPost('tax_percents');
 
-                $tax_name_index = 0;
+                $taxNameIndex = 0;
 
-                foreach ($tax_percents as $tax_percent) {
-                    $tax_percentage = parse_tax($tax_percent);
+                foreach ($taxPercents as $taxPercent) {
+                    $taxpercentage = parse_tax($taxPercent);
 
-                    if (is_numeric($tax_percentage)) {
-                        $items_taxes_data[] = ['name' => $tax_names[$tax_name_index], 'percent' => $tax_percentage];
+                    if (is_numeric($taxpercentage)) {
+                        $itemsTaxesData[] = ['name' => $taxNames[$taxNameIndex], 'percent' => $taxpercentage];
                     }
 
-                    $tax_name_index++;
+                    $taxNameIndex++;
                 }
-                $success &= $this->item_taxes->save_value($items_taxes_data, $item_id);
+                $success &= $this->item_taxes->save_value($itemsTaxesData, $itemId);
             }
 
             // Save item quantity
-            $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
-            foreach ($stock_locations as $location) {
-                $updated_quantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
+            $stockLocations = $this->stock_location->get_undeleted_all()->getResultArray();
+            foreach ($stockLocations as $location) {
+                $updatedQuantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
 
-                if ($item_data['item_type'] == ITEM_TEMP) {
-                    $updated_quantity = 0;
+                if ($itemData['item_type'] == ITEM_TEMP) {
+                    $updatedQuantity = 0;
                 }
 
-                $location_detail = [
-                    'item_id'     => $item_id,
+                $locationDetail = [
+                    'item_id'     => $itemId,
                     'location_id' => $location['location_id'],
-                    'quantity'    => $updated_quantity
+                    'quantity'    => $updatedQuantity
                 ];
 
-                $item_quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id']);
+                $itemQuantity = $this->item_quantity->get_item_quantity($itemId, $location['location_id']);
 
-                if ($item_quantity->quantity != $updated_quantity || $new_item) {
-                    $success = $success &&  $this->item_quantity->save_value($location_detail, $item_id, $location['location_id']);
+                if ($itemQuantity->quantity != $updatedQuantity || $newItem) {
+                    $success = $success &&  $this->item_quantity->save_value($locationDetail, $itemId, $location['location_id']);
 
                     $inv_data = [
                         'trans_date'      => date('Y-m-d H:i:s'),
-                        'trans_items'     => $item_id,
-                        'trans_user'      => $employee_id,
+                        'trans_items'     => $itemId,
+                        'trans_user'      => $employeeId,
                         'trans_location'  => $location['location_id'],
                         'trans_comment'   => lang('Items.manually_editing_of_quantity'),
-                        'trans_inventory' => $updated_quantity - $item_quantity->quantity
+                        'trans_inventory' => $updatedQuantity - $itemQuantity->quantity
                     ];
 
                     $success = $success && $this->inventory->insert($inv_data, false);
                 }
             }
-            $success = $success && $this->saveItemAttributes($item_id);
+            $success = $success && $this->saveItemAttributes($itemId);
 
-            if ($success && $upload_success) {
-                $message = lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name'];
+            if ($success && $uploadSuccess) {
+                Events::trigger('item_saved', [$itemId]);
 
-                return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $item_id]);
+                $message = lang('Items.successful_' . ($newItem ? 'adding' : 'updating')) . ' ' . $itemData['name'];
+                return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $itemId]);
             } else {
-                $message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($upload_data['error']);
+                $message = $uploadSuccess ? lang('Items.error_adding_updating') . ' ' . $itemData['name'] : strip_tags($uploadData['error']);
 
-                return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $item_id]);
+                return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $itemId]);
             }
         } else {
-            $message = lang('Items.error_adding_updating') . ' ' . $item_data['name'];
+            $message = lang('Items.error_adding_updating') . ' ' . $itemData['name'];
 
             return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => NEW_ENTRY]);
         }
@@ -938,6 +940,7 @@ class Items extends Secure_Controller
         $items_to_delete = $this->request->getPost('ids');
 
         if ($this->item->delete_list($items_to_delete)) {
+            Events::trigger('item_deleted', $items_to_delete);
             $message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
             return $this->response->setJSON(['success' => true, 'message' => $message]);
         } else {
@@ -972,7 +975,7 @@ class Items extends Secure_Controller
     }
 
     /**
-     * Imports items from a CSV formatted file.
+     * Imports items from a CSV-formatted file.
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
@@ -997,7 +1000,7 @@ class Items extends Secure_Controller
                     $attributeData = [];
 
                     foreach ($attributeDefinitionNames as $definitionName) {
-                        $attributeData[$definitionName] = $this->attribute->get_definition_by_name($definitionName)[0];
+                        $attributeData[$definitionName] = $this->attribute->getDefinitionByName($definitionName)[0];
 
                         if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
                             $attributeData[$definitionName]['dropdown_values'] = $this->attribute->get_definition_values($attributeData[$definitionName]['definition_id']);
@@ -1006,6 +1009,7 @@ class Items extends Secure_Controller
                     $db = db_connect();
                     $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
 
+                    $itemIds = [];
                     foreach ($csvRows as $key => $row) {
                         $isFailedRow = false;
                         $itemId = (int)$row['Id'];
@@ -1075,6 +1079,8 @@ class Items extends Secure_Controller
                             if ($isUpdate) {
                                 $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
                             }
+
+                            $itemIds[] = $itemData['item_id'];
                         } else {
                             $failedRow = $key + 2;
                             $failCodes[] = $failedRow;
@@ -1093,6 +1099,8 @@ class Items extends Secure_Controller
                     } else {
                         $db->transCommit();
                         $this->attribute->deleteOrphanedValues();
+
+                        Events::trigger('item_saved', $itemIds);
 
                         return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }

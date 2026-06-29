@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "Diskon",
     "customer_email"                   => "Email",
     "customer_location"                => "Lokasi",
-    "customer_mailchimp_status"        => "Status MailChimp",
     "customer_optional"                => "(Diperlukan untuk Pembayaran Jatuh Tempo)",
     "customer_required"                => "(Dibutuhkan)",
     "customer_total"                   => "Total",

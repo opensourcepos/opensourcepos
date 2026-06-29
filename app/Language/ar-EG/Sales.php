@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "الخصم",
     "customer_email"                   => "البريد الإلكترونى",
     "customer_location"                => "المكان",
-    "customer_mailchimp_status"        => "حالة بريد ميل تشيمب",
     "customer_optional"                => "(مطلوب للدفعات المستحقة)",
     "customer_required"                => "(اجباري)",
     "customer_total"                   => "المجموع",

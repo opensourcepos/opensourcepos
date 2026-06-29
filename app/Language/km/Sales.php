@@ -41,7 +41,6 @@ return [
     "customer_discount"                => "បញ្ចុះតម្លៃ",
     "customer_email"                   => "អ៊ីម៉ែល",
     "customer_location"                => "ទីតាំង",
-    "customer_mailchimp_status"        => "",
     "customer_optional"                => "(ត្រូវការបញ្ចូល ប្រាក់ដែលត្រូវបង់)",
     "customer_required"                => "(ត្រូវការ)",
     "customer_total"                   => "សរុប",
