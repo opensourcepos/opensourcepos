@@ -558,10 +558,10 @@ class Sale_lib
     /**
      * Multiple Payments
      */
-    public function get_payments(): array
+    public function getPayments(): array
     {
         if (!$this->session->get('sales_payments')) {
-            $this->set_payments([]);
+            $this->setPayments([]);
         }
 
         return $this->session->get('sales_payments');
@@ -570,22 +570,22 @@ class Sale_lib
     /**
      * Multiple Payments
      */
-    public function set_payments(array $payments_data): void
+    public function setPayments(array $payments_data): void
     {
         $this->session->set('sales_payments', $payments_data);
     }
 
     /**
-     * Adds a new payment to the payments array or updates an existing one.
+     * Adds a new payment to the payment array or updates an existing one.
      * It will also disable cash_mode if a non-qualifying payment type is added.
-     * @param string $payment_id
-     * @param string $payment_amount
-     * @param int $cash_adjustment
+     * @param string $paymentId
+     * @param string $paymentAmount
+     * @param string|null $referenceCode
+     * @param int $cashAdjustment
      */
     public function addPayment(string $paymentId, string $paymentAmount, ?string $referenceCode = null, int $cashAdjustment = CASH_ADJUSTMENT_FALSE): void
     {
-        $payments = $this->get_payments();
-        if (isset($payments[$payment_id])) {
+        $payments = $this->getPayments();
         if (isset($payments[$paymentId])) {
             // payment_method already exists, add to payment_amount
             $payments[$paymentId]['payment_amount'] = bcadd($payments[$paymentId]['payment_amount'], $paymentAmount);
@@ -610,7 +610,7 @@ class Sale_lib
             }
         }
 
-        $this->set_payments($payments);
+        $this->setPayments($payments);
     }
 
     /**
@@ -618,11 +618,11 @@ class Sale_lib
      */
     public function edit_payment(string $payment_id, float $payment_amount): bool
     {
-        $payments = $this->get_payments();
+        $payments = $this->getPayments();
         if (isset($payments[$payment_id])) {
             $payments[$payment_id]['payment_type'] = $payment_id;
             $payments[$payment_id]['payment_amount'] = $payment_amount;
-            $this->set_payments($payments);
+            $this->setPayments($payments);
 
             return true;
         }
@@ -637,7 +637,7 @@ class Sale_lib
      */
     public function delete_payment(string $payment_id): void
     {
-        $payments = $this->get_payments();
+        $payments = $this->getPayments();
         $decoded_payment_id = urldecode($payment_id);
 
         unset($payments[$decoded_payment_id]);
@@ -653,7 +653,7 @@ class Sale_lib
                 unset($payments[lang('Sales.cash')]);
             }
         }
-        $this->set_payments($payments);
+        $this->setPayments($payments);
     }
 
     /**
@@ -673,7 +673,7 @@ class Sale_lib
         $subtotal = '0.0';
         $cash_mode_eligible = CASH_MODE_TRUE;
 
-        foreach ($this->get_payments() as $payments) {
+        foreach ($this->getPayments() as $payments) {
             if (!$payments['cash_adjustment']) {
                 $subtotal = bcadd($payments['payment_amount'], $subtotal);
             }

@@ -69,7 +69,7 @@ class Sales extends Secure_Controller
     public function getIndex(): ResponseInterface|string
     {
         $this->session->set('allow_temp_items', 1);
-        return $this->_reload();    // TODO: Hungarian Notation
+        return $this->reload();
     }
 
     /**
@@ -242,7 +242,7 @@ class Sales extends Secure_Controller
             }
         }
 
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
@@ -292,7 +292,7 @@ class Sales extends Secure_Controller
 
         $this->sale_lib->empty_payments();
 
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
@@ -310,7 +310,7 @@ class Sales extends Secure_Controller
         };
 
         $this->sale_lib->set_mode($mode);
-        return $this->_reload();
+        return $this->reload();
     }
 
 
@@ -344,7 +344,7 @@ class Sales extends Secure_Controller
     public function postSetPaymentType(): ResponseInterface|string    // TODO: This function does not appear to be called anywhere in the code.
     {
         $this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-        return $this->_reload();    // TODO: Hungarian notation.
+        return $this->reload();
     }
 
     /**
@@ -419,7 +419,7 @@ class Sales extends Secure_Controller
                 $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
                 $giftcardNumber = $amountTendered;
 
-                $payments = $this->sale_lib->get_payments();
+                $payments = $this->sale_lib->getPayments();
                 $paymentType = $paymentType . ':' . $giftcardNumber;
                 $currentPaymentsWithGiftcard = isset($payments[$paymentType]) ? $payments[$paymentType]['payment_amount'] : 0;
                 $currentGiftcardValue = $giftcard->get_giftcard_value($giftcardNumber);
@@ -447,7 +447,7 @@ class Sales extends Secure_Controller
                     $points = $this->customer->get_info($customerId)->points;
                     $points = ($points == null ? 0 : $points);
 
-                    $payments = $this->sale_lib->get_payments();
+                    $payments = $this->sale_lib->getPayments();
                     $currentPaymentsWithRewards = isset($payments[$paymentType]) ? $payments[$paymentType]['payment_amount'] : 0;
                     $curRewardsValue = $points;
 
@@ -476,13 +476,12 @@ class Sales extends Secure_Controller
                 }
             } else {
                 $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
-                $this->sale_lib->add_payment($paymentType, $amountTendered);
                 $referenceCode = $this->request->getPost('reference_code');
                 $this->sale_lib->addPayment($paymentType, $amountTendered, $referenceCode);
             }
         }
 
-        return $this->_reload($data);
+        return $this->reload($data);
     }
 
     /**
@@ -498,7 +497,7 @@ class Sales extends Secure_Controller
 
         $this->sale_lib->delete_payment(base64url_decode($payment_id));
 
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
@@ -578,7 +577,7 @@ class Sales extends Secure_Controller
             }
         }
 
-        return $this->_reload($data);
+        return $this->reload($data);
     }
 
     /**
@@ -621,18 +620,18 @@ class Sales extends Secure_Controller
             // Return mode legitimately uses negative quantities for refunds
             if ($this->sale_lib->get_mode() != 'return' && $quantity < 0) {
                 $data['error'] = lang('Sales.negative_quantity_invalid');
-                return $this->_reload($data);
+                return $this->reload($data);
             }
 
             // Business logic: discount bounds depend on discount_type and item values
             if ($discount_type == PERCENT && $discount > 100) {
                 $data['error'] = lang('Sales.discount_percent_exceeds_100');
-                return $this->_reload($data);
+                return $this->reload($data);
             }
 
             if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, 2), 2) > 0) {
                 $data['error'] = lang('Sales.discount_exceeds_item_total');
-                return $this->_reload($data);
+                return $this->reload($data);
             }
 
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
@@ -650,7 +649,7 @@ class Sales extends Secure_Controller
             $data['error'] = $errors ? reset($errors) : lang('Sales.error_editing_item');
         }
 
-        return $this->_reload($data);
+        return $this->reload($data);
     }
 
     /**
@@ -667,7 +666,7 @@ class Sales extends Secure_Controller
 
         $this->sale_lib->empty_payments();
 
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
@@ -685,7 +684,7 @@ class Sales extends Secure_Controller
         $this->sale_lib->clear_quote_number();
         $this->sale_lib->remove_customer();
 
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
@@ -745,7 +744,7 @@ class Sales extends Secure_Controller
         $tax_details = $this->tax_lib->get_taxes($data['cart']);    // TODO: Duplicated code
         $data['taxes'] = $tax_details[0];
         $data['discount'] = $this->sale_lib->get_discount();
-        $data['payments'] = $this->sale_lib->get_payments();
+        $data['payments'] = $this->sale_lib->getPayments();
 
         // Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
         $totals = $this->sale_lib->get_totals($tax_details[0]);
@@ -764,7 +763,7 @@ class Sales extends Secure_Controller
         // Prevent negative total sales (fraud/theft vector) - returns can have negative totals for legitimate refunds
         if ($this->sale_lib->get_mode() != 'return' && bccomp($totals['total'], '0') < 0) {
             $data['error'] = lang('Sales.negative_total_invalid');
-            return $this->_reload($data);
+            return $this->reload($data);
         }
 
         if ($data['cash_mode']) {    // TODO: Convert this to ternary notation
@@ -807,7 +806,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_invoice_number_exists($invoice_number)) {
                 $data['error'] = lang('Sales.invoice_number_duplicate', [$invoice_number]);
-                return $this->_reload($data);
+                return $this->reload($data);
             } else {
                 $data['invoice_number'] = $invoice_number;
                 $data['sale_status'] = COMPLETED;
@@ -828,7 +827,7 @@ class Sales extends Secure_Controller
 
                 if ($data['sale_id_num'] == NEW_ENTRY) {
                     $data['error_message'] = lang('Sales.transaction_failed');
-                    return $this->_reload($data);
+                    return $this->reload($data);
                 } else {
                     $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
                     $this->sale_lib->clear_all();
@@ -852,7 +851,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_work_order_number_exists($work_order_number)) {
                 $data['error'] = lang('Sales.work_order_number_duplicate');
-                return $this->_reload($data);
+                return $this->reload($data);
             } else {
                 $data['work_order_number'] = $work_order_number;
                 $data['sale_status'] = SUSPENDED;
@@ -880,7 +879,7 @@ class Sales extends Secure_Controller
 
             if ($sale_id == NEW_ENTRY && $this->sale->check_quote_number_exists($quote_number)) {
                 $data['error'] = lang('Sales.quote_number_duplicate');
-                return $this->_reload($data);
+                return $this->reload($data);
             } else {
                 $data['quote_number'] = $quote_number;
                 $data['sale_status'] = SUSPENDED;
@@ -912,7 +911,7 @@ class Sales extends Secure_Controller
 
             if ($data['sale_id_num'] == NEW_ENTRY) {
                 $data['error_message'] = lang('Sales.transaction_failed');
-                return $this->_reload($data);
+                return $this->reload($data);
             } else {
                 $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 
@@ -1096,7 +1095,7 @@ class Sales extends Secure_Controller
         $this->sale_lib->copy_entire_sale($sale_id);
         $data = [];
         $data['cart'] = $this->sale_lib->get_cart();
-        $data['payments'] = $this->sale_lib->get_payments();
+        $data['payments'] = $this->sale_lib->getPayments();
         $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
 
         $tax_details = $this->tax_lib->get_taxes($data['cart'], $sale_id);
@@ -1192,7 +1191,7 @@ class Sales extends Secure_Controller
      * @param array $data
      * @return void
      */
-    private function _reload(array $data = []): ResponseInterface|string    // TODO: Hungarian notation
+    private function reload(array $data = []): ResponseInterface|string
     {
         $sale_id = $this->session->get('sale_id');    // TODO: This variable is never used
 
@@ -1218,7 +1217,7 @@ class Sales extends Secure_Controller
         $tax_details = $this->tax_lib->get_taxes($data['cart']);    // TODO: Duplicated code.
         $data['taxes'] = $tax_details[0];
         $data['discount'] = $this->sale_lib->get_discount();
-        $data['payments'] = $this->sale_lib->get_payments();
+        $data['payments'] = $this->sale_lib->getPayments();
 
         // Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
         $totals = $this->sale_lib->get_totals($tax_details[0]);
@@ -1567,7 +1566,7 @@ class Sales extends Secure_Controller
         }
 
         $this->sale_lib->clear_all();
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
@@ -1581,7 +1580,7 @@ class Sales extends Secure_Controller
         $suspended_id = $this->sale_lib->get_suspended_id();
         $this->sale_lib->clear_all();
         $this->sale->delete_suspended_sale($suspended_id);
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
@@ -1597,7 +1596,7 @@ class Sales extends Secure_Controller
         $sale_id = $this->sale_lib->get_sale_id();
         $dinner_table = $this->sale_lib->get_dinner_table();
         $cart = $this->sale_lib->get_cart();
-        $payments = $this->sale_lib->get_payments();
+        $payments = $this->sale_lib->getPayments();
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $customer_id = $this->sale_lib->get_customer();
         $invoice_number = $this->sale_lib->get_invoice_number();
@@ -1623,7 +1622,7 @@ class Sales extends Secure_Controller
 
         $this->sale_lib->clear_all();
 
-        return $this->_reload($data);
+        return $this->reload($data);
     }
 
     /**
@@ -1657,7 +1656,7 @@ class Sales extends Secure_Controller
         // Set current register mode to reflect that of unsuspended order type
         $this->change_register_mode($this->sale_lib->get_sale_type());
 
-        return $this->_reload();
+        return $this->reload();
     }
 
     /**
