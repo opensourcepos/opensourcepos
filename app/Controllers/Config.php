@@ -17,11 +17,9 @@ use App\Models\Enums\Rounding_mode;
 use App\Models\Stock_location;
 use App\Models\Tax;
 use CodeIgniter\Database\BaseConnection;
-use CodeIgniter\Encryption\EncrypterInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\OSPOS;
-use Config\Services;
 use DirectoryIterator;
 use NumberFormatter;
 use ReflectionException;
@@ -30,7 +28,6 @@ class Config extends Secure_Controller
 {
     protected $helpers = ['security'];
     private BaseConnection $db;
-    private EncrypterInterface $encrypter;
     private Barcode_lib $barcode_lib;
     private Sale_lib $sale_lib;
     private Receiving_lib $receiving_lib;
@@ -62,13 +59,6 @@ class Config extends Secure_Controller
         $this->tax = model(Tax::class);
         $this->config = config(OSPOS::class)->settings;
         $this->db = Database::connect();
-
-        helper('security');
-        if (check_encryption()) {
-            $this->encrypter = Services::encrypter();
-        } else {
-            log_message('alert', 'Error preparing encryption key');
-        }
     }
 
     /**
@@ -256,25 +246,11 @@ class Config extends Secure_Controller
         // Integrations Related fields
         $data['mailchimp']    = [];
 
-        if (check_encryption()) {    // TODO: Hungarian notation
-            if (!isset($this->encrypter)) {
-                helper('security');
-                $this->encrypter = Services::encrypter();
-            }
+        $data['mailchimp']['api_key'] = decryptValue($this->config['mailchimp_api_key'] ?? null);
+        $data['mailchimp']['list_id'] = decryptValue($this->config['mailchimp_list_id'] ?? null);
 
-            $data['mailchimp']['api_key'] = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
-                ? $this->encrypter->decrypt($this->config['mailchimp_api_key'])
-                : '';
-
-            $data['mailchimp']['list_id'] = (isset($this->config['mailchimp_list_id']) && !empty($this->config['mailchimp_list_id']))
-                ? $this->encrypter->decrypt($this->config['mailchimp_list_id'])
-                : '';
-
-            // Remove any backup of .env created by check_encryption()
-            remove_backup();
-        } else {
-            $data['mailchimp']['api_key'] = '';
-            $data['mailchimp']['list_id'] = '';
+        if (checkEncryption()) {
+            removeBackup();
         }
 
         $data['mailchimp']['lists'] = $this->_mailchimp();
@@ -512,15 +488,23 @@ class Config extends Secure_Controller
     public function postSaveEmail(): ResponseInterface
     {
         $password = '';
+        $passwordInput = $this->request->getPost('smtp_pass');
 
-        if (check_encryption() && !empty($this->request->getPost('smtp_pass'))) {
-            $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+        if (!empty($passwordInput)) {
+            $password = encryptValue($passwordInput);
+            if (empty($password)) {
+                log_message('error', 'SMTP password encryption failed - credentials not saved');
+
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Config.encryption_failed'),
+                ]);
+            }
         }
 
         $protocol = $this->request->getPost('protocol');
         $mailpath = $this->request->getPost('mailpath');
 
-        // Validate mailpath: required for sendmail, optional for others but must be safe if provided
         $isMailpathRequired = ($protocol === 'sendmail');
         $isMailpathProvided = !empty($mailpath);
         $isMailpathValid = $isMailpathProvided && preg_match('/^[a-zA-Z0-9_\-\/.]+$/', $mailpath);
@@ -528,7 +512,7 @@ class Config extends Secure_Controller
         if (($isMailpathRequired && !$isMailpathProvided) || ($isMailpathProvided && !$isMailpathValid)) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Config.mailpath_invalid')
+                'message' => lang('Config.mailpath_invalid'),
             ]);
         }
 
@@ -540,7 +524,7 @@ class Config extends Secure_Controller
             'smtp_pass'    => $password,
             'smtp_port'    => $this->request->getPost('smtp_port', FILTER_SANITIZE_NUMBER_INT),
             'smtp_timeout' => $this->request->getPost('smtp_timeout', FILTER_SANITIZE_NUMBER_INT),
-            'smtp_crypto'  => $this->request->getPost('smtp_crypto')
+            'smtp_crypto'  => $this->request->getPost('smtp_crypto'),
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);
@@ -558,16 +542,25 @@ class Config extends Secure_Controller
     public function postSaveMessage(): ResponseInterface
     {
         $password = '';
+        $passwordInput = $this->request->getPost('msg_pwd');
 
-        if (check_encryption() && !empty($this->request->getPost('msg_pwd'))) {
-            $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
+        if (!empty($passwordInput)) {
+            $password = encryptValue($passwordInput);
+            if (empty($password)) {
+                log_message('error', 'SMS password encryption failed');
+
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Config.encryption_failed'),
+                ]);
+            }
         }
 
         $batch_save_data = [
             'msg_msg' => $this->request->getPost('msg_msg'),
             'msg_uid' => $this->request->getPost('msg_uid'),
             'msg_pwd' => $password,
-            'msg_src' => $this->request->getPost('msg_src')
+            'msg_src' => $this->request->getPost('msg_src'),
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);
@@ -623,24 +616,38 @@ class Config extends Secure_Controller
      */
     public function postSaveMailchimp(): ResponseInterface
     {
-        $api_key = '';
-        $list_id = '';
+        $apiKey = '';
+        $listId = '';
 
-        if (check_encryption()) {
-            $api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
-            if (!empty($api_key_unencrypted)) {
-                $api_key = $this->encrypter->encrypt($api_key_unencrypted);
-            }
+        $apiKeyInput = $this->request->getPost('mailchimp_api_key');
+        if (!empty($apiKeyInput)) {
+            $apiKey = encryptValue($apiKeyInput);
+            if (empty($apiKey)) {
+                log_message('error', 'Mailchimp API key encryption failed');
 
-            $list_id_unencrypted = $this->request->getPost('mailchimp_list_id');
-            if (!empty($list_id_unencrypted)) {
-                $list_id = $this->encrypter->encrypt($list_id_unencrypted);
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Config.encryption_failed'),
+                ]);
             }
         }
 
-        $batch_save_data = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];
+        $listIdInput = $this->request->getPost('mailchimp_list_id');
+        if (!empty($listIdInput)) {
+            $listId = encryptValue($listIdInput);
+            if (empty($listId)) {
+                log_message('error', 'Mailchimp list ID encryption failed');
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Config.encryption_failed'),
+                ]);
+            }
+        }
+
+        $batchSaveData = ['mailchimp_api_key' => $apiKey, 'mailchimp_list_id' => $listId];
+
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }

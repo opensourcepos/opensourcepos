@@ -33,10 +33,12 @@ class Convert_to_ci4 extends Migration
         if (!empty(config('Encryption')->key)) {
             $this->convert_ci3_encrypted_data();
         } else {
-            check_encryption();
+            if (!checkEncryption()) {
+                throw new \RuntimeException('Unable to persist encryption key. Migration cannot proceed without encryption.');
+            }
         }
 
-        remove_backup();
+        removeBackup();
     }
 
     /**
@@ -66,15 +68,19 @@ class Convert_to_ci4 extends Migration
 
         $decrypted_data = $this->decrypt_ci3_data($ci3_encrypted_data);
 
-        check_encryption();
+        if (!checkEncryption()) {
+            abortEncryptionConversion();
+            removeBackup();
+            throw new RedirectException('login');
+        }
 
         try {
             $ci4_encrypted_data = $this->encrypt_data($decrypted_data);
 
             $success = empty(array_diff_assoc($decrypted_data, $this->decrypt_data($ci4_encrypted_data)));
             if (!$success) {
-                abort_encryption_conversion();
-                remove_backup();
+                abortEncryptionConversion();
+                removeBackup();
                 throw new RedirectException('login');
             }
 

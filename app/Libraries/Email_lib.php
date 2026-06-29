@@ -3,11 +3,7 @@
 namespace app\Libraries;
 
 use CodeIgniter\Email\Email;
-use CodeIgniter\Encryption\Encryption;
-use CodeIgniter\Encryption\EncrypterInterface;
-use CodeIgniter\Encryption\Exceptions\EncryptionException;
 use Config\OSPOS;
-use Config\Services;
 
 
 /**
@@ -26,21 +22,9 @@ class Email_lib
         $this->email = new Email();
         $this->config = config(OSPOS::class)->settings;
 
-        $encrypter = Services::encrypter();
+        $smtpPass = decryptValue($this->config['smtp_pass'] ?? null);
 
-        $smtp_pass = $this->config['smtp_pass'];
-        if (!empty($smtp_pass) && check_encryption()) {
-            try {
-                $smtp_pass = $encrypter->decrypt($smtp_pass);
-            } catch (\EncryptionException $e) {
-                // Decryption failed, use the original value
-                log_message('error', 'SMTP password decryption failed: ' . $e->getMessage());
-                $smtp_pass = '';
-            }
-
-        }
-
-        $email_config = [
+        $emailConfig = [
             'mailType'    => 'html',
             'userAgent'   => 'OSPOS',
             'validate'    => true,
@@ -48,12 +32,12 @@ class Email_lib
             'mailPath'    => $this->config['mailpath'],
             'SMTPHost'    => $this->config['smtp_host'],
             'SMTPUser'    => $this->config['smtp_user'],
-            'SMTPPass'    => $smtp_pass,
+            'SMTPPass'    => $smtpPass,
             'SMTPPort'    => (int)$this->config['smtp_port'],
             'SMTPTimeout' => (int)$this->config['smtp_timeout'],
-            'SMTPCrypto'  => $this->config['smtp_crypto']
+            'SMTPCrypto'  => $this->config['smtp_crypto'],
         ];
-        $this->email->initialize($email_config);
+        $this->email->initialize($emailConfig);
     }
 
     /**
