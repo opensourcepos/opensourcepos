@@ -394,84 +394,89 @@ class Sales extends Secure_Controller
     {
         $data = [];
         $giftcard = model(Giftcard::class);
-        $payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $paymentType = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if ($payment_type !== lang('Sales.giftcard')) {
-            $rules = ['amount_tendered' => 'trim|required|decimal_locale',];
-            $messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
-        } else {
-            $rules = ['amount_tendered' => 'trim|required',];
+        if ($paymentType === lang('Sales.giftcard')) {
+            $rules    = ['amount_tendered' => 'trim|required'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
+        } elseif ($paymentType === lang('Sales.debit') || $paymentType === lang('Sales.credit')) {
+            $rules    = ['amount_tendered' => 'trim|required'];
+            $messages = ['amount_tendered' => lang('Sales.must_enter_rrn')];
+        } else {
+            $rules    = ['amount_tendered' => 'trim|required|decimal_locale'];
+            $messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
         }
 
         if (!$this->validate($rules, $messages)) {
-            $data['error'] = $payment_type === lang('Sales.giftcard')
-                ? lang('Sales.must_enter_numeric_giftcard')
-                : lang('Sales.must_enter_numeric');
+            $data['error'] = match(true) {
+                $paymentType === lang('Sales.giftcard') => lang('Sales.must_enter_numeric_giftcard'),
+                $paymentType === lang('Sales.debit'), $paymentType === lang('Sales.credit') => lang('Sales.must_enter_rrn'),
+                default => lang('Sales.must_enter_numeric'),
+            };
         } else {
-            if ($payment_type === lang('Sales.giftcard')) {
-                // In the case of giftcard payment the register input amount_tendered becomes the giftcard number
-                $amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
-                $giftcard_num = $amount_tendered;
+            if ($paymentType === lang('Sales.giftcard')) {
+                // For giftcard payments, the register input amount_tendered becomes the giftcard number
+                $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
+                $giftcardNumber = $amountTendered;
 
                 $payments = $this->sale_lib->get_payments();
-                $payment_type = $payment_type . ':' . $giftcard_num;
-                $current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-                $cur_giftcard_value = $giftcard->get_giftcard_value($giftcard_num);
-                $cur_giftcard_customer = $giftcard->get_giftcard_customer($giftcard_num);
-                $customer_id = $this->sale_lib->get_customer();
+                $paymentType = $paymentType . ':' . $giftcardNumber;
+                $currentPaymentsWithGiftcard = isset($payments[$paymentType]) ? $payments[$paymentType]['payment_amount'] : 0;
+                $currentGiftcardValue = $giftcard->get_giftcard_value($giftcardNumber);
+                $currentGiftcardCustomer = $giftcard->get_giftcard_customer($giftcardNumber);
+                $customerId = $this->sale_lib->get_customer();
 
-                if (isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id && $cur_giftcard_customer != null) {
-                    $data['error'] = lang('Giftcards.cannot_use', [$giftcard_num]);
-                } elseif (($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() === 'sale') {
-                    $data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value]);
+                if (isset($currentGiftcardCustomer) && $currentGiftcardCustomer != $customerId && $currentGiftcardCustomer != null) {
+                    $data['error'] = lang('Giftcards.cannot_use', [$giftcardNumber]);
+                } elseif (($currentGiftcardValue - $currentPaymentsWithGiftcard) <= 0 && $this->sale_lib->get_mode() === 'sale') {
+                    $data['error'] = lang('Giftcards.remaining_balance', [$giftcardNumber, $currentGiftcardValue]);
                 } else {
-                    $new_giftcard_value = $giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
-                    $new_giftcard_value = max($new_giftcard_value, 0);
-                    $this->sale_lib->set_giftcard_remainder($new_giftcard_value);
-                    $new_giftcard_value = to_currency($new_giftcard_value);
-                    $data['warning'] = lang('Giftcards.remaining_balance', [$giftcard_num, $new_giftcard_value]);
-                    $amount_tendered = min($this->sale_lib->get_amount_due(), $giftcard->get_giftcard_value($giftcard_num));
+                    $newGiftcardValue = $giftcard->get_giftcard_value($giftcardNumber) - $this->sale_lib->get_amount_due();
+                    $newGiftcardValue = max($newGiftcardValue, 0);
+                    $this->sale_lib->set_giftcard_remainder($newGiftcardValue);
+                    $newGiftcardValue = to_currency($newGiftcardValue);
+                    $data['warning'] = lang('Giftcards.remaining_balance', [$giftcardNumber, $newGiftcardValue]);
+                    $amountTendered = min($this->sale_lib->get_amount_due(), $giftcard->get_giftcard_value($giftcardNumber));
 
-                    $this->sale_lib->add_payment($payment_type, $amount_tendered);
+                    $this->sale_lib->add_payment($paymentType, $amountTendered);
                 }
-            } elseif ($payment_type === lang('Sales.rewards')) {
-                $customer_id = $this->sale_lib->get_customer();
-                $package_id = $this->customer->get_info($customer_id)->package_id;
-                if (!empty($package_id)) {
-                    $points = $this->customer->get_info($customer_id)->points;
+            } elseif ($paymentType === lang('Sales.rewards')) {
+                $customerId = $this->sale_lib->get_customer();
+                $packageId = $this->customer->get_info($customerId)->package_id;
+                if (!empty($packageId)) {
+                    $points = $this->customer->get_info($customerId)->points;
                     $points = ($points == null ? 0 : $points);
 
                     $payments = $this->sale_lib->get_payments();
-                    $current_payments_with_rewards = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-                    $cur_rewards_value = $points;
+                    $currentPaymentsWithRewards = isset($payments[$paymentType]) ? $payments[$paymentType]['payment_amount'] : 0;
+                    $curRewardsValue = $points;
 
-                    if (($cur_rewards_value - $current_payments_with_rewards) <= 0) {
-                        $data['error'] = lang('Sales.rewards_remaining_balance') . to_currency($cur_rewards_value);
+                    if (($curRewardsValue - $currentPaymentsWithRewards) <= 0) {
+                        $data['error'] = lang('Sales.rewards_remaining_balance') . to_currency($curRewardsValue);
                     } else {
-                        $new_reward_value = $points - $this->sale_lib->get_amount_due();
-                        $new_reward_value = max($new_reward_value, 0);
-                        $this->sale_lib->set_rewards_remainder($new_reward_value);
-                        $new_reward_value = str_replace('$', '\$', to_currency($new_reward_value));
-                        $data['warning'] = lang('Sales.rewards_remaining_balance') . $new_reward_value;
-                        $amount_tendered = min($this->sale_lib->get_amount_due(), $points);
+                        $newRewardValue = $points - $this->sale_lib->get_amount_due();
+                        $newRewardValue = max($newRewardValue, 0);
+                        $this->sale_lib->set_rewards_remainder($newRewardValue);
+                        $newRewardValue = str_replace('$', '\$', to_currency($newRewardValue));
+                        $data['warning'] = lang('Sales.rewards_remaining_balance') . $newRewardValue;
+                        $amountTendered = min($this->sale_lib->get_amount_due(), $points);
 
-                        $this->sale_lib->add_payment($payment_type, $amount_tendered);
+                        $this->sale_lib->add_payment($paymentType, $amountTendered);
                     }
                 }
-            } elseif ($payment_type === lang('Sales.cash')) {
-                $amount_due = $this->sale_lib->get_total();
-                $sales_total = $this->sale_lib->get_total(false);
-                $amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
-                $this->sale_lib->add_payment($payment_type, $amount_tendered);
-                $cash_adjustment_amount = $amount_due - $sales_total;
-                if ($cash_adjustment_amount <> 0) {
+            } elseif ($paymentType === lang('Sales.cash')) {
+                $amountDue = $this->sale_lib->get_total();
+                $salesTotal = $this->sale_lib->get_total(false);
+                $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
+                $this->sale_lib->add_payment($paymentType, $amountTendered);
+                $cashAdjustmentAmount = $amountDue - $salesTotal;
+                if ($cashAdjustmentAmount <> 0) {
                     $this->session->set('cash_mode', CASH_MODE_TRUE);
-                    $this->sale_lib->add_payment(lang('Sales.cash_adjustment'), $cash_adjustment_amount, CASH_ADJUSTMENT_TRUE);
+                    $this->sale_lib->add_payment(lang('Sales.cash_adjustment'), $cashAdjustmentAmount, CASH_ADJUSTMENT_TRUE);
                 }
             } else {
-                $amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
-                $this->sale_lib->add_payment($payment_type, $amount_tendered);
+                $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
+                $this->sale_lib->add_payment($paymentType, $amountTendered);
             }
         }
 
