@@ -102,8 +102,13 @@ class PluginManager
             return;
         }
 
-        $migrationModel = new PluginMigrationModel();
         $db = Database::connect();
+
+        if (!$db->tableExists('plugin_migrations')) {
+            return;
+        }
+
+        $migrationModel = new PluginMigrationModel();
         $forge = Database::forge();
 
         foreach ($this->plugins as $pluginId => $plugin) {
