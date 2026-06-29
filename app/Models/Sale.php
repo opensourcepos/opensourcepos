@@ -77,7 +77,8 @@ class Sale extends Model
                 MAX(IFnull(payments.sale_payment_amount, 0)) AS amount_tendered,
                 (MAX(payments.sale_payment_amount)) - ($sale_total) AS change_due,
                 " . '
-                MAX(payments.payment_type) AS payment_type';
+                MAX(payments.payment_type) AS payment_type,
+                MAX(payments.reference_code) AS reference_code';
 
         $builder = $this->db->table('sales_items AS sales_items');
         $builder->select($sql);
@@ -94,7 +95,7 @@ class Sale extends Model
 
         $builder->where('sales.sale_id', $sale_id);
 
-        $builder->groupBy('sales.sale_id');
+        $builder->groupBy('sales.sale_id, payments.reference_code');
         $builder->orderBy('sales.sale_time', 'asc');
 
         return $builder->get();
@@ -1093,12 +1094,13 @@ class Sale extends Model
                     SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
                     SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
                     SUM(payments.cash_refund) AS sale_cash_refund,
-                    GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
+                    GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type,
+                    payments.reference_code AS reference_code
                 FROM ' . $this->db->prefixTable('sales_payments') . ' AS payments
                 INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
                     ON sales.sale_id = payments.sale_id
                 WHERE ' . $where . '
-                GROUP BY payments.sale_id
+                GROUP BY payments.sale_id, payments.reference_code
             )';
 
         $this->db->query($sql);
