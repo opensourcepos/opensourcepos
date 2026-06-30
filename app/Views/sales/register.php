@@ -410,13 +410,37 @@ helper('url');
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
                                 <td>
-                                    <?= form_dropdown('payment_type', $payment_options, $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit', 'disabled' => 'disabled']) ?>
+                                    <?= form_dropdown('payment_type', $payment_options, $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => '100%', 'disabled' => 'disabled']) ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span id="amount_tendered_label"><?= lang(ucfirst($controller_name) . '.amount_tendered') ?></span></td>
                                 <td>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-control input-sm disabled', 'disabled' => 'disabled', 'value' => '0', 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                                    <?= form_input([
+                                        'name' => 'amount_tendered',
+                                        'id' => 'amount_tendered',
+                                        'class' => 'form-control input-sm disabled',
+                                        'disabled' => 'disabled',
+                                        'value' => '0',
+                                        'size' => '5',
+                                        'tabindex' => ++$tabindex,
+                                        'onClick' => 'this.select();'
+                                    ]) ?>
+                                </td>
+                            </tr>
+                            <tr class="reference-code-input reference-code-input-hidden">
+                                <td style="padding-top: 8px;"><span id='reference_code_label'><?= lang('Sales.reference_code') ?></span></td>
+                                <td style="padding-top: 8px;">
+                                    <?php echo form_input(array(
+                                        'name'	=> 'reference_code',
+                                        'id'	=> 'reference_code',
+                                        'class'	=> 'form-control input-sm non-giftcard-input',
+                                        'disabled' => true,
+                                        'value'	=> '',
+                                        'size' => 5,
+                                        'tabindex'	=> ++$tabindex,
+                                        'onClick'	=> 'this.select();'));
+                                    ?>
                                 </td>
                             </tr>
                         </table>
@@ -451,7 +475,7 @@ helper('url');
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
                                 <td>
-                                    <?= form_dropdown('payment_type', $payment_options,  $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                                    <?= form_dropdown('payment_type', $payment_options,  $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => '100%']) ?>
                                 </td>
                             </tr>
                             <tr>
@@ -459,6 +483,21 @@ helper('url');
                                 <td>
                                     <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-control input-sm non-giftcard-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
                                     <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-control input-sm giftcard-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
+                                </td>
+                            </tr>
+                            <tr class="reference-code-input reference-code-input-hidden">
+                                <td style="padding-top: 8px;"><span id='reference_code_label'><?= lang('Sales.reference_code') ?></span></td>
+                                <td style="padding-top: 8px;">
+                                    <?php echo form_input(array(
+                                        'name'     => 'reference_code',
+                                        'id'       => 'reference_code',
+                                        'class'    => 'form-control input-sm non-giftcard-input',
+                                        'disabled' => true,
+                                        'value'    => '',
+                                        'size'     => 5,
+                                        'tabindex' => ++$tabindex,
+                                        'onClick'  => 'this.select();'));
+                                    ?>
                                 </td>
                             </tr>
                         </table>
@@ -569,6 +608,7 @@ helper('url');
 <script type="text/javascript">
     const keyboardShortcuts = <?= json_encode($keyboardShortcuts ?? []) ?>;
     const paymentsCoverTotal = <?= json_encode((bool) $payments_cover_total) ?>;
+    const referenceCodePaymentTypes = <?= json_encode($reference_code_payment_types) ?>;
     const shortcutCodes = {
         items: keyboardShortcuts?.items?.code ?? null,
         customers: keyboardShortcuts?.customers?.code ?? null,
@@ -602,8 +642,8 @@ helper('url');
         });
 
         $("input[name='item_number']").change(function() {
-            var item_id = $(this).parents('tr').find("input[name='item_id']").val();
-            var item_number = $(this).val();
+            const item_id = $(this).parents('tr').find("input[name='item_id']").val();
+            const item_number = $(this).val();
             $.ajax({
                 url: "<?= site_url('sales/changeItemNumber') ?>",
                 method: 'post',
@@ -616,8 +656,8 @@ helper('url');
         });
 
         $("input[name='name']").change(function() {
-            var item_id = $(this).parents('tr').find("input[name='item_id']").val();
-            var item_name = $(this).val();
+            const item_id = $(this).parents('tr').find("input[name='item_id']").val();
+            const item_name = $(this).val();
             $.ajax({
                 url: "<?= site_url('sales/changeItemName') ?>",
                 method: 'post',
@@ -630,8 +670,8 @@ helper('url');
         });
 
         $("input[name='item_description']").change(function() {
-            var item_id = $(this).parents('tr').find("input[name='item_id']").val();
-            var item_description = $(this).val();
+            const item_id = $(this).parents('tr').find("input[name='item_id']").val();
+            const item_description = $(this).val();
             $.ajax({
                 url: "<?= site_url('sales/changeItemDescription') ?>",
                 method: 'post',
@@ -668,7 +708,7 @@ helper('url');
             }
         });
 
-        var clear_fields = function() {
+        const clear_fields = function() {
             if ($(this).val().match("<?= lang(ucfirst($controller_name) . '.start_typing_item_name') . '|' . lang(ucfirst($controller_name) . '.start_typing_customer_name') ?>")) {
                 $(this).val('');
             }
@@ -805,7 +845,7 @@ helper('url');
                     $('#customer').val(response.id);
                     $('#select_customer_form').submit();
                 } else {
-                    var $stock_location = $("select[name='stock_location']").val();
+                    const $stock_location = $("select[name='stock_location']").val();
                     $('#item_location').val($stock_location);
                     $('#item').val(response.id);
                     if (stay_open) {
@@ -822,16 +862,20 @@ helper('url');
         });
 
         $('[name="discount_toggle"]').change(function() {
-            var input = $('<input>').attr('type', 'hidden').attr('name', 'discount_type').val(($(this).prop('checked')) ? 1 : 0);
+            const input = $('<input>').attr('type', 'hidden').attr('name', 'discount_type').val(($(this).prop('checked')) ? 1 : 0);
             $('#cart_' + $(this).attr('data-line')).append($(input));
             $('#cart_' + $(this).attr('data-line')).submit();
         });
     });
 
     function check_payment_type() {
-        var cash_mode = <?= json_encode($cash_mode) ?>;
+        const cash_mode = <?= json_encode($cash_mode) ?>;
+        const paymentType = $("#payment_types").val();
+        const isGiftCard = paymentType == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>";
+        const isCash = paymentType == "<?= lang(ucfirst($controller_name) . '.cash') ?>";
+        const needsReferenceCode = referenceCodePaymentTypes.indexOf(paymentType) !== -1;
 
-        if ($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.giftcard') ?>") {
+        if (isGiftCard) {
             $("#sale_total").html("<?= to_currency($total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.giftcard_number') ?>");
@@ -839,13 +883,15 @@ helper('url');
             $(".giftcard-input").attr('disabled', false);
             $(".non-giftcard-input").attr('disabled', true);
             $(".giftcard-input:enabled").val('').focus();
-        } else if (($("#payment_types").val() == "<?= lang(ucfirst($controller_name) . '.cash') ?>" && cash_mode == '1')) {
+            $(".reference-code-input").hide();
+        } else if (isCash && cash_mode == '1') {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($cash_amount_due) ?>");
             $("#amount_tendered_label").html("<?= lang(ucfirst($controller_name) . '.amount_tendered') ?>");
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($cash_amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
+            $(".reference-code-input").hide();
         } else {
             $("#sale_total").html("<?= to_currency($non_cash_total) ?>");
             $("#sale_amount_due").html("<?= to_currency($amount_due) ?>");
@@ -853,6 +899,14 @@ helper('url');
             $("#amount_tendered:enabled").val("<?= to_currency_no_money($amount_due) ?>");
             $(".giftcard-input").attr('disabled', true);
             $(".non-giftcard-input").attr('disabled', false);
+            if (needsReferenceCode) {
+                $("#reference_code_label").html("<?= lang(ucfirst($controller_name) . '.reference_code') ?>");
+                $(".reference-code-input").show();
+                $(".reference-code-input input").attr('disabled', false);
+            } else {
+                $(".reference-code-input").hide();
+                $(".reference-code-input input").attr('disabled', true);
+            }
         }
     }
 

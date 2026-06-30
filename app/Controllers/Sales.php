@@ -399,7 +399,7 @@ class Sales extends Secure_Controller
         if ($paymentType === lang('Sales.giftcard')) {
             $rules    = ['amount_tendered' => 'trim|required'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
-        } elseif ($paymentType === lang('Sales.debit') || $paymentType === lang('Sales.credit')) {
+        } elseif (in_array($paymentType, get_reference_code_payment_types())) {
             $rules    = ['amount_tendered' => 'trim|required'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_reference_code')];
         } else {
@@ -410,7 +410,7 @@ class Sales extends Secure_Controller
         if (!$this->validate($rules, $messages)) {
             $data['error'] = match(true) {
                 $paymentType === lang('Sales.giftcard') => lang('Sales.must_enter_numeric_giftcard'),
-                $paymentType === lang('Sales.debit'), $paymentType === lang('Sales.credit') => lang('Sales.must_enter_reference_code'),
+                in_array($paymentType, get_reference_code_payment_types()) => lang('Sales.must_enter_reference_code'),
                 default => lang('Sales.must_enter_numeric'),
             };
         } else {
@@ -1259,6 +1259,8 @@ class Sales extends Secure_Controller
             $data['payment_options'] = $this->sale->get_payment_options();
         }
 
+        $data['reference_code_payment_types'] = get_reference_code_payment_types();
+
         $data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
         $data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
 
@@ -1377,6 +1379,7 @@ class Sales extends Secure_Controller
         }
 
         $data['payment_options'] = $payment_options;
+        $data['reference_code_payment_types'] = get_reference_code_payment_types();
 
         // Set up a slightly modified list of payment types for new payment entry
         $payment_options["--"] = lang('Common.none_selected_text');
