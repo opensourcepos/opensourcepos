@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Receipt sent to",
     "receipt_unsent"                   => "Receipt failed to be sent to",
     "reference_code"                   => "付款参考代码",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "銷售登記",
     "remove_customer"                  => "移除客戶",

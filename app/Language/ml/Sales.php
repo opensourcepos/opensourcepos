@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "",
     "receipt_unsent"                   => "",
     "reference_code"                   => "പേയ്‌മെന്റ് റഫറൻസ് കോഡ്",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "",
     "remove_customer"                  => "",

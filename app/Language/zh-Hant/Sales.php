@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "發送收據",
     "receipt_unsent"                   => "收據未能發送",
     "reference_code"                   => "付款參考代碼",
+    "reference_code_length_error"      => "",
     "refund"                           => "退款類型",
     "register"                         => "銷售登記",
     "remove_customer"                  => "移除客戶",

@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Чек отправлен",
     "receipt_unsent"                   => "Чек не отправлен",
     "reference_code"                   => "Код ссылки на платёж",
+    "reference_code_length_error"      => "",
     "refund"                           => "Тип возврата",
     "register"                         => "Журнал продаж",
     "remove_customer"                  => "Удалить клиента",

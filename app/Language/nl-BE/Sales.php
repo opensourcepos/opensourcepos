@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Ticket verstuurd naar",
     "receipt_unsent"                   => "Fout bij het versturen van ticket naar",
     "reference_code"                   => "Betalingsreferentiecode",
+    "reference_code_length_error"      => "",
     "refund"                           => "Type Terugbetaling",
     "register"                         => "Kassa",
     "remove_customer"                  => "Verwijder Klant",

@@ -169,6 +169,7 @@ return [
     "receipt_sent"                     => "Reçu envoyé à",
     "receipt_unsent"                   => "Reçu NON envoyé à",
     "reference_code"                   => "Code de référence de paiement",
+    "reference_code_length_error"      => "",
     "refund"                           => "Type de remboursement",
     "register"                         => "Registre des Ventes",
     "remove_customer"                  => "Enlever Client",

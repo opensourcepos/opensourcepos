@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Nyugta elküldve",
     "receipt_unsent"                   => "Nyugta sikertelen küldése",
     "reference_code"                   => "Fizetési hivatkozási kód",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "Értékesitési nyilvántartás",
     "remove_customer"                  => "Vásárló eltávolítása",

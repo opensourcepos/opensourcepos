@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Risiti imetumwa kwa",
     "receipt_unsent"                   => "Imeshindikana kutuma risiti kwa",
     "reference_code"                   => "Nambari ya Kumbukumbu ya Malipo",
+    "reference_code_length_error"      => "",
     "refund"                           => "Aina ya Marejesho",
     "register"                         => "Usajili wa Mauzo",
     "remove_customer"                  => "Ondoa Mteja",

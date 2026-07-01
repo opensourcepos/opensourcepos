@@ -169,6 +169,7 @@ return [
     "receipt_sent"                     => "Recibo enviado a",
     "receipt_unsent"                   => "Falló el envío del recibo a",
     "reference_code"                   => "Código de referencia de pago",
+    "reference_code_length_error"      => "",
     "refund"                           => "Modo de Reembolso",
     "register"                         => "Registro de ventas",
     "remove_customer"                  => "Borrar cliente",

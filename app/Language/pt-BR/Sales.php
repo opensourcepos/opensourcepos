@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Enviar recibo para",
     "receipt_unsent"                   => "Recibo não devem ser enviados para",
     "reference_code"                   => "Código de referência do pagamento",
+    "reference_code_length_error"      => "",
     "refund"                           => "Tipo de Reembolso",
     "register"                         => "Registar Venda",
     "remove_customer"                  => "Remover Cliente",

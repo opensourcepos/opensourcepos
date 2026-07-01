@@ -400,8 +400,16 @@ class Sales extends Secure_Controller
             $rules    = ['amount_tendered' => 'trim|required'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
         } elseif (in_array($paymentType, get_reference_code_payment_types())) {
-            $rules    = ['amount_tendered' => 'trim|required'];
-            $messages = ['amount_tendered' => lang('Sales.must_enter_reference_code')];
+            $min      = (int)($this->config['payment_reference_code_min'] ?? 3);
+            $max      = (int)($this->config['payment_reference_code_max'] ?? 20);
+            $rules    = [
+                'amount_tendered' => 'trim|required',
+                'reference_code'  => "trim|required|min_length[$min]|max_length[$max]",
+            ];
+            $messages = [
+                'amount_tendered' => lang('Sales.must_enter_reference_code'),
+                'reference_code'  => lang('Sales.reference_code_length_error'),
+            ];
         } else {
             $rules    = ['amount_tendered' => 'trim|required|decimal_locale'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];

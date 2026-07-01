@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "رسید به",
     "receipt_unsent"                   => "رسید ارسال نشد به",
     "reference_code"                   => "کد مرجع پرداخت",
+    "reference_code_length_error"      => "",
     "refund"                           => "نوع بازپرداخت",
     "register"                         => "ثبت فروش",
     "remove_customer"                  => "حذف مشتری",

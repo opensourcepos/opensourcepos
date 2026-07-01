@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Квитанція відправлена",
     "receipt_unsent"                   => "Не вдалося надіслати квитанцію",
     "reference_code"                   => "Код посилання на платіж",
+    "reference_code_length_error"      => "",
     "refund"                           => "Тип відшкодування",
     "register"                         => "Журнал продажів",
     "remove_customer"                  => "Видалити клієнта",

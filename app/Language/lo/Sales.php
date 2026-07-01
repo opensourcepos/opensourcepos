@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Receipt sent to",
     "receipt_unsent"                   => "Receipt failed to be sent to",
     "reference_code"                   => "ລະຫັດອ້າງອີງການຊຳລະເງິນ",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "Sales Register",
     "remove_customer"                  => "Remove Customer",

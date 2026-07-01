@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Kvitto skickat till",
     "receipt_unsent"                   => "Kvittot misslyckades med att skickas till",
     "reference_code"                   => "Betalningsreferenskod",
+    "reference_code_length_error"      => "",
     "refund"                           => "Återbetalningstyp",
     "register"                         => "Försäljningsregister",
     "remove_customer"                  => "Ta bort kund",

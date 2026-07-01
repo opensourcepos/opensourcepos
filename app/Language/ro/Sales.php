@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Chitanta trimisa catre",
     "receipt_unsent"                   => "Trimitere chitanta nereusita catre",
     "reference_code"                   => "Cod de referință plată",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "Registru Vanzari",
     "remove_customer"                  => "Eliminati Clientul",

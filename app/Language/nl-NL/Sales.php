@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Kassabon verzonden naar",
     "receipt_unsent"                   => "Kassabon niet verzonden naar",
     "reference_code"                   => "Betalingsreferentiecode",
+    "reference_code_length_error"      => "",
     "refund"                           => "Terugbetaling soort",
     "register"                         => "Verkoopregister",
     "remove_customer"                  => "Klant verwijderen",

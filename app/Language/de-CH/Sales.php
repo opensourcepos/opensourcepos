@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Quittung gesendet an",
     "receipt_unsent"                   => "Quittung nicht gesendet",
     "reference_code"                   => "Zahlungsreferenzcode",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "Kasse",
     "remove_customer"                  => "Entferne Kunde",

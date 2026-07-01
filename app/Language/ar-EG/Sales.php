@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "تم إرسال الإيصال إلى",
     "receipt_unsent"                   => "فشل إرسال الإيصال إلى",
     "reference_code"                   => "كود مرجع الدفع",
+    "reference_code_length_error"      => "",
     "refund"                           => "نوع/سبب الاسترجاع",
     "register"                         => "مسجل المبيعات",
     "remove_customer"                  => "حذف عميل",

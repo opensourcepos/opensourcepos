@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Nota dikirim ke",
     "receipt_unsent"                   => "Noto gagal dikirim kepada",
     "reference_code"                   => "Kode Referensi Pembayaran",
+    "reference_code_length_error"      => "",
     "refund"                           => "Tipe Pengembalian Dana",
     "register"                         => "Transaksi Penjualan",
     "remove_customer"                  => "Hapus Pelanggan",

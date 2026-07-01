@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Разписката  е изпратена до",
     "receipt_unsent"                   => "Разписката  не бе изпратена до",
     "reference_code"                   => "Референтен код на плащане",
+    "reference_code_length_error"      => "",
     "refund"                           => "Вид на въстановяването",
     "register"                         => "Регистър на продажбите",
     "remove_customer"                  => "Премахване на клиент",

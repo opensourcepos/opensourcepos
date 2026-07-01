@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Çek Göndərildi",
     "receipt_unsent"                   => "Çek göndərilə Bilmədi",
     "reference_code"                   => "Ödəniş İstinad Kodu",
+    "reference_code_length_error"      => "",
     "refund"                           => "Qaytarılma növü",
     "register"                         => "jurnal satışı",
     "remove_customer"                  => "müştəriləri silmək",

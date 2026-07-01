@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Biên lai gửi đến",
     "receipt_unsent"                   => "Gặp lỗi khi gửi biên lai đến",
     "reference_code"                   => "Mã tham chiếu thanh toán",
+    "reference_code_length_error"      => "",
     "refund"                           => "Phương thức hoàn tiền",
     "register"                         => "Nhập đơn bán hàng",
     "remove_customer"                  => "Xóa bỏ khách hàng",

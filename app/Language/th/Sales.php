@@ -168,6 +168,7 @@ return [
     'receipt_sent' => "ส่งใบเสร็จไปที่",
     'receipt_unsent' => "ไม่สามารถส่งใบเสร็จไปที่",
     'reference_code'  => "รหัสอ้างอิงการชำระเงิน",
+    'reference_code_length_error' => "",
     'refund' => "ประเภทการยกเลิกการขาย",
     'register' => "ลงทะเบียนขาย",
     'remove_customer' => "ลบลูกค้า",

@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "קבלה נשלחה אל",
     "receipt_unsent"                   => "קבלה לא נשלחה אל",
     "reference_code"                   => "קוד אסמכתא לתשלום",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "קופת מכירות",
     "remove_customer"                  => "הסר לקוח",

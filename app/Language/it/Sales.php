@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Scontrino inviato a",
     "receipt_unsent"                   => "Scontrino fallito da inviare a",
     "reference_code"                   => "Codice di riferimento pagamento",
+    "reference_code_length_error"      => "",
     "refund"                           => "Tipo di rimborso",
     "register"                         => "Registrazione Vendita",
     "remove_customer"                  => "Rimuovi Cliente",

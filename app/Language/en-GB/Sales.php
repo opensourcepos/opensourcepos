@@ -169,6 +169,7 @@ return [
     "receipt_sent"                     => "Receipt sent to",
     "receipt_unsent"                   => "Receipt failed to be sent to",
     "reference_code"                   => "Payment Reference Code",
+    "reference_code_length_error"      => "Reference code length is invalid.",
     "refund"                           => "Refund Type",
     "register"                         => "Sales Register",
     "remove_customer"                  => "Remove Customer",

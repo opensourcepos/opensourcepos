@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Fiş gönderildi:",
     "receipt_unsent"                   => "Fiş gönderilemedi:",
     "reference_code"                   => "Ödeme Referans Kodu",
+    "reference_code_length_error"      => "",
     "refund"                           => "Geri Ödeme Türü",
     "register"                         => "Satış Kaydı",
     "remove_customer"                  => "Müşteriyi Kaldır",

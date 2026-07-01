@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Račun poslat",
     "receipt_unsent"                   => "Račun nije poslat",
     "reference_code"                   => "Referentni kod plaćanja",
+    "reference_code_length_error"      => "",
     "refund"                           => "Tip povrata",
     "register"                         => "Registar prodaje",
     "remove_customer"                  => "Uklonite kupca",

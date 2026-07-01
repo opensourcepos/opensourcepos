@@ -168,6 +168,7 @@ return [
     'receipt_sent' => "پسوڵەی نێردرا بۆ",
     'receipt_unsent' => "پسوڵەکە شکستی هێنا لە ناردنی بۆ",
     'reference_code' => "کۆدی مەرجعی پارەدان",
+    'reference_code_length_error' => "",
     'refund' => "جۆری گەڕاندنەوەی پارە",
     'register' => "تۆماری فرۆشتن",
     'remove_customer' => "لابردنی کڕیار",

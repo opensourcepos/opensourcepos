@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "ரசீது அனுப்பப்பட்டது",
     "receipt_unsent"                   => "ரசீதை அனுப்ப இயலவில்லை",
     "reference_code"                   => "கட்டண குறிப்பு குறியீடு",
+    "reference_code_length_error"      => "",
     "refund"                           => "பணத்தைத் திரும்பப்பெறுதல் வகை",
     "register"                         => "விற்பனை பதிவு",
     "remove_customer"                  => "வாடிக்கையாளரை அகற்று",

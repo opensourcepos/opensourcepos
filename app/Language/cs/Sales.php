@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Účtenku odeslat",
     "receipt_unsent"                   => "Účtenku nelze odeslat",
     "reference_code"                   => "Referenční kód platby",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "Pokladna",
     "remove_customer"                  => "Odebrat zákazníka",

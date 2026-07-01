@@ -168,6 +168,7 @@ return [
     "receipt_sent"                     => "Η Απόδειξη εστάλη σε",
     "receipt_unsent"                   => "Αποτυχία αποστολής Απόδειξης σε",
     "reference_code"                   => "Κωδικός αναφοράς πληρωμής",
+    "reference_code_length_error"      => "",
     "refund"                           => "",
     "register"                         => "Μητρώο Πωλήσεων",
     "remove_customer"                  => "Αφαίρεση Πελάτη",
