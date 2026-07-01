@@ -404,11 +404,18 @@ class Sales extends Secure_Controller
             $max      = (int)($this->config['payment_reference_code_max'] ?? 20);
             $rules    = [
                 'amount_tendered' => 'trim|required',
-                'reference_code'  => "trim|required|min_length[$min]|max_length[$max]",
+                'reference_code'  => "trim|required|alpha_numeric|min_length[$min]|max_length[$max]",
             ];
             $messages = [
-                'amount_tendered' => lang('Sales.must_enter_reference_code'),
-                'reference_code'  => lang('Sales.reference_code_length_error'),
+                'amount_tendered' => [
+                    'required'   => lang('Sales.must_enter_numeric'),
+                ],
+                'reference_code'  => [
+                    'required'      => lang('Sales.must_enter_reference_code'),
+                    'alpha_numeric' => lang('Sales.reference_code_invalid_characters'),
+                    'min_length'    => lang('Sales.reference_code_length_error'),
+                    'max_length'    => lang('Sales.reference_code_length_error'),
+                ],
             ];
         } else {
             $rules    = ['amount_tendered' => 'trim|required|decimal_locale'];
@@ -416,11 +423,8 @@ class Sales extends Secure_Controller
         }
 
         if (!$this->validate($rules, $messages)) {
-            $data['error'] = match(true) {
-                $paymentType === lang('Sales.giftcard') => lang('Sales.must_enter_numeric_giftcard'),
-                in_array($paymentType, get_reference_code_payment_types()) => lang('Sales.must_enter_reference_code'),
-                default => lang('Sales.must_enter_numeric'),
-            };
+            $errors = $this->validator->getErrors();
+            $data['error'] = $errors ? reset($errors) : lang('Sales.must_enter_numeric');
         } else {
             if ($paymentType === lang('Sales.giftcard')) {
                 // For giftcard payments, the register input amount_tendered becomes the giftcard number
