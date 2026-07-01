@@ -641,7 +641,8 @@ class Sales extends Secure_Controller
                 return $this->reload($data);
             }
 
-            if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, 2), 2) > 0) {
+            $precision = totals_decimals();
+            if ($discount_type == FIXED && bccomp((string)$discount, bcmul((string)abs($quantity), (string)$price, $precision), $precision) > 0) {
                 $data['error'] = lang('Sales.discount_exceeds_item_total');
                 return $this->reload($data);
             }
