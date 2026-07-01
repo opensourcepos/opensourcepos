@@ -397,13 +397,13 @@ class Sales extends Secure_Controller
         $paymentType = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($paymentType === lang('Sales.giftcard')) {
-            $rules    = ['amount_tendered' => 'trim|required'];
+            $rules    = ['amount_tendered' => 'trim|required|integer']; //For giftcards, amount_tendered becomes the giftcard number which must be an integer
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
         } elseif (in_array($paymentType, get_reference_code_payment_types())) {
             $min      = (int)($this->config['payment_reference_code_min'] ?? 3);
             $max      = (int)($this->config['payment_reference_code_max'] ?? 20);
             $rules    = [
-                'amount_tendered' => 'trim|required',
+                'amount_tendered' => 'trim|required|decimal_locale',
                 'reference_code'  => "trim|required|alpha_numeric|min_length[$min]|max_length[$max]",
             ];
             $messages = [
