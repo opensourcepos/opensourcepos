@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'منطقه زمانی اوسپوس:',
     'ospos_info'                                => 'اطلاعات نصب اوسپوس',
     'payment_options_order'                     => 'سفارش گزینه های پرداخت',
-    'payment_reference_code_length_limits'      => 'کد مرجع پرداخت</br>محدودیت‌های طول',
+    'payment_reference_code_length_limits'      => 'کد مرجع پرداخت<br>محدودیت‌های طول',
     'payment_reference_code_length_max_label'   => 'حداکثر',
     'payment_reference_code_length_min_label'   => 'حداقل',
     'perm_risk'                                 => 'مجوزهای بالاتر از 750 برای نوشتن و 660 برای خواندن ، این نرم افزار را در معرض خطر قرار می دهد.',

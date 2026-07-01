@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => 'OSPOS פרטי התקנה',
     'payment_options_order'                     => 'סידור אפשרויות תשלום',
-    'payment_reference_code_length_limits'      => 'קוד אסמכתא לתשלום</br>מגבלות אורך',
+    'payment_reference_code_length_limits'      => 'קוד אסמכתא לתשלום<br>מגבלות אורך',
     'payment_reference_code_length_max_label'   => 'מקס',
     'payment_reference_code_length_min_label'   => 'מין',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

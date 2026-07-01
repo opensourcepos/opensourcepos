@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'المنطقة الزمنية OSPOS:',
     'ospos_info'                                => 'معلومات التثبيت OSPOS',
     'payment_options_order'                     => 'ترتيب خيارات الدفع',
-    'payment_reference_code_length_limits'      => 'كود مرجع الدفع</br>حدود الطول',
+    'payment_reference_code_length_limits'      => 'كود مرجع الدفع<br>حدود الطول',
     'payment_reference_code_length_max_label'   => 'الحد الأقصى',
     'payment_reference_code_length_min_label'   => 'الحد الأدنى',
     'perm_risk'                                 => 'صلاحيات الملفات ممكن ان تشكل خطر في حال كانت غير صحيحة.',

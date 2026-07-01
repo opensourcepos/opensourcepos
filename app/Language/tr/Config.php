@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'OSPOS Saat Dilimi:',
     'ospos_info'                                => 'OSPOS Kurulum Bilgisi',
     'payment_options_order'                     => 'Ödeme Seçenekleri Sırası',
-    'payment_reference_code_length_limits'      => 'Ödeme Referans Kodu</br>Uzunluk Sınırları',
+    'payment_reference_code_length_limits'      => 'Ödeme Referans Kodu<br>Uzunluk Sınırları',
     'payment_reference_code_length_max_label'   => 'Maks',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Doğru olmayan izinler bu yazılımı riske atar.',

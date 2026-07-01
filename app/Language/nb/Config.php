@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => '',
     'payment_options_order'                     => '',
-    'payment_reference_code_length_limits'      => 'Betalingsreferansekode</br>Lengdegrenser',
+    'payment_reference_code_length_limits'      => 'Betalingsreferansekode<br>Lengdegrenser',
     'payment_reference_code_length_max_label'   => 'Maks',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => '',

@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'เขตเวลาของระบบ OSPOS:',
     'ospos_info'                                => 'ข้อมูลการติดตั้งระบบ OSPOS',
     'payment_options_order'                     => 'ตัวเลือกการชำระเงิน',
-    'payment_reference_code_length_limits'      => 'รหัสอ้างอิงการชำระเงิน</br>ขีดจำกัดความยาว',
+    'payment_reference_code_length_limits'      => 'รหัสอ้างอิงการชำระเงิน<br>ขีดจำกัดความยาว',
     'payment_reference_code_length_max_label'   => 'สูงสุด',
     'payment_reference_code_length_min_label'   => 'ต่ำสุด',
     'perm_risk'                                 => 'การอนุญาตที่ไม่ถูกต้องทำให้ซอฟต์แวร์นี้ตกอยู่ในความเสี่ยง',

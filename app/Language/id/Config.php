@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'Zona waktu OSPOS:',
     'ospos_info'                                => 'Info pemasangan OSPOS',
     'payment_options_order'                     => 'Urutan pilihan pembayaran',
-    'payment_reference_code_length_limits'      => 'Kode Referensi Pembayaran</br>Batas Panjang',
+    'payment_reference_code_length_limits'      => 'Kode Referensi Pembayaran<br>Batas Panjang',
     'payment_reference_code_length_max_label'   => 'Maks',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Setelan izin yang salah berbahaya bagi keamanan perangkat lunak.',

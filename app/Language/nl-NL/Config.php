@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'OSPOS tijdzone:',
     'ospos_info'                                => 'OSPOS installatie info',
     'payment_options_order'                     => 'Betalingsopties volgorde',
-    'payment_reference_code_length_limits'      => 'Betalingsreferentiecode</br>Lengtelimieten',
+    'payment_reference_code_length_limits'      => 'Betalingsreferentiecode<br>Lengtelimieten',
     'payment_reference_code_length_max_label'   => 'Max',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Onjuiste machtigingen zijn een risico voor deze software.',

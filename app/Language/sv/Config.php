@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'OSPOS-tidszon:',
     'ospos_info'                                => 'OSPOS installationsinfo',
     'payment_options_order'                     => 'Betalningsalternativ ordnning',
-    'payment_reference_code_length_limits'      => 'Betalningsreferenskod</br>Längdgränser',
+    'payment_reference_code_length_limits'      => 'Betalningsreferenskod<br>Längdgränser',
     'payment_reference_code_length_max_label'   => 'Max',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Felaktiga behörigheter gör att denna programvara är i fara.',

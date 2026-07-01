@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'Saa ya OSPOS:',
     'ospos_info'                                => 'Taarifa za Usakinishaji wa OSPOS',
     'payment_options_order'                     => 'Mpangilio wa Chaguo za Malipo',
-    'payment_reference_code_length_limits'      => 'Nambari ya Kumbukumbu ya Malipo</br>Mipaka ya Urefu',
+    'payment_reference_code_length_limits'      => 'Nambari ya Kumbukumbu ya Malipo<br>Mipaka ya Urefu',
     'payment_reference_code_length_max_label'   => 'Kiwango cha juu',
     'payment_reference_code_length_min_label'   => 'Kiwango cha chini',
     'perm_risk'                                 => 'Ruhusa zisizo sahihi zinaacha programu hii kwenye hatari.',

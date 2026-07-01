@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'OSPOS 時區：',
     'ospos_info'                                => 'OSPOS 安裝信息',
     'payment_options_order'                     => '付款選項訂單',
-    'payment_reference_code_length_limits'      => '付款參考代碼</br>長度限制',
+    'payment_reference_code_length_limits'      => '付款參考代碼<br>長度限制',
     'payment_reference_code_length_max_label'   => '最大',
     'payment_reference_code_length_min_label'   => '最小',
     'perm_risk'                                 => '不正確的權限使該軟件面臨風險。',

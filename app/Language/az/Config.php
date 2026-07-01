@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'OSPOS Saat qurşağı:',
     'ospos_info'                                => 'OSPOS quraşdırılması məlumatı',
     'payment_options_order'                     => 'Sifariş üçün Ödəmə Şərtləri',
-    'payment_reference_code_length_limits'      => 'Ödəniş İstinad Kodu</br>Uzunluq Limitləri',
+    'payment_reference_code_length_limits'      => 'Ödəniş İstinad Kodu<br>Uzunluq Limitləri',
     'payment_reference_code_length_max_label'   => 'Maks',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

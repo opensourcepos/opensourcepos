@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => '',
     'payment_options_order'                     => '',
-    'payment_reference_code_length_limits'      => 'ادائیگی حوالہ کوڈ</br>لمبائی کی حدود',
+    'payment_reference_code_length_limits'      => 'ادائیگی حوالہ کوڈ<br>لمبائی کی حدود',
     'payment_reference_code_length_max_label'   => 'زیادہ سے زیادہ',
     'payment_reference_code_length_min_label'   => 'کم سے کم',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

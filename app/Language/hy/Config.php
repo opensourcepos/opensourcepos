@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => '',
     'payment_options_order'                     => '',
-    'payment_reference_code_length_limits'      => 'Վճարման հղման կոդ</br>Երկարության սահմանափակումներ',
+    'payment_reference_code_length_limits'      => 'Վճարման հղման կոդ<br>Երկարության սահմանափակումներ',
     'payment_reference_code_length_max_label'   => 'Մաքս',
     'payment_reference_code_length_min_label'   => 'Մին',
     'perm_risk'                                 => '',

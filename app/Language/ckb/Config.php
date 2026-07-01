@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'ناوچەی کاتی OSPOS:',
     'ospos_info'                                => 'زانیاری دامەزراندنی OSPOS',
     'payment_options_order'                     => 'ڕیزبەندی بژاردەکانی پارەدان',
-    'payment_reference_code_length_limits'      => 'کۆدی مەرجعی پارەدان</br>سنووری درێژی',
+    'payment_reference_code_length_limits'      => 'کۆدی مەرجعی پارەدان<br>سنووری درێژی',
     'payment_reference_code_length_max_label'   => 'زۆرترین',
     'payment_reference_code_length_min_label'   => 'کەمترین',
     'perm_risk'                                 => 'ڕێگەپێدانی هەڵە ئەم نەرمەکاڵایە دەخاتە مەترسییەوە.',

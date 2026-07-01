@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'Часовой пояс системы:',
     'ospos_info'                                => 'Информация об установке OSPOS',
     'payment_options_order'                     => 'Параметры оплаты заказа',
-    'payment_reference_code_length_limits'      => 'Код ссылки на платёж</br>Ограничения длины',
+    'payment_reference_code_length_limits'      => 'Код ссылки на платёж<br>Ограничения длины',
     'payment_reference_code_length_max_label'   => 'Макс',
     'payment_reference_code_length_min_label'   => 'Мин',
     'perm_risk'                                 => 'Неправильные разрешения на доступ подвергают это программное обеспечение риску.',

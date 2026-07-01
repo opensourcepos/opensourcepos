@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => '',
     'payment_options_order'                     => '',
-    'payment_reference_code_length_limits'      => 'Referenční kód platby</br>Omezení délky',
+    'payment_reference_code_length_limits'      => 'Referenční kód platby<br>Omezení délky',
     'payment_reference_code_length_max_label'   => 'Max',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

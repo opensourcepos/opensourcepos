@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'Часова зона OSPOS:',
     'ospos_info'                                => 'Інформація про встановлення OSPOS',
     'payment_options_order'                     => 'Варіанти оплати замовлення',
-    'payment_reference_code_length_limits'      => 'Код посилання на платіж</br>Обмеження довжини',
+    'payment_reference_code_length_limits'      => 'Код посилання на платіж<br>Обмеження довжини',
     'payment_reference_code_length_max_label'   => 'Макс',
     'payment_reference_code_length_min_label'   => 'Мін',
     'perm_risk'                                 => 'Неправильні дозволи роблять OSPOS вразливим.',

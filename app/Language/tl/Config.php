@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => 'OSPOS Installation Info',
     'payment_options_order'                     => 'Payment Options Order',
-    'payment_reference_code_length_limits'      => 'Code ng Sanggunian sa Pagbabayad</br>Mga Limitasyon sa Haba',
+    'payment_reference_code_length_limits'      => 'Code ng Sanggunian sa Pagbabayad<br>Mga Limitasyon sa Haba',
     'payment_reference_code_length_max_label'   => 'Max',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

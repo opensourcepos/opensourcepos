@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => '',
     'payment_options_order'                     => 'Payment Options Order',
-    'payment_reference_code_length_limits'      => 'Referentni kod plaćanja</br>Ograničenja duljine',
+    'payment_reference_code_length_limits'      => 'Referentni kod plaćanja<br>Ograničenja duljine',
     'payment_reference_code_length_max_label'   => 'Maks',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

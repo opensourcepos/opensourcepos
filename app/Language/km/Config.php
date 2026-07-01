@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => '',
     'payment_options_order'                     => '',
-    'payment_reference_code_length_limits'      => 'កូដយោងការទូទាត់</br>ដែនកំណត់ប្រវែង',
+    'payment_reference_code_length_limits'      => 'កូដយោងការទូទាត់<br>ដែនកំណត់ប្រវែង',
     'payment_reference_code_length_max_label'   => 'អតិបរមា',
     'payment_reference_code_length_min_label'   => 'អប្បបរមា',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'Zona horaria OSPOS:',
     'ospos_info'                                => 'Información de instalación OSPOS',
     'payment_options_order'                     => 'Payment Options Order',
-    'payment_reference_code_length_limits'      => 'Código de referencia de pago</br>Límites de longitud',
+    'payment_reference_code_length_limits'      => 'Código de referencia de pago<br>Límites de longitud',
     'payment_reference_code_length_max_label'   => 'Máx',
     'payment_reference_code_length_min_label'   => 'Mín',
     'perm_risk'                                 => 'Los permisos incorrectos ponen en riesgo este software.',

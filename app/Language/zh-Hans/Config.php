@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => '',
     'ospos_info'                                => '',
     'payment_options_order'                     => 'Payment Options Order',
-    'payment_reference_code_length_limits'      => '付款参考代码</br>长度限制',
+    'payment_reference_code_length_limits'      => '付款参考代码<br>长度限制',
     'payment_reference_code_length_max_label'   => '最大',
     'payment_reference_code_length_min_label'   => '最小',
     'perm_risk'                                 => 'Permissions higher than 750 leaves this software at risk.',

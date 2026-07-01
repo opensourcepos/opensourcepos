@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'Múi giờ OSPOS:',
     'ospos_info'                                => 'Thông tin cài đặt OSPOS',
     'payment_options_order'                     => 'Thứ tự tùy chọn thanh toán',
-    'payment_reference_code_length_limits'      => 'Mã tham chiếu thanh toán</br>Giới hạn độ dài',
+    'payment_reference_code_length_limits'      => 'Mã tham chiếu thanh toán<br>Giới hạn độ dài',
     'payment_reference_code_length_max_label'   => 'Tối đa',
     'payment_reference_code_length_min_label'   => 'Tối thiểu',
     'perm_risk'                                 => 'Phân quyền không đúng khiến phần mềm tiềm ẩn rủi ro.',

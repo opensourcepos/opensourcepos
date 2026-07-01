@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'OSPOS Timezone:',
     'ospos_info'                                => 'OSPOS Installation Info',
     'payment_options_order'                     => 'Payment Options Order',
-    'payment_reference_code_length_limits'      => 'கட்டண குறிப்பு குறியீடு</br>நீள வரம்புகள்',
+    'payment_reference_code_length_limits'      => 'கட்டண குறிப்பு குறியீடு<br>நீள வரம்புகள்',
     'payment_reference_code_length_max_label'   => 'அதிகபட்சம்',
     'payment_reference_code_length_min_label'   => 'குறைந்தபட்சம்',
     'perm_risk'                                 => 'Incorrect permissions leaves this software at risk.',

@@ -227,7 +227,7 @@ return [
     'os_timezone'                               => 'OSPOS Tijdzone:',
     'ospos_info'                                => 'OSPOS Installatiegegevens',
     'payment_options_order'                     => 'Betaal opties volgorde',
-    'payment_reference_code_length_limits'      => 'Betalingsreferentiecode</br>Lengtelimieten',
+    'payment_reference_code_length_limits'      => 'Betalingsreferentiecode<br>Lengtelimieten',
     'payment_reference_code_length_max_label'   => 'Max',
     'payment_reference_code_length_min_label'   => 'Min',
     'perm_risk'                                 => 'Verkeerd ingestelde permissies vormen een beveiligingsrisico.',
