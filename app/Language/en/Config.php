@@ -217,6 +217,7 @@ return [
     "msg_uid_required"                          => "SMS-API Username is a required field",
     "whatsapp"                                  => "WhatsApp",
     "whatsapp_configuration"                    => "WhatsApp Configuration",
+    "whatsapp_docs_link"                        => "How to get these credentials — read the WhatsApp Business Cloud API documentation",
     "whatsapp_enabled"                          => "Enable WhatsApp",
     "whatsapp_phone_id"                         => "Phone Number ID",
     "whatsapp_phone_id_required"                => "Phone Number ID is a required field",
