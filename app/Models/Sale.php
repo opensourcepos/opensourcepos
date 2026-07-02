@@ -482,7 +482,8 @@ class Sale extends Model
                         'payment_amount'  => $payment_amount,
                         'cash_refund'     => $cash_refund,
                         'cash_adjustment' => $cash_adjustment,
-                        'employee_id'     => $employee_id
+                        'employee_id'     => $employee_id,
+                        'reference_code'  => $payment['reference_code'] ?? null,
                     ];
                     $success = $builder->insert($sales_payments_data);
                 } elseif ($payment_id != NEW_ENTRY) {
@@ -594,7 +595,7 @@ class Sale extends Model
                 'cash_refund'     => $payment['cash_refund'],
                 'cash_adjustment' => $payment['cash_adjustment'],
                 'employee_id'     => $employeeId,
-                'reference_code'  => $payment['reference_code']
+                'reference_code'  => $payment['reference_code'] ?? '',
             ];
 
             $builder = $this->db->table('sales_payments');

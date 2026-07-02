@@ -1479,6 +1479,30 @@ class Sales extends Secure_Controller
             'invoice_number' => $this->request->getPost('invoice_number') != '' ? $this->request->getPost('invoice_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null
         ];
 
+        // Validate reference_code for the new payment if applicable
+        $payment_type_new_check = $this->request->getPost('payment_type_new', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $payment_amount_new_check = $this->request->getPost('payment_amount_new');
+        if ($payment_type_new_check != PAYMENT_TYPE_UNASSIGNED && !empty($payment_amount_new_check)
+            && in_array($payment_type_new_check, get_reference_code_payment_types())) {
+            $min = (int)($this->config['payment_reference_code_min'] ?? 3);
+            $max = (int)($this->config['payment_reference_code_max'] ?? 20);
+            $rules = [
+                'reference_code_new' => "trim|required|alpha_numeric|min_length[$min]|max_length[$max]",
+            ];
+            $messages = [
+                'reference_code_new' => [
+                    'required'      => lang('Sales.must_enter_reference_code'),
+                    'alpha_numeric' => lang('Sales.reference_code_invalid_characters'),
+                    'min_length'    => lang('Sales.reference_code_length_error'),
+                    'max_length'    => lang('Sales.reference_code_length_error'),
+                ],
+            ];
+            if (!$this->validate($rules, $messages)) {
+                $errors = $this->validator->getErrors();
+                return $this->response->setJSON(['success' => false, 'message' => reset($errors), 'id' => $sale_id]);
+            }
+        }
+
         // In order to maintain tradition the only element that can change on prior payments is the payment type
         $amount_tendered = 0;
         $number_of_payments = $this->request->getPost('number_of_payments', FILTER_SANITIZE_NUMBER_INT);
@@ -1488,6 +1512,7 @@ class Sales extends Secure_Controller
             $payment_amount = parse_decimals($this->request->getPost("payment_amount_$i"));
             $refund_type = $this->request->getPost("refund_type_$i", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $cash_refund = parse_decimals($this->request->getPost("refund_amount_$i"));
+            $reference_code = $this->request->getPost("reference_code_$i", FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null;
 
             $cash_adjustment = $payment_type == lang('Sales.cash_adjustment') ? CASH_ADJUSTMENT_TRUE : CASH_ADJUSTMENT_FALSE;
 
@@ -1509,13 +1534,15 @@ class Sales extends Secure_Controller
                 'payment_amount'  => $payment_amount,
                 'cash_refund'     => $cash_refund,
                 'cash_adjustment' => $cash_adjustment,
-                'employee_id'     => $employee_id
+                'employee_id'     => $employee_id,
+                'reference_code'  => $reference_code,
             ];
         }
 
         $payment_id = NEW_ENTRY;
         $payment_amount_new = $this->request->getPost('payment_amount_new');
         $payment_type = $this->request->getPost('payment_type_new', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $reference_code_new = $this->request->getPost('reference_code_new', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null;
 
         if ($payment_type != PAYMENT_TYPE_UNASSIGNED && !empty($payment_amount_new)) {
             $payment_amount = parse_decimals($payment_amount_new);
@@ -1538,7 +1565,8 @@ class Sales extends Secure_Controller
                 'payment_amount'  => $payment_amount,
                 'cash_refund'     => $cash_refund,
                 'cash_adjustment' => $cash_adjustment,
-                'employee_id'     => $employee_id
+                'employee_id'     => $employee_id,
+                'reference_code'  => $reference_code_new,
             ];
         }
 

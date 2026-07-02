@@ -67,6 +67,12 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group form-group-sm reference-code-input-new" style="display:none;">
+                <?= form_label(lang('Sales.reference_code'), 'reference_code_new', ['class' => 'control-label col-xs-3']) ?>
+                <div class="col-xs-8">
+                    <?= form_input(['name' => 'reference_code_new', 'id' => 'reference_code_new', 'value' => '', 'class' => 'form-control input-sm', 'disabled' => true]) ?>
+                </div>
+            </div>
         <?php } ?>
 
         <?php
@@ -78,6 +84,7 @@
                 <div class="col-xs-4">
                     <?php // No editing of Gift Card payments as it's a complex change ?>
                     <?= form_hidden("payment_id_$i", $row->payment_id) ?>
+                    <?= form_hidden("reference_code_$i", $row->reference_code ?? '') ?>
                     <?php if (!empty(strstr($row->payment_type, lang('Sales.giftcard')))): ?>
                         <?= form_input(['name' => "payment_type_$i", 'value' => $row->payment_type, 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
                     <?php else: ?>
@@ -202,6 +209,20 @@
             appendTo: '.modal-content',
             select: fill_value_employee,
             focus: fill_value_employee
+        });
+
+        const referenceCodePaymentTypes = <?= json_encode($reference_code_payment_types ?? []) ?>;
+
+        $('#payment_types_new').on('change', function() {
+            const paymentType = $(this).val();
+            const needsReferenceCode = referenceCodePaymentTypes.indexOf(paymentType) !== -1;
+            if (needsReferenceCode) {
+                $('.reference-code-input-new').show();
+                $('#reference_code_new').attr('disabled', false);
+            } else {
+                $('.reference-code-input-new').hide();
+                $('#reference_code_new').attr('disabled', true).val('');
+            }
         });
 
         $('button#delete').click(function() {
