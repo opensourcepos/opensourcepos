@@ -62,7 +62,7 @@ if (isset($error_message)) {
                     return;
                 }
                 $btn.addClass('disabled');
-                $.get('<?= site_url() . "sales/sendWhatsapp/$sale_id_num" ?>',
+                $.get('<?= site_url() . esc("sales/sendWhatsapp/$sale_id_num") ?>',
                     function(response) {
                         $.notify({
                             message: response.message

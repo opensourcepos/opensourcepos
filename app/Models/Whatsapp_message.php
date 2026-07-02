@@ -93,14 +93,35 @@ class Whatsapp_message extends Model
      * Updates the delivery status of an outbound message identified by its
      * WhatsApp message id (wamid), used by webhook status callbacks.
      *
+     * Status callbacks can arrive out of order, so backward transitions along
+     * the sent -> delivered -> read progression are ignored to avoid a late
+     * "delivered" downgrading an already "read" message. Statuses outside that
+     * ordering (e.g. "failed") are always applied.
+     *
      * @param string $wa_message_id The WhatsApp message id.
      * @param string $status        The new status (sent|delivered|read|failed).
      */
     public function update_status(string $wa_message_id, string $status): bool
     {
-        $builder = $this->db->table('whatsapp_messages');
-        $builder->where('wa_message_id', $wa_message_id);
+        $rank = ['sent' => 1, 'delivered' => 2, 'read' => 3];
 
-        return $builder->update(['status' => $status]);
+        $current = $this->db->table('whatsapp_messages')
+            ->select('status')
+            ->where('wa_message_id', $wa_message_id)
+            ->get()
+            ->getRow();
+
+        if ($current === null) {
+            return false;
+        }
+
+        // Ignore backward/equal transitions within the known ordering.
+        if (isset($rank[$status], $rank[$current->status]) && $rank[$status] <= $rank[$current->status]) {
+            return true;
+        }
+
+        return $this->db->table('whatsapp_messages')
+            ->where('wa_message_id', $wa_message_id)
+            ->update(['status' => $status]);
     }
 }

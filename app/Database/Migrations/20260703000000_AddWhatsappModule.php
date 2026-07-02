@@ -68,6 +68,8 @@ class AddWhatsappModule extends Migration
         $this->forge->addKey('phone');
         $this->forge->addKey('person_id');
         $this->forge->addKey('created_at');
+        // Looked up on every inbound status webhook callback (update_status()).
+        $this->forge->addKey('wa_message_id');
         // utf8mb4 so emoji and full multilingual message content can be stored.
         $this->forge->createTable('whatsapp_messages', true, ['CHARSET' => 'utf8mb4', 'COLLATE' => 'utf8mb4_unicode_ci']);
     }
