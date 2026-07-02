@@ -17,6 +17,10 @@
  */
 ?>
 
+<?php
+$secondaryCurrency['show'] = $secondaryCurrency['show'] && !empty($config['receipt_show_secondary_currency']);
+?>
+
 <div id="receipt_wrapper" style="font-size: <?= $config['receipt_font_size'] ?>px;">
     <div id="receipt_header">
         <?php if ($config['company_logo'] != '') { ?>
@@ -65,7 +69,7 @@
         ?>
                 <tr>
                     <td><?= esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
-                    <td><?= to_currency($item['price']) ?></td>
+                    <td><?= esc($item['secondaryPriceDisplay'] ?? secondary_currency_render_amount((float) $item['price'], $secondaryCurrency, true)) ?></td>
                     <td><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td class="total-value"><?= to_currency($item[($config['receipt_show_total_discount'] ? 'total' : 'discounted_total')]) ?></td>
                     <?php if ($config['receipt_show_tax_ind']) { ?>
@@ -84,7 +88,7 @@
                 <?php if ($item['discount'] > 0) { ?>
                     <tr>
                         <?php if ($item['discount_type'] == FIXED) { ?>
-                            <td colspan="3" class="discount"><?= to_currency($item['discount']) . " " . lang('Sales.discount') ?></td>
+                            <td colspan="3" class="discount"><?= esc($item['secondaryDiscountDisplay'] ?? to_currency($item['discount']) . ' ' . lang('Sales.discount')) ?></td>
                         <?php } elseif ($item['discount_type'] == PERCENT) { ?>
                             <td colspan="3" class="discount"><?= to_decimals($item['discount']) . " " . lang('Sales.discount_included') ?></td>
                         <?php } ?>
@@ -99,23 +103,23 @@
         <?php if ($config['receipt_show_total_discount'] && $discount > 0) { ?>
             <tr>
                 <td colspan="3" style="text-align: right; border-top: 2px solid #000000;"><?= lang('Sales.sub_total') ?></td>
-                <td style="text-align: right; border-top:2px solid #000000;"><?= to_currency($prediscount_subtotal) ?></td>
+                <td style="text-align: right; border-top:2px solid #000000;"><?= esc($secondaryPrediscountSubtotalDisplay ?? to_currency($prediscount_subtotal)) ?></td>
             </tr>
             <tr>
                 <td colspan="3" class="total-value"><?= lang('Sales.customer_discount') ?>:</td>
-                <td class="total-value"><?= to_currency($discount * -1) ?></td>
+                <td class="total-value"><?= esc($secondaryDiscountDisplay ?? to_currency($discount * -1)) ?></td>
             </tr>
         <?php } ?>
 
         <?php if ($config['receipt_show_taxes']) { ?>
             <tr>
                 <td colspan="3" style="text-align: right; border-top: 2px solid #000000;"><?= lang('Sales.sub_total') ?></td>
-                <td style="text-align: right; border-top: 2px solid #000000;"><?= to_currency($subtotal) ?></td>
+                <td style="text-align: right; border-top: 2px solid #000000;"><?= esc($secondarySubtotalDisplay ?? secondary_currency_render_amount((float) $subtotal, $secondaryCurrency)) ?></td>
             </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="3" class="total-value"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?>:</td>
-                    <td class="total-value"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
+                    <td class="total-value"><?= esc($tax['secondarySaleTaxAmountDisplay'] ?? secondary_currency_render_amount((float) $tax['sale_tax_amount'], $secondaryCurrency)) ?></td>
                 </tr>
         <?php
             }
@@ -127,7 +131,7 @@
         <?php $border = (!$config['receipt_show_taxes'] && !($config['receipt_show_total_discount'] && $discount > 0)); ?>
         <tr>
             <td colspan="3" style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= lang('Sales.total') ?></td>
-            <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= to_currency($total) ?></td>
+            <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= esc($secondaryTotalDisplay ?? secondary_currency_render_amount((float) $total, $secondaryCurrency)) . ' <br> ' . to_currency($total) ?></td>
         </tr>
 
         <tr>
@@ -162,6 +166,12 @@
             <td colspan="3" style="text-align: right;"> <?= lang($amount_change >= 0 ? ($only_sale_check ? 'Sales.check_balance' : 'Sales.change_due') : 'Sales.amount_due') ?> </td>
             <td class="total-value"><?= to_currency($amount_change) ?></td>
         </tr>
+        <?php if ($secondaryCurrency['show']) { ?>
+        <tr>
+            <td colspan="3" style="text-align: right;"><?= esc(lang('Config.currency_rate')) ?></td>
+            <td class="total-value"><?= esc($secondaryRateDisplay ?? secondary_currency_rate_display($secondaryCurrency['rate'])) ?></td>
+        </tr>
+        <?php } ?>
     </table>
 
     <div id="sale_return_policy">

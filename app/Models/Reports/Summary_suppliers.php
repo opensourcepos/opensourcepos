@@ -2,6 +2,8 @@
 
 namespace App\Models\Reports;
 
+use Config\OSPOS;
+
 class Summary_suppliers extends Summary_report
 {
     /**
@@ -9,7 +11,8 @@ class Summary_suppliers extends Summary_report
      */
     protected function _get_data_columns(): array    // TODO: hungarian notation
     {
-        return [
+        $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+        $columns = [
             ['supplier_name' => lang('Reports.supplier')],
             ['quantity'      => lang('Reports.quantity')],
             ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
@@ -18,6 +21,13 @@ class Summary_suppliers extends Summary_report
             ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
             ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter']
         ];
+
+        if ($secondaryCurrency['show']) {
+            $columns[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+            $columns[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+        }
+
+        return $columns;
     }
 
     /**

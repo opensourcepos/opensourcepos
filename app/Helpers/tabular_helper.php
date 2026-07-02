@@ -767,7 +767,7 @@ function get_expense_category_data_row(object $expense_category): array
 
 function expense_headers(): array
 {
-    return [
+    $headers = [
         ['expense_id'        => lang('Expenses.expense_id')],
         ['date'              => lang('Expenses.date')],
         ['supplier_name'     => lang('Expenses.supplier_name')],
@@ -779,6 +779,14 @@ function expense_headers(): array
         ['description'       => lang('Expenses.description')],
         ['created_by'        => lang('Expenses.employee')]
     ];
+
+    $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+    if ($secondaryCurrency['show']) {
+        $headers[] = ['secondary_rate' => lang('Reports.selling_rate'), 'sorter' => 'number_sorter'];
+        $headers[] = ['total_secondary_currency' => secondary_currency_display_label(lang('Reports.total'), $secondaryCurrency), 'sorter' => 'number_sorter'];
+    }
+
+    return $headers;
 }
 
 /**
@@ -795,8 +803,10 @@ function get_expenses_manage_table_headers(): string
 function get_expenses_data_row(object $expense): array
 {
     $controller = get_controller();
+    $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings, (float) ($expense->secondary_currency_rate ?? 0));
+    $secondaryAmount = secondary_currency_render_amount((float) $expense->amount, $secondaryCurrency);
 
-    return [
+    $row = [
         'expense_id'        => $expense->expense_id,
         'date'              => to_datetime(strtotime($expense->date)),
         'supplier_name'     => $expense->supplier_name,
@@ -817,6 +827,13 @@ function get_expenses_data_row(object $expense): array
             ]
         )
     ];
+
+    if ($secondaryCurrency['show']) {
+        $row['secondary_rate'] = secondary_currency_render_rate($secondaryCurrency);
+        $row['total_secondary_currency'] = $secondaryAmount;
+    }
+
+    return $row;
 }
 
 /**
@@ -827,18 +844,35 @@ function get_expenses_data_last_row(object $expense): array
     $table_data_rows = '';    // TODO: This variable is never used
     $sum_amount_expense = 0;
     $sum_tax_amount_expense = 0;
+    $sum_secondary_amount_expense = 0.0;
+    $secondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings);
+    $displayCurrency = $secondaryCurrency;
+    $displayCurrency['show'] = true;
+    $displayCurrency['rate'] = 1;
 
     foreach ($expense->getResult() as $key => $expense) {
         $sum_amount_expense += $expense->amount;
         $sum_tax_amount_expense += $expense->tax_amount;
+
+        $rowSecondaryCurrency = secondary_currency_context(config(OSPOS::class)->settings, (float) ($expense->secondary_currency_rate ?? 0));
+        if ($rowSecondaryCurrency['show']) {
+            $sum_secondary_amount_expense += (float) $expense->amount * (float) $rowSecondaryCurrency['rate'];
+        }
     }
 
-    return [
+    $row = [
         'expense_id' => '-',
         'date'       => lang('Sales.total'),
         'amount'     => to_currency($sum_amount_expense),
         'tax_amount' => to_currency($sum_tax_amount_expense)
     ];
+
+    if ($secondaryCurrency['show']) {
+        $row['secondary_rate'] = '';
+        $row['total_secondary_currency'] = secondary_currency_render_amount($sum_secondary_amount_expense, $displayCurrency);
+    }
+
+    return $row;
 }
 
 /**

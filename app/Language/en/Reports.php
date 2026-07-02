@@ -106,6 +106,8 @@ return [
     "sales"                                   => "Transactions",
     "sales_amount"                            => "Transactions amount",
     "sales_summary_report"                    => "Transactions Summary Report",
+    "selling_rate"                            => "Selling rate",
+    "rate"                                    => "Rate",
     "sales_taxes"                             => "Sales Taxes",
     "sales_taxes_summary_report"              => "Sales Taxes Summary Report",
     "serial_number"                           => "Serial Number",
