@@ -256,6 +256,9 @@ class Config extends Secure_Controller
         // Integrations Related fields
         $data['mailchimp']    = [];
 
+        // WhatsApp encrypted fields decrypted for display
+        $data['whatsapp'] = ['token' => '', 'app_secret' => ''];
+
         if (check_encryption()) {    // TODO: Hungarian notation
             if (!isset($this->encrypter)) {
                 helper('security');
@@ -268,6 +271,14 @@ class Config extends Secure_Controller
 
             $data['mailchimp']['list_id'] = (isset($this->config['mailchimp_list_id']) && !empty($this->config['mailchimp_list_id']))
                 ? $this->encrypter->decrypt($this->config['mailchimp_list_id'])
+                : '';
+
+            $data['whatsapp']['token'] = !empty($this->config['whatsapp_token'])
+                ? $this->encrypter->decrypt($this->config['whatsapp_token'])
+                : '';
+
+            $data['whatsapp']['app_secret'] = !empty($this->config['whatsapp_app_secret'])
+                ? $this->encrypter->decrypt($this->config['whatsapp_app_secret'])
                 : '';
 
             // Remove any backup of .env created by check_encryption()
@@ -568,6 +579,60 @@ class Config extends Secure_Controller
             'msg_uid' => $this->request->getPost('msg_uid'),
             'msg_pwd' => $password,
             'msg_src' => $this->request->getPost('msg_src')
+        ];
+
+        $success = $this->appconfig->batch_save($batch_save_data);
+
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    /**
+     * Saves WhatsApp Business Cloud API configuration. Used in app/Views/configs/whatsapp_config.php.
+     *
+     * @throws ReflectionException
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveWhatsapp(): ResponseInterface
+    {
+        // Preserve the stored (encrypted) secrets when the field is left blank.
+        $token = $this->config['whatsapp_token'] ?? '';
+        $app_secret = $this->config['whatsapp_app_secret'] ?? '';
+
+        if (check_encryption()) {
+            if (!empty($this->request->getPost('whatsapp_token'))) {
+                $token = $this->encrypter->encrypt($this->request->getPost('whatsapp_token'));
+            }
+
+            if (!empty($this->request->getPost('whatsapp_app_secret'))) {
+                $app_secret = $this->encrypter->encrypt($this->request->getPost('whatsapp_app_secret'));
+            }
+
+            remove_backup();
+        } else {
+            // Encryption unavailable: store the raw values so credentials can
+            // still be configured. Whatsapp_lib::token()/webhook decrypt tolerate
+            // unencrypted values.
+            if (!empty($this->request->getPost('whatsapp_token'))) {
+                $token = $this->request->getPost('whatsapp_token');
+            }
+
+            if (!empty($this->request->getPost('whatsapp_app_secret'))) {
+                $app_secret = $this->request->getPost('whatsapp_app_secret');
+            }
+        }
+
+        $batch_save_data = [
+            'whatsapp_enabled'              => $this->request->getPost('whatsapp_enabled') != null ? '1' : '0',
+            'whatsapp_phone_id'             => $this->request->getPost('whatsapp_phone_id'),
+            'whatsapp_business_id'          => $this->request->getPost('whatsapp_business_id'),
+            'whatsapp_token'                => $token,
+            'whatsapp_api_url'              => $this->request->getPost('whatsapp_api_url'),
+            'whatsapp_api_version'          => $this->request->getPost('whatsapp_api_version'),
+            'whatsapp_default_country_code' => $this->request->getPost('whatsapp_default_country_code', FILTER_SANITIZE_NUMBER_INT),
+            'whatsapp_msg'                  => $this->request->getPost('whatsapp_msg'),
+            'whatsapp_verify_token'         => $this->request->getPost('whatsapp_verify_token'),
+            'whatsapp_app_secret'           => $app_secret
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);

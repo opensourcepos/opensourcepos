@@ -28,6 +28,8 @@ return [
     "items_desc"                 => "Add, Update, Delete, and Search Items.",
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers and Employees.",
+    "whatsapp"                   => "WhatsApp",
+    "whatsapp_desc"              => "Send WhatsApp messages to Customers and view conversations.",
     "migrate"                    => "Migrate",
     "migrate_desc"               => "Update the OSPOS Database.",
     "office"                     => "Office",

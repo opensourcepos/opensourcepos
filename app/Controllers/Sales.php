@@ -7,6 +7,7 @@ use App\Libraries\Email_lib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
 use App\Libraries\Token_lib;
+use App\Libraries\Whatsapp_lib;
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Dinner_table;
@@ -31,6 +32,7 @@ class Sales extends Secure_Controller
     protected $helpers = ['file'];
     private Barcode_lib $barcode_lib;
     private Email_lib $email_lib;
+    private Whatsapp_lib $whatsapp_lib;
     private Sale_lib $sale_lib;
     private Tax_lib $tax_lib;
     private Token_lib $token_lib;
@@ -51,6 +53,7 @@ class Sales extends Secure_Controller
         $this->session = session();
         $this->barcode_lib = new Barcode_lib();
         $this->email_lib = new Email_lib();
+        $this->whatsapp_lib = new Whatsapp_lib();
         $this->sale_lib = new Sale_lib();
         $this->tax_lib = new Tax_lib();
         $this->token_lib = new Token_lib();
@@ -1008,6 +1011,77 @@ class Sales extends Secure_Controller
     }
 
     /**
+     * Sends the PDF invoice/quote/work_order/receipt to the customer via WhatsApp.
+     * Mirrors getSendPdf() but delivers the document through the WhatsApp Cloud API.
+     * Used in app/Views/sales/invoice.php, quote.php, work_order.php and receipt.php.
+     *
+     * @param int $sale_id
+     * @param string $type
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function getSendWhatsapp(int $sale_id, string $type = 'invoice'): ResponseInterface
+    {
+        $sale_data = $this->_load_sale_data($sale_id);
+
+        $result = false;
+        $message = lang('Sales.whatsapp_no_phone');
+
+        // Restrict $type to known sale document types: auto-routing leaves this
+        // segment user-controlled and it is interpolated into the view path.
+        if (!in_array($type, ['invoice', 'quote', 'work_order', 'receipt'], true)) {
+            $type = 'invoice';
+        }
+
+        if (!empty($sale_data['customer_phone'])) {
+            $number = array_key_exists($type . "_number", $sale_data) ? $sale_data[$type . "_number"] : "";
+
+            $text = $this->config['invoice_email_message'];
+            $tokens = [
+                new Token_invoice_sequence($number),
+                new Token_invoice_count('POS ' . $sale_data['sale_id']),
+                new Token_customer((array)$sale_data)
+            ];
+            $caption = $this->token_lib->render($text, $tokens);
+
+            $sale_data['mimetype'] = $this->email_lib->getLogoMimeType();
+            $sale_data['img_tag'] = $this->email_lib->buildLogoImgTag();
+
+            // Generate the same PDF used for the email attachment.
+            $view = Services::renderer();
+            $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
+
+            helper(['dompdf', 'file']);
+
+            // Unique temp path avoids a TOCTOU race with getSendPdf() (which uses a
+            // deterministic name); the customer still sees a friendly document name.
+            $display_name = lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
+            $filename = tempnam(sys_get_temp_dir(), 'wa_');
+
+            if ($filename !== false && file_put_contents($filename, create_pdf($html)) !== false) {
+                $result = $this->whatsapp_lib->sendDocument(
+                    $sale_data['customer_phone'],
+                    $filename,
+                    $display_name,
+                    $caption,
+                    $sale_data['customer_id'] ?? null
+                );
+            }
+
+            // Always clean up the temp PDF.
+            if ($filename !== false && is_file($filename)) {
+                unlink($filename);
+            }
+
+            $message = lang($result ? "Sales." . $type . "_whatsapp_sent" : "Sales." . $type . "_whatsapp_unsent") . ' ' . $sale_data['customer_phone'];
+        }
+
+        $this->sale_lib->clear_all();
+
+        return $this->response->setJSON(['success' => $result, 'message' => $message, 'id' => $sale_id]);
+    }
+
+    /**
      * @param int $customer_id
      * @param array $data
      * @param bool $stats
@@ -1030,6 +1104,7 @@ class Sales extends Secure_Controller
             $data['first_name'] = $customer_info->first_name;
             $data['last_name'] = $customer_info->last_name;
             $data['customer_email'] = $customer_info->email;
+            $data['customer_phone'] = $customer_info->phone_number;
             $data['customer_address'] = $customer_info->address_1;
 
             if (!empty($customer_info->zip) || !empty($customer_info->city)) {
