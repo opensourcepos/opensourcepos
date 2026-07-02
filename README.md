@@ -28,7 +28,7 @@ The features include:
 - Quotation and invoicing
 - Expenses logging
 - Cash up function
-- Printing and emailing of receipts, invoices and quotations
+- Printing, emailing and WhatsApp sending of receipts, invoices and quotations
 - Barcode generation and printing
 - Database of customers and suppliers
 - Multiuser with permission control
@@ -38,6 +38,7 @@ The features include:
 - Rewards
 - Restaurant tables
 - Messaging (SMS)
+- WhatsApp messaging with customer conversation history
 - Multilanguage
 - Selectable Bootstrap based UI theme with Bootswatch
 - MailChimp integration

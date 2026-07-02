@@ -113,6 +113,13 @@
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>
 
+            <div class="col-xs-offset-2 col-xs-8" style="margin-top: 10px;">
+                <span class="glyphicon glyphicon-info-sign">&nbsp;</span>
+                <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started" target="_blank" rel="noopener noreferrer">
+                    <?= lang('Config.whatsapp_docs_link') ?>
+                </a>
+            </div>
+
         </fieldset>
     </div>
 <?= form_close() ?>
