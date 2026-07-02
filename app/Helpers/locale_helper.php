@@ -279,6 +279,18 @@ function get_payment_options(): array
 }
 
 /**
+ * Returns the payment types that require a reference code (e.g. card terminal receipt number).
+ * Single source of truth used by both the controller validation and the view's JS.
+ */
+function get_reference_code_payment_types(): array
+{
+    return [
+        lang('Sales.debit'),
+        lang('Sales.credit'),
+    ];
+}
+
+/**
  * Determines if the current currency symbol is on the right side of the amount
  *
  * @return bool true is returned when the symbol should be displayed to the right of the amount. False otherwise.

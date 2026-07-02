@@ -77,7 +77,8 @@ class Sale extends Model
                 MAX(IFnull(payments.sale_payment_amount, 0)) AS amount_tendered,
                 (MAX(payments.sale_payment_amount)) - ($sale_total) AS change_due,
                 " . '
-                MAX(payments.payment_type) AS payment_type';
+                MAX(payments.payment_type) AS payment_type,
+                MAX(payments.reference_code) AS reference_code';
 
         $builder = $this->db->table('sales_items AS sales_items');
         $builder->select($sql);
@@ -94,7 +95,7 @@ class Sale extends Model
 
         $builder->where('sales.sale_id', $sale_id);
 
-        $builder->groupBy('sales.sale_id');
+        $builder->groupBy('sales.sale_id, payments.reference_code');
         $builder->orderBy('sales.sale_time', 'asc');
 
         return $builder->get();
@@ -481,7 +482,8 @@ class Sale extends Model
                         'payment_amount'  => $payment_amount,
                         'cash_refund'     => $cash_refund,
                         'cash_adjustment' => $cash_adjustment,
-                        'employee_id'     => $employee_id
+                        'employee_id'     => $employee_id,
+                        'reference_code'  => $payment['reference_code'] ?? null,
                     ];
                     $success = $builder->insert($sales_payments_data);
                 } elseif ($payment_id != NEW_ENTRY) {
@@ -516,19 +518,19 @@ class Sale extends Model
      * @throws ReflectionException
      */
     public function save_value(
-        int $sale_id,
-        string &$sale_status,
-        array &$items,
-        int $customer_id,
-        int $employee_id,
-        string $comment,
+        int     $saleId,
+        string  &$saleStatus,
+        array   &$items,
+        int     $customerId,
+        int     $employeeId,
+        string  $comment,
         ?string $invoice_number,
         ?string $work_order_number,
         ?string $quote_number,
-        int $sale_type,
-        ?array $payments,
-        ?int $dinner_table_id,
-        ?array &$sales_taxes
+        int     $sale_type,
+        ?array  $payments,
+        ?int    $dinner_table_id,
+        ?array  &$sales_taxes
     ): int {    // TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
         $config = config(OSPOS::class)->settings;
         $attribute = model(Attribute::class);
@@ -539,8 +541,8 @@ class Sale extends Model
 
         $item_quantity = model(Item_quantity::class);
 
-        if ($sale_id != NEW_ENTRY) {
-            $this->clear_suspended_sale_detail($sale_id);
+        if ($saleId != NEW_ENTRY) {
+            $this->clear_suspended_sale_detail($saleId);
         }
 
         if (count($items) == 0) {    // TODO: ===
@@ -549,10 +551,10 @@ class Sale extends Model
 
         $sales_data = [
             'sale_time'         => date('Y-m-d H:i:s'),
-            'customer_id'       => $customer->exists($customer_id) ? $customer_id : null,
-            'employee_id'       => $employee_id,
+            'customer_id'       => $customer->exists($customerId) ? $customerId : null,
+            'employee_id'       => $employeeId,
             'comment'           => $comment,
-            'sale_status'       => $sale_status,
+            'sale_status'       => $saleStatus,
             'invoice_number'    => $invoice_number,
             'quote_number'      => $quote_number,
             'work_order_number' => $work_order_number,
@@ -563,38 +565,37 @@ class Sale extends Model
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if ($sale_id == NEW_ENTRY) {
-            $builder = $this->db->table('sales');
+        $builder = $this->db->table('sales');
+        if ($saleId == NEW_ENTRY) {
             $builder->insert($sales_data);
-            $sale_id = $this->db->insertID();
+            $saleId = $this->db->insertID();
         } else {
-            $builder = $this->db->table('sales');
-            $builder->where('sale_id', $sale_id);
+            $builder->where('sale_id', $saleId);
             $builder->update($sales_data);
         }
 
         $total_amount = 0;
-        $total_amount_used = 0;
+        $totalAmountUsed = 0;
 
         foreach ($payments as $payment_id => $payment) {
             if (!empty(strstr($payment['payment_type'], lang('Sales.giftcard')))) {
-                // We have a gift card, and we have to deduct the used value from the total value of the card.
-                $splitpayment = explode(':', $payment['payment_type']);    // TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
-                $cur_giftcard_value = $giftcard->get_giftcard_value($splitpayment[1]);    // TODO: this should be refactored to $current_giftcard_value
-                $giftcard->update_giftcard_value($splitpayment[1], $cur_giftcard_value - $payment['payment_amount']);
+                $splitPayment = explode(':', $payment['payment_type']);
+                $currentGiftcardValue = $giftcard->get_giftcard_value($splitPayment[1]);
+                $giftcard->update_giftcard_value($splitPayment[1], $currentGiftcardValue - $payment['payment_amount']);
             } elseif (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
-                $cur_rewards_value = $customer->get_info($customer_id)->points;
-                $customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount']);
-                $total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
+                $currentRewardsValue = $customer->get_info($customerId)->points;
+                $customer->update_reward_points_value($customerId, $currentRewardsValue - $payment['payment_amount']);
+                $totalAmountUsed = floatval($totalAmountUsed) + floatval($payment['payment_amount']);
             }
 
             $sales_payments_data = [
-                'sale_id'         => $sale_id,
+                'sale_id'         => $saleId,
                 'payment_type'    => $payment['payment_type'],
                 'payment_amount'  => $payment['payment_amount'],
                 'cash_refund'     => $payment['cash_refund'],
                 'cash_adjustment' => $payment['cash_adjustment'],
-                'employee_id'     => $employee_id
+                'employee_id'     => $employeeId,
+                'reference_code'  => $payment['reference_code'] ?? '',
             ];
 
             $builder = $this->db->table('sales_payments');
@@ -603,9 +604,9 @@ class Sale extends Model
             $total_amount = floatval($total_amount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
         }
 
-        $this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
+        $this->save_customer_rewards($customerId, $saleId, $total_amount, $totalAmountUsed);
 
-        $customer = $customer->get_info($customer_id);
+        $customer = $customer->get_info($customerId);
 
         foreach ($items as $line => $item_data) {
             $cur_item_info = $item->get_info($item_data['item_id']);
@@ -615,7 +616,7 @@ class Sale extends Model
             }
 
             $sales_items_data = [
-                'sale_id'            => $sale_id,
+                'sale_id'            => $saleId,
                 'item_id'            => $item_data['item_id'],
                 'line'               => $item_data['line'],
                 'description'        => character_limiter($item_data['description'], 255),
@@ -632,7 +633,7 @@ class Sale extends Model
             $builder = $this->db->table('sales_items');
             $builder->insert($sales_items_data);
 
-            if ($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED) {    // TODO: === ?
+            if ($cur_item_info->stock_type == HAS_STOCK && $saleStatus == COMPLETED) {    // TODO: === ?
                 // Update stock quantity if item type is a standard stock item and the sale is a standard sale
                 $item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
 
@@ -652,11 +653,11 @@ class Sale extends Model
                 }
 
                 // Inventory Count Details
-                $sale_remarks = 'POS ' . $sale_id;    // TODO: Use string interpolation here.
+                $sale_remarks = 'POS ' . $saleId;    // TODO: Use string interpolation here.
                 $inv_data = [
                     'trans_date'      => date('Y-m-d H:i:s'),
                     'trans_items'     => $item_data['item_id'],
-                    'trans_user'      => $employee_id,
+                    'trans_user'      => $employeeId,
                     'trans_location'  => $item_data['item_location'],
                     'trans_comment'   => $sale_remarks,
                     'trans_inventory' => -$item_data['quantity']
@@ -665,17 +666,17 @@ class Sale extends Model
                 $inventory->insert($inv_data, false);
             }
 
-            $attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $sale_id);
+            $attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $saleId);
         }
 
-        if ($customer_id == NEW_ENTRY || $customer->taxable) {
-            $this->save_sales_tax($sale_id, $sales_taxes[0]);
-            $this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
+        if ($customerId == NEW_ENTRY || $customer->taxable) {
+            $this->save_sales_tax($saleId, $sales_taxes[0]);
+            $this->save_sales_items_taxes($saleId, $sales_taxes[1]);
         }
 
         if ($config['dinner_table_enable']) {
             $dinner_table = model(Dinner_table::class);
-            if ($sale_status == COMPLETED) {    // TODO: === ?
+            if ($saleStatus == COMPLETED) {    // TODO: === ?
                 $dinner_table->release($dinner_table_id);
             } else {
                 $dinner_table->occupy($dinner_table_id);
@@ -684,7 +685,7 @@ class Sale extends Model
 
         $this->db->transComplete();
 
-        return $this->db->transStatus() ? $sale_id : -1;
+        return $this->db->transStatus() ? $saleId : -1;
     }
 
     /**
@@ -1093,12 +1094,13 @@ class Sale extends Model
                     SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
                     SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
                     SUM(payments.cash_refund) AS sale_cash_refund,
-                    GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
+                    GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type,
+                    payments.reference_code AS reference_code
                 FROM ' . $this->db->prefixTable('sales_payments') . ' AS payments
                 INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
                     ON sales.sale_id = payments.sale_id
                 WHERE ' . $where . '
-                GROUP BY payments.sale_id
+                GROUP BY payments.sale_id, payments.reference_code
             )';
 
         $this->db->query($sql);

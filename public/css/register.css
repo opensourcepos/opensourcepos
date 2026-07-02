@@ -103,6 +103,15 @@ input#amount_tendered:disabled {
     clear: both;
 }
 
+#buttons_sale {
+    padding-right: 0.5em;
+}
+
 .alert {
     margin-bottom: 5px;
+}
+
+#add_payment_button,
+#buttons_sale .btn {
+    min-width: 120px;
 }

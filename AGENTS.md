@@ -33,6 +33,12 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Use CodeIgniter 4 framework patterns and helpers
 - Sanitize user input; escape output using `esc()` helper
 
+## Localization
+
+- When adding new keys to language files, add the key to all `app/Language/*/` variants
+- Non-English files must use an empty string (`""` or `''`) as the value when no translation is provided — CodeIgniter automatically falls back to the default (`en`) language
+- Only `app/Language/en/` and `app/Language/en-GB/` should contain English strings
+
 ## Security
 
 - Never commit secrets, credentials, or `.env` files
