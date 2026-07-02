@@ -6,6 +6,7 @@ use App\Libraries\Whatsapp_lib;
 use App\Models\Whatsapp_message;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
+use Config\Services;
 use Throwable;
 
 /**
@@ -67,10 +68,22 @@ class Whatsapp_webhook extends BaseController
         $config = config(OSPOS::class)->settings;
         $raw    = $this->request->getBody() ?? '';
 
-        if (! $this->signatureValid($raw, (string) ($config['whatsapp_app_secret'] ?? ''))) {
+        // The stored app secret is encrypted; decrypt it before comparing HMACs.
+        $appSecret = $this->decryptSecret((string) ($config['whatsapp_app_secret'] ?? ''));
+
+        // Signature verification is mandatory. Without an app secret we cannot
+        // authenticate the sender on this public, CSRF-exempt endpoint, so we
+        // refuse to persist anything rather than fail open to spoofed payloads.
+        if ($appSecret === '') {
+            log_message('warning', 'WhatsApp webhook: app secret not configured; rejecting inbound payload.');
+
+            return $this->response->setStatusCode(200)->setContentType('text/plain')->setBody('');
+        }
+
+        if (! $this->signatureValid($raw, $appSecret)) {
             log_message('warning', 'WhatsApp webhook: invalid signature, ignoring payload.');
 
-            return $this->response->setStatusCode(200)->setBody('');
+            return $this->response->setStatusCode(200)->setContentType('text/plain')->setBody('');
         }
 
         try {
@@ -80,7 +93,7 @@ class Whatsapp_webhook extends BaseController
             log_message('error', 'WhatsApp webhook processing error: ' . $e->getMessage());
         }
 
-        return $this->response->setStatusCode(200)->setBody('');
+        return $this->response->setStatusCode(200)->setContentType('text/plain')->setBody('');
     }
 
     /**
@@ -143,13 +156,30 @@ class Whatsapp_webhook extends BaseController
     }
 
     /**
-     * Validates the X-Hub-Signature-256 header when an app secret is configured.
-     * When no app secret is set, validation is skipped (returns true).
+     * Returns the decrypted app secret, tolerating values that were stored
+     * unencrypted (mirrors Whatsapp_lib::token()).
+     */
+    private function decryptSecret(string $value): string
+    {
+        if ($value === '') {
+            return '';
+        }
+
+        try {
+            return Services::encrypter()->decrypt($value);
+        } catch (Throwable $e) {
+            return $value;
+        }
+    }
+
+    /**
+     * Validates the X-Hub-Signature-256 header against the app secret.
+     * Fails closed: an empty secret or missing/mismatched header is rejected.
      */
     private function signatureValid(string $raw, string $appSecret): bool
     {
         if ($appSecret === '') {
-            return true;
+            return false;
         }
 
         $header = $this->request->getHeaderLine('X-Hub-Signature-256');

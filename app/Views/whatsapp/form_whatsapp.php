@@ -73,8 +73,7 @@
 
             rules: {
                 phone: {
-                    required: true,
-                    number: true
+                    required: true
                 },
                 message: {
                     required: true,

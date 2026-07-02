@@ -73,8 +73,11 @@ class Whatsapp extends Secure_Controller
      */
     public function postSend(): ResponseInterface
     {
-        $phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $phone = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        // Send the message body verbatim: WhatsApp renders plain text, not HTML.
+        // Entity-encoding here would surface literal &amp;/&#039; to the customer
+        // and double-encode when the log is later shown via esc().
+        $message = trim((string) $this->request->getPost('message'));
 
         $response = $this->whatsapp_lib->sendText($phone, $message);
 
@@ -92,8 +95,11 @@ class Whatsapp extends Secure_Controller
      */
     public function postSend_form(int $person_id = NEW_ENTRY): ResponseInterface
     {
-        $phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $phone = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        // Send the message body verbatim: WhatsApp renders plain text, not HTML.
+        // Entity-encoding here would surface literal &amp;/&#039; to the customer
+        // and double-encode when the log is later shown via esc().
+        $message = trim((string) $this->request->getPost('message'));
 
         $response = $this->whatsapp_lib->sendText($phone, $message, $person_id === NEW_ENTRY ? null : $person_id);
 

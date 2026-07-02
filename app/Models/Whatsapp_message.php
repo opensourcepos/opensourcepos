@@ -77,9 +77,12 @@ class Whatsapp_message extends Model
      */
     public function get_recent_conversations(int $limit = 50): array
     {
+        // Group by phone only: inbound webhook messages and general outbound
+        // sends log person_id => null, while sale sends log a real person_id.
+        // Grouping on both would split one customer's thread into two rows.
         $builder = $this->db->table('whatsapp_messages');
-        $builder->select('phone, person_id, MAX(created_at) AS last_activity, COUNT(*) AS message_count');
-        $builder->groupBy('phone, person_id');
+        $builder->select('phone, MAX(person_id) AS person_id, MAX(created_at) AS last_activity, COUNT(*) AS message_count');
+        $builder->groupBy('phone');
         $builder->orderBy('last_activity', 'desc');
         $builder->limit($limit);
 

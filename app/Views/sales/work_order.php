@@ -55,6 +55,11 @@ if (isset($error_message)) {
     <script type="text/javascript">
         $(document).ready(function() {
             $("#show_whatsapp_button").click(function() {
+                var $btn = $(this);
+                if ($btn.hasClass('disabled')) {
+                    return;
+                }
+                $btn.addClass('disabled');
                 $.get('<?= esc("/sales/sendWhatsapp/$sale_id_num/work_order") ?>',
                     function(response) {
                         $.notify({
@@ -63,7 +68,9 @@ if (isset($error_message)) {
                             type: response.success ? 'success' : 'danger'
                         })
                     }, 'json'
-                );
+                ).always(function() {
+                    $btn.removeClass('disabled');
+                });
             });
         });
     </script>

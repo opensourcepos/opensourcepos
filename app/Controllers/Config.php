@@ -609,6 +609,17 @@ class Config extends Secure_Controller
             }
 
             remove_backup();
+        } else {
+            // Encryption unavailable: store the raw values so credentials can
+            // still be configured. Whatsapp_lib::token()/webhook decrypt tolerate
+            // unencrypted values.
+            if (!empty($this->request->getPost('whatsapp_token'))) {
+                $token = $this->request->getPost('whatsapp_token');
+            }
+
+            if (!empty($this->request->getPost('whatsapp_app_secret'))) {
+                $app_secret = $this->request->getPost('whatsapp_app_secret');
+            }
         }
 
         $batch_save_data = [

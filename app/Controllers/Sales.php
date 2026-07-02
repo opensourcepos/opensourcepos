@@ -1027,6 +1027,12 @@ class Sales extends Secure_Controller
         $result = false;
         $message = lang('Sales.whatsapp_no_phone');
 
+        // Restrict $type to known sale document types: auto-routing leaves this
+        // segment user-controlled and it is interpolated into the view path.
+        if (!in_array($type, ['invoice', 'quote', 'work_order', 'receipt'], true)) {
+            $type = 'invoice';
+        }
+
         if (!empty($sale_data['customer_phone'])) {
             $number = array_key_exists($type . "_number", $sale_data) ? $sale_data[$type . "_number"] : "";
 
@@ -1046,16 +1052,25 @@ class Sales extends Secure_Controller
             $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
 
             helper(['dompdf', 'file']);
-            $filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
 
-            if (file_put_contents($filename, create_pdf($html)) !== false) {
+            // Unique temp path avoids a TOCTOU race with getSendPdf() (which uses a
+            // deterministic name); the customer still sees a friendly document name.
+            $display_name = lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
+            $filename = tempnam(sys_get_temp_dir(), 'wa_');
+
+            if ($filename !== false && file_put_contents($filename, create_pdf($html)) !== false) {
                 $result = $this->whatsapp_lib->sendDocument(
                     $sale_data['customer_phone'],
                     $filename,
-                    basename($filename),
+                    $display_name,
                     $caption,
                     $sale_data['customer_id'] ?? null
                 );
+            }
+
+            // Always clean up the temp PDF.
+            if ($filename !== false && is_file($filename)) {
+                unlink($filename);
             }
 
             $message = lang($result ? "Sales." . $type . "_whatsapp_sent" : "Sales." . $type . "_whatsapp_unsent") . ' ' . $sale_data['customer_phone'];
