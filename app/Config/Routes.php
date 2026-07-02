@@ -12,6 +12,10 @@ $routes->get('login', 'Login::index');
 $routes->post('login', 'Login::index');
 $routes->post('migrate', 'Login::migrate');
 
+// Public WhatsApp Cloud API webhook (verification + inbound events). No auth; CSRF-exempt (see Config/Filters.php).
+$routes->get('whatsapp/webhook', 'Whatsapp_webhook::index');
+$routes->post('whatsapp/webhook', 'Whatsapp_webhook::index');
+
 $routes->add('no_access/index/(:segment)', 'No_access::index/$1');
 $routes->add('no_access/index/(:segment)/(:segment)', 'No_access::index/$1/$2');
 

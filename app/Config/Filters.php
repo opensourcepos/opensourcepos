@@ -73,7 +73,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             'honeypot',
-            'csrf' => ['except' => 'login|migrate'],
+            'csrf' => ['except' => 'login|migrate|whatsapp/webhook'],
             'invalidchars',
         ],
         'after' => [

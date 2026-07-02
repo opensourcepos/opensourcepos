@@ -45,6 +45,24 @@ if (isset($error_message)) {
     </script>
 <?php endif; ?>
 
+<?php if (!empty($customer_phone)): ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#show_whatsapp_button").click(function() {
+                $.get('<?= site_url() . esc("/sales/sendWhatsapp/$sale_id_num/receipt") ?>',
+                    function(response) {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: response.success ? 'success' : 'danger'
+                        })
+                    }, 'json'
+                );
+            });
+        });
+    </script>
+<?php endif; ?>
+
 <?= view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align: right;">
@@ -54,6 +72,11 @@ if (isset($error_message)) {
     <?php if (!empty($customer_email)): ?>
         <a href="javascript:void(0);">
             <div class="btn btn-info btn-sm" id="show_email_button"><?= '<span class="glyphicon glyphicon-envelope">&nbsp;</span>' . lang('Sales.send_receipt') ?></div>
+        </a>
+    <?php endif; ?>
+    <?php if (!empty($customer_phone)): ?>
+        <a href="javascript:void(0);">
+            <div class="btn btn-success btn-sm" id="show_whatsapp_button"><?= '<span class="glyphicon glyphicon-comment">&nbsp;</span>' . lang('Sales.send_whatsapp') ?></div>
         </a>
     <?php endif; ?>
     <?= anchor('sales', '<span class="glyphicon glyphicon-shopping-cart">&nbsp;</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
