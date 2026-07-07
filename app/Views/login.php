@@ -177,6 +177,7 @@ $request = Services::request();
         <!-- endinject -->
     <?php endif; ?>
     <script>
+        // @noinspection JSInitializingVariableWithUndefined
         const APP_STATE = {
             isNewInstall: <?= $isNewInstall ? 'true' : 'false' ?>,
             isLatest: <?= $isLatest ? 'true' : 'false' ?>,
@@ -193,8 +194,10 @@ $request = Services::request();
                 go: <?= json_encode(lang('Login.go')) ?>,
                 migrationRequired: <?= json_encode(lang('Login.migration_required')) ?>,
                 migrationInitializing: <?= json_encode(lang('Login.migration_initializing')) ?>,
+                migratingDatabase: <?= json_encode(lang('Login.migrating_database')) ?>,
                 migrationRunning: <?= json_encode(lang('Login.migration_running')) ?>,
                 migrationComplete: <?= json_encode(lang('Login.migration_complete')) ?>,
+                migrationCompleteMigrate: <?= json_encode(lang('Login.migration_complete_migrate')) ?>,
                 migrationCompleteLogin: <?= json_encode(lang('Login.migration_complete_login')) ?>,
                 migrationFailed: <?= json_encode(lang('Login.migration_failed')) ?>,
                 migrationErrorConnection: <?= json_encode(lang('Login.migration_error_connection')) ?>
@@ -216,15 +219,16 @@ $request = Services::request();
                 if (APP_STATE.isNewInstall) {
                     $heading.text(APP_STATE.i18n.initializationRequired);
                     $submitButton.text(APP_STATE.i18n.initialize);
+                    $loginFields.addClass('d-none');
                 } else {
                     $heading.text(APP_STATE.i18n.migrationRequired);
                     $submitButton.text(APP_STATE.i18n.migrate);
+                    $loginFields.removeClass('d-none');
                 }
                 $warning.removeClass('d-none');
                 $success.addClass('d-none');
                 $progress.addClass('d-none');
                 $error.addClass('d-none');
-                $loginFields.addClass('d-none');
             }
 
             function showMigrationProgress() {
@@ -232,6 +236,7 @@ $request = Services::request();
                 $success.addClass('d-none');
                 $error.addClass('d-none');
                 $loginFields.addClass('d-none');
+                $progress.find('h3').text(APP_STATE.isNewInstall ? APP_STATE.i18n.migrationInitializing : APP_STATE.i18n.migratingDatabase);
                 $progress.removeClass('d-none');
                 $submitButton.prop('disabled', true);
             }
@@ -240,6 +245,7 @@ $request = Services::request();
                 $progress.addClass('d-none');
                 $error.addClass('d-none');
                 $warning.addClass('d-none');
+                $success.find('strong').text(APP_STATE.isNewInstall ? APP_STATE.i18n.migrationComplete : APP_STATE.i18n.migrationCompleteMigrate);
                 $success.removeClass('d-none');
                 $heading.text(APP_STATE.i18n.welcome);
                 $loginFields.removeClass('d-none');
@@ -250,11 +256,16 @@ $request = Services::request();
             function showMigrationError(message) {
                 $progress.addClass('d-none');
                 $success.addClass('d-none');
-                $loginFields.addClass('d-none');
                 $errorMessage.text(message);
                 $error.removeClass('d-none');
                 $warning.addClass('d-none');
-                $submitButton.text(APP_STATE.isNewInstall ? APP_STATE.i18n.initialize : APP_STATE.i18n.migrate);
+                if (APP_STATE.isNewInstall) {
+                    $loginFields.addClass('d-none');
+                    $submitButton.text(APP_STATE.i18n.initialize);
+                } else {
+                    $loginFields.removeClass('d-none');
+                    $submitButton.text(APP_STATE.i18n.migrate);
+                }
                 $submitButton.prop('disabled', false);
             }
 
@@ -286,7 +297,9 @@ $request = Services::request();
                         dataType: 'json',
                         timeout: 3600000,
                         data: {
-                            [APP_STATE.csrfToken]: APP_STATE.csrfHash
+                            [APP_STATE.csrfToken]: APP_STATE.csrfHash,
+                            username: $('#input-username').val(),
+                            password: $('#input-password').val(),
                         },
                         success: function(response) {
                             if (response.success) {
