@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp-liste(r)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Bedømmelse',
+    'none_selected_text'                => '[Vælg]',
     'status'                            => 'Status',
     'subscription_status_cleaned'       => 'Renset',
     'subscription_status_pending'       => 'Afventer',

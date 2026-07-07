@@ -18,6 +18,7 @@ return [
     'lists'                             => 'Mailchimp Liste(leri)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Değerlendirme',
+    'none_selected_text'                => '[Seç]',
     'status'                            => 'Durum',
     'subscription_status_cleaned'       => 'Temizlendi',
     'subscription_status_pending'       => 'Beklemede',

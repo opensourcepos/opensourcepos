@@ -18,6 +18,7 @@ return [
     'lists'                             => 'รายการ Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'ระดับ',
+    'none_selected_text'                => 'กรุณาเลือก',
     'status'                            => 'สถานะ',
     'subscription_status_cleaned'       => 'ล้างแล้ว',
     'subscription_status_pending'       => 'รอการดำเนินการ',

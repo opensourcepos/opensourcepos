@@ -18,6 +18,7 @@ return [
     'lists'                             => 'மெயில்சிம்ப் பட்டியல்(கள்)',
     'mailchimp'                         => 'மெயில்சிம்ப்',
     'member_rating'                     => 'மதிப்பீடு',
+    'none_selected_text'                => '[தேர்ந்தெடு]',
     'status'                            => 'நிலை',
     'subscription_status_cleaned'       => 'சுத்தம் செய்யப்பட்டது',
     'subscription_status_pending'       => 'நிலுவையில்',

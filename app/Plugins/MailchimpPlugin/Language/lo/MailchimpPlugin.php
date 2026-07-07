@@ -19,6 +19,7 @@ return [
     'lists'                             => 'ລາຍຊື່ Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'ການໃຫ້ຄະແນນ',
+    'none_selected_text'                => 'ບໍ່ໄດ້ເລືອກລາຍການ',
     'status'                            => 'ສະຖານະ',
     'subscription_status_cleaned'       => 'ລ້າງແລ້ວ',
     'subscription_status_pending'       => 'ລໍຖ້າ',

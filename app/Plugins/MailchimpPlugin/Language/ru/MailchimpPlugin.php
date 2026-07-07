@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Список(ы) Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Рейтинг',
+    'none_selected_text'                => '[Выбрать]',
     'status'                            => 'Статус',
     'subscription_status_cleaned'       => 'Очищен',
     'subscription_status_pending'       => 'В ожидании',

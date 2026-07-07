@@ -19,6 +19,7 @@ return [
     'lists'                             => 'لیست(‌های) میل‌چیمپ',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'رتبه بندی',
+    'none_selected_text'                => '[Select]',
     'status'                            => 'وضعیت',
     'subscription_status_cleaned'       => 'پاکسازی شده',
     'subscription_status_pending'       => 'در انتظار',

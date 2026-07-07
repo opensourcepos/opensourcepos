@@ -18,6 +18,7 @@ return [
     'lists'                             => 'Mailchimp List(s)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Rating',
+    'none_selected_text'                => '[Select]',
     'status'                            => 'Status',
     'subscription_status_cleaned'       => 'Nalinis',
     'subscription_status_pending'       => 'Nakabinbin',

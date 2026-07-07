@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Listă(i) Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Evaluare',
+    'none_selected_text'                => '[Select]ati',
     'status'                            => 'Stare',
     'subscription_status_cleaned'       => 'Curățat',
     'subscription_status_pending'       => 'În așteptare',

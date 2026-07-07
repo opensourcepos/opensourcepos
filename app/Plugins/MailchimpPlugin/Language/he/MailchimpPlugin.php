@@ -19,6 +19,7 @@ return [
     'lists'                             => 'רשימה(ות) של Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'דירוג',
+    'none_selected_text'                => '[בחר]',
     'status'                            => 'סטטוס',
     'subscription_status_cleaned'       => 'נוקה',
     'subscription_status_pending'       => 'ממתין',

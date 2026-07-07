@@ -18,6 +18,7 @@ return [
     'lists'                             => 'Danh sách Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Đánh giá',
+    'none_selected_text'                => '[Chọn]',
     'status'                            => 'Tình trạng',
     'subscription_status_cleaned'       => 'Đã làm sạch',
     'subscription_status_pending'       => 'Đang chờ',

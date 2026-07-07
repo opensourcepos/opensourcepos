@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp სია(ები)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'რეიტინგი',
+    'none_selected_text'                => '[არჩევა]',
     'status'                            => 'სტატუსი',
     'subscription_status_cleaned'       => 'გაწმენდილი',
     'subscription_status_pending'       => 'ლოდინის რეჟიმში',

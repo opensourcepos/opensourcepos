@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp-lijst(en)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Beoordeling',
+    'none_selected_text'                => '[Selecteren]',
     'status'                            => 'Status',
     'subscription_status_cleaned'       => 'Gewist',
     'subscription_status_pending'       => 'In afwachting',

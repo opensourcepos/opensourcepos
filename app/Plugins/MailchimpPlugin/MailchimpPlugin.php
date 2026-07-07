@@ -203,9 +203,17 @@ class MailchimpPlugin extends BasePlugin
 
             $customer = $customerModel->getInfo($customerId);
 
-            $subscriptionStatus = !empty($customer->consent)
-                ? strtolower(SubscriptionStatus::SUBSCRIBED->name)
-                : strtolower(SubscriptionStatus::UNSUBSCRIBED->name);
+            if (empty($customer->consent)) {
+                log_message('debug', "Mailchimp sync skipped for customer ID {$customerId}: no consent");
+                continue;
+            }
+
+            $subscriptionStatus = SubscriptionStatus::tryFrom((int) service('request')->getPost('status'));
+
+            if ($subscriptionStatus === null) {
+                log_message('debug', "Mailchimp sync skipped for customer ID {$customerId}: no status selected");
+                continue;
+            }
 
             $personData = [
                 'email'      => $customer->email ?? '',
@@ -213,7 +221,12 @@ class MailchimpPlugin extends BasePlugin
                 'last_name'  => $customer->last_name ?? '',
             ];
 
-            $this->mailchimpLibrary->synchronizeSubscription($personData, ['person_id' => $customerId], $subscriptionStatus);
+            $this->mailchimpLibrary->synchronizeSubscription(
+                $personData,
+                ['person_id' => $customerId],
+                strtolower($subscriptionStatus->name),
+                (bool) service('request')->getPost('vip')
+            );
         }
     }
 

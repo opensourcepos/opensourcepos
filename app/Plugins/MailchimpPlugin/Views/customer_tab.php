@@ -15,7 +15,7 @@
                         <div class="col-xs-4">
                             <?= form_dropdown(
                                 'status',
-                                $subscriptionStatusOptions,
+                                [0 => lang('MailchimpPlugin.none_selected_text')] + $subscriptionStatusOptions,
                                 $mailchimpData['status'],
                                 ['id' => 'status', 'class' => 'form-control input-sm']
                             ) ?>

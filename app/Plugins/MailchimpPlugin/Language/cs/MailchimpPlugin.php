@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Seznam(y) Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Hodnocení',
+    'none_selected_text'                => 'bez výběru',
     'status'                            => 'Stav',
     'subscription_status_cleaned'       => 'Vyčištěno',
     'subscription_status_pending'       => 'Čeká se',

@@ -19,6 +19,7 @@ return [
     'lists'                             => 'قائمة (قوائم) Mailchimp',
     'mailchimp'                         => 'ميل تشيمب',
     'member_rating'                     => 'التقييم',
+    'none_selected_text'                => '[إختيار]',
     'status'                            => 'الحالة',
     'subscription_status_cleaned'       => 'تم التنظيف',
     'subscription_status_pending'       => 'قيد الانتظار',

@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Orodha(o) za Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Tathmini',
+    'none_selected_text'                => '[Chagua]',
     'status'                            => 'Hadhi',
     'subscription_status_cleaned'       => 'Imesafishwa',
     'subscription_status_pending'       => 'Inasubiri',

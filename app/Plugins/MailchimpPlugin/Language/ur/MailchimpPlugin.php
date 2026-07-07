@@ -18,6 +18,7 @@ return [
     'lists'                             => 'میل چیمپ فہرست (فہرستیں)',
     'mailchimp'                         => 'میل چیمپ',
     'member_rating'                     => 'ریٹنگ',
+    'none_selected_text'                => '[Select]',
     'status'                            => 'صورتحال',
     'subscription_status_cleaned'       => 'صاف کیا گیا',
     'subscription_status_pending'       => 'زیر التوا',

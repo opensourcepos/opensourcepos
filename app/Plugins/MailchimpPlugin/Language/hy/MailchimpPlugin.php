@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp ցուցակ(եր)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Վարկանիշ',
+    'none_selected_text'                => '[Select]',
     'status'                            => 'Կարգավիճակ',
     'subscription_status_cleaned'       => 'Մաքրված',
     'subscription_status_pending'       => 'Սպասման մեջ',

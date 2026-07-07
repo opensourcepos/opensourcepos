@@ -19,6 +19,7 @@ return [
     'lists'                             => 'لیستەکانی Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'پلە',
+    'none_selected_text'                => '[دیاریکردن]',
     'status'                            => 'دۆخ',
     'subscription_status_cleaned'       => 'پاککراوە',
     'subscription_status_pending'       => 'چاوەڕوانکراو',

@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp lista(k)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Értékelés',
+    'none_selected_text'                => 'Nincs kiválaszva',
     'status'                            => 'Állapot',
     'subscription_status_cleaned'       => 'Tisztítva',
     'subscription_status_pending'       => 'Függőben',

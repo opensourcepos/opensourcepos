@@ -18,6 +18,7 @@ return [
     'lists'                             => 'Mailchimp 列表',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => '評分',
+    'none_selected_text'                => '[選擇]',
     'status'                            => '狀況',
     'subscription_status_cleaned'       => '已清理',
     'subscription_status_pending'       => '待處理',

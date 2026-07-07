@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Λίστα(ες) Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Βαθμολογία',
+    'none_selected_text'                => '[Επιλογή]',
     'status'                            => 'Κατάσταση',
     'subscription_status_cleaned'       => 'Καθαρίστηκε',
     'subscription_status_pending'       => 'Σε εκκρεμότητα',

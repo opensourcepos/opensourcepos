@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp ലിസ്റ്റുകൾ',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'റേറ്റിംഗ്',
+    'none_selected_text'                => '[Select]',
     'status'                            => 'നില',
     'subscription_status_cleaned'       => 'വൃത്തിയാക്കി',
     'subscription_status_pending'       => 'തൽക്കാലം നിർത്തിവെച്ചിരിക്കുന്നു',

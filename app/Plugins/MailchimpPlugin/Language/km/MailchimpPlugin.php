@@ -19,6 +19,7 @@ return [
     'lists'                             => 'បញ្ជី Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'ការវាយតម្លៃ',
+    'none_selected_text'                => '[ជ្រើសរើស]',
     'status'                            => 'ស្ថានភាព',
     'subscription_status_cleaned'       => 'បានសម្អាត',
     'subscription_status_pending'       => 'កំពុងរង់ចាំ',

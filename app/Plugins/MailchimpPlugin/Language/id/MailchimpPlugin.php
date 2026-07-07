@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Daftar Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Peringkat',
+    'none_selected_text'                => '[Select]',
     'status'                            => 'Status',
     'subscription_status_cleaned'       => 'Dibersihkan',
     'subscription_status_pending'       => 'Tertunda',

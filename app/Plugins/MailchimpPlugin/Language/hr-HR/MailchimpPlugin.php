@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp lista(e)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Ocjena',
+    'none_selected_text'                => 'Nothing selected',
     'status'                            => 'Status',
     'subscription_status_cleaned'       => 'Očišćeno',
     'subscription_status_pending'       => 'Na čekanju',

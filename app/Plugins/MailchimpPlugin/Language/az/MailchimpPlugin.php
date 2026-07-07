@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Mailchimp Siyahısı (siyahıları)',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Reytinq',
+    'none_selected_text'                => 'Seçin',
     'status'                            => 'Status',
     'subscription_status_cleaned'       => 'Təmizləndi',
     'subscription_status_pending'       => 'Gözləmədə',

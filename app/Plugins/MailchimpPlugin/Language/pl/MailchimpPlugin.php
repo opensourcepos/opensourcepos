@@ -19,6 +19,7 @@ return [
     'lists'                             => 'Lista(y) Mailchimp',
     'mailchimp'                         => 'Mailchimp',
     'member_rating'                     => 'Ocena',
+    'none_selected_text'                => '[Wybierz]',
     'status'                            => 'Status',
     'subscription_status_cleaned'       => 'Wyczyszczono',
     'subscription_status_pending'       => 'Oczekujący',
