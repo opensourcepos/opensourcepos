@@ -27,20 +27,20 @@ class Login extends BaseController
             $migration = new MY_Migration(config('Migrations'));
             $config = config(OSPOS::class)->settings;
 
-            $gcaptcha_enabled = array_key_exists('gcaptcha_enable', $config)
+            $gcaptchaEnabled = array_key_exists('gcaptcha_enable', $config)
                 ? $config['gcaptcha_enable']
                 : false;
 
-            $migration->migrate_to_ci4();
+            $migration->migrateToCI4();
 
             $validation = Services::validation();
 
             $data = [
-                'has_errors'       => false,
-                'is_new_install'   => !(MY_Migration::get_current_version()),
-                'is_latest'        => $migration->is_latest(),
-                'latest_version'   => $migration->get_latest_migration(),
-                'gcaptcha_enabled' => $gcaptcha_enabled,
+                'hasErrors'       => false,
+                'isNewInstall'   => !(MY_Migration::getCurrentVersion()),
+                'isLatest'        => $migration->isLatest(),
+                'latestVersion'   => $migration->getLatestMigration(),
+                'gcaptchaEnabled' => $gcaptchaEnabled,
                 'config'           => $config,
                 'validation'       => $validation
             ];
@@ -49,7 +49,7 @@ class Login extends BaseController
                 return view('login', $data);
             }
 
-            if (!$data['is_latest'] || $data['is_new_install']) {
+            if (!$data['isLatest'] || $data['isNewInstall']) {
                 set_time_limit(3600);
 
                 $migration->setNamespace('App')->latest();
@@ -76,9 +76,24 @@ class Login extends BaseController
 
     public function migrate(): ResponseInterface
     {
+        $rules = ['username' => 'required|login_check[data]'];
+        $messages = [
+            'username' => [
+                'required'    => lang('Login.required_username'),
+                'login_check' => lang('Login.invalid_username_and_password'),
+            ]
+        ];
+
+        if (!$this->validate($rules, $messages)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Login.invalid_username_and_password')
+            ])->setStatusCode(401);
+        }
+
         try {
             $migration = new MY_Migration(config('Migrations'));
-            $migration->migrate_to_ci4();
+            $migration->migrateToCI4();
 
             set_time_limit(3600);
             $migration->setNamespace('App')->latest();
