@@ -1368,7 +1368,7 @@ class Sale_lib
         // Establish cash_mode for this sale by inspecting the payments
         if ($this->session->get('cash_rounding')) {
             $cash_types_only = true;
-            foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
+            foreach ($this->sale->getSalePayments($sale_id)->getResult() as $row) {
                 if ($row->payment_type != lang('Sales.cash') && $row->payment_type != lang('Sales.cash_adjustment')) {
                     $cash_types_only = false;
                 }
@@ -1385,7 +1385,7 @@ class Sale_lib
         }
 
         // Now load payments
-        foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
+        foreach ($this->sale->getSalePayments($sale_id)->getResult() as $row) {
             $this->add_payment($row->payment_type, $row->payment_amount, $row->cash_adjustment);
         }
 

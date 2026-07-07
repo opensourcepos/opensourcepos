@@ -132,7 +132,7 @@ class Receiving extends Model
 
         foreach ($items as $line => $item_data) {
             $config = config(OSPOS::class)->settings;
-            $cur_item_info = $item->get_info($item_data['item_id']);
+            $cur_item_info = $item->getInfo($item_data['item_id']);
 
             $receivings_items_data = [
                 'receiving_id'       => $receiving_id,

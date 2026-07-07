@@ -329,7 +329,7 @@ class Item extends Model
     /**
      * Gets information about a particular item
      */
-    public function get_info(int $item_id): object
+    public function getInfo(int $item_id): object
     {
         $builder = $this->db->table('items');
         $builder->select('items.*');
@@ -1096,7 +1096,7 @@ class Item extends Model
     public function change_cost_price(int $item_id, float $items_received, float $new_price, ?float $old_price = null): bool
     {
         if ($old_price === null) {
-            $item_info = $this->get_info($item_id);
+            $item_info = $this->getInfo($item_id);
             $old_price = $item_info->cost_price;
         }
 

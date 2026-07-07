@@ -131,7 +131,7 @@ class Sales extends Secure_Controller
      */
     public function getRow(int $row_id): ResponseInterface
     {
-        $sale_info = $this->sale->get_info($row_id)->getRow();
+        $sale_info = $this->sale->getInfo($row_id)->getRow();
         $data_row = get_sale_data_row($sale_info);
 
         return $this->response->setJSON($data_row);
@@ -1088,7 +1088,7 @@ class Sales extends Secure_Controller
         $cash_rounding = $this->sale_lib->reset_cash_rounding();
         $data['cash_rounding'] = $cash_rounding;
 
-        $sale_info = $this->sale->get_info($sale_id)->getRowArray();
+        $sale_info = $this->sale->getInfo($sale_id)->getRowArray();
         $this->sale_lib->copy_entire_sale($sale_id);
         $data = [];
         $data['cart'] = $this->sale_lib->get_cart();
@@ -1339,7 +1339,7 @@ class Sales extends Secure_Controller
     {
         $data = [];
 
-        $sale_info = $this->sale->get_info($sale_id)->getRowArray();
+        $sale_info = $this->sale->getInfo($sale_id)->getRowArray();
         $data['selected_customer_id'] = $sale_info['customer_id'];
         $data['selected_customer_name'] = $sale_info['customer_name'];
         $employee_info = $this->employee->getInfo($sale_info['employee_id']);
@@ -1354,7 +1354,7 @@ class Sales extends Secure_Controller
 
         $data['payments'] = [];
 
-        foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $payment) {
+        foreach ($this->sale->getSalePayments($sale_id)->getResult() as $payment) {
             foreach (get_object_vars($payment) as $property => $value) {
                 $payment->$property = $value;
             }
@@ -1506,7 +1506,7 @@ class Sales extends Secure_Controller
             } else {
                 $cash_adjustment = CASH_ADJUSTMENT_FALSE;
                 $amount_tendered += $payment_amount;
-                $sale_info = $this->sale->get_info($sale_id)->getRowArray();
+                $sale_info = $this->sale->getInfo($sale_id)->getRowArray();
 
                 if ($amount_tendered > $sale_info['amount_due']) {
                     $cash_refund = $amount_tendered - $sale_info['amount_due'];

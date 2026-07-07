@@ -311,7 +311,7 @@ class Items extends Secure_Controller
             unset($data['definition_names'][$definition_id]);
         }
 
-        $item_info = $this->item->get_info($item_id);
+        $item_info = $this->item->getInfo($item_id);
 
         $data['allow_temp_item'] = ($data['allow_temp_item'] === 1 && $item_id !== NEW_ENTRY && $item_info->item_type != ITEM_TEMP) ? 0 : 1;
 
@@ -417,7 +417,7 @@ class Items extends Secure_Controller
         $data['selected_low_sell_item_id'] = $item_info->low_sell_item_id;
 
         if ($item_id !== NEW_ENTRY && $item_info->item_id !== $item_info->low_sell_item_id) {
-            $low_sell_item_info = $this->item->get_info($item_info->low_sell_item_id);
+            $low_sell_item_info = $this->item->getInfo($item_info->low_sell_item_id);
             $data['selected_low_sell_item'] = implode(NAME_SEPARATOR, [$low_sell_item_info->name, $low_sell_item_info->pack_name]);
         } else {
             $data['selected_low_sell_item'] = '';
@@ -435,7 +435,7 @@ class Items extends Secure_Controller
      */
     public function getInventory(int $item_id = NEW_ENTRY): string
     {
-        $item_info = $this->item->get_info($item_id);    // TODO: Duplicate code
+        $item_info = $this->item->getInfo($item_id);    // TODO: Duplicate code
 
         foreach (get_object_vars($item_info) as $property => $value) {
             $item_info->$property = $value;
@@ -462,7 +462,7 @@ class Items extends Secure_Controller
      */
     public function getCountDetails(int $item_id = NEW_ENTRY): string
     {
-        $item_info = $this->item->get_info($item_id);    // TODO: Duplicate code
+        $item_info = $this->item->getInfo($item_id);    // TODO: Duplicate code
 
         foreach (get_object_vars($item_info) as $property => $value) {
             $item_info->$property = $value;
@@ -857,7 +857,7 @@ class Items extends Secure_Controller
     public function postSaveInventory($item_id = NEW_ENTRY): ResponseInterface
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-        $cur_item_info = $this->item->get_info($item_id);
+        $cur_item_info = $this->item->getInfo($item_id);
         $location_id = $this->request->getPost('stock_location');
         $new_quantity = $this->request->getPost('newquantity');
         $inv_data = [
