@@ -22,6 +22,7 @@ return [
     'status'                => 'ស្ថានភាព',
     'uninstall'             => 'លុបការដំឡើង',
     'uninstall_failed'      => 'បរាជ័យក្នុងការលុបការដំឡើងប្លក',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'ប្លកត្រូវបានលុបការដំឡើងដោយជោគជ័យ',
     'version'               => 'កំណែ',
 ];

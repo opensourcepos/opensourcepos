@@ -22,6 +22,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Uninstall',
     'uninstall_failed'      => 'Failed to uninstall plugin',
+    'uninstall_warning'     => 'Uninstalling this plugin will remove all data in the database associated with the plugin and cannot be reversed. Are you sure you want to uninstall?',
     'uninstalled'           => 'Plugin uninstalled successfully',
     'version'               => 'Version',
 ];

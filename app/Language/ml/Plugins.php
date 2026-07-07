@@ -22,6 +22,7 @@ return [
     'status'                => 'നില',
     'uninstall'             => 'അൺഇൻസ്റ്റാൾ ചെയ്യുക',
     'uninstall_failed'      => 'പ്ലഗിൻ അൺഇൻസ്റ്റാൾ ചെയ്യൽ പരാജയപ്പെട്ടു',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'പ്ലഗിൻ വിജയകരമായി അൺഇൻസ്റ്റാൾ ചെയ്തു',
     'version'               => 'പതിപ്പ്',
 ];

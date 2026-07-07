@@ -22,6 +22,7 @@ return [
     'status'                => 'სტატუსი',
     'uninstall'             => 'დეინსტალაცია',
     'uninstall_failed'      => 'დანამატის დეინსტალაცია ვერ მოხერხდა',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'დანამატი წარმატებით დეინსტალირდა',
     'version'               => 'ვერსია',
 ];

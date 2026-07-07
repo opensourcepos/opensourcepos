@@ -22,6 +22,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Hapus instalasi',
     'uninstall_failed'      => 'Gagal menghapus instalasi plugin',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plugin berhasil dihapus instalasinya',
     'version'               => 'Versi',
 ];

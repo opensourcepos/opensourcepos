@@ -22,6 +22,7 @@ return [
     'status'                => 'สถานะ',
     'uninstall'             => 'ถอนการติดตั้ง',
     'uninstall_failed'      => 'ถอนการติดตั้งปลั๊กอินไม่สำเร็จ',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'ถอนการติดตั้งปลั๊กอินสำเร็จ',
     'version'               => 'เวอร์ชัน',
 ];

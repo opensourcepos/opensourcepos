@@ -22,6 +22,7 @@ return [
     'status'                => 'סטטוס',
     'uninstall'             => 'הסר התקנה',
     'uninstall_failed'      => 'הסרת התקנת התוסף נכשלה',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'התוסף הוסר בהצלחה',
     'version'               => 'גרסה',
 ];

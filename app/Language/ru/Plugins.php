@@ -22,6 +22,7 @@ return [
     'status'                => 'Статус',
     'uninstall'             => 'Удалить',
     'uninstall_failed'      => 'Не удалось удалить плагин',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Плагин успешно удалён',
     'version'               => 'Версия',
 ];

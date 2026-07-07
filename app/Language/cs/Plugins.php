@@ -22,6 +22,7 @@ return [
     'status'                => 'Stav',
     'uninstall'             => 'Odinstalovat',
     'uninstall_failed'      => 'Odinstalace pluginu se nezdařila',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plugin byl úspěšně odinstalován',
     'version'               => 'Verze',
 ];

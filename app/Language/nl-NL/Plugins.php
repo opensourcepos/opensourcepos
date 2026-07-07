@@ -22,6 +22,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Verwijderen',
     'uninstall_failed'      => 'Plugin verwijderen mislukt',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plugin succesvol verwijderd',
     'version'               => 'Versie',
 ];

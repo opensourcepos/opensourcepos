@@ -22,6 +22,7 @@ return [
     'status'                => 'الحالة',
     'uninstall'             => 'إلغاء التثبيت',
     'uninstall_failed'      => 'فشل إلغاء تثبيت الإضافة',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'تم إلغاء تثبيت الإضافة بنجاح',
     'version'               => 'الإصدار',
 ];

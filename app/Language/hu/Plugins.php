@@ -22,6 +22,7 @@ return [
     'status'                => 'Állapot',
     'uninstall'             => 'Eltávolítás',
     'uninstall_failed'      => 'A bővítmény eltávolítása sikertelen',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'A bővítmény sikeresen eltávolítva',
     'version'               => 'Verzió',
 ];

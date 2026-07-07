@@ -933,7 +933,7 @@ function get_controller(): string
     return end($controller_name_parts);
 }
 
-function plugin_headers(): array
+function pluginHeaders(): array
 {
     return [
         ['name'        => lang('Plugins.name'),    'escape' => false],
@@ -943,12 +943,12 @@ function plugin_headers(): array
     ];
 }
 
-function get_plugin_manage_table_headers(): string
+function getPluginManageTableHeaders(): string
 {
-    return transform_headers(plugin_headers(), false, true);
+    return transform_headers(pluginHeaders(), false, true);
 }
 
-function get_plugin_data_row(array $plugin): array
+function getPluginDataRow(array $plugin): array
 {
     $pluginId = $plugin['id'];
 
@@ -965,6 +965,11 @@ function get_plugin_data_row(array $plugin): array
     if ($plugin['has_config'] && $plugin['enabled']) {
         $editHtml .= ' <button class="btn btn-primary btn-xs plugin-config" data-plugin-id="' . esc($pluginId) . '">'
             . '<span class="glyphicon glyphicon-cog"></span> ' . lang('Plugins.configure') . '</button>';
+    }
+
+    if (!$plugin['enabled'] && $plugin['installed']) {
+        $editHtml .= ' <button class="btn btn-danger btn-xs plugin-action" data-action="uninstall" data-plugin-id="' . esc($pluginId) . '">'
+            . '<span class="glyphicon glyphicon-trash"></span> ' . lang('Plugins.uninstall') . '</button>';
     }
 
     return [

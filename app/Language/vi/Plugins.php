@@ -22,6 +22,7 @@ return [
     'status'                => 'Trạng thái',
     'uninstall'             => 'Gỡ cài đặt',
     'uninstall_failed'      => 'Gỡ cài đặt plugin thất bại',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plugin đã được gỡ cài đặt thành công',
     'version'               => 'Phiên bản',
 ];

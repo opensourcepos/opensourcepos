@@ -22,6 +22,7 @@ return [
     'status'                => 'حیثیت',
     'uninstall'             => 'ان انسٹال کریں',
     'uninstall_failed'      => 'پلگ ان ان انسٹال کرنے میں ناکامی',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'پلگ ان کامیابی سے ان انسٹال ہوگیا',
     'version'               => 'ورژن',
 ];

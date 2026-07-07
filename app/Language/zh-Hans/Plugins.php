@@ -22,6 +22,7 @@ return [
     'status'                => '状态',
     'uninstall'             => '卸载',
     'uninstall_failed'      => '卸载插件失败',
+    'uninstall_warning'     => '',
     'uninstalled'           => '插件已成功卸载',
     'version'               => '版本',
 ];

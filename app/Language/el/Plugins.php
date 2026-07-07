@@ -22,6 +22,7 @@ return [
     'status'                => 'Κατάσταση',
     'uninstall'             => 'Απεγκατάσταση',
     'uninstall_failed'      => 'Η απεγκατάσταση της προσθήκης απέτυχε',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Η προσθήκη απεγκαταστάθηκε επιτυχώς',
     'version'               => 'Έκδοση',
 ];

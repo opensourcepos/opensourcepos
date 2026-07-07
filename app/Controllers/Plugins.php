@@ -17,7 +17,7 @@ class Plugins extends Secure_Controller
 
     public function getIndex(): string
     {
-        $data['table_headers'] = get_plugin_manage_table_headers();
+        $data['table_headers'] = getPluginManageTableHeaders();
         return view('plugins/manage', $data);
     }
 
@@ -26,7 +26,7 @@ class Plugins extends Secure_Controller
         $search = strtolower($this->request->getGet('search') ?? '');
         $limit  = (int)($this->request->getGet('limit') ?? 0);
         $offset = (int)($this->request->getGet('offset') ?? 0);
-        $sort   = $this->sanitizeSortColumn(plugin_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'name');
+        $sort   = $this->sanitizeSortColumn(pluginHeaders(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'name');
         $order  = strtolower($this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'asc');
 
         $pluginData = $this->buildPluginDataArray();
@@ -49,7 +49,7 @@ class Plugins extends Secure_Controller
 
         $pluginData = $limit > 0 ? array_slice($pluginData, $offset, $limit) : array_slice($pluginData, $offset);
 
-        return $this->response->setJSON(['total' => $total, 'rows' => array_map('get_plugin_data_row', $pluginData)]);
+        return $this->response->setJSON(['total' => $total, 'rows' => array_map('getPluginDataRow', $pluginData)]);
     }
 
     public function getRow(string $pluginId): ResponseInterface
@@ -66,10 +66,11 @@ class Plugins extends Secure_Controller
             'description' => $plugin->getPluginDescription(),
             'version'     => $plugin->getVersion(),
             'enabled'     => isset($enabled[$pluginId]),
+            'installed'   => $this->pluginManager->isPluginInstalled($pluginId),
             'has_config'  => $plugin->getConfigView() !== null,
         ];
 
-        return $this->response->setJSON(get_plugin_data_row($pluginData));
+        return $this->response->setJSON(getPluginDataRow($pluginData));
     }
 
     private function buildPluginDataArray(): array
@@ -85,6 +86,7 @@ class Plugins extends Secure_Controller
                 'description' => $plugin->getPluginDescription(),
                 'version'     => $plugin->getVersion(),
                 'enabled'     => isset($enabled[$pluginId]),
+                'installed'   => $this->pluginManager->isPluginInstalled($pluginId),
                 'has_config'  => $plugin->getConfigView() !== null,
             ];
         }

@@ -22,6 +22,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Dezinstalare',
     'uninstall_failed'      => 'Dezinstalarea plugin-ului a eșuat',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plugin dezinstalat cu succes',
     'version'               => 'Versiune',
 ];

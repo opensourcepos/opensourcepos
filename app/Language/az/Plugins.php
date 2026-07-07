@@ -22,6 +22,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Sil',
     'uninstall_failed'      => 'Plagini silmək alınmadı',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plagin uğurla silindi',
     'version'               => 'Versiya',
 ];

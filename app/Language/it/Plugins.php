@@ -22,6 +22,7 @@ return [
     'status'                => 'Stato',
     'uninstall'             => 'Disinstalla',
     'uninstall_failed'      => 'Impossibile disinstallare il plugin',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plugin disinstallato con successo',
     'version'               => 'Versione',
 ];

@@ -22,6 +22,7 @@ return [
     'status'                => 'ສະຖານະ',
     'uninstall'             => 'ຖອນການຕິດຕັ້ງ',
     'uninstall_failed'      => 'ການຖອນການຕິດຕັ້ງ Plugin ລົ້ມເຫລວ',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Plugin ຖືກຖອນການຕິດຕັ້ງສຳເລັດ',
     'version'               => 'ເວີຊັນ',
 ];

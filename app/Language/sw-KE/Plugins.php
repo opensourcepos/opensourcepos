@@ -22,6 +22,7 @@ return [
     'status'                => 'Hali',
     'uninstall'             => 'Ondoa',
     'uninstall_failed'      => 'Imeshindwa kuondoa programu-jalizi',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Programu-jalizi imeondolewa',
     'version'               => 'Toleo',
 ];

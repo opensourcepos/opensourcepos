@@ -201,7 +201,7 @@ class PluginManager
             return false;
         }
 
-        if (!$this->configModel->exists($pluginId, 'installed')) {
+        if (!$this->configModel->exists($pluginId, 'installed') || $this->configModel->getValue($pluginId, 'installed') === '0') {
             if (!$plugin->install()) {
                 log_message('error', "Failed to install plugin: {$pluginId}");
                 return false;
@@ -246,9 +246,15 @@ class PluginManager
             return false;
         }
 
-        $this->configModel->deleteAllForPlugin($pluginId);
+        $this->configModel->deleteAllNonControlForPlugin($pluginId);
+        $this->configModel->setValue($pluginId, 'installed', '0', true);
 
         return true;
+    }
+
+    public function isPluginInstalled(string $pluginId): bool
+    {
+        return $this->configModel->getValue($pluginId, 'installed') === '1';
     }
 
     public function getSetting(string $pluginId, string $key, mixed $default = null): mixed

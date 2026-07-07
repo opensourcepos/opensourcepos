@@ -26,6 +26,35 @@ The PluginManager recursively scans `app/Plugins/` directory:
 
 Both formats are supported, but directory plugins allow for self-contained packages with their own components.
 
+## Uninstall
+
+> **Warning:** Uninstall is destructive and cannot be reversed. All plugin data will be permanently deleted.
+
+### Uninstall Steps
+
+1. **Disable the plugin** - The plugin must be disabled before the Uninstall button appears
+2. **Click Uninstall** - Click the Uninstall button in the Plugins admin interface
+3. **Remove files** - Delete the plugin folder from `app/Plugins/` manually
+
+### What Happens During Uninstall
+
+The framework automatically removes all plugin settings from the `ospos_plugin_config` table when uninstall is triggered. Any custom database tables created by the plugin must be dropped inside the plugin's own `uninstall()` method — the goal is to leave the database in exactly the state it was before the plugin was installed.
+
+Implement `uninstall()` in your plugin class to drop any tables your plugin created:
+
+```php
+public function uninstall(): bool
+{
+    $forge = \Config\Database::forge();
+    $forge->dropTable('my_plugin_data', true);
+    return true;
+}
+```
+
+If your plugin created no custom tables, the default `BasePlugin::uninstall()` no-op is sufficient — the framework handles `ospos_plugin_config` cleanup automatically.
+
+> **Note:** Deleting the plugin files from `app/Plugins/` is a separate manual step. The Uninstall button only cleans up database state — it does not remove files from disk.
+
 ## Architecture
 
 ### Plugin Interface

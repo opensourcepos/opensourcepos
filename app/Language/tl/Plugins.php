@@ -22,6 +22,7 @@ return [
     'status'                => 'Katayuan',
     'uninstall'             => 'I-uninstall',
     'uninstall_failed'      => 'Nabigo ang pag-uninstall ng plugin',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Matagumpay na na-uninstall ang plugin',
     'version'               => 'Bersyon',
 ];

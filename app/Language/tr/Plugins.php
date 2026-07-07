@@ -22,6 +22,7 @@ return [
     'status'                => 'Durum',
     'uninstall'             => 'Kaldır',
     'uninstall_failed'      => 'Eklenti kaldırılamadı',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Eklenti başarıyla kaldırıldı',
     'version'               => 'Sürüm',
 ];

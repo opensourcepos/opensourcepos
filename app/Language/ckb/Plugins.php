@@ -22,6 +22,7 @@ return [
     'status'                => 'باری',
     'uninstall'             => 'لادانی دامەزراندن',
     'uninstall_failed'      => 'ناکامی لە لادانی دامەزراندنی پڵەگین',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'پڵەگین بە سەرکەوتوویی لادرا',
     'version'               => 'وەشان',
 ];

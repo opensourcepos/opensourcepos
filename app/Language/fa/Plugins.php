@@ -22,6 +22,7 @@ return [
     'status'                => 'وضعیت',
     'uninstall'             => 'حذف نصب',
     'uninstall_failed'      => 'حذف نصب افزونه ناموفق بود',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'افزونه با موفقیت حذف نصب شد',
     'version'               => 'نسخه',
 ];

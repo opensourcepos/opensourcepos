@@ -22,6 +22,7 @@ return [
     'status'                => 'Կարգավիճակ',
     'uninstall'             => 'Հեռացնել',
     'uninstall_failed'      => 'Հավելման հեռացումը ձախողվեց',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Հավելումը հաջողությամբ հեռացվեց',
     'version'               => 'Տարբերակ',
 ];

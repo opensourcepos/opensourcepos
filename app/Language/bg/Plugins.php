@@ -22,6 +22,7 @@ return [
     'status'                => 'Статус',
     'uninstall'             => 'Деинсталиране',
     'uninstall_failed'      => 'Неуспешно деинсталиране на приставката',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Приставката е деинсталирана успешно',
     'version'               => 'Версия',
 ];

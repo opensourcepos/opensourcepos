@@ -22,6 +22,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Odinstaluj',
     'uninstall_failed'      => 'Nie udało się odinstalować wtyczki',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Wtyczka została pomyślnie odinstalowana',
     'version'               => 'Wersja',
 ];

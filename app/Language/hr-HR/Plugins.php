@@ -22,6 +22,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Deinstaliraj',
     'uninstall_failed'      => 'Deinstaliranje dodatka nije uspjelo',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'Dodatak je uspješno deinstaliran',
     'version'               => 'Verzija',
 ];

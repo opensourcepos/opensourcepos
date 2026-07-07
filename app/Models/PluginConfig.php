@@ -82,6 +82,12 @@ class PluginConfig extends Model
         return $builder->delete(['plugin_id' => $pluginId]);
     }
 
+    public function deleteAllNonControlForPlugin(string $pluginId): bool
+    {
+        $builder = $this->db->table('plugin_config');
+        return $builder->delete(['plugin_id' => $pluginId, 'is_control' => 0]);
+    }
+
     public function batchSave(string $pluginId, array $data): bool
     {
         $this->db->transBegin();

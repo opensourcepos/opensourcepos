@@ -22,6 +22,7 @@ return [
     'status'                => 'நிலை',
     'uninstall'             => 'நிறுவல் நீக்கு',
     'uninstall_failed'      => 'செருகுநிரலை நிறுவல் நீக்க தோல்வி',
+    'uninstall_warning'     => '',
     'uninstalled'           => 'செருகுநிரல் வெற்றிகரமாக நிறுவல் நீக்கப்பட்டது',
     'version'               => 'பதிப்பு',
 ];
