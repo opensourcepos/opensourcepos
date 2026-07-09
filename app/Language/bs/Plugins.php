@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Nije uspjelo omogućavanje dodatka',
     'enabled'               => 'Dodatak je uspješno omogućen',
     'inactive'              => 'Neaktivno',
-    'install'               => '',
+    'install'               => 'Instaliraj',
     'management'            => 'Upravljanje dodacima',
     'name'                  => 'Naziv dodatka',
     'no_config'             => 'Ovaj dodatak nema opcija konfiguracije',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Deinstaliraj',
     'uninstall_failed'      => 'Nije uspjelo deinstaliranje dodatka',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Deinstaliranje ovog dodatka uklonit će sve podatke u bazi podataka vezane za dodatak i ne može se poništiti. Jeste li sigurni da želite deinstalirati?',
     'uninstalled'           => 'Dodatak je uspješno deinstaliran',
     'version'               => 'Verzija',
 ];

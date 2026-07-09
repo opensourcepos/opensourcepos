@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Det gick inte att aktivera plugin',
     'enabled'               => 'Plugin aktiverades',
     'inactive'              => 'Inaktiv',
-    'install'               => '',
+    'install'               => 'Installera',
     'management'            => 'Plugin-hantering',
     'name'                  => 'Plugin-namn',
     'no_config'             => 'Det här pluginet har inga konfigurationsalternativ',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Avinstallera',
     'uninstall_failed'      => 'Det gick inte att avinstallera plugin',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Avinstallation av detta plugin kommer att ta bort alla data i databasen som är kopplade till plugin och kan inte ångras. Är du säker på att du vill avinstallera?',
     'uninstalled'           => 'Plugin avinstallerades',
     'version'               => 'Version',
 ];

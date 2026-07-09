@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Imeshindwa kuwasha programu-jalizi',
     'enabled'               => 'Programu-jalizi imewashwa',
     'inactive'              => 'Haifanyi kazi',
-    'install'               => '',
+    'install'               => 'Sakinisha',
     'management'            => 'Usimamizi wa programu-jalizi',
     'name'                  => 'Jina la programu-jalizi',
     'no_config'             => 'Programu-jalizi hii haina chaguo za usanidi',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Hali',
     'uninstall'             => 'Ondoa',
     'uninstall_failed'      => 'Imeshindwa kuondoa programu-jalizi',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Kuondoa programu-jalizi hii kutafuta data yote kwenye hifadhidata inayohusiana na programu-jalizi na haiwezi kurudishwa. Je, una uhakika unataka kuondoa?',
     'uninstalled'           => 'Programu-jalizi imeondolewa',
     'version'               => 'Toleo',
 ];

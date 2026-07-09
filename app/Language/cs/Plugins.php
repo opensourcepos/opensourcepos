@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Aktivace pluginu se nezdařila',
     'enabled'               => 'Plugin byl úspěšně aktivován',
     'inactive'              => 'Neaktivní',
-    'install'               => '',
+    'install'               => 'Instalovat',
     'management'            => 'Správa pluginů',
     'name'                  => 'Název pluginu',
     'no_config'             => 'Tento plugin nemá žádné možnosti konfigurace',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Stav',
     'uninstall'             => 'Odinstalovat',
     'uninstall_failed'      => 'Odinstalace pluginu se nezdařila',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Odinstalování tohoto pluginu odstraní všechna data v databázi spojená s tímto pluginem a nelze to vrátit zpět. Opravdu chcete plugin odinstalovat?',
     'uninstalled'           => 'Plugin byl úspěšně odinstalován',
     'version'               => 'Verze',
 ];

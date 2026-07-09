@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Plugin inschakelen mislukt',
     'enabled'               => 'Plugin succesvol ingeschakeld',
     'inactive'              => 'Inactief',
-    'install'               => '',
+    'install'               => 'Installeren',
     'management'            => 'Pluginbeheer',
     'name'                  => 'Pluginnaam',
     'no_config'             => 'Deze plugin heeft geen configuratieopties',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Verwijderen',
     'uninstall_failed'      => 'Plugin verwijderen mislukt',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Het verwijderen van deze plugin verwijdert alle gegevens in de database die zijn gekoppeld aan de plugin en kan niet ongedaan worden gemaakt. Weet u zeker dat u wilt verwijderen?',
     'uninstalled'           => 'Plugin succesvol verwijderd',
     'version'               => 'Versie',
 ];

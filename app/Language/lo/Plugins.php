@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'ການເປີດໃຊ້ Plugin ລົ້ມເຫລວ',
     'enabled'               => 'Plugin ຖືກເປີດໃຊ້ສຳເລັດ',
     'inactive'              => 'ປິດໃຊ້',
-    'install'               => '',
+    'install'               => 'ຕິດຕັ້ງ',
     'management'            => 'ການຈັດການ Plugin',
     'name'                  => 'ຊື່ Plugin',
     'no_config'             => 'Plugin ນີ້ບໍ່ມີທາງເລືອກການຕັ້ງຄ່າ',
@@ -23,7 +23,7 @@ return [
     'status'                => 'ສະຖານະ',
     'uninstall'             => 'ຖອນການຕິດຕັ້ງ',
     'uninstall_failed'      => 'ການຖອນການຕິດຕັ້ງ Plugin ລົ້ມເຫລວ',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'ການຖອນການຕິດຕັ້ງ Plugin ນີ້ຈະລຶບຂໍ້ມູນທັງໝົດໃນຖານຂໍ້ມູນທີ່ກ່ຽວຂ້ອງກັບ Plugin ແລະບໍ່ສາມາດຍ້ອນກັບໄດ້. ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການຖອນການຕິດຕັ້ງ?',
     'uninstalled'           => 'Plugin ຖືກຖອນການຕິດຕັ້ງສຳເລັດ',
     'version'               => 'ເວີຊັນ',
 ];

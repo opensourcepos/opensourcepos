@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Deinstallieren',
     'uninstall_failed'      => 'Plugin konnte nicht deinstalliert werden',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Das Deinstallieren dieses Plugins entfernt alle mit dem Plugin verbundenen Daten aus der Datenbank und kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie deinstallieren möchten?',
     'uninstalled'           => 'Plugin erfolgreich deinstalliert',
     'version'               => 'Version',
 ];

@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Plagini aktiv etmək alınmadı',
     'enabled'               => 'Plagin uğurla aktiv edildi',
     'inactive'              => 'Deaktiv',
-    'install'               => '',
+    'install'               => 'Quraşdır',
     'management'            => 'Plagin idarəetməsi',
     'name'                  => 'Plagin adı',
     'no_config'             => 'Bu plaginin konfiqurasiya seçimləri yoxdur',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Sil',
     'uninstall_failed'      => 'Plagini silmək alınmadı',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Bu plagini silmək, verilənlər bazasında plaginlə əlaqəli bütün məlumatları siləcək və geri alına bilməz. Plagini silmək istədiyinizdən əminsiniz?',
     'uninstalled'           => 'Plagin uğurla silindi',
     'version'               => 'Versiya',
 ];

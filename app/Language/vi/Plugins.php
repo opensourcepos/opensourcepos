@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Kích hoạt plugin thất bại',
     'enabled'               => 'Plugin đã được kích hoạt thành công',
     'inactive'              => 'Không hoạt động',
-    'install'               => '',
+    'install'               => 'Cài đặt',
     'management'            => 'Quản lý plugin',
     'name'                  => 'Tên plugin',
     'no_config'             => 'Plugin này không có tùy chọn cấu hình',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Trạng thái',
     'uninstall'             => 'Gỡ cài đặt',
     'uninstall_failed'      => 'Gỡ cài đặt plugin thất bại',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Việc gỡ cài đặt plugin này sẽ xóa tất cả dữ liệu trong cơ sở dữ liệu liên quan đến plugin và không thể hoàn tác. Bạn có chắc chắn muốn gỡ cài đặt không?',
     'uninstalled'           => 'Plugin đã được gỡ cài đặt thành công',
     'version'               => 'Phiên bản',
 ];

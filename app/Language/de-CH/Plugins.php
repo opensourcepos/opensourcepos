@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Plugin konnte nicht aktiviert werden',
     'enabled'               => 'Plugin erfolgreich aktiviert',
     'inactive'              => 'Inaktiv',
-    'install'               => '',
+    'install'               => 'Installieren',
     'management'            => 'Plugin-Verwaltung',
     'name'                  => 'Plugin-Name',
     'no_config'             => 'Dieses Plugin hat keine Konfigurationsoptionen',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Deinstallieren',
     'uninstall_failed'      => 'Plugin konnte nicht deinstalliert werden',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Das Deinstallieren dieses Plugins entfernt alle mit dem Plugin verbundenen Daten aus der Datenbank und kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie deinstallieren möchten?',
     'uninstalled'           => 'Plugin erfolgreich deinstalliert',
     'version'               => 'Version',
 ];

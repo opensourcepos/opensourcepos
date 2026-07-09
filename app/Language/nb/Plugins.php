@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Aktivering av plugin mislyktes',
     'enabled'               => 'Plugin ble aktivert',
     'inactive'              => 'Inaktiv',
-    'install'               => '',
+    'install'               => 'Installer',
     'management'            => 'Plugin-administrasjon',
     'name'                  => 'Plugin-navn',
     'no_config'             => 'Denne plugin har ingen konfigurasjonsalternativer',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Avinstaller',
     'uninstall_failed'      => 'Avinstallering av plugin mislyktes',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Avinstallering av denne plugin vil fjerne alle data i databasen som er knyttet til plugin og kan ikke angres. Er du sikker på at du vil avinstallere?',
     'uninstalled'           => 'Plugin ble avinstallert',
     'version'               => 'Versjon',
 ];

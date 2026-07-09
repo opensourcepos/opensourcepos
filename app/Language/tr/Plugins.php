@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Eklenti etkinleştirilemedi',
     'enabled'               => 'Eklenti başarıyla etkinleştirildi',
     'inactive'              => 'Pasif',
-    'install'               => '',
+    'install'               => 'Kur',
     'management'            => 'Eklenti Yönetimi',
     'name'                  => 'Eklenti Adı',
     'no_config'             => 'Bu eklentinin yapılandırma seçeneği yok',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Durum',
     'uninstall'             => 'Kaldır',
     'uninstall_failed'      => 'Eklenti kaldırılamadı',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Bu eklentiyi kaldırmak, veritabanında eklentiyle ilişkili tüm verileri siler ve geri alınamaz. Kaldırmak istediğinizden emin misiniz?',
     'uninstalled'           => 'Eklenti başarıyla kaldırıldı',
     'version'               => 'Sürüm',
 ];

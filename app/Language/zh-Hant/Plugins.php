@@ -11,7 +11,7 @@ return [
     'enable_failed'         => '啟用插件失敗',
     'enabled'               => '插件已成功啟用',
     'inactive'              => '已停用',
-    'install'               => '',
+    'install'               => '安裝',
     'management'            => '插件管理',
     'name'                  => '插件名稱',
     'no_config'             => '此插件沒有設定選項',
@@ -23,7 +23,7 @@ return [
     'status'                => '狀態',
     'uninstall'             => '解除安裝',
     'uninstall_failed'      => '解除安裝插件失敗',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => '解除安裝此插件將移除資料庫中所有與該插件相關的資料，且無法復原。您確定要解除安裝嗎？',
     'uninstalled'           => '插件已成功解除安裝',
     'version'               => '版本',
 ];

@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Nie udało się włączyć wtyczki',
     'enabled'               => 'Wtyczka została pomyślnie włączona',
     'inactive'              => 'Nieaktywny',
-    'install'               => '',
+    'install'               => 'Zainstaluj',
     'management'            => 'Zarządzanie wtyczkami',
     'name'                  => 'Nazwa wtyczki',
     'no_config'             => 'Ta wtyczka nie ma opcji konfiguracyjnych',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Odinstaluj',
     'uninstall_failed'      => 'Nie udało się odinstalować wtyczki',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Odinstalowanie tej wtyczki spowoduje usunięcie wszystkich danych w bazie danych powiązanych z wtyczką i nie można tego cofnąć. Czy na pewno chcesz odinstalować?',
     'uninstalled'           => 'Wtyczka została pomyślnie odinstalowana',
     'version'               => 'Wersja',
 ];

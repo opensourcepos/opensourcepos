@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Aktivering af plugin mislykkedes',
     'enabled'               => 'Plugin blev aktiveret',
     'inactive'              => 'Inaktiv',
-    'install'               => '',
+    'install'               => 'Installer',
     'management'            => 'Plugin-administration',
     'name'                  => 'Plugin-navn',
     'no_config'             => 'Dette plugin har ingen konfigurationsmuligheder',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Afinstaller',
     'uninstall_failed'      => 'Afinstallation af plugin mislykkedes',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Afinstallation af dette plugin vil fjerne alle data i databasen tilknyttet pluginnet og kan ikke fortrydes. Er du sikker på, at du vil afinstallere?',
     'uninstalled'           => 'Plugin blev afinstalleret',
     'version'               => 'Version',
 ];

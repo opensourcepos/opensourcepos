@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Gagal mengaktifkan plugin',
     'enabled'               => 'Plugin berhasil diaktifkan',
     'inactive'              => 'Nonaktif',
-    'install'               => '',
+    'install'               => 'Pasang',
     'management'            => 'Manajemen Plugin',
     'name'                  => 'Nama Plugin',
     'no_config'             => 'Plugin ini tidak memiliki opsi konfigurasi',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Hapus instalasi',
     'uninstall_failed'      => 'Gagal menghapus instalasi plugin',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Menghapus instalasi plugin ini akan menghapus semua data di database yang terkait dengan plugin dan tidak dapat dipulihkan. Apakah Anda yakin ingin menghapus instalasinya?',
     'uninstalled'           => 'Plugin berhasil dihapus instalasinya',
     'version'               => 'Versi',
 ];

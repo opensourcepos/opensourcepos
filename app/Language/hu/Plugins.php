@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'A bővítmény engedélyezése sikertelen',
     'enabled'               => 'A bővítmény sikeresen engedélyezve',
     'inactive'              => 'Inaktív',
-    'install'               => '',
+    'install'               => 'Telepítés',
     'management'            => 'Bővítménykezelés',
     'name'                  => 'Bővítmény neve',
     'no_config'             => 'Ennek a bővítménynek nincsenek konfigurációs lehetőségei',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Állapot',
     'uninstall'             => 'Eltávolítás',
     'uninstall_failed'      => 'A bővítmény eltávolítása sikertelen',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'A bővítmény eltávolítása törli az adatbázisból a bővítményhez tartozó összes adatot, és nem vonható vissza. Biztosan el szeretné távolítani?',
     'uninstalled'           => 'A bővítmény sikeresen eltávolítva',
     'version'               => 'Verzió',
 ];

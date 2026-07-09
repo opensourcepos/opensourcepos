@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Nabigo ang pag-enable ng plugin',
     'enabled'               => 'Matagumpay na na-enable ang plugin',
     'inactive'              => 'Hindi Aktibo',
-    'install'               => '',
+    'install'               => 'I-install',
     'management'            => 'Pamamahala ng Plugin',
     'name'                  => 'Pangalan ng Plugin',
     'no_config'             => 'Walang mga opsyon sa configuration ang plugin na ito',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Katayuan',
     'uninstall'             => 'I-uninstall',
     'uninstall_failed'      => 'Nabigo ang pag-uninstall ng plugin',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Ang pag-uninstall ng plugin na ito ay magtatanggal ng lahat ng data sa database na nauugnay sa plugin at hindi maaaring baligtarin. Sigurado ka bang gusto mong i-uninstall?',
     'uninstalled'           => 'Matagumpay na na-uninstall ang plugin',
     'version'               => 'Bersyon',
 ];

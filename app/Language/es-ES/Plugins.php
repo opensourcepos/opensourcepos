@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Error al habilitar el plugin',
     'enabled'               => 'Plugin habilitado correctamente',
     'inactive'              => 'Inactivo',
-    'install'               => '',
+    'install'               => 'Instalar',
     'management'            => 'Gestión de plugins',
     'name'                  => 'Nombre del plugin',
     'no_config'             => 'Este plugin no tiene opciones de configuración',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Estado',
     'uninstall'             => 'Desinstalar',
     'uninstall_failed'      => 'Error al desinstalar el plugin',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Desinstalar este plugin eliminará todos los datos de la base de datos asociados con el plugin y no se puede revertir. ¿Está seguro de que desea desinstalar?',
     'uninstalled'           => 'Plugin desinstalado correctamente',
     'version'               => 'Versión',
 ];

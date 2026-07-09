@@ -11,7 +11,7 @@ return [
     'enable_failed'         => 'Activarea plugin-ului a eșuat',
     'enabled'               => 'Plugin activat cu succes',
     'inactive'              => 'Inactiv',
-    'install'               => '',
+    'install'               => 'Instalare',
     'management'            => 'Gestionarea plugin-urilor',
     'name'                  => 'Numele plugin-ului',
     'no_config'             => 'Acest plugin nu are opțiuni de configurare',
@@ -23,7 +23,7 @@ return [
     'status'                => 'Status',
     'uninstall'             => 'Dezinstalare',
     'uninstall_failed'      => 'Dezinstalarea plugin-ului a eșuat',
-    'uninstall_warning'     => '',
+    'uninstall_warning'     => 'Dezinstalarea acestui plugin va elimina toate datele din baza de date asociate cu plugin-ul și nu poate fi anulată. Sigur doriți să dezinstalați?',
     'uninstalled'           => 'Plugin dezinstalat cu succes',
     'version'               => 'Versiune',
 ];
