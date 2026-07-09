@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Activarea plugin-ului a eșuat',
     'enabled'               => 'Plugin activat cu succes',
     'inactive'              => 'Inactiv',
+    'install'               => '',
     'management'            => 'Gestionarea plugin-urilor',
     'name'                  => 'Numele plugin-ului',
     'no_config'             => 'Acest plugin nu are opțiuni de configurare',

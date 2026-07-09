@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Gagal mengaktifkan plugin',
     'enabled'               => 'Plugin berhasil diaktifkan',
     'inactive'              => 'Nonaktif',
+    'install'               => '',
     'management'            => 'Manajemen Plugin',
     'name'                  => 'Nama Plugin',
     'no_config'             => 'Plugin ini tidak memiliki opsi konfigurasi',

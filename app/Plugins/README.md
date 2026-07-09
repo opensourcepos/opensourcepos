@@ -125,14 +125,15 @@ The `PluginManager` class handles:
 
 OSPOS fires these events that plugins can listen to:
 
-| Event              | Arguments                          | Fired when                                              |
-|--------------------|------------------------------------|---------------------------------------------------------|
-| `customer_loaded`  | `int $customerId`                  | Customer form view is rendered (`Customers::getView()`) |
-| `customer_saved`   | `array $customerIds`               | Customer created/updated via form save or CSV import    |
-| `customer_deleted` | `int $personId, string $email`     | Customer deleted                                        |
-| `item_saved`       | `array $itemIds`                   | Item created/updated via form save or CSV import        |
-| `sale_completed`      | `int $saleIdNum, string $saleType` | Sale finalized and receipt rendered                     |
-| `receiving_complete` | `int $receivingId, string $mode`   | Receiving finalized and items added to inventory        |
+| Event                 | Arguments                                                         | Fired when                                              |
+|-----------------------|-------------------------------------------------------------------|---------------------------------------------------------|
+| `customer_loaded`     | `int $customerId, array $pluginData = []`                         | Customer form view is rendered (`Customers::getView()`) |
+| `customer_saved`      | `array $customerIds, array $pluginData = []`                      | Customer created/updated via form save or CSV import    |
+| `customer_deleted`    | `int $personId, string $email, array $pluginData = []`            | Customer deleted                                        |
+| `item_saved`          | `array $itemIds, array $pluginData = []`                          | Item created/updated via form save or CSV import        |
+| `item_deleted`        | `array $itemIds, array $pluginData = []`                          | Item(s) deleted                                         |
+| `sale_completed`      | `int $saleIdNum, string $saleType, array $pluginData = []`        | Sale finalized and receipt rendered                     |
+| `receiving_completed` | `int $receivingId, string $mode, array $pluginData = []`          | Receiving finalized and items added to inventory        |
 
 > **Note:** `customer_saved` and `item_saved` always receive an array of IDs.
 
@@ -218,10 +219,12 @@ pluginContentExists(string $section): bool
 
 These hook points are currently defined in core views:
 
-| Hook (event key)         | View file                          | Data passed                       | Usage                                          |
-|--------------------------|------------------------------------|-----------------------------------|------------------------------------------------|
-| `view:customer_tab_nav`  | `app/Views/customers/form.php:28`  | `['customer' => $person_info]`    | Add `<li>` tab navigation entries to customer form  |
-| `view:customer_tab_panels` | `app/Views/customers/form.php:326` | `['customer' => $person_info]` | Add `<div>` tab panel content to customer form |
+| Hook (event key)              | View file                               | Data passed                       | Usage                                               |
+|-------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------------------------|
+| `view:customer_tab_nav`       | `app/Views/customers/form.php:28`       | `['customer' => $person_info]`    | Add `<li>` tab navigation entries to customer form  |
+| `view:customer_tab_panels`    | `app/Views/customers/form.php:326`      | `['customer' => $person_info]`    | Add `<div>` tab panel content to customer form      |
+| `view:sales_receipt_buttons`  | `app/Views/sales/receipt.php:51`        | `['saleId' => $sale_id_num]`      | Add buttons to the receipt view                     |
+| `view:sales_register_buttons` | `app/Views/sales/register.php`          | *(none)*                          | Add UI controls to the register checkout area       |
 
 ### Benefits
 
@@ -230,6 +233,136 @@ These hook points are currently defined in core views:
 - **Data Access**: Pass context (sale, customer, etc.) to plugin views
 - **Multiple Plugins**: Multiple plugins can hook the same location
 - **Clean Separation**: Core views remain unmodified
+
+## Passing Data to Plugins
+
+Plugins sometimes need data from the user's browser — a toggle, a dropdown selection, a text input — that was injected into a core view via a view hook. Since that UI element lives outside the core form and outside the controller, getting that data to the event listener requires a deliberate mechanism. OSPOS provides two patterns depending on the use case.
+
+### AJAX Calls to Plugin Controllers
+
+For interactions that happen independently of a form submission (e.g. a button click, a real-time toggle that should persist), the plugin injects a view partial that makes its own AJAX call directly to the plugin controller:
+
+```php
+// In plugin view partial (e.g. Views/my_button.php)
+<div class="btn btn-info btn-sm" id="my_plugin_action_button">Do Thing</div>
+<script>
+$('#my_plugin_action_button').click(function() {
+    $.ajax({
+        type: 'POST',
+        url: '<?= site_url("plugins/myplugin/doThing") ?>',
+        dataType: 'json'
+    });
+});
+</script>
+```
+
+The plugin controller handles it:
+
+```php
+// In Controllers/MyPluginController.php
+public function postDoThing(): ResponseInterface
+{
+    // ... plugin logic
+    return $this->response->setJSON(['success' => true]);
+}
+```
+
+Define the route in `Config/Routes.php`:
+
+```php
+$routes->post('plugins/myplugin/doThing', '\App\Plugins\MyPlugin\Controllers\MyPluginController::postDoThing');
+```
+
+Use this pattern when the action is self-contained and does not need to modify the outcome of the core form submission.
+
+### Plugin Data via Form Submission (`$pluginData`)
+
+When a plugin injects a UI control (checkbox, input, etc.) that should influence what the plugin does *at the moment a core form is submitted*, use the `$pluginData` mechanism. This avoids modifying core controller code and keeps the contract between core and plugins clean.
+
+#### How It Works
+
+1. **Core view** marks its form with `data-plugin-form`:
+
+```php
+<?= form_open("sales/complete", ['id' => 'buttons_form', 'data-plugin-form' => 'true']) ?>
+```
+
+2. **Core JS** (`plugin_data_helper.js`, bundled globally) listens for that form's submit event. It sweeps the entire page for any input with `data-plugin-field`, serializes their values to JSON, and injects a hidden `plugin_data` field into the form before it posts.
+
+3. **Core controller** reads `plugin_data` from POST and passes it as the final argument to `Events::trigger()`:
+
+```php
+$pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+Events::trigger('sale_completed', $data['sale_id_num'], $sale_type, $pluginData);
+```
+
+4. **Plugin listener** receives `$pluginData` and reads its own namespaced key:
+
+```php
+public function onSaleCompleted(int $saleId, int $saleType, array $pluginData = []): void
+{
+    $sendToApi = $pluginData['myplugin_send_to_api'] ?? true;
+    if (!$sendToApi) {
+        return;
+    }
+    // ... proceed
+}
+```
+
+#### Naming Convention — Namespaced Keys
+
+All `data-plugin-field` values **must** be namespaced using the plugin ID as a prefix:
+
+```
+{pluginId}_{variableName}
+```
+
+Examples: `caspos_send_to_caspos`, `mailchimp_sync_customer`, `mystore_include_tax`.
+
+This prevents key collisions when multiple plugins inject fields into the same view. The core knows nothing about the key names — it passes the entire object through unchanged.
+
+#### Plugin View Partial
+
+The plugin's injected partial only needs the `data-plugin-field` attribute — no JavaScript required:
+
+```php
+// Views/my_control.php
+<div class="col-xs-6">
+    <label for="myplugin_send_to_api" class="control-label checkbox">
+        <input type="checkbox"
+               name="myplugin_send_to_api"
+               id="myplugin_send_to_api"
+               data-plugin-field="myplugin_send_to_api"
+               value="1"
+               checked>
+        <?= lang('MyPlugin.send_to_api') ?>
+    </label>
+</div>
+```
+
+The `plugin_data_helper.js` finds the element by `data-plugin-field` regardless of where it sits in the DOM — inside or outside the form, in any injected partial.
+
+#### Thin Contract
+
+The `$pluginData` array is intentionally opaque to the core. The core passes it through without inspecting or validating its contents. This means:
+
+- **Only pass what the listener needs at decision time** — not full objects, not IDs the plugin can look up itself from `$saleId`.
+- **Booleans and simple scalars only** — flags, selections, short strings. Avoid large payloads.
+- **Default to the safe/enabled behavior** — use `$pluginData['key'] ?? true` so that if the field is absent (e.g. the view hook is not registered, or the plugin is toggled off), the plugin behaves as if enabled rather than silently skipping.
+
+#### Which Events Support `$pluginData`
+
+All events pass `$pluginData`. For events fired from a form marked `data-plugin-form`, the array is populated from the POST body. For events fired from AJAX delete calls or GET requests, it is always `[]`.
+
+| Event                 | Form                       | View                                          | POST populated |
+|-----------------------|----------------------------|-----------------------------------------------|----------------|
+| `sale_completed`      | `#buttons_form`            | `app/Views/sales/register.php`                | Yes            |
+| `receiving_completed` | `#finish_receiving_form`   | `app/Views/receivings/receiving.php`          | Yes            |
+| `item_saved`          | `#item_form` / `#csv_form` | `app/Views/items/form.php` / `form_csv_import.php` | Yes       |
+| `customer_saved`      | `#customer_form` / `#csv_form` | `app/Views/customers/form.php` / `form_csv_import.php` | Yes  |
+| `customer_loaded`     | *(GET request)*            | —                                             | No (always `[]`) |
+| `item_deleted`        | *(AJAX, no form)*          | —                                             | No (always `[]`) |
+| `customer_deleted`    | *(AJAX, no form)*          | —                                             | No (always `[]`) |
 
 ## Creating a Plugin
 

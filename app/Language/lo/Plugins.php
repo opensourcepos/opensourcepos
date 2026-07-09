@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'ການເປີດໃຊ້ Plugin ລົ້ມເຫລວ',
     'enabled'               => 'Plugin ຖືກເປີດໃຊ້ສຳເລັດ',
     'inactive'              => 'ປິດໃຊ້',
+    'install'               => '',
     'management'            => 'ການຈັດການ Plugin',
     'name'                  => 'ຊື່ Plugin',
     'no_config'             => 'Plugin ນີ້ບໍ່ມີທາງເລືອກການຕັ້ງຄ່າ',

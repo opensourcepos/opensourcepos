@@ -14,7 +14,7 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'customer_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'customer_form', 'class' => 'form-horizontal', 'data-plugin-form' => 'true']) ?>
 
     <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
         <li class="active" role="presentation">

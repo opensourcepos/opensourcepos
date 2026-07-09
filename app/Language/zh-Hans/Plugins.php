@@ -11,6 +11,7 @@ return [
     'enable_failed'         => '启用插件失败',
     'enabled'               => '插件已成功启用',
     'inactive'              => '已禁用',
+    'install'               => '',
     'management'            => '插件管理',
     'name'                  => '插件名称',
     'no_config'             => '此插件没有配置选项',

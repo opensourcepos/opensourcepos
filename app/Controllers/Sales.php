@@ -917,7 +917,8 @@ class Sales extends Secure_Controller
                 }
                 $data['receipt_template_view'] = $receipt_template;
 
-                Events::trigger('sale_completed', $data['sale_id_num'], $sale_type);
+                $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                Events::trigger('sale_completed', $data['sale_id_num'], $sale_type, $pluginData);
 
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);

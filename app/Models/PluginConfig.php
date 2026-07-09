@@ -70,18 +70,6 @@ class PluginConfig extends Model
         return $settings;
     }
 
-    public function deleteKey(string $pluginId, string $key): bool
-    {
-        $builder = $this->db->table('plugin_config');
-        return $builder->delete(['plugin_id' => $pluginId, 'key' => $key]);
-    }
-
-    public function deleteAllForPlugin(string $pluginId): bool
-    {
-        $builder = $this->db->table('plugin_config');
-        return $builder->delete(['plugin_id' => $pluginId]);
-    }
-
     public function deleteAllNonControlForPlugin(string $pluginId): bool
     {
         $builder = $this->db->table('plugin_config');

@@ -960,7 +960,7 @@ function getPluginDataRow(array $plugin): array
         ? '<button class="btn btn-warning btn-xs plugin-action" data-action="disable" data-plugin-id="' . esc($pluginId) . '">'
           . '<span class="glyphicon glyphicon-pause"></span> ' . lang('Plugins.disable') . '</button>'
         : '<button class="btn btn-success btn-xs plugin-action" data-action="enable" data-plugin-id="' . esc($pluginId) . '">'
-          . '<span class="glyphicon glyphicon-play"></span> ' . lang('Plugins.enable') . '</button>';
+          . '<span class="glyphicon glyphicon-play"></span> ' . lang($plugin['installed'] ? 'Plugins.enable' : 'Plugins.install') . '</button>';
 
     if ($plugin['has_config'] && $plugin['enabled']) {
         $editHtml .= ' <button class="btn btn-primary btn-xs plugin-config" data-plugin-id="' . esc($pluginId) . '">'

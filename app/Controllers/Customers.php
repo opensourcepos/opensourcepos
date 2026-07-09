@@ -180,7 +180,7 @@ class Customers extends Persons
             $data['stats'] = $stats;
         }
 
-        Events::trigger('customer_loaded', $customerId);
+        Events::trigger('customer_loaded', $customerId, []);
 
         return view("customers/form", $data);
     }
@@ -232,7 +232,8 @@ class Customers extends Persons
         ];
 
         if ($this->customer->saveCustomer($personData, $customerData, $customerId)) {
-            Events::trigger('customer_saved', [$customerData['person_id']]);
+            $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+            Events::trigger('customer_saved', [$customerData['person_id']], $pluginData);
 
             // New customer
             if ($customerId == NEW_ENTRY) {
@@ -298,7 +299,8 @@ class Customers extends Persons
         $count = 0;
         foreach ($customers->getResult() as $customer) {
             if ($this->customer->delete($customer->person_id)) {
-                Events::trigger('customer_deleted', (int)$customer->person_id, (string)$customer->email);
+                $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                Events::trigger('customer_deleted', (int)$customer->person_id, (string)$customer->email, $pluginData);
                 $count++;
             }
         }
@@ -423,7 +425,8 @@ class Customers extends Persons
 
                     return $this->response->setJSON(['success' => false, 'message' => $message]);
                 } else {
-                    Events::trigger('customer_saved', $customerIds);
+                    $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                    Events::trigger('customer_saved', $customerIds, $pluginData);
 
                     return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_success')]);
                 }

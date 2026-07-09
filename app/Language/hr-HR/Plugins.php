@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Omogućavanje dodatka nije uspjelo',
     'enabled'               => 'Dodatak je uspješno omogućen',
     'inactive'              => 'Neaktivno',
+    'install'               => '',
     'management'            => 'Upravljanje dodacima',
     'name'                  => 'Naziv dodatka',
     'no_config'             => 'Ovaj dodatak nema opcija konfiguracije',

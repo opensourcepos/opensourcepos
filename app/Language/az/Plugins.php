@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Plagini aktiv etmək alınmadı',
     'enabled'               => 'Plagin uğurla aktiv edildi',
     'inactive'              => 'Deaktiv',
+    'install'               => '',
     'management'            => 'Plagin idarəetməsi',
     'name'                  => 'Plagin adı',
     'no_config'             => 'Bu plaginin konfiqurasiya seçimləri yoxdur',

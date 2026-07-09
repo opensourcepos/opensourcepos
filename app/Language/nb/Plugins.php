@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Aktivering av plugin mislyktes',
     'enabled'               => 'Plugin ble aktivert',
     'inactive'              => 'Inaktiv',
+    'install'               => '',
     'management'            => 'Plugin-administrasjon',
     'name'                  => 'Plugin-navn',
     'no_config'             => 'Denne plugin har ingen konfigurasjonsalternativer',

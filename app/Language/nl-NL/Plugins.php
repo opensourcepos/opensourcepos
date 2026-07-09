@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Plugin inschakelen mislukt',
     'enabled'               => 'Plugin succesvol ingeschakeld',
     'inactive'              => 'Inactief',
+    'install'               => '',
     'management'            => 'Pluginbeheer',
     'name'                  => 'Pluginnaam',
     'no_config'             => 'Deze plugin heeft geen configuratieopties',

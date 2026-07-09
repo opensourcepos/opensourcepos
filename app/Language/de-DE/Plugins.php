@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Plugin konnte nicht aktiviert werden',
     'enabled'               => 'Plugin erfolgreich aktiviert',
     'inactive'              => 'Inaktiv',
+    'install'               => 'Installieren',
     'management'            => 'Plugin-Verwaltung',
     'name'                  => 'Plugin-Name',
     'no_config'             => 'Dieses Plugin hat keine Konfigurationsoptionen',

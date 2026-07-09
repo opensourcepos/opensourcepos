@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Nabigo ang pag-enable ng plugin',
     'enabled'               => 'Matagumpay na na-enable ang plugin',
     'inactive'              => 'Hindi Aktibo',
+    'install'               => '',
     'management'            => 'Pamamahala ng Plugin',
     'name'                  => 'Pangalan ng Plugin',
     'no_config'             => 'Walang mga opsyon sa configuration ang plugin na ito',

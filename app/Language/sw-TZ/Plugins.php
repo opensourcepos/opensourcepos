@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Imeshindwa kuwasha programu-jalizi',
     'enabled'               => 'Programu-jalizi imewashwa',
     'inactive'              => 'Haifanyi kazi',
+    'install'               => '',
     'management'            => 'Usimamizi wa programu-jalizi',
     'name'                  => 'Jina la programu-jalizi',
     'no_config'             => 'Programu-jalizi hii haina chaguo za usanidi',

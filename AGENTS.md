@@ -78,12 +78,24 @@ tests/              # PHPUnit test suite
 
 ### Plugin System
 
+**MANDATORY: Read `app/Plugins/README.md` before doing any work related to plugins.** It is the authoritative reference for plugin architecture, event contracts, view hook points, the `$pluginData` pass-through mechanism, language file conventions, migrations, and LICENSE requirements.
+
 Plugins live in `app/Plugins/<PluginName>/` and are auto-discovered by `PluginManager`. Each plugin:
 - Extends `BasePlugin` or implements `PluginInterface`
-- Registers event hooks (e.g., `item_sale`, `customer_saved`, view hooks like `customer_tabs`)
-- Can include its own `Views/`, `Models/`, `Controllers/`, and `Language/` subdirectories
+- Registers event hooks in `registerEvents()` using `Events::on()`
+- Can include its own `Views/`, `Models/`, `Controllers/`, `Language/`, and `Migrations/` subdirectories
 - Configuration stored in `ospos_plugin_config` table
-- See `app/Plugins/README.md` for plugin structure, event hooks, and LICENSE requirements
+- Plugin-specific routes go in `Config/Routes.php` within the plugin directory
+
+#### View Hook Points
+
+Core views inject plugin UI using `pluginContent('hook_name', $data)`. All currently defined hook points are listed in `app/Plugins/README.md`. When adding a new hook point to a core view:
+1. Call `pluginContent('your_hook_name', $data)` at the injection point
+2. If the hook is inside or adjacent to a form whose controller fires `Events::trigger()`, add `data-plugin-form="true"` to that form tag so `plugin_data_helper.js` serializes any `[data-plugin-field]` inputs into the POST
+
+#### Plugin Data Pass-through (`$pluginData`)
+
+All `Events::trigger()` calls in core controllers pass a final `array $pluginData` argument decoded from the POST field `plugin_data`. Plugin listeners declare `array $pluginData = []` as the last parameter. Plugin-injected inputs use `data-plugin-field="pluginid_varname"` (namespaced to the plugin ID) — the core JS collects and serializes them automatically. Never add plugin-specific logic to core controllers to read individual keys; the entire opaque array is forwarded as-is.
 
 ### Frontend Build
 

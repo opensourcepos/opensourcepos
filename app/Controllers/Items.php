@@ -744,7 +744,8 @@ class Items extends Secure_Controller
             $success = $success && $this->saveItemAttributes($itemId);
 
             if ($success && $uploadSuccess) {
-                Events::trigger('item_saved', [$itemId]);
+                $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                Events::trigger('item_saved', [$itemId], $pluginData);
 
                 $message = lang('Items.successful_' . ($newItem ? 'adding' : 'updating')) . ' ' . $itemData['name'];
                 return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $itemId]);
@@ -940,7 +941,8 @@ class Items extends Secure_Controller
         $items_to_delete = $this->request->getPost('ids');
 
         if ($this->item->delete_list($items_to_delete)) {
-            Events::trigger('item_deleted', $items_to_delete);
+            $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+            Events::trigger('item_deleted', $items_to_delete, $pluginData);
             $message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
             return $this->response->setJSON(['success' => true, 'message' => $message]);
         } else {
@@ -1100,7 +1102,8 @@ class Items extends Secure_Controller
                         $db->transCommit();
                         $this->attribute->deleteOrphanedValues();
 
-                        Events::trigger('item_saved', $itemIds);
+                        $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                        Events::trigger('item_saved', $itemIds, $pluginData);
 
                         return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }

@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Kích hoạt plugin thất bại',
     'enabled'               => 'Plugin đã được kích hoạt thành công',
     'inactive'              => 'Không hoạt động',
+    'install'               => '',
     'management'            => 'Quản lý plugin',
     'name'                  => 'Tên plugin',
     'no_config'             => 'Plugin này không có tùy chọn cấu hình',

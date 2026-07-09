@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Aktivace pluginu se nezdařila',
     'enabled'               => 'Plugin byl úspěšně aktivován',
     'inactive'              => 'Neaktivní',
+    'install'               => '',
     'management'            => 'Správa pluginů',
     'name'                  => 'Název pluginu',
     'no_config'             => 'Tento plugin nemá žádné možnosti konfigurace',

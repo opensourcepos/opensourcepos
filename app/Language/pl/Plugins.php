@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Nie udało się włączyć wtyczki',
     'enabled'               => 'Wtyczka została pomyślnie włączona',
     'inactive'              => 'Nieaktywny',
+    'install'               => '',
     'management'            => 'Zarządzanie wtyczkami',
     'name'                  => 'Nazwa wtyczki',
     'no_config'             => 'Ta wtyczka nie ma opcji konfiguracyjnych',

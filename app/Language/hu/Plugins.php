@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'A bővítmény engedélyezése sikertelen',
     'enabled'               => 'A bővítmény sikeresen engedélyezve',
     'inactive'              => 'Inaktív',
+    'install'               => '',
     'management'            => 'Bővítménykezelés',
     'name'                  => 'Bővítmény neve',
     'no_config'             => 'Ennek a bővítménynek nincsenek konfigurációs lehetőségei',

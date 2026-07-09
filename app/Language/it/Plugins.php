@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Impossibile abilitare il plugin',
     'enabled'               => 'Plugin abilitato con successo',
     'inactive'              => 'Inattivo',
+    'install'               => '',
     'management'            => 'Gestione plugin',
     'name'                  => 'Nome plugin',
     'no_config'             => 'Questo plugin non ha opzioni di configurazione',

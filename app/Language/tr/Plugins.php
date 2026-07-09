@@ -11,6 +11,7 @@ return [
     'enable_failed'         => 'Eklenti etkinleştirilemedi',
     'enabled'               => 'Eklenti başarıyla etkinleştirildi',
     'inactive'              => 'Pasif',
+    'install'               => '',
     'management'            => 'Eklenti Yönetimi',
     'name'                  => 'Eklenti Adı',
     'no_config'             => 'Bu eklentinin yapılandırma seçeneği yok',
