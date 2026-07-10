@@ -1485,7 +1485,7 @@ class Sales extends Secure_Controller
         if ($payment_type_new_check != PAYMENT_TYPE_UNASSIGNED && !empty($payment_amount_new_check)
             && in_array($payment_type_new_check, get_reference_code_payment_types())) {
             $min = (int)($this->config['payment_reference_code_min'] ?? 3);
-            $max = (int)($this->config['payment_reference_code_max'] ?? 20);
+            $max = (int)($this->config['payment_reference_code_max'] ?? 40);
             $rules = [
                 'reference_code_new' => "trim|required|alpha_numeric|min_length[$min]|max_length[$max]",
             ];

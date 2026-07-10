@@ -188,8 +188,8 @@
                         </div>
                         <div class="col-xs-6">
                             <span class="control-label"><?= lang('Config.payment_reference_code_length_max_label') ?>: </span>
-                            <span id="payment_reference_code_max_display"><?= $config['payment_reference_code_max'] ?? 20 ?></span>
-                            <?= form_input(['type' => 'hidden', 'name' => 'payment_reference_code_max', 'id' => 'payment_reference_code_max', 'value' => $config['payment_reference_code_max'] ?? 20]) ?>
+                            <span id="payment_reference_code_max_display"><?= $config['payment_reference_code_max'] ?? 40 ?></span>
+                            <?= form_input(['type' => 'hidden', 'name' => 'payment_reference_code_max', 'id' => 'payment_reference_code_max', 'value' => $config['payment_reference_code_max'] ?? 40]) ?>
                         </div>
                     </div>
                 </div>
