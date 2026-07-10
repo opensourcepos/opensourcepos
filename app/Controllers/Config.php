@@ -474,6 +474,15 @@ class Config extends Secure_Controller
      */
     public function postSaveLocale(): ResponseInterface
     {
+        $rules = [
+            'payment_reference_code_min' => 'required|integer|greater_than[0]',
+            'payment_reference_code_max' => 'required|integer|greater_than_equal_to[payment_reference_code_min]',
+        ];
+        if (!$this->validate($rules)) {
+            $errors = $this->validator->getErrors();
+            return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
+        }
+
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
         $batch_save_data = [

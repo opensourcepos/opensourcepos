@@ -319,7 +319,7 @@
         $('#payment_reference_code_slider').slider({
             range: true,
             min: 3,
-            max: 20,
+            max: 40,
             step: 1,
             values: [
                 parseInt($('#payment_reference_code_min').val()),

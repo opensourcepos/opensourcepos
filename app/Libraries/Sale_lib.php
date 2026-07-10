@@ -1388,7 +1388,7 @@ class Sale_lib
 
         // Now load payments
         foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
-            $this->addPayment($row->payment_type, $row->payment_amount, $row->cash_adjustment);
+            $this->addPayment($row->payment_type, $row->payment_amount, $row->reference_code ?? null, $row->cash_adjustment);
         }
 
         $this->set_customer($this->sale->get_customer($sale_id)->person_id);
