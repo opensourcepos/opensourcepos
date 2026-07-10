@@ -446,27 +446,38 @@ class Config extends Secure_Controller
      */
     public function postSaveLocale(): ResponseInterface
     {
+        $rules = [
+            'payment_reference_code_min' => 'required|integer|greater_than[0]',
+            'payment_reference_code_max' => 'required|integer|greater_than_equal_to[payment_reference_code_min]',
+        ];
+        if (!$this->validate($rules)) {
+            $errors = $this->validator->getErrors();
+            return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
+        }
+
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
         $batch_save_data = [
-            'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
-            'currency_code'         => $this->request->getPost('currency_code'),
-            'language_code'         => $exploded[0],
-            'language'              => $exploded[1],
-            'timezone'              => $this->request->getPost('timezone'),
-            'dateformat'            => $this->request->getPost('dateformat'),
-            'timeformat'            => $this->request->getPost('timeformat'),
-            'thousands_separator'   => $this->request->getPost('thousands_separator') != null,
-            'number_locale'         => $this->request->getPost('number_locale'),
-            'currency_decimals'     => $this->request->getPost('currency_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'tax_decimals'          => $this->request->getPost('tax_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'quantity_decimals'     => $this->request->getPost('quantity_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'country_codes'         => htmlspecialchars($this->request->getPost('country_codes')),
-            'payment_options_order' => $this->request->getPost('payment_options_order'),
-            'date_or_time_format'   => $this->request->getPost('date_or_time_format') != null,
-            'cash_decimals'         => $this->request->getPost('cash_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'cash_rounding_code'    => $this->request->getPost('cash_rounding_code'),
-            'financial_year'        => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
+            'currency_symbol'            => htmlspecialchars($currency_symbol ?? ''),
+            'currency_code'              => $this->request->getPost('currency_code'),
+            'language_code'              => $exploded[0],
+            'language'                   => $exploded[1],
+            'timezone'                   => $this->request->getPost('timezone'),
+            'dateformat'                 => $this->request->getPost('dateformat'),
+            'timeformat'                 => $this->request->getPost('timeformat'),
+            'thousands_separator'        => $this->request->getPost('thousands_separator') != null,
+            'number_locale'              => $this->request->getPost('number_locale'),
+            'currency_decimals'          => $this->request->getPost('currency_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'tax_decimals'               => $this->request->getPost('tax_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'quantity_decimals'          => $this->request->getPost('quantity_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'country_codes'              => htmlspecialchars($this->request->getPost('country_codes')),
+            'payment_options_order'      => $this->request->getPost('payment_options_order'),
+            'payment_reference_code_min' => $this->request->getPost('payment_reference_code_min', FILTER_SANITIZE_NUMBER_INT),
+            'payment_reference_code_max' => $this->request->getPost('payment_reference_code_max', FILTER_SANITIZE_NUMBER_INT),
+            'date_or_time_format'        => $this->request->getPost('date_or_time_format') != null,
+            'cash_decimals'              => $this->request->getPost('cash_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'cash_rounding_code'         => $this->request->getPost('cash_rounding_code'),
+            'financial_year'             => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);

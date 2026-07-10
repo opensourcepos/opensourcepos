@@ -176,6 +176,25 @@
                 </div>
             </div>
 
+            <div class="form-group form-group-sm" style="display:flex; align-items:center">
+                <?= form_label(lang('Config.payment_reference_code_length_limits'), 'payment_reference_code_length', ['class' => 'control-label col-xs-2', 'style' => 'padding-top:0; line-height:1.4; margin-top:-8px']) ?>
+                <div class="col-xs-4">
+                    <div id="payment_reference_code_slider"></div>
+                    <div class="row" style="margin-top:6px">
+                        <div class="col-xs-6">
+                            <span class="control-label"><?= lang('Config.payment_reference_code_length_min_label') ?>: </span>
+                            <span id="payment_reference_code_min_display"><?= $config['payment_reference_code_min'] ?? 3 ?></span>
+                            <?= form_input(['type' => 'hidden', 'name' => 'payment_reference_code_min', 'id' => 'payment_reference_code_min', 'value' => $config['payment_reference_code_min'] ?? 3]) ?>
+                        </div>
+                        <div class="col-xs-6">
+                            <span class="control-label"><?= lang('Config.payment_reference_code_length_max_label') ?>: </span>
+                            <span id="payment_reference_code_max_display"><?= $config['payment_reference_code_max'] ?? 40 ?></span>
+                            <?= form_input(['type' => 'hidden', 'name' => 'payment_reference_code_max', 'id' => 'payment_reference_code_max', 'value' => $config['payment_reference_code_max'] ?? 40]) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
@@ -290,6 +309,29 @@
     // Validation and submit handling
     $(document).ready(function() {
         $('span').tooltip();
+
+        var primaryColor = $('.btn-primary').css('background-color');
+        $('<style>').text(
+            '#payment_reference_code_slider .ui-slider-range { background: ' + primaryColor + '; }' +
+            '#payment_reference_code_slider .ui-slider-handle { border-color: ' + primaryColor + '; }'
+        ).appendTo('head');
+
+        $('#payment_reference_code_slider').slider({
+            range: true,
+            min: 3,
+            max: 40,
+            step: 1,
+            values: [
+                parseInt($('#payment_reference_code_min').val()),
+                parseInt($('#payment_reference_code_max').val())
+            ],
+            slide: function(event, ui) {
+                $('#payment_reference_code_min').val(ui.values[0]);
+                $('#payment_reference_code_max').val(ui.values[1]);
+                $('#payment_reference_code_min_display').text(ui.values[0]);
+                $('#payment_reference_code_max_display').text(ui.values[1]);
+            }
+        });
 
         $('#currency_symbol, #thousands_separator, #currency_code').change(function() {
             var data = {
