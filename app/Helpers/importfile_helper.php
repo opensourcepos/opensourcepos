@@ -98,3 +98,25 @@ function bom_exists(&$file_handle): bool
 
     return $result;
 }
+
+/**
+ * Checks that the parsed item import rows expose the columns the import expects.
+ * A file whose header row does not match the template (for example when the
+ * "Id" column is missing or renamed) would otherwise trigger "Undefined array
+ * key" errors while building each item.
+ *
+ * @param array $csv_rows Rows returned by get_csv_file().
+ * @return bool True when the required columns are present.
+ */
+function csv_import_has_required_item_headers(array $csv_rows): bool
+{
+    if (empty($csv_rows)) {
+        return false;
+    }
+
+    $required_headers = ['Id', 'Item Name', 'Category', 'Cost Price', 'Unit Price', 'Reorder Level', 'Description', 'Allow Alt Description', 'Item has Serial Number', 'Image', 'HSN'];
+
+    $present_headers = array_keys($csv_rows[0]);
+
+    return empty(array_diff($required_headers, $present_headers));
+}

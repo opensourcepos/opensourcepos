@@ -189,6 +189,41 @@ class ItemsCsvImportTest extends CIUnitTestCase
         unlink($tempFile);
     }
 
+    public function testRequiredHeadersDetectedForTemplate(): void
+    {
+        $csvContent = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN' . "\n";
+        $csvContent .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_ok_');
+        file_put_contents($tempFile, $csvContent);
+
+        $rows = get_csv_file($tempFile);
+
+        $this->assertTrue(csv_import_has_required_item_headers($rows));
+
+        unlink($tempFile);
+    }
+
+    public function testMissingIdHeaderIsRejected(): void
+    {
+        $csvContent = "Barcode,\"Item Name\",Category\n";
+        $csvContent .= "ITEM001,Test Item,Electronics\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_bad_');
+        file_put_contents($tempFile, $csvContent);
+
+        $rows = get_csv_file($tempFile);
+
+        $this->assertFalse(csv_import_has_required_item_headers($rows));
+
+        unlink($tempFile);
+    }
+
+    public function testEmptyCsvHasNoRequiredHeaders(): void
+    {
+        $this->assertFalse(csv_import_has_required_item_headers([]));
+    }
+
     public function testBomExists(): void
     {
         $bom = pack('CCC', 0xef, 0xbb, 0xbf);
@@ -1112,3 +1147,4 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertTrue($isValid, 'Valid location name should pass validation');
     }
 }
+
