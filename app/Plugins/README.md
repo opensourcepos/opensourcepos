@@ -813,6 +813,186 @@ log_plugin_message('myplugin', 'debug', 'API call', 'api');
 
 Check logs in `writable/logs/`.
 
+## Toast Notifications (Pop-up Alerts)
+
+OSPOS uses [Bootstrap Notify](https://github.com/mouse0270/bootstrap-notify) for in-page toast notifications via `$.notify()`. It is loaded globally on every page.
+
+### From JavaScript (AJAX responses)
+
+The standard pattern for plugin AJAX calls is to fire a toast in the response callback:
+
+```javascript
+$.ajax({
+    type: 'POST',
+    url: '<?= site_url("plugins/myplugin/doThing") ?>',
+    dataType: 'json',
+    success: function(response) {
+        $.notify({ message: response.message }, { type: response.success ? 'success' : 'danger' });
+    },
+    error: function() {
+        $.notify({ message: 'Something went wrong.' }, { type: 'danger' });
+    }
+});
+```
+
+Available `type` values: `success`, `danger`, `warning`, `info`.
+
+### From PHP (after a page load or redirect)
+
+When an event handler runs server-side and needs to surface an error or message on the next rendered page, use CI4 session flash data. Store the message in the event handler:
+
+```php
+public function onSaleCompleted(int $saleId, string $saleType, array $pluginData = []): void
+{
+    $response = $this->myLibrary->processTransaction($saleId);
+
+    if (!$response->isSuccess()) {
+        session()->setFlashdata('myplugin_error', $response->getMessage());
+    }
+}
+```
+
+Then read it in the injected view partial that is rendered on that same page:
+
+```php
+// In your plugin view partial (Views/my_partial.php)
+<script>
+$(document).ready(function() {
+    <?php $error = session()->getFlashdata('myplugin_error'); ?>
+    <?php if (!empty($error)): ?>
+    $.notify({ message: <?= json_encode($error) ?> }, { type: 'danger' });
+    <?php endif; ?>
+});
+</script>
+```
+
+Flash data is consumed on the first read and automatically cleared — no cleanup needed. Use `json_encode()` to safely embed the PHP string into JS without XSS risk.
+
+## Registering Modules (Admin Menu Entries)
+
+A **module** is a menu entry in the OSPOS admin sidebar. Registering one gives the plugin its own page in the navigation and wires up the permission system so access can be granted per user.
+
+### Register in `install()`
+
+Use `BasePlugin::registerModule()` inside your `install()` method:
+
+```php
+public function install(): bool
+{
+    // ... create tables, set defaults ...
+    $this->registerModule('myplugin', 500, 'office');
+    return true;
+}
+```
+
+Parameters:
+
+| Parameter | Type | Description |
+|---|---|---|
+| `$module_id` | string | Unique identifier — **prefix with plugin ID** (e.g. `myplugin_dashboard`) |
+| `$sort` | int | Position in the menu list (lower = higher up). Default: 500 |
+| `$admin_menu_group` | string | Menu group: `'office'`, `'reports'`, etc. |
+
+`registerModule()` is idempotent — safe to call multiple times. It inserts the module and permission rows and auto-grants access to `person_id = 1` (the admin user).
+
+### Unregister in `uninstall()`
+
+```php
+public function uninstall(): bool
+{
+    $this->unregisterModule('myplugin');
+    // ... drop tables ...
+    return true;
+}
+```
+
+This removes the module and its permissions. User grants cascade automatically via foreign key.
+
+### Language Keys
+
+Views display module names and descriptions by calling:
+
+```php
+lang("Module.{$module->module_id}")       // display name
+lang("Module.{$module->module_id}_desc")  // description
+```
+
+CI4 splits on the dot: `Module` is the **file name**, the rest is the **key**. This means the strings must live in a file named `Module.php` — they cannot be merged into your plugin's main language file (e.g. `MyPlugin.php`).
+
+The file must be inside the plugin's own `Language/{locale}/` directory, not in `app/Language/`. PluginManager registers the plugin's PSR-4 namespace at startup; CI4's FileLocator searches all registered namespaces when loading language files, so it finds `app/Plugins/MyPlugin/Language/en/Module.php` automatically.
+
+Create `Language/en/Module.php` in your plugin directory:
+
+```php
+<?php
+// app/Plugins/MyPlugin/Language/en/Module.php
+return [
+    'myplugin'      => 'My Plugin',
+    'myplugin_desc' => 'Manage My Plugin settings and operations.',
+];
+```
+
+For other locales, create the same file under `Language/{locale}/` with an empty string for untranslated keys — CI4 falls back to `en` automatically:
+
+```php
+<?php
+// app/Plugins/MyPlugin/Language/es-ES/Module.php
+return [
+    'myplugin'      => 'Mi Plugin',
+    'myplugin_desc' => '',
+];
+```
+
+### Controller and Route
+
+The module menu link routes to `/{module_id}`. Create a controller and register the route in `Config/Routes.php`:
+
+```php
+$routes->get('myplugin', '\App\Plugins\MyPlugin\Controllers\MyPluginController::getIndex');
+$routes->get('myplugin/(:any)', '\App\Plugins\MyPlugin\Controllers\MyPluginController::getIndex');
+```
+
+The controller should extend `Secure_Controller` so the permission check is enforced automatically:
+
+```php
+class MyPluginController extends \App\Controllers\Secure_Controller
+{
+    public function __construct()
+    {
+        parent::__construct('myplugin');
+    }
+
+    public function getIndex(): string
+    {
+        return view('App\Plugins\MyPlugin\Views\dashboard');
+    }
+}
+```
+
+Passing the `module_id` to `Secure_Controller`'s constructor restricts access to users who have been granted that permission.
+
+### Sub-permissions
+
+For finer-grained access control within a module, register sub-permissions after the module:
+
+```php
+public function install(): bool
+{
+    $this->registerModule('myplugin', 500, 'office');
+    $this->registerSubPermission('myplugin_reports', 'myplugin');
+    return true;
+}
+```
+
+Check sub-permissions in the controller or view:
+
+```php
+$employee = model(\App\Models\Employee::class);
+if ($employee->has_grant('myplugin_reports', session('person_id'))) {
+    // show reports section
+}
+```
+
 ## Distributing Plugins
 
 Plugin developers can package their plugins as zip files:
