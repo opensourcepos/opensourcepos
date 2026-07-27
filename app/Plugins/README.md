@@ -127,12 +127,14 @@ OSPOS fires these events that plugins can listen to:
 
 | Event                 | Arguments                                                         | Fired when                                              |
 |-----------------------|-------------------------------------------------------------------|---------------------------------------------------------|
+| `user_logged_in`      | `int $personId, array $pluginData = []`                           | User successfully authenticated via the login form      |
 | `customer_loaded`     | `int $customerId, array $pluginData = []`                         | Customer form view is rendered (`Customers::getView()`) |
 | `customer_saved`      | `array $customerIds, array $pluginData = []`                      | Customer created/updated via form save or CSV import    |
 | `customer_deleted`    | `int $personId, string $email, array $pluginData = []`            | Customer deleted                                        |
 | `item_saved`          | `array $itemIds, array $pluginData = []`                          | Item created/updated via form save or CSV import        |
 | `item_deleted`        | `array $itemIds, array $pluginData = []`                          | Item(s) deleted                                         |
-| `sale_completed`      | `int $saleIdNum, string $saleType, array $pluginData = []`        | Sale finalized and receipt rendered                     |
+| `sale_completed`      | `int $saleIdNum, string $saleType, array $pluginData = []`        | Sale finalized and receipt rendered (non-return sales only) |
+| `return_completed`    | `int $returnSaleId, int $originalSaleId, array $pluginData = []`  | Return finalized — fired instead of `sale_completed` when mode is return. `$originalSaleId` is the sale being returned against; `0` if the return was not initiated via `return_entire_sale()` |
 | `receiving_completed` | `int $receivingId, string $mode, array $pluginData = []`          | Receiving finalized and items added to inventory        |
 
 > **Note:** `customer_saved` and `item_saved` always receive an array of IDs.
@@ -360,6 +362,7 @@ All events pass `$pluginData`. For events fired from a form marked `data-plugin-
 | `receiving_completed` | `#finish_receiving_form`   | `app/Views/receivings/receiving.php`          | Yes            |
 | `item_saved`          | `#item_form` / `#csv_form` | `app/Views/items/form.php` / `form_csv_import.php` | Yes       |
 | `customer_saved`      | `#customer_form` / `#csv_form` | `app/Views/customers/form.php` / `form_csv_import.php` | Yes  |
+| `user_logged_in`      | *(POST login form, no plugin fields)* | —                               | No (always `[]`) |
 | `customer_loaded`     | *(GET request)*            | —                                             | No (always `[]`) |
 | `item_deleted`        | *(AJAX, no form)*          | —                                             | No (always `[]`) |
 | `customer_deleted`    | *(AJAX, no form)*          | —                                             | No (always `[]`) |
@@ -422,7 +425,7 @@ class MyPlugin extends BasePlugin
         Events::on('receiving_complete', [$this, 'onReceivingComplete']);
     }
 
-    public function onSaleComplete(int $saleIdNum, string $saleType): void
+    public function onSaleComplete(int $saleIdNum, string $saleType, array $pluginData = []): void
     {
         log_message('info', "Sale completed: #{$saleIdNum} ({$saleType})");
     }
@@ -774,7 +777,7 @@ Each plugin tracks its version independently. The table is created by the core m
 
 ## Event Flow
 
-1. Application triggers event: `Events::trigger('sale_completed', $saleIdNum, $saleType)`
+1. Application triggers event: `Events::trigger('sale_completed', $saleIdNum, $saleType, $pluginData)`
 2. PluginManager recursively scans `app/Plugins/` directory
 3. Each enabled plugin registers its listeners via `registerEvents()`
 4. Events::on() callbacks are invoked automatically
