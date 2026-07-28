@@ -478,6 +478,8 @@ app/Plugins/
     │   └── ExampleModel.php
     ├── Traits/                   # Shared PHP traits for plugin classes
     │   └── ExampleTrait.php
+    ├── Tests/                    # Plugin unit tests (optional)
+    │   └── ExamplePluginTest.php
     ├── Views/                    # Plugin views
     │   ├── config.php
     │   └── dashboard.php
@@ -682,6 +684,7 @@ Settings are prefixed with the plugin ID (e.g., `example_api_key`) and stored in
 | `app/Plugins/ExamplePlugin/Traits/ExampleTrait.php`           | `App\Plugins\ExamplePlugin\Traits\ExampleTrait`           |
 | `app/Plugins/ExamplePlugin/Migrations/20260627120000_CreateExampleTable.php` | `App\Plugins\ExamplePlugin\Migrations\CreateExampleTable` |
 | `app/Plugins/ExamplePlugin/Language/en/ExamplePlugin.php`     | *(Language file - returns array, no namespace)*           |
+| `app/Plugins/ExamplePlugin/Tests/ExamplePluginTest.php`       | `App\Plugins\ExamplePlugin\Tests`                         |
 
 ## Database
 
@@ -774,6 +777,71 @@ Migration state is stored in `ospos_plugin_migrations`:
 | `ran_at` | datetime | when the last migration ran |
 
 Each plugin tracks its version independently. The table is created by the core migration `20260627000000_PluginMigrationsTableCreate`.
+
+## Unit Tests
+
+Plugins can ship their own test suite inside a `Tests/` subdirectory. PHPUnit discovers them automatically — no separate `phpunit.xml` per plugin is needed or wanted.
+
+### Directory Structure
+
+```text
+app/Plugins/ExamplePlugin/
+└── Tests/
+    └── ExamplePluginTest.php    # and any additional *Test.php files
+```
+
+### Namespace
+
+```
+App\Plugins\ExamplePlugin\Tests
+```
+
+This resolves via the existing `App\` → `app/` PSR-4 mapping in `composer.json` — no autoload changes needed.
+
+### Base Class
+
+Extend `App\Libraries\Plugins\PluginTestCase` instead of `CIUnitTestCase` directly. `PluginTestCase` calls `PluginManager::registerAllNamespaces()` in `setUp()` so plugin class namespaces resolve without the `pre_system` hook that normally fires during a real request. Tests that exercise only pure PHP logic (no plugin class loading) may extend `CIUnitTestCase` directly.
+
+### Example
+
+```php
+<?php
+
+namespace App\Plugins\ExamplePlugin\Tests;
+
+use App\Libraries\Plugins\PluginTestCase;
+use App\Plugins\ExamplePlugin\ExamplePlugin;
+
+class ExamplePluginTest extends PluginTestCase
+{
+    public function testGetPluginId(): void
+    {
+        $plugin = new ExamplePlugin();
+        $this->assertSame('Example', $plugin->getPluginId());
+    }
+
+    public function testGetVersion(): void
+    {
+        $plugin = new ExamplePlugin();
+        $this->assertSame('1.0.0', $plugin->getVersion());
+    }
+}
+```
+
+### Running Plugin Tests
+
+```bash
+# All suites (core + plugins)
+composer test
+
+# Plugins only
+vendor/bin/phpunit --testsuite Plugins
+
+# Single plugin
+vendor/bin/phpunit app/Plugins/ExamplePlugin/Tests/
+```
+
+> **Do not** place plugin tests under the root `tests/` directory — that breaks self-containment. Do not bundle a per-plugin `phpunit.xml` — the root `phpunit.xml.dist` already includes `./app/Plugins` in the `Plugins` testsuite.
 
 ## Event Flow
 
@@ -1012,6 +1080,7 @@ ExamplePlugin-1.0.0.zip
     ├── Libraries/
     │   └── ApiClient.php
     ├── Models/
+    ├── Tests/
     ├── Traits/
     ├── Views/
     ├── ExamplePlugin.php

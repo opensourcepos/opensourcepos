@@ -116,6 +116,26 @@ All `Events::trigger()` calls in core controllers pass a final `array $pluginDat
 - Tests must pass before submitting changes (`composer test`)
 - Minimum PHPUnit version: 10.5.16+. Default config: `phpunit.xml.dist`
 
+### Plugin Tests
+
+Each plugin may ship its own `Tests/` subdirectory. PHPUnit discovers them automatically via the `Plugins` testsuite in `phpunit.xml.dist`.
+
+**Convention:**
+```
+app/Plugins/{PluginName}/
+└── Tests/
+    └── {PluginName}Test.php    # namespace App\Plugins\{PluginName}\Tests
+```
+
+**Base class:** Extend `App\Libraries\Plugins\PluginTestCase` (registers plugin namespaces in `setUp`). Pure-PHP tests may extend `CodeIgniter\Test\CIUnitTestCase` directly.
+
+```bash
+vendor/bin/phpunit --testsuite Plugins          # plugins only
+vendor/bin/phpunit app/Plugins/CASPOSPlugin/Tests/  # single plugin
+```
+
+No changes to `composer.json` are needed — `App\Plugins\{Name}\Tests\*` resolves via the existing `App\` → `app/` PSR-4 mapping.
+
 ## Conventions
 
 - Controllers → `app/Controllers/`
