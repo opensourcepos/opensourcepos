@@ -73,7 +73,16 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             'honeypot',
-            'csrf' => ['except' => 'login|migrate'],
+            // Listed as an array rather than a pipe-delimited string so each entry is
+            // anchored independently. CI4 matches every entry as \A<pattern>\z, so the
+            // string form 'login|migrate' produced one pattern whose inner alternatives
+            // were unanchored and matched far more than intended.
+            //
+            // 'plugins/*/webhook' lets a plugin expose an inbound provider callback.
+            // A CSRF token cannot exist on a server-to-server delivery, so plugins must
+            // authenticate these requests themselves (e.g. verifying the provider's
+            // signature header against a shared secret).
+            'csrf' => ['except' => ['login', 'migrate', 'plugins/*/webhook']],
             'invalidchars',
         ],
         'after' => [
