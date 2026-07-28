@@ -1016,7 +1016,7 @@ class Sale extends Model
     {
         $giftcard = model(Giftcard::class);
 
-        if (!$giftcard->exists($giftcard->get_giftcard_id($giftcardNumber))) {    // TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
+        if (!$giftcard->exists($giftcard->getGiftcardId($giftcardNumber))) {    // TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
             return 0;
         }
 
