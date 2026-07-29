@@ -83,10 +83,22 @@ abstract class BasePlugin implements PluginInterface
     }
 
     /**
+     * Module and permission ids must be the plugin id itself or prefixed with
+     * '{plugin_id}_' (e.g. 'mailchimp' or 'mailchimp_dashboard'). PluginManager
+     * relies on this naming to auto-unregister everything on uninstall.
+     */
+    private function idMatchesPluginConvention(string $id): bool
+    {
+        $pluginId = $this->getPluginId();
+        return $id === $pluginId || str_starts_with($id, $pluginId . '_');
+    }
+
+    /**
      * Register a module in the permission system and auto-grant it to admin (person_id=1).
      * Call from install(). Idempotent — safe to call multiple times.
      *
-     * Convention: prefix module_id with plugin_id (e.g. 'mailchimp_dashboard').
+     * PluginManager automatically unregisters the module when the plugin is
+     * uninstalled, matched by the required id convention (see idMatchesPluginConvention).
      * Language keys resolved from plugin's Language/{locale}/Module.php file.
      */
     protected function registerModule(
@@ -94,6 +106,10 @@ abstract class BasePlugin implements PluginInterface
         int $sort = 500,
         string $admin_menu_group = 'office'
     ): bool {
+        if (!$this->idMatchesPluginConvention($module_id)) {
+            $this->log('error', "Module id '{$module_id}' must be '{$this->getPluginId()}' or prefixed with '{$this->getPluginId()}_'");
+            return false;
+        }
         $db = \Config\Database::connect();
         $db->table('modules')->ignore(true)->insert([
             'module_id'     => $module_id,
@@ -115,7 +131,11 @@ abstract class BasePlugin implements PluginInterface
 
     /**
      * Remove a module and all its permissions from the permission system.
-     * Grants cascade automatically via FK. Call from uninstall().
+     * Grants cascade automatically via FK.
+     *
+     * Calling this from uninstall() is not required — PluginManager
+     * auto-unregisters modules matching the plugin id convention on uninstall.
+     * Use this only to remove a module while the plugin stays installed.
      *
      * Note: ospos_permissions has no FK cascade from ospos_modules, so
      * permissions must be deleted before the module row.
@@ -135,6 +155,10 @@ abstract class BasePlugin implements PluginInterface
      */
     protected function registerSubPermission(string $permission_id, string $module_id): bool
     {
+        if (!$this->idMatchesPluginConvention($permission_id)) {
+            $this->log('error', "Permission id '{$permission_id}' must be '{$this->getPluginId()}' or prefixed with '{$this->getPluginId()}_'");
+            return false;
+        }
         $db = \Config\Database::connect();
         $db->table('permissions')->ignore(true)->insert([
             'permission_id' => $permission_id,

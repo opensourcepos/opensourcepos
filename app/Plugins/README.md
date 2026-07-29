@@ -993,24 +993,17 @@ Parameters:
 
 | Parameter | Type | Description |
 |---|---|---|
-| `$module_id` | string | Unique identifier — **prefix with plugin ID** (e.g. `myplugin_dashboard`) |
+| `$module_id` | string | **Must be the plugin ID or prefixed with `{plugin_id}_`** (e.g. `myplugin` or `myplugin_dashboard`) — enforced; other ids are rejected |
 | `$sort` | int | Position in the menu list (lower = higher up). Default: 500 |
 | `$admin_menu_group` | string | Menu group: `'office'`, `'reports'`, etc. |
 
 `registerModule()` is idempotent — safe to call multiple times. It inserts the module and permission rows and auto-grants access to `person_id = 1` (the admin user).
 
-### Unregister in `uninstall()`
+### Automatic Cleanup on Uninstall
 
-```php
-public function uninstall(): bool
-{
-    $this->unregisterModule('myplugin');
-    // ... drop tables ...
-    return true;
-}
-```
+You do **not** need to unregister anything in `uninstall()`. When the plugin is uninstalled, the framework removes every module and permission whose id is the plugin id or starts with `{plugin_id}_` — the same way plugin settings in `ospos_plugin_config` are cleaned up. User grants cascade via foreign key. This is why the id naming convention is enforced: it is how the framework knows which rows belong to your plugin.
 
-This removes the module and its permissions. User grants cascade automatically via foreign key.
+`unregisterModule()` and `unregisterSubPermission()` still exist for the rare case where you want to remove a module or permission while the plugin stays installed (e.g. a feature toggle or plugin upgrade).
 
 ### Language Keys
 
