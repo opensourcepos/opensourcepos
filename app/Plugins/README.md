@@ -1042,6 +1042,57 @@ class MyPluginController extends \App\Controllers\Secure_Controller
 
 Passing the `module_id` to `Secure_Controller`'s constructor restricts access to users who have been granted that permission.
 
+### Module Icon
+
+By default, OSPOS looks for a built-in SVG at `public/images/menubar/{module_id}.svg`. To supply a custom icon from your plugin, listen to the `view:module_icon_{module_id}` event and output an `<img>` tag pointing to your icon route.
+
+**1. Register the event in `registerEvents()`:**
+
+```php
+Events::on('view:module_icon_myplugin', [$this, 'injectModuleIcon']);
+```
+
+**2. Add the handler:**
+
+```php
+public function injectModuleIcon(): void
+{
+    echo $this->renderView('module_icon');
+}
+```
+
+**3. Create `Views/module_icon.php`:**
+
+```php
+<img src="<?= base_url('plugins/myplugin/icon') ?>" style="border: none;" alt="My Plugin">
+```
+
+> **Important:** Use only `style="border: none;"` — no inline `width` or `height`. OSPOS CSS controls sizing automatically:
+> - Navbar: 24px wide (`.navbar .menu-icon img`)
+> - Home/office grid: 64px tall (`#home_module_list img`, `#office_module_list img`)
+>
+> Adding inline size constraints will override these rules and break one or both locations.
+
+**4. Serve the icon file via a route.** Add to `Config/Routes.php`:
+
+```php
+$routes->get('plugins/myplugin/icon', '\App\Plugins\MyPlugin\Controllers\MyPluginController::getIcon');
+```
+
+Add the controller method — note this route must **not** extend `Secure_Controller` (or use a public controller) so the browser can fetch the image without an auth redirect:
+
+```php
+public function getIcon(): \CodeIgniter\HTTP\ResponseInterface
+{
+    $path = APPPATH . 'Plugins/MyPlugin/my-icon.svg';
+    return $this->response
+        ->setHeader('Content-Type', 'image/svg+xml')
+        ->setBody(file_get_contents($path));
+}
+```
+
+Store the SVG file directly in your plugin directory (e.g. `app/Plugins/MyPlugin/my-icon.svg`). PNG is also supported — use `image/png` as the content type.
+
 ### Sub-permissions
 
 For finer-grained access control within a module, register sub-permissions after the module:
