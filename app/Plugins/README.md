@@ -226,7 +226,15 @@ These hook points are currently defined in core views:
 | `view:customer_tab_nav`       | `app/Views/customers/form.php:28`       | `['customer' => $person_info]`    | Add `<li>` tab navigation entries to customer form  |
 | `view:customer_tab_panels`    | `app/Views/customers/form.php:326`      | `['customer' => $person_info]`    | Add `<div>` tab panel content to customer form      |
 | `view:sales_receipt_buttons`  | `app/Views/sales/receipt.php:51`        | `['saleId' => $sale_id_num]`      | Add buttons to the receipt view                     |
+| `view:sales_invoice_buttons`  | `app/Views/sales/invoice.php:59`        | `['saleId' => $sale_id_num]`      | Add buttons to the invoice view                     |
+| `view:sales_quote_buttons`    | `app/Views/sales/quote.php:55`          | `['saleId' => $sale_id_num]`      | Add buttons to the quote view                       |
+| `view:sales_work_order_buttons` | `app/Views/sales/work_order.php:57`   | `['saleId' => $sale_id_num]`      | Add buttons to the work order view                  |
 | `view:sales_register_buttons` | `app/Views/sales/register.php`          | *(none)*                          | Add UI controls to the register checkout area       |
+
+The four sales document hooks are deliberately symmetrical: a plugin that delivers a
+sale document (print, email, messaging) can register the same callback for all four and
+branch on the document type. Only `saleId` is passed, so resolve any further sale or
+customer data inside the plugin.
 
 ### Benefits
 
@@ -603,6 +611,31 @@ Always use fully qualified controller names:
 - `\App\Plugins\ExamplePlugin\Controllers\ExampleController::methodName`
 
 This ensures routes work correctly regardless of autoloader state.
+
+### Inbound Webhook Routes
+
+A plugin that integrates with an external provider may need to receive server-to-server
+callbacks. Such a request carries no CSRF token and no session, so the route must be
+both public and CSRF-exempt.
+
+Name the route exactly `plugins/<plugin_id>/webhook`. `app/Config/Filters.php` exempts
+that pattern (`plugins/*/webhook`) from the global CSRF filter, so no core change is
+needed per plugin:
+
+```php
+// app/Plugins/ExamplePlugin/Config/Routes.php
+$routes->get('plugins/example/webhook', '\App\Plugins\ExamplePlugin\Controllers\WebhookController::index');
+$routes->post('plugins/example/webhook', '\App\Plugins\ExamplePlugin\Controllers\WebhookController::index');
+```
+
+The exemption is anchored, so only that exact path is exempt — sibling routes such as
+`plugins/example/sync` keep full CSRF protection.
+
+**The plugin is responsible for authenticating these requests.** Because the endpoint is
+unauthenticated by design, the webhook controller must extend `BaseController` (not
+`Secure_Controller`) and verify the caller itself — typically by recomputing the
+provider's signature header over the raw request body with a shared secret and comparing
+using `hash_equals()`. Never trust a webhook payload that failed that check.
 
 ## Internationalization (Language Files)
 
