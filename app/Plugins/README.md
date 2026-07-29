@@ -133,7 +133,7 @@ OSPOS fires these events that plugins can listen to:
 | `customer_deleted`    | `int $personId, string $email, array $pluginData = []`            | Customer deleted                                        |
 | `item_saved`          | `array $itemIds, array $pluginData = []`                          | Item created/updated via form save or CSV import        |
 | `item_deleted`        | `array $itemIds, array $pluginData = []`                          | Item(s) deleted                                         |
-| `sale_completed`      | `int $saleIdNum, string $saleType, array $pluginData = []`        | Sale finalized and receipt rendered (non-return sales only) |
+| `sale_completed`      | `int $saleIdNum, int $saleType, array $pluginData = []`           | Sale finalized and receipt rendered (non-return sales only) |
 | `return_completed`    | `int $returnSaleId, int $originalSaleId, array $pluginData = []`  | Return finalized — fired instead of `sale_completed` when mode is return. `$originalSaleId` is the sale being returned against; `0` if the return was not initiated via `return_entire_sale()` |
 | `receiving_completed` | `int $receivingId, string $mode, array $pluginData = []`          | Receiving finalized and items added to inventory        |
 
@@ -433,7 +433,7 @@ class MyPlugin extends BasePlugin
         Events::on('receiving_complete', [$this, 'onReceivingComplete']);
     }
 
-    public function onSaleComplete(int $saleIdNum, string $saleType, array $pluginData = []): void
+    public function onSaleComplete(int $saleIdNum, int $saleType, array $pluginData = []): void
     {
         log_message('info', "Sale completed: #{$saleIdNum} ({$saleType})");
     }
@@ -946,7 +946,7 @@ Available `type` values: `success`, `danger`, `warning`, `info`.
 When an event handler runs server-side and needs to surface an error or message on the next rendered page, use CI4 session flash data. Store the message in the event handler:
 
 ```php
-public function onSaleCompleted(int $saleId, string $saleType, array $pluginData = []): void
+public function onSaleCompleted(int $saleId, int $saleType, array $pluginData = []): void
 {
     $response = $this->myLibrary->processTransaction($saleId);
 
