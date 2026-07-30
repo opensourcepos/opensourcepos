@@ -199,7 +199,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $rows = get_csv_file($tempFile);
 
-        $this->assertTrue(csv_import_has_required_item_headers($rows));
+        $this->assertTrue(csvImportHasRequiredItemHeaders($rows, [], []));
 
         unlink($tempFile);
     }
@@ -214,7 +214,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $rows = get_csv_file($tempFile);
 
-        $this->assertFalse(csv_import_has_required_item_headers($rows));
+        $this->assertFalse(csvImportHasRequiredItemHeaders($rows, [], []));
 
         unlink($tempFile);
     }
@@ -229,14 +229,29 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $rows = get_csv_file($tempFile);
 
-        $this->assertFalse(csv_import_has_required_item_headers($rows));
+        $this->assertFalse(csvImportHasRequiredItemHeaders($rows, [], []));
+
+        unlink($tempFile);
+    }
+
+    public function testMissingAttributeColumnIsRejected(): void
+    {
+        $csvContent = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN' . "\n";
+        $csvContent .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_no_attribute_');
+        file_put_contents($tempFile, $csvContent);
+
+        $rows = get_csv_file($tempFile);
+
+        $this->assertFalse(csvImportHasRequiredItemHeaders($rows, ['Warehouse'], ['Color']));
 
         unlink($tempFile);
     }
 
     public function testEmptyCsvHasNoRequiredHeaders(): void
     {
-        $this->assertFalse(csv_import_has_required_item_headers([]));
+        $this->assertFalse(csvImportHasRequiredItemHeaders([], [], []));
     }
 
     public function testBomExists(): void
