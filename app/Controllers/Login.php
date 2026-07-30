@@ -37,7 +37,7 @@ class Login extends BaseController
 
             $data = [
                 'hasErrors'       => false,
-                'isNewInstall'   => !(MY_Migration::getCurrentVersion()),
+                'isNewInstall'   => MY_Migration::getCurrentVersion() === 0,
                 'isLatest'        => $migration->isLatest(),
                 'latestVersion'   => $migration->getLatestMigration(),
                 'gcaptchaEnabled' => $gcaptchaEnabled,
@@ -76,7 +76,17 @@ class Login extends BaseController
 
     public function migrate(): ResponseInterface
     {
-        $isNewInstall = !MY_Migration::getCurrentVersion();
+        $currentVersion = MY_Migration::getCurrentVersion();
+
+        if ($currentVersion === null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Login.migration_error_connection')
+            ])->setStatusCode(503);
+        }
+
+        // Only a confirmed empty database counts as a new install with no credentials to check.
+        $isNewInstall = $currentVersion === 0;
 
         if (!$isNewInstall) {
             $rules = ['username' => 'required|login_check[data]'];
