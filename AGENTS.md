@@ -130,7 +130,7 @@ app/Plugins/{PluginName}/
     └── {PluginName}Test.php    # namespace App\Plugins\{PluginName}\Tests
 ```
 
-**Base class:** Extend `App\Libraries\Plugins\PluginTestCase` (registers plugin namespaces in `setUp`). Pure-PHP tests may extend `CodeIgniter\Test\CIUnitTestCase` directly.
+**Base class:** Extend `Tests\Support\PluginTestCase` (registers plugin namespaces in `setUp`). Pure-PHP tests may extend `CodeIgniter\Test\CIUnitTestCase` directly.
 
 ```bash
 vendor/bin/phpunit --testsuite Plugins          # plugins only

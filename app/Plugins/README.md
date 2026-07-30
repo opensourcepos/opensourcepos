@@ -833,7 +833,7 @@ This resolves via the existing `App\` → `app/` PSR-4 mapping in `composer.json
 
 ### Base Class
 
-Extend `App\Libraries\Plugins\PluginTestCase` instead of `CIUnitTestCase` directly. `PluginTestCase` calls `PluginManager::registerAllNamespaces()` in `setUp()` so plugin class namespaces resolve without the `pre_system` hook that normally fires during a real request. Tests that exercise only pure PHP logic (no plugin class loading) may extend `CIUnitTestCase` directly.
+Extend `Tests\Support\PluginTestCase` instead of `CIUnitTestCase` directly. `PluginTestCase` calls `PluginManager::registerAllNamespaces()` in `setUp()` so plugin class namespaces resolve without the `pre_system` hook that normally fires during a real request. Tests that exercise only pure PHP logic (no plugin class loading) may extend `CIUnitTestCase` directly.
 
 ### Example
 
@@ -842,8 +842,8 @@ Extend `App\Libraries\Plugins\PluginTestCase` instead of `CIUnitTestCase` direct
 
 namespace App\Plugins\ExamplePlugin\Tests;
 
-use App\Libraries\Plugins\PluginTestCase;
 use App\Plugins\ExamplePlugin\ExamplePlugin;
+use Tests\Support\PluginTestCase;
 
 class ExamplePluginTest extends PluginTestCase
 {
