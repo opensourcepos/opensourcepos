@@ -18,9 +18,9 @@ class Login extends BaseController
     public Model $employee;
 
     /**
-     * @return RedirectResponse|string
+     * @return RedirectResponse|ResponseInterface|string
      */
-    public function index(): string|RedirectResponse
+    public function index(): string|RedirectResponse|ResponseInterface
     {
         $this->employee = model(Employee::class);
         if (!$this->employee->is_logged_in()) {
@@ -33,13 +33,24 @@ class Login extends BaseController
 
             $migration->migrateToCI4();
 
+            $currentVersion = MY_Migration::getCurrentVersion();
+
+            if ($currentVersion === null) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.migration_error_connection')
+                ])->setStatusCode(503);
+            }
+
+            $latestVersion = $migration->getLatestMigration();
+
             $validation = Services::validation();
 
             $data = [
                 'hasErrors'       => false,
-                'isNewInstall'   => MY_Migration::getCurrentVersion() === 0,
-                'isLatest'        => $migration->isLatest(),
-                'latestVersion'   => $migration->getLatestMigration(),
+                'isNewInstall'   => $currentVersion === 0,
+                'isLatest'        => $latestVersion === $currentVersion,
+                'latestVersion'   => $latestVersion,
                 'gcaptchaEnabled' => $gcaptchaEnabled,
                 'config'           => $config,
                 'validation'       => $validation
