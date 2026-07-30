@@ -76,19 +76,23 @@ class Login extends BaseController
 
     public function migrate(): ResponseInterface
     {
-        $rules = ['username' => 'required|login_check[data]'];
-        $messages = [
-            'username' => [
-                'required'    => lang('Login.required_username'),
-                'login_check' => lang('Login.invalid_username_and_password'),
-            ]
-        ];
+        $isNewInstall = !MY_Migration::getCurrentVersion();
 
-        if (!$this->validate($rules, $messages)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => lang('Login.invalid_username_and_password')
-            ])->setStatusCode(401);
+        if (!$isNewInstall) {
+            $rules = ['username' => 'required|login_check[data]'];
+            $messages = [
+                'username' => [
+                    'required'    => lang('Login.required_username'),
+                    'login_check' => lang('Login.invalid_username_and_password'),
+                ]
+            ];
+
+            if (!$this->validate($rules, $messages)) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.invalid_username_and_password')
+                ])->setStatusCode(401);
+            }
         }
 
         try {
