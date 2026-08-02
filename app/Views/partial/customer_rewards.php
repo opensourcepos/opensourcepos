@@ -38,9 +38,9 @@ foreach ($customer_rewards as $reward_key => $reward_category) {
             echo form_input($form_data);
             ?>
         </div>
-        <span class="add_customer_reward glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
+        <span class="add_customer_reward bi bi-plus-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
         <span>&nbsp;&nbsp;</span>
-        <span class="remove_customer_reward glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
+        <span class="remove_customer_reward bi bi-dash-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
     </div>
 
 <?php } ?>

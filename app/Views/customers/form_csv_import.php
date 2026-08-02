@@ -12,7 +12,9 @@
         <div class="form-group form-group-sm">
             <div class="col-xs-12">
                 <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                    <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i><span class="fileinput-filename"></span></div>
+                    <div class="form-control" data-trigger="fileinput">
+                        <i class="bi bi-filetype-csv icon-spacing fileinput-exists"></i><span class="fileinput-filename"></span>
+                    </div>
                     <span class="input-group-addon input-sm btn btn-default btn-file">
                         <span class="fileinput-new"><?= lang('Common.import_select_file') ?></span><span class="fileinput-exists"><?= lang('Common.import_change_file') ?></span><input type="file" id="file_path" name="file_path" accept=".csv">
                     </span>
