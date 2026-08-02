@@ -7,12 +7,10 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
-
-
-<div id="page_title"><?= lang('Reports.report_input') ?></div>
+<?php
+$title_info['config_title'] = lang('Reports.report_input');
+echo view('configs/config_header', $title_info);
+?>
 
 <?php
 if (isset($error)) {
@@ -20,69 +18,76 @@ if (isset($error)) {
 }
 ?>
 
-<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data']) ?>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
-        <div class="col-xs-3">
-            <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="daterangepicker" class="form-label"><?= lang('Reports.date_range') ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="daterangepicker-icon"><i class="bi bi-calendar2-range"></i></span>
+                <input type="text" class="form-select" name="daterangepicker" id="daterangepicker" aria-describedby="daterangepicker-icon">
+            </div>
         </div>
-    </div>
 
-    <?php if (!empty($mode)) { ?>
-        <div class="form-group form-group-sm">
-            <?php if ($mode == 'sale') { ?>
-                <?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
-                <div id="report_sale_type" class="col-xs-3">
-                    <?= form_dropdown('sale_type', $sale_type_options, 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
-                </div>
-            <?php } elseif ($mode == 'receiving') { ?>
-                <?= form_label(lang('Reports.receiving_type'), 'reports_receiving_type_label', ['class' => 'required control-label col-xs-2']) ?>
-                <div id="report_receiving_type" class="col-xs-3">
-                    <?= form_dropdown(
-                        'receiving_type',
-                        [
-                            'all'          => lang('Reports.all'),
-                            'receiving'    => lang('Reports.receivings'),
-                            'returns'      => lang('Reports.returns'),
-                            'requisitions' => lang('Reports.requisitions')
-                        ],
-                        'all',
-                        ['id' => 'input_type', 'class' => 'form-control']
-                    ) ?>
-                </div>
+        <div class="col-12 col-lg-6">
+            <?php if (!empty($mode)) { ?>
+                    <?php if ($mode == 'sale') { ?>
+                        <label for="reports_sale_type_label" class="form-label"><?= lang('Reports.sale_type') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+                        <div class="input-group mb-3" id="report_sale_type">
+                            <span class="input-group-text"><i class="bi bi-receipt"></i></span>
+                            <select class="form-select" name="sale_type" id="input_type" required>
+                                <?php foreach ($sale_type_options as $value => $label) { ?>
+                                    <option value="<?= $value ?>" <?= $value === 'complete' ? 'selected' : '' ?>><?= $label ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    <?php } elseif ($mode == 'receiving') { ?>
+                        <label for="reports_receiving_type_label" class="form-label"><?= lang('Reports.receiving_type') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+                        <div class="input-group mb-3" id="report_receiving_type">
+                            <span class="input-group-text"><i class="bi bi-truck"></i></span>
+                            <select class="form-select" name="receiving_type" id="input_type" required>
+                                <option value="all" <?= 'all' === 'all' ? 'selected' : '' ?>><?= lang('Reports.all') ?></option>
+                                <option value="receiving"><?= lang('Reports.receivings') ?></option>
+                                <option value="returns"><?= lang('Reports.returns') ?></option>
+                                <option value="requisitions"><?= lang('Reports.requisitions') ?></option>
+                            </select>
+                        </div>
+                    <?php } ?>
             <?php } ?>
         </div>
-    <?php } ?>
 
-    <?php if (isset($discount_type_options)) { ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
-            <div id="report_discount_type" class="col-xs-3">
-                <?= form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
+        <?php if (isset($discount_type_options)) { ?>
+            <div class="col-12 col-lg-6">
+                <label for="reports_discount_type_label" class="form-label"><?= lang('Reports.discount_type') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+                <div class="input-group mb-3" id="report_discount_type">
+                    <span class="input-group-text"><i class="bi bi-plus-slash-minus"></i></span>
+                    <select class="form-select" name="discount_type" id="discount_type_id" required>
+                        <?php foreach ($discount_type_options as $value => $label) { ?>
+                            <option value="<?= $value ?>" <?= $value == $config['default_sales_discount_type'] ? 'selected' : '' ?>><?= $label ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
             </div>
-        </div>
-    <?php } ?>
+        <?php } ?>
 
-    <?php if (!empty($stock_locations) && count($stock_locations) > 2) { ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
-            <div id="report_stock_location" class="col-xs-3">
-                <?= form_dropdown('stock_location', $stock_locations, 'all', ['id' => 'location_id', 'class' => 'form-control']) ?>
+        <?php if (!empty($stock_locations) && count($stock_locations) > 2) { ?>
+            <div class="col-12 col-lg-6">
+                <label for="reports_stock_location_label" class="form-label"><?= lang('Reports.stock_location') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+                <div class="input-group mb-3" id="report_stock_location">
+                    <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+                    <select class="form-select" name="stock_location" id="location_id" required>
+                        <?php foreach ($stock_locations as $value => $label) { ?>
+                            <option value="<?= $value ?>" <?= $value === 'all' ? 'selected' : '' ?>><?= $label ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
             </div>
-        </div>
-    <?php } ?>
+        <?php } ?>
+    </div>
 
-    <?php
-    echo form_button(
-        [
-            'name'    => 'generate_report',
-            'id'      => 'generate_report',
-            'content' => lang('Common.submit'),
-            'class'   => 'btn btn-primary btn-sm'
-        ]
-    );
-    ?>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" name="generate_report" id="generate_report"><?= lang('Common.submit'); ?></button>
+    </div>
 
 <?= form_close() ?>
 

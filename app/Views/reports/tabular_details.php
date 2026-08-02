@@ -12,15 +12,17 @@
 
 <?= view('partial/header') ?>
 
-<div id="page_title"><?= esc($title) ?></div>
+<?php
+$title_info['config_title'] = esc($title);
+echo view('configs/config_header', $title_info);
+?>
 
-<div id="page_subtitle"><?= esc($subtitle) ?></div>
+<h5><?= esc($subtitle) ?></h5>
 
 <div id="toolbar">
-    <div class="pull-left form-inline" role="toolbar">
-        <!-- Toggle Button -->
-        <button id="toggleCostProfitButton" class="btn btn-default btn-sm print_hide">
-            <?php echo lang('Reports.toggle_cost_and_profit'); ?>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary d-print-none" id="toggleCostProfitButton">
+            <i class="bi bi-toggles"></i><span class="d-none d-sm-inline ms-2"><?= lang('Reports.toggle_cost_and_profit') ?></span>
         </button>
     </div>
 </div>
@@ -48,7 +50,7 @@
         var init_dialog = function () {
             <?php if (isset($editable)) { ?>
                 table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row')) ?>');
-                dialog_support.init("a.modal-dlg");
+                dialog_support.init("a.modal-launch");
             <?php } ?>
         };
 
@@ -56,6 +58,7 @@
             .addClass("table-striped")
             .addClass("table-bordered")
             .bootstrapTable({
+                toolbar: '#toolbar',
                 columns: applyColumnVisibility(<?= transform_headers(esc($headers['summary']), true) ?>),
                 stickyHeader: true,
                 stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
@@ -69,14 +72,17 @@
                 exportDataType: 'all',
                 exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
                 data: <?= json_encode($summary_data) ?>,
-                iconSize: 'sm',
+                loadingTemplate: function (loadingMessage) {
+                    return '<div class="w-100 h-100 bg-body text-center pt-2"><div class="spinner-grow spinner-grow-sm"></div><span class="ps-1" role="status">' + loadingMessage + '</span></div>'
+                },
+                loadingFontSize: '1em',
                 paginationVAlign: 'bottom',
                 detailView: true,
                 escape: true,
                 search: true,
                 onPageChange: init_dialog,
                 onPostBody: function () {
-                    dialog_support.init("a.modal-dlg");
+                    dialog_support.init("a.modal-launch");
                 },
                 onExpandRow: function (index, row, $detail) {
                     $detail.html('<table></table>').find("table").bootstrapTable({

@@ -9,159 +9,109 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("expenses/save/$expenses_info->expense_id", ['id' => 'expenses_edit_form']) ?>
 
-<?= form_open("expenses/save/$expenses_info->expense_id", ['id' => 'expenses_edit_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="item_basic_info">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.info'), 'expenses_info', ['class' => 'control-label col-xs-3']) ?>
-            <?= form_label(!empty($expenses_info->expense_id) ? lang('Expenses.expense_id') . " $expenses_info->expense_id" : '', 'expenses_info_id', ['class' => 'control-label col-xs-8', 'style' => 'text-align: left']) ?>
+    <div class="mb-3"><?= lang('Expenses.info') ?> <?= !empty($expenses_info->expense_id) ? lang('Expenses.expense_id') . " $expenses_info->expense_id" : '' ?></div>
+
+    <label for="datetime" class="form-label"><?= lang('Expenses.date'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="datetime-icon"><i class="bi bi-calendar2"></i></span>
+        <input type="hidden" name="date" id="datetime" aria-describedby="datetime-icon" value="<?= to_datetime(strtotime($expenses_info->date)) ?>">
+        <input type="text" class="form-control" value="<?= to_datetime(strtotime($expenses_info->date)) ?>" disabled readonly>
+    </div>
+
+    <label for="supplier_name" class="form-label"><?= lang('Expenses.supplier_name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="supplier_name-icon"><i class="bi bi-truck"></i></span>
+        <input type="hidden" name="supplier_id" id="supplier_id">
+        <input type="text" class="form-control"  name="supplier_name" id="supplier_name" aria-describedby="supplier_name-icon" value="<?= lang('Expenses.start_typing_supplier_name') ?>">
+        <button type="button" class="btn btn-outline-danger" id="remove_supplier_button" title="Remove Supplier"><i class="bi bi-x-circle"></i></button>
+    </div>
+
+    <label for="supplier_tax_code" class="form-label"><?= lang('Expenses.supplier_tax_code'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="supplier_tax_code-icon"><i class="bi bi-piggy-bank"></i></span>
+        <input type="text" class="form-control" name="supplier_tax_code" id="supplier_tax_code" aria-describedby="supplier_tax_code-icon" value="<?= $expenses_info->supplier_tax_code ?>">
+    </div>
+
+    <label for="amount" class="form-label"><?= lang('Expenses.amount'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <?php if (!is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="amount-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+        <input class="form-control" name="amount" id="amount" aria-describedby="amount-icon" value="<?= to_currency_no_money($expenses_info->amount) ?>" required>
+        <?php if (is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="amount-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+    </div>
+
+    <label for="tax_amount" class="form-label"><?= lang('Expenses.tax_amount'); ?></label>
+    <div class="input-group mb-3">
+        <?php if (!is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="tax_amount-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+        <input class="form-control" name="tax_amount" id="tax_amount" aria-describedby="tax_amount-icon" value="<?= to_currency_no_money($expenses_info->tax_amount) ?>">
+        <?php if (is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="tax_amount-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+    </div>
+
+    <label for="payment_type" class="form-label"><?= lang('Expenses.payment'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="payment_type-icon"><i class="bi bi-wallet2"></i></span>
+        <select class="form-select" name="payment_type" id="payment_type" aria-describedby="payment_type-icon">
+            <?php foreach ($payment_options as $k => $v): ?>
+                <option value="<?= $k ?>" <?= $k == $expenses_info->payment_type ? 'selected' : '' ?>>
+                    <?= $v ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <label for="category" class="form-label"><?= lang('Expenses_categories.name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="category-icon"><i class="bi bi-bookmark"></i></span>
+        <select class="form-select" name="expense_category_id" id="category" aria-describedby="category-icon">
+            <?php foreach ($expense_categories as $k => $v): ?>
+                <option value="<?= $k ?>" <?= $k == $expenses_info->expense_category_id ? 'selected' : '' ?>>
+                    <?= $v ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <label for="employee" class="form-label"><?= lang('Expenses.employee'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="employee-icon"><i class="bi bi-person"></i></span>
+        <?php if ($can_assign_employee): ?>
+            <select class="form-select" name="employee_id" id="employee_id">
+                <?php foreach ($employees as $k => $v): ?>
+                    <option value="<?= $k ?>" <?= $k == $expenses_info->employee_id ? 'selected' : '' ?>>
+                        <?= esc($v) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        <?php else: ?>
+            <input type="hidden" name="employee_id" value="<?= $expenses_info->employee_id ?>">
+            <input type="text" class="form-control" name="employee" id="employee" aria-describedby="employee-icon" value="<?= esc($employees[$expenses_info->employee_id] ?? '') ?>" disabled readonly>
+        <?php endif; ?>
+    </div>
+
+    <label for="description" class="form-label"><?= lang('Expenses.description'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-chat"></i></span>
+        <textarea class="form-control" name="description" id="description" rows="6"><?= $expenses_info->description ?></textarea>
+    </div>
+
+    <?php if (!empty($expenses_info->expense_id)): ?>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="deleted" id="deleted" value="1" <?= $expenses_info->deleted == 1 ? 'checked' : '' ?>>
+            <label class="form-check-label text-danger" for="deleted"><?= lang('Expenses.is_deleted') ?></label>
         </div>
+    <?php endif; ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.date'), 'date', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
-                    <?= form_input([
-                        'name'     => 'date',
-                        'class'    => 'form-control input-sm datetime',
-                        'value'    => to_datetime(strtotime($expenses_info->date)),
-                        'readonly' => 'readonly'
-                    ]) ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.supplier_name'), 'supplier_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <?= form_input([
-                    'name'  => 'supplier_name',
-                    'id'    => 'supplier_name',
-                    'class' => 'form-control input-sm',
-                    'value' => lang('Expenses.start_typing_supplier_name')
-                ]);
-                echo form_input([
-                    'type' => 'hidden',
-                    'name' => 'supplier_id',
-                    'id'   => 'supplier_id'
-                ]) ?>
-            </div>
-            <div class="col-xs-2">
-                <a id="remove_supplier_button" class="btn btn-danger btn-sm" title="Remove Supplier">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.supplier_tax_code'), 'supplier_tax_code', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <?= form_input([
-                    'name'  => 'supplier_tax_code',
-                    'id'    => 'supplier_tax_code',
-                    'class' => 'form-control input-sm',
-                    'value' => $expenses_info->supplier_tax_code
-                ]) ?>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.amount'), 'amount', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'amount',
-                        'id'    => 'amount',
-                        'class' => 'form-control input-sm',
-                        'value' => to_currency_no_money($expenses_info->amount)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.tax_amount'), 'tax_amount', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'tax_amount',
-                        'id'    => 'tax_amount',
-                        'class' => 'form-control input-sm',
-                        'value' => to_currency_no_money($expenses_info->tax_amount)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.payment'), 'payment_type', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <?= form_dropdown('payment_type', $payment_options, $expenses_info->payment_type, ['class' => 'form-control', 'id' => 'payment_type']) ?>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses_categories.name'), 'category', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <?= form_dropdown('expense_category_id', $expense_categories, $expenses_info->expense_category_id, ['class' => 'form-control', 'id' => 'category']) ?>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <?php if ($can_assign_employee): ?>
-                    <?= form_dropdown('employee_id', $employees, $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
-                <?php else: ?>
-                    <?= form_hidden('employee_id', $expenses_info->employee_id) ?>
-                    <?= form_input(['name' => 'employee_name', 'value' => esc($employees[$expenses_info->employee_id] ?? ''), 'class' => 'form-control', 'readonly' => 'readonly']) ?>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <?= form_textarea([
-                    'name'  => 'description',
-                    'id'    => 'description',
-                    'class' => 'form-control input-sm',
-                    'value' => $expenses_info->description
-                ]) ?>
-            </div>
-        </div>
-
-        <?php if (!empty($expenses_info->expense_id)) { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Expenses.is_deleted') . ':', 'deleted', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-5">
-                    <?= form_checkbox([
-                        'name'    => 'deleted',
-                        'id'      => 'deleted',
-                        'value'   => 1,
-                        'checked' => $expenses_info->deleted == 1
-                    ]) ?>
-                </div>
-            </div>
-        <?php } ?>
-
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">
