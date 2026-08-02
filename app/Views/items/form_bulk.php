@@ -8,167 +8,104 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Items.edit_fields_you_want_to_update') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open('items/bulkUpdate/', ['id' => 'item_form']) ?>
 
-<?= form_open('items/bulkUpdate/', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="bulk_item_basic_info">
+    <div class="mb-3"><?= lang('Items.edit_fields_you_want_to_update') ?></div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'name',
-                    'id'    => 'name',
-                    'class' => 'form-control input-sm'
-                ]) ?>
-            </div>
-        </div>
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm">
-                        <i class="bi bi-tag"></i>
-                    </span>
-                    <?= form_input([
-                        'name'  => 'category',
-                        'id'    => 'category',
-                        'class' => 'form-control input-sm'
-                    ]) ?>
-                </div>
-            </div>
-        </div>
+    <label for="name" class="form-label"><?= lang('Items.name') ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="name-icon"><i class="bi bi-tag"></i></span>
+        <input type="text" class="form-control" name="name" id="name" aria-describedby="name-icon">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('supplier_id', $suppliers, '', ['class' => 'form-control']) ?>
-            </div>
-        </div>
+    <label for="category" class="form-label"><?= lang('Items.category') ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="category-icon"><i class="bi bi-bookmark"></i></span>
+        <input type="text" class="form-control" name="category" id="category" aria-describedby="category-icon">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'cost_price',
-                        'id'    => 'cost_price',
-                        'class' => 'form-control input-sm'
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
+    <label for="supplier" class="form-label"><?= lang('Items.supplier'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-truck"></i></span>
+        <select class="form-select" name="supplier_id" id="supplier">
+            <?php foreach ($suppliers as $value => $label): ?>
+                <option value="<?= $value ?>"><?= $label ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-        <div class="form-group form-group">
-            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'unit_price',
-                        'id'    => 'unit_price',
-                        'class' => 'form-control input-sm'
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
+    <label for="cost_price" class="form-label"><?= lang('Items.cost_price') ?></label>
+    <div class="input-group mb-3">
+        <?php if (!is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="cost_price-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+        <input type="number" step="any" class="form-control" name="cost_price" id="cost_price" aria-describedby="cost_price-icon">
+        <?php if (is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="cost_price-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'  => 'tax_names[]',
-                    'id'    => 'tax_name_1',
-                    'class' => 'form-control input-sm',
-                    'value' => $config['default_tax_1_name']
-                ]) ?>
-            </div>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?= form_input([
-                        'name'  => 'tax_percents[]',
-                        'id'    => 'tax_percent_name_1',
-                        'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_1_rate'])
-                    ]) ?>
-                    <span class="input-group input-group-addon"><b>%</b></span>
-                </div>
-            </div>
-        </div>
+    <label for="unit_price" class="form-label"><?= lang('Items.unit_price') ?></label>
+    <div class="input-group mb-3">
+        <?php if (!is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="unit_price-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+        <input type="number" step="any" class="form-control" name="unit_price" id="unit_price" aria-describedby="unit_price-icon">
+        <?php if (is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="unit_price-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'  => 'tax_names[]',
-                    'id'    => 'tax_name_2',
-                    'class' => 'form-control input-sm',
-                    'value' => $config['default_tax_2_name']
-                ]) ?>
-            </div>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?= form_input([
-                        'name'  => 'tax_percents[]',
-                        'id'    => 'tax_percent_name_2',
-                        'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_2_rate'])
-                    ]) ?>
-                    <span class="input-group input-group-addon"><b>%</b></span>
-                </div>
-            </div>
-        </div>
+    <label for="tax_name_1" class="form-label"><?= lang('Items.tax_1') ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="tax_name_1-icon"><i class="bi bi-piggy-bank"></i></span>
+        <input type="text" class="form-control w-25" name="tax_names[]" id="tax_name_1" aria-describedby="tax_name_1-icon" value="<?= $config['default_tax_1_name'] ?>">
+        <input type="number" step="any" min="0" max="100" class="form-control" name="tax_percents[]" id="tax_percent_name_1" aria-describedby="tax_percent_name_1-icon" value="<?= to_tax_decimals($config['default_tax_1_rate']) ?>">
+        <span class="input-group-text" id="tax_percent_name_1-icon"><i class="bi bi-percent"></i></span>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'  => 'reorder_level',
-                    'id'    => 'reorder_level',
-                    'class' => 'form-control input-sm'
-                ]) ?>
-            </div>
-        </div>
+    <label for="tax_name_2" class="form-label"><?= lang('Items.tax_2') ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="tax_name_2-icon"><i class="bi bi-piggy-bank"></i></span>
+        <input type="text" class="form-control w-25" name="tax_names[]" id="tax_name_2" aria-describedby="tax_name_2-icon" value="<?= $config['default_tax_2_name'] ?>">
+        <input type="number" step="any" min="0" max="100" class="form-control" name="tax_percents[]" id="tax_percent_name_2" aria-describedby="tax_percent_name_2-icon" value="<?= to_tax_decimals($config['default_tax_2_rate']) ?>">
+        <span class="input-group-text" id="tax_percent_name_2-icon"><i class="bi bi-percent"></i></span>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_textarea([
-                    'name'  => 'description',
-                    'id'    => 'description',
-                    'class' => 'form-control input-sm'
-                ]) ?>
-            </div>
-        </div>
+    <label for="reorder_level" class="form-label"><?= lang('Items.reorder_level') ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="reorder_level-icon"><i class="bi bi-list-ol"></i></span>
+        <input type="text" class="form-control" name="reorder_level" id="reorder_level" aria-describedby="reorder_level-icon">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('allow_alt_description', $allow_alt_description_choices, '', ['class' => 'form-control']) ?>
-            </div>
-        </div>
+    <label for="description" class="form-label"><?= lang('Items.description'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-chat"></i></span>
+        <textarea class="form-control" name="description" id="description" rows="6"></textarea>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('is_serialized', $serialization_choices, '', ['class' => 'form-control']) ?>
-            </div>
-        </div>
+    <label for="allow_alt_description" class="form-label"><?= lang('Items.allow_alt_description'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-input-cursor-text"></i></span>
+        <select class="form-select" name="allow_alt_description" id="allow_alt_description">
+            <?php foreach ($allow_alt_description_choices as $value => $label): ?>
+                <option value="<?= $value ?>"><?= $label ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-    </fieldset>
+    <label for="is_serialized" class="form-label"><?= lang('Items.is_serialized'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-123"></i></span>
+        <select class="form-select" name="is_serialized" id="is_serialized">
+            <?php foreach ($serialization_choices as $value => $label): ?>
+                <option value="<?= $value ?>"><?= $label ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">

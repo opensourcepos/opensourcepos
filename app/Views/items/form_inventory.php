@@ -7,104 +7,56 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("items/saveInventory/$item_info->item_id", ['id' => 'item_form']) ?>
 
-<?= form_open("items/saveInventory/$item_info->item_id", ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="inv_item_basic_info">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.item_number'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm">
-                        <i class="bi bi-upc-scan"></i>
-                    </span>
-                    <?= form_input([
-                        'name'     => 'item_number',
-                        'id'       => 'item_number',
-                        'class'    => 'form-control input-sm',
-                        'disabled' => '',
-                        'value'    => $item_info->item_number
-                    ]) ?>
-                </div>
-            </div>
-        </div>
+    <label for="item_number" class="form-label"><?= lang('Items.item_number'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="item_number-icon"><i class="bi bi-upc-scan"></i></span>
+        <input type="text" class="form-control" name="item_number" id="item_number" aria-describedby="item_number-icon" value="<?= $item_info->item_number ?>" disabled readonly>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'     => 'name',
-                    'id'       => 'name',
-                    'class'    => 'form-control input-sm',
-                    'disabled' => '',
-                    'value'    => $item_info->name
-                ]) ?>
-            </div>
-        </div>
+    <label for="name" class="form-label"><?= lang('Items.name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="name-icon"><i class="bi bi-tag"></i></span>
+        <input type="text" class="form-control" name="name" id="name" aria-describedby="name-icon" value="<?= $item_info->name ?>" disabled readonly>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm">
-                        <i class="bi bi-tag"></i>
-                    </span>
-                    <?= form_input([
-                        'name'     => 'category',
-                        'id'       => 'category',
-                        'class'    => 'form-control input-sm',
-                        'disabled' => '',
-                        'value'    => $item_info->category
-                    ]) ?>
-                </div>
-            </div>
-        </div>
+    <label for="category" class="form-label"><?= lang('Items.category'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="category-icon"><i class="bi bi-bookmark"></i></span>
+        <input type="text" class="form-control" name="category" id="category" aria-describedby="category-icon" value="<?= $item_info->category ?>" disabled readonly>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange' => 'fill_quantity(this.value)', 'class' => 'form-control']) ?>
-            </div>
-        </div>
+    <label for="stock_location" class="form-label"><?= lang('Items.stock_location'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+        <select class="form-select" name="stock_location" id="stock_location" onchange="fill_quantity(this.value)">
+            <?php foreach ($stock_locations as $value => $label): ?>
+                <option value="<?= $value ?>" <?= $value == current($stock_locations) ? 'selected' : '' ?>><?= $label ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'     => 'quantity',
-                    'id'       => 'quantity',
-                    'class'    => 'form-control input-sm',
-                    'disabled' => '',
-                    'value'    => to_quantity_decimals(current($item_quantities))
-                ]) ?>
-            </div>
-        </div>
+    <label for="quantity" class="form-label"><?= lang('Items.current_quantity'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="quantity-icon"><i class="bi bi-box"></i></span>
+        <input type="text" class="form-control" name="quantity" id="quantity" aria-describedby="quantity-icon" value="<?= to_quantity_decimals(current($item_quantities)) ?>" disabled readonly>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.add_minus'), 'quantity', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'  => 'newquantity',
-                    'id'    => 'newquantity',
-                    'class' => 'form-control input-sm'
-                ]) ?>
-            </div>
-        </div>
+    <label for="newquantity" class="form-label"><?= lang('Items.add_minus'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="newquantity-icon"><i class="bi bi-plus-slash-minus"></i></span>
+        <input type="number" step="1" class="form-control" name="newquantity" id="newquantity" aria-describedby="newquantity-icon">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.inventory_comments'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_textarea([
-                    'name'  => 'trans_comment',
-                    'id'    => 'trans_comment',
-                    'class' => 'form-control input-sm'
-                ]) ?>
-            </div>
-        </div>
+    <label for="trans_comment" class="form-label"><?= lang('Items.inventory_comments'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-chat"></i></span>
+        <textarea class="form-control" name="trans_comment" id="trans_comment" rows="6"></textarea>
+    </div>
 
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">

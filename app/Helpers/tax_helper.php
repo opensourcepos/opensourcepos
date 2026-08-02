@@ -38,7 +38,7 @@ function get_tax_code_data_row($tax_code_row): array
             "$controller_name/view_tax_codes/$tax_code_row->tax_code",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller_name) . ".update_tax_codes")
             ]
@@ -76,7 +76,7 @@ function get_tax_categories_data_row($tax_categories_row): array
             "$controller_name/view/$tax_categories_row->tax_category_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller_name) . ".update")
             ]
@@ -113,7 +113,7 @@ function get_tax_jurisdictions_data_row($tax_jurisdiction_row): array
             "$controller_name/view/$tax_jurisdiction_row->jurisdiction_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller_name) . ".update")
             ]
@@ -158,7 +158,7 @@ function get_tax_rates_data_row($tax_rates_row): array
             "$controller_name/view/$tax_rates_row->tax_rate_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller_name) . ".update")
             ]
