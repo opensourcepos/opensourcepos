@@ -588,7 +588,10 @@ class Items extends Secure_Controller
      */
     public function getBulkEdit(): string
     {
-        $suppliers = ['' => lang('Items.none')];
+        $suppliers = [
+            ''                          => lang('Items.do_nothing'),
+            Item::CLEAR_SUPPLIER_OPTION => lang('Items.none')
+        ];
 
         foreach ($this->supplier->get_all()->getResultArray() as $row) {
             $suppliers[$row['person_id']] = $row['company_name'];
@@ -895,16 +898,7 @@ class Items extends Secure_Controller
     public function postBulkUpdate(): ResponseInterface
     {
         $items_to_update = $this->request->getPost('item_ids');
-        $item_data = [];
-
-        foreach (Item::ALLOWED_BULK_EDIT_FIELDS as $field) {
-            $value = $this->request->getPost($field);
-            if ($field === 'supplier_id' && $value !== '') {
-                $item_data[$field] = $value;
-            } elseif ($value !== null && $value !== '') {
-                $item_data[$field] = $value;
-            }
-        }
+        $item_data = Item::filterBulkEditFields($this->request->getPost() ?? []);
 
         // Item data could be empty if tax information is being updated
         if (empty($item_data) || $this->item->update_multiple($item_data, $items_to_update)) {

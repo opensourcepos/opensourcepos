@@ -20,6 +20,13 @@ class Item extends Model
     public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
     public const ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
 
+    /**
+     * Sentinel posted by the bulk edit form to clear supplier_id, since an empty
+     * value there means "leave the column alone". Non-numeric so it can never
+     * collide with a suppliers.person_id.
+     */
+    public const CLEAR_SUPPLIER_OPTION = 'NONE';
+
     public const ALLOWED_BULK_EDIT_FIELDS = [
         'name',
         'category',
@@ -468,10 +475,45 @@ class Item extends Model
     }
 
     /**
+     * Reduces raw bulk edit input to the columns that may be bulk updated.
+     *
+     * Keys outside ALLOWED_BULK_EDIT_FIELDS are dropped, and a field that is absent
+     * or empty is left untouched so it keeps its current value. supplier_id is
+     * nullable, so CLEAR_SUPPLIER_OPTION is how the form asks for it to be cleared.
+     */
+    public static function filterBulkEditFields(array $input): array
+    {
+        $item_data = [];
+
+        foreach (self::ALLOWED_BULK_EDIT_FIELDS as $field) {
+            $value = $input[$field] ?? null;
+
+            if ($value === null || $value === '') {
+                continue;
+            }
+
+            if ($field === 'supplier_id' && $value === self::CLEAR_SUPPLIER_OPTION) {
+                $value = null;
+            }
+
+            $item_data[$field] = $value;
+        }
+
+        return $item_data;
+    }
+
+    /**
      * Updates multiple items at once
      */
     public function update_multiple(array $item_data, string $item_ids): bool
     {
+        // Query Builder bypasses $allowedFields, so the whitelist is enforced here (GHSA-49mq-h2g4-grr9)
+        $item_data = array_intersect_key($item_data, array_flip(self::ALLOWED_BULK_EDIT_FIELDS));
+
+        if (empty($item_data)) {
+            return false;
+        }
+
         $builder = $this->db->table('items');
         $builder->whereIn('item_id', explode(':', $item_ids));
 
