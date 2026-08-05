@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Streepjescode",
     "item_number_duplicate"              => "Artikelnummer is al aanwezig in de database.",
-    "item_number_invalid"                => "Artikelnummer bevat niet-toegestane tekens.",
+    'item_number_invalid'                => 'Artikelnummer bevat niet-toegestane tekens.',
     "kit"                                => "Set",
     "location"                           => "Locatie",
     "low_inventory_items"                => "Artikelen niet voorradig",

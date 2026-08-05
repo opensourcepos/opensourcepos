@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "",
     "item_number_duplicate"              => "",
-    "item_number_invalid"                => "Ο αριθμός είδους περιέχει μη επιτρεπόμενους χαρακτήρες.",
+    'item_number_invalid'                => 'Ο αριθμός είδους περιέχει μη επιτρεπόμενους χαρακτήρες.',
     "kit"                                => "",
     "location"                           => "",
     "low_inventory_items"                => "",

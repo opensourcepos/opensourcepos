@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "A termék száma már szerepel az adatbázisban",
-    "item_number_invalid"                => "A termék száma nem megengedett karaktereket tartalmaz.",
+    'item_number_invalid'                => 'A termék száma nem megengedett karaktereket tartalmaz.',
     "kit"                                => "",
     "location"                           => "Helyszín",
     "low_inventory_items"                => "Kifogyott term.",

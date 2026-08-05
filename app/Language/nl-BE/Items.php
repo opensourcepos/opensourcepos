@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "Artikelnummer is reeds aanwezig in de database.",
-    "item_number_invalid"                => "Artikelnummer bevat niet-toegestane tekens.",
+    'item_number_invalid'                => 'Artikelnummer bevat niet-toegestane tekens.',
     "kit"                                => "Set",
     "location"                           => "Locatie",
     "low_inventory_items"                => "Niet in stock",

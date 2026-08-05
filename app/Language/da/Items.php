@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "",
     "item_number_duplicate"              => "",
-    "item_number_invalid"                => "Varenummer indeholder ikke-tilladte tegn.",
+    'item_number_invalid'                => 'Varenummer indeholder ikke-tilladte tegn.',
     "kit"                                => "",
     "location"                           => "",
     "low_inventory_items"                => "",

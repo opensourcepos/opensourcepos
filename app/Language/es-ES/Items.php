@@ -61,7 +61,7 @@ return [
     "item_id"                            => "Id del Artículo",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "El número de artículo ya esta presente en la base de datos.",
-    "item_number_invalid"                => "El número de artículo contiene caracteres no permitidos.",
+    'item_number_invalid'                => 'El número de artículo contiene caracteres no permitidos.',
     "kit"                                => "Kits de artículos",
     "location"                           => "Ubicación",
     "low_inventory_items"                => "Artículos de Inventario Escaso",

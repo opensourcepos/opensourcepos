@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "بارکد",
     "item_number_duplicate"              => "شماره مورد در بانک اطلاعاتی موجود است.",
-    "item_number_invalid"                => "شماره مورد حاوی کاراکترهای غیرمجاز است.",
+    'item_number_invalid'                => 'شماره مورد حاوی کاراکترهای غیرمجاز است.',
     "kit"                                => "کیت",
     "location"                           => "محل",
     "low_inventory_items"                => "موجودی غیر از سهام",

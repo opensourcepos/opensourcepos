@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Codice a Barre",
     "item_number_duplicate"              => "Numero Articolo è già presente nel database.",
-    "item_number_invalid"                => "Il numero articolo contiene caratteri non consentiti.",
+    'item_number_invalid'                => 'Il numero articolo contiene caratteri non consentiti.',
     "kit"                                => "Kit",
     "location"                           => "Posizione",
     "low_inventory_items"                => "Articoli Fuori Stock",

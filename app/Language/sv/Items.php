@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Streckkod",
     "item_number_duplicate"              => "Artikelnummer finns redan i databasen.",
-    "item_number_invalid"                => "Artikelnumret innehåller otillåtna tecken.",
+    'item_number_invalid'                => 'Artikelnumret innehåller otillåtna tecken.',
     "kit"                                => "Kit",
     "location"                           => "Lagerplats",
     "low_inventory_items"                => "Artikeln slutsåld",

@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Barcode",
     "item_number_duplicate"              => "Item Number is already present in the database.",
-    "item_number_invalid"                => "Item Number contains disallowed characters.",
+    'item_number_invalid'                => 'Item Number contains disallowed characters.',
     "kit"                                => "Kit",
     "location"                           => "Location",
     "low_inventory_items"                => "Out Of Stock Items",

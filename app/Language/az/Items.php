@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Barkod",
     "item_number_duplicate"              => "Malın Nömrəsi artiq Məlumat bazasında var.",
-    "item_number_invalid"                => "Malın Nömrəsində icazə verilməyən simvollar var.",
+    'item_number_invalid'                => 'Malın Nömrəsində icazə verilməyən simvollar var.',
     "kit"                                => "Dəst",
     "location"                           => "Yer",
     "low_inventory_items"                => "Bitmış Mallar",

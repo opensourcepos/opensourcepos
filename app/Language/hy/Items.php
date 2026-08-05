@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "",
     "item_number_duplicate"              => "",
-    "item_number_invalid"                => "Իրի համարը պարունակում է անթույլատրելի նիշեր։",
+    'item_number_invalid'                => 'Իրի համարը պարունակում է անթույլատրելի նիշեր։',
     "kit"                                => "",
     "location"                           => "",
     "low_inventory_items"                => "",

@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Barcode",
     "item_number_duplicate"              => "Die Artikelnummer existiert bereits in der Datenbank.",
-    "item_number_invalid"                => "Die Artikelnummer enthält nicht zulässige Zeichen.",
+    'item_number_invalid'                => 'Die Artikelnummer enthält nicht zulässige Zeichen.',
     "kit"                                => "Satz",
     "location"                           => "Ort",
     "low_inventory_items"                => "Nicht vorrätige Artikel",

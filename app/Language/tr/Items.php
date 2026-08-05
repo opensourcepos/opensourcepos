@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "Ürün numarası veritabanında zaten var.",
-    "item_number_invalid"                => "Ürün numarası izin verilmeyen karakterler içeriyor.",
+    'item_number_invalid'                => 'Ürün numarası izin verilmeyen karakterler içeriyor.',
     "kit"                                => "Set",
     "location"                           => "Yer",
     "low_inventory_items"                => "Stokta Olmayan Ürünler",

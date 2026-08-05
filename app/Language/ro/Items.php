@@ -61,7 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "",
     "item_number_duplicate"              => "",
-    "item_number_invalid"                => "Numărul articolului conține caractere nepermise.",
+    'item_number_invalid'                => 'Numărul articolului conține caractere nepermise.',
     "kit"                                => "",
     "location"                           => "",
     "low_inventory_items"                => "",

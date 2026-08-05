@@ -617,9 +617,9 @@ class Items extends Secure_Controller
      */
     public function postSave(int $item_id = NEW_ENTRY): ResponseInterface
     {
-        $item_number = $this->request->getPost('item_number');
+        $itemNumber = $this->request->getPost('item_number');
 
-        if (!empty($item_number)) {
+        if (!empty($itemNumber)) {
             $rules = [
                 'item_number' => 'alpha_numeric_punct',
             ];

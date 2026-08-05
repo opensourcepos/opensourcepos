@@ -61,7 +61,7 @@ return [
     'item_id' => "",
     'item_number' => "โค๊ด",
     'item_number_duplicate' => "The item number is already present in the database",
-    'item_number_invalid' => "The item number contains disallowed characters",
+    'item_number_invalid' => 'The item number contains disallowed characters',
     'kit' => "ชุด",
     'location' => "ที่ตั้ง",
     'low_inventory_items' => "สินค้าคงเหลือน้อย",
