@@ -123,6 +123,7 @@ gulp.task('debug-js', function() {
         './node_modules/jspdf/dist/jspdf.umd.js',
         './node_modules/dompurify/dist/purify.js',
         './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
+        './node_modules/xlsx/dist/xlsx.full.min.js',
         './node_modules/tableexport.jquery.plugin/tableExport.min.js',
         './node_modules/chartist/dist/chartist.js',
         './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.js',
@@ -172,6 +173,7 @@ gulp.task('prod-js', function() {
         './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js',
         './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js',
         './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
+        './node_modules/xlsx/dist/xlsx.full.min.js',
         './node_modules/tableexport.jquery.plugin/tableExport.min.js'], { allowEmpty: true });
 
     var opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
