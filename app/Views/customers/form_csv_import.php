@@ -1,6 +1,6 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open_multipart('customers/importCsvFile/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
+<?= form_open_multipart('customers/importCsvFile/', ['id' => 'csv_form', 'class' => 'form-horizontal', 'data-plugin-form' => 'true']) ?>
     <fieldset id="item_basic_info">
 
         <div class="form-group form-group-sm">

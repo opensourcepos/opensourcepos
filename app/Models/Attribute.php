@@ -303,7 +303,7 @@ class Attribute extends Model
         $builder->orderBy('definition_name', 'ASC');
 
         if (!$groups) {
-            $builder->whereNotIn('definition_type', GROUP);
+            $builder->whereNotIn('definition_type', [GROUP]);
         }
 
         $results = $builder->get()->getResultArray();
@@ -578,7 +578,7 @@ class Attribute extends Model
      * @param string|bool $definition_type
      * @return array
      */
-    public function get_definition_by_name(string $definition_name, string|bool $definition_type = false): array
+    public function getDefinitionByName(string $definition_name, string|bool $definition_type = false): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where('definition_name', $definition_name);
@@ -803,10 +803,13 @@ class Attribute extends Model
 
 
     /**
+     * Gets all attribute values for a given item. Used by plugins, do not remove.
+     *
      * @param int $item_id
-     * @return array
+     * @return array An array of attribute values, indexed by definition ID. Each attribute value is an array with the
+     * attribute_value, attribute_datetime and attribute_decimal keys.
      */
-    public function get_attribute_values(int $item_id): array    // TODO: Is this function used anywhere in the code?
+    public function getAttributeValues(int $item_id): array
     {
         $builder = $this->db->table('attribute_links');
         $builder->select('attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
@@ -816,6 +819,40 @@ class Attribute extends Model
         $results = $builder->get()->getResultArray();
 
         return $this->to_array($results, 'definition_id');
+    }
+
+    /**
+     * Gets all attribute values for multiple items in bulk. Used by plugins, do not remove.
+     *
+     * @param array $itemIds Array of item IDs
+     * @return array A nested array keyed by [item_id][definition_id] with attribute value arrays
+     */
+    public function getAttributeValuesBulk(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $builder = $this->db->table('attribute_links');
+        $builder->select('attribute_links.item_id, attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
+        $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
+        $builder->whereIn('item_id', $itemIds);
+        $builder->where('attribute_links.sale_id', null);
+        $builder->where('attribute_links.receiving_id', null);
+
+        $results = $builder->get()->getResultArray();
+
+        $map = [];
+        foreach ($results as $row) {
+            $itemId = $row['item_id'];
+            $defId = $row['definition_id'];
+            $map[$itemId][$defId] = [
+                'attribute_value'   => $row['attribute_value'],
+                'attribute_decimal' => $row['attribute_decimal'],
+                'attribute_date'    => $row['attribute_date'],
+            ];
+        }
+        return $map;
     }
 
     /**
@@ -1185,7 +1222,7 @@ class Attribute extends Model
      * @param int $attributeId
      * @return void
      */
-    private function deleteAttributeLinksByDefinitionIdAndAttributeId(int $definitionId, int $attributeId): void
+    public function deleteAttributeLinksByDefinitionIdAndAttributeId(int $definitionId, int $attributeId): void
     {
         $builder = $this->db->table('attribute_links');
         $builder->where('sale_id', null);
@@ -1230,5 +1267,24 @@ class Attribute extends Model
             $itemsBuilder->where('category', $attributeValue);
             $itemsBuilder->update();
         }
+    }
+
+    /**
+     * Given an attribute_definition gets all the items and their values associated with the attribute_definition.
+     *
+     * @param int $definition_id of the attribute to search by.
+     * @return array containing item_id => attribute_value pairs.
+     */
+    public function getAllValuesByDefinition(int $definition_id): array
+    {
+        $builder = $this->db->table('attribute_links');
+        $builder->select('attribute_links.item_id, attribute_links.attribute_id, attribute_values.attribute_value');
+        $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
+        $builder->where('definition_id', $definition_id);
+        $builder->where('item_id IS NOT NULL');
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+
+        return $builder->get()->getResultArray();
     }
 }

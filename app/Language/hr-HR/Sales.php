@@ -38,7 +38,6 @@ return [
     'customer_discount'                 => 'Popust',
     'customer_email'                    => 'e-mail kupca',
     'customer_location'                 => 'Mjesto kupca',
-    'customer_mailchimp_status'         => '',
     'customer_optional'                 => '',
     'customer_required'                 => '',
     'customer_total'                    => 'Total',

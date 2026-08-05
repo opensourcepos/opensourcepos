@@ -248,7 +248,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertIsInt((int) $row->item_id);
         $this->assertGreaterThan(0, (int) $row->item_id);
 
-        $savedItem = $this->item->get_info((int) $row->item_id);
+        $savedItem = $this->item->getInfo((int) $row->item_id);
         $this->assertEquals('CSV Imported Item', $savedItem->name);
         $this->assertEquals('Description from CSV', $savedItem->description);
         $this->assertEquals('Electronics', $savedItem->category);
@@ -445,7 +445,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $this->assertTrue($this->item->save_value($updatedData, $updatedData['item_id']));
 
-        $updatedItem = $this->item->get_info($updatedData['item_id']);
+        $updatedItem = $this->item->getInfo($updatedData['item_id']);
         $this->assertEquals('Updated Name', $updatedItem->name);
         $this->assertEquals('Updated Category', $updatedItem->category);
         $this->assertEquals(15.00, (float)$updatedItem->cost_price);
@@ -635,7 +635,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $this->assertTrue($this->item->save_value($itemData));
 
-        $savedItem = $this->item->get_info($itemData['item_id']);
+        $savedItem = $this->item->getInfo($itemData['item_id']);
         $this->assertEquals(-1, (int)$savedItem->reorder_level);
     }
 
@@ -674,7 +674,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
             $this->assertTrue($this->item->save_value($itemData));
 
-            $savedItem = $this->item->get_info($itemData['item_id']);
+            $savedItem = $this->item->getInfo($itemData['item_id']);
 
             $this->assertSame(
                 $case['expected_cost_price'],
@@ -704,7 +704,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
         $this->assertTrue($this->item->save_value($itemData));
 
-        $savedItem = $this->item->get_info($itemData['item_id']);
+        $savedItem = $this->item->getInfo($itemData['item_id']);
         $this->assertEquals('8471', $savedItem->hsn_code);
     }
 
@@ -797,7 +797,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertIsInt($itemData['item_id']);
         $this->assertGreaterThan(0, $itemData['item_id']);
 
-        $savedItem = $this->item->get_info($itemData['item_id']);
+        $savedItem = $this->item->getInfo($itemData['item_id']);
         $this->assertEquals('Item Without Barcode', $savedItem->name);
     }
 
@@ -891,7 +891,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
         ];
         $this->inventory->insert($inventoryData);
 
-        $savedItem = $this->item->get_info($itemData['item_id']);
+        $savedItem = $this->item->getInfo($itemData['item_id']);
         $this->assertEquals('Complete Test Item', $savedItem->name);
         $this->assertEquals('Electronics', $savedItem->category);
         $this->assertEquals(50.00, (float)$savedItem->cost_price);

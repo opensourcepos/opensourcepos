@@ -38,7 +38,6 @@ return [
     'customer_discount'                 => 'Giảm giá',
     'customer_email'                    => 'Thư điện tử',
     'customer_location'                 => 'Vị trí',
-    'customer_mailchimp_status'         => 'Trạng thái tài khoản Mailchimp',
     'customer_optional'                 => '(Tùy chọn)',
     'customer_required'                 => '(Bắt buộc)',
     'customer_total'                    => 'Tổng cộng',

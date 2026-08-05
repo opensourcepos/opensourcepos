@@ -38,7 +38,6 @@ return [
     'customer_discount'                 => 'Discount',
     'customer_email'                    => 'Vevő e-mail',
     'customer_location'                 => 'Vevő hely',
-    'customer_mailchimp_status'         => '',
     'customer_optional'                 => '',
     'customer_required'                 => '',
     'customer_total'                    => 'Total',

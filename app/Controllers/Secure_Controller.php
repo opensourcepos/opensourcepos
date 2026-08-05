@@ -99,10 +99,10 @@ class Secure_Controller extends BaseController
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return mixed|void
      */
-    public function getConfig($key)
+    public function getConfig(string $key)
     {
         if (isset($config[$key])) {
             return $config[$key];

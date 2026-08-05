@@ -40,7 +40,7 @@ class Sale extends Model
     /**
      * Get sale info
      */
-    public function get_info(int $sale_id): ResultInterface
+    public function getInfo(int $sale_id): ResultInterface
     {
         $config = config(OSPOS::class)->settings;
         $this->create_temp_table(['sale_id' => $sale_id]);
@@ -583,7 +583,7 @@ class Sale extends Model
                 $currentGiftcardValue = $giftcard->get_giftcard_value($splitPayment[1]);
                 $giftcard->update_giftcard_value($splitPayment[1], $currentGiftcardValue - $payment['payment_amount']);
             } elseif (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
-                $currentRewardsValue = $customer->get_info($customerId)->points;
+                $currentRewardsValue = $customer->getInfo($customerId)->points;
                 $customer->update_reward_points_value($customerId, $currentRewardsValue - $payment['payment_amount']);
                 $totalAmountUsed = floatval($totalAmountUsed) + floatval($payment['payment_amount']);
             }
@@ -606,10 +606,10 @@ class Sale extends Model
 
         $this->save_customer_rewards($customerId, $saleId, $total_amount, $totalAmountUsed);
 
-        $customer = $customer->get_info($customerId);
+        $customer = $customer->getInfo($customerId);
 
         foreach ($items as $line => $item_data) {
-            $cur_item_info = $item->get_info($item_data['item_id']);
+            $cur_item_info = $item->getInfo($item_data['item_id']);
 
             if ($item_data['price'] == 0.00) {
                 $item_data['discount'] = 0.00;
@@ -807,10 +807,10 @@ class Sale extends Model
             $item = model(Item::class);
             $item_quantity = model(Item_quantity::class);
 
-            $items = $this->get_sale_items($sale_id)->getResultArray();
+            $items = $this->getSaleItems($sale_id)->getResultArray();
 
             foreach ($items as $item_data) {
-                $cur_item_info = $item->get_info($item_data['item_id']);
+                $cur_item_info = $item->getInfo($item_data['item_id']);
 
                 if ($cur_item_info->stock_type == HAS_STOCK) {
                     // Create query to update inventory tracking
@@ -842,7 +842,7 @@ class Sale extends Model
     /**
      * Gets sale item
      */
-    public function get_sale_items(int $sale_id): ResultInterface
+    public function getSaleItems(int $sale_id): ResultInterface
     {
         $builder = $this->db->table('sales_items');
         $builder->where('sale_id', $sale_id);
@@ -908,7 +908,7 @@ class Sale extends Model
     /**
      * Gets sale payments
      */
-    public function get_sale_payments(int $sale_id): ResultInterface
+    public function getSalePayments(int $sale_id): ResultInterface
     {
         $builder = $this->db->table('sales_payments');
         $builder->where('sale_id', $sale_id);
@@ -949,7 +949,7 @@ class Sale extends Model
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
 
-        return $customer->get_info($builder->get()->getRow()->customer_id);
+        return $customer->getInfo($builder->get()->getRow()->customer_id);
     }
 
     /**
@@ -962,7 +962,7 @@ class Sale extends Model
 
         $employee = model(Employee::class);
 
-        return $employee->get_info($builder->get()->getRow()->employee_id);
+        return $employee->getInfo($builder->get()->getRow()->employee_id);
     }
 
     /**
@@ -1385,11 +1385,11 @@ class Sale extends Model
             $customer_rewards = model(Customer_rewards::class);
             $rewards = model(Rewards::class);
 
-            $package_id = $customer->get_info($customer_id)->package_id;
+            $package_id = $customer->getInfo($customer_id)->package_id;
 
             if (!empty($package_id)) {
                 $points_percent = $customer_rewards->get_points_percent($package_id);
-                $points = $customer->get_info($customer_id)->points;
+                $points = $customer->getInfo($customer_id)->points;
                 $points = ($points == null ? 0 : $points);
                 $points_percent = ($points_percent == null ? 0 : $points_percent);
                 $total_amount_earned = ($total_amount * $points_percent / 100);

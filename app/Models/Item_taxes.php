@@ -9,7 +9,7 @@ use CodeIgniter\Model;
  */
 class Item_taxes extends Model
 {
-    protected $table = 'item_taxes';
+    protected $table = 'items_taxes';
     protected $primaryKey = 'item_id';
     protected $useAutoIncrement = false;
     protected $useSoftDeletes = false;
@@ -23,12 +23,34 @@ class Item_taxes extends Model
      */
     public function get_info(int $item_id): array
     {
-        $builder = $this->db->table('items_taxes');
+        $builder = $this->db->table($this->table);
         $builder->where('item_id', $item_id);
 
         // Return an array of taxes for an item
         return $builder->get()->getResultArray();
     }
+
+    /**
+     * Get all the taxes of given items. Used by plugins. Do not remove from code.
+     *
+     * @param array $itemIds
+     * @param bool $getDeleted
+     * @return array
+     */
+    public function getBulkInfo(array $itemIds, bool $getDeleted = false): array
+    {
+        $builder = $this->db->table($this->table);
+        $builder->whereIn('items_taxes.item_id', $itemIds);
+
+        if (!$getDeleted) {
+            $builder->join('items', 'items.item_id = items_taxes.item_id');
+            $builder->where('items.deleted', 0);
+            $builder->select('items_taxes.*');
+        }
+
+        return $builder->get()->getResultArray();
+    }
+
 
     /**
      * Inserts or updates an item's taxes
@@ -42,7 +64,7 @@ class Item_taxes extends Model
 
         $this->delete($item_id);
 
-        $builder = $this->db->table('items_taxes');
+        $builder = $this->db->table($this->table);
 
         foreach ($items_taxes_data as $row) {
             $row['item_id'] = $item_id;
@@ -69,7 +91,7 @@ class Item_taxes extends Model
         foreach (explode(':', $item_ids) as $item_id) {
             $this->delete($item_id);
 
-            $builder = $this->db->table('items_taxes');
+            $builder = $this->db->table($this->table);
 
             foreach ($items_taxes_data as $row) {
                 $row['item_id'] = $item_id;

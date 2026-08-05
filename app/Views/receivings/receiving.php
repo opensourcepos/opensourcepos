@@ -345,7 +345,7 @@ if (isset($success)) {
 
                 <?php } else { ?>
 
-                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal', 'data-plugin-form' => 'true']) ?>
 
                     <div class="form-group form-group-sm">
                         <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>

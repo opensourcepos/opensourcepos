@@ -173,4 +173,4 @@ const DEFAULT_LANGUAGE_CODE = 'en';
 /**
  * Admin modules - list of modules required for admin privileges
  */
-const ADMIN_MODULES = ['customers', 'employees', 'giftcards', 'items', 'item_kits', 'messages', 'receivings', 'reports', 'sales', 'config', 'suppliers'];
+const ADMIN_MODULES = ['customers', 'employees', 'giftcards', 'items', 'item_kits', 'messages', 'plugins', 'receivings', 'reports', 'sales', 'config', 'suppliers'];

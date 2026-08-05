@@ -38,7 +38,6 @@ return [
     'customer_discount'                 => 'Discount',
     'customer_email'                    => 'Email',
     'customer_location'                 => 'Location',
-    'customer_mailchimp_status'         => 'Mailchimp status',
     'customer_optional'                 => '(Required for Due Payments)',
     'customer_required'                 => '(Required)',
     'customer_total'                    => 'Total',
