@@ -617,6 +617,25 @@ class Items extends Secure_Controller
      */
     public function postSave(int $item_id = NEW_ENTRY): ResponseInterface
     {
+        $item_number = $this->request->getPost('item_number');
+
+        if (!empty($item_number)) {
+            $rules = [
+                'item_number' => 'alpha_numeric_punct',
+            ];
+            $messages = [
+                'item_number' => [
+                    'alpha_numeric_punct' => lang('Items.item_number_invalid'),
+                ],
+            ];
+
+            if (!$this->validate($rules, $messages)) {
+                $errors = $this->validator->getErrors();
+
+                return $this->response->setJSON(['success' => false, 'message' => reset($errors), 'id' => $item_id]);
+            }
+        }
+
         $upload_data = $this->upload_image();
         $upload_success = empty($upload_data['error']);
 
@@ -1200,6 +1219,16 @@ class Items extends Secure_Controller
         foreach ($valuesToCheckForNumeric as $key => $value) {
             if (!is_numeric($value) && !empty($value)) {
                 log_message('error', "non-numeric: '$value' for '$key' when numeric is required");
+                return true;
+            }
+        }
+
+        // Check item_number for disallowed characters
+        if (!empty($itemData['item_number'])) {
+            $rules = ['item_number' => 'alpha_numeric_punct'];
+
+            if (!\Config\Services::validation()->setRules($rules)->run($itemData)) {
+                log_message('error', "invalid item_number: '{$itemData['item_number']}' contains disallowed characters");
                 return true;
             }
         }
