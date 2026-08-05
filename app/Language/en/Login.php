@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "Running database migrations...",
     "password"                            => "Password",
     "required_username"                   => "The username field is required.",
+    "too_many_attempts"                   => "Too many attempts. Please wait a moment and try again.",
     "username"                            => "Username",
     "welcome"                             => "Welcome to {0}!"
 ];
