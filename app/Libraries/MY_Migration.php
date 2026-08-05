@@ -32,9 +32,10 @@ class MY_Migration extends MigrationRunner
     /**
      * Gets the database version number
      *
-     * @return int The version number of the last successfully run database migration.
+     * @return int|null The version number of the last successfully run database migration,
+     *                  0 for a confirmed empty database, or null if the database is unavailable.
      */
-    public static function getCurrentVersion(): int
+    public static function getCurrentVersion(): ?int
     {
         try {
             $db = Database::connect();
@@ -45,9 +46,9 @@ class MY_Migration extends MigrationRunner
                 return $result ? (int) $result->version : 0;
             }
         } catch (Exception $e) {
-            // Database not available yet (e.g. fresh install before schema).
+            // Database unavailable — distinct from a confirmed empty database.
             // Catches mysqli_sql_exception which is not a DatabaseException.
-            return 0;
+            return null;
         }
 
         return 0;
