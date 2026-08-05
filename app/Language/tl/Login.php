@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Password",
     "required_username"                   => "",
+    "too_many_attempts"                   => "Masyadong maraming pagtatangka. Mangyaring maghintay sandali at subukang muli.",
     "username"                            => "Username",
     "welcome"                             => ""
 ];

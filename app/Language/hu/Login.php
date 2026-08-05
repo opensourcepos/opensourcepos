@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Jelszó",
     "required_username"                   => "",
+    "too_many_attempts"                   => "Túl sok próbálkozás. Kérjük, várjon egy kicsit, majd próbálja újra.",
     "username"                            => "Felhasználó név",
     "welcome"                             => ""
 ];

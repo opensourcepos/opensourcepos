@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Lozinka",
     "required_username"                   => "",
+    "too_many_attempts"                   => "Previše pokušaja. Pričekajte trenutak i pokušajte ponovno.",
     "username"                            => "Korisničko ime",
     "welcome"                             => ""
 ];

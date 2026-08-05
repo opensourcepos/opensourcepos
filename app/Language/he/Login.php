@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "סיסמה",
     "required_username"                   => "",
+    "too_many_attempts"                   => "יותר מדי ניסיונות. אנא המתן רגע ונסה שוב.",
     "username"                            => "שם משתמש",
     "welcome"                             => ""
 ];

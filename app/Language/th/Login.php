@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "รหัสผ่าน",
     "required_username"                   => "จำเป็นต้องระบุชื่อผู้ใช้งาน",
+    "too_many_attempts"                   => "พยายามมากเกินไป กรุณารอสักครู่แล้วลองใหม่อีกครั้ง",
     "username"                            => "ชื่อผู้ใช้",
     "welcome"                             => "ยินดีต้อนรับสู่ {0}!"
 ];

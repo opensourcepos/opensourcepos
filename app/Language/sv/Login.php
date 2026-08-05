@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "Kör databasmigrationer...",
     "password"                            => "Lösenord",
     "required_username"                   => "Fältet för användarnamn krävs.",
+    "too_many_attempts"                   => "För många försök. Vänta en stund och försök igen.",
     "username"                            => "Användarnamn",
     "welcome"                             => "Välkommen till {0}!"
 ];

@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "ពាក្យសំងាត់",
     "required_username"                   => "",
+    "too_many_attempts"                   => "ការព្យាយាមច្រើនពេក។ សូមរង់ចាំបន្តិច ហើយព្យាយាមម្តងទៀត។",
     "username"                            => "ឈ្មោះ",
     "welcome"                             => ""
 ];
