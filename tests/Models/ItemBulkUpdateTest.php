@@ -28,7 +28,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
     protected Item $item;
 
     /** @var list<int> */
-    private array $created_item_ids = [];
+    private array $createdItemIds = [];
 
     /** @var list<int> */
     private array $created_supplier_person_ids = [];
@@ -42,9 +42,9 @@ class ItemBulkUpdateTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        if ($this->created_item_ids !== []) {
-            $this->db->table('items')->whereIn('item_id', $this->created_item_ids)->delete();
-            $this->created_item_ids = [];
+        if ($this->createdItemIds !== []) {
+            $this->db->table('items')->whereIn('item_id', $this->createdItemIds)->delete();
+            $this->createdItemIds = [];
         }
 
         if ($this->created_supplier_person_ids !== []) {
@@ -61,7 +61,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
      */
     private function createItem(array $overrides = []): int
     {
-        $item_data = array_merge([
+        $itemData = array_merge([
             'name'                  => 'Bulk Edit Fixture',
             'category'              => 'Fixtures',
             'cost_price'            => 10.00,
@@ -76,12 +76,12 @@ class ItemBulkUpdateTest extends CIUnitTestCase
             'hsn_code'              => ''
         ], $overrides);
 
-        $this->item->save_value($item_data);
+        $this->item->save_value($itemData);
 
-        $item_id = (int)$item_data['item_id'];
-        $this->created_item_ids[] = $item_id;
+        $itemId = (int)$itemData['item_id'];
+        $this->createdItemIds[] = $itemId;
 
-        return $item_id;
+        return $itemId;
     }
 
     /**
