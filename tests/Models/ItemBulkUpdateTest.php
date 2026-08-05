@@ -168,7 +168,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
             'stock_type' => '1'
         ]);
 
-        $this->assertSame(['unit_price' => '25.00'], $filtered);
+        $this->assertSame(['unit_price' => 25.0], $filtered);
     }
 
     public function testFilterBulkEditFieldsOmitsAbsentSupplier(): void
@@ -201,7 +201,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
     {
         $filtered = Item::filterBulkEditFields(['supplier_id' => '7']);
 
-        $this->assertSame(['supplier_id' => '7'], $filtered);
+        $this->assertSame(['supplier_id' => 7], $filtered);
     }
 
     public function testFilterBulkEditFieldsSkipsEmptyValuesForEveryField(): void
@@ -213,13 +213,59 @@ class ItemBulkUpdateTest extends CIUnitTestCase
 
     public function testFilterBulkEditFieldsAcceptsEveryWhitelistedField(): void
     {
-        $input = array_fill_keys(Item::ALLOWED_BULK_EDIT_FIELDS, 'x');
+        $input = [
+            'name'                  => 'Renamed',
+            'category'              => 'Regrouped',
+            'supplier_id'           => '7',
+            'cost_price'            => '1.50',
+            'unit_price'            => '2.50',
+            'reorder_level'         => '3',
+            'description'           => 'described',
+            'allow_alt_description' => '1',
+            'is_serialized'         => '1'
+        ];
 
         $this->assertSame(
             Item::ALLOWED_BULK_EDIT_FIELDS,
             array_keys(Item::filterBulkEditFields($input)),
             'Every whitelisted field should still be editable'
         );
+    }
+
+    public function testFilterBulkEditFieldsDropsArrayValues(): void
+    {
+        $input = array_fill_keys(Item::ALLOWED_BULK_EDIT_FIELDS, ['x']);
+
+        $this->assertSame([], Item::filterBulkEditFields($input), 'Array values must never reach the update');
+    }
+
+    public function testFilterBulkEditFieldsDropsNonNumericPricesAndQuantities(): void
+    {
+        $filtered = Item::filterBulkEditFields([
+            'cost_price'    => 'abc',
+            'unit_price'    => 'DROP TABLE',
+            'reorder_level' => 'lots',
+            'name'          => 'Renamed'
+        ]);
+
+        $this->assertSame(['name' => 'Renamed'], $filtered, 'Unparseable numbers must be omitted');
+    }
+
+    public function testFilterBulkEditFieldsDropsInvalidBooleanValues(): void
+    {
+        $filtered = Item::filterBulkEditFields([
+            'allow_alt_description' => '2',
+            'is_serialized'         => 'yes'
+        ]);
+
+        $this->assertSame([], $filtered, 'Booleans other than 0/1 must be omitted');
+    }
+
+    public function testFilterBulkEditFieldsDropsNonNumericSupplier(): void
+    {
+        $filtered = Item::filterBulkEditFields(['supplier_id' => '7; DROP TABLE items']);
+
+        $this->assertSame([], $filtered, 'A non-numeric supplier_id other than the sentinel must be omitted');
     }
 
     public function testFilterBulkEditFieldsAcceptsZeroValues(): void

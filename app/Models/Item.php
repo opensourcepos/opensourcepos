@@ -477,8 +477,10 @@ class Item extends Model
     /**
      * Reduces raw bulk edit input to the columns that may be bulk updated.
      *
-     * Keys outside ALLOWED_BULK_EDIT_FIELDS are dropped, and a field that is absent
-     * or empty is left untouched so it keeps its current value. supplier_id is
+     * Keys outside ALLOWED_BULK_EDIT_FIELDS are dropped, and a field that is absent,
+     * empty, or invalid for its column is left untouched so it keeps its current
+     * value. Prices and quantities are locale-parsed the same way postSave() does,
+     * booleans must be 0/1, and supplier_id must be numeric. supplier_id is
      * nullable, so CLEAR_SUPPLIER_OPTION is how the form asks for it to be cleared.
      */
     public static function filterBulkEditFields(array $input): array
@@ -488,12 +490,32 @@ class Item extends Model
         foreach (self::ALLOWED_BULK_EDIT_FIELDS as $field) {
             $value = $input[$field] ?? null;
 
-            if ($value === null || $value === '') {
+            if ($value === null || $value === '' || !is_scalar($value)) {
                 continue;
             }
 
-            if ($field === 'supplier_id' && $value === self::CLEAR_SUPPLIER_OPTION) {
-                $value = null;
+            if ($field === 'supplier_id') {
+                if ($value === self::CLEAR_SUPPLIER_OPTION) {
+                    $item_data[$field] = null;
+                } elseif (ctype_digit((string)$value)) {
+                    $item_data[$field] = (int)$value;
+                }
+
+                continue;
+            }
+
+            if ($field === 'cost_price' || $field === 'unit_price') {
+                $value = parse_decimals((string)$value);
+            } elseif ($field === 'reorder_level') {
+                $value = parse_quantity((string)$value);
+            } elseif ($field === 'allow_alt_description' || $field === 'is_serialized') {
+                if (!in_array((string)$value, ['0', '1'], true)) {
+                    continue;
+                }
+            }
+
+            if ($value === false) {
+                continue;
             }
 
             $item_data[$field] = $value;
