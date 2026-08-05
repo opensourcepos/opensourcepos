@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Código de barras",
     "item_number_duplicate"              => "El código del artículo ya está presente en la base de datos.",
+    "item_number_invalid"                => "El código del artículo contiene caracteres no permitidos.",
     "kit"                                => "Kit",
     "location"                           => "Ubicación",
     "low_inventory_items"                => "",

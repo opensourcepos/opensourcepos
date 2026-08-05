@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "Broj stavke već postoji u bazi",
+    "item_number_invalid"                => "Broj stavke sadrži nedopuštene znakove.",
     "kit"                                => "",
     "location"                           => "Mjesto",
     "low_inventory_items"                => "Rasprodaja artikala",

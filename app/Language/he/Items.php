@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "ברקוד",
     "item_number_duplicate"              => "מספר הפריט כבר נמצא במסד הנתונים.",
+    "item_number_invalid"                => "מספר הפריט מכיל תווים אסורים.",
     "kit"                                => "ערכה",
     "location"                           => "מיקום",
     "low_inventory_items"                => "פריטים מחוץ למלאי",

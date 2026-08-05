@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Kode Barang",
     "item_number_duplicate"              => "Nomor item telah ada pada basis data.",
+    "item_number_invalid"                => "Nomor item mengandung karakter yang tidak diizinkan.",
     "kit"                                => "Perlengkapan",
     "location"                           => "Lokasi Barang",
     "low_inventory_items"                => "Daftar Stock Rendah",

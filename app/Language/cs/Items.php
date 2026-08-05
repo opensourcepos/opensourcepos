@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Čárový kód",
     "item_number_duplicate"              => "Položka už je v databázi.",
+    "item_number_invalid"                => "Číslo položky obsahuje nepovolené znaky.",
     "kit"                                => "Sada",
     "location"                           => "Umístění",
     "low_inventory_items"                => "Položky co nejsou skladem",

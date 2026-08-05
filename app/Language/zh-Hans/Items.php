@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "The item number is already present in the database",
+    "item_number_invalid"                => "The item number contains disallowed characters",
     "kit"                                => "",
     "location"                           => "位置",
     "low_inventory_items"                => "低庫存產品",

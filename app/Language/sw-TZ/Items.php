@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Msimbo wa Mstari",
     "item_number_duplicate"              => "namba ya Bidhaa tayari ipo kwenye Kanzidata.",
+    "item_number_invalid"                => "Namba ya Bidhaa ina herufi ambazo hairuhusiwi.",
     "kit"                                => "Kifurushi",
     "location"                           => "Mahali",
     "low_inventory_items"                => "Bidhaa Zilizokwisha Stoo",

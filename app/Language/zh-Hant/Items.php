@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "項目編號已存在於數據庫中。",
+    "item_number_invalid"                => "項目編號包含不允許的字符。",
     "kit"                                => "成套工具",
     "location"                           => "位置",
     "low_inventory_items"                => "低庫存產品",
