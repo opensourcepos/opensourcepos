@@ -30,6 +30,9 @@ class ItemBulkUpdateTest extends CIUnitTestCase
     /** @var list<int> */
     private array $created_item_ids = [];
 
+    /** @var list<int> */
+    private array $created_supplier_person_ids = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,6 +45,12 @@ class ItemBulkUpdateTest extends CIUnitTestCase
         if ($this->created_item_ids !== []) {
             $this->db->table('items')->whereIn('item_id', $this->created_item_ids)->delete();
             $this->created_item_ids = [];
+        }
+
+        if ($this->created_supplier_person_ids !== []) {
+            $this->db->table('suppliers')->whereIn('person_id', $this->created_supplier_person_ids)->delete();
+            $this->db->table('people')->whereIn('person_id', $this->created_supplier_person_ids)->delete();
+            $this->created_supplier_person_ids = [];
         }
 
         parent::tearDown();
@@ -73,6 +82,40 @@ class ItemBulkUpdateTest extends CIUnitTestCase
         $this->created_item_ids[] = $item_id;
 
         return $item_id;
+    }
+
+    /**
+     * Creates a supplier (people + suppliers rows, to satisfy the items FK chain)
+     * and returns its person_id.
+     */
+    private function createSupplier(): int
+    {
+        $this->db->table('people')->insert([
+            'first_name'   => 'Bulk',
+            'last_name'    => 'Supplier',
+            'phone_number' => '555-0100',
+            'email'        => 'bulk.supplier@example.test',
+            'address_1'    => '1 Fixture Way',
+            'address_2'    => '',
+            'city'         => 'Testville',
+            'state'        => 'TS',
+            'zip'          => '00000',
+            'country'      => 'US',
+            'comments'     => 'fixture'
+        ]);
+
+        $person_id = (int)$this->db->insertID();
+
+        $this->db->table('suppliers')->insert([
+            'person_id'    => $person_id,
+            'company_name' => 'Bulk Edit Supplies',
+            'agency_name'  => '',
+            'category'     => 0
+        ]);
+
+        $this->created_supplier_person_ids[] = $person_id;
+
+        return $person_id;
     }
 
     private function fetchItem(int $item_id): array
@@ -127,9 +170,17 @@ class ItemBulkUpdateTest extends CIUnitTestCase
 
     public function testUpdateMultipleClearsSupplierWhenPassedNull(): void
     {
-        $item_id = $this->createItem();
+        $supplier_id = $this->createSupplier();
+        $item_id     = $this->createItem(['supplier_id' => $supplier_id]);
 
-        $this->item->update_multiple(['supplier_id' => null], (string)$item_id);
+        $this->assertEquals(
+            $supplier_id,
+            (int)$this->fetchItem($item_id)['supplier_id'],
+            'precondition: the item must start with a supplier'
+        );
+
+        $filtered = Item::filterBulkEditFields(['supplier_id' => Item::CLEAR_SUPPLIER_OPTION]);
+        $this->item->update_multiple($filtered, (string)$item_id);
 
         $this->assertNull($this->fetchItem($item_id)['supplier_id'], 'supplier_id should be cleared');
     }
