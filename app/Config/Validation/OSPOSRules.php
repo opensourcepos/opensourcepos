@@ -66,7 +66,7 @@ class OSPOSRules
      * @param $response
      * @return bool true on successful GCaptcha verification or false if GCaptcha failed.
      */
-    private function gcaptcha_check($response): bool
+    protected function gcaptcha_check($response): bool
     {
         if (!empty($response)) {
             $check = [
