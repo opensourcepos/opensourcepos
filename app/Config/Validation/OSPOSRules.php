@@ -6,6 +6,7 @@ use App\Models\Employee;
 use CodeIgniter\HTTP\IncomingRequest;
 use Config\OSPOS;
 use Config\Services;
+use DirectoryIterator;
 
 /**
  * @property Employee employee
@@ -149,5 +150,26 @@ class OSPOSRules
         $value = parse_decimals($candidate);
 
         return $value !== false && $value >= 0;
+    }
+
+    /**
+     * Validates that the candidate theme name matches an installed bootswatch theme directory.
+     *
+     * @param string $theme
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function themeExists(string $theme, ?string &$error = null): bool
+    {
+        $dir = new DirectoryIterator('resources/bootswatch');
+
+        foreach ($dir as $fileInfo) {
+            if ($fileInfo->isDir() && !$fileInfo->isDot() && $fileInfo->getFilename() === $theme) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
