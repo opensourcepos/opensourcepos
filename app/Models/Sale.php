@@ -1016,7 +1016,7 @@ class Sale extends Model
     {
         $giftcard = model(Giftcard::class);
 
-        if (!$giftcard->exists($giftcard->get_giftcard_id($giftcardNumber))) {    // TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
+        if (!$giftcard->exists($giftcard->getGiftcardId($giftcardNumber))) {    // TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
             return 0;
         }
 
@@ -1095,12 +1095,12 @@ class Sale extends Model
                     SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
                     SUM(payments.cash_refund) AS sale_cash_refund,
                     GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type,
-                    payments.reference_code AS reference_code
+                    GROUP_CONCAT(NULLIF(payments.reference_code, "") SEPARATOR ", ") AS reference_code
                 FROM ' . $this->db->prefixTable('sales_payments') . ' AS payments
                 INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
                     ON sales.sale_id = payments.sale_id
                 WHERE ' . $where . '
-                GROUP BY payments.sale_id, payments.reference_code
+                GROUP BY payments.sale_id
             )';
 
         $this->db->query($sql);

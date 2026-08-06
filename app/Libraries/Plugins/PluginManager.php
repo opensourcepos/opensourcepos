@@ -246,10 +246,41 @@ class PluginManager
             return false;
         }
 
+        $this->unregisterPluginModules($pluginId);
+
         $this->configModel->deleteAllNonControlForPlugin($pluginId);
         $this->configModel->setValue($pluginId, 'installed', '0', true);
 
         return true;
+    }
+
+    /**
+     * Remove all modules and sub-permissions the plugin registered via
+     * BasePlugin::registerModule()/registerSubPermission(). Matched by the
+     * enforced id convention: ids are the plugin id itself or prefixed with
+     * '{plugin_id}_'. Runs automatically on uninstall so plugins don't have
+     * to call unregisterModule() themselves. Grants cascade via FK.
+     */
+    private function unregisterPluginModules(string $pluginId): void
+    {
+        $db = Database::connect();
+
+        // No FK cascade from modules to permissions — delete permissions first
+        $db->table('permissions')
+            ->groupStart()
+                ->where('permission_id', $pluginId)
+                ->orLike('permission_id', $pluginId . '_', 'after')
+                ->orWhere('module_id', $pluginId)
+                ->orLike('module_id', $pluginId . '_', 'after')
+            ->groupEnd()
+            ->delete();
+
+        $db->table('modules')
+            ->groupStart()
+                ->where('module_id', $pluginId)
+                ->orLike('module_id', $pluginId . '_', 'after')
+            ->groupEnd()
+            ->delete();
     }
 
     public function isPluginInstalled(string $pluginId): bool

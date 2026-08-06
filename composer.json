@@ -28,7 +28,7 @@
         "php": "^8.2",
         "ext-intl": "*",
         "codeigniter4/framework": "4.7.2",
-        "dompdf/dompdf": "^2.0.3",
+        "dompdf/dompdf": "^3.1.6",
         "ezyang/htmlpurifier": "^4.17",
         "laminas/laminas-escaper": "2.18.0",
         "paragonie/random_compat": "^2.0.21",
@@ -56,6 +56,11 @@
         "exclude-from-classmap": [
             "**/Database/Migrations/**"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "config": {
         "allow-plugins": {

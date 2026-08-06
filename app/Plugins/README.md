@@ -133,7 +133,7 @@ OSPOS fires these events that plugins can listen to:
 | `customer_deleted`    | `int $personId, string $email, array $pluginData = []`            | Customer deleted                                        |
 | `item_saved`          | `array $itemIds, array $pluginData = []`                          | Item created/updated via form save or CSV import        |
 | `item_deleted`        | `array $itemIds, array $pluginData = []`                          | Item(s) deleted                                         |
-| `sale_completed`      | `int $saleIdNum, string $saleType, array $pluginData = []`        | Sale finalized and receipt rendered (non-return sales only) |
+| `sale_completed`      | `int $saleIdNum, int $saleType, array $pluginData = []`           | Sale finalized and receipt rendered (non-return sales only) |
 | `return_completed`    | `int $returnSaleId, int $originalSaleId, array $pluginData = []`  | Return finalized — fired instead of `sale_completed` when mode is return. `$originalSaleId` is the sale being returned against; `0` if the return was not initiated via `return_entire_sale()` |
 | `receiving_completed` | `int $receivingId, string $mode, array $pluginData = []`          | Receiving finalized and items added to inventory        |
 
@@ -433,7 +433,7 @@ class MyPlugin extends BasePlugin
         Events::on('receiving_complete', [$this, 'onReceivingComplete']);
     }
 
-    public function onSaleComplete(int $saleIdNum, string $saleType, array $pluginData = []): void
+    public function onSaleComplete(int $saleIdNum, int $saleType, array $pluginData = []): void
     {
         log_message('info', "Sale completed: #{$saleIdNum} ({$saleType})");
     }
@@ -486,6 +486,8 @@ app/Plugins/
     │   └── ExampleModel.php
     ├── Traits/                   # Shared PHP traits for plugin classes
     │   └── ExampleTrait.php
+    ├── Tests/                    # Plugin unit tests (optional)
+    │   └── ExamplePluginTest.php
     ├── Views/                    # Plugin views
     │   ├── config.php
     │   └── dashboard.php
@@ -715,6 +717,7 @@ Settings are prefixed with the plugin ID (e.g., `example_api_key`) and stored in
 | `app/Plugins/ExamplePlugin/Traits/ExampleTrait.php`           | `App\Plugins\ExamplePlugin\Traits\ExampleTrait`           |
 | `app/Plugins/ExamplePlugin/Migrations/20260627120000_CreateExampleTable.php` | `App\Plugins\ExamplePlugin\Migrations\CreateExampleTable` |
 | `app/Plugins/ExamplePlugin/Language/en/ExamplePlugin.php`     | *(Language file - returns array, no namespace)*           |
+| `app/Plugins/ExamplePlugin/Tests/ExamplePluginTest.php`       | `App\Plugins\ExamplePlugin\Tests`                         |
 
 ## Database
 
@@ -808,6 +811,71 @@ Migration state is stored in `ospos_plugin_migrations`:
 
 Each plugin tracks its version independently. The table is created by the core migration `20260627000000_PluginMigrationsTableCreate`.
 
+## Unit Tests
+
+Plugins can ship their own test suite inside a `Tests/` subdirectory. PHPUnit discovers them automatically — no separate `phpunit.xml` per plugin is needed or wanted.
+
+### Directory Structure
+
+```text
+app/Plugins/ExamplePlugin/
+└── Tests/
+    └── ExamplePluginTest.php    # and any additional *Test.php files
+```
+
+### Namespace
+
+```
+App\Plugins\ExamplePlugin\Tests
+```
+
+This resolves via the existing `App\` → `app/` PSR-4 mapping in `composer.json` — no autoload changes needed.
+
+### Base Class
+
+Extend `Tests\Support\PluginTestCase` instead of `CIUnitTestCase` directly. `PluginTestCase` calls `PluginManager::registerAllNamespaces()` in `setUp()` so plugin class namespaces resolve without the `pre_system` hook that normally fires during a real request. Tests that exercise only pure PHP logic (no plugin class loading) may extend `CIUnitTestCase` directly.
+
+### Example
+
+```php
+<?php
+
+namespace App\Plugins\ExamplePlugin\Tests;
+
+use App\Plugins\ExamplePlugin\ExamplePlugin;
+use Tests\Support\PluginTestCase;
+
+class ExamplePluginTest extends PluginTestCase
+{
+    public function testGetPluginId(): void
+    {
+        $plugin = new ExamplePlugin();
+        $this->assertSame('Example', $plugin->getPluginId());
+    }
+
+    public function testGetVersion(): void
+    {
+        $plugin = new ExamplePlugin();
+        $this->assertSame('1.0.0', $plugin->getVersion());
+    }
+}
+```
+
+### Running Plugin Tests
+
+```bash
+# All suites (core + plugins)
+composer test
+
+# Plugins only
+vendor/bin/phpunit --testsuite Plugins
+
+# Single plugin
+vendor/bin/phpunit app/Plugins/ExamplePlugin/Tests/
+```
+
+> **Do not** place plugin tests under the root `tests/` directory — that breaks self-containment. Do not bundle a per-plugin `phpunit.xml` — the root `phpunit.xml.dist` already includes `./app/Plugins` in the `Plugins` testsuite.
+
 ## Event Flow
 
 1. Application triggers event: `Events::trigger('sale_completed', $saleIdNum, $saleType, $pluginData)`
@@ -878,7 +946,7 @@ Available `type` values: `success`, `danger`, `warning`, `info`.
 When an event handler runs server-side and needs to surface an error or message on the next rendered page, use CI4 session flash data. Store the message in the event handler:
 
 ```php
-public function onSaleCompleted(int $saleId, string $saleType, array $pluginData = []): void
+public function onSaleCompleted(int $saleId, int $saleType, array $pluginData = []): void
 {
     $response = $this->myLibrary->processTransaction($saleId);
 
@@ -925,24 +993,17 @@ Parameters:
 
 | Parameter | Type | Description |
 |---|---|---|
-| `$module_id` | string | Unique identifier — **prefix with plugin ID** (e.g. `myplugin_dashboard`) |
+| `$module_id` | string | **Must be the plugin ID or prefixed with `{plugin_id}_`** (e.g. `myplugin` or `myplugin_dashboard`) — enforced; other ids are rejected |
 | `$sort` | int | Position in the menu list (lower = higher up). Default: 500 |
 | `$admin_menu_group` | string | Menu group: `'office'`, `'reports'`, etc. |
 
 `registerModule()` is idempotent — safe to call multiple times. It inserts the module and permission rows and auto-grants access to `person_id = 1` (the admin user).
 
-### Unregister in `uninstall()`
+### Automatic Cleanup on Uninstall
 
-```php
-public function uninstall(): bool
-{
-    $this->unregisterModule('myplugin');
-    // ... drop tables ...
-    return true;
-}
-```
+You do **not** need to unregister anything in `uninstall()`. When the plugin is uninstalled, the framework removes every module and permission whose id is the plugin id or starts with `{plugin_id}_` — the same way plugin settings in `ospos_plugin_config` are cleaned up. User grants cascade via foreign key. This is why the id naming convention is enforced: it is how the framework knows which rows belong to your plugin.
 
-This removes the module and its permissions. User grants cascade automatically via foreign key.
+`unregisterModule()` and `unregisterSubPermission()` still exist for the rare case where you want to remove a module or permission while the plugin stays installed (e.g. a feature toggle or plugin upgrade).
 
 ### Language Keys
 
@@ -1007,6 +1068,57 @@ class MyPluginController extends \App\Controllers\Secure_Controller
 
 Passing the `module_id` to `Secure_Controller`'s constructor restricts access to users who have been granted that permission.
 
+### Module Icon
+
+By default, OSPOS looks for a built-in SVG at `public/images/menubar/{module_id}.svg`. To supply a custom icon from your plugin, listen to the `view:module_icon_{module_id}` event and output an `<img>` tag pointing to your icon route.
+
+**1. Register the event in `registerEvents()`:**
+
+```php
+Events::on('view:module_icon_myplugin', [$this, 'injectModuleIcon']);
+```
+
+**2. Add the handler:**
+
+```php
+public function injectModuleIcon(): void
+{
+    echo $this->renderView('module_icon');
+}
+```
+
+**3. Create `Views/module_icon.php`:**
+
+```php
+<img src="<?= base_url('plugins/myplugin/icon') ?>" style="border: none;" alt="My Plugin">
+```
+
+> **Important:** Use only `style="border: none;"` — no inline `width` or `height`. OSPOS CSS controls sizing automatically:
+> - Navbar: 24px wide (`.navbar .menu-icon img`)
+> - Home/office grid: 64px tall (`#home_module_list img`, `#office_module_list img`)
+>
+> Adding inline size constraints will override these rules and break one or both locations.
+
+**4. Serve the icon file via a route.** Add to `Config/Routes.php`:
+
+```php
+$routes->get('plugins/myplugin/icon', '\App\Plugins\MyPlugin\Controllers\MyPluginController::getIcon');
+```
+
+Add the controller method — note this route must **not** extend `Secure_Controller` (or use a public controller) so the browser can fetch the image without an auth redirect:
+
+```php
+public function getIcon(): \CodeIgniter\HTTP\ResponseInterface
+{
+    $path = APPPATH . 'Plugins/MyPlugin/my-icon.svg';
+    return $this->response
+        ->setHeader('Content-Type', 'image/svg+xml')
+        ->setBody(file_get_contents($path));
+}
+```
+
+Store the SVG file directly in your plugin directory (e.g. `app/Plugins/MyPlugin/my-icon.svg`). PNG is also supported — use `image/png` as the content type.
+
 ### Sub-permissions
 
 For finer-grained access control within a module, register sub-permissions after the module:
@@ -1045,6 +1157,7 @@ ExamplePlugin-1.0.0.zip
     ├── Libraries/
     │   └── ApiClient.php
     ├── Models/
+    ├── Tests/
     ├── Traits/
     ├── Views/
     ├── ExamplePlugin.php
