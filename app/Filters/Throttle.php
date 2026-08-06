@@ -21,7 +21,7 @@ class Throttle implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         if ($request->getMethod() !== 'POST') {
-            return;
+            return null;
         }
 
         $throttler = Services::throttler();
@@ -46,9 +46,12 @@ class Throttle implements FilterInterface
                     'message' => lang('Login.too_many_attempts'),
                 ]);
         }
+
+        return null;
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
+        return null;
     }
 }
