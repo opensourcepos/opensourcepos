@@ -294,7 +294,9 @@ class Receiving extends Model
             lang('Sales.check') => lang('Sales.check'),
             lang('Sales.debit') => lang('Sales.debit'),
             lang('Sales.credit') => lang('Sales.credit'),
-            lang('Sales.due') => lang('Sales.due')
+            lang('Sales.due') => lang('Sales.due'),
+            lang('Sales.bank_transfer') => lang('Sales.bank_transfer'),
+            lang('Sales.wallet') => lang('Sales.wallet')
         ];
     }
 

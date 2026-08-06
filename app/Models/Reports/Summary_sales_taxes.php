@@ -33,14 +33,16 @@ class Summary_sales_taxes extends Summary_report
      * @param object $builder
      * @return void
      */
-    protected function _where(array $inputs, object &$builder): void    // TODO: hungarian notation
+    protected function _where(array $inputs, object &$builder): void
     {
         $builder->where('sales.sale_status', COMPLETED);
 
-        if (empty($this->config['date_or_time_format'])) {    // TODO: Duplicated code
-            $builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+        if (empty($this->config['date_or_time_format'])) {
+            $builder->where('DATE(sales.sale_time) >=', $inputs['start_date']);
+            $builder->where('DATE(sales.sale_time) <=', $inputs['end_date']);
         } else {
-            $builder->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+            $builder->where('sales.sale_time >=', $inputs['start_date']);
+            $builder->where('sales.sale_time <=', $inputs['end_date']);
         }
     }
 
@@ -53,9 +55,11 @@ class Summary_sales_taxes extends Summary_report
         $builder = $this->db->table('sales_taxes');
 
         if (empty($this->config['date_or_time_format'])) {
-            $builder->where('DATE(sale_time) BETWEEN ' . $inputs['start_date'] . ' AND ' . $inputs['end_date']);
+            $builder->where('DATE(sale_time) >=', $inputs['start_date']);
+            $builder->where('DATE(sale_time) <=', $inputs['end_date']);
         } else {
-            $builder->where('sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+            $builder->where('sale_time >=', $inputs['start_date']);
+            $builder->where('sale_time <=', $inputs['end_date']);
         }
 
         $builder->select('reporting_authority, jurisdiction_name, tax_category, tax_rate, SUM(sale_tax_amount) AS tax');

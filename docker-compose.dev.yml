@@ -46,6 +46,7 @@ services:
             - .:/app
         environment:
             - CI_ENVIRONMENT=development
+            - ALLOWED_HOSTNAMES=localhost
             - MYSQL_USERNAME=admin
             - MYSQL_PASSWORD=pointofsale
             - MYSQL_DB_NAME=ospos

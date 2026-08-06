@@ -75,7 +75,7 @@ CREATE TABLE `ospos_cash_up` (
   `open_employee_id` int(10) NOT NULL,
   `close_employee_id` int(10) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Indexes for table `ospos_cash_up`
 

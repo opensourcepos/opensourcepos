@@ -40,17 +40,16 @@ function check_encryption(): bool
 
             $config_file = file_get_contents($config_path);
 
-            if (strpos($config_file, 'encryption.key') !== false) {
-                $config_file = preg_replace("/(encryption\.key.*=.*)('.*')/", "$1'$key'", $config_file);
+            if (preg_match('/^\s*encryption\.key\s*=/m', $config_file)) {
+                $config_file = preg_replace("/^(\s*encryption\.key\s*=\s*).*/m", "\$1'$key'", $config_file, 1);
             } else {
                 $config_file .= "\nencryption.key = '$key'\n";
             }
 
             if (!empty($old_key)) {
                 $old_line = "# encryption.key = '$old_key' REMOVE IF UNNEEDED\r\n";
-                $insertion_point = stripos($config_file, 'encryption.key');
-                if ($insertion_point !== false) {
-                    $config_file = substr_replace($config_file, $old_line, $insertion_point, 0);
+                if (preg_match('/^encryption\.key\s*=/m', $config_file, $matches, PREG_OFFSET_CAPTURE)) {
+                    $config_file = substr_replace($config_file, $old_line, $matches[0][1], 0);
                 }
             }
 
