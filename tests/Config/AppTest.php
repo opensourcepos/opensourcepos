@@ -10,6 +10,10 @@ class AppTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        putenv('app.allowedHostnames');
+        putenv('ALLOWED_HOSTNAMES');
+        unset($_ENV['app.allowedHostnames'], $_ENV['ALLOWED_HOSTNAMES']);
+        unset($_SERVER['app.allowedHostnames'], $_SERVER['ALLOWED_HOSTNAMES']);
     }
 
     protected function tearDown(): void
@@ -20,13 +24,16 @@ class AppTest extends CIUnitTestCase
         putenv('app.allowedHostnames');
         putenv('ALLOWED_HOSTNAMES');
         unset($_SERVER['HTTP_HOST']);
+        unset($_ENV['app.allowedHostnames'], $_ENV['ALLOWED_HOSTNAMES']);
+        unset($_SERVER['app.allowedHostnames'], $_SERVER['ALLOWED_HOSTNAMES']);
+        $_SERVER['CI_ENVIRONMENT'] = 'testing';
     }
 
     public function testGetValidHostReturnsHostWhenValid(): void
     {
         $app = new class extends App {
             public array $allowedHostnames = ['example.com', 'www.example.com'];
-            
+
             public function __construct() {}
         };
 
@@ -47,7 +54,7 @@ class AppTest extends CIUnitTestCase
     {
         $app = new class extends App {
             public array $allowedHostnames = ['example.com', 'www.example.com'];
-            
+
             public function __construct() {}
         };
 
@@ -71,7 +78,7 @@ class AppTest extends CIUnitTestCase
 
         $app = new class extends App {
             public array $allowedHostnames = [];
-            
+
             public function __construct() {}
         };
 
@@ -93,12 +100,12 @@ class AppTest extends CIUnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('allowedHostnames is not configured');
 
-        // Set production environment
+        $_SERVER['CI_ENVIRONMENT'] = 'production';
         putenv('CI_ENVIRONMENT=production');
 
         $app = new class extends App {
             public array $allowedHostnames = [];
-            
+
             public function __construct() {}
         };
 
@@ -114,7 +121,7 @@ class AppTest extends CIUnitTestCase
     {
         $app = new class extends App {
             public array $allowedHostnames = ['example.com'];
-            
+
             public function __construct() {}
         };
 
@@ -383,5 +390,53 @@ class AppTest extends CIUnitTestCase
 
         // Clean up
         putenv('ALLOWED_HOSTNAMES');
+    }
+
+    public function testEnvAllowedHostnamesLiteralFalse(): void
+    {
+        putenv('app.allowedHostnames=false');
+
+        $_SERVER['HTTP_HOST'] = 'false';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals(['false'], $app->allowedHostnames);
+
+        putenv('app.allowedHostnames');
+    }
+
+    public function testEnvAllowedHostnamesLiteralNull(): void
+    {
+        putenv('app.allowedHostnames=null');
+
+        $_SERVER['HTTP_HOST'] = 'null';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals(['null'], $app->allowedHostnames);
+
+        putenv('app.allowedHostnames');
+    }
+
+    public function testEnvAllowedHostnamesWhitespaceOnly(): void
+    {
+        putenv('app.allowedHostnames=   ');
+        putenv('CI_ENVIRONMENT=development');
+
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new App();
+
+        $this->assertEquals([], $app->allowedHostnames);
+        $this->assertStringContainsString('localhost', $app->baseURL);
+
+        putenv('app.allowedHostnames');
+        putenv('CI_ENVIRONMENT');
     }
 }

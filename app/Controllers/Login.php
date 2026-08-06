@@ -18,29 +18,40 @@ class Login extends BaseController
     public Model $employee;
 
     /**
-     * @return RedirectResponse|string
+     * @return RedirectResponse|ResponseInterface|string
      */
-    public function index(): string|RedirectResponse
+    public function index(): string|RedirectResponse|ResponseInterface
     {
         $this->employee = model(Employee::class);
         if (!$this->employee->is_logged_in()) {
             $migration = new MY_Migration(config('Migrations'));
             $config = config(OSPOS::class)->settings;
 
-            $gcaptcha_enabled = array_key_exists('gcaptcha_enable', $config)
+            $gcaptchaEnabled = array_key_exists('gcaptcha_enable', $config)
                 ? $config['gcaptcha_enable']
                 : false;
 
-            $migration->migrate_to_ci4();
+            $migration->migrateToCI4();
+
+            $currentVersion = MY_Migration::getCurrentVersion();
+
+            if ($currentVersion === null) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.migration_error_connection')
+                ])->setStatusCode(503);
+            }
+
+            $latestVersion = $migration->getLatestMigration();
 
             $validation = Services::validation();
 
             $data = [
-                'has_errors'       => false,
-                'is_new_install'   => !(MY_Migration::get_current_version()),
-                'is_latest'        => $migration->is_latest(),
-                'latest_version'   => $migration->get_latest_migration(),
-                'gcaptcha_enabled' => $gcaptcha_enabled,
+                'hasErrors'       => false,
+                'isNewInstall'   => $currentVersion === 0,
+                'isLatest'        => $latestVersion === $currentVersion,
+                'latestVersion'   => $latestVersion,
+                'gcaptchaEnabled' => $gcaptchaEnabled,
                 'config'           => $config,
                 'validation'       => $validation
             ];
@@ -49,7 +60,7 @@ class Login extends BaseController
                 return view('login', $data);
             }
 
-            if (!$data['is_latest'] || $data['is_new_install']) {
+            if (!$data['isLatest'] || $data['isNewInstall']) {
                 set_time_limit(3600);
 
                 $migration->setNamespace('App')->latest();
@@ -76,9 +87,38 @@ class Login extends BaseController
 
     public function migrate(): ResponseInterface
     {
+        $currentVersion = MY_Migration::getCurrentVersion();
+
+        if ($currentVersion === null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Login.migration_error_connection')
+            ])->setStatusCode(503);
+        }
+
+        // Only a confirmed empty database counts as a new install with no credentials to check.
+        $isNewInstall = $currentVersion === 0;
+
+        if (!$isNewInstall) {
+            $rules = ['username' => 'required|login_check[data]'];
+            $messages = [
+                'username' => [
+                    'required'    => lang('Login.required_username'),
+                    'login_check' => lang('Login.invalid_username_and_password'),
+                ]
+            ];
+
+            if (!$this->validate($rules, $messages)) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.invalid_username_and_password')
+                ])->setStatusCode(401);
+            }
+        }
+
         try {
             $migration = new MY_Migration(config('Migrations'));
-            $migration->migrate_to_ci4();
+            $migration->migrateToCI4();
 
             set_time_limit(3600);
             $migration->setNamespace('App')->latest();
