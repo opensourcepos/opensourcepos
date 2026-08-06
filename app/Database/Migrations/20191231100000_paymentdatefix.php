@@ -12,7 +12,7 @@ class Migration_PaymentDateFix extends Migration
     public function up(): void
     {
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.2_paymentdatefix.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.2_paymentdatefix.sql');
     }
 
     /**
