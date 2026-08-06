@@ -65,7 +65,7 @@ class Attributes extends Secure_Controller
     public function postSaveAttributeValue(): ResponseInterface
     {
         $success = $this->attribute->saveAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $this->request->getPost('attribute_value'),
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
             $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT) ?? false,
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
@@ -82,7 +82,7 @@ class Attributes extends Secure_Controller
     public function postDeleteDropdownAttributeValue(): ResponseInterface
     {
         $success = $this->attribute->deleteDropdownAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $this->request->getPost('attribute_value'),
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
 
@@ -135,7 +135,7 @@ class Attributes extends Secure_Controller
         if ($this->attribute->saveDefinition($definition_data, $definition_id)) {
             // New definition
             if ($definition_id == NO_DEFINITION_ID) {
-                $definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
+                $definition_values = json_decode($this->request->getPost('definition_values'));
 
                 foreach ($definition_values as $definition_value) {
                     $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
