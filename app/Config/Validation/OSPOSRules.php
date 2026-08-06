@@ -40,13 +40,6 @@ class OSPOSRules
             return false;
         }
 
-        $password = $data['password'];
-        if (!$employee->login($username, $password)) {
-            $error = lang('Login.invalid_username_and_password');
-
-            return false;
-        }
-
         $gcaptcha_enabled = array_key_exists('gcaptcha_enable', $this->config) && $this->config['gcaptcha_enable'];
         if ($gcaptcha_enabled) {
             $g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
@@ -58,6 +51,13 @@ class OSPOSRules
             }
         }
 
+        $password = $data['password'];
+        if (!$employee->login($username, $password)) {
+            $error = lang('Login.invalid_username_and_password');
+
+            return false;
+        }
+
         return true;
     }
 
@@ -67,7 +67,7 @@ class OSPOSRules
      * @param $response
      * @return bool true on successful GCaptcha verification or false if GCaptcha failed.
      */
-    private function gcaptcha_check($response): bool
+    protected function gcaptcha_check($response): bool
     {
         if (!empty($response)) {
             $check = [
