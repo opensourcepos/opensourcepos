@@ -104,7 +104,7 @@
     (function() {
         <?= view('partial/datepicker_locale', ['format' => dateformat_bootstrap($config['dateformat'])]) ?>
 
-        var enable_delete = function() {
+        const enable_delete = function() {
             $('.remove_attribute_btn').click(function() {
                 $(this).parents('.form-group').remove();
             });
@@ -113,7 +113,7 @@
         enable_delete();
 
         $("input[name*='attribute_links']").change(function() {
-            var definition_id = $(this).data('definition-id');
+            const definition_id = $(this).data('definition-id');
             $("input[name='attribute_ids[" + definition_id + "]']").val('');
         }).autocomplete({
             source: function(request, response) {
@@ -129,11 +129,11 @@
             delay: 10
         });
 
-        var definition_values = function() {
-            var result = {};
+        const definition_values = function() {
+            const result = {};
             $("[name*='attribute_links'").each(function() {
-                var definition_id = $(this).data('definition-id');
-                var element = $(this);
+                const definition_id = $(this).data('definition-id');
+                const element = $(this);
                 
                 // For checkboxes, use the visible checkbox, not the hidden input
                 if (element.attr('type') === 'hidden' && element.siblings('input[type="checkbox"]').length > 0) {
@@ -151,9 +151,9 @@
             return result;
         };
 
-        var refresh = function() {
-            var definition_id = $("#definition_name option:selected").val();
-            var attribute_values = definition_values();
+        const refresh = function() {
+            const definition_id = $("#definition_name option:selected").val();
+            let attribute_values = definition_values();
             attribute_values[definition_id] = '';
             $('#attributes').load('<?= "items/attributes/$item_id" ?>', {
                 'definition_ids': JSON.stringify(attribute_values)
