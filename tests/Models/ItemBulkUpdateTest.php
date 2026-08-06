@@ -31,7 +31,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
     private array $createdItemIds = [];
 
     /** @var list<int> */
-    private array $created_supplier_person_ids = [];
+    private array $createdSupplierPersonIds = [];
 
     protected function setUp(): void
     {
@@ -47,10 +47,10 @@ class ItemBulkUpdateTest extends CIUnitTestCase
             $this->createdItemIds = [];
         }
 
-        if ($this->created_supplier_person_ids !== []) {
-            $this->db->table('suppliers')->whereIn('person_id', $this->created_supplier_person_ids)->delete();
-            $this->db->table('people')->whereIn('person_id', $this->created_supplier_person_ids)->delete();
-            $this->created_supplier_person_ids = [];
+        if ($this->createdSupplierPersonIds !== []) {
+            $this->db->table('suppliers')->whereIn('person_id', $this->createdSupplierPersonIds)->delete();
+            $this->db->table('people')->whereIn('person_id', $this->createdSupplierPersonIds)->delete();
+            $this->createdSupplierPersonIds = [];
         }
 
         parent::tearDown();
@@ -104,42 +104,42 @@ class ItemBulkUpdateTest extends CIUnitTestCase
             'comments'     => 'fixture'
         ]);
 
-        $person_id = (int)$this->db->insertID();
+        $personId = (int)$this->db->insertID();
 
         $this->db->table('suppliers')->insert([
-            'person_id'    => $person_id,
+            'person_id'    => $personId,
             'company_name' => 'Bulk Edit Supplies',
             'agency_name'  => '',
             'category'     => 0
         ]);
 
-        $this->created_supplier_person_ids[] = $person_id;
+        $this->createdSupplierPersonIds[] = $personId;
 
-        return $person_id;
+        return $personId;
     }
 
-    private function fetchItem(int $item_id): array
+    private function fetchItem(int $itemId): array
     {
         return (array)$this->db->table('items')
-            ->where('item_id', $item_id)
+            ->where('item_id', $itemId)
             ->get()
             ->getRow();
     }
 
     public function testUpdateMultipleIgnoresNonWhitelistedColumns(): void
     {
-        $item_id = $this->createItem();
+        $itemId = $this->createItem();
 
         $result = $this->item->updateMultiple([
             'unit_price' => 25.00,   // legitimate
             'deleted'    => 1,       // injected — would hide the item
             'item_type'  => 2,       // injected — would change item semantics
             'stock_type' => 1        // injected
-        ], (string)$item_id);
+        ], (string)$itemId);
 
         $this->assertTrue($result, 'The legitimate field should still be applied');
 
-        $row = $this->fetchItem($item_id);
+        $row = $this->fetchItem($itemId);
 
         $this->assertEquals(25.00, (float)$row['unit_price'], 'Whitelisted field should be updated');
         $this->assertEquals(0, (int)$row['deleted'], 'Injected deleted must be ignored');
@@ -149,12 +149,12 @@ class ItemBulkUpdateTest extends CIUnitTestCase
 
     public function testUpdateMultipleWithOnlyNonWhitelistedColumnsIsNoOp(): void
     {
-        $item_id = $this->createItem();
+        $itemId = $this->createItem();
 
-        $result = $this->item->updateMultiple(['deleted' => 1], (string)$item_id);
+        $result = $this->item->updateMultiple(['deleted' => 1], (string)$itemId);
 
         $this->assertFalse($result, 'An update of only disallowed columns should not run');
-        $this->assertEquals(0, (int)$this->fetchItem($item_id)['deleted'], 'Item must not be soft deleted');
+        $this->assertEquals(0, (int)$this->fetchItem($itemId)['deleted'], 'Item must not be soft deleted');
     }
 
     public function testUpdateMultipleAppliesToEveryColonSeparatedId(): void
@@ -170,19 +170,19 @@ class ItemBulkUpdateTest extends CIUnitTestCase
 
     public function testUpdateMultipleClearsSupplierWhenPassedNull(): void
     {
-        $supplier_id = $this->createSupplier();
-        $item_id     = $this->createItem(['supplier_id' => $supplier_id]);
+        $supplierId = $this->createSupplier();
+        $itemId     = $this->createItem(['supplier_id' => $supplierId]);
 
         $this->assertEquals(
-            $supplier_id,
-            (int)$this->fetchItem($item_id)['supplier_id'],
+            $supplierId,
+            (int)$this->fetchItem($itemId)['supplier_id'],
             'precondition: the item must start with a supplier'
         );
 
         $filtered = Item::filterBulkEditFields(['supplier_id' => Item::CLEAR_SUPPLIER_OPTION]);
-        $this->item->updateMultiple($filtered, (string)$item_id);
+        $this->item->updateMultiple($filtered, (string)$itemId);
 
-        $this->assertNull($this->fetchItem($item_id)['supplier_id'], 'supplier_id should be cleared');
+        $this->assertNull($this->fetchItem($itemId)['supplier_id'], 'supplier_id should be cleared');
     }
 
     public function testBulkEditWhitelistExcludesSensitiveColumns(): void
@@ -328,17 +328,17 @@ class ItemBulkUpdateTest extends CIUnitTestCase
 
     public function testFilterBulkEditFieldsOutputIsSafeForUpdateMultiple(): void
     {
-        $item_id = $this->createItem();
+        $itemId = $this->createItem();
 
         $filtered = Item::filterBulkEditFields([
-            'item_ids' => (string)$item_id,
+            'item_ids' => (string)$itemId,
             'deleted'  => '1',
             'name'     => 'Renamed'
         ]);
 
-        $this->item->updateMultiple($filtered, (string)$item_id);
+        $this->item->updateMultiple($filtered, (string)$itemId);
 
-        $row = $this->fetchItem($item_id);
+        $row = $this->fetchItem($itemId);
         $this->assertEquals('Renamed', $row['name']);
         $this->assertEquals(0, (int)$row['deleted'], 'Injected deleted must never reach the table');
     }
