@@ -2,10 +2,13 @@
 /**
  * @var int $sale_id_num
  * @var bool $print_after_sale
+ * @var string $receipt_template_view
  * @var array $config
  */
 
 use App\Models\Employee;
+
+$template = $receipt_template_view ?? 'receipt_default';
 
 ?>
 
@@ -21,7 +24,7 @@ if (isset($error_message)) {
 <?php if (!empty($customer_email)): ?>
     <script type="text/javascript">
         $(document).ready(function() {
-            var send_email = function() {
+            const send_email = function() {
                 $.get('<?= site_url() . esc("/sales/sendPdf/$sale_id_num/receipt") ?>',
                     function(response) {
                         $.notify({
@@ -61,6 +64,6 @@ if (isset($error_message)) {
     <?php endif; ?>
 </div>
 
-<?= view('sales/' . $config['receipt_template']) ?>
+<?= view('sales/' . $template) ?>
 
 <?= view('partial/footer') ?>

@@ -9,6 +9,9 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use CodeIgniter\Boot;
+use Config\Paths;
+
 /*
  *---------------------------------------------------------------
  * Sample file for Preloading
@@ -54,6 +57,7 @@ class preload
                 '/system/Config/Routes.php',
                 '/system/Language/',
                 '/system/bootstrap.php',
+                '/system/util_bootstrap.php',
                 '/system/rewrite.php',
                 '/Views/',
                 // Errors occur.
@@ -69,10 +73,10 @@ class preload
 
     private function loadAutoloader(): void
     {
-        $paths = new Config\Paths();
+        $paths = new Paths();
         require rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'Boot.php';
 
-        CodeIgniter\Boot::preload($paths);
+        Boot::preload($paths);
     }
 
     /**
@@ -97,7 +101,9 @@ class preload
                 }
 
                 require_once $file[0];
-                echo 'Loaded: ' . $file[0] . "\n";
+                // Uncomment only for debugging (to inspect which files are included).
+                // Never use this in production - preload scripts must not generate output.
+                // echo 'Loaded: ' . $file[0] . "\n";
             }
         }
     }

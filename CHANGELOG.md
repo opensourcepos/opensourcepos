@@ -1,5 +1,4 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.0...HEAD
-[3.4.2]: https://github.com/opensourcepos/opensourcepos/compare/3.4.1...3.4.2
+[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.1...HEAD
 [3.4.1]: https://github.com/opensourcepos/opensourcepos/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...3.4.0
 [3.3.9]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
@@ -34,10 +33,36 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [3.4.0] - 2025-02-06
+## [3.4.1] - 2025-06-05
+- Feature: PSR-12 Compliant Indentation by @objecttothis in ([#4196](https://github.com/opensourcepos/opensourcepos/pull/4196))
+- Add .env to dist zip by @jekkos in ([#4199](https://github.com/opensourcepos/opensourcepos/pull/4199))
+- Add CI4 coding standards linter ([#3708](https://github.com/opensourcepos/opensourcepos/issues/3708)) by @jekkos in ([#4198](https://github.com/opensourcepos/opensourcepos/pull/4198))
+- Bump canvg from 3.0.10 to 3.0.11 by @dependabot in ([#4189](https://github.com/opensourcepos/opensourcepos/pull/4189))
+- Bump jspdf and jspdf-autotable by @dependabot in ([#4190](https://github.com/opensourcepos/opensourcepos/pull/4190))
+- Feature bump ci to 4.6.0 by @objecttothis in ([#4197](https://github.com/opensourcepos/opensourcepos/pull/4197))
+- Add Kurdish language option to UI by @BudsieBuds in ([#4210](https://github.com/opensourcepos/opensourcepos/pull/4210))
+- Convert language ku to ckb by @BudsieBuds in ([#4211](https://github.com/opensourcepos/opensourcepos/pull/4211))
+- Fix PHP 8.4 errors by @BudsieBuds in ([#4215](https://github.com/opensourcepos/opensourcepos/pull/4215))
+- Add default bootstrap to themes by @BudsieBuds in ([#4219](https://github.com/opensourcepos/opensourcepos/pull/4219))
+- Update language names by @BudsieBuds in ([#4218](https://github.com/opensourcepos/opensourcepos/pull/4218))
+- Update install docs by @BudsieBuds in ([#4217](https://github.com/opensourcepos/opensourcepos/pull/4217))
+- Convert menu icons to SVG by @BudsieBuds in ([#4220](https://github.com/opensourcepos/opensourcepos/pull/4220))
+- Enhance license handling by @BudsieBuds in ([#4223](https://github.com/opensourcepos/opensourcepos/pull/4223))
+- Fix datetime rendering ([#4226](https://github.com/opensourcepos/opensourcepos/issues/4226)) by @jekkos in ([#4227](https://github.com/opensourcepos/opensourcepos/pull/4227))
+- Fix datetime rendering by @jekkos in ([#4228](https://github.com/opensourcepos/opensourcepos/pull/4228))
+- Fix null error when sending by email a receipt of a sale that has no invoice by @diego-ramos in ([#4229](https://github.com/opensourcepos/opensourcepos/pull/4229))
+- Update Receivings.php to save form. by @odiea in ([#4231](https://github.com/opensourcepos/opensourcepos/pull/4231))
+- Update Cashups.php for ajax cashup total to work. by @odiea in ([#4238](https://github.com/opensourcepos/opensourcepos/pull/4238))
+- Coding style updates for PSR-12 compliance & improved readability by @BudsieBuds in ([#4204](https://github.com/opensourcepos/opensourcepos/pull/4204))
+- Fix Codeigniter disallowed characters error with payment types that have accents by @diego-ramos in ([#4232](https://github.com/opensourcepos/opensourcepos/pull/4232))
+- Fixed broken escape string for success & warning messages by @Franchovy in ([#4253](https://github.com/opensourcepos/opensourcepos/pull/4253))
+- Bugfix constraint migration fix by @objecttothis in ([#4230](https://github.com/opensourcepos/opensourcepos/pull/4230))
+- Fix item number lookup in sales/receivings ([#4212](https://github.com/opensourcepos/opensourcepos/issues/4212)) by @jekkos in ([#4250](https://github.com/opensourcepos/opensourcepos/pull/4250))
+
+## [3.4.0] - 2025-03-23
 
 - Translation updates (Spanish, Indonesian, Swedish, Urdu, Chinese, Thai, French, Dutch)
-- PHP 8.x support
+- PHP `8.x` support
 - Security fixes (XSS, SQLi)
 - Migration to Gulp as buildsystem
 - Decimal validation fix

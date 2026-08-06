@@ -65,8 +65,10 @@ class Item extends Model
     public function exists(string $item_id, bool $ignore_deleted = false, bool $deleted = false): bool
     {
         $builder = $this->db->table('items');
+        $builder->groupStart();
         $builder->where('item_id', $item_id);
         $builder->orWhere('item_number', $item_id);
+        $builder->groupEnd();
 
         if (!$ignore_deleted) {
             $builder->where('deleted', $deleted);
@@ -352,7 +354,7 @@ class Item extends Model
     /**
      * Gets information about a particular item by item id or number
      */
-    public function get_info_by_id_or_number(string $item_id, bool $include_deleted = true)
+    public function get_info_by_id_or_number(string $item_id, bool $include_deleted = true): stdClass|string
     {
         $builder = $this->db->table('items');
         $builder->groupStart();
@@ -389,9 +391,10 @@ class Item extends Model
     public function get_item_id(string $item_number, bool $ignore_deleted = false, bool $deleted = false): bool|int
     {
         $builder = $this->db->table('items');
-        $builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+        $builder->groupStart();
         $builder->where('item_number', $item_number);
         $builder->orWhere('item_id', $item_number);
+        $builder->groupEnd();
 
         if (!$ignore_deleted) {
             $builder->where('items.deleted', $deleted);
@@ -547,9 +550,9 @@ class Item extends Model
     public function get_search_suggestion_format(?string $seed = null): string
     {
         $config = config(OSPOS::class)->settings;
-        
+
         $suggestionsFirstColumn = $this->suggestionColumnIsAllowed($config['suggestions_first_column'])
-            ? $config['suggestions_first_column'] 
+            ? $config['suggestions_first_column']
             : 'name';
         $seed .= ',' . $suggestionsFirstColumn;
 
@@ -573,14 +576,14 @@ class Item extends Model
         $config = config(OSPOS::class)->settings;
 
         $label = '';
-        $label1 = $this->suggestionColumnIsAllowed($config['suggestions_first_column']) 
-            ? $config['suggestions_first_column'] 
+        $label1 = $this->suggestionColumnIsAllowed($config['suggestions_first_column'])
+            ? $config['suggestions_first_column']
             : 'name';
-        $label2 = $this->suggestionColumnIsAllowed($config['suggestions_second_column']) 
-            ? $config['suggestions_second_column'] 
+        $label2 = $this->suggestionColumnIsAllowed($config['suggestions_second_column'])
+            ? $config['suggestions_second_column']
             : '';
-        $label3 = $this->suggestionColumnIsAllowed($config['suggestions_third_column']) 
-            ? $config['suggestions_third_column'] 
+        $label3 = $this->suggestionColumnIsAllowed($config['suggestions_third_column'])
+            ? $config['suggestions_third_column']
             : '';
 
         $this->format_result_numbers($result_row);

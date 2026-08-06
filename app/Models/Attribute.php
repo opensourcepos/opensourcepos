@@ -388,7 +388,7 @@ class Attribute extends Model
             foreach ($builder->get()->getResult() as $attribute) {
                 switch ($to) {
                     case DATE:
-                        $success = valid_date($attribute->attribute_value);
+                        $success = isValidDate($attribute->attribute_value);
                         break;
                     case DECIMAL:
                         $success = valid_decimal($attribute->attribute_value);
@@ -575,10 +575,10 @@ class Attribute extends Model
 
     /**
      * @param string $definition_name
-     * @param $definition_type
+     * @param string|bool $definition_type
      * @return array
      */
-    public function get_definition_by_name(string $definition_name, $definition_type = false): array
+    public function get_definition_by_name(string $definition_name, string|bool $definition_type = false): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where('definition_name', $definition_name);
@@ -602,27 +602,52 @@ class Attribute extends Model
      */
     public function saveAttributeLink(int $itemId, int $definitionId, int $attributeId): bool
     {
+        if ($attributeId <= 0) {
+            return false;
+        }
+
         $normalizedItemId = empty($itemId) ? null : $itemId;
         $normalizedAttributeId = empty($attributeId) ? null : $attributeId;
 
         $this->db->transStart();
 
+        $definitionType = $this->getAttributeInfo($definitionId)->definition_type ?? '';
+
         $builder = $this->db->table('attribute_links');
 
-        if ($this->attributeLinkExists($normalizedItemId, $definitionId)) {
-            $builder->set(['attribute_id' => $normalizedAttributeId]);
-            $builder->where('definition_id', $definitionId);
+        if ($definitionType === DROPDOWN && $normalizedItemId === null) {
             $builder->where('item_id', $normalizedItemId);
+            $builder->where('definition_id', $definitionId);
+            $builder->where('attribute_id', $normalizedAttributeId);
             $builder->where('sale_id', null);
             $builder->where('receiving_id', null);
-            $builder->update();
+
+            $dropdownAttributeLinkExists = $builder->countAllResults(false) !== 0;
+
+            if (!$dropdownAttributeLinkExists) {
+                $data = [
+                    'attribute_id'  => $normalizedAttributeId,
+                    'item_id'       => $normalizedItemId,
+                    'definition_id' => $definitionId
+                ];
+                $builder->insert($data);
+            }
         } else {
-            $data = [
-                'attribute_id'  => $normalizedAttributeId,
-                'item_id'       => $normalizedItemId,
-                'definition_id' => $definitionId
-            ];
-            $builder->insert($data);
+            if ($this->attributeLinkExists($normalizedItemId, $definitionId)) {
+                $builder->set(['attribute_id' => $normalizedAttributeId]);
+                $builder->where('definition_id', $definitionId);
+                $builder->where('item_id', $normalizedItemId);
+                $builder->where('sale_id', null);
+                $builder->where('receiving_id', null);
+                $builder->update();
+            } else {
+                $data = [
+                    'attribute_id' => $normalizedAttributeId,
+                    'item_id' => $normalizedItemId,
+                    'definition_id' => $definitionId
+                ];
+                $builder->insert($data);
+            }
         }
 
         $this->db->transComplete();

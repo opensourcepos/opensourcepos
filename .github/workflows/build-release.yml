@@ -123,6 +123,7 @@ jobs:
             .
             !.git
             !node_modules
+          include-hidden-files: true
           retention-days: 1
 
   docker:
@@ -155,7 +156,7 @@ jobs:
         run: |
           BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '_')
           if [ "$BRANCH" = "master" ]; then
-            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }},${{ secrets.DOCKER_USERNAME }}/opensourcepos:latest" >> $GITHUB_OUTPUT
+            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }},${{ secrets.DOCKER_USERNAME }}/opensourcepos:master" >> $GITHUB_OUTPUT
           else
             echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }}" >> $GITHUB_OUTPUT
           fi

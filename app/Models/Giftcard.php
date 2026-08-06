@@ -106,15 +106,15 @@ class Giftcard extends Model
     /**
      * Gets a giftcard id given a giftcard number
      */
-    public function get_giftcard_id(string $giftcard_number): bool
+    public function getGiftcardId(string $giftcardNumber): int|false
     {
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcard_number);
+        $builder->where('giftcard_number', $giftcardNumber);
         $builder->where('deleted', 0);
 
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {
             return $query->getRow()->giftcard_id;
         }
 
@@ -291,7 +291,7 @@ class Giftcard extends Model
      */
     public function get_giftcard_value(string $giftcard_number): float    // TODO: we may need to do a search for all float values and for currencies cast them to strings at the point where we get them from the database.
     {
-        if (!$this->exists($this->get_giftcard_id($giftcard_number))) {
+        if (!$this->exists($this->getGiftcardId($giftcard_number))) {
             return 0;
         }
 
@@ -349,7 +349,7 @@ class Giftcard extends Model
      */
     public function get_giftcard_customer(string $giftcard_number): int|null
     {
-        if (!$this->exists($this->get_giftcard_id($giftcard_number))) {
+        if (!$this->exists($this->getGiftcardId($giftcard_number))) {
             return 0;
         }
 

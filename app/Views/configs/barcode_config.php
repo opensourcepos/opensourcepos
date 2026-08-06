@@ -204,6 +204,7 @@
                 <?= form_label(lang('Config.barcode_number_in_row'), 'barcode_num_in_row', ['class' => 'control-label col-xs-2 required']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
+                        'type'  => 'number',
                         'name'  => 'barcode_num_in_row',
                         'id'    => 'barcode_num_in_row',
                         'class' => 'form-control input-sm required',
@@ -217,6 +218,9 @@
                 <div class="col-sm-2">
                     <div class="input-group">
                         <?= form_input([
+                            'type'  => 'number',
+                            'min'   => '0',
+                            'max'   => '100',
                             'name'  => 'barcode_page_width',
                             'id'    => 'barcode_page_width',
                             'class' => 'form-control input-sm required',
@@ -232,6 +236,7 @@
                 <div class="col-sm-2">
                     <div class="input-group">
                         <?= form_input([
+                            'type'  => 'number',
                             'name'  => 'barcode_page_cellspacing',
                             'id'    => 'barcode_page_cellspacing',
                             'class' => 'form-control input-sm required',

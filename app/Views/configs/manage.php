@@ -30,6 +30,9 @@
         <a data-toggle="tab" href="#invoice_tab" title="<?= lang('Config.invoice_configuration') ?>"><?= lang('Config.invoice') ?></a>
     </li>
     <li role="presentation">
+        <a data-toggle="tab" href="#shortcuts_tab" title="<?= lang('Config.shortcuts_configuration') ?>"><?= lang('Config.shortcuts') ?></a>
+    </li>
+    <li role="presentation">
         <a data-toggle="tab" href="#reward_tab" title="<?= lang('Config.reward_configuration') ?>"><?= lang('Config.reward') ?></a>
     </li>
     <li role="presentation">
@@ -64,6 +67,9 @@
     </div>
     <div class="tab-pane" id="invoice_tab">
         <?= view('configs/invoice_config') ?>
+    </div>
+    <div class="tab-pane" id="shortcuts_tab">
+        <?= view('configs/shortcuts_config') ?>
     </div>
     <div class="tab-pane" id="reward_tab">
         <?= view('configs/reward_config') ?>

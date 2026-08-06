@@ -1,6 +1,5 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title><?= lang('Errors.badRequest') ?></title>
@@ -16,7 +15,6 @@
             left: 50%;
             margin-left: -73px;
         }
-
         body {
             height: 100%;
             background: #fafafa;
@@ -24,7 +22,6 @@
             color: #777;
             font-weight: 300;
         }
-
         h1 {
             font-weight: lighter;
             letter-spacing: normal;
@@ -33,7 +30,6 @@
             margin-bottom: 0;
             color: #222;
         }
-
         .wrap {
             max-width: 1024px;
             margin: 5rem auto;
@@ -44,12 +40,10 @@
             border-radius: 0.5rem;
             position: relative;
         }
-
         pre {
             white-space: normal;
             margin-top: 1.5rem;
         }
-
         code {
             background: #fafafa;
             border: 1px solid #efefef;
@@ -57,11 +51,9 @@
             border-radius: 5px;
             display: block;
         }
-
         p {
             margin-top: 1.5rem;
         }
-
         .footer {
             margin-top: 2rem;
             border-top: 1px solid #efefef;
@@ -69,7 +61,6 @@
             font-size: 85%;
             color: #999;
         }
-
         a:active,
         a:link,
         a:visited {
@@ -77,19 +68,17 @@
         }
     </style>
 </head>
-
 <body>
-    <div class="wrap">
-        <h1>400</h1>
+<div class="wrap">
+    <h1>400</h1>
 
-        <p>
-            <?php if (ENVIRONMENT !== 'production') : ?>
-                <?= nl2br(esc($message)) ?>
-            <?php else : ?>
-                <?= lang('Errors.sorryBadRequest') ?>
-            <?php endif; ?>
-        </p>
-    </div>
+    <p>
+        <?php if (ENVIRONMENT !== 'production') : ?>
+            <?= nl2br(esc($message)) ?>
+        <?php else : ?>
+            <?= lang('Errors.sorryBadRequest') ?>
+        <?php endif; ?>
+    </p>
+</div>
 </body>
-
 </html>
