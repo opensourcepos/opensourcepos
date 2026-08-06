@@ -279,6 +279,18 @@ function get_payment_options(): array
 }
 
 /**
+ * Returns the payment types that require a reference code (e.g. card terminal receipt number).
+ * Single source of truth used by both the controller validation and the view's JS.
+ */
+function get_reference_code_payment_types(): array
+{
+    return [
+        lang('Sales.debit'),
+        lang('Sales.credit'),
+    ];
+}
+
+/**
  * Determines if the current currency symbol is on the right side of the amount
  *
  * @return bool true is returned when the symbol should be displayed to the right of the amount. False otherwise.
@@ -639,13 +651,14 @@ function dateformat_bootstrap(string $php_format): string
 }
 
 /**
- * @param string $date
+ * @param string $candidate
  * @return bool
  */
-function valid_date(string $date): bool    // TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
+function isValidDate(string $candidate): bool
 {
     $config = config(OSPOS::class)->settings;
-    return (DateTime::createFromFormat($config['dateformat'], $date));
+    $parsed = DateTime::createFromFormat($config['dateformat'], $candidate);
+    return $parsed !== false && $parsed->format($config['dateformat']) === $candidate;
 }
 
 /**
