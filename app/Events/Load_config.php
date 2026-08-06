@@ -30,7 +30,7 @@ class Load_config
 
         $config = config(OSPOS::class);
 
-        if (!$migration->is_latest()) {
+        if (!$migration->isLatest()) {
             $this->session->destroy();
         }
 

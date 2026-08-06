@@ -1,10 +1,10 @@
 <?php
 /**
- * @var bool $has_errors
- * @var bool $is_latest
- * @var bool $is_new_install
- * @var string $latest_version
- * @var bool $gcaptcha_enabled
+ * @var bool $hasErrors
+ * @var bool $isLatest
+ * @var bool $isNewInstall
+ * @var string $latestVersion
+ * @var bool $gcaptchaEnabled
  * @var CodeIgniter\HTTP\IncomingRequest $request
  * @var array $config
  * @var $validation
@@ -53,36 +53,44 @@ $request = Services::request();
             </div>
             <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
                 <?= form_open('login', ['id' => 'login-form']) ?>
-                
+
                 <h3 id="form-heading" class="text-center m-0">
-                    <?php if (!$is_latest || $is_new_install): ?>
+                    <?php if ($isNewInstall): ?>
+                        <?= lang('Login.initialization_required') ?>
+                    <?php elseif (!$isLatest): ?>
                         <?= lang('Login.migration_required') ?>
                     <?php else: ?>
                         <?= lang('Login.welcome', [lang('Common.software_short')]) ?>
                     <?php endif; ?>
                 </h3>
-                
-                <div id="migration-warning" class="alert alert-warning mt-3<?= $is_new_install ? '' : ' d-none' ?>">
-                    <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
+
+                <div id="migration-warning" class="alert alert-warning mt-3<?= ($isNewInstall || !$isLatest) ? '' : ' d-none' ?>">
+                    <strong>
+                        <?php if ($isNewInstall): ?>
+                            <?= lang('Login.initialization_message') ?>
+                        <?php else: ?>
+                            <?= lang('Login.migration_auth_message', [$latestVersion]) ?>
+                        <?php endif; ?>
+                    </strong>
                 </div>
-                
-                <?php if ($has_errors): ?>
+
+                <?php if ($hasErrors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
                         <div class="alert alert-danger mt-3">
                             <?= $error ?>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
-                
+
                 <div id="migration-success" class="alert alert-success d-none mt-3">
                     <strong><?= lang('Login.migration_complete') ?></strong> <?= lang('Login.migration_complete_login') ?>
                 </div>
-                
+
                 <div id="migration-progress" class="d-none mt-4">
                     <h3 class="text-center mb-4"><?= lang('Login.migration_initializing') ?></h3>
                     <div class="progress mb-3" style="height: 30px;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
-                             role="progressbar" 
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                             role="progressbar"
                              style="width: 100%">
                         </div>
                     </div>
@@ -90,12 +98,12 @@ $request = Services::request();
                         <?= lang('Login.migration_running') ?>
                     </p>
                 </div>
-                
+
                 <div id="migration-error" class="alert alert-danger d-none mt-3" role="alert">
                     <strong>Error:</strong> <span id="migration-error-message"></span>
                 </div>
-                
-                <div id="login-fields" class="w-100<?= $is_new_install ? ' d-none' : '' ?>">
+
+                <div id="login-fields" class="w-100<?= $isNewInstall ? ' d-none' : '' ?>">
                     <?php if (empty($config['login_form']) || 'floating_labels' == ($config['login_form'])): ?>
                         <div class="form-floating mt-3">
                             <input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
@@ -125,16 +133,18 @@ $request = Services::request();
                             <input class="form-control" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                         </div>
                     <?php endif; ?>
-                    
-                    <?php if ($gcaptcha_enabled): ?>
+
+                    <?php if ($gcaptchaEnabled): ?>
                         <script src="https://www.google.com/recaptcha/api.js"></script>
                         <div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="<?= esc($config['gcaptcha_site_key']) ?>"></div>
                     <?php endif; ?>
                 </div>
-                
+
                 <div class="d-grid">
                     <button id="submit-button" class="btn btn-lg btn-primary" name="login-button" type="submit">
-                        <?php if ($is_new_install): ?>
+                        <?php if ($isNewInstall): ?>
+                            <?= lang('Login.initialize') ?>
+                        <?php elseif (!$isLatest): ?>
                             <?= lang('Module.migrate') ?>
                         <?php else: ?>
                             <?= lang('Login.go') ?>
@@ -167,21 +177,27 @@ $request = Services::request();
         <!-- endinject -->
     <?php endif; ?>
     <script>
+        // @noinspection JSInitializingVariableWithUndefined
         const APP_STATE = {
-            isNewInstall: <?= $is_new_install ? 'true' : 'false' ?>,
-            isLatest: <?= $is_latest ? 'true' : 'false' ?>,
+            isNewInstall: <?= $isNewInstall ? 'true' : 'false' ?>,
+            isLatest: <?= $isLatest ? 'true' : 'false' ?>,
             csrfToken: '<?= csrf_token() ?>',
             csrfHash: '<?= csrf_hash() ?>',
             migrateUrl: '<?= site_url('migrate') ?>',
             loginUrl: '<?= site_url('login') ?>',
             i18n: {
                 welcome: <?= json_encode(lang('Login.welcome', [lang('Common.software_short')])) ?>,
+                initialize: <?= json_encode(lang('Login.initialize')) ?>,
+                initializationRequired: <?= json_encode(lang('Login.initialization_required')) ?>,
+                initializationMessage: <?= json_encode(lang('Login.initialization_message')) ?>,
                 migrate: <?= json_encode(lang('Module.migrate')) ?>,
                 go: <?= json_encode(lang('Login.go')) ?>,
                 migrationRequired: <?= json_encode(lang('Login.migration_required')) ?>,
                 migrationInitializing: <?= json_encode(lang('Login.migration_initializing')) ?>,
+                migratingDatabase: <?= json_encode(lang('Login.migrating_database')) ?>,
                 migrationRunning: <?= json_encode(lang('Login.migration_running')) ?>,
                 migrationComplete: <?= json_encode(lang('Login.migration_complete')) ?>,
+                migrationCompleteMigrate: <?= json_encode(lang('Login.migration_complete_migrate')) ?>,
                 migrationCompleteLogin: <?= json_encode(lang('Login.migration_complete_login')) ?>,
                 migrationFailed: <?= json_encode(lang('Login.migration_failed')) ?>,
                 migrationErrorConnection: <?= json_encode(lang('Login.migration_error_connection')) ?>
@@ -200,13 +216,19 @@ $request = Services::request();
             const $submitButton = $('#submit-button');
 
             function showMigrationRequired() {
-                $heading.text(APP_STATE.i18n.migrationRequired);
+                if (APP_STATE.isNewInstall) {
+                    $heading.text(APP_STATE.i18n.initializationRequired);
+                    $submitButton.text(APP_STATE.i18n.initialize);
+                    $loginFields.addClass('d-none');
+                } else {
+                    $heading.text(APP_STATE.i18n.migrationRequired);
+                    $submitButton.text(APP_STATE.i18n.migrate);
+                    $loginFields.removeClass('d-none');
+                }
                 $warning.removeClass('d-none');
                 $success.addClass('d-none');
                 $progress.addClass('d-none');
                 $error.addClass('d-none');
-                $loginFields.addClass('d-none');
-                $submitButton.text(APP_STATE.i18n.migrate);
             }
 
             function showMigrationProgress() {
@@ -214,6 +236,7 @@ $request = Services::request();
                 $success.addClass('d-none');
                 $error.addClass('d-none');
                 $loginFields.addClass('d-none');
+                $progress.find('h3').text(APP_STATE.isNewInstall ? APP_STATE.i18n.migrationInitializing : APP_STATE.i18n.migratingDatabase);
                 $progress.removeClass('d-none');
                 $submitButton.prop('disabled', true);
             }
@@ -222,6 +245,7 @@ $request = Services::request();
                 $progress.addClass('d-none');
                 $error.addClass('d-none');
                 $warning.addClass('d-none');
+                $success.find('strong').text(APP_STATE.isNewInstall ? APP_STATE.i18n.migrationComplete : APP_STATE.i18n.migrationCompleteMigrate);
                 $success.removeClass('d-none');
                 $heading.text(APP_STATE.i18n.welcome);
                 $loginFields.removeClass('d-none');
@@ -232,11 +256,16 @@ $request = Services::request();
             function showMigrationError(message) {
                 $progress.addClass('d-none');
                 $success.addClass('d-none');
-                $loginFields.addClass('d-none');
                 $errorMessage.text(message);
                 $error.removeClass('d-none');
                 $warning.addClass('d-none');
-                $submitButton.text(APP_STATE.i18n.migrate);
+                if (APP_STATE.isNewInstall) {
+                    $loginFields.addClass('d-none');
+                    $submitButton.text(APP_STATE.i18n.initialize);
+                } else {
+                    $loginFields.removeClass('d-none');
+                    $submitButton.text(APP_STATE.i18n.migrate);
+                }
                 $submitButton.prop('disabled', false);
             }
 
@@ -250,27 +279,32 @@ $request = Services::request();
                 $submitButton.text(APP_STATE.i18n.go);
             }
 
-            if (!APP_STATE.isNewInstall) {
+            if (!APP_STATE.isNewInstall && APP_STATE.isLatest) {
                 showLoginForm();
+            } else {
+                showMigrationRequired();
             }
 
             $form.on('submit', function(e) {
-                if (APP_STATE.isNewInstall) {
+                if (APP_STATE.isNewInstall || !APP_STATE.isLatest) {
                     e.preventDefault();
-                    
+
                     showMigrationProgress();
-                    
+
                     $.ajax({
                         url: APP_STATE.migrateUrl,
                         type: 'POST',
                         dataType: 'json',
                         timeout: 3600000,
                         data: {
-                            [APP_STATE.csrfToken]: APP_STATE.csrfHash
+                            [APP_STATE.csrfToken]: APP_STATE.csrfHash,
+                            username: $('#input-username').val(),
+                            password: $('#input-password').val(),
                         },
                         success: function(response) {
                             if (response.success) {
                                 APP_STATE.isNewInstall = false;
+                                APP_STATE.isLatest = true;
                                 showMigrationSuccess();
                             } else {
                                 showMigrationError(response.message || APP_STATE.i18n.migrationFailed);
