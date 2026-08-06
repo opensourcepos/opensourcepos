@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Inleveranser",
     "show_in_sales"                    => "Visa i försäljning",
     "show_in_sales_visibility"         => "Försäljning",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "Uppdatera attribut",
 ];

@@ -403,6 +403,25 @@ function item_headers(): array
 }
 
 /**
+ * Get all sortable column keys for items table, including dynamic attribute columns.
+ *
+ * @return array Array of column headers in format expected by sanitizeSortColumn
+ */
+function item_sort_columns(): array
+{
+    $attribute = model(Attribute::class);
+    $definitionIds = array_keys($attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS));
+
+    $headers = item_headers();
+
+    foreach ($definitionIds as $definitionId) {
+        $headers[] = [(string) $definitionId => ''];
+    }
+
+    return $headers;
+}
+
+/**
  * Get the header for the items tabular view
  */
 function get_items_manage_table_headers(): string
@@ -422,7 +441,7 @@ function get_items_manage_table_headers(): string
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
     foreach ($definitionsWithTypes as $definition_id => $definitionInfo) {
-        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => false];
+        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => true];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];

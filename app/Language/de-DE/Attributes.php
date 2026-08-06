@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "Eingänge",
     "show_in_sales"                    => "In Verkäufen anzeigen",
     "show_in_sales_visibility"         => "Verkauf",
+    "show_in_search"                   => "In Suche anzeigen",
+    "show_in_search_visibility"        => "Suche",
     "update"                           => "Attribut aktualisieren",
 ];

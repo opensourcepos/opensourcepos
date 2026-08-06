@@ -30,5 +30,7 @@ return [
     "show_in_receivings_visibility"    => "קבלת סחורה",
     "show_in_sales"                    => "הצג במכירות",
     "show_in_sales_visibility"         => "מכירות",
+    "show_in_search"                   => "Show in search",
+    "show_in_search_visibility"        => "Search",
     "update"                           => "עדכן מאפיין",
 ];
