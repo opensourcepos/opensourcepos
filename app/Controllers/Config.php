@@ -352,7 +352,7 @@ class Config extends Secure_Controller
 
         $file_info = [
             'orig_name' => $filename,
-            'raw_name'  => $info['filename'],
+            'raw_name'  => preg_replace('/[^a-zA-Z0-9_\-]/', '_', $info['filename']),
             'file_ext'  => $file->guessExtension()
         ];
 
