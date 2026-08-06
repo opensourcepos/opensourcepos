@@ -1778,7 +1778,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_SALES, true);
+        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_SALES, true);
 
         $inputs = [
             'start_date'     => $start_date,
@@ -1937,7 +1937,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_RECEIVINGS, true);
+        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_RECEIVINGS, true);
 
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
 
