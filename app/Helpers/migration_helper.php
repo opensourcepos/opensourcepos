@@ -88,7 +88,7 @@ function executeScriptWithTransaction(string $path): bool
 }
 
 /**
- * Drops provided foreign key constraints from given table.
+ * Drops provided foreign key constraints from a given table if the constraint exists.
  * This is required to successfully create the generated unique constraint.
  *
  * @param array $foreignKeys names of the foreign key constraints to drop
@@ -172,6 +172,7 @@ function dropAllForeignKeyConstraints(string $table, string $column): array {
             WHERE kcu.TABLE_SCHEMA = DATABASE()
                 AND ((kcu.REFERENCED_TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.REFERENCED_COLUMN_NAME = '$column')
                 OR (kcu.TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.COLUMN_NAME = '$column'))
+                AND rc.CONSTRAINT_NAME IS NOT NULL
         ");
 
     $deletedConstraints = [];

@@ -15,7 +15,7 @@
 ?>
 
 <!doctype html>
-<html lang="<?= $this->request->getLocale() ?>">
+<html lang="<?= current_language_code() ?>">
 
 <head>
     <meta charset="utf-8">
