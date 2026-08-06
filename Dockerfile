@@ -13,7 +13,8 @@ RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/time
 
 WORKDIR /app
 COPY --chown=www-data:www-data . /app
-RUN chmod 770 /app/writable/uploads /app/writable/logs /app/writable/cache \
+RUN chmod 750 /app/writable/logs /app/writable/uploads /app/writable/cache /app/public/uploads /app/public/uploads/item_pics \
+    && chmod 640 /app/writable/uploads/importCustomers.csv \
     && ln -s /app/*[^public] /var/www \
     && rm -rf /var/www/html \
     && ln -nsf /app/public /var/www/html

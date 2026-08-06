@@ -22,7 +22,7 @@ function current_language_code(bool $load_system_language = false): string
         }
     }
 
-    return $config->language_code ?? DEFAULT_LANGUAGE_CODE;
+    return $config['language_code'] ?? DEFAULT_LANGUAGE_CODE;
 }
 
 /**
@@ -43,7 +43,7 @@ function current_language(bool $load_system_language = false): string
         }
     }
 
-    return $config->language ?? DEFAULT_LANGUAGE_CODE;
+    return $config['language'] ?? DEFAULT_LANGUAGE;
 }
 
 /**
@@ -272,7 +272,22 @@ function get_payment_options(): array
         $payments[lang('Sales.upi')] = lang('Sales.upi');
     }
 
+    $payments[lang('Sales.bank_transfer')] = lang('Sales.bank_transfer');
+    $payments[lang('Sales.wallet')]        = lang('Sales.wallet');
+
     return $payments;
+}
+
+/**
+ * Returns the payment types that require a reference code (e.g. card terminal receipt number).
+ * Single source of truth used by both the controller validation and the view's JS.
+ */
+function get_reference_code_payment_types(): array
+{
+    return [
+        lang('Sales.debit'),
+        lang('Sales.credit'),
+    ];
 }
 
 /**
@@ -636,13 +651,14 @@ function dateformat_bootstrap(string $php_format): string
 }
 
 /**
- * @param string $date
+ * @param string $candidate
  * @return bool
  */
-function valid_date(string $date): bool    // TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
+function isValidDate(string $candidate): bool
 {
     $config = config(OSPOS::class)->settings;
-    return (DateTime::createFromFormat($config['dateformat'], $date));
+    $parsed = DateTime::createFromFormat($config['dateformat'], $candidate);
+    return $parsed !== false && $parsed->format($config['dateformat']) === $candidate;
 }
 
 /**
