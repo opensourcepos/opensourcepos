@@ -21,6 +21,8 @@ class LoginTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
+    private array $usedKeys = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -38,7 +40,24 @@ class LoginTest extends CIUnitTestCase
 
     private function clearThrottleState(): void
     {
+        $throttler = Services::throttler();
+
+        foreach ($this->usedKeys as $key) {
+            $throttler->remove($key);
+        }
+
+        $this->usedKeys = [];
+
         Services::resetSingle('throttler');
+    }
+
+    private function trackThrottleKeys(string $username = ''): void
+    {
+        $this->usedKeys[] = 'login-ip-' . Services::request()->getIPAddress();
+
+        if ($username !== '') {
+            $this->usedKeys[] = 'login-user-' . strtolower($username);
+        }
     }
 
     /**
@@ -64,6 +83,7 @@ class LoginTest extends CIUnitTestCase
             'username' => 'admin',
             'password' => 'pointofsale',
         ]);
+        $this->trackThrottleKeys('admin');
 
         $this->skipIfMigrationRequired($response);
 
@@ -76,6 +96,7 @@ class LoginTest extends CIUnitTestCase
             'username' => 'admin',
             'password' => 'wrongpassword',
         ]);
+        $this->trackThrottleKeys('admin');
 
         $this->skipIfMigrationRequired($response);
 
@@ -90,12 +111,14 @@ class LoginTest extends CIUnitTestCase
                 'username' => 'wronguser',
                 'password' => 'wrongpassword',
             ]);
+            $this->trackThrottleKeys('wronguser');
         }
 
         $response = $this->post('/login', [
             'username' => 'wronguser',
             'password' => 'wrongpassword',
         ]);
+        $this->trackThrottleKeys('wronguser');
 
         $response->assertStatus(429);
         $result = json_decode($response->getJSON(), true);
@@ -110,12 +133,14 @@ class LoginTest extends CIUnitTestCase
                 'username' => 'admin',
                 'password' => 'wrongpassword',
             ]);
+            $this->trackThrottleKeys('admin');
         }
 
         $response = $this->post('/login', [
             'username' => 'admin',
             'password' => 'pointofsale',
         ]);
+        $this->trackThrottleKeys('admin');
 
         $this->skipIfMigrationRequired($response);
 
