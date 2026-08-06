@@ -25,7 +25,7 @@ return [
     "migration_running"                   => "Databasemigraties uitvoeren...",
     "password"                            => "Wachtwoord",
     "required_username"                   => "Het gebruikersnaam veld is verplicht.",
-    "too_many_attempts"                   => "Te veel pogingen. Wacht even en probeer het opnieuw.",
+    'too_many_attempts'                   => 'Te veel pogingen. Wacht even en probeer het opnieuw.',
     "username"                            => "Gebruikersnaam",
     "welcome"                             => "Welkom bij {0}!"
 ];

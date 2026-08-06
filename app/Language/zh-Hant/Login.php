@@ -25,7 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "密碼",
     "required_username"                   => "",
-    "too_many_attempts"                   => "嘗試次數過多。請稍候片刻後再試一次。",
+    'too_many_attempts'                   => '嘗試次數過多。請稍候片刻後再試一次。',
     "username"                            => "帳號",
     "welcome"                             => "歡迎來到 {0}！"
 ];

@@ -25,7 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Password",
     "required_username"                   => "",
-    "too_many_attempts"                   => "ພະຍາຍາມຫຼາຍເກີນໄປ. ກະລຸນາລໍຖ້າບຶດໜຶ່ງ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.",
+    'too_many_attempts'                   => 'ພະຍາຍາມຫຼາຍເກີນໄປ. ກະລຸນາລໍຖ້າບຶດໜຶ່ງ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.',
     "username"                            => "Username",
     "welcome"                             => ""
 ];
