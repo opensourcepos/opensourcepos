@@ -3,6 +3,8 @@
 return [
     "admin_cashups"              => "",
     "admin_cashups_desc"         => "",
+    "accounting"                 => "Accounting",
+    "accounting_desc"            => "Manage Chart of Accounts, Journal Entries, and Financial Reports.",
     "attributes"                 => "Attributes",
     "attributes_desc"            => "Add, Update, Delete, and Search attributes.",
     "both"                       => "Both",
