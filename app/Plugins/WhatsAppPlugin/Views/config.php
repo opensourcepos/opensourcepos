@@ -10,11 +10,11 @@
     <fieldset id="config_info">
 
         <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-        <div id="plugins_header"><?= lang('WhatsappPlugin.configuration') ?></div>
+        <div id="plugins_header"><?= lang('WhatsAppPlugin.configuration') ?></div>
         <ul id="error_message_box" class="error_message_box"></ul>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.phone_id'), 'phone_id', ['class' => 'control-label col-xs-3 required']) ?>
+            <?= form_label(lang('WhatsAppPlugin.phone_id'), 'phone_id', ['class' => 'control-label col-xs-3 required']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone"></span></span>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.business_id'), 'business_id', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.business_id'), 'business_id', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'business_id',
@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.token'), 'token', ['class' => 'control-label col-xs-3 required']) ?>
+            <?= form_label(lang('WhatsAppPlugin.token'), 'token', ['class' => 'control-label col-xs-3 required']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -56,7 +56,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.api_url'), 'api_url', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.api_url'), 'api_url', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'api_url',
@@ -68,7 +68,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.api_version'), 'api_version', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.api_version'), 'api_version', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
                     'name'  => 'api_version',
@@ -80,36 +80,36 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.default_country_code'), 'default_country_code', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.default_country_code'), 'default_country_code', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
                     'name'        => 'default_country_code',
                     'id'          => 'default_country_code',
                     'class'       => 'form-control input-sm',
                     'value'       => esc($settings['default_country_code'] ?? ''),
-                    'placeholder' => lang('WhatsappPlugin.default_country_code_placeholder'),
+                    'placeholder' => lang('WhatsAppPlugin.default_country_code_placeholder'),
                 ]) ?>
             </div>
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.saved_message'), 'saved_message', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.saved_message'), 'saved_message', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_textarea([
                     'name'        => 'saved_message',
                     'id'          => 'saved_message',
                     'class'       => 'form-control input-sm',
                     'value'       => $settings['saved_message'] ?? '',
-                    'placeholder' => lang('WhatsappPlugin.saved_message_placeholder'),
+                    'placeholder' => lang('WhatsAppPlugin.saved_message_placeholder'),
                 ]) ?>
             </div>
         </div>
 
         <hr>
-        <div id="plugins_header"><?= lang('WhatsappPlugin.webhook_heading') ?></div>
+        <div id="plugins_header"><?= lang('WhatsAppPlugin.webhook_heading') ?></div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.webhook_url'), 'webhook_url', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.webhook_url'), 'webhook_url', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'     => 'webhook_url_display',
@@ -118,12 +118,12 @@
                     'value'    => esc($webhook_url ?? ''),
                     'readonly' => 'true',
                 ]) ?>
-                <span class="help-block"><?= lang('WhatsappPlugin.webhook_url_help') ?></span>
+                <span class="help-block"><?= lang('WhatsAppPlugin.webhook_url_help') ?></span>
             </div>
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.verify_token'), 'verify_token', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.verify_token'), 'verify_token', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'verify_token',
@@ -135,7 +135,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('WhatsappPlugin.app_secret'), 'app_secret', ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('WhatsAppPlugin.app_secret'), 'app_secret', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -146,12 +146,12 @@
                         'value' => esc($settings['app_secret'] ?? ''),
                     ]) ?>
                 </div>
-                <span class="help-block"><?= lang('WhatsappPlugin.app_secret_help') ?></span>
+                <span class="help-block"><?= lang('WhatsAppPlugin.app_secret_help') ?></span>
             </div>
         </div>
 
         <div class="col-xs-offset-3 col-xs-8">
-            <p class="help-block"><?= lang('WhatsappPlugin.window_notice') ?></p>
+            <p class="help-block"><?= lang('WhatsAppPlugin.window_notice') ?></p>
         </div>
 
         <?= form_submit([
@@ -164,7 +164,7 @@
         <div class="col-xs-offset-3 col-xs-8" style="margin-top: 10px;">
             <span class="glyphicon glyphicon-info-sign">&nbsp;</span>
             <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started" target="_blank" rel="noopener noreferrer">
-                <?= lang('WhatsappPlugin.docs_link') ?>
+                <?= lang('WhatsAppPlugin.docs_link') ?>
             </a>
         </div>
 
@@ -198,8 +198,8 @@
             },
 
             messages: {
-                phone_id: '<?= lang('WhatsappPlugin.phone_id_required') ?>',
-                token: '<?= lang('WhatsappPlugin.token_required') ?>'
+                phone_id: '<?= lang('WhatsAppPlugin.phone_id_required') ?>',
+                token: '<?= lang('WhatsAppPlugin.token_required') ?>'
             }
         }));
     });

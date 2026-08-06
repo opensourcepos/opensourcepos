@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Plugins\WhatsappPlugin\Models;
+namespace App\Plugins\WhatsAppPlugin\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use ReflectionException;
 
 /**
- * Persists the WhatsApp conversation log (outbound messages we send and inbound
- * replies received via the webhook) so the full interaction with a customer can
- * be displayed.
+ * Persists the WhatsApp conversation log: outbound messages the plugin sends and
+ * inbound replies received via the webhook.
  */
-class WhatsappMessage extends Model
+class WhatsAppMessage extends Model
 {
     protected $table            = 'whatsapp_messages';
     protected $primaryKey       = 'message_id';
@@ -33,10 +32,6 @@ class WhatsappMessage extends Model
     ];
 
     /**
-     * Records a message in the conversation log.
-     *
-     * @param array $data Row data (direction, phone, body, ...).
-     *
      * @return int The inserted message_id, or 0 on failure.
      *
      * @throws ReflectionException
@@ -51,10 +46,7 @@ class WhatsappMessage extends Model
     }
 
     /**
-     * Returns the conversation for a given phone number ordered oldest first.
-     *
      * @param string $phone Normalized phone number (digits only).
-     * @param int    $limit Maximum number of messages to return.
      */
     public function get_conversation(string $phone, int $limit = 200): ResultInterface
     {
@@ -68,14 +60,11 @@ class WhatsappMessage extends Model
     }
 
     /**
-     * Returns the distinct phone numbers that have a conversation, most recently
-     * active first, along with the latest message preview.
-     *
-     * @param int $limit Maximum number of conversations to return.
+     * Distinct phone numbers with a conversation, most recently active first.
      */
     public function get_recent_conversations(int $limit = 50): array
     {
-        // Group by phone only: inbound webhook messages and general outbound
+        // Grouped by phone only: inbound webhook messages and general outbound
         // sends log person_id => null, while sale sends log a real person_id.
         // Grouping on both would split one customer's thread into two rows.
         $builder = $this->db->table('whatsapp_messages');
@@ -88,16 +77,13 @@ class WhatsappMessage extends Model
     }
 
     /**
-     * Updates the delivery status of an outbound message identified by its
-     * WhatsApp message id (wamid), used by webhook status callbacks.
+     * Updates the delivery status of an outbound message, identified by its
+     * WhatsApp message id (wamid).
      *
-     * Status callbacks can arrive out of order, so backward transitions along
-     * the sent -> delivered -> read progression are ignored to avoid a late
-     * "delivered" downgrading an already "read" message. Statuses outside that
-     * ordering (e.g. "failed") are always applied.
-     *
-     * @param string $waMessageId The WhatsApp message id.
-     * @param string $status      The new status (sent|delivered|read|failed).
+     * Status callbacks can arrive out of order, so backward transitions along the
+     * sent -> delivered -> read progression are ignored to stop a late "delivered"
+     * downgrading an already "read" message. Statuses outside that ordering
+     * (e.g. "failed") are always applied.
      */
     public function update_status(string $waMessageId, string $status): bool
     {
@@ -113,7 +99,6 @@ class WhatsappMessage extends Model
             return false;
         }
 
-        // Ignore backward/equal transitions within the known ordering.
         if (isset($rank[$status], $rank[$current->status]) && $rank[$status] <= $rank[$current->status]) {
             return true;
         }

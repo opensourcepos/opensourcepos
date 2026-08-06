@@ -1,9 +1,7 @@
 <?php
 /**
- * "Send via WhatsApp" button injected into a sale document view.
- *
- * Rendered only when the sale's customer has a phone number — the plugin checks
- * that before calling this view, so no further guard is needed here.
+ * "Send via WhatsApp" button injected into a sale document view. The plugin has
+ * already confirmed the customer has a phone number.
  *
  * @var int    $saleId
  * @var string $documentType One of invoice|quote|work_order|receipt.
@@ -11,7 +9,7 @@
 ?>
 <a href="javascript:void(0);">
     <div class="btn btn-success btn-sm" id="show_whatsapp_button">
-        <?= '<span class="glyphicon glyphicon-comment">&nbsp;</span>' . lang('WhatsappPlugin.send_whatsapp') ?>
+        <?= '<span class="glyphicon glyphicon-comment">&nbsp;</span>' . lang('WhatsAppPlugin.send_whatsapp') ?>
     </div>
 </a>
 

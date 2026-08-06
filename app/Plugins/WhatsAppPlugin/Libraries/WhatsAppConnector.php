@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Plugins\WhatsappPlugin\Libraries;
+namespace App\Plugins\WhatsAppPlugin\Libraries;
 
-use App\Plugins\WhatsappPlugin\Models\WhatsappMessage;
+use App\Plugins\WhatsAppPlugin\Models\WhatsAppMessage;
 use CodeIgniter\HTTP\CURLRequest;
 use Config\Services;
 use CURLFile;
@@ -12,15 +12,17 @@ use Throwable;
  * Sends messages through the WhatsApp Business Cloud API (Meta / Graph API) and
  * records every outbound message in the conversation log.
  *
- * Credentials are injected by WhatsappPlugin::connector() rather than read from
+ * Credentials are injected by WhatsAppPlugin::connector() rather than read from
  * global config, so the connector stays usable in isolation and in tests.
  *
  * @see https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started
  */
-class WhatsappConnector
+class WhatsAppConnector
 {
+    private const PLUGIN_ID = 'whatsapp';
+
     private array $settings;
-    private WhatsappMessage $messageModel;
+    private WhatsAppMessage $messageModel;
 
     /**
      * @param array $settings enabled, api_url, api_version, phone_id, token,
@@ -29,28 +31,22 @@ class WhatsappConnector
     public function __construct(array $settings = [])
     {
         $this->settings     = $settings;
-        $this->messageModel = model(WhatsappMessage::class);
+        $this->messageModel = model(WhatsAppMessage::class);
     }
 
     /**
-     * Sends a free-form text message.
+     * Sends a free-form text message. $phone may be in any format.
      *
      * Note: free-form messages are only delivered within the 24 hour customer
      * service window (i.e. after the customer has messaged the business).
      * Outside that window an approved message template is required.
-     *
-     * @param string   $phone    Recipient phone number (any format; normalized here).
-     * @param string   $message  Message body.
-     * @param int|null $personId Customer person_id, when known (for the log).
-     *
-     * @return bool True when the API accepted the message.
      */
     public function sendText(string $phone, string $message, ?int $personId = null): bool
     {
         $to = $this->normalizePhone($phone);
 
         if (! $this->isConfigured() || $to === '' || $message === '') {
-            $this->logOutbound($to, 'text', $message, null, null, null, 'failed', lang('WhatsappPlugin.not_configured'), $personId);
+            $this->logOutbound($to, 'text', $message, null, null, null, 'failed', lang('WhatsAppPlugin.not_configured'), $personId);
 
             return false;
         }
@@ -82,25 +78,18 @@ class WhatsappConnector
     }
 
     /**
-     * Sends a document (e.g. a PDF invoice) as an attachment.
+     * Sends a document (e.g. a PDF invoice) as an attachment. $filepath must be an
+     * absolute local path; $filename is what the recipient sees.
      *
-     * The local file is uploaded to the WhatsApp media endpoint first, then a
-     * document message referencing the returned media id is sent.
-     *
-     * @param string   $phone    Recipient phone number (any format; normalized here).
-     * @param string   $filepath Absolute path to the local file to send.
-     * @param string   $filename Filename shown to the recipient.
-     * @param string   $caption  Optional caption.
-     * @param int|null $personId Customer person_id, when known (for the log).
-     *
-     * @return bool True when the API accepted the message.
+     * The file is uploaded to the WhatsApp media endpoint first, then a document
+     * message referencing the returned media id is sent.
      */
     public function sendDocument(string $phone, string $filepath, string $filename, string $caption = '', ?int $personId = null): bool
     {
         $to = $this->normalizePhone($phone);
 
         if (! $this->isConfigured() || $to === '' || ! is_file($filepath)) {
-            $this->logOutbound($to, 'document', $caption, null, $filename, null, 'failed', lang('WhatsappPlugin.not_configured'), $personId);
+            $this->logOutbound($to, 'document', $caption, null, $filename, null, 'failed', lang('WhatsAppPlugin.not_configured'), $personId);
 
             return false;
         }
@@ -108,7 +97,7 @@ class WhatsappConnector
         $mediaId = $this->uploadMedia($filepath, 'application/pdf');
 
         if ($mediaId === null) {
-            $this->logOutbound($to, 'document', $caption, null, $filename, null, 'failed', lang('WhatsappPlugin.media_upload_failed'), $personId);
+            $this->logOutbound($to, 'document', $caption, null, $filename, null, 'failed', lang('WhatsAppPlugin.media_upload_failed'), $personId);
 
             return false;
         }
@@ -150,8 +139,6 @@ class WhatsappConnector
      * (no '+', spaces or punctuation). When a default country code is configured
      * and the number does not already start with it, it is prepended.
      *
-     * @param string $phone Raw phone number.
-     *
      * @return string Normalized number, or '' when no digits are present.
      */
     public function normalizePhone(string $phone): string
@@ -165,15 +152,16 @@ class WhatsappConnector
         $country = preg_replace('/\D+/', '', (string) ($this->settings['default_country_code'] ?? '')) ?? '';
 
         if ($country !== '' && ! str_starts_with($digits, $country)) {
-            // Drop a single leading trunk '0' before prefixing the country code.
-            $digits = $country . ltrim($digits, '0');
+            // Only the single national trunk '0' is dropped; further leading zeros
+            // are part of the subscriber number and must survive.
+            $digits = $country . preg_replace('/^0/', '', $digits, 1);
         }
 
         return $digits;
     }
 
     /**
-     * @return bool True when the plugin is enabled and the required credentials are set.
+     * @return bool True when the plugin is enabled and the credentials are set.
      */
     public function isConfigured(): bool
     {
@@ -183,12 +171,7 @@ class WhatsappConnector
     }
 
     /**
-     * Uploads a local file to the WhatsApp media endpoint.
-     *
-     * @param string $filepath Absolute path to the file.
-     * @param string $mime     Mime type of the file.
-     *
-     * @return string|null The media id, or null on failure.
+     * @return string|null The uploaded media id, or null on failure.
      */
     private function uploadMedia(string $filepath, string $mime): ?string
     {
@@ -208,9 +191,9 @@ class WhatsappConnector
                 return (string) $body['id'];
             }
 
-            log_message('error', 'WhatsApp media upload failed: ' . (string) $response->getBody());
+            $this->logApi('error', 'Media upload failed: ' . (string) $response->getBody());
         } catch (Throwable $e) {
-            log_message('error', 'WhatsApp media upload exception: ' . $e->getMessage());
+            $this->logApi('error', 'Media upload exception: ' . $e->getMessage());
         }
 
         return null;
@@ -218,9 +201,6 @@ class WhatsappConnector
 
     /**
      * Sends a JSON POST to a Graph API endpoint with the bearer token.
-     *
-     * @param string $url     Full endpoint URL.
-     * @param array  $payload JSON payload.
      *
      * @return array|null Decoded response body, or null on transport failure.
      */
@@ -239,15 +219,12 @@ class WhatsappConnector
 
             return is_array($body) ? $body : null;
         } catch (Throwable $e) {
-            log_message('error', 'WhatsApp API exception: ' . $e->getMessage());
+            $this->logApi('error', 'API exception: ' . $e->getMessage());
 
             return null;
         }
     }
 
-    /**
-     * Records an outbound message in the conversation log.
-     */
     private function logOutbound(string $phone, string $type, ?string $body, ?string $mediaId, ?string $filename, ?string $waMessageId, string $status, ?string $error, ?int $personId): void
     {
         try {
@@ -264,8 +241,17 @@ class WhatsappConnector
                 'error'         => $error,
             ]);
         } catch (Throwable $e) {
-            log_message('error', 'WhatsApp log write failed: ' . $e->getMessage());
+            log_plugin_message('error', 'Conversation log write failed: ' . $e->getMessage(), self::PLUGIN_ID);
         }
+    }
+
+    /**
+     * Graph API failures go to a dedicated api log so they stay separate from the
+     * plugin's general log.
+     */
+    private function logApi(string $level, string $message): void
+    {
+        log_plugin_message($level, $message, self::PLUGIN_ID, 'api');
     }
 
     private function token(): string
@@ -306,6 +292,6 @@ class WhatsappConnector
 
     private function extractError(?array $response): ?string
     {
-        return $response['error']['message'] ?? lang('WhatsappPlugin.send_failed');
+        return $response['error']['message'] ?? lang('WhatsAppPlugin.send_failed');
     }
 }

@@ -16,34 +16,34 @@
 <div class="container-fluid">
 
     <?php if (! $configured): ?>
-        <div class="alert alert-warning"><?= lang('WhatsappPlugin.not_configured_notice') ?></div>
+        <div class="alert alert-warning"><?= lang('WhatsAppPlugin.not_configured_notice') ?></div>
     <?php endif; ?>
 
     <div class="row">
         <div class="col-sm-6">
             <?= form_open(site_url('whatsapp/send'), ['id' => 'send_whatsapp_form', 'class' => 'form-horizontal']) ?>
                 <fieldset>
-                    <legend><?= lang('WhatsappPlugin.whatsapp_send') ?></legend>
+                    <legend><?= lang('WhatsAppPlugin.whatsapp_send') ?></legend>
 
                     <div class="form-group form-group-sm">
-                        <label for="phone" class="col-xs-3 control-label"><?= lang('WhatsappPlugin.phone') ?></label>
+                        <label for="phone" class="col-xs-3 control-label"><?= lang('WhatsAppPlugin.phone') ?></label>
                         <div class="col-xs-9">
-                            <input class="form-control input-sm required" type="text" name="phone" id="phone" placeholder="<?= lang('WhatsappPlugin.phone_placeholder') ?>">
-                            <span class="help-block"><?= lang('WhatsappPlugin.phone_help') ?></span>
+                            <input class="form-control input-sm required" type="text" name="phone" id="phone" placeholder="<?= lang('WhatsAppPlugin.phone_placeholder') ?>">
+                            <span class="help-block"><?= lang('WhatsAppPlugin.phone_help') ?></span>
                         </div>
                     </div>
 
                     <div class="form-group form-group-sm">
-                        <label for="message" class="col-xs-3 control-label"><?= lang('WhatsappPlugin.message') ?></label>
+                        <label for="message" class="col-xs-3 control-label"><?= lang('WhatsAppPlugin.message') ?></label>
                         <div class="col-xs-9">
-                            <textarea class="form-control input-sm required" rows="3" id="message" name="message" placeholder="<?= lang('WhatsappPlugin.message_placeholder') ?>"><?= esc($saved_message) ?></textarea>
+                            <textarea class="form-control input-sm required" rows="3" id="message" name="message" placeholder="<?= lang('WhatsAppPlugin.message_placeholder') ?>"><?= esc($saved_message) ?></textarea>
                         </div>
                     </div>
 
                     <?= form_submit([
                         'name'  => 'submit_form',
                         'id'    => 'submit_form',
-                        'value' => lang('WhatsappPlugin.whatsapp_send'),
+                        'value' => lang('WhatsAppPlugin.whatsapp_send'),
                         'class' => 'btn btn-primary btn-sm pull-right',
                     ]) ?>
                 </fieldset>
@@ -51,19 +51,19 @@
         </div>
 
         <div class="col-sm-6">
-            <legend><?= lang('WhatsappPlugin.recent_conversations') ?></legend>
+            <legend><?= lang('WhatsAppPlugin.recent_conversations') ?></legend>
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th><?= lang('WhatsappPlugin.phone') ?></th>
-                        <th><?= lang('WhatsappPlugin.messages') ?></th>
-                        <th><?= lang('WhatsappPlugin.last_activity') ?></th>
+                        <th><?= lang('WhatsAppPlugin.phone') ?></th>
+                        <th><?= lang('WhatsAppPlugin.messages') ?></th>
+                        <th><?= lang('WhatsAppPlugin.last_activity') ?></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($conversations)): ?>
-                        <tr><td colspan="4" class="text-muted"><?= lang('WhatsappPlugin.no_conversations') ?></td></tr>
+                        <tr><td colspan="4" class="text-muted"><?= lang('WhatsAppPlugin.no_conversations') ?></td></tr>
                     <?php else: ?>
                         <?php foreach ($conversations as $conversation): ?>
                             <tr>
@@ -72,7 +72,7 @@
                                 <td><?= esc($conversation['last_activity']) ?></td>
                                 <td>
                                     <button type="button" class="btn btn-xs btn-info view-conversation" data-phone="<?= esc($conversation['phone']) ?>">
-                                        <?= lang('WhatsappPlugin.view') ?>
+                                        <?= lang('WhatsAppPlugin.view') ?>
                                     </button>
                                 </td>
                             </tr>

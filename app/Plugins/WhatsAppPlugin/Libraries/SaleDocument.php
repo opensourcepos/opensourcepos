@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Plugins\WhatsappPlugin\Libraries;
+namespace App\Plugins\WhatsAppPlugin\Libraries;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Email_lib;
@@ -22,16 +22,11 @@ use Config\Services;
  * Assembles a sale document (invoice / quote / work order / receipt) as a PDF so
  * it can be delivered over WhatsApp.
  *
- * NOTE FOR REVIEWERS
- * ------------------
  * buildData() mirrors the subset of `Sales::_load_sale_data()` that the
- * `sales/{type}_email` views consume. That method is `private`, so a plugin
- * cannot call it and the orchestration has to be repeated here. Every call below
- * goes through an existing public API (`Sale_lib`, `Tax_lib`, `Sale`, `Customer`,
- * `Employee`, `Barcode_lib`, `Stock_location`) — no totals or tax logic is
- * reimplemented — but this class becomes redundant the moment core exposes a
- * reusable accessor for sale document data. See the discussion in the core
- * enablers PR; collapsing this into a single core call is preferred.
+ * `sales/{type}_email` views consume, because that method is private. Every call
+ * goes through an existing public API, so no totals or tax logic is reimplemented,
+ * but this class becomes redundant once core exposes a reusable accessor for sale
+ * document data.
  */
 class SaleDocument
 {
@@ -73,27 +68,17 @@ class SaleDocument
     }
 
     /**
-     * Renders a sale document to a temporary PDF file.
-     *
-     * The caller owns the returned file and must unlink it.
-     *
-     * @param int    $saleId Sale to render.
-     * @param string $type   One of invoice|quote|work_order|receipt (already validated).
+     * Renders a sale document to a temporary PDF file. $type is one of
+     * invoice|quote|work_order|receipt, already validated by the caller, which
+     * also owns the returned file and must unlink it.
      *
      * @return array{path: string, display_name: string, caption: string, phone: string, person_id: int|null}|null
-     *                                                                                                             Null when the document could not be rendered.
+     *                                                                                                             Null when the PDF could not be generated.
      */
     public function renderPdf(int $saleId, string $type): ?array
     {
-        $data = $this->buildData($saleId);
-
-        $phone = (string) ($data['customer_phone'] ?? '');
-
-        if ($phone === '') {
-            return null;
-        }
-
-        $number = $data[$type . '_number'] ?? '';
+        $data   = $this->buildData($saleId);
+        $number = $this->documentNumber($data, $type);
 
         $emailLib         = new Email_lib();
         $data['mimetype'] = $emailLib->getLogoMimeType();
@@ -118,11 +103,26 @@ class SaleDocument
 
         return [
             'path'         => $path,
-            'display_name' => lang('Sales.' . $type) . '-' . str_replace('/', '-', (string) $number) . '.pdf',
-            'caption'      => $this->buildCaption($data, (string) $number),
-            'phone'        => $phone,
+            'display_name' => lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf',
+            'caption'      => $this->buildCaption($data, $number),
+            'phone'        => (string) ($data['customer_phone'] ?? ''),
             'person_id'    => isset($data['customer_id']) ? (int) $data['customer_id'] : null,
         ];
+    }
+
+    /**
+     * Identifier used in the filename and the caption's invoice-sequence token.
+     *
+     * Receipts have no number of their own — the receipt view identifies the sale
+     * by its POS id — and invoice/quote/work-order numbers are null on a sale that
+     * was never issued as that document type. Both fall back to the POS id so the
+     * filename is never left empty.
+     */
+    private function documentNumber(array $data, string $type): string
+    {
+        $number = (string) ($data[$type . '_number'] ?? '');
+
+        return $number !== '' ? $number : (string) $data['sale_id'];
     }
 
     /**
@@ -142,9 +142,8 @@ class SaleDocument
     /**
      * Builds the view data for a sale document.
      *
-     * Mirrors `Sales::_load_sale_data()` — see the class docblock. Like core, this
-     * loads the sale into the register cart to compute totals; callers are
-     * expected to clear it afterwards, exactly as core's send endpoints do.
+     * Like core, this loads the sale into the register cart to compute totals;
+     * callers are expected to clear it afterwards via clearCart().
      */
     private function buildData(int $saleId): array
     {
@@ -206,6 +205,10 @@ class SaleDocument
         $data['invoice_number'] = $saleInfo['invoice_number'];
         $data['quote_number']   = $saleInfo['quote_number'];
         $data['sale_status']    = $saleInfo['sale_status'];
+
+        // Sale::getInfo() does not select work_order_number, but the
+        // work_order_email view requires it, so read it from the model directly.
+        $data['work_order_number'] = $saleModel->get_work_order_number($saleId);
 
         $data['company_info'] = implode("\n", [$this->config['address'], $this->config['phone']]);
 

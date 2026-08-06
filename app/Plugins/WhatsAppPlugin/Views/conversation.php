@@ -7,7 +7,7 @@
 ?>
 <div class="whatsapp-conversation" style="max-height: 360px; overflow-y: auto; border: 1px solid #e5e5e5; border-radius: 4px; padding: 8px; background: #efeae2;">
     <?php if (empty($messages)): ?>
-        <p class="text-muted" style="text-align: center; margin: 12px 0;"><?= lang('WhatsappPlugin.no_messages') ?></p>
+        <p class="text-muted" style="text-align: center; margin: 12px 0;"><?= lang('WhatsAppPlugin.no_messages') ?></p>
     <?php else: ?>
         <?php foreach ($messages as $message): ?>
             <?php $outbound = $message->direction === 'out'; ?>
@@ -24,7 +24,7 @@
                     <div style="font-size: 10px; color: #888; margin-top: 2px;">
                         <?= esc($message->created_at) ?>
                         <?php if ($outbound && ! empty($message->status)): ?>
-                            &middot; <?= esc(lang('WhatsappPlugin.status_' . $message->status)) ?>
+                            &middot; <?= esc(lang('WhatsAppPlugin.status_' . $message->status)) ?>
                         <?php endif; ?>
                     </div>
                 </div>

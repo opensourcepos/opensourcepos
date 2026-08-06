@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Plugins\WhatsappPlugin\Controllers;
+namespace App\Plugins\WhatsAppPlugin\Controllers;
 
 use App\Controllers\Secure_Controller;
 use App\Models\Person;
-use App\Plugins\WhatsappPlugin\Libraries\SaleDocument;
-use App\Plugins\WhatsappPlugin\Libraries\WhatsappConnector;
-use App\Plugins\WhatsappPlugin\Models\WhatsappMessage;
-use App\Plugins\WhatsappPlugin\WhatsappPlugin;
+use App\Plugins\WhatsAppPlugin\Libraries\SaleDocument;
+use App\Plugins\WhatsAppPlugin\Libraries\WhatsAppConnector;
+use App\Plugins\WhatsAppPlugin\Models\WhatsAppMessage;
+use App\Plugins\WhatsAppPlugin\WhatsAppPlugin;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * WhatsApp messaging controller.
  *
- * Mirrors the SMS Messages controller: a page to send free-form WhatsApp
- * messages plus a per-person modal form, and additionally exposes the full
- * conversation (outbound sends and inbound replies) with a customer.
+ * Mirrors the SMS Messages controller: a page to send free-form WhatsApp messages
+ * plus a per-person modal form, and additionally exposes the full conversation
+ * (outbound sends and inbound replies) with a customer.
  *
- * Guarded by the 'whatsapp' permission registered in WhatsappPlugin::install().
+ * Guarded by the 'whatsapp' permission registered in WhatsAppPlugin::install().
  */
-class WhatsappController extends Secure_Controller
+class WhatsAppController extends Secure_Controller
 {
-    private WhatsappPlugin $plugin;
-    private WhatsappConnector $connector;
-    private WhatsappMessage $messageModel;
+    private WhatsAppPlugin $plugin;
+    private WhatsAppConnector $connector;
+    private WhatsAppMessage $messageModel;
 
     public function __construct()
     {
@@ -32,22 +32,18 @@ class WhatsappController extends Secure_Controller
 
         $plugin = service('pluginManager')->getPlugin('whatsapp');
 
-        // Plugin namespaces — and therefore these routes — are registered for every
-        // plugin directory, enabled or not. A disabled plugin must not send messages
-        // or expose conversation history, so refuse to serve rather than rely on the
-        // route simply not existing.
-        if (! $plugin instanceof WhatsappPlugin || ! $plugin->isEnabled()) {
+        // Routes are registered for every plugin directory, enabled or not, so a
+        // disabled plugin must refuse to serve rather than rely on the route
+        // simply not existing.
+        if (! $plugin instanceof WhatsAppPlugin || ! $plugin->isEnabled()) {
             throw PageNotFoundException::forPageNotFound();
         }
 
         $this->plugin       = $plugin;
         $this->connector    = $plugin->connector();
-        $this->messageModel = model(WhatsappMessage::class);
+        $this->messageModel = model(WhatsAppMessage::class);
     }
 
-    /**
-     * Landing page: send form plus the list of recent conversations.
-     */
     public function getIndex(): string
     {
         return $this->plugin->renderPluginView('whatsapp', [
@@ -89,9 +85,6 @@ class WhatsappController extends Secure_Controller
         ]);
     }
 
-    /**
-     * Sends a WhatsApp message from the landing page.
-     */
     public function postSend(): ResponseInterface
     {
         $phone = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -104,12 +97,12 @@ class WhatsappController extends Secure_Controller
 
         return $this->response->setJSON([
             'success' => $sent,
-            'message' => lang($sent ? 'WhatsappPlugin.successfully_sent' : 'WhatsappPlugin.unsuccessfully_sent') . ' ' . esc($phone),
+            'message' => lang($sent ? 'WhatsAppPlugin.successfully_sent' : 'WhatsAppPlugin.unsuccessfully_sent') . ' ' . esc($phone),
         ]);
     }
 
     /**
-     * Sends a WhatsApp message to a specific person. Used in Views/form_whatsapp.php.
+     * Used in Views/form_whatsapp.php.
      *
      * @noinspection PhpUnused
      */
@@ -127,7 +120,7 @@ class WhatsappController extends Secure_Controller
 
         return $this->response->setJSON([
             'success'   => $sent,
-            'message'   => lang($sent ? 'WhatsappPlugin.successfully_sent' : 'WhatsappPlugin.unsuccessfully_sent') . ' ' . esc($phone),
+            'message'   => lang($sent ? 'WhatsAppPlugin.successfully_sent' : 'WhatsAppPlugin.unsuccessfully_sent') . ' ' . esc($phone),
             'person_id' => $sent ? $personId : NEW_ENTRY,
         ]);
     }
@@ -141,19 +134,32 @@ class WhatsappController extends Secure_Controller
     public function getSendDocument(int $saleId, string $type = 'invoice'): ResponseInterface
     {
         // $type is interpolated into a view path, so restrict it to known types.
-        if (! in_array($type, WhatsappPlugin::DOCUMENT_TYPES, true)) {
+        if (! in_array($type, WhatsAppPlugin::DOCUMENT_TYPES, true)) {
             $type = 'invoice';
         }
 
         $saleDocument = new SaleDocument();
-        $document     = $saleDocument->renderPdf($saleId, $type);
+
+        // Checked before rendering so a missing phone number and a failed PDF are
+        // never reported as each other.
+        $phone = $this->connector->normalizePhone($saleDocument->customerPhone($saleId));
+
+        if ($phone === '') {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('WhatsAppPlugin.no_phone'),
+                'id'      => $saleId,
+            ]);
+        }
+
+        $document = $saleDocument->renderPdf($saleId, $type);
 
         if ($document === null) {
             $saleDocument->clearCart();
 
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('WhatsappPlugin.no_phone'),
+                'message' => lang('WhatsAppPlugin.document_failed'),
                 'id'      => $saleId,
             ]);
         }
@@ -166,7 +172,6 @@ class WhatsappController extends Secure_Controller
             $document['person_id'],
         );
 
-        // Always clean up the temp PDF.
         if (is_file($document['path'])) {
             unlink($document['path']);
         }
@@ -175,7 +180,7 @@ class WhatsappController extends Secure_Controller
 
         return $this->response->setJSON([
             'success' => $sent,
-            'message' => lang('WhatsappPlugin.' . $type . ($sent ? '_sent' : '_unsent')) . ' ' . $document['phone'],
+            'message' => lang('WhatsAppPlugin.' . $type . ($sent ? '_sent' : '_unsent')) . ' ' . $document['phone'],
             'id'      => $saleId,
         ]);
     }

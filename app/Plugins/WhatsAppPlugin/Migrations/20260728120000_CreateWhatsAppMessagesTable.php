@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Plugins\WhatsappPlugin\Migrations;
+namespace App\Plugins\WhatsAppPlugin\Migrations;
 
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\Forge;
 
 /**
- * Conversation log: every outbound message the plugin sends and every inbound
- * reply received via the webhook is stored here, so the WhatsApp page can render
- * the full interaction with a customer.
+ * Conversation log table.
  *
- * Dropped by WhatsappPlugin::uninstall() — `down()` is never called by the
+ * Dropped by WhatsAppPlugin::uninstall() — `down()` is never called by the
  * PluginManager, so it is deliberately not defined here.
  */
-class CreateWhatsappMessagesTable
+class CreateWhatsAppMessagesTable
 {
     public function __construct(
         private BaseConnection $db,

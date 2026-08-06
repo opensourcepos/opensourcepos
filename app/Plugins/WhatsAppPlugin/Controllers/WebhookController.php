@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Plugins\WhatsappPlugin\Controllers;
+namespace App\Plugins\WhatsAppPlugin\Controllers;
 
 use App\Controllers\BaseController;
-use App\Plugins\WhatsappPlugin\Models\WhatsappMessage;
-use App\Plugins\WhatsappPlugin\WhatsappPlugin;
+use App\Plugins\WhatsAppPlugin\Models\WhatsAppMessage;
+use App\Plugins\WhatsAppPlugin\WhatsAppPlugin;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use Throwable;
@@ -12,36 +12,30 @@ use Throwable;
 /**
  * Public WhatsApp webhook endpoint (no authentication).
  *
- * Meta calls this URL to (1) verify the subscription (GET) and (2) deliver
- * inbound messages and delivery-status updates (POST). Received messages are
- * stored in the conversation log so they appear alongside outbound messages.
+ * Meta calls this URL to verify the subscription (GET) and to deliver inbound
+ * messages and delivery-status updates (POST).
  *
- * The route is `plugins/whatsapp/webhook`, which app/Config/Filters.php exempts
- * from CSRF via its plugin webhook pattern. It must be publicly reachable over
- * HTTPS for Meta to deliver events. Because it is unauthenticated, every POST is
- * verified against the app secret before anything is persisted.
+ * The route is CSRF-exempt and publicly reachable, so every POST is authenticated
+ * against the app secret before anything is persisted.
  *
  * @see https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started
  */
 class WebhookController extends BaseController
 {
-    private WhatsappPlugin $plugin;
+    private WhatsAppPlugin $plugin;
 
     public function __construct()
     {
         $plugin = service('pluginManager')->getPlugin('whatsapp');
 
         // Routes exist for disabled plugins too — do not accept deliveries then.
-        if (! $plugin instanceof WhatsappPlugin || ! $plugin->isEnabled()) {
+        if (! $plugin instanceof WhatsAppPlugin || ! $plugin->isEnabled()) {
             throw PageNotFoundException::forPageNotFound();
         }
 
         $this->plugin = $plugin;
     }
 
-    /**
-     * Handles both the verification handshake (GET) and event delivery (POST).
-     */
     public function index(): ResponseInterface
     {
         if ($this->request->getMethod() === 'GET') {
@@ -81,17 +75,16 @@ class WebhookController extends BaseController
         $raw       = $this->request->getBody() ?? '';
         $appSecret = $this->plugin->secret('app_secret');
 
-        // Signature verification is mandatory. Without an app secret we cannot
-        // authenticate the sender on this public, CSRF-exempt endpoint, so we
-        // refuse to persist anything rather than fail open to spoofed payloads.
+        // Without an app secret the sender cannot be authenticated, so refuse to
+        // persist anything rather than fail open to spoofed payloads.
         if ($appSecret === '') {
-            log_message('warning', 'WhatsApp webhook: app secret not configured; rejecting inbound payload.');
+            $this->log('warning', 'App secret not configured; rejecting inbound payload.');
 
             return $this->acknowledge();
         }
 
         if (! $this->signatureValid($raw, $appSecret)) {
-            log_message('warning', 'WhatsApp webhook: invalid signature, ignoring payload.');
+            $this->log('warning', 'Invalid signature, ignoring payload.');
 
             return $this->acknowledge();
         }
@@ -100,7 +93,7 @@ class WebhookController extends BaseController
             $payload = json_decode($raw, true);
             $this->process(is_array($payload) ? $payload : []);
         } catch (Throwable $e) {
-            log_message('error', 'WhatsApp webhook processing error: ' . $e->getMessage());
+            $this->log('error', 'Webhook processing error: ' . $e->getMessage());
         }
 
         return $this->acknowledge();
@@ -111,14 +104,13 @@ class WebhookController extends BaseController
      */
     private function process(array $payload): void
     {
-        $messageModel = model(WhatsappMessage::class);
+        $messageModel = model(WhatsAppMessage::class);
         $connector    = $this->plugin->connector();
 
         foreach ($payload['entry'] ?? [] as $entry) {
             foreach ($entry['changes'] ?? [] as $change) {
                 $value = $change['value'] ?? [];
 
-                // Inbound messages from customers.
                 foreach ($value['messages'] ?? [] as $message) {
                     $phone = $connector->normalizePhone((string) ($message['from'] ?? ''));
 
@@ -142,7 +134,6 @@ class WebhookController extends BaseController
                     ]);
                 }
 
-                // Delivery/read status updates for our outbound messages.
                 foreach ($value['statuses'] ?? [] as $status) {
                     if (! empty($status['id']) && ! empty($status['status'])) {
                         $messageModel->update_status((string) $status['id'], (string) $status['status']);
@@ -152,9 +143,6 @@ class WebhookController extends BaseController
         }
     }
 
-    /**
-     * Extracts a human-readable body from an inbound message of any type.
-     */
     private function extractInboundBody(array $message, string $type): string
     {
         return match ($type) {
@@ -187,10 +175,15 @@ class WebhookController extends BaseController
     }
 
     /**
-     * Empty 200 response: tells Meta the delivery was received so it is not retried.
+     * Empty 200: tells Meta the delivery was received so it is not retried.
      */
     private function acknowledge(): ResponseInterface
     {
         return $this->response->setStatusCode(200)->setContentType('text/plain')->setBody('');
+    }
+
+    private function log(string $level, string $message): void
+    {
+        log_plugin_message($level, $message, $this->plugin->getPluginId());
     }
 }
