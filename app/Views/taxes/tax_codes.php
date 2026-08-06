@@ -27,7 +27,7 @@
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit Handling
+    // Validation and Submit Handling
     $(document).ready(function() {
         let tax_code_count = <?= sizeof($tax_codes) ?>;
         if (tax_code_count == 0) {

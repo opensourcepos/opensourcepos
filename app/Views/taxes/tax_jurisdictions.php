@@ -28,7 +28,7 @@
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit Handling
+    // Validation and Submit Handling
     $(document).ready(function() {
         let tax_jurisdictions_count = <?= sizeof($tax_jurisdictions) ?>;
         if (tax_jurisdictions_count == 0) {
