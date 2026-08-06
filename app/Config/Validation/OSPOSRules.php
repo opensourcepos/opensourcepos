@@ -165,7 +165,12 @@ class OSPOSRules
         $dir = new DirectoryIterator('resources/bootswatch');
 
         foreach ($dir as $fileInfo) {
-            if ($fileInfo->isDir() && !$fileInfo->isDot() && $fileInfo->getFilename() === $theme) {
+            if (
+                $fileInfo->isDir()
+                && !$fileInfo->isDot()
+                && $fileInfo->getFilename() !== 'fonts'
+                && $fileInfo->getFilename() === $theme
+            ) {
                 return true;
             }
         }
