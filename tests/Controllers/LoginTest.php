@@ -151,6 +151,7 @@ class LoginTest extends CIUnitTestCase
     {
         for ($i = 0; $i < 10; $i++) {
             $response = $this->get('/login');
+            $this->skipIfMigrationRequired($response);
             $response->assertStatus(200);
         }
     }
