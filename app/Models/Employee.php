@@ -6,12 +6,6 @@ use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
 use stdClass;
 
-/**
- * Employee class
- *
- * @property session session
- *
- */
 class Employee extends Person
 {
     public Session $session;

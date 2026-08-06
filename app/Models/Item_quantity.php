@@ -2,13 +2,9 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Item_quantity class
- */
-class Item_quantity extends Model
+class Item_quantity extends BaseModel
 {
     protected $table = 'item_quantities';
     protected $primaryKey = 'item_id';

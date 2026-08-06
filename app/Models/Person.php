@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use stdClass;
 
-/**
- * Base class for People classes
- */
-class Person extends Model
+class Person extends BaseModel
 {
     protected $table = 'people';
     protected $primaryKey = 'person_id';

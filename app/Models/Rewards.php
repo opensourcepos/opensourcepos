@@ -2,13 +2,7 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-/**
- * Rewards class
- */
-
-class Rewards extends Model    // TODO: This class is named with plural while the general practice is to name models singular
+class Rewards extends BaseModel
 {
     protected $table = 'sales_reward_points';
     protected $primaryKey = 'id';

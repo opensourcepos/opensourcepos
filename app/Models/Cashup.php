@@ -3,15 +3,10 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use Config\OSPOS;
 use stdClass;
 
-/**
- * Cashup class
- * Cashups are used to report actual cash on hand, expenses and transactions at the end of a period.
- */
-class Cashup extends Model
+class Cashup extends BaseModel
 {
     protected $table = 'cash_up';
     protected $primaryKey = 'cashup_id';
