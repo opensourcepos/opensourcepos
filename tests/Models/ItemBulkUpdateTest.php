@@ -130,7 +130,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
     {
         $item_id = $this->createItem();
 
-        $result = $this->item->update_multiple([
+        $result = $this->item->updateMultiple([
             'unit_price' => 25.00,   // legitimate
             'deleted'    => 1,       // injected — would hide the item
             'item_type'  => 2,       // injected — would change item semantics
@@ -151,7 +151,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
     {
         $item_id = $this->createItem();
 
-        $result = $this->item->update_multiple(['deleted' => 1], (string)$item_id);
+        $result = $this->item->updateMultiple(['deleted' => 1], (string)$item_id);
 
         $this->assertFalse($result, 'An update of only disallowed columns should not run');
         $this->assertEquals(0, (int)$this->fetchItem($item_id)['deleted'], 'Item must not be soft deleted');
@@ -162,7 +162,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
         $first  = $this->createItem();
         $second = $this->createItem();
 
-        $this->item->update_multiple(['category' => 'Regrouped'], "$first:$second");
+        $this->item->updateMultiple(['category' => 'Regrouped'], "$first:$second");
 
         $this->assertEquals('Regrouped', $this->fetchItem($first)['category']);
         $this->assertEquals('Regrouped', $this->fetchItem($second)['category']);
@@ -180,7 +180,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
         );
 
         $filtered = Item::filterBulkEditFields(['supplier_id' => Item::CLEAR_SUPPLIER_OPTION]);
-        $this->item->update_multiple($filtered, (string)$item_id);
+        $this->item->updateMultiple($filtered, (string)$item_id);
 
         $this->assertNull($this->fetchItem($item_id)['supplier_id'], 'supplier_id should be cleared');
     }
@@ -336,7 +336,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
             'name'     => 'Renamed'
         ]);
 
-        $this->item->update_multiple($filtered, (string)$item_id);
+        $this->item->updateMultiple($filtered, (string)$item_id);
 
         $row = $this->fetchItem($item_id);
         $this->assertEquals('Renamed', $row['name']);

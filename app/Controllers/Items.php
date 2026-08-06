@@ -897,28 +897,28 @@ class Items extends Secure_Controller
      */
     public function postBulkUpdate(): ResponseInterface
     {
-        $items_to_update = $this->request->getPost('item_ids');
-        $item_data = Item::filterBulkEditFields($this->request->getPost() ?? []);
+        $itemsToUpdate = $this->request->getPost('item_ids');
+        $itemData = Item::filterBulkEditFields($this->request->getPost() ?? []);
 
         // Item data could be empty if tax information is being updated
-        if (empty($item_data) || $this->item->update_multiple($item_data, $items_to_update)) {
-            $items_taxes_data = [];
-            $tax_names = $this->request->getPost('tax_names');
-            $tax_percents = $this->request->getPost('tax_percents');
-            $tax_updated = false;
+        if (empty($itemData) || $this->item->updateMultiple($itemData, $itemsToUpdate)) {
+            $itemsTaxesData = [];
+            $taxNames = $this->request->getPost('tax_names');
+            $taxPercents = $this->request->getPost('tax_percents');
+            $taxUpdated = false;
 
-            foreach ($tax_percents as $tax_percent) {
-                if (!empty($tax_names[$tax_percent]) && is_numeric($tax_percents[$tax_percent])) {
-                    $tax_updated = true;
-                    $items_taxes_data[] = ['name' => $tax_names[$tax_percent], 'percent' => $tax_percents[$tax_percent]];
+            foreach ($taxPercents as $tax_percent) {
+                if (!empty($taxNames[$tax_percent]) && is_numeric($taxPercents[$tax_percent])) {
+                    $taxUpdated = true;
+                    $itemsTaxesData[] = ['name' => $taxNames[$tax_percent], 'percent' => $taxPercents[$tax_percent]];
                 }
             }
 
-            if ($tax_updated) {
-                $this->item_taxes->save_multiple($items_taxes_data, $items_to_update);
+            if ($taxUpdated) {
+                $this->item_taxes->save_multiple($itemsTaxesData, $itemsToUpdate);
             }
 
-            return $this->response->setJSON(['success' => true, 'message' => lang('Items.successful_bulk_edit'), 'id' => $items_to_update]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Items.successful_bulk_edit'), 'id' => $itemsToUpdate]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => lang('Items.error_updating_multiple')]);
         }

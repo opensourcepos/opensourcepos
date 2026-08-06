@@ -485,7 +485,7 @@ class Item extends Model
      */
     public static function filterBulkEditFields(array $input): array
     {
-        $item_data = [];
+        $itemData = [];
 
         foreach (self::ALLOWED_BULK_EDIT_FIELDS as $field) {
             $value = $input[$field] ?? null;
@@ -496,9 +496,9 @@ class Item extends Model
 
             if ($field === 'supplier_id') {
                 if ($value === self::CLEAR_SUPPLIER_OPTION) {
-                    $item_data[$field] = null;
+                    $itemData[$field] = null;
                 } elseif (ctype_digit((string)$value)) {
-                    $item_data[$field] = (int)$value;
+                    $itemData[$field] = (int)$value;
                 }
 
                 continue;
@@ -518,28 +518,28 @@ class Item extends Model
                 continue;
             }
 
-            $item_data[$field] = $value;
+            $itemData[$field] = $value;
         }
 
-        return $item_data;
+        return $itemData;
     }
 
     /**
      * Updates multiple items at once
      */
-    public function update_multiple(array $item_data, string $item_ids): bool
+    public function updateMultiple(array $itemData, string $itemIds): bool
     {
         // Query Builder bypasses $allowedFields, so the whitelist is enforced here (GHSA-49mq-h2g4-grr9)
-        $item_data = array_intersect_key($item_data, array_flip(self::ALLOWED_BULK_EDIT_FIELDS));
+        $itemData = array_intersect_key($itemData, array_flip(self::ALLOWED_BULK_EDIT_FIELDS));
 
-        if (empty($item_data)) {
+        if (empty($itemData)) {
             return false;
         }
 
         $builder = $this->db->table('items');
-        $builder->whereIn('item_id', explode(':', $item_ids));
+        $builder->whereIn('item_id', explode(':', $itemIds));
 
-        return $builder->update($item_data);
+        return $builder->update($itemData);
     }
 
     /**
