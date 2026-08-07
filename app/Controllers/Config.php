@@ -349,10 +349,11 @@ class Config extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
+        helper('security');
 
         $file_info = [
             'orig_name' => $filename,
-            'raw_name'  => preg_replace('/[^a-zA-Z0-9_\-]/', '_', $info['filename']),
+            'raw_name'  => sanitize_filename($info['filename']),
             'file_ext'  => $file->guessExtension()
         ];
 
