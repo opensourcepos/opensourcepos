@@ -64,8 +64,14 @@ class Attributes extends Secure_Controller
      */
     public function postSaveAttributeValue(): ResponseInterface
     {
+        $attribute_value = $this->request->getPost('attribute_value');
+
+        if (!is_string($attribute_value) || $attribute_value === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->saveAttributeValue(
-            $this->request->getPost('attribute_value'),
+            $attribute_value,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
             $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT) ?? false,
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
@@ -81,8 +87,14 @@ class Attributes extends Secure_Controller
      */
     public function postDeleteDropdownAttributeValue(): ResponseInterface
     {
+        $attribute_value = $this->request->getPost('attribute_value');
+
+        if (!is_string($attribute_value) || $attribute_value === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->deleteDropdownAttributeValue(
-            $this->request->getPost('attribute_value'),
+            $attribute_value,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
 
