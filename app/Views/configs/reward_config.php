@@ -43,8 +43,8 @@
     // Validation and submit handling
     $(document).ready(function() {
 
-        var enable_disable_customer_reward_enable = (function() {
-            var customer_reward_enable = $("#customer_reward_enable").is(":checked");
+        const enable_disable_customer_reward_enable = (function() {
+            const customer_reward_enable = $("#customer_reward_enable").is(":checked");
             $("input[name*='customer_reward']:not(input[name=customer_reward_enable])").prop("disabled", !customer_reward_enable);
             $("input[name*='reward_points_']:not(input[name=customer_reward_enable])").prop("disabled", !customer_reward_enable);
             if (customer_reward_enable) {
@@ -57,9 +57,9 @@
 
         $("#customer_reward_enable").change(enable_disable_customer_reward_enable);
 
-        var table_count = <?= sizeof($customer_rewards) ?>;
+        let table_count = <?= sizeof($customer_rewards) ?>;
 
-        var hide_show_remove = function() {
+        const hide_show_remove = function() {
             if ($("input[name*='customer_rewards']:enabled").length > 1) {
                 $(".remove_customer_rewards").show();
             } else {
@@ -67,27 +67,27 @@
             }
         };
 
-        var add_customer_reward = function() {
-            var id = $(this).parent().find('input').attr('id');
+        const add_customer_reward = function() {
+            let id = $(this).parent().find('input').attr('id');
             id = id.replace(/.*?_(\d+)$/g, "$1");
-            var previous_id = 'customer_reward_' + id;
-            var previous_id_next = 'reward_points_' + id;
-            var block = $(this).parent().clone(true);
-            var new_block = block.insertAfter($(this).parent());
-            var new_block_id = 'customer_reward_' + ++id;
-            var new_block_id_next = 'reward_points_' + id;
+            const previous_id = 'customer_reward_' + id;
+            const previous_id_next = 'reward_points_' + id;
+            const block = $(this).parent().clone(true);
+            const new_block = block.insertAfter($(this).parent());
+            const new_block_id = 'customer_reward_' + ++id;
+            const new_block_id_next = 'reward_points_' + id;
             $(new_block).find('label').html("<?= lang('Config.customer_reward') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
             $(new_block).find("input[id='" + previous_id + "']").attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
             $(new_block).find("input[id='" + previous_id_next + "']").attr('id', new_block_id_next).removeAttr('disabled').attr('name', new_block_id_next).attr('class', 'form-control input-sm').val('');
             hide_show_remove();
         };
 
-        var remove_customer_reward = function() {
+        const remove_customer_reward = function() {
             $(this).parent().remove();
             hide_show_remove();
         };
 
-        var init_add_remove_tables = function() {
+        const init_add_remove_tables = function() {
             $('.add_customer_reward').click(add_customer_reward);
             $('.remove_customer_reward').click(remove_customer_reward);
             hide_show_remove();
@@ -96,10 +96,10 @@
         };
         init_add_remove_tables();
 
-        var duplicate_found = false;
+        const duplicate_found = false;
         // Run validator once for all fields
         $.validator.addMethod('customer_reward', function(value, element) {
-            var value_count = 0;
+            let value_count = 0;
             $("input[name*='customer_reward']:not(input[name=customer_reward_enable])").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });

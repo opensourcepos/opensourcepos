@@ -76,7 +76,7 @@
 
         $('#datetime').datetimepicker(pickerconfig);
 
-        var fill_value = function(event, ui) {
+        const fill_value = function(event, ui) {
             event.preventDefault();
             $("input[name='supplier_id']").val(ui.item.value);
             $("input[name='supplier_name']").val(ui.item.label);

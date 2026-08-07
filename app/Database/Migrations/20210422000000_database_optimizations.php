@@ -113,7 +113,7 @@ class Migration_database_optimizations extends Migration
         }
         $this->db->transComplete();
 
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
         log_message('info', 'Finished migrating database optimizations.');
     }
 

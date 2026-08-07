@@ -78,7 +78,7 @@
             !$(this).val() && $(this).val('');
         });
 
-        var fill_value = function(event, ui) {
+        const fill_value = function(event, ui) {
             event.preventDefault();
             $(this).val((ui.item ? ui.item.label : ""));
             $("input[name='person_id']").val(ui.item.value);

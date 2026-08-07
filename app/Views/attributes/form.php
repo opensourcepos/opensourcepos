@@ -102,12 +102,12 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        var values = [];
-        var definition_id = <?= esc($definition_id, 'js') ?>;
-        var is_new = definition_id == 0;
+        const values = [];
+        const definition_id = <?= esc($definition_id, 'js') ?>;
+        const is_new = definition_id == 0;
 
-        var disable_definition_types = function() {
-            var definition_type = $("#definition_type option:selected").text();
+        const disable_definition_types = function() {
+            const definition_type = $("#definition_type option:selected").text();
 
             if (definition_type == "DATE" || (definition_type == "GROUP" && !is_new) || definition_type == "DECIMAL") {
                 $('#definition_type').prop("disabled", true);
@@ -121,7 +121,7 @@
         }
         disable_definition_types();
 
-        var disable_category_dropdown = function() {
+        const disable_category_dropdown = function() {
             if (definition_id == -1) {
                 $('#definition_name').prop("disabled", true);
                 $('#definition_type').prop("disabled", true);
@@ -131,11 +131,11 @@
         }
         disable_category_dropdown();
 
-        var show_hide_fields = function(event) {
-            var is_dropdown = $('#definition_type').val() !== '1';
-            var is_decimal = $('#definition_type').val() !== '2';
-            var is_no_group = $('#definition_type').val() !== '0';
-            var is_category_dropdown = definition_id == -1;
+        const show_hide_fields = function(event) {
+            const is_dropdown = $('#definition_type').val() !== '1';
+            const is_decimal = $('#definition_type').val() !== '2';
+            const is_no_group = $('#definition_type').val() !== '0';
+            const is_category_dropdown = definition_id == -1;
 
             $('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
             $('#definition_unit').parents('.form-group').toggleClass('hidden', is_decimal);
@@ -150,12 +150,12 @@
         show_hide_fields();
 
         $('.selectpicker').each(function() {
-            var $selectpicker = $(this);
+            const $selectpicker = $(this);
             $.fn.selectpicker.call($selectpicker, $selectpicker.data());
         });
 
-        var remove_attribute_value = function() {
-            var value = $(this).parents("li").text();
+        const remove_attribute_value = function() {
+            const value = $(this).parents("li").text();
 
             if (is_new) {
                 values.splice($.inArray(value, values), 1);
@@ -168,8 +168,8 @@
             $(this).parents("li").remove();
         };
 
-        var add_attribute_value = function(value) {
-            var is_event = typeof(value) !== 'string';
+        const add_attribute_value = function(value) {
+            const is_event = typeof(value) !== 'string';
 
             if ($("#definition_value").val().match(/(\||_)/g) != null) {
                 return;
@@ -206,7 +206,7 @@
             }
         });
 
-        var definition_values = <?= json_encode(array_values($definition_values)) ?>;
+        const definition_values = <?= json_encode(array_values($definition_values)) ?>;
         $.each(definition_values, function(index, element) {
             add_attribute_value(element);
         });
