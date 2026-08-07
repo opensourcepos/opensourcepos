@@ -115,7 +115,7 @@ class Items extends Secure_Controller
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
-        $definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+        $definition_names = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
@@ -309,7 +309,7 @@ class Items extends Secure_Controller
         $data['default_tax_2_rate'] = '';
         $data['item_kit_disabled'] = !$this->employee->has_grant('item_kits', $this->employee->get_logged_in_employee_info()->person_id);
         $data['definition_values'] = $this->attribute->get_attributes_by_item($item_id);
-        $data['definition_names'] = $this->attribute->get_definition_names();
+        $data['definition_names'] = $this->attribute->getDefinitionNames();
 
         foreach ($data['definition_values'] as $definition_id => $definition) {
             unset($data['definition_names'][$definition_id]);
@@ -325,7 +325,7 @@ class Items extends Secure_Controller
 
         if ($data['category_dropdown'] === '1') {
             $categories = ['' => lang('Items.none')];
-            $category_options = $this->attribute->get_definition_values(CATEGORY_DEFINITION_ID);
+            $category_options = $this->attribute->getDefinitionValues(CATEGORY_DEFINITION_ID);
             $category_options = array_combine($category_options, $category_options);    // Overwrite indexes with values for saving in items table instead of attributes
             $data['categories'] = array_merge($categories, $category_options);
 
@@ -523,7 +523,7 @@ class Items extends Secure_Controller
         $data['item_id'] = $item_id;
         $definition_ids = json_decode($this->request->getGet('definition_ids') ?? '', true);
         $data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
-        $data['definition_names'] = $this->attribute->get_definition_names();
+        $data['definition_names'] = $this->attribute->getDefinitionNames();
 
         foreach ($data['definition_values'] as $definition_id => $definition_value) {
             $attribute_value = $this->attribute->getAttributeValue($item_id, $definition_id);
@@ -534,7 +534,7 @@ class Items extends Secure_Controller
             $values['selected_value'] = '';
 
             if ($definition_value['definition_type'] === DROPDOWN) {
-                $values['values'] = $this->attribute->get_definition_values($definition_id);
+                $values['values'] = $this->attribute->getDefinitionValues($definition_id);
                 $link_value = $this->attribute->get_link_value($item_id, $definition_id);
                 $values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
             }
@@ -559,7 +559,7 @@ class Items extends Secure_Controller
         $data['item_id'] = $item_id;
         $definition_ids = json_decode($this->request->getPost('definition_ids'), true);
         $data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
-        $data['definition_names'] = $this->attribute->get_definition_names();
+        $data['definition_names'] = $this->attribute->getDefinitionNames();
 
         foreach ($data['definition_values'] as $definition_id => $definition_value) {
             $attribute_value = $this->attribute->getAttributeValue($item_id, $definition_id);
@@ -570,7 +570,7 @@ class Items extends Secure_Controller
             $values['selected_value'] = '';
 
             if ($definition_value['definition_type'] === DROPDOWN) {
-                $values['values'] = $this->attribute->get_definition_values($definition_id);
+                $values['values'] = $this->attribute->getDefinitionValues($definition_id);
                 $link_value = $this->attribute->get_link_value($item_id, $definition_id);
                 $values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
             }
@@ -964,7 +964,7 @@ class Items extends Secure_Controller
         helper('importfile');
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
-        $allowed_attributes = $this->attribute->get_definition_names();
+        $allowed_attributes = $this->attribute->getDefinitionNames();
         $data = generate_import_items_csv($allowed_locations, $allowed_attributes);
 
         return $this->response->download($name, $data);
@@ -998,7 +998,7 @@ class Items extends Secure_Controller
                     $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
                     $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
                     $allowedStockLocations = $this->stock_location->get_allowed_locations();
-                    $attributeDefinitionNames    = $this->attribute->get_definition_names();
+                    $attributeDefinitionNames    = $this->attribute->getDefinitionNames();
 
                     unset($attributeDefinitionNames[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
 
@@ -1006,10 +1006,10 @@ class Items extends Secure_Controller
 
 
                     foreach ($attributeDefinitionNames as $definitionName) {
-                        $attributeData[$definitionName] = $this->attribute->get_definition_by_name($definitionName);
+                        $attributeData[$definitionName] = $this->attribute->getDefinitionByName($definitionName);
 
                         if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
-                            $attributeData[$definitionName]['dropdown_values'] = $this->attribute->get_definition_values($attributeData[$definitionName]['definition_id']);
+                            $attributeData[$definitionName]['dropdown_values'] = $this->attribute->getDefinitionValues($attributeData[$definitionName]['definition_id']);
                         }
                     }
                     $db = db_connect();
