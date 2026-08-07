@@ -54,7 +54,7 @@ class SalesControllerTest extends CIUnitTestCase
         ];
 
         $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        $this->assertTrue($employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY));
 
         return (int) $personData['person_id'];
     }
@@ -85,7 +85,7 @@ class SalesControllerTest extends CIUnitTestCase
         ];
 
         $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        $this->assertTrue($employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY));
 
         return (int) $personData['person_id'];
     }
