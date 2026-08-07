@@ -143,9 +143,9 @@ class Secure_Controller extends BaseController
 
     /**
      * @param int $data_item_id
-     * @return false
+     * @return ResponseInterface|false
      */
-    public function postSave(int $data_item_id = -1)
+    public function postSave(int $data_item_id = -1): ResponseInterface|false
     {
         return false;
     }
