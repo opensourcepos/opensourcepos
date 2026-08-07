@@ -47,7 +47,7 @@ class WhatsAppController extends Secure_Controller
     public function getIndex(): string
     {
         return $this->plugin->renderPluginView('whatsapp', [
-            'conversations' => $this->messageModel->get_recent_conversations(),
+            'conversations' => $this->messageModel->getRecentConversations(),
             'configured'    => $this->connector->isConfigured(),
             'saved_message' => $this->plugin->savedMessage(),
         ]);
@@ -66,7 +66,7 @@ class WhatsAppController extends Secure_Controller
             'phone'         => $phone,
             'saved_message' => $this->plugin->savedMessage(),
             'messages'      => $phone !== ''
-                ? $this->messageModel->get_conversation($phone)->getResult()
+                ? $this->messageModel->getConversation($phone)->getResult()
                 : [],
         ]);
     }
@@ -80,7 +80,7 @@ class WhatsAppController extends Secure_Controller
 
         return $this->plugin->renderPluginView('conversation', [
             'messages' => $phone !== ''
-                ? $this->messageModel->get_conversation($phone)->getResult()
+                ? $this->messageModel->getConversation($phone)->getResult()
                 : [],
         ]);
     }
@@ -131,7 +131,7 @@ class WhatsAppController extends Secure_Controller
      *
      * @noinspection PhpUnused
      */
-    public function getSendDocument(int $saleId, string $type = 'invoice'): ResponseInterface
+    public function postSendDocument(int $saleId, string $type = 'invoice'): ResponseInterface
     {
         // $type is interpolated into a view path, so restrict it to known types.
         if (! in_array($type, WhatsAppPlugin::DOCUMENT_TYPES, true)) {
@@ -155,8 +155,6 @@ class WhatsAppController extends Secure_Controller
         $document = $saleDocument->renderPdf($saleId, $type);
 
         if ($document === null) {
-            $saleDocument->clearCart();
-
             return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('WhatsAppPlugin.document_failed'),
@@ -175,8 +173,6 @@ class WhatsAppController extends Secure_Controller
         if (is_file($document['path'])) {
             unlink($document['path']);
         }
-
-        $saleDocument->clearCart();
 
         return $this->response->setJSON([
             'success' => $sent,

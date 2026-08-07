@@ -4,4 +4,4 @@
  * the image differently in the navbar and the office grid.
  */
 ?>
-<img src="<?= base_url('plugins/whatsapp/icon') ?>" style="border: none;" alt="<?= lang('WhatsAppPlugin.whatsapp') ?>">
+<img src="<?= base_url('plugins/whatsapp/icon') ?>" style="border: none;" alt="<?= esc(lang('WhatsAppPlugin.whatsapp')) ?>">

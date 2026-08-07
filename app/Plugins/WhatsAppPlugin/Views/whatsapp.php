@@ -28,7 +28,7 @@
                     <div class="form-group form-group-sm">
                         <label for="phone" class="col-xs-3 control-label"><?= lang('WhatsAppPlugin.phone') ?></label>
                         <div class="col-xs-9">
-                            <input class="form-control input-sm required" type="text" name="phone" id="phone" placeholder="<?= lang('WhatsAppPlugin.phone_placeholder') ?>">
+                            <input class="form-control input-sm required" type="text" name="phone" id="phone" placeholder="<?= esc(lang('WhatsAppPlugin.phone_placeholder')) ?>">
                             <span class="help-block"><?= lang('WhatsAppPlugin.phone_help') ?></span>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                     <div class="form-group form-group-sm">
                         <label for="message" class="col-xs-3 control-label"><?= lang('WhatsAppPlugin.message') ?></label>
                         <div class="col-xs-9">
-                            <textarea class="form-control input-sm required" rows="3" id="message" name="message" placeholder="<?= lang('WhatsAppPlugin.message_placeholder') ?>"><?= esc($saved_message) ?></textarea>
+                            <textarea class="form-control input-sm required" rows="3" id="message" name="message" placeholder="<?= esc(lang('WhatsAppPlugin.message_placeholder')) ?>"><?= esc($saved_message) ?></textarea>
                         </div>
                     </div>
 

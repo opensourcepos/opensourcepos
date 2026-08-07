@@ -40,8 +40,10 @@ class CreateWhatsAppMessagesTable
         $this->forge->addKey('phone');
         $this->forge->addKey('person_id');
         $this->forge->addKey('created_at');
-        // Looked up on every inbound status webhook callback (update_status()).
-        $this->forge->addKey('wa_message_id');
+        // Unique so a redelivered webhook cannot log the same message twice.
+        // Sends that never reached Meta store null, which a unique index allows
+        // any number of.
+        $this->forge->addUniqueKey('wa_message_id');
 
         // utf8mb4 so emoji and full multilingual message content can be stored.
         $this->forge->createTable('whatsapp_messages', true, [

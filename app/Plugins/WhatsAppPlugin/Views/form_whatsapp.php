@@ -82,11 +82,11 @@
 
             messages: {
                 phone: {
-                    required: "<?= lang('WhatsAppPlugin.phone_number_required') ?>",
-                    number: "<?= lang('WhatsAppPlugin.phone') ?>"
+                    required: "<?= esc(lang('WhatsAppPlugin.phone_number_required'), 'js') ?>",
+                    number: "<?= esc(lang('WhatsAppPlugin.phone'), 'js') ?>"
                 },
                 message: {
-                    required: "<?= lang('WhatsAppPlugin.message_required') ?>"
+                    required: "<?= esc(lang('WhatsAppPlugin.message_required'), 'js') ?>"
                 }
             }
         }, form_support.error));

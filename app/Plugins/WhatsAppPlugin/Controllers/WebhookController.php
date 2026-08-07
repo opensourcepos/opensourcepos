@@ -54,7 +54,7 @@ class WebhookController extends BaseController
         $token     = $this->request->getGet('hub_verify_token');
         $challenge = $this->request->getGet('hub_challenge');
 
-        $expected = (string) $this->plugin->getSettings()['verify_token'];
+        $expected = (string) ($this->plugin->getSettings()['verify_token'] ?? '');
 
         if ($mode === 'subscribe' && $expected !== '' && hash_equals($expected, (string) $token)) {
             // text/plain so the dev debug toolbar does not inject HTML into the
@@ -118,6 +118,12 @@ class WebhookController extends BaseController
                         continue;
                     }
 
+                    $waMessageId = isset($message['id']) ? (string) $message['id'] : null;
+
+                    if ($waMessageId !== null && $messageModel->existsByWaMessageId($waMessageId)) {
+                        continue;
+                    }
+
                     $type = (string) ($message['type'] ?? 'text');
 
                     $messageModel->log([
@@ -126,7 +132,7 @@ class WebhookController extends BaseController
                         'direction'     => 'in',
                         'type'          => $type,
                         'body'          => $this->extractInboundBody($message, $type),
-                        'wa_message_id' => $message['id'] ?? null,
+                        'wa_message_id' => $waMessageId,
                         'status'        => 'received',
                         'created_at'    => isset($message['timestamp'])
                             ? date('Y-m-d H:i:s', (int) $message['timestamp'])
@@ -136,7 +142,7 @@ class WebhookController extends BaseController
 
                 foreach ($value['statuses'] ?? [] as $status) {
                     if (! empty($status['id']) && ! empty($status['status'])) {
-                        $messageModel->update_status((string) $status['id'], (string) $status['status']);
+                        $messageModel->updateStatus((string) $status['id'], (string) $status['status']);
                     }
                 }
             }

@@ -21,7 +21,29 @@ use Throwable;
  */
 class WhatsAppPlugin extends BasePlugin
 {
+    /**
+     * Doubles as the allowlist for saveSettings(), so a crafted form post cannot
+     * write keys the plugin does not own.
+     */
+    private const DEFAULT_SETTINGS = [
+        'api_url'              => 'https://graph.facebook.com',
+        'api_version'          => 'v21.0',
+        'phone_id'             => '',
+        'business_id'          => '',
+        'token'                => '',
+        'default_country_code' => '',
+        'saved_message'        => '',
+        'verify_token'         => '',
+        'app_secret'           => '',
+    ];
+
     private const ENCRYPTED_SETTINGS = ['token', 'app_secret'];
+
+    /**
+     * api_url builds every outbound call, so an unrestricted one would let anyone
+     * who can save settings aim authenticated server-side requests at any host.
+     */
+    private const ALLOWED_API_HOSTS = ['graph.facebook.com'];
 
     /**
      * Also guards the $type route segment, which is interpolated into a view path.
@@ -63,15 +85,9 @@ class WhatsAppPlugin extends BasePlugin
     {
         $this->log('info', 'Installing WhatsApp plugin');
 
-        $this->setSetting('api_url', 'https://graph.facebook.com');
-        $this->setSetting('api_version', 'v21.0');
-        $this->setSetting('phone_id', '');
-        $this->setSetting('business_id', '');
-        $this->setSetting('token', '');
-        $this->setSetting('default_country_code', '');
-        $this->setSetting('saved_message', '');
-        $this->setSetting('verify_token', '');
-        $this->setSetting('app_secret', '');
+        foreach (self::DEFAULT_SETTINGS as $key => $default) {
+            $this->setSetting($key, $default);
+        }
 
         $this->registerModule('whatsapp', 101);
 
@@ -104,21 +120,39 @@ class WhatsAppPlugin extends BasePlugin
     }
 
     /**
-     * Secrets are decrypted so the config form can show the stored value.
+     * Settings for the config form. This array is rendered into the browser, so
+     * the secrets are replaced by a flag saying whether each one is set; writing
+     * a decrypted token into the DOM would undo storing it encrypted.
      */
     public function getSettings(): array
     {
-        return [
-            'api_url'              => $this->getSetting('api_url', 'https://graph.facebook.com'),
-            'api_version'          => $this->getSetting('api_version', 'v21.0'),
-            'phone_id'             => $this->getSetting('phone_id', ''),
-            'business_id'          => $this->getSetting('business_id', ''),
-            'token'                => $this->decryptSetting((string) $this->getSetting('token', '')),
-            'default_country_code' => $this->getSetting('default_country_code', ''),
-            'saved_message'        => $this->getSetting('saved_message', ''),
-            'verify_token'         => $this->getSetting('verify_token', ''),
-            'app_secret'           => $this->decryptSetting((string) $this->getSetting('app_secret', '')),
-        ];
+        $settings = $this->allSettings();
+
+        $settings['token_configured']      = $settings['token'] !== '';
+        $settings['app_secret_configured'] = $settings['app_secret'] !== '';
+        $settings['token']                 = '';
+        $settings['app_secret']            = '';
+
+        return $settings;
+    }
+
+    /**
+     * Includes the decrypted secrets, for callers that talk to the API. Never
+     * hand this to a view.
+     */
+    private function allSettings(): array
+    {
+        $settings = [];
+
+        foreach (self::DEFAULT_SETTINGS as $key => $default) {
+            $value = (string) $this->getSetting($key, $default);
+
+            $settings[$key] = in_array($key, self::ENCRYPTED_SETTINGS, true)
+                ? $this->decryptSetting($value)
+                : $value;
+        }
+
+        return $settings;
     }
 
     public function getConfigViewData(): array
@@ -127,22 +161,32 @@ class WhatsAppPlugin extends BasePlugin
     }
 
     /**
-     * Persists settings, encrypting secrets. An empty secret submission clears it.
+     * Persists settings, encrypting secrets.
      *
-     * Nothing is persisted when a secret cannot be encrypted, so a failing
-     * encrypter can never downgrade a stored token to plaintext.
+     * The form never renders a stored secret, so an empty secret field means
+     * "unchanged"; clearing one is the separate clear_* checkbox. Nothing is
+     * persisted when a secret cannot be encrypted, so a failing encrypter can
+     * never downgrade a stored token to plaintext.
      */
     public function saveSettings(array $settings): bool
     {
         $normalized = [];
 
         foreach ($settings as $key => $value) {
-            if (in_array($key, self::ENCRYPTED_SETTINGS, true)) {
-                $raw = (string) $value;
+            if (! array_key_exists($key, self::DEFAULT_SETTINGS)) {
+                continue;
+            }
 
-                if ($raw === '') {
+            $raw = (string) $value;
+
+            if (in_array($key, self::ENCRYPTED_SETTINGS, true)) {
+                if (! empty($settings['clear_' . $key])) {
                     $normalized[$key] = '';
 
+                    continue;
+                }
+
+                if ($raw === '') {
                     continue;
                 }
 
@@ -157,7 +201,21 @@ class WhatsAppPlugin extends BasePlugin
                 continue;
             }
 
-            $normalized[$key] = (string) $value;
+            if ($key === 'api_url') {
+                $raw = rtrim(trim($raw), '/');
+
+                if ($raw === '') {
+                    $raw = self::DEFAULT_SETTINGS['api_url'];
+                }
+
+                if (! $this->apiUrlAllowed($raw)) {
+                    $this->log('warning', 'Refusing to store an API base URL outside the WhatsApp Cloud API: ' . $raw);
+
+                    return false;
+                }
+            }
+
+            $normalized[$key] = $raw;
         }
 
         return parent::saveSettings($normalized);
@@ -165,7 +223,7 @@ class WhatsAppPlugin extends BasePlugin
 
     public function connector(): WhatsAppConnector
     {
-        $settings = $this->getSettings();
+        $settings = $this->allSettings();
 
         return new WhatsAppConnector([
             'enabled'              => $this->isEnabled(),
@@ -228,6 +286,14 @@ class WhatsAppPlugin extends BasePlugin
         }
 
         echo $this->renderView('sale_document_button', ['saleId' => $saleId, 'documentType' => $type]);
+    }
+
+    private function apiUrlAllowed(string $url): bool
+    {
+        $parts = parse_url($url);
+
+        return ($parts['scheme'] ?? '') === 'https'
+            && in_array(strtolower($parts['host'] ?? ''), self::ALLOWED_API_HOSTS, true);
     }
 
     /**

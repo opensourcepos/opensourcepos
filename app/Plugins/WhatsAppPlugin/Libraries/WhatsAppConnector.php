@@ -139,10 +139,16 @@ class WhatsAppConnector
      * (no '+', spaces or punctuation). When a default country code is configured
      * and the number does not already start with it, it is prepended.
      *
+     * A leading '+' means the caller already gave a full international number, so
+     * the default is not applied — otherwise '+4420...' would become '14420...'
+     * on a register configured for country code 1.
+     *
      * @return string Normalized number, or '' when no digits are present.
      */
     public function normalizePhone(string $phone): string
     {
+        $isInternational = str_starts_with(ltrim($phone), '+');
+
         $digits = preg_replace('/\D+/', '', $phone) ?? '';
 
         if ($digits === '') {
@@ -151,7 +157,7 @@ class WhatsAppConnector
 
         $country = preg_replace('/\D+/', '', (string) ($this->settings['default_country_code'] ?? '')) ?? '';
 
-        if ($country !== '' && ! str_starts_with($digits, $country)) {
+        if (! $isInternational && $country !== '' && ! str_starts_with($digits, $country)) {
             // Only the single national trunk '0' is dropped; further leading zeros
             // are part of the subscriber number and must survive.
             $digits = $country . preg_replace('/^0/', '', $digits, 1);

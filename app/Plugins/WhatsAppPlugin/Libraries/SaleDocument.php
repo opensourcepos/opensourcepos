@@ -30,6 +30,38 @@ use Config\Services;
  */
 class SaleDocument
 {
+    /**
+     * Every session key Sale_lib owns, plus the cash adjustment the totals write.
+     * Rendering loads a historical sale into the register cart, so the operator's
+     * in-progress sale is snapshotted across these and put back afterwards.
+     */
+    private const REGISTER_SESSION_KEYS = [
+        'cash_adjustment_amount',
+        'cash_mode',
+        'cash_rounding',
+        'dinner_table',
+        'payment_type',
+        'return_original_sale_id',
+        'sale_id',
+        'sale_type',
+        'sales_cart',
+        'sales_comment',
+        'sales_customer',
+        'sales_email_receipt',
+        'sales_employee',
+        'sales_giftcard_remainder',
+        'sales_invoice_number',
+        'sales_location',
+        'sales_mode',
+        'sales_payments',
+        'sales_price_work_orders',
+        'sales_print_after_sale',
+        'sales_quote_number',
+        'sales_rewards_remainder',
+        'sales_work_order_number',
+        'suspended_id',
+    ];
+
     private array $config;
 
     public function __construct()
@@ -72,10 +104,24 @@ class SaleDocument
      * invoice|quote|work_order|receipt, already validated by the caller, which
      * also owns the returned file and must unlink it.
      *
+     * The register session is restored before returning, so sending a document
+     * for an old sale never disturbs the sale the operator has open.
+     *
      * @return array{path: string, display_name: string, caption: string, phone: string, person_id: int|null}|null
      *                                                                                                             Null when the PDF could not be generated.
      */
     public function renderPdf(int $saleId, string $type): ?array
+    {
+        $register = $this->snapshotRegister();
+
+        try {
+            return $this->render($saleId, $type);
+        } finally {
+            $this->restoreRegister($register);
+        }
+    }
+
+    private function render(int $saleId, string $type): ?array
     {
         $data   = $this->buildData($saleId);
         $number = $this->documentNumber($data, $type);
@@ -142,8 +188,8 @@ class SaleDocument
     /**
      * Builds the view data for a sale document.
      *
-     * Like core, this loads the sale into the register cart to compute totals;
-     * callers are expected to clear it afterwards via clearCart().
+     * Like core, this loads the sale into the register cart to compute totals.
+     * renderPdf() puts the cart back afterwards.
      */
     private function buildData(int $saleId): array
     {
@@ -274,11 +320,33 @@ class SaleDocument
     }
 
     /**
-     * Clears the register cart, matching what core's send endpoints do once the
-     * document has been delivered.
+     * @return array Only the keys that were set, so restoreRegister() can tell
+     *               "absent" from "present and empty".
      */
-    public function clearCart(): void
+    private function snapshotRegister(): array
     {
-        (new Sale_lib())->clear_all();
+        $session  = session();
+        $snapshot = [];
+
+        foreach (self::REGISTER_SESSION_KEYS as $key) {
+            if ($session->has($key)) {
+                $snapshot[$key] = $session->get($key);
+            }
+        }
+
+        return $snapshot;
+    }
+
+    private function restoreRegister(array $snapshot): void
+    {
+        $session = session();
+
+        foreach (self::REGISTER_SESSION_KEYS as $key) {
+            if (array_key_exists($key, $snapshot)) {
+                $session->set($key, $snapshot[$key]);
+            } else {
+                $session->remove($key);
+            }
+        }
     }
 }

@@ -11,8 +11,10 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('whatsapp', '\App\Plugins\WhatsAppPlugin\Controllers\WhatsAppController::getIndex');
 $routes->get('whatsapp/view/(:num)', '\App\Plugins\WhatsAppPlugin\Controllers\WhatsAppController::getView/$1');
 $routes->get('whatsapp/conversation/(:segment)', '\App\Plugins\WhatsAppPlugin\Controllers\WhatsAppController::getConversation/$1');
-$routes->get('whatsapp/sendDocument/(:num)/(:segment)', '\App\Plugins\WhatsAppPlugin\Controllers\WhatsAppController::getSendDocument/$1/$2');
 $routes->post('whatsapp/send', '\App\Plugins\WhatsAppPlugin\Controllers\WhatsAppController::postSend');
+// POST, unlike core's sales/sendPdf: this delivers a document to a customer, so
+// it stays behind the CSRF filter.
+$routes->post('whatsapp/sendDocument/(:num)/(:segment)', '\App\Plugins\WhatsAppPlugin\Controllers\WhatsAppController::postSendDocument/$1/$2');
 $routes->post('whatsapp/sendForm/(:num)', '\App\Plugins\WhatsAppPlugin\Controllers\WhatsAppController::postSendForm/$1');
 
 $routes->get('plugins/whatsapp/icon', '\App\Plugins\WhatsAppPlugin\Controllers\IconController::getIcon');

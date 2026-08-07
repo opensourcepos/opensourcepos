@@ -46,9 +46,22 @@ class WhatsAppMessage extends Model
     }
 
     /**
+     * Meta redelivers a webhook whose acknowledgement it did not see, so the same
+     * inbound message can arrive twice. The unique index on wa_message_id is the
+     * backstop; this keeps a redelivery from becoming a failed insert part-way
+     * through a payload.
+     */
+    public function existsByWaMessageId(string $waMessageId): bool
+    {
+        return $this->db->table('whatsapp_messages')
+            ->where('wa_message_id', $waMessageId)
+            ->countAllResults() > 0;
+    }
+
+    /**
      * @param string $phone Normalized phone number (digits only).
      */
-    public function get_conversation(string $phone, int $limit = 200): ResultInterface
+    public function getConversation(string $phone, int $limit = 200): ResultInterface
     {
         $builder = $this->db->table('whatsapp_messages');
         $builder->where('phone', $phone);
@@ -62,7 +75,7 @@ class WhatsAppMessage extends Model
     /**
      * Distinct phone numbers with a conversation, most recently active first.
      */
-    public function get_recent_conversations(int $limit = 50): array
+    public function getRecentConversations(int $limit = 50): array
     {
         // Grouped by phone only: inbound webhook messages and general outbound
         // sends log person_id => null, while sale sends log a real person_id.
@@ -84,27 +97,34 @@ class WhatsAppMessage extends Model
      * sent -> delivered -> read progression are ignored to stop a late "delivered"
      * downgrading an already "read" message. Statuses outside that ordering
      * (e.g. "failed") are always applied.
+     *
+     * The ordering lives in the WHERE clause rather than in a read-then-compare,
+     * because two callbacks for the same message can be handled concurrently and
+     * the later write would otherwise win on a stale comparison.
+     *
+     * @return bool False when the statement itself fails. A skipped backward
+     *              transition and an unknown wamid both count as success.
      */
-    public function update_status(string $waMessageId, string $status): bool
+    public function updateStatus(string $waMessageId, string $status): bool
     {
         $rank = ['sent' => 1, 'delivered' => 2, 'read' => 3];
 
-        $current = $this->db->table('whatsapp_messages')
-            ->select('status')
-            ->where('wa_message_id', $waMessageId)
-            ->get()
-            ->getRow();
+        $builder = $this->db->table('whatsapp_messages')->where('wa_message_id', $waMessageId);
 
-        if ($current === null) {
-            return false;
+        if (isset($rank[$status])) {
+            $overtakes = array_keys(array_filter($rank, static fn (int $r): bool => $r < $rank[$status]));
+
+            $builder->groupStart()
+                ->where('status', null)
+                ->orWhereNotIn('status', array_keys($rank));
+
+            if ($overtakes !== []) {
+                $builder->orWhereIn('status', $overtakes);
+            }
+
+            $builder->groupEnd();
         }
 
-        if (isset($rank[$status], $rank[$current->status]) && $rank[$status] <= $rank[$current->status]) {
-            return true;
-        }
-
-        return $this->db->table('whatsapp_messages')
-            ->where('wa_message_id', $waMessageId)
-            ->update(['status' => $status]);
+        return $builder->update(['status' => $status]);
     }
 }

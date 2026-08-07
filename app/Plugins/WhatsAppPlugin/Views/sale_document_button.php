@@ -7,11 +7,9 @@
  * @var string $documentType One of invoice|quote|work_order|receipt.
  */
 ?>
-<a href="javascript:void(0);">
-    <div class="btn btn-success btn-sm" id="show_whatsapp_button">
-        <?= '<span class="glyphicon glyphicon-comment">&nbsp;</span>' . lang('WhatsAppPlugin.send_whatsapp') ?>
-    </div>
-</a>
+<button type="button" class="btn btn-success btn-sm" id="show_whatsapp_button">
+    <?= '<span class="glyphicon glyphicon-comment">&nbsp;</span>' . lang('WhatsAppPlugin.send_whatsapp') ?>
+</button>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -24,7 +22,8 @@
 
             $btn.addClass('disabled');
 
-            $.get('<?= site_url('whatsapp/sendDocument/' . $saleId . '/' . $documentType) ?>',
+            // The CSRF token is appended by the $.ajax wrapper in partial/header_js.
+            $.post('<?= site_url('whatsapp/sendDocument/' . $saleId . '/' . $documentType) ?>', {},
                 function(response) {
                     $.notify({
                         message: response.message

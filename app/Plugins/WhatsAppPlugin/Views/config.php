@@ -3,6 +3,9 @@
  * @var array  $settings
  * @var string $webhook_url
  */
+
+$token_configured      = ! empty($settings['token_configured']);
+$app_secret_configured = ! empty($settings['app_secret_configured']);
 ?>
 
 <?= form_open(site_url('plugins/saveConfig/whatsapp'), ['id' => 'config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
@@ -46,12 +49,22 @@
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
                     <?= form_password([
-                        'name'  => 'token',
-                        'id'    => 'token',
-                        'class' => 'form-control input-sm required',
-                        'value' => esc($settings['token'] ?? ''),
+                        'name'         => 'token',
+                        'id'           => 'token',
+                        'class'        => 'form-control input-sm' . ($token_configured ? '' : ' required'),
+                        'value'        => '',
+                        'autocomplete' => 'new-password',
+                        'placeholder'  => $token_configured ? lang('WhatsAppPlugin.secret_stored') : '',
                     ]) ?>
                 </div>
+                <?php if ($token_configured): ?>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="clear_token" value="1"> <?= lang('WhatsAppPlugin.clear_secret') ?>
+                        </label>
+                    </div>
+                    <span class="help-block"><?= lang('WhatsAppPlugin.secret_unchanged_help') ?></span>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -140,12 +153,22 @@
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
                     <?= form_password([
-                        'name'  => 'app_secret',
-                        'id'    => 'app_secret',
-                        'class' => 'form-control input-sm',
-                        'value' => esc($settings['app_secret'] ?? ''),
+                        'name'         => 'app_secret',
+                        'id'           => 'app_secret',
+                        'class'        => 'form-control input-sm',
+                        'value'        => '',
+                        'autocomplete' => 'new-password',
+                        'placeholder'  => $app_secret_configured ? lang('WhatsAppPlugin.secret_stored') : '',
                     ]) ?>
                 </div>
+                <?php if ($app_secret_configured): ?>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="clear_app_secret" value="1"> <?= lang('WhatsAppPlugin.clear_secret') ?>
+                        </label>
+                    </div>
+                    <span class="help-block"><?= lang('WhatsAppPlugin.secret_unchanged_help') ?></span>
+                <?php endif; ?>
                 <span class="help-block"><?= lang('WhatsAppPlugin.app_secret_help') ?></span>
             </div>
         </div>
@@ -192,14 +215,16 @@
 
             errorLabelContainer: '#error_message_box',
 
+            // The token is absent here on purpose: an empty field means "keep the
+            // stored one", so it is required only until one has been saved, which
+            // the field's own class expresses.
             rules: {
-                phone_id: 'required',
-                token: 'required'
+                phone_id: 'required'
             },
 
             messages: {
-                phone_id: '<?= lang('WhatsAppPlugin.phone_id_required') ?>',
-                token: '<?= lang('WhatsAppPlugin.token_required') ?>'
+                phone_id: '<?= esc(lang('WhatsAppPlugin.phone_id_required'), 'js') ?>',
+                token: '<?= esc(lang('WhatsAppPlugin.token_required'), 'js') ?>'
             }
         }));
     });
