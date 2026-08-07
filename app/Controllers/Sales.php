@@ -125,7 +125,7 @@ class Sales extends Secure_Controller
     }
 
     /**
-     * @param int $row_id
+     * @param int $rowId
      * @return ResponseInterface
      */
     public function getRow(int $rowId): ResponseInterface
@@ -958,7 +958,7 @@ class Sales extends Secure_Controller
     /**
      * Email PDF invoice to customer. Used in app/Views/sales/form.php, invoice.php, quote.php, tax_invoice.php and work_order.php
      *
-     * @param int $sale_id
+     * @param int $saleId
      * @param string $type
      * @return ResponseInterface
      * @noinspection PhpUnused
@@ -1015,7 +1015,7 @@ class Sales extends Secure_Controller
     /**
      * Emails sales receipt to customer. Used in app/Views/sales/receipt.php
      *
-     * @param int $sale_id
+     * @param int $saleId
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
@@ -1345,7 +1345,7 @@ class Sales extends Secure_Controller
     /**
      * Load the sales receipt for a sale. Used in app/Views/sales/form.php
      *
-     * @param int $sale_id
+     * @param int $saleId
      * @return string
      * @noinspection PhpUnused
      */
@@ -1366,7 +1366,7 @@ class Sales extends Secure_Controller
     /**
      * Loads the sales invoice for a sale. Used in app/Views/sales/form.php
      *
-     * @param int $sale_id
+     * @param int $saleId
      * @return string
      * @noinspection PhpUnused
      */
@@ -1387,7 +1387,7 @@ class Sales extends Secure_Controller
     /**
      * Edits an existing sale or work order. Used in app/Views/sales/form.php
      *
-     * @param int $sale_id
+     * @param int $saleId
      * @return string
      * @throws ReflectionException
      */
@@ -1503,7 +1503,7 @@ class Sales extends Secure_Controller
     /**
      * This saves the sale from the update sale view (sales/form).
      * It only updates the sales table and payments.
-     * @param int $sale_id
+     * @param int $saleId
      * @return ResponseInterface
      * @throws ReflectionException
      */
