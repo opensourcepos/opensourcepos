@@ -249,6 +249,7 @@ class SalesControllerTest extends CIUnitTestCase
         ]);
 
         $response->assertStatus(200);
+        $response->assertSee(lang('Sales.not_authorized'));
 
         $session = Services::session();
         $cart = $session->get('sales_cart');
