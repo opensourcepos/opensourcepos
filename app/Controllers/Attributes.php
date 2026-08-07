@@ -221,7 +221,7 @@ class Attributes extends Secure_Controller
     private function get_attributes(int $definition_flags = 0): array
     {
         $definition_flag_names = [];
-        foreach (Attribute::get_definition_flags() as $id => $term) {
+        foreach (Attribute::getDefinitionFlags() as $id => $term) {
             if ($id & $definition_flags) {
                 $definition_flag_names[$id] = lang('Attributes.' . strtolower($term) . '_visibility');
             }
@@ -241,8 +241,8 @@ class Attributes extends Secure_Controller
         }
 
         $data['definition_id'] = $definition_id;
-        $data['definition_values'] = $this->attribute->get_definition_values($definition_id);
-        $data['definition_group'] = $this->attribute->get_definitions_by_type(GROUP, $definition_id);
+        $data['definition_values'] = $this->attribute->getDefinitionValues($definition_id);
+        $data['definition_group'] = $this->attribute->getDefinitionsByType(GROUP, $definition_id);
         $data['definition_group'][''] = lang('Common.none_selected_text');
         $data['definition_info'] = $info;
 
