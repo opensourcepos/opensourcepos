@@ -28,7 +28,7 @@ class Convert_to_ci4 extends Migration
     public function up(): void
     {
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_ci4_conversion.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_ci4_conversion.sql');
 
         if (!empty(config('Encryption')->key)) {
             $this->convert_ci3_encrypted_data();
