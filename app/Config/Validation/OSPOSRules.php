@@ -6,6 +6,7 @@ use App\Models\Employee;
 use CodeIgniter\HTTP\IncomingRequest;
 use Config\OSPOS;
 use Config\Services;
+use DirectoryIterator;
 
 /**
  * @property Employee employee
@@ -39,13 +40,6 @@ class OSPOSRules
             return false;
         }
 
-        $password = $data['password'];
-        if (!$employee->login($username, $password)) {
-            $error = lang('Login.invalid_username_and_password');
-
-            return false;
-        }
-
         $gcaptcha_enabled = array_key_exists('gcaptcha_enable', $this->config) && $this->config['gcaptcha_enable'];
         if ($gcaptcha_enabled) {
             $g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
@@ -57,6 +51,13 @@ class OSPOSRules
             }
         }
 
+        $password = $data['password'];
+        if (!$employee->login($username, $password)) {
+            $error = lang('Login.invalid_username_and_password');
+
+            return false;
+        }
+
         return true;
     }
 
@@ -66,7 +67,7 @@ class OSPOSRules
      * @param $response
      * @return bool true on successful GCaptcha verification or false if GCaptcha failed.
      */
-    private function gcaptcha_check($response): bool
+    protected function gcaptcha_check($response): bool
     {
         if (!empty($response)) {
             $check = [
@@ -149,5 +150,31 @@ class OSPOSRules
         $value = parse_decimals($candidate);
 
         return $value !== false && $value >= 0;
+    }
+
+    /**
+     * Validates that the candidate theme name matches an installed bootswatch theme directory.
+     *
+     * @param string $theme
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function themeExists(string $theme, ?string &$error = null): bool
+    {
+        $dir = new DirectoryIterator('resources/bootswatch');
+
+        foreach ($dir as $fileInfo) {
+            if (
+                $fileInfo->isDir()
+                && !$fileInfo->isDot()
+                && $fileInfo->getFilename() !== 'fonts'
+                && $fileInfo->getFilename() === $theme
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

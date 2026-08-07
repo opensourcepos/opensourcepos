@@ -647,6 +647,14 @@ class Sales extends Secure_Controller
                 return $this->reload($data);
             }
 
+            // sales_change_price grant is enforced server-side here; the UI-only "change_price" flag must not be trusted
+            $current_price = $this->sale_lib->get_cart()[$line]['price'] ?? null;
+            $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+            if ($current_price !== null && bccomp((string)$price, (string)$current_price, $precision) != 0 && !$this->employee->has_grant('sales_change_price', $employee_id)) {
+                $data['error'] = lang('Sales.not_authorized');
+                return $this->reload($data);
+            }
+
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
             $discounted_total = $this->request->getPost('discounted_total') != ''
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
