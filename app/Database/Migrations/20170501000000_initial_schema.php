@@ -38,7 +38,7 @@ class Migration_Initial_Schema extends Migration
         
         // Fresh install - load initial schema
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/initial_schema.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/initial_schema.sql');
     }
 
     /**

@@ -12,7 +12,7 @@ class Migration_NullableTaxCategoryId extends Migration
     public function up(): void
     {
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_nullable_tax_category_id.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_nullable_tax_category_id.sql');
     }
 
     /**
