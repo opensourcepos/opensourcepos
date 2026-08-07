@@ -74,7 +74,8 @@ class Item extends Model
             $builder->where('deleted', $deleted);
         }
 
-        return ($builder->get()->getNumRows() === 1);
+        // >= 1: numeric barcodes can match another row's item_id (OR lookup), so === 1 falsely fails.
+        return ($builder->get()->getNumRows() >= 1);
     }
 
     /**
