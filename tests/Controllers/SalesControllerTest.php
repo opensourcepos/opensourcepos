@@ -24,7 +24,7 @@ class SalesControllerTest extends CIUnitTestCase
 
     protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $refresh     = false;
+    protected $refresh     = true;
     protected $namespace   = null;
 
     protected function setUp(): void
