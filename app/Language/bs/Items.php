@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Barkod",
     "item_number_duplicate"              => "Broj artikla već postoji u bazi podataka.",
+    'item_number_invalid'                => 'Broj artikla sadrži nedozvoljene znakove.',
     "kit"                                => "Komplet",
     "location"                           => "Mjesto",
     "low_inventory_items"                => "Prodaja artikala",

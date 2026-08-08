@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "UPC/EAN/ISBN",
     "item_number_duplicate"              => "Die Artikelnummer existiert bereits in der Datenbank",
+    'item_number_invalid'                => 'Die Artikelnummer enthält nicht zulässige Zeichen.',
     "kit"                                => "",
     "location"                           => "Ort",
     "low_inventory_items"                => "nicht am Lager",
