@@ -106,4 +106,54 @@ class Encryption extends BaseConfig
      * by CI3 Encryption default configuration.
      */
     public string $cipher = 'AES-256-CTR';
+
+    /**
+     * Constructor - loads encryption key from fallback location if not set.
+     *
+     * This supports Docker/container environments where ROOTPATH/.env may be
+     * read-only or ephemeral. The fallback key file is stored in WRITEPATH/config/.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // If key not set from .env or environment, try WRITEPATH fallback
+        if (empty($this->key) || strlen($this->key) < 64) {
+            $fallbackKey = $this->loadKeyFromWritable();
+            if ($fallbackKey !== null) {
+                $this->key = $fallbackKey;
+            }
+        }
+    }
+
+    /**
+     * Loads encryption key from WRITEPATH/config/encryption.key.
+     *
+     * @return string|null The encryption key if found, null otherwise
+     */
+    private function loadKeyFromWritable(): ?string
+    {
+        $keyFile = WRITEPATH . 'config' . DIRECTORY_SEPARATOR . 'encryption.key';
+
+        if (!file_exists($keyFile) || !is_readable($keyFile)) {
+            return null;
+        }
+
+        $content = file_get_contents($keyFile);
+        if ($content === false) {
+            return null;
+        }
+
+        $data = json_decode($content, true);
+        if (
+            !is_array($data)
+            || !isset($data['key'])
+            || !is_string($data['key'])
+            || strlen($data['key']) < 64
+        ) {
+            return null;
+        }
+
+        return $data['key'];
+    }
 }
