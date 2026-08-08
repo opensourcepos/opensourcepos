@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\AccessDeniedRedirectException;
 use App\Models\Employee;
 use App\Models\Module;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -40,8 +41,7 @@ class Secure_Controller extends BaseController
         $validation = Services::validation();
 
         if (!$this->employee->is_logged_in()) {
-            header("Location:" . base_url('login'));
-            exit();
+            throw new AccessDeniedRedirectException(base_url('login'));
         }
 
         $logged_in_employee_info = $this->employee->get_logged_in_employee_info();
@@ -49,8 +49,7 @@ class Secure_Controller extends BaseController
             !$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
             || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
         ) {
-            header("Location:" . base_url("no_access/$module_id/$submodule_id"));
-            exit();
+            throw new AccessDeniedRedirectException(base_url("no_access/$module_id/$submodule_id"));
         }
 
         // Load up global global_view_data visible to all the loaded views
@@ -144,9 +143,9 @@ class Secure_Controller extends BaseController
 
     /**
      * @param int $data_item_id
-     * @return false
+     * @return ResponseInterface|false
      */
-    public function postSave(int $data_item_id = -1)
+    public function postSave(int $data_item_id = -1): ResponseInterface|false
     {
         return false;
     }
