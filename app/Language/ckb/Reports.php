@@ -29,6 +29,7 @@ return [
     'date' => "ڕێکەوت",
     'date_range' => "مەودای بەروار",
     'description' => "دەربارە",
+    'detailed_item_sales_report' => "",
     'detailed_receivings_report' => "ڕاپۆرتی وردی وەرگرتنەکان",
     'detailed_receivings_report_input' => "",
     'detailed_reports' => "ڕاپۆرتە وردەکان",

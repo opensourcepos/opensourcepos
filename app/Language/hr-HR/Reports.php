@@ -29,6 +29,7 @@ return [
     "date"                                    => "Datum",
     "date_range"                              => "Vremenski period",
     "description"                             => "Opis",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Izvještaj primki",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Izvještaji",

@@ -29,6 +29,7 @@ return [
     "date"                                    => "Datum",
     "date_range"                              => "Období",
     "description"                             => "Popis",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Podrobný přehled příjmů",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Podrobné sestavy",
