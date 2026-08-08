@@ -7,6 +7,8 @@ This document provides guidance for AI agents working on the Open Source Point o
 - **PSR-12** enforced via PHP-CS-Fixer (config: `.php-cs-fixer.no-header.php`)
 - Follow PHP CodeIgniter 4 coding standards
 - `camelCase` for variables and methods; `PascalCase` for classes; `UPPER_CASE` for constants
+- When editing existing code containing non-PSR-compliant local variable names, refactor those variable names to `camelCase` as part of the edit
+- All newly written code (variables, classes, functions) must use PSR-compliant naming, regardless of surrounding code style
 - PHP 8.2+ features acceptable (named arguments, enums, readonly properties)
 - Write PHP 8.2+ compatible code with proper type declarations
 - Views in `app/Views/errors/html/` are excluded from the fixer

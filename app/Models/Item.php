@@ -20,6 +20,13 @@ class Item extends Model
     public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
     public const ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
 
+    /**
+     * Sentinel posted by the bulk edit form to clear supplier_id, since an empty
+     * value there means "leave the column alone". Non-numeric so it can never
+     * collide with a suppliers.person_id.
+     */
+    public const CLEAR_SUPPLIER_OPTION = 'NONE';
+
     public const ALLOWED_BULK_EDIT_FIELDS = [
         'name',
         'category',
@@ -468,14 +475,71 @@ class Item extends Model
     }
 
     /**
+     * Reduces raw bulk edit input to the columns that may be bulk updated.
+     *
+     * Keys outside ALLOWED_BULK_EDIT_FIELDS are dropped, and a field that is absent,
+     * empty, or invalid for its column is left untouched so it keeps its current
+     * value. Prices and quantities are locale-parsed the same way postSave() does,
+     * booleans must be 0/1, and supplier_id must be numeric. supplier_id is
+     * nullable, so CLEAR_SUPPLIER_OPTION is how the form asks for it to be cleared.
+     */
+    public static function filterBulkEditFields(array $input): array
+    {
+        $itemData = [];
+
+        foreach (self::ALLOWED_BULK_EDIT_FIELDS as $field) {
+            $value = $input[$field] ?? null;
+
+            if ($value === null || $value === '' || !is_scalar($value)) {
+                continue;
+            }
+
+            if ($field === 'supplier_id') {
+                if ($value === self::CLEAR_SUPPLIER_OPTION) {
+                    $itemData[$field] = null;
+                } elseif (ctype_digit((string)$value)) {
+                    $itemData[$field] = (int)$value;
+                }
+
+                continue;
+            }
+
+            if ($field === 'cost_price' || $field === 'unit_price') {
+                $value = parse_decimals((string)$value);
+            } elseif ($field === 'reorder_level') {
+                $value = parse_quantity((string)$value);
+            } elseif ($field === 'allow_alt_description' || $field === 'is_serialized') {
+                if (!in_array((string)$value, ['0', '1'], true)) {
+                    continue;
+                }
+            }
+
+            if ($value === false) {
+                continue;
+            }
+
+            $itemData[$field] = $value;
+        }
+
+        return $itemData;
+    }
+
+    /**
      * Updates multiple items at once
      */
-    public function update_multiple(array $item_data, string $item_ids): bool
+    public function updateMultiple(array $itemData, string $itemIds): bool
     {
-        $builder = $this->db->table('items');
-        $builder->whereIn('item_id', explode(':', $item_ids));
+        // Query Builder bypasses $allowedFields, so the whitelist is enforced here (GHSA-49mq-h2g4-grr9)
+        $itemData = array_intersect_key($itemData, array_flip(self::ALLOWED_BULK_EDIT_FIELDS));
 
-        return $builder->update($item_data);
+        if (empty($itemData)) {
+            return false;
+        }
+
+        $builder = $this->db->table('items');
+        $builder->whereIn('item_id', explode(':', $itemIds));
+
+        return $builder->update($itemData);
     }
 
     /**
