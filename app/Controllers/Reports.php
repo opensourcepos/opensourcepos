@@ -701,13 +701,13 @@ class Reports extends Secure_Controller
         return view('reports/date_input', $data);
     }
 
-    public function date_input_item_sales(): string
+    public function dateInputItemSales(): string
     {
         $this->clearCache();
 
-        $stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
-        $stock_locations['all'] = lang('Reports.all');
-        $data['stock_locations'] = array_reverse($stock_locations, true);
+        $stockLocations = $data = $this->stock_location->get_allowed_locations('sales');
+        $stockLocations['all'] = lang('Reports.all');
+        $data['stock_locations'] = array_reverse($stockLocations, true);
         $data['mode'] = 'sale';
         $data['sale_type_options'] = $this->get_sale_type_options();
         $data['selected_sale_type'] = 'sales';
@@ -1905,31 +1905,31 @@ class Reports extends Secure_Controller
         return view('reports/tabular_details', $data);
     }
 
-    public function detailed_item_sales(string $start_date, string $end_date, string $sale_type = 'sales', string $location_id = 'all', string $discount_type = 'all'): string
+    public function detailedItemSales(string $startDate, string $endDate, string $saleType = 'sales', string $locationId = 'all', string $discountType = 'all'): string
     {
         $this->clearCache();
 
-        $sale_type = array_key_exists($sale_type, $this->get_sale_type_options()) ? $sale_type : 'sales';
-        $location_id = ctype_digit($location_id) ? (string) (int) $location_id : 'all';
-        $discount_type = in_array($discount_type, ['all', (string) PERCENT, (string) FIXED], true) ? $discount_type : 'all';
+        $saleType = array_key_exists($saleType, $this->get_sale_type_options()) ? $saleType : 'sales';
+        $locationId = ctype_digit($locationId) ? (string) (int) $locationId : 'all';
+        $discountType = in_array($discountType, ['all', (string) PERCENT, (string) FIXED], true) ? $discountType : 'all';
 
         $inputs = [
-            'start_date'    => $start_date,
-            'end_date'      => $end_date,
-            'sale_type'     => $sale_type,
-            'location_id'   => $location_id,
-            'discount_type' => $discount_type
+            'start_date'    => $startDate,
+            'end_date'      => $endDate,
+            'sale_type'     => $saleType,
+            'location_id'   => $locationId,
+            'discount_type' => $discountType
         ];
 
         $this->detailed_item_sales->create($inputs);
 
-        $report_data = $this->detailed_item_sales->getData($inputs);
+        $reportData = $this->detailed_item_sales->getData($inputs);
         $summary = $this->detailed_item_sales->getSummaryData($inputs);
 
-        $tabular_data = [];
+        $tabularData = [];
 
-        foreach ($report_data as $row) {
-            $tabular_data[] = [
+        foreach ($reportData as $row) {
+            $tabularData[] = [
                 'sale_time'     => to_datetime(strtotime($row['sale_time'])),
                 'sale_id'       => $row['sale_id'],
                 'customer_name' => $row['customer_name'],
@@ -1952,9 +1952,9 @@ class Reports extends Secure_Controller
 
         $data = [
             'title'        => lang('Reports.detailed_item_sales_report'),
-            'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
+            'subtitle'     => $this->_get_subtitle_report(['start_date' => $startDate, 'end_date' => $endDate]),
             'headers'      => $this->detailed_item_sales->getDataColumns(),
-            'data'         => $tabular_data,
+            'data'         => $tabularData,
             'summary_data' => $summary
         ];
 
