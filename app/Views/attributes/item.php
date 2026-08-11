@@ -92,7 +92,7 @@
                 }
                 ?>
                 <span class="input-group-addon input-sm btn btn-default remove_attribute_btn">
-                    <span class="glyphicon glyphicon-trash"></span>
+                    <i class="bi bi-trash"></i>
                 </span>
             </div>
         </div>
