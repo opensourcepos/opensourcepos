@@ -9,24 +9,18 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
+<?php
+$title_info['config_title'] = esc($title);
+echo view('configs/config_header', $title_info);
+?>
 
-<div id="page_title"><?= esc($title) ?></div>
-
-<div id="page_subtitle"><?= esc($subtitle) ?></div>
+<h5><?= esc($subtitle) ?></h5>
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 
-<div id="toolbar">
-    <div class="pull-left form-inline" role="toolbar">
-        <!-- Toggle Button -->
-        <button id="toggleCostProfitButton" class="btn btn-default btn-sm print_hide">
-            <?php echo lang('Reports.toggle_cost_and_profit'); ?>
-        </button>
-    </div>
-</div>
+<button type="button" class="btn btn-secondary d-print-none" id="toggleCostProfitButton">
+    <i class="bi bi-toggles"></i><span class="d-none d-sm-inline ms-2"><?= lang('Reports.toggle_cost_and_profit') ?></span>
+</button>
 
 <?= view($chart_type) ?>
 

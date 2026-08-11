@@ -5,37 +5,22 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("expenses_categories/save/$category_info->expense_category_id", ['id' => 'expense_category_edit_form']) ?>
 
-<?= form_open("expenses_categories/save/$category_info->expense_category_id", ['id' => 'expense_category_edit_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="expenses_categories">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses_categories.name'), 'category_name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'category_name',
-                    'id'    => 'category_name',
-                    'class' => 'form-control input-sm',
-                    'value' => $category_info->category_name
-                ]) ?>
-            </div>
-        </div>
+    <label for="category_name" class="form-label"><?= lang('Expenses_categories.name'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="category_name-icon"><i class="bi bi-bookmark"></i></span>
+        <input type="text" class="form-control" name="category_name" id="category_name" aria-describedby="category_name-icon" value="<?= $category_info->category_name; ?>" required>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses_categories.description'), 'category_description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_textarea([
-                    'name'  => 'category_description',
-                    'id'    => 'category_description',
-                    'class' => 'form-control input-sm',
-                    'value' => $category_info->category_description
-                ]) ?>
-            </div>
-        </div>
+    <label for="category_description" class="form-label"><?= lang('Expenses_categories.description'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="category_description-icon"><i class="bi bi-card-text"></i></span>
+        <textarea class="form-control" name="category_description" id="category_description" rows="10" aria-describedby="category_description-icon"><?= $category_info->category_description ?></textarea>
+    </div>
 
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">

@@ -6,70 +6,46 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'supplier_form']) ?>
 
-<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'supplier_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="supplier_basic_info">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.company_name'), 'company_name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'company_name',
-                    'id'    => 'company_name_input',
-                    'class' => 'form-control input-sm',
-                    'value' => html_entity_decode($person_info->company_name)
-                ]) ?>
-            </div>
-        </div>
+    <label for="company_name" class="form-label"><?= lang('Suppliers.company_name'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="company_name-icon"><i class="bi bi-building"></i></span>
+        <input type="text" class="form-control" name="company_name" id="company_name" aria-describedby="company_name-icon" value="<?= html_entity_decode($person_info->company_name) ?>" required>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-6">
-                <?= form_dropdown('category', $categories, $person_info->category, ['class' => 'form-control', 'id' => 'category']) ?>
-            </div>
-        </div>
+    <label for="category" class="form-label"><?= lang('Suppliers.category'); ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-truck"></i></span>
+        <select class="form-select" name="category" id="category" required>
+            <?php foreach ($categories as $key => $label): ?>
+                <option value="<?= $key ?>" <?= $person_info->category == $key ? 'selected' : '' ?>><?= $label ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.agency_name'), 'agency_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'agency_name',
-                    'id'    => 'agency_name_input',
-                    'class' => 'form-control input-sm',
-                    'value' => $person_info->agency_name
-                ]) ?>
-            </div>
-        </div>
+    <label for="agency_name" class="form-label"><?= lang('Suppliers.agency_name'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="agency_name-icon"><i class="bi bi-building"></i></span>
+        <input type="text" class="form-control" name="agency_name" id="agency_name" aria-describedby="agency_name-icon" value="<?= $person_info->agency_name ?>">
+    </div>
 
-        <?= view('people/form_basic_info') ?>
+    <?= view('people/form_basic_info') ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'account_number',
-                    'id'    => 'account_number',
-                    'class' => 'form-control input-sm',
-                    'value' => $person_info->account_number
-                ]) ?>
-            </div>
-        </div>
+    <label for="account_number" class="form-label"><?= lang('Suppliers.account_number'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="account_number-icon"><i class="bi bi-hash"></i></span>
+        <input type="text" class="form-control" name="account_number" id="account_number" aria-describedby="account_number-icon" value="<?= $person_info->account_number ?>">
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'tax_id',
-                    'id'    => 'tax_id',
-                    'class' => 'form-control input-sm',
-                    'value' => $person_info->tax_id
-                ]) ?>
-            </div>
-        </div>
+    <label for="tax_id" class="form-label"><?= lang('Suppliers.tax_id'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="tax_id-icon"><i class="bi bi-bank"></i></span>
+        <input type="text" class="form-control" name="tax_id" id="tax_id" aria-describedby="tax_id-icon" value="<?= $person_info->tax_id ?>">
+    </div>
 
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">

@@ -132,7 +132,7 @@ function get_sale_data_row(object $sale): array
         "$controller/edit/$sale->sale_id",
         '<i class="bi bi-pencil-square"></i>',
         [
-            'class'           => 'modal-dlg print_hide',
+            'class'           => 'modal-launch print_hide',
             'data-btn-delete' => lang('Common.delete'),
             'data-btn-submit' => lang('Common.submit'),
             'title'           => lang(ucfirst($controller) . ".update")
@@ -234,7 +234,7 @@ function get_person_data_row(object $person): array
                 "Messages/view/$person->person_id",
                 '<i class="bi bi-telephone"></i>',
                 [
-                    'class'           => 'modal-dlg',
+                    'class'           => 'modal-launch',
                     'data-btn-submit' => lang('Common.submit'),
                     'title'           => lang('Messages.sms_send')
                 ]
@@ -243,7 +243,7 @@ function get_person_data_row(object $person): array
             "$controller/view/$person->person_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . '.update')    // TODO: String interpolation
             ]
@@ -301,7 +301,7 @@ function get_customer_data_row(object $person, object $stats): array
                 "Messages/view/$person->person_id",
                 '<i class="bi bi-telephone"></i>',
                 [
-                    'class'           => 'modal-dlg',
+                    'class'           => 'modal-launch',
                     'data-btn-submit' => lang('Common.submit'),
                     'title'           => lang('Messages.sms_send')
                 ]
@@ -310,7 +310,7 @@ function get_customer_data_row(object $person, object $stats): array
             "$controller/view/$person->person_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -371,7 +371,7 @@ function get_supplier_data_row(object $supplier): array
                 "Messages/view/$supplier->person_id",
                 '<i class="bi bi-telephone"></i>',
                 [
-                    'class'           => "modal-dlg",
+                    'class'           => "modal-launch",
                     'data-btn-submit' => lang('Common.submit'),
                     'title'           => lang('Messages.sms_send')
                 ]
@@ -380,7 +380,7 @@ function get_supplier_data_row(object $supplier): array
             "$controller/view/$supplier->person_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => "modal-dlg",
+                'class'           => "modal-launch",
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -500,7 +500,7 @@ function get_item_data_row(object $item): array
             "$controller/inventory/$item->item_id",
             '<i class="bi bi-box"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".count")
             ]
@@ -509,7 +509,7 @@ function get_item_data_row(object $item): array
             "$controller/countDetails/$item->item_id",
             '<i class="bi bi-info-square"></i>',
             [
-                'class' => 'modal-dlg',
+                'class' => 'modal-launch',
                 'title' => lang(ucfirst($controller) . ".details_count")
             ]
         ),
@@ -517,7 +517,7 @@ function get_item_data_row(object $item): array
             "$controller/view/$item->item_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -563,7 +563,7 @@ function get_giftcard_data_row(object $giftcard): array
             "$controller/view/$giftcard->giftcard_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -609,7 +609,7 @@ function get_item_kit_data_row(object $item_kit): array
             "$controller/view/$item_kit->item_kit_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -717,7 +717,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
             "$controller/view/$attribute_row->definition_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -757,7 +757,7 @@ function get_expense_category_data_row(object $expense_category): array
             "$controller/view/$expense_category->expense_category_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -811,7 +811,7 @@ function get_expenses_data_row(object $expense): array
             "$controller/view/$expense->expense_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
@@ -913,7 +913,7 @@ function get_cash_up_data_row(object $cash_up): array
             "$controller/view/$cash_up->cashup_id",
             '<i class="bi bi-pencil-square"></i>',
             [
-                'class'           => 'modal-dlg',
+                'class'           => 'modal-launch',
                 'data-btn-submit' => lang('Common.submit'),
                 'title'           => lang(ucfirst($controller) . ".update")
             ]

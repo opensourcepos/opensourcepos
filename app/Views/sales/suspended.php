@@ -11,7 +11,7 @@ $this->dinner_table = model(Dinner_table::class);
 
 <style>
     @media (min-width: 768px) {
-        .modal-dlg .modal-dialog {
+        .modal-launch .modal-dialog {
             width: 750px !important;
         }
     }
