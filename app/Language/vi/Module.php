@@ -46,4 +46,6 @@ return [
     "timeclocks_categories"      => "",
     "timeclocks_categories_desc" => "",
     "timeclocks_desc"            => "",
+    "transfers"                  => "",
+    "transfers_desc"             => "",
 ];

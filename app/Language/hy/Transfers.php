@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'cancel_transfer'          => '',
+    'cannot_be_deleted'        => '',
+    'comments'                 => '',
+    'complete_transfer'        => '',
+    'confirm_cancel_transfer'  => '',
+    'confirm_delete'           => '',
+    'confirm_finish_transfer'  => '',
+    'error_editing_item'       => '',
+    'error_insufficient_stock' => '',
+    'error_same_location'      => '',
+    'find_or_scan_item'        => '',
+    'id'                       => '',
+    'item_name'                => '',
+    'quantity'                 => '',
+    'receipt'                  => '',
+    'register'                 => '',
+    'stock_destination'        => '',
+    'stock_source'             => '',
+    'successfully_deleted'     => '',
+    'total'                    => '',
+    'transaction_failed'       => '',
+    'unable_to_add_item'       => '',
+    'update'                   => '',
+];

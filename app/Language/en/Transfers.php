@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'cancel_transfer'          => 'Cancel',
+    'cannot_be_deleted'        => 'Transfer(s) delete failed.',
+    'comments'                 => 'Comments',
+    'complete_transfer'        => 'Finish',
+    'confirm_cancel_transfer'  => 'Are you sure you want to clear this transfer? All items will be cleared.',
+    'confirm_delete'           => 'Are you sure you want to delete this transfer? This action cannot be undone.',
+    'confirm_finish_transfer'  => 'Are you sure you want to submit this transfer? This cannot be undone.',
+    'error_editing_item'       => 'Item edit failed.',
+    'error_insufficient_stock' => 'One or more items do not have enough stock at the source location.',
+    'error_same_location'      => 'Unable to transfer stock from and to the same Stock Location.',
+    'find_or_scan_item'        => 'Find or Scan Item',
+    'id'                       => 'Transfer ID',
+    'item_name'                => 'Item Name',
+    'quantity'                 => 'Qty.',
+    'receipt'                  => 'Transfer Receipt',
+    'register'                 => 'Stock Transfer',
+    'stock_destination'        => 'To Location',
+    'stock_source'             => 'From Location',
+    'successfully_deleted'     => 'You have successfully deleted',
+    'total'                    => 'Total',
+    'transaction_failed'       => 'Transfer transaction(s) failed.',
+    'unable_to_add_item'       => 'Item add to Transfer failed.',
+    'update'                   => 'Update',
+];

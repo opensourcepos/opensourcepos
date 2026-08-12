@@ -46,4 +46,6 @@ return [
     "timeclocks_categories"      => "",
     "timeclocks_categories_desc" => "",
     "timeclocks_desc"            => "",
+    "transfers"                  => "Transfers",
+    "transfers_desc"             => "Transfer stock between locations.",
 ];

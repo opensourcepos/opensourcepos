@@ -1,6 +1,8 @@
 <?php
 
 return [
+    "transfers"                  => "",
+    "transfers_desc"             => "",
     'admin_cashups' => "",
     'admin_cashups_desc' => "",
     'attributes' => "Atribut",

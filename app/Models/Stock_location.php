@@ -190,6 +190,7 @@ class Stock_location extends Model
             $this->_insert_new_permission('items', $location_id, $location_name);    // TODO: need to refactor out the hungarian notation.
             $this->_insert_new_permission('sales', $location_id, $location_name);
             $this->_insert_new_permission('receivings', $location_id, $location_name);
+            $this->_insert_new_permission('transfers', $location_id, $location_name);
 
             // Insert quantities for existing items
             $item = model(Item::class);
@@ -219,6 +220,7 @@ class Stock_location extends Model
             $this->_insert_new_permission('items', $location_id, $location_name);
             $this->_insert_new_permission('sales', $location_id, $location_name);
             $this->_insert_new_permission('receivings', $location_id, $location_name);
+            $this->_insert_new_permission('transfers', $location_id, $location_name);
         }
 
         $builder = $this->db->table('stock_locations');

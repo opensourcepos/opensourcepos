@@ -1,6 +1,8 @@
 <?php
 
 return [
+    "detailed_transfers_report"               => "",
+    "transfers"                               => "",
     'all' => "ทั้งหมด",
     'authority' => "ผู้ได้รับอนุญาติ",
     'canceled' => "ถูกยกเลิก",

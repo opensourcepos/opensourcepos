@@ -1,6 +1,8 @@
 <?php
 
 return [
+    "detailed_transfers_report"               => "",
+    "transfers"                               => "",
     'all' => "هەموو",
     'authority' => "دەسەڵات",
     'canceled' => "هەڵوەشایەوە",

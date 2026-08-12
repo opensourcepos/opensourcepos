@@ -8,6 +8,7 @@
 $detailed_reports = [
     'reports_sales'      => 'detailed',
     'reports_receivings' => 'detailed',
+    'reports_transfers'  => 'detailed',
     'reports_customers'  => 'specific',
     'reports_discounts'  => 'specific',
     'reports_employees'  => 'specific',

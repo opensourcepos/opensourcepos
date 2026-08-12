@@ -8,6 +8,7 @@ use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Reports\Detailed_receivings;
 use App\Models\Reports\Detailed_sales;
+use App\Models\Reports\Detailed_transfers;
 use App\Models\Reports\Inventory_low;
 use App\Models\Reports\Inventory_summary;
 use App\Models\Reports\Specific_customer;
@@ -47,6 +48,7 @@ class Reports extends Secure_Controller
     private Summary_discounts $summary_discounts;
     private Summary_payments $summary_payments;
     private Detailed_sales $detailed_sales;
+    private Detailed_transfers $detailed_transfers;
     private Supplier $supplier;
     private Detailed_receivings $detailed_receivings;
     private Inventory_summary $inventory_summary;
@@ -74,6 +76,7 @@ class Reports extends Secure_Controller
         $this->summary_discounts = model(Summary_discounts::class);
         $this->summary_payments = model(Summary_payments::class);
         $this->detailed_sales = model(Detailed_sales::class);
+        $this->detailed_transfers = model(Detailed_transfers::class);
         $this->supplier = model(Supplier::class);
         $this->detailed_receivings = model(Detailed_receivings::class);
         $this->inventory_summary = model(Inventory_summary::class);
@@ -710,6 +713,21 @@ class Reports extends Secure_Controller
         $stock_locations['all'] =  lang('Reports.all');
         $data['stock_locations'] = array_reverse($stock_locations, true);
         $data['mode'] = 'receiving';
+
+        return view('reports/date_input', $data);
+    }
+
+    /**
+     * Transfers date input. Used in app/Config/Routes.php
+     *
+     * @return string
+     * @noinspection PhpUnused
+     */
+    public function date_input_transfers(): string
+    {
+        $stock_locations = $data = $this->stock_location->get_allowed_locations('transfers');
+        $stock_locations['all'] =  lang('Reports.all');
+        $data['stock_locations'] = array_reverse($stock_locations, true);
 
         return view('reports/date_input', $data);
     }
@@ -2013,6 +2031,64 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular_details', $data);
+    }
+
+    /**
+     * @param string $start_date
+     * @param string $end_date
+     * @param string $transfer_type
+     * @param string $location_id
+     * @return string
+     */
+    public function detailed_transfers(string $start_date, string $end_date, string $transfer_type = '0', string $location_id = 'all'): string
+    {
+        $this->clearCache();
+
+        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'location_id' => $location_id];
+
+        $columns = $this->detailed_transfers->getDataColumns();
+        $headers = $columns;
+        $report_data = $this->detailed_transfers->getData($inputs);
+
+        $summary_data = [];
+        $details_data = [];
+
+        foreach ($report_data['summary'] as $key => $row) {
+            $summary_data[] = [
+                'id'                => $row['transfer_id'],
+                'transfer_time'     => to_datetime(strtotime($row['transfer_time'])),
+                'quantity'          => to_quantity_decimals($row['quantity']),
+                'employee_name'     => $row['employee_name'],
+                'location_from_name'=> $row['location_from_name'],
+                'location_to_name'  => $row['location_to_name'],
+                'comment'           => $row['comment']
+            ];
+
+            foreach ($report_data['details'][$key] as $drow) {
+                $details_data[$row['transfer_id']][] = [
+                    $drow['item_number'],
+                    $drow['name'],
+                    $drow['category'],
+                    to_quantity_decimals($drow['quantity'])
+                ];
+            }
+        }
+
+        $summary = $this->detailed_transfers->getSummaryData($inputs);
+        $overall_summary_data = [
+            'total_quantity' => to_quantity_decimals($summary['total_quantity'])
+        ];
+
+        $data = [
+            'title'                => lang('Reports.detailed_transfers_report'),
+            'subtitle'             => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
+            'headers'              => $headers,
+            'summary_data'         => $summary_data,
+            'details_data'         => $details_data,
+            'overall_summary_data' => $overall_summary_data
+        ];
+
+        return view('reports/tabular_details_transfers', $data);
     }
 
     /**
