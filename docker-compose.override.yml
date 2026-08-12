@@ -1,0 +1,20 @@
+services:
+    ospos:
+        build:
+            context: .
+            target: ospos_dev
+            args:
+                - USERID=1000
+                - GROUPID=1000
+        environment:
+            - CI_ENVIRONMENT=development
+            - PHP_TIMEZONE=UTC
+            - XDEBUG_CONFIG=client_host=host.docker.internal
+        volumes:
+            - ./.env:/app/.env:ro
+            - ./app:/app/app
+            - ./public:/app/public
+            - ./writable:/app/writable
+            - ./tests:/app/tests
+            - ./phpunit.xml:/app/phpunit.xml:ro
+            - ./.php-cs-fixer.no-header.php:/app/.php-cs-fixer.no-header.php:ro

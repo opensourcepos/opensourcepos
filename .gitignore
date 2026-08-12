@@ -88,3 +88,4 @@ auth.json
 /app/Database/database.sql
 /writable/cache/settings
 /.env.bak
+phpunit.xml

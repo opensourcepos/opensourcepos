@@ -35,8 +35,8 @@ git-svn-diff.py
 branding/
 
 # Build configs (not needed at runtime)
-composer.json
-composer.lock
+# composer.json and composer.lock are kept in the build context so the
+# ospos_dev stage can install the (dev) dependencies with composer.
 package.json
 package-lock.json
 gulpfile.js
