@@ -42,6 +42,7 @@ return [
     'customer_mailchimp_status'         => 'Estado de Mailchimp',
     'customer_optional'                 => '(Obligatorio para Pagos Vencidos)',
     'customer_required'                 => '(Requerido)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Total',
     'customer_total_spent'              => 'Total Gastado',
     'customers_available_points'        => 'Puntos Disponibles',

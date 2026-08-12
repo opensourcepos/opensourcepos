@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'MailChimp Status',
     'customer_optional'                 => '(Vereist voor te betalen betalingen)',
     'customer_required'                 => '(Vereist)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Totaal',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Beschikbare punten',

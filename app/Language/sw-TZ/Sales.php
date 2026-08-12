@@ -42,6 +42,7 @@ return [
     'customer_mailchimp_status'         => 'Hali ya MailChimp',
     'customer_optional'                 => '(Inahitajika kwa Malipo ya Madeni)',
     'customer_required'                 => '(Inahitajika)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Jumla',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Pointi Zinazopatikana',

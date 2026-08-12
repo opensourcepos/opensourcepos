@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'מצב Mailchimp',
     'customer_optional'                 => 'נדרש עבור תשלומים עתידיים (אופציונאלי)',
     'customer_required'                 => '(נדרש)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'סהכ',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'נקודות זמינות',

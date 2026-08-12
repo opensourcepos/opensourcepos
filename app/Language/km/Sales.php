@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => '',
     'customer_optional'                 => '(ត្រូវការបញ្ចូល ប្រាក់ដែលត្រូវបង់)',
     'customer_required'                 => '(ត្រូវការ)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'សរុប',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'ពិន្ទុដែលប្រើប្រាស់បាន',

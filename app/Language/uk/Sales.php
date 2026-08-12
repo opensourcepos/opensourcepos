@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Статус клієнта mailchimp',
     'customer_optional'                 => '(Потрібно для належних платежів)',
     'customer_required'                 => "(Обов'язково)",
+    'customer_required_error'           => '',
     'customer_total'                    => 'Всього',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Доступні бали',

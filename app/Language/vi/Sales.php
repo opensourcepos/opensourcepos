@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Trạng thái tài khoản Mailchimp',
     'customer_optional'                 => '(Tùy chọn)',
     'customer_required'                 => '(Bắt buộc)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Tổng cộng',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Các điểm sẵn có',

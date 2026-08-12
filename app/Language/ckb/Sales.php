@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'دۆخی بەکارهێنان مایلچیمپ',
     'customer_optional'                 => '(پێویستە بۆئەو پارانەی دەبێت بدرێت)',
     'customer_required'                 => '(پێویستە)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'کۆی گشتی',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'خاڵە بەردەستەکان',

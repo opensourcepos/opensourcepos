@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'حالة بريد ميل تشيمب',
     'customer_optional'                 => '(مطلوب للدفعات المستحقة)',
     'customer_required'                 => '(اجباري)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'المجموع',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'النقاط المتاحة',

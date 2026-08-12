@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Mailchim Status',
     'customer_optional'                 => '(Benötigt für fällige Zahlungen)',
     'customer_required'                 => '(Benötigt)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Gesamtbetrag',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Verfügbare Punkte',

@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Status MailChimp',
     'customer_optional'                 => '(Diperlukan untuk Pembayaran Jatuh Tempo)',
     'customer_required'                 => '(Dibutuhkan)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Total',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Poin tersedia',

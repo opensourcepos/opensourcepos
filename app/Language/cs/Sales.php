@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Stav mailchimp',
     'customer_optional'                 => '(Volitelné)',
     'customer_required'                 => '(Vyžadováno)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Celkem',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Dostupné body',

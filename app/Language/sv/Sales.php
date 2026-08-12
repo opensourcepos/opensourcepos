@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'MailChimp status',
     'customer_optional'                 => '(Krävs för förfallna betalningar)',
     'customer_required'                 => '(Nödvändig)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Totalt',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Tillgängliga poäng',

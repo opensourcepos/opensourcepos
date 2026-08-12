@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'MailChimp durumu',
     'customer_optional'                 => '(Geciken Ödemeler İçin Gerekli)',
     'customer_required'                 => '(Gerekli)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Total',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Var Olan Puanlar',

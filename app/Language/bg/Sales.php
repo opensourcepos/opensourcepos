@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Състояние на Mailchimp',
     'customer_optional'                 => '(Незадължително)',
     'customer_required'                 => '(Задължително)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Обща сума',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Налични точки',

@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Status MailChimp-a',
     'customer_optional'                 => '(Potrebno za odloženo plaćanje)',
     'customer_required'                 => 'Obavezno',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Ukupno',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Dostupni poeni',

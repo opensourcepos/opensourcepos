@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'وضعیت Mailchimp',
     'customer_optional'                 => '(مورد نیاز برای پرداخت مقررات)',
     'customer_required'                 => '(ضروری)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'جمع',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'امتیازهای موجود',

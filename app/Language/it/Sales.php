@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Stato Mailchimp',
     'customer_optional'                 => '(Opzionale)',
     'customer_required'                 => '(Richiesto)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Totale',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Punti Dispnibili',

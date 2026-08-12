@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Mailchimp Statusu',
     'customer_optional'                 => '(Ödənişlərdə tələb olunur)',
     'customer_required'                 => '(Vacib)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Cəmi',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Mövcud ballar',

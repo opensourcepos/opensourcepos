@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'MailChimp電子報行銷狀態',
     'customer_optional'                 => '到期付款需要',
     'customer_required'                 => '必需',
+    'customer_required_error'           => '',
     'customer_total'                    => '總數',
     'customer_total_spent'              => '',
     'customers_available_points'        => '現有積分',

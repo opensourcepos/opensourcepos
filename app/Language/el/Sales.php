@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Κατάσταση Mailchimp',
     'customer_optional'                 => '(Απαραίτητο για πληρωμές επί Πιστώσει)',
     'customer_required'                 => '(Απαραίτητο)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Σύνολο',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Διαθέσιμοι Πόντοι',

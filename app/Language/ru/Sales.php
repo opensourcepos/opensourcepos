@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'Статус Mailchimp',
     'customer_optional'                 => '(Требуется для своевременной оплаты)',
     'customer_required'                 => '(Необходимо)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'Итог',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'Доступные баллы',

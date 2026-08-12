@@ -750,6 +750,13 @@ class Sales extends Secure_Controller
         $data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
         $data['email_receipt'] = $this->sale_lib->is_email_receipt();
         $customer_id = $this->sale_lib->get_customer();
+
+        // Do not allow completing a transaction without selecting a customer
+        if ($customer_id <= 0) {
+            $data['error'] = lang('Sales.customer_required_error');
+            return $this->reload($data);
+        }
+
         $invoice_number = $this->sale_lib->get_invoice_number();
         $data["invoice_number"] = $invoice_number;
         $work_order_number = $this->sale_lib->get_work_order_number();

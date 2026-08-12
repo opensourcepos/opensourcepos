@@ -41,6 +41,7 @@ return [
     'customer_mailchimp_status'         => 'மெயில்சிம்ப் நிலை',
     'customer_optional'                 => '(நிலுவை தொகை வைக்க அவசியம்)',
     'customer_required'                 => '(தேவை)',
+    'customer_required_error'           => '',
     'customer_total'                    => 'மொத்தம்',
     'customer_total_spent'              => '',
     'customers_available_points'        => 'இருப்பு புள்ளிகள்',
