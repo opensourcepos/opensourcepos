@@ -4,7 +4,7 @@
  * @var string $table_headers
  * @var array $filters
  * @var array $stock_locations
- * @var int $stock_location
+ * @var array $stock_location
  * @var array $config
  * @var string|null $start_date
  * @var string|null $end_date
@@ -17,7 +17,25 @@ use App\Models\Employee;
 <?= view('partial/header') ?>
 
 <script type="text/javascript">
+    const stock_locations = <?= json_encode($stock_locations) ?>;
+
     $(document).ready(function() {
+        // Show/hide the quantity column of each stock location based on the checked locations.
+        // No reload needed: the search always returns every location column.
+        const apply_stock_location_columns = function() {
+            const selected = ($('#stock_location').val() || []).map(String);
+            Object.keys(stock_locations).forEach(function(location_id) {
+                const field = 'location_' + location_id;
+                if (selected.includes(String(location_id))) {
+                    $('#table').bootstrapTable('showColumn', field);
+                } else {
+                    $('#table').bootstrapTable('hideColumn', field);
+                }
+            });
+        };
+
+        $('#stock_location').on('change', apply_stock_location_columns);
+
         $('#generate_barcodes').click(function() {
             window.open(
                 'index.php/items/generateBarcodes/' + table_support.selected_ids().join(':'),
@@ -71,6 +89,8 @@ use App\Models\Employee;
                 })
             }
         });
+
+        apply_stock_location_columns();
     });
 </script>
 
@@ -109,14 +129,17 @@ use App\Models\Employee;
         <?php
         if (count($stock_locations) > 1) {
             echo form_dropdown(
-                'stock_location',
+                'stock_location[]',
                 $stock_locations,
                 $stock_location,
                 [
-                    'id'         => 'stock_location',
-                    'class'      => 'selectpicker show-menu-arrow',
-                    'data-style' => 'btn-default btn-sm',
-                    'data-width' => 'fit'
+                    'id'                        => 'stock_location',
+                    'class'                     => 'selectpicker show-menu-arrow',
+                    'multiple'                  => true,
+                    'data-selected-text-format' => 'count > 1',
+                    'data-style'                => 'btn-default btn-sm',
+                    'data-width'                => 'fit',
+                    'title'                     => lang('Items.quantity')
                 ]
             );
         }

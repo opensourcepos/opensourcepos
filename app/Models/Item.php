@@ -192,19 +192,19 @@ class Item extends Model
             $builder->select('MAX(inventory.trans_location) AS trans_location');
             $builder->select('MAX(inventory.trans_inventory) AS trans_inventory');
 
-            if ($filters['stock_location_id'] > -1) {
-                $builder->select('MAX(item_quantities.item_id) AS qty_item_id');
-                $builder->select('MAX(item_quantities.location_id) AS location_id');
-                $builder->select('MAX(item_quantities.quantity) AS quantity');
+            if (!empty($filters['stock_locations'])) {
+                foreach ($filters['stock_locations'] as $location_id) {
+                    $location_id = (int)$location_id;
+                    $builder->select("MAX(CASE WHEN item_quantities.location_id = $location_id THEN item_quantities.quantity END) AS location_$location_id");
+                }
             }
         }
 
         $builder->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
         $builder->join('inventory AS inventory', 'inventory.trans_items = items.item_id');
 
-        if ($filters['stock_location_id'] > -1) {
-            $builder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id');
-            $builder->where('location_id', $filters['stock_location_id']);
+        if (!empty($filters['stock_locations'])) {
+            $builder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id', 'left');
         }
 
         $where = empty($config['date_or_time_format'])
@@ -412,7 +412,7 @@ class Item extends Model
     /**
      * Gets information about multiple items
      */
-    public function get_multiple_info(array $item_ids, int $location_id): ResultInterface
+    public function get_multiple_info(array $item_ids, int|array $location_id): ResultInterface
     {
         $format = $this->db->escape(dateformat_mysql());
 
@@ -425,11 +425,23 @@ class Item extends Model
         $builder->select('MAX(quantity) as quantity');
 
         $builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-        $builder->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
+        $builder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id', 'left');
         $builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND sale_id IS NULL AND receiving_id IS NULL', 'left');
         $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 
-        $builder->where('location_id', $location_id);
+        $location_ids = array_values(array_map('intval', (array)$location_id));
+        $location_ids = array_filter($location_ids, static fn (int $id): bool => $id > 0);
+
+        if (count($location_ids) === 1) {
+            $builder->where('item_quantities.location_id', $location_ids[0]);
+            $builder->select("MAX(CASE WHEN item_quantities.location_id = {$location_ids[0]} THEN item_quantities.quantity END) AS location_{$location_ids[0]}");
+        } elseif (count($location_ids) > 1) {
+            foreach ($location_ids as $loc_id) {
+                $builder->select("MAX(CASE WHEN item_quantities.location_id = $loc_id THEN item_quantities.quantity END) AS location_$loc_id");
+            }
+            $builder->whereIn('item_quantities.location_id', $location_ids);
+        }
+
         $builder->whereIn('items.item_id', $item_ids);
 
         $builder->groupBy('items.item_id');

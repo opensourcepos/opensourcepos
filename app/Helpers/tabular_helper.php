@@ -404,14 +404,39 @@ function item_headers(): array
 
 /**
  * Get the header for the items tabular view
+ *
+ * @param array<int, string> $stock_locations map of location_id => location_name to display as quantity columns
  */
-function get_items_manage_table_headers(): string
+function get_items_manage_table_headers(array $stock_locations = []): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
     $definitionsWithTypes = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
     $headers = item_headers();
+
+    // Replace the generic quantity column with one column per stock location
+    $headers = array_values(array_filter($headers, static function (array $header): bool {
+        return ! array_key_exists('quantity', $header);
+    }));
+
+    // Insert a total column right after the unit price (Retail Price) column
+    $position = 0;
+    foreach ($headers as $index => $header) {
+        if (array_key_exists('unit_price', $header)) {
+            $position = $index + 1;
+            break;
+        }
+    }
+    array_splice($headers, $position, 0, [['total' => lang('Reports.total_quantity'), 'sortable' => false]]);
+
+    if (empty($stock_locations)) {
+        $headers[] = ['quantity' => lang('Items.quantity')];
+    } else {
+        foreach ($stock_locations as $location_id => $location_name) {
+            $headers[] = ['location_' . $location_id => $location_name, 'sortable' => false];
+        }
+    }
 
     if ($config['use_destination_based_tax']) {
         $headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => false];
@@ -482,6 +507,15 @@ function get_item_data_row(object $item): array
 
     $definition_names = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
+    $location_quantities = [];
+    $total_quantity = 0;
+    foreach (get_object_vars($item) as $property => $value) {
+        if (preg_match('/^location_(\d+)$/', $property, $matches)) {
+            $location_quantities[$property] = to_quantity_decimals($value);
+            $total_quantity += (float) $value;
+        }
+    }
+
     $columns = [
         'items.item_id' => $item->item_id,
         'item_number'   => $item->item_number,
@@ -490,10 +524,13 @@ function get_item_data_row(object $item): array
         'company_name'  => $item->company_name,    // TODO: This isn't in the items table. Should this be here?
         'cost_price'    => to_currency($item->cost_price),
         'unit_price'    => to_currency($item->unit_price),
-        'quantity'      => to_quantity_decimals($item->quantity),
+        'total'         => to_quantity_decimals((string) $total_quantity),
+        'quantity'      => isset($item->quantity) ? to_quantity_decimals($item->quantity) : null,
         'tax_percents'  => !$tax_percents ? '-' : $tax_percents,
         'item_pic'      => $image
     ];
+
+    $columns = array_merge($columns, $location_quantities);
 
     $icons = [
         'inventory' => anchor(

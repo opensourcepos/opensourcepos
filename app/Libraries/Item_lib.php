@@ -37,12 +37,41 @@ class Item_lib
     }
 
     /**
-     * @param string|null $location
+     * @param array|string|null $location
      * @return void
      */
-    public function set_item_location(?string $location): void
+    public function set_item_location(array|string|null $location): void
     {
+        if (is_array($location)) {
+            $location = $location[0] ?? null;
+        }
+
         $this->session->set('item_location', $location);
+    }
+
+    /**
+     * Returns the stock locations that should be shown as quantity columns in the item list.
+     *
+     * @return list<int>
+     */
+    public function get_item_locations(): array
+    {
+        $locations = $this->session->get('item_locations');
+
+        if (empty($locations)) {
+            $locations = [(int)$this->get_item_location()];
+        }
+
+        return array_values(array_map('intval', $locations));
+    }
+
+    /**
+     * @param array|int $locations
+     * @return void
+     */
+    public function set_item_locations(array|int $locations): void
+    {
+        $this->session->set('item_locations', array_values(array_map('intval', (array)$locations)));
     }
 
     /**

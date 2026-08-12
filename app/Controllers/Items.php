@@ -75,14 +75,26 @@ class Items extends Secure_Controller
     {
         $this->session->set('allow_temp_items', 0);
 
-        $data['table_headers'] = get_items_manage_table_headers();
+        $allowed_locations = $this->stock_location->get_allowed_locations();
+
+        // Restore stock locations from URL or session (used to default the column checkboxes)
+        $stock_requested = $this->request->getGet('stock_location');
+        $selected_locations = $stock_requested !== null
+            ? array_map('intval', is_array($stock_requested) ? $stock_requested : [$stock_requested])
+            : $this->item_lib->get_item_locations();
+        $selected_locations = array_values(array_intersect($selected_locations, array_map('intval', array_keys($allowed_locations))));
+
+        if (empty($selected_locations)) {
+            $selected_locations = $this->item_lib->get_item_locations();
+        }
+
+        $this->item_lib->set_item_locations($selected_locations);
+
+        $data['table_headers'] = get_items_manage_table_headers($allowed_locations);
 
         // Restore stock_location from URL or session
-        $stockLocation = $this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT);
-        $data['stock_location'] = $stockLocation
-            ? $stockLocation
-            : $this->item_lib->get_item_location();
-        $data['stock_locations'] = $this->stock_location->get_allowed_locations();
+        $data['stock_location'] = $selected_locations;
+        $data['stock_locations'] = $allowed_locations;
 
         // Filters that will be loaded in the multiselect dropdown
         $data['filters'] = [
@@ -115,12 +127,25 @@ class Items extends Secure_Controller
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
+        $allowed_locations = $this->stock_location->get_allowed_locations();
+        $stock_requested = $this->request->getGet('stock_location');
+        $selected_locations = $stock_requested !== null
+            ? array_map('intval', is_array($stock_requested) ? $stock_requested : [$stock_requested])
+            : $this->item_lib->get_item_locations();
+        $selected_locations = array_values(array_intersect($selected_locations, array_map('intval', array_keys($allowed_locations))));
+
+        if (empty($selected_locations)) {
+            $selected_locations = $this->item_lib->get_item_locations();
+        }
+
+        $this->item_lib->set_item_locations($selected_locations);
+
         $definition_names = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
             'end_date'          => $this->request->getGet('end_date'),
-            'stock_location_id' => $this->item_lib->get_item_location(),
+            'stock_locations'   => array_keys($allowed_locations),
             'empty_upc'         => false,
             'low_inventory'     => false,
             'is_serialized'     => false,
@@ -280,7 +305,8 @@ class Items extends Secure_Controller
      */
     public function getRow(string $item_ids): ResponseInterface    // TODO: An array would be better for parameter.
     {
-        $item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
+        $allowed_locations = $this->stock_location->get_allowed_locations();
+        $item_infos = $this->item->get_multiple_info(explode(':', $item_ids), array_keys($allowed_locations));
 
         $result = [];
 
