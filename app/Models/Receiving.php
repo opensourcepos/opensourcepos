@@ -105,6 +105,7 @@ class Receiving extends Model
         $attribute = model(Attribute::class);
         $inventory = model('Inventory');
         $item = model(Item::class);
+        $item_lot = model(Item_lot::class);
         $item_quantity = model(Item_quantity::class);
         $supplier = model(Supplier::class);
 
@@ -170,6 +171,9 @@ class Receiving extends Model
                 $item_data['item_location']
             );
 
+            // Track the received quantity as a lot for this receiving
+            $item_lot->add_quantity($item_data['item_id'], $receiving_id, $item_data['item_location'], $items_received);
+
             $recv_remarks = 'RECV ' . $receiving_id;
             $inv_data = [
                 'trans_date'      => date('Y-m-d H:i:s'),
@@ -225,6 +229,7 @@ class Receiving extends Model
             $items = $this->get_receiving_items($receiving_id)->getResultArray();
 
             $inventory = model('Inventory');
+            $item_lot = model(Item_lot::class);
             $item_quantity = model(Item_quantity::class);
 
             foreach ($items as $item) {
@@ -242,6 +247,9 @@ class Receiving extends Model
 
                 // Update quantities
                 $item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
+
+                // Remove the received stock from the lot
+                $item_lot->add_quantity($item['item_id'], $receiving_id, $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
             }
         }
 
