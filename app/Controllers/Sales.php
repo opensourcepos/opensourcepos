@@ -1719,6 +1719,25 @@ class Sales extends Secure_Controller
     }
 
     /**
+     * Cancels a suspended sale from the suspended sales list.
+     * This releases any stock that was reserved by the suspended sale.
+     * Used in app/Views/sales/suspended.php.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postDeleteSuspended(): ResponseInterface|string
+    {
+        $sale_id = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
+
+        if ($sale_id > 0) {
+            $this->sale->delete_suspended_sale($sale_id);
+        }
+
+        return $this->reload();
+    }
+
+    /**
      * Show Keyboard shortcut modal. Used in app/Views/sales/register.php
      *
      * @return string

@@ -539,6 +539,7 @@ class Sale extends Model
         $inventory = model('Inventory');
         $item = model(Item::class);
 
+        $item_lot = model(Item_lot::class);
         $item_quantity = model(Item_quantity::class);
 
         if ($saleId != NEW_ENTRY) {
@@ -564,6 +565,12 @@ class Sale extends Model
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
+
+        if ($saleId != NEW_ENTRY) {
+            // Return any stock that was reserved while the sale was suspended so that the
+            // new quantity adjustment below reflects the current cart contents.
+            $this->release_suspended_reservations($saleId, $employeeId);
+        }
 
         $builder = $this->db->table('sales');
         if ($saleId == NEW_ENTRY) {
@@ -633,7 +640,7 @@ class Sale extends Model
             $builder = $this->db->table('sales_items');
             $builder->insert($sales_items_data);
 
-            if ($cur_item_info->stock_type == HAS_STOCK && $saleStatus == COMPLETED) {    // TODO: === ?
+            if ($cur_item_info->stock_type == HAS_STOCK && ($saleStatus == COMPLETED || $saleStatus == SUSPENDED)) {    // TODO: === ?
                 // Update stock quantity if item type is a standard stock item and the sale is a standard sale
                 $item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
 
@@ -653,7 +660,7 @@ class Sale extends Model
                 }
 
                 // Inventory Count Details
-                $sale_remarks = 'POS ' . $saleId;    // TODO: Use string interpolation here.
+                $sale_remarks = ($saleStatus == SUSPENDED ? 'SUSPENDED ' : 'POS ') . $saleId;    // TODO: Use string interpolation here.
                 $inv_data = [
                     'trans_date'      => date('Y-m-d H:i:s'),
                     'trans_items'     => $item_data['item_id'],
@@ -664,6 +671,18 @@ class Sale extends Model
                 ];
 
                 $inventory->insert($inv_data, false);
+
+                if ($saleStatus == COMPLETED) {
+                    // Consume stock from supplier lots FIFO, or credit returned stock
+                    if ($item_data['quantity'] < 0) {
+                        $item_lot->return_stock($item_data['item_id'], $item_data['item_location'], abs((float)$item_data['quantity']), $saleId, (int)$item_data['line']);
+                    } else {
+                        $item_lot->consume_and_record($item_data['item_id'], $item_data['item_location'], (float)$item_data['quantity'], $saleId, (int)$item_data['line']);
+                    }
+                } else {
+                    // Record the reservation so it can be released if the sale is cancelled or completed
+                    $this->save_suspended_reservation($saleId, $item_data['item_id'], $item_data['item_location'], (float)$item_data['quantity']);
+                }
             }
 
             $attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $saleId);
@@ -800,11 +819,17 @@ class Sale extends Model
 
         $sale_status = $this->get_sale_status($sale_id);
 
+        if ($update_inventory && $sale_status == SUSPENDED) {
+            // Return the stock that was reserved while the sale was suspended
+            $this->release_suspended_reservations($sale_id, $employee_id);
+        }
+
         if ($update_inventory && $sale_status == COMPLETED) {
             // Defect, not all item deletions will be undone?
             // Get array with all the items involved in the sale to update the inventory tracking
             $inventory = model('Inventory');
             $item = model(Item::class);
+            $item_lot = model(Item_lot::class);
             $item_quantity = model(Item_quantity::class);
 
             $items = $this->get_sale_items($sale_id)->getResultArray();
@@ -827,6 +852,9 @@ class Sale extends Model
 
                     // Update quantities
                     $item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
+
+                    // Restore the lots that were consumed by this sale line
+                    $item_lot->restore_lots($sale_id, (int)$item_data['line'], $item_data['item_id'], $item_data['item_location']);
                 }
             }
         }
@@ -1131,6 +1159,7 @@ class Sale extends Model
                     MAX(items.item_number) AS item_number,
                     MAX(items.category) AS category,
                     MAX(items.supplier_id) AS supplier_id,
+                    GROUP_CONCAT(DISTINCT CASE WHEN sales_items_lots.receiving_id = 0 THEN ' . $this->db->escape(lang('Receivings.return')) . ' ELSE IFNULL(lot_supplier.company_name, CONCAT(lot_supplier_p.first_name, " ", lot_supplier_p.last_name)) END SEPARATOR ", ") AS supplier_name,
                     MAX(sales_items.quantity_purchased) AS quantity_purchased,
                     MAX(sales_items.item_cost_price) AS item_cost_price,
                     MAX(sales_items.item_unit_price) AS item_unit_price,
@@ -1166,6 +1195,14 @@ class Sale extends Model
                     ON sales.employee_id = employee.person_id
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items_taxes_temp') . ' AS sales_items_taxes
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
+                LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items_lots') . ' AS sales_items_lots
+                    ON sales_items.sale_id = sales_items_lots.sale_id AND sales_items.line = sales_items_lots.line
+                LEFT OUTER JOIN ' . $this->db->prefixTable('receivings') . ' AS lot_receivings
+                    ON sales_items_lots.receiving_id = lot_receivings.receiving_id
+                LEFT OUTER JOIN ' . $this->db->prefixTable('suppliers') . ' AS lot_supplier
+                    ON lot_receivings.supplier_id = lot_supplier.person_id
+                LEFT OUTER JOIN ' . $this->db->prefixTable('people') . ' AS lot_supplier_p
+                    ON lot_supplier.person_id = lot_supplier_p.person_id
                 WHERE ' . $where . '
                 GROUP BY sale_id, item_id, line
             )';
@@ -1318,6 +1355,8 @@ class Sale extends Model
             $dinner_table->release($dinner_table_id);
         }
 
+        $this->release_suspended_reservations($sale_id);
+
         $this->update_sale_status($sale_id, CANCELED);
 
         $this->db->transComplete();
@@ -1349,12 +1388,87 @@ class Sale extends Model
         $builder = $this->db->table('sales_items');
         $builder->delete(['sale_id' => $sale_id]);
 
+        $builder = $this->db->table('sales_items_lots');
+        $builder->delete(['sale_id' => $sale_id]);
+
         $builder = $this->db->table('sales_taxes');
         $builder->delete(['sale_id' => $sale_id]);
 
         $this->db->transComplete();
 
         return $this->db->transStatus();
+    }
+
+    /**
+     * Records the stock reservation for an item when a sale is suspended.
+     * The quantity has already been decremented by the caller; this only tracks it
+     * so that it can be released when the sale is completed, cancelled or re-suspended.
+     */
+    public function save_suspended_reservation(int $sale_id, int $item_id, int $location_id, float $quantity): void
+    {
+        $builder = $this->db->table('suspended_sales_reservations');
+        $existing = $builder->where('sale_id', $sale_id)
+            ->where('item_id', $item_id)
+            ->where('location_id', $location_id)
+            ->get()
+            ->getRow();
+
+        if ($existing === null) {
+            $builder->insert([
+                'sale_id'           => $sale_id,
+                'item_id'           => $item_id,
+                'location_id'       => $location_id,
+                'quantity_reserved' => $quantity
+            ]);
+        } else {
+            $builder->where('sale_id', $sale_id)
+                ->where('item_id', $item_id)
+                ->where('location_id', $location_id)
+                ->update(['quantity_reserved' => $quantity]);
+        }
+    }
+
+    /**
+     * Releases the stock reservation for a suspended sale, returning the reserved
+     * quantity to the item quantities table. Called when a suspended sale is
+     * completed, cancelled, discarded or re-suspended.
+     */
+    public function release_suspended_reservations(int $sale_id, ?int $employee_id = null): bool
+    {
+        $builder = $this->db->table('suspended_sales_reservations');
+        $reservations = $builder->where('sale_id', $sale_id)->get()->getResult();
+
+        if (empty($reservations)) {
+            return true;
+        }
+
+        // inventory.trans_user is NOT NULL: fall back to the logged-in employee when none was provided
+        if ($employee_id === null) {
+            $employee = model(Employee::class);
+            $employee_info = $employee->get_logged_in_employee_info();
+            $employee_id = ($employee_info !== false && isset($employee_info->person_id)) ? $employee_info->person_id : 0;
+        }
+
+        $inventory = model('Inventory');
+        $item_quantity = model(Item_quantity::class);
+
+        foreach ($reservations as $reservation) {
+            $item_quantity->change_quantity($reservation->item_id, $reservation->location_id, (float)$reservation->quantity_reserved);
+
+            $inv_data = [
+                'trans_date'      => date('Y-m-d H:i:s'),
+                'trans_items'     => $reservation->item_id,
+                'trans_user'      => $employee_id,
+                'trans_comment'   => 'Releasing suspended sale ' . $sale_id,
+                'trans_location'  => $reservation->location_id,
+                'trans_inventory' => $reservation->quantity_reserved
+            ];
+            $inventory->insert($inv_data, false);
+        }
+
+        $builder->where('sale_id', $sale_id)->delete();
+
+        return true;
     }
 
     /**
@@ -1535,3 +1649,4 @@ class Sale extends Model
         }
     }
 }
+
