@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Attribute;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
+use JsonException;
 
 require_once('Secure_Controller.php');
 
@@ -64,8 +65,14 @@ class Attributes extends Secure_Controller
      */
     public function postSaveAttributeValue(): ResponseInterface
     {
+        $attributeValue = $this->request->getPost('attribute_value');
+
+        if (!is_string($attributeValue) || $attributeValue === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->saveAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $attributeValue,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
             $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT) ?? false,
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
@@ -81,8 +88,14 @@ class Attributes extends Secure_Controller
      */
     public function postDeleteDropdownAttributeValue(): ResponseInterface
     {
+        $attributeValue = $this->request->getPost('attribute_value');
+
+        if (!is_string($attributeValue) || $attributeValue === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->deleteDropdownAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $attributeValue,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
 
@@ -132,11 +145,25 @@ class Attributes extends Secure_Controller
 
         $definition_name = $definition_data['definition_name'];
 
+        if ($definition_id == NO_DEFINITION_ID) {
+            try {
+                $definition_values = json_decode($this->request->getPost('definition_values') ?? '', false, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                $definition_values = null;
+            }
+
+            if (!is_array($definition_values) || array_filter($definition_values, static fn ($value) => !is_string($value)) !== []) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
+                    'id'      => NEW_ENTRY
+                ]);
+            }
+        }
+
         if ($this->attribute->saveDefinition($definition_data, $definition_id)) {
             // New definition
             if ($definition_id == NO_DEFINITION_ID) {
-                $definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
-
                 foreach ($definition_values as $definition_value) {
                     $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
                 }
