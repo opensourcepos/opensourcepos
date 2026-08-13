@@ -27,7 +27,7 @@
     "require": {
         "php": "^8.2",
         "ext-intl": "*",
-        "codeigniter4/framework": "4.7.2",
+        "codeigniter4/framework": "4.7.4",
         "dompdf/dompdf": "^3.1.6",
         "ezyang/htmlpurifier": "^4.17",
         "laminas/laminas-escaper": "2.18.0",

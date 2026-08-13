@@ -397,12 +397,10 @@ class Attribute extends Model
 
                 if (!$success) {
                     $affected_items = $this->get_items_by_value($attribute->attribute_value, $definition_id);
-                    foreach ($affected_items as $affected_item) {
-                        $affected_items[] = $affected_item['item_id'];
-                    }
+                    $affected_item_ids = array_column($affected_items, 'item_id');
 
-                    log_message('error', "Attribute_value: '$attribute->attribute_value' cannot be converted to $to. Affected Items: " . implode(',', $affected_items));
-                    unset($affected_items);
+                    log_message('error', "Attribute_value: '$attribute->attribute_value' cannot be converted to $to. Affected Items: " . implode(',', $affected_item_ids));
+                    unset($affected_items, $affected_item_ids);
                 }
             }
         }
