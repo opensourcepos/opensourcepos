@@ -11,7 +11,6 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
-use Config\Database;
 
 class ItemsCsvImportTest extends CIUnitTestCase
 {
@@ -19,9 +18,9 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     protected $migrate = true;
     protected $migrateOnce = true;
-    protected $seed = '';
+    protected $seed = 'TestDatabaseBootstrapSeeder';
     protected $seedOnce = true;
-    protected $refresh = true;
+    protected $refresh = false;
     protected $namespace = null;
 
     protected $item;
@@ -31,13 +30,6 @@ class ItemsCsvImportTest extends CIUnitTestCase
     protected $attribute;
     protected $stock_location;
     protected $supplier;
-
-    public static function setUpBeforeClass(): void
-    {
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
 
     protected function setUp(): void
     {

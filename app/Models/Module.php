@@ -32,10 +32,10 @@ class Module extends Model
         if ($query->getNumRows() == 1) {    // TODO: ===
             $row = $query->getRow();
 
-            return lang($row->name_lang_key);
+            return lang('Module.' . $row->module_id);
         }
 
-        return lang('Errors.unknown');
+        return lang('Error.unknown');
     }
 
     /**
@@ -50,7 +50,7 @@ class Module extends Model
         if ($query->getNumRows() == 1) {    // TODO: ===
             $row = $query->getRow();
 
-            return lang($row->desc_lang_key);
+            return lang('Module.' . $row->module_id . '_desc');
         }
 
         return lang('Errors.unknown');

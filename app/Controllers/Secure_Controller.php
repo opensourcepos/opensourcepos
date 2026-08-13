@@ -40,10 +40,6 @@ class Secure_Controller extends BaseController
         $config = config(OSPOS::class)->settings;
         $validation = Services::validation();
 
-        if (!$this->employee->is_logged_in()) {
-            throw new AccessDeniedRedirectException(base_url('login'));
-        }
-
         $logged_in_employee_info = $this->employee->get_logged_in_employee_info();
         if (
             !$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)

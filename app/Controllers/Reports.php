@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\AccessDeniedRedirectException;
 use App\Models\Attribute;
 use App\Models\Customer;
 use App\Models\Stock_location;
@@ -85,8 +86,7 @@ class Reports extends Secure_Controller
 
             // Check access to report submodule
             if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
-                header('Location: ' . base_url('no_access/reports/reports_' . $submodule_id));
-                exit();
+                throw new AccessDeniedRedirectException(base_url('no_access/reports/reports_' . $submodule_id));
             }
         }
 

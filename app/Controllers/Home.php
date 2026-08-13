@@ -3,13 +3,22 @@
 namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
+use App\Models\Employee;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 
 class Home extends Secure_Controller
 {
     public function __construct()
     {
+        $method_name = Services::request()->getUri()->getSegment(2);
+
+        if ($method_name === 'logout') {
+            $this->employee = model(Employee::class);
+            return;
+        }
+
         parent::__construct('home', null, 'home');
     }
 

@@ -133,7 +133,7 @@ class Sales extends Secure_Controller
         $personId = $this->session->get('person_id');
 
         if (!$this->employee->has_grant('reports_sales', $personId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         }
 
         $saleInfo = $this->sale->get_info($rowId)->getRow();
@@ -968,7 +968,7 @@ class Sales extends Secure_Controller
         $personId = $this->session->get('person_id');
 
         if (!$this->employee->has_grant('reports_sales', $personId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         }
 
         $saleData = $this->_load_sale_data($saleId);
@@ -1024,7 +1024,7 @@ class Sales extends Secure_Controller
         $personId = $this->session->get('person_id');
 
         if (!$this->employee->has_grant('reports_sales', $personId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         }
 
         $saleData = $this->_load_sale_data($saleId);
@@ -1457,7 +1457,7 @@ class Sales extends Secure_Controller
         $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
         if (!$has_grant) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         } else {
             $sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
 
@@ -1484,7 +1484,7 @@ class Sales extends Secure_Controller
         $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
         if (!$has_grant) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         } else {
             $sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
 
@@ -1512,7 +1512,7 @@ class Sales extends Secure_Controller
         $personId = $this->session->get('person_id');
 
         if (!$this->employee->has_grant('reports_sales', $personId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         }
 
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
