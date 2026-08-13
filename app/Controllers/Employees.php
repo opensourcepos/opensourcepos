@@ -169,6 +169,14 @@ class Employees extends Persons
             }
         }
 
+        if (!empty($this->request->getPost('password')) && ENVIRONMENT != 'testing' && filter_var(getenv('DISALLOW_PASSWORD_CHANGE'), FILTER_VALIDATE_BOOLEAN)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Employees.error_password_change_disallowed'),
+                'id'      => $employee_id
+            ]);
+        }
+
         // Password has been changed OR first time password set
         if (!empty($this->request->getPost('password')) && ENVIRONMENT != 'testing') {
             $exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -186,6 +194,24 @@ class Employees extends Persons
                 'language_code' => $exploded[0],
                 'language'      => $exploded[1]
             ];
+        }
+
+        if (filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN)) {
+            $current_grant_ids = $employee_id != NEW_ENTRY
+                ? array_column($this->employee->get_employee_grants($employee_id), 'permission_id')
+                : [];
+            $submitted_grant_ids = array_column($grants_array, 'permission_id');
+
+            sort($current_grant_ids);
+            sort($submitted_grant_ids);
+
+            if ($current_grant_ids !== $submitted_grant_ids) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Employees.error_grant_change_disallowed'),
+                    'id'      => $employee_id
+                ]);
+            }
         }
 
         if ($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id)) {

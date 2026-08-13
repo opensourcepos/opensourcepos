@@ -161,9 +161,114 @@ class EmployeeTest extends CIUnitTestCase
     public function testHasGrantReturnsFalseForMissingGrant(): void
     {
         $employeeModel = model(Employee::class);
-        
+
         $result = $employeeModel->has_grant('nonexistent_permission', 1);
-        
+
         $this->assertFalse($result);
+    }
+
+    protected function createEmployeeWithGrants(array $grantsData): int
+    {
+        $personData = [
+            'first_name'   => 'Grant',
+            'last_name'    => 'Tester',
+            'email'        => 'granttester@test.com',
+            'phone_number' => '555-5678'
+        ];
+
+        $employeeData = [
+            'username'      => 'granttester',
+            'password'      => password_hash('password123', PASSWORD_DEFAULT),
+            'hash_version'  => 2,
+            'language_code' => 'en',
+            'language'      => 'english'
+        ];
+
+        $employeeModel = model(Employee::class);
+        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+
+        return $personData['person_id'];
+    }
+
+    public function testExistingEmployeeKeepsOriginalGrantsWhenGrantChangeDisallowed(): void
+    {
+        $employeeId = $this->createEmployeeWithGrants([
+            ['permission_id' => 'customers', 'menu_group' => 'home']
+        ]);
+
+        putenv('DISALLOW_GRANT_CHANGE=true');
+
+        $employeeModel = model(Employee::class);
+        $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
+        $employeeData = ['username' => 'granttester', 'language_code' => 'en', 'language' => 'english'];
+        $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
+
+        $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);
+
+        putenv('DISALLOW_GRANT_CHANGE');
+
+        $this->assertTrue($employeeModel->has_grant('customers', $employeeId));
+        $this->assertFalse($employeeModel->has_grant('sales', $employeeId));
+    }
+
+    public function testNewEmployeeCreationWithGrantsRejectedWhenGrantChangeDisallowed(): void
+    {
+        putenv('DISALLOW_GRANT_CHANGE=true');
+
+        $result = $this->createEmployeeWithGrantsExpectingFailure([
+            ['permission_id' => 'customers', 'menu_group' => 'home']
+        ]);
+
+        putenv('DISALLOW_GRANT_CHANGE');
+
+        $this->assertFalse($result);
+    }
+
+    protected function createEmployeeWithGrantsExpectingFailure(array $grantsData): bool
+    {
+        $personData = [
+            'first_name'   => 'Rejected',
+            'last_name'    => 'Tester',
+            'email'        => 'rejectedtester@test.com',
+            'phone_number' => '555-9999'
+        ];
+
+        $employeeData = [
+            'username'      => 'rejectedtester',
+            'password'      => password_hash('password123', PASSWORD_DEFAULT),
+            'hash_version'  => 2,
+            'language_code' => 'en',
+            'language'      => 'english'
+        ];
+
+        $employeeModel = model(Employee::class);
+
+        return $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+    }
+
+    public function testExistingEmployeeGrantsUpdateWhenGrantChangeAllowed(): void
+    {
+        $employeeId = $this->createEmployeeWithGrants([
+            ['permission_id' => 'customers', 'menu_group' => 'home']
+        ]);
+
+        $employeeModel = model(Employee::class);
+        $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
+        $employeeData = ['username' => 'granttester', 'language_code' => 'en', 'language' => 'english'];
+        $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
+
+        $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);
+
+        $this->assertFalse($employeeModel->has_grant('customers', $employeeId));
+        $this->assertTrue($employeeModel->has_grant('sales', $employeeId));
+    }
+
+    public function testNewEmployeeCreationWithGrantsSucceedsWhenGrantChangeAllowed(): void
+    {
+        $result = $this->createEmployeeWithGrantsExpectingFailure([
+            ['permission_id' => 'customers', 'menu_group' => 'home']
+        ]);
+
+        $this->assertTrue((bool) $result);
     }
 }

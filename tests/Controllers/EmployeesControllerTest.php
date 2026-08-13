@@ -206,14 +206,94 @@ class EmployeesControllerTest extends CIUnitTestCase
         $permissionsRequested = ['customers', 'employees', 'sales', 'config'];
         $userPermissions = ['customers', 'sales'];
         $isAdmin = true;
-        
+
         $granted = [];
         foreach ($permissionsRequested as $perm) {
             if ($isAdmin || in_array($perm, $userPermissions)) {
                 $granted[] = $perm;
             }
         }
-        
+
         $this->assertEquals($permissionsRequested, $granted);
+    }
+
+    public function testGrantChangeRequestFailsWhenGrantChangeDisallowed(): void
+    {
+        $employeeId = $this->createNonAdminEmployee();
+        $this->loginAsAdmin();
+
+        putenv('DISALLOW_GRANT_CHANGE=true');
+
+        $response = $this->post('/employees/save/' . $employeeId, [
+            'first_name'      => 'NonAdmin',
+            'last_name'       => 'User',
+            'email'           => 'nonadmin@test.com',
+            'username'        => 'nonadmin',
+            'grant_employees' => 'employees'
+        ]);
+
+        putenv('DISALLOW_GRANT_CHANGE');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testNewEmployeeCreationWithGrantsFailsWhenGrantChangeDisallowed(): void
+    {
+        $this->loginAsAdmin();
+
+        putenv('DISALLOW_GRANT_CHANGE=true');
+
+        $response = $this->post('/employees/save', [
+            'first_name'      => 'Brand',
+            'last_name'       => 'New',
+            'email'           => 'brandnew@test.com',
+            'username'        => 'brandnew',
+            'password'        => 'password123',
+            'grant_customers' => 'customers'
+        ]);
+
+        putenv('DISALLOW_GRANT_CHANGE');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testGrantChangeRequestSucceedsWhenGrantChangeAllowed(): void
+    {
+        $employeeId = $this->createNonAdminEmployee();
+        $this->loginAsAdmin();
+
+        $response = $this->post('/employees/save/' . $employeeId, [
+            'first_name'      => 'NonAdmin',
+            'last_name'       => 'User',
+            'email'           => 'nonadmin@test.com',
+            'username'        => 'nonadmin',
+            'grant_employees' => 'employees'
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testNewEmployeeCreationWithGrantsSucceedsWhenGrantChangeAllowed(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/employees/save', [
+            'first_name'      => 'Brand',
+            'last_name'       => 'New2',
+            'email'           => 'brandnew2@test.com',
+            'username'        => 'brandnew2',
+            'password'        => 'password123',
+            'grant_customers' => 'customers'
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
     }
 }
