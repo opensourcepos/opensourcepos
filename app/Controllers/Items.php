@@ -13,9 +13,11 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
+use Config\Database;
 use Config\OSPOS;
 use Config\Services;
 use Exception;
@@ -25,6 +27,7 @@ require_once('Secure_Controller.php');
 
 class Items extends Secure_Controller
 {
+    private BaseConnection $db;
     private BaseHandler $image;
     private Barcode_lib $barcode_lib;
     private Item_lib $item_lib;
@@ -43,6 +46,8 @@ class Items extends Secure_Controller
     public function __construct()
     {
         parent::__construct('items');
+
+        $this->db = Database::connect();
 
         $this->session = Services::session();
 
@@ -679,7 +684,8 @@ class Items extends Secure_Controller
         $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
 
         // Wrap the entire save sequence in a single transaction for atomicity
-        $this->db->transBegin();
+        $db = db_connect();
+        $db->transBegin();
 
         $success = $this->item->save_value($itemData, $itemId);
         $newItem = false;
@@ -748,14 +754,14 @@ class Items extends Secure_Controller
 
         // Check all success conditions before committing
         if ($success && $uploadSuccess) {
-            $this->db->transCommit();
+            $db->transCommit();
             $message = lang('Items.successful_' . ($newItem ? 'adding' : 'updating')) . ' ' . $itemData['name'];
 
             return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $itemId]);
         }
 
         // Rollback on failure
-        $this->db->transRollback();
+        $db->transRollback();
         $message = $uploadSuccess ? lang('Items.error_adding_updating') . ' ' . $itemData['name'] : strip_tags($uploadData['error']);
 
         return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $itemId]);
