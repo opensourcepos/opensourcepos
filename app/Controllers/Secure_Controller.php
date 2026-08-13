@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\AccessDeniedRedirectException;
 use App\Models\Employee;
 use App\Models\Module;
+use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
 use CodeIgniter\Session\Session;
@@ -45,7 +45,7 @@ class Secure_Controller extends BaseController
             !$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
             || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
         ) {
-            throw new AccessDeniedRedirectException(base_url("no_access/$module_id/$submodule_id"));
+            throw new RedirectException("no_access/$module_id/$submodule_id");
         }
 
         // Load up global global_view_data visible to all the loaded views

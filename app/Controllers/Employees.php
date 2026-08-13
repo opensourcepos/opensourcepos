@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\AccessDeniedRedirectException;
 use App\Models\Module;
+use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
@@ -80,7 +80,7 @@ class Employees extends Persons
         $current_user = $this->employee->get_logged_in_employee_info();
 
         if ($employee_id != NEW_ENTRY && !$this->employee->canModifyEmployee($person_info->person_id, $current_user->person_id)) {
-            throw new AccessDeniedRedirectException(base_url('no_access/employees/employees'));
+            throw new RedirectException('no_access/employees/employees');
         }
 
         foreach (get_object_vars($person_info) as $property => $value) {
