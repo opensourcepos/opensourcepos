@@ -628,6 +628,7 @@ class Sales extends Secure_Controller
             $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $price = parse_decimals($this->request->getPost('price'));
+            $price = $price !== false ? number_format((float) $price, totals_decimals(), '.', '') : $price;
             $quantity = parse_decimals($this->request->getPost('quantity'));
             $discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $discount = $discount_type

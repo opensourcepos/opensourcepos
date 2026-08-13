@@ -24,7 +24,7 @@ class Migration_Initial_Schema extends Migration
         // Check if core application tables exist (existing install)
         // Note: migrations table may exist even on fresh DB due to migration tracking
         $tables = $this->db->listTables();
-        
+
         // Check for a core application table, not just migrations table
         foreach ($tables as $table) {
             // Strip prefix if present for comparison
@@ -35,7 +35,7 @@ class Migration_Initial_Schema extends Migration
                 return;
             }
         }
-        
+
         // Fresh install - load initial schema
         helper('migration');
         executeScript(APPPATH . 'Database/Migrations/sqlscripts/initial_schema.sql');
