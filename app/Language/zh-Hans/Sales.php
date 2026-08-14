@@ -84,6 +84,8 @@ return [
     'hsn'                               => '',
     'id'                                => '銷售編號',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Invoice',
     'invoice_confirm'                   => 'This invoice will be sent to',
     'invoice_enable'                    => 'Create Invoice',

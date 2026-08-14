@@ -84,9 +84,11 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest a
 /**
  * Global Constants.
  */
-const NEW_ENTRY = -1;
-const ACTIVE = 0;
-const DELETED = 1;
+const NEW_ENTRY                     = -1;
+const ACTIVE                        = 0;
+const DELETED                       = 1;
+const INSUFFICIENT_GIFTCARD_BALANCE = -2;
+const INSUFFICIENT_REWARD_POINTS    = -3;
 
 /**
  * Attribute Related Constants.

@@ -84,6 +84,8 @@ return [
     'hsn'                               => '',
     'id'                                => 'Prodaja br.',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Faktura',
     'invoice_confirm'                   => 'Poslati fakturu',
     'invoice_enable'                    => 'Napravi fakturu',

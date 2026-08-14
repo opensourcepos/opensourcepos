@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'מזהה מכירה',
     'include_prices'                    => 'לכלול מחירים?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'חשבונית',
     'invoice_confirm'                   => 'חשבונית זו תישלח אל',
     'invoice_enable'                    => 'צור חשבונית',

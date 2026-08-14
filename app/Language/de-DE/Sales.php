@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'ID',
     'include_prices'                    => 'Inklusiv Preise?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Rechnung',
     'invoice_confirm'                   => 'Diese Rechnung wird gesendet an',
     'invoice_enable'                    => 'Erzeuge Rechnung',

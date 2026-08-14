@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'ID Penjualan',
     'include_prices'                    => 'Termasuk Harga?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Faktur',
     'invoice_confirm'                   => 'Faktur ini akan dikirim ke',
     'invoice_enable'                    => 'Nomor Faktur',

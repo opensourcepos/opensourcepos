@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Mã bán hàng',
     'include_prices'                    => 'Bao gồm Giá?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Hóa đơn',
     'invoice_confirm'                   => 'Hóa đơn sẽ được gửi đến',
     'invoice_enable'                    => 'Tạo hóa dơn',

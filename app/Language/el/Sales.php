@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'ID Πώλησης',
     'include_prices'                    => 'Συμπερίληψη Τιμών?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Τιμολόγιο',
     'invoice_confirm'                   => 'Το τιμολόγιο θα αποσταλεί σε',
     'invoice_enable'                    => 'Δημιουργία Τιμολογίου',

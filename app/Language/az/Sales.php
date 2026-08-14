@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Satış İD',
     'include_prices'                    => 'Qiymətlər daxildir?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Qaimə',
     'invoice_confirm'                   => 'Bu qaimə göndəriləcək',
     'invoice_enable'                    => 'Qaimə Yarat',

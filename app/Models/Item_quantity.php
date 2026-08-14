@@ -98,6 +98,19 @@ class Item_quantity extends Model
     }
 
     /**
+     * Atomically decrements an item's quantity at a location
+     */
+    public function decrementQuantity(int $itemId, int $locationId, float $quantityChange): bool
+    {
+        $builder = $this->db->table('item_quantities');
+        $builder->where('item_id', $itemId);
+        $builder->where('location_id', $locationId);
+        $builder->set('quantity', 'quantity - ' . $this->db->escape($quantityChange), false);
+
+        return $builder->update();
+    }
+
+    /**
      * Set to 0 all quantity in the given item
      */
     public function reset_quantity(int $item_id): bool

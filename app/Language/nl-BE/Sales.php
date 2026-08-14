@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Verkoop ID',
     'include_prices'                    => 'Prijzen inclusief?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Factuur',
     'invoice_confirm'                   => 'Deze factuur zal verstuurd worden naar',
     'invoice_enable'                    => 'Maak Factuur',

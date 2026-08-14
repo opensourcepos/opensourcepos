@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'رمز نظام منسق',
     'id'                                => 'رقم عملية البيع',
     'include_prices'                    => 'يشمل الاسعار؟',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'فاتورة',
     'invoice_confirm'                   => 'هذه الفاتورة سوف ترسل إلى',
     'invoice_enable'                    => 'رقم فاتورة',

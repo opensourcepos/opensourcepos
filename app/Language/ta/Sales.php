@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'விற்பனை எண்',
     'include_prices'                    => 'விலைகளைச் சேர்க்கவா?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'விற்பனைச்சிட்டை',
     'invoice_confirm'                   => 'இந்த விற்பனைச்சிட்டை அனுப்பப்படும்',
     'invoice_enable'                    => 'விற்பனைச்சிட்டை எண்',

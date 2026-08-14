@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Номер на продажба',
     'include_prices'                    => 'Включва цени?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Фактура',
     'invoice_confirm'                   => 'Тази фактура ще бъде изпратена до',
     'invoice_enable'                    => 'Създаване на фактура',

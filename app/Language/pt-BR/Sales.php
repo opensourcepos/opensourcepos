@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Venda ID',
     'include_prices'                    => 'Incluir Preços?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Fatura',
     'invoice_confirm'                   => 'Esta fatura será enviada para',
     'invoice_enable'                    => 'Criar Fatura',

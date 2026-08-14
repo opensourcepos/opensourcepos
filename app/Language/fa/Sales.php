@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'شناسه فروش',
     'include_prices'                    => 'شامل قیمت ها می شوید؟',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'صورتحساب',
     'invoice_confirm'                   => 'این فاکتور به ارسال می شود',
     'invoice_enable'                    => 'شماره فاکتور',

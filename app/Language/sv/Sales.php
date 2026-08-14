@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Försäljnings-ID',
     'include_prices'                    => 'Inkludera priser?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Faktura',
     'invoice_confirm'                   => 'Denna faktura skickas till',
     'invoice_enable'                    => 'Fakturanummer',

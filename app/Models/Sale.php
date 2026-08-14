@@ -580,11 +580,19 @@ class Sale extends Model
         foreach ($payments as $payment_id => $payment) {
             if (!empty(strstr($payment['payment_type'], lang('Sales.giftcard')))) {
                 $splitPayment = explode(':', $payment['payment_type']);
-                $currentGiftcardValue = $giftcard->get_giftcard_value($splitPayment[1]);
-                $giftcard->update_giftcard_value($splitPayment[1], $currentGiftcardValue - $payment['payment_amount']);
+
+                if (! $giftcard->decrementGiftcardValue($splitPayment[1], (float) $payment['payment_amount'])) {
+                    $this->db->transRollback();
+
+                    return INSUFFICIENT_GIFTCARD_BALANCE;
+                }
             } elseif (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
-                $currentRewardsValue = $customer->get_info($customerId)->points;
-                $customer->update_reward_points_value($customerId, $currentRewardsValue - $payment['payment_amount']);
+                if (! $customer->adjustRewardPoints($customerId, -(float) $payment['payment_amount'])) {
+                    $this->db->transRollback();
+
+                    return INSUFFICIENT_REWARD_POINTS;
+                }
+
                 $totalAmountUsed = floatval($totalAmountUsed) + floatval($payment['payment_amount']);
             }
 
@@ -635,16 +643,10 @@ class Sale extends Model
 
             if ($cur_item_info->stock_type == HAS_STOCK && $saleStatus == COMPLETED) {    // TODO: === ?
                 // Update stock quantity if item type is a standard stock item and the sale is a standard sale
-                $item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
-
-                $item_quantity->save_value(
-                    [
-                        'quantity'    => $item_quantity_data->quantity - $item_data['quantity'],
-                        'item_id'     => $item_data['item_id'],
-                        'location_id' => $item_data['item_location']
-                    ],
+                $item_quantity->decrementQuantity(
                     $item_data['item_id'],
-                    $item_data['item_location']
+                    $item_data['item_location'],
+                    (float) $item_data['quantity'],
                 );
 
                 // If an items was deleted but later returned it's restored with this rule
@@ -1382,24 +1384,21 @@ class Sale extends Model
 
         if (!empty($customer_id) && $config['customer_reward_enable']) {
             $customer = model(Customer::class);
-            $customer_rewards = model(Customer_rewards::class);
+            $customerRewards = model(Customer_rewards::class);
             $rewards = model(Rewards::class);
 
-            $package_id = $customer->get_info($customer_id)->package_id;
+            $packageId = $customer->get_info($customer_id)->package_id;
 
-            if (!empty($package_id)) {
-                $points_percent = $customer_rewards->get_points_percent($package_id);
-                $points = $customer->get_info($customer_id)->points;
-                $points = ($points == null ? 0 : $points);
-                $points_percent = ($points_percent == null ? 0 : $points_percent);
-                $total_amount_earned = ($total_amount * $points_percent / 100);
-                $points = $points + $total_amount_earned;
+            if (! empty($packageId)) {
+                $pointsPercent     = $customerRewards->get_points_percent($packageId);
+                $pointsPercent     = ($pointsPercent === null ? 0 : $pointsPercent);
+                $totalAmountEarned = ($total_amount * $pointsPercent / 100);
 
-                $customer->update_reward_points_value($customer_id, $points);
+                $customer->adjustRewardPoints($customer_id, $totalAmountEarned);
 
-                $rewards_data = ['sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used];
+                $rewardsData = ['sale_id' => $sale_id, 'earned' => $totalAmountEarned, 'used' => $total_amount_used];
 
-                $rewards->save_value($rewards_data);
+                $rewards->save_value($rewardsData);
             }
         }
     }

@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'ID Vanzare',
     'include_prices'                    => 'Include Preturi?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Factura',
     'invoice_confirm'                   => 'Aceasta factura va fi trimisa catre',
     'invoice_enable'                    => 'Creare Factura',

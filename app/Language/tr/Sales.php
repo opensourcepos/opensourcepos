@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Satış No',
     'include_prices'                    => 'Fiyat Dahil?',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'Fatura',
     'invoice_confirm'                   => 'Bu fatura şuna gönderilecek',
     'invoice_enable'                    => 'Fatura Numarası',

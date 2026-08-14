@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'کۆدی سیستەمی هارمونیزە',
     'id'                                => 'ناسنامەی فرۆشتن',
     'include_prices'                    => 'نرخەکان لەخۆ بگرێت؟',
+    'insufficient_giftcard_balance'     => '',
+    'insufficient_reward_points'        => '',
     'invoice'                           => 'فاکتۆرە',
     'invoice_confirm'                   => 'ئەم فاکتورەیە دەنێردرێت بۆ',
     'invoice_enable'                    => 'ژمارەی فاکتورە',
