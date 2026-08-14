@@ -114,13 +114,13 @@ class Employees extends Persons
      * Inserts/updates an employee
      * @return ResponseInterface
      */
-    public function postSave(int $employee_id = NEW_ENTRY): ResponseInterface
+    public function postSave(int $employeeId = NEW_ENTRY): ResponseInterface
     {
-        $current_user = $this->employee->get_logged_in_employee_info();
+        $currentUser = $this->employee->get_logged_in_employee_info();
 
-        if ($employee_id != NEW_ENTRY) {
-            $target_employee = $this->employee->get_info($employee_id);
-            if (!$this->employee->canModifyEmployee($target_employee->person_id, $current_user->person_id)) {
+        if ($employeeId != NEW_ENTRY) {
+            $targetEmployee = $this->employee->get_info($employeeId);
+            if (!$this->employee->canModifyEmployee($targetEmployee->person_id, $currentUser->person_id)) {
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Employees.error_updating_admin'),
@@ -129,17 +129,17 @@ class Employees extends Persons
             }
         }
 
-        $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: duplicated code
-        $last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $firstName = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: duplicated code
+        $lastName = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
         // format first and last name properly
-        $first_name = $this->nameize($first_name);
-        $last_name = $this->nameize($last_name);
+        $firstName = $this->nameize($firstName);
+        $lastName = $this->nameize($lastName);
 
-        $person_data = [
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
+        $personData = [
+            'first_name'   => $firstName,
+            'last_name'    => $lastName,
             'gender'       => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
             'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -152,35 +152,44 @@ class Employees extends Persons
             'comments'     => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        $grants_array = [];
-        $isAdmin = $this->employee->isAdmin($current_user->person_id);
+        $grantsArray = [];
+        $isAdmin = $this->employee->isAdmin($currentUser->person_id);
 
         foreach ($this->module->get_all_permissions()->getResult() as $permission) {
             $grants = [];
             $grant = $this->request->getPost('grant_' . $permission->permission_id) != null ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
 
             if ($grant == $permission->permission_id) {
-                if (!$isAdmin && !$this->employee->has_grant($permission->permission_id, $current_user->person_id)) {
+                if (!$isAdmin && !$this->employee->has_grant($permission->permission_id, $currentUser->person_id)) {
                     continue;
                 }
                 $grants['permission_id'] = $permission->permission_id;
                 $grants['menu_group'] = $this->request->getPost('menu_group_' . $permission->permission_id) != null ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '--';
-                $grants_array[] = $grants;
+                $grantsArray[] = $grants;
             }
+        }
+
+        if (filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN)
+            && $this->hasGrantsChanged($employeeId, $isAdmin, $currentUser, $grantsArray)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Employees.error_grant_change_disallowed'),
+                'id'      => $employeeId
+            ]);
         }
 
         if (!empty($this->request->getPost('password')) && ENVIRONMENT != 'testing' && filter_var(getenv('DISALLOW_PASSWORD_CHANGE'), FILTER_VALIDATE_BOOLEAN)) {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.error_password_change_disallowed'),
-                'id'      => $employee_id
+                'id'      => $employeeId
             ]);
         }
 
         // Password has been changed OR first time password set
         if (!empty($this->request->getPost('password')) && ENVIRONMENT != 'testing') {
             $exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-            $employee_data = [
+            $employeeData = [
                 'username'      => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'password'      => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
                 'hash_version'  => 2,
@@ -189,58 +198,67 @@ class Employees extends Persons
             ];
         } else { // Password not changed
             $exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-            $employee_data = [
+            $employeeData = [
                 'username'      => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'language_code' => $exploded[0],
                 'language'      => $exploded[1]
             ];
         }
 
-        if (filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN)) {
-            $current_grant_ids = $employee_id != NEW_ENTRY
-                ? array_column($this->employee->get_employee_grants($employee_id), 'permission_id')
-                : [];
-            $submitted_grant_ids = array_column($grants_array, 'permission_id');
-
-            sort($current_grant_ids);
-            sort($submitted_grant_ids);
-
-            if ($current_grant_ids !== $submitted_grant_ids) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => lang('Employees.error_grant_change_disallowed'),
-                    'id'      => $employee_id
-                ]);
-            }
-        }
-
-        if ($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id)) {
+        if ($this->employee->save_employee($personData, $employeeData, $grantsArray, $employeeId)) {
             // New employee
-            if ($employee_id == NEW_ENTRY) {
+            if ($employeeId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $employee_data['person_id']
+                    'message' => lang('Employees.successful_adding') . ' ' . $firstName . ' ' . $lastName,
+                    'id'      => $employeeData['person_id']
                 ]);
             } else { // Existing employee
-                $logged_in_employee_id = session()->get('person_id');
-                if ($employee_id == $logged_in_employee_id) {
-                    session()->set('language_code', $employee_data['language_code']);
-                    session()->set('language', $employee_data['language']);
+                $loggedInEmployeeId = session()->get('person_id');
+                if ($employeeId == $loggedInEmployeeId) {
+                    session()->set('language_code', $employeeData['language_code']);
+                    session()->set('language', $employeeData['language']);
                 }
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $employee_id
+                    'message' => lang('Employees.successful_updating') . ' ' . $firstName . ' ' . $lastName,
+                    'id'      => $employeeId
                 ]);
             }
         } else { // Failure
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+                'message' => lang('Employees.error_adding_updating') . ' ' . $firstName . ' ' . $lastName,
                 'id'      => NEW_ENTRY
             ]);
         }
+    }
+
+    /**
+     * Determines whether the submitted grants differ from the employee's current grants,
+     * limited to the permissions the current user has authority over when not an admin.
+     */
+    private function hasGrantsChanged(int $employeeId, bool $isAdmin, object $currentUser, array $grantsArray): bool
+    {
+        $currentGrantIds = [];
+
+        if ($employeeId != NEW_ENTRY) {
+            $currentGrantIds = array_column($this->employee->get_employee_grants($employeeId), 'permission_id');
+
+            if (!$isAdmin) {
+                $currentGrantIds = array_values(array_filter(
+                    $currentGrantIds,
+                    fn ($permissionId) => $this->employee->has_grant($permissionId, $currentUser->person_id)
+                ));
+            }
+        }
+
+        $submittedGrantIds = array_column($grantsArray, 'permission_id');
+
+        sort($currentGrantIds);
+        sort($submittedGrantIds);
+
+        return $currentGrantIds !== $submittedGrantIds;
     }
 
     /**

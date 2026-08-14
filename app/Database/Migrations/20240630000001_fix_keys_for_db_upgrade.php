@@ -60,7 +60,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
         }
 
         $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes')
-            . ' ADD CONSTRAINT ospos_sales_items_taxes_ibfk_1 FOREIGN KEY (sale_id, item_id, line) '
-            . ' REFERENCES ' . $this->db->prefixTable('sales_items') . ' (sale_id, item_id, line)');
+            . ' ADD CONSTRAINT ospos_sales_items_taxes_ibfk_1 FOREIGN KEY (sale_id) '
+            . ' REFERENCES ' . $this->db->prefixTable('sales_items') . ' (sale_id)');
     }
 }
