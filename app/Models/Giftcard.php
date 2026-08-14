@@ -318,6 +318,7 @@ class Giftcard extends Model
     {
         $builder = $this->db->table('giftcards');
         $builder->where('giftcard_number', $giftcardNumber);
+        $builder->where('deleted', 0);
         $builder->where('value >=', $amount);
         $builder->set('value', 'value - ' . $this->db->escape($amount), false);
 
