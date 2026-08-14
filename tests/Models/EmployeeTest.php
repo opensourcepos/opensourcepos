@@ -169,15 +169,17 @@ class EmployeeTest extends CIUnitTestCase
 
     protected function createEmployeeWithGrants(array $grantsData): int
     {
+        $uniqueSuffix = uniqid();
+
         $personData = [
             'first_name'   => 'Grant',
             'last_name'    => 'Tester',
-            'email'        => 'granttester@test.com',
+            'email'        => "granttester{$uniqueSuffix}@test.com",
             'phone_number' => '555-5678'
         ];
 
         $employeeData = [
-            'username'      => 'granttester',
+            'username'      => "granttester{$uniqueSuffix}",
             'password'      => password_hash('password123', PASSWORD_DEFAULT),
             'hash_version'  => 2,
             'language_code' => 'en',
@@ -185,7 +187,10 @@ class EmployeeTest extends CIUnitTestCase
         ];
 
         $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        $result = $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+
+        $this->assertTrue($result);
+        $this->assertArrayHasKey('person_id', $personData);
 
         return $personData['person_id'];
     }
@@ -226,15 +231,17 @@ class EmployeeTest extends CIUnitTestCase
 
     protected function createEmployeeWithGrantsExpectingFailure(array $grantsData): bool
     {
+        $uniqueSuffix = uniqid();
+
         $personData = [
             'first_name'   => 'Rejected',
             'last_name'    => 'Tester',
-            'email'        => 'rejectedtester@test.com',
+            'email'        => "rejectedtester{$uniqueSuffix}@test.com",
             'phone_number' => '555-9999'
         ];
 
         $employeeData = [
-            'username'      => 'rejectedtester',
+            'username'      => "rejectedtester{$uniqueSuffix}",
             'password'      => password_hash('password123', PASSWORD_DEFAULT),
             'hash_version'  => 2,
             'language_code' => 'en',
