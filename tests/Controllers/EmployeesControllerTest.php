@@ -58,6 +58,7 @@ class EmployeesControllerTest extends CIUnitTestCase
         $session->destroy();
         $session->set('person_id', 1);
         $session->set('menu_group', 'office');
+        $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
     }
 
     protected function loginAsNonAdmin(int $personId): void
@@ -66,6 +67,7 @@ class EmployeesControllerTest extends CIUnitTestCase
         $session->destroy();
         $session->set('person_id', $personId);
         $session->set('menu_group', 'home');
+        $this->withSession(['person_id' => $personId, 'menu_group' => 'home']);
     }
 
     public function testNonAdminCannotViewAdminAccount(): void

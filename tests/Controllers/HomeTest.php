@@ -227,6 +227,7 @@ class HomeTest extends CIUnitTestCase
         $session = Services::session();
         $session->destroy();
         $session->set('person_id', 1); // Admin user
+        $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
     }
     
     /**
@@ -275,6 +276,7 @@ class HomeTest extends CIUnitTestCase
         $session->destroy();
         $session->set('person_id', $personId);
         $session->set('menu_group', 'home');
+        $this->withSession(['person_id' => $personId, 'menu_group' => 'home']);
     }
     
     // ========== BOLA Authorization Tests ==========

@@ -93,6 +93,7 @@ class SalesControllerTest extends CIUnitTestCase
         $session->destroy();
         $session->set('person_id', $personId);
         $session->set('menu_group', 'home');
+        $this->withSession(['person_id' => $personId, 'menu_group' => 'home']);
     }
 
     protected function createCashierEmployee(): int

@@ -42,6 +42,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $session = Services::session();
         $session->set('person_id', 1);
         $session->set('menu_group', 'office');
+        $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
     }
 
     protected function createCsvFile(array $rows): string

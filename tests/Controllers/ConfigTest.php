@@ -28,6 +28,9 @@ class ConfigTest extends CIUnitTestCase
         $session->destroy();
         $session->set('person_id', 1);
         $session->set('menu_group', 'office');
+
+        // FeatureTestTrait blanks $_SESSION per request; populate it so Secure_Controller sees a logged-in user
+        $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
     }
 
     // ========== Valid Mailpath Tests ==========
