@@ -1704,11 +1704,11 @@ class Sales extends Secure_Controller
             $data['error'] = lang('Sales.insufficient_reward_points');
         } elseif ($saleIdNum === NEW_ENTRY) {
             $data['error'] = lang('Sales.unsuccessfully_suspended_sale');
+            $this->sale_lib->clear_all();
         } else {
             $data['success'] = lang('Sales.successfully_suspended_sale');
+            $this->sale_lib->clear_all();
         }
-
-        $this->sale_lib->clear_all();
 
         return $this->reload($data);
     }
