@@ -892,6 +892,9 @@ class Sales extends Secure_Controller
                 } elseif ($data['sale_id_num'] === INSUFFICIENT_REWARD_POINTS) {
                     $data['error_message'] = lang('Sales.insufficient_reward_points');
                     return $this->reload($data);
+                } elseif ($data['sale_id_num'] == NEW_ENTRY) {
+                    $data['error_message'] = lang('Sales.transaction_failed');
+                    return $this->reload($data);
                 }
 
                 $this->sale_lib->set_suspended_id($data['sale_id_num']);
@@ -928,6 +931,9 @@ class Sales extends Secure_Controller
                     return $this->reload($data);
                 } elseif ($data['sale_id_num'] === INSUFFICIENT_REWARD_POINTS) {
                     $data['error_message'] = lang('Sales.insufficient_reward_points');
+                    return $this->reload($data);
+                } elseif ($data['sale_id_num'] == NEW_ENTRY) {
+                    $data['error_message'] = lang('Sales.transaction_failed');
                     return $this->reload($data);
                 }
 
