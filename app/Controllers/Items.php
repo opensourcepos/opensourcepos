@@ -17,6 +17,7 @@ use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\Validation\FormatRules;
 use Config\Database;
 use Config\OSPOS;
 use Config\Services;
@@ -1235,9 +1236,9 @@ class Items extends Secure_Controller
 
         // Check item_number for disallowed characters
         if (!empty($itemData['item_number'])) {
-            $rules = ['item_number' => 'alpha_numeric_punct'];
+            $formatRules = new FormatRules();
 
-            if (!\Config\Services::validation()->setRules($rules)->run($itemData)) {
+            if (!$formatRules->alpha_numeric_punct($itemData['item_number'])) {
                 log_message('error', "invalid item_number: '{$itemData['item_number']}' contains disallowed characters");
                 return true;
             }
