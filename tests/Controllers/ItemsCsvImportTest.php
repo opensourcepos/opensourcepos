@@ -18,10 +18,11 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     protected $migrate = true;
     protected $migrateOnce = true;
-    protected $seed = 'TestDatabaseBootstrapSeeder';
     protected $seedOnce = true;
     protected $refresh = false;
     protected $namespace = null;
+
+    private static $doneBootstrap = false;
 
     protected $item;
     protected $item_quantity;
@@ -33,6 +34,11 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     protected function setUp(): void
     {
+        if (self::$doneBootstrap === false) {
+            \CodeIgniter\Database\Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            self::$doneBootstrap = true;
+        }
+
         parent::setUp();
 
         helper('importfile');
