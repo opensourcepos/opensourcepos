@@ -162,7 +162,7 @@ class OSPOSRules
      */
     public function themeExists(string $theme, ?string &$error = null): bool
     {
-        $dir = new DirectoryIterator('resources/bootswatch');
+        $dir = new DirectoryIterator(FCPATH . 'resources/bootswatch');
 
         foreach ($dir as $fileInfo) {
             if (

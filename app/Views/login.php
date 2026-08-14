@@ -171,9 +171,11 @@ $request = Services::request();
 
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:login:debug:js -->
+        <script src="resources/js/jquery-12e87d2f3a.js"></script>
         <!-- endinject -->
     <?php else : ?>
         <!-- inject:login:prod:js -->
+        <script src="resources/jquery-2c872dbe60.min.js"></script>
         <!-- endinject -->
     <?php endif; ?>
     <script>

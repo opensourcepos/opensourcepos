@@ -482,10 +482,10 @@ function parse_decimals(string $number, ?int $decimals = null): mixed
 
     $config = config(OSPOS::class)->settings;
 
-    $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
+    $fmt = new NumberFormatter($config['number_locale'] ?? 'en_US', NumberFormatter::DECIMAL);
 
     if (!$decimals) {
-        $decimals = intVal($config['currency_decimals']);
+        $decimals = intVal($config['currency_decimals'] ?? 2);
         $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
     }
 

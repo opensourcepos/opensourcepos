@@ -483,11 +483,18 @@ class Config extends Secure_Controller
      */
     public function postSaveLocale(): ResponseInterface
     {
+        // Sanitize first so non-numeric input is stripped, then validate the sanitized values.
+        $payment_reference_code_min = $this->request->getPost('payment_reference_code_min', FILTER_SANITIZE_NUMBER_INT);
+        $payment_reference_code_max = $this->request->getPost('payment_reference_code_max', FILTER_SANITIZE_NUMBER_INT);
+
         $rules = [
-            'payment_reference_code_min' => 'required|integer|greater_than[0]',
-            'payment_reference_code_max' => 'required|integer|greater_than_equal_to[payment_reference_code_min]',
+            'payment_reference_code_min' => 'permit_empty|integer|greater_than[0]',
+            'payment_reference_code_max' => 'permit_empty|integer|greater_than_equal_to[{payment_reference_code_min}]',
         ];
-        if (!$this->validate($rules)) {
+        if (!$this->validateData([
+            'payment_reference_code_min' => $payment_reference_code_min,
+            'payment_reference_code_max' => $payment_reference_code_max
+        ], $rules)) {
             $errors = $this->validator->getErrors();
             return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
         }

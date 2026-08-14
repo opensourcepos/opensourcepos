@@ -50,11 +50,17 @@ class Migration_Initial_Schema extends Migration
         // Cannot safely revert initial schema
         // Would require dropping all tables which would lose all data
         $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
-        
+        $migrationTable = $this->db->getPrefix() . 'migrations';
+
         foreach ($this->db->listTables() as $table) {
+            // Keep the migration history table so the framework can record the rollback.
+            if ($table === $migrationTable || $table === 'migrations') {
+                continue;
+            }
+
             $this->db->query('DROP TABLE IF EXISTS `' . $table . '`');
         }
-        
+
         $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
