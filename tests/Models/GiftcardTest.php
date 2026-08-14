@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Giftcard;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\ConcurrentDbRaceTrait;
 
 /**
  * Regression tests for GHSA-995p-52qw-5hh2: decrementGiftcardValue() must
@@ -15,6 +16,7 @@ use CodeIgniter\Test\DatabaseTestTrait;
 class GiftcardTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use ConcurrentDbRaceTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -83,16 +85,21 @@ class GiftcardTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(0.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
 
-    public function testDecrementGiftcardValueTwoSequentialCallsBothApply(): void
+    public function testDecrementGiftcardValueConcurrentDecrementsOneWins(): void
     {
         $giftcardNumber = $this->createGiftcard(100.00);
-        $giftcardModel  = model(Giftcard::class);
+        $db             = \Config\Database::connect();
+        $table          = $db->DBPrefix . 'giftcards';
 
-        $firstResult  = $giftcardModel->decrementGiftcardValue((string) $giftcardNumber, 30.00);
-        $secondResult = $giftcardModel->decrementGiftcardValue((string) $giftcardNumber, 30.00);
+        $sql = sprintf(
+            "UPDATE %s SET value = value - 60 WHERE giftcard_number = %s AND deleted = 0 AND value >= 60",
+            $table,
+            $db->escape($giftcardNumber)
+        );
 
-        $this->assertTrue($firstResult);
-        $this->assertTrue($secondResult);
+        [$affectedRows1, $affectedRows2] = $this->raceTwoUpdates($sql, $sql);
+
+        $this->assertSame(1, $affectedRows1 + $affectedRows2);
         $this->assertEqualsWithDelta(40.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
 }

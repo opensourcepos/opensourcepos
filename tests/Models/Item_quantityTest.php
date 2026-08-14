@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Item_quantity;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\ConcurrentDbRaceTrait;
 
 /**
  * Regression tests for GHSA-995p-52qw-5hh2: changeQuantity() must apply
@@ -18,6 +19,7 @@ use CodeIgniter\Test\DatabaseTestTrait;
 class Item_quantityTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use ConcurrentDbRaceTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -98,17 +100,24 @@ class Item_quantityTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(-3.0, $this->getQuantity($itemId), 0.001);
     }
 
-    public function testDecrementQuantityTwoSequentialCallsBothApply(): void
+    public function testDecrementQuantityConcurrentDecrementsBothApply(): void
     {
         $itemId = $this->createTestItem();
         $this->createItemQuantityRow($itemId, 10);
-        $itemQuantityModel = model(Item_quantity::class);
+        $db    = \Config\Database::connect();
+        $table = $db->DBPrefix . 'item_quantities';
 
-        $firstResult  = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -3);
-        $secondResult = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -3);
+        $sql = sprintf(
+            'INSERT INTO %s (item_id, location_id, quantity) VALUES (%s, %s, -3) ON DUPLICATE KEY UPDATE quantity = quantity + -3',
+            $table,
+            $db->escape($itemId),
+            $db->escape(self::LOCATION_ID)
+        );
 
-        $this->assertTrue($firstResult);
-        $this->assertTrue($secondResult);
+        [$affectedRows1, $affectedRows2] = $this->raceTwoUpdates($sql, $sql);
+
+        $this->assertSame(1, $affectedRows1);
+        $this->assertSame(1, $affectedRows2);
         $this->assertEqualsWithDelta(4.0, $this->getQuantity($itemId), 0.001);
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Customer;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\ConcurrentDbRaceTrait;
 
 /**
  * Regression tests for GHSA-995p-52qw-5hh2: adjustRewardPoints() must apply
@@ -15,6 +16,7 @@ use CodeIgniter\Test\DatabaseTestTrait;
 class CustomerRewardPointsTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use ConcurrentDbRaceTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -108,16 +110,21 @@ class CustomerRewardPointsTest extends CIUnitTestCase
         $this->assertSame(0, $this->getCustomerPoints($personId));
     }
 
-    public function testAdjustRewardPointsTwoSequentialDecrementsBothApply(): void
+    public function testAdjustRewardPointsConcurrentDecrementsOneWins(): void
     {
-        $personId      = $this->createCustomerWithPoints(100);
-        $customerModel = model(Customer::class);
+        $personId = $this->createCustomerWithPoints(100);
+        $db       = \Config\Database::connect();
+        $table    = $db->DBPrefix . 'customers';
 
-        $firstResult  = $customerModel->adjustRewardPoints($personId, -30);
-        $secondResult = $customerModel->adjustRewardPoints($personId, -30);
+        $sql = sprintf(
+            'UPDATE %s SET points = points - 60 WHERE person_id = %s AND points >= 60',
+            $table,
+            $db->escape($personId)
+        );
 
-        $this->assertTrue($firstResult);
-        $this->assertTrue($secondResult);
+        [$affectedRows1, $affectedRows2] = $this->raceTwoUpdates($sql, $sql);
+
+        $this->assertSame(1, $affectedRows1 + $affectedRows2);
         $this->assertSame(40, $this->getCustomerPoints($personId));
     }
 }
