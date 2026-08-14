@@ -1,426 +1,70 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.1...HEAD
-[3.4.1]: https://github.com/opensourcepos/opensourcepos/compare/3.4.0...3.4.1
-[3.4.0]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...3.4.0
-[3.3.9]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
-[3.3.8]: https://github.com/opensourcepos/opensourcepos/compare/3.3.7...3.3.8
-[3.3.7]: https://github.com/opensourcepos/opensourcepos/compare/3.3.6...3.3.7
-[3.3.6]: https://github.com/opensourcepos/opensourcepos/compare/3.3.5...3.3.6
-[3.3.5]: https://github.com/opensourcepos/opensourcepos/compare/3.3.4...3.3.5
-[3.3.4]: https://github.com/opensourcepos/opensourcepos/compare/3.3.3...3.3.4
-[3.3.3]: https://github.com/opensourcepos/opensourcepos/compare/3.3.2...3.3.3
-[3.3.2]: https://github.com/opensourcepos/opensourcepos/compare/3.3.1...3.3.2
-[3.3.1]: https://github.com/opensourcepos/opensourcepos/compare/3.3.0...3.3.1
-[3.3.0]: https://github.com/opensourcepos/opensourcepos/compare/3.2.3...3.3.0
-[3.2.3]: https://github.com/opensourcepos/opensourcepos/compare/3.2.2...3.2.3
-[3.2.2]: https://github.com/opensourcepos/opensourcepos/compare/3.2.1...3.2.2
-[3.2.1]: https://github.com/opensourcepos/opensourcepos/compare/3.2.0...3.2.1
-[3.2.0]: https://github.com/opensourcepos/opensourcepos/compare/3.1.1...3.2.0
-[3.1.1]: https://github.com/opensourcepos/opensourcepos/compare/3.1.0...3.1.1
-[3.1.0]: https://github.com/opensourcepos/opensourcepos/compare/3.0.2...3.1.0
-[3.0.2]: https://github.com/opensourcepos/opensourcepos/compare/3.0.1...3.0.2
-[3.0.1]: https://github.com/opensourcepos/opensourcepos/compare/3.0.0...3.0.1
-[3.0.0]: https://github.com/opensourcepos/opensourcepos/compare/2.4.0...3.0.0
-[2.4.0]: https://github.com/opensourcepos/opensourcepos/compare/2.3.4...2.4.0
-[2.3.4]: https://github.com/opensourcepos/opensourcepos/compare/2.3.3...2.3.4
-[2.3.3]: https://github.com/opensourcepos/opensourcepos/compare/2.3.2...2.3.3
-[2.3.2]: https://github.com/opensourcepos/opensourcepos/compare/2.3.1...2.3.2
-[2.3.1]: https://github.com/opensourcepos/opensourcepos/compare/2.3...2.3.1
-[2.3.0]: https://github.com/opensourcepos/opensourcepos/compare/2.2.2...2.3
-
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-## [Unreleased]
-
-## [3.4.1] - 2025-06-05
-- Feature: PSR-12 Compliant Indentation by @objecttothis in ([#4196](https://github.com/opensourcepos/opensourcepos/pull/4196))
-- Add .env to dist zip by @jekkos in ([#4199](https://github.com/opensourcepos/opensourcepos/pull/4199))
-- Add CI4 coding standards linter ([#3708](https://github.com/opensourcepos/opensourcepos/issues/3708)) by @jekkos in ([#4198](https://github.com/opensourcepos/opensourcepos/pull/4198))
-- Bump canvg from 3.0.10 to 3.0.11 by @dependabot in ([#4189](https://github.com/opensourcepos/opensourcepos/pull/4189))
-- Bump jspdf and jspdf-autotable by @dependabot in ([#4190](https://github.com/opensourcepos/opensourcepos/pull/4190))
-- Feature bump ci to 4.6.0 by @objecttothis in ([#4197](https://github.com/opensourcepos/opensourcepos/pull/4197))
-- Add Kurdish language option to UI by @BudsieBuds in ([#4210](https://github.com/opensourcepos/opensourcepos/pull/4210))
-- Convert language ku to ckb by @BudsieBuds in ([#4211](https://github.com/opensourcepos/opensourcepos/pull/4211))
-- Fix PHP 8.4 errors by @BudsieBuds in ([#4215](https://github.com/opensourcepos/opensourcepos/pull/4215))
-- Add default bootstrap to themes by @BudsieBuds in ([#4219](https://github.com/opensourcepos/opensourcepos/pull/4219))
-- Update language names by @BudsieBuds in ([#4218](https://github.com/opensourcepos/opensourcepos/pull/4218))
-- Update install docs by @BudsieBuds in ([#4217](https://github.com/opensourcepos/opensourcepos/pull/4217))
-- Convert menu icons to SVG by @BudsieBuds in ([#4220](https://github.com/opensourcepos/opensourcepos/pull/4220))
-- Enhance license handling by @BudsieBuds in ([#4223](https://github.com/opensourcepos/opensourcepos/pull/4223))
-- Fix datetime rendering ([#4226](https://github.com/opensourcepos/opensourcepos/issues/4226)) by @jekkos in ([#4227](https://github.com/opensourcepos/opensourcepos/pull/4227))
-- Fix datetime rendering by @jekkos in ([#4228](https://github.com/opensourcepos/opensourcepos/pull/4228))
-- Fix null error when sending by email a receipt of a sale that has no invoice by @diego-ramos in ([#4229](https://github.com/opensourcepos/opensourcepos/pull/4229))
-- Update Receivings.php to save form. by @odiea in ([#4231](https://github.com/opensourcepos/opensourcepos/pull/4231))
-- Update Cashups.php for ajax cashup total to work. by @odiea in ([#4238](https://github.com/opensourcepos/opensourcepos/pull/4238))
-- Coding style updates for PSR-12 compliance & improved readability by @BudsieBuds in ([#4204](https://github.com/opensourcepos/opensourcepos/pull/4204))
-- Fix Codeigniter disallowed characters error with payment types that have accents by @diego-ramos in ([#4232](https://github.com/opensourcepos/opensourcepos/pull/4232))
-- Fixed broken escape string for success & warning messages by @Franchovy in ([#4253](https://github.com/opensourcepos/opensourcepos/pull/4253))
-- Bugfix constraint migration fix by @objecttothis in ([#4230](https://github.com/opensourcepos/opensourcepos/pull/4230))
-- Fix item number lookup in sales/receivings ([#4212](https://github.com/opensourcepos/opensourcepos/issues/4212)) by @jekkos in ([#4250](https://github.com/opensourcepos/opensourcepos/pull/4250))
-
-## [3.4.0] - 2025-03-23
-
-- Translation updates (Spanish, Indonesian, Swedish, Urdu, Chinese, Thai, French, Dutch)
-- PHP `8.x` support
-- Security fixes (XSS, SQLi)
-- Migration to Gulp as buildsystem
-- Decimal validation fix
-- Sticky header fix
-- Receipt sent as attachment
-- Barcode generation library upgrade
-- Bump framework to CodeIgniter `4.x.x`
-- Improve security performance against bots
-
-## [3.3.9] - 2023-11-06
-
-- Translation updates (Arabic, Central Khmer, Croatian, Czech, Danish, English, French, Indonesian, Lao, Russian, Spanish, Thai)
-- Fix logout race condition issue ([#3578](https://github.com/opensourcepos/opensourcepos/issues/3578))
-- Fix docker compose file ([#3754](https://github.com/opensourcepos/opensourcepos/issues/3754))
-- Minor report fixes
-
-## [3.3.8] - 2022-08-03
-
-- Translation updates (Azerbaijani, Flemish, French, Spanish, Thai, Vietnamese)
-- Fix logo removal issue (CSRF regression) ([#3533](https://github.com/opensourcepos/opensourcepos/issues/3533))
-- Substract refunds from total rewards as payment method ([#3536](https://github.com/opensourcepos/opensourcepos/issues/3536))
-
-## [3.3.7] - 2022-03-29
-
-- Translation updates (Chinese, French, Indonesian, Italian, Polish, Swedish, Thai)
-- XSS fixes in bootstrap datatables
-- Invoice numbering fixes
-- Docker compose database scripts are now mounted from a container volume
-
-## [3.3.6] - 2021-10-31
-
-- Translation updates (Bosnian, Dutch, Indonesian, Polish, Russian, Spanish)
-- Make footer revision clickable (ref to github)
-- Minor reporting adjustments
-- Introduced new global keyboard shortcuts (see overview below)
-
-### Fixes
-
-- reCaptcha issue fix
-- Username verification bugfix
-- Clickjacking security mitigations
-- Fixes for the payment summary after refresh
-- Hardening against XSS by introducing a CSP header in the HTTP headers
-- Several CSRF and XSS fixes
-- Type juggling password fix for old logins
-
-
-## [3.3.5] - 2021-08-26 [YANKED]
-
-- Translation updates (Arabic, Azerbaijani, Bulgarian, Chinese, Dutch, French, Indonesian, Polish, Portuguese, Romanian, Spanish, Swedish, Tamil, Thai, Turkish, Ukrainian, Vietnamese)
-- New responsive login page based on Bootstrap `5`
-- Translation fallback to English when a string is untranslated for the selected language
-- Database and performance optimizations
-- Grunt/CI updates
-- CSV item import improvements
-
-### Fixes
-
-- Username verification fix on employee insert/update
-- Minor report fixes
-- Attribute encoding fix
-- Decimal render fix
-- Fixes for Docker to make it run on Windows
-- Blind SQL injection fix
-
-## [3.3.4] - 2021-04-20
-
-- Translation updates (Hungarian, Indonesian, Bosnian, Ukrainian, Vietnamese, Spanish)
-- Prevent data wipeout when calling GET directly on the save endpoint
-- Cleanup `.htaccess`
-- Docker compose usability improvements
-- Cookie secure flag fix for Chrome (you can enable CSRF protection again now)
-- Use LONGBLOB for session storage. This should fix issues preventing a user from adding a large number of items to register
-- Cash rounding bugfixes
-- Fix daily overview cash sale totals
-- Show sale count in the transaction report
-- Button disable to prevent double submission
-- Add barcode field to item kits
-- Fix discount register parsing in some specific locales
-
-## [3.3.3] - 2021-01-01
-
-- PHP `7.4` support
-- Set PHP `7.2` to be the minimum level due to older version deprecations
-- Added email CC and BCC (see `config/email.php`)
-- Cash rounding to nearest 5 cents
-- Updated composer packages and JS plugins
-- Improved security (CSRF protection)
-- Various small improvements and bug fixes
-
-## [3.3.2] - 2020-09-03
-
-- Fixed `only_full_group_by` issue with MySQL/MariaDB
-- Fixed POS transaction return failure if items were deleted
-- Various bug fixes
-
-## [3.3.1] - 2019-12-14
-
-- Various bug fixes (please disable `only_full_group_by` option from MySQL/MariaDB to avoid issues)
-
-## [3.3.0] - 2019-09-29
-
-- New logo
-- Upgrade CodeIgniter to version `3.1.11`
-- PHP `7.3` support
-- Attributes feature (allows extensibility of items replacing old custom fields)
-- India GST tax support + various tax support improvements
-- Cash up feature
-- Temporary items feature
-- Fixed sales discount
-- Supplier category feature
-- Improved items import and CSV file generation (to contain additional attributes)
-- Improved Docker installation with NGINX reverse proxy using Let's Encrypt TLS certificate
-- Database performance improvements
-- Added and udated translations
-- Fixed various reports issues
-- Fixed rounding issues
-- Fixed CSRF issues
-- Fixed database upgrade script issues
-- Various bug fixes
-
-## [3.2.3] - 2018-06-13
-
-- Upgrade CodeIgniter to version `3.1.9`
-- Further revert of CSRF change causing regression
-
-## [3.2.2] - 2018-06-06
-
-- Revert CSRF change causing regression
-
-## [3.2.1] - 2018-06-04
-
-- Support for GDPR
-- CSRF simplifications
-- Translation upgrades
-- Various bug fixes
-
-## [3.2.0] - 2018-04-14
-
-- Upgrade CodeIgniter to version `3.1.8`
-- PHP `7.2` support (use OpenSSL and not MCrypt)
-- Automatic database upgrades from `3.0.0` at first login (no more SQL scripts)
-- Home and (back)office menu switch (top menu can be organized in two views)
-- Expenses feature
-- Quote and work order features
-- Improved invoice support
-- Sale suspend, soft delete, complete as the state not as different tables or hard delete
-- Restore deleted sales
-- Improved item kits
-- Export tables all records and export to PDF
-- Table sticky header (headers visible during scrolling)
-- Allow duplicate barcodes (config option)
-- Search suggestion formatting (config option)
-- Define print and email checkboxes behavior (config option)
-- Edit customer from sales register
-- Added and updated translations
-- Various jQuery plugins upgrade
-- Fixed permission issues (e.g. password change)
-- Fixed various reports issues and renamed Sales to Transactions
-- Various bug fixes (e.g. tax, rounding, library circular dependency)
-
-## [3.1.1] - 2017-09-09
-
-- Updated en-US and en-GB translations, better grammar, and consistency
-- Fixed database migration issue with VAT tax included
-- Fixed database backup bug
-- Fixed gift card error
-- Fixed database `upgrade to 3.1.x` script (now it's to `3.1.1` and there is no `3.1.0` anymore)
-- Fixed old database upgrade scripts for people upgrading from `2.x` versions
-- Fixed `.htaccess` file in OSPOS root dir (it was not forwarding to `public` subdir)
-- Fixed few jQuery `2.0` upgrade issues
-
-## [3.1.0] - 2017-09-02
-
-- MySQL `5.7` and PHP `7.x` support
-- Advanced tax support with customer tax categories and more
-- Better horeca use case support with dinner table sale tagging
-- Customer rewards support
-- Added quote support and better invoice support
-- Added integration with Mailchimp to connect customer list with Mailchimp list
-- Prevent inserting two customers with the same email address
-- Customer total spending and stats
-- Added Google reCAPTCHA option for the login page to increase protection from brute force attacks
-- Added due payment for credit sale support
-- Gift card numbering with two options: series and random
-- Extended item kits functionality
-- Employees are allowed to change their own password by clicking their name in the top bar
-- Cash rounding support, extended decimals
-- Reworked item pictures, file names, and storing
-- Financial year start date and selection from date range pickers
-- Date time range filters can be date and time or date only
-- Added two new Bootswatch themes
-- Receipts font size support
-- Fix automatically people's name first capital letter, emails in lower case only
-- Fixes to Receiving
-- Various amendments to database script updates from older versions
-- Added dotenv support
-- Updates to language translations (split English to American English and British English)
-- Various Dockers support improvements
-- Minor bugfixes
-
-## [3.0.2] - 2016-12-31
-
-- Fixed error when performing scans multiple times in a row
-- Fixed summary reports
-- Protect employee privacy by printing just the first letter of the family name
-- Updates to language translations
-- Various Dockers support improvements
-- Minor bugfixes
-
-## [3.0.1] - 2016-11-27
-
-- Upgrade CodeIgniter to version `3.1.2`
-- Substantial database performance improvements
-- Improved security: email and SMS passwords encryption, removed `phpinfo.php`
-- Set code to be production and not development in `index.php`
-- Reports improvements, fixed table sorting, tax calculation and made profit to be net profit
-- Better Apache `2.4` support in `.htaccess`
-- Updates to language translations
-- Fixed excel template download links
-- Fixed employee name in sale receipt and invoice reprinting
-- Fixed `2.3.2_to_2.3.3.sql` database upgrade script mistake
-- Fixed `phppos to ospos` database migration script
-- Minor bug fixes and some general code clean up
-
-## [3.0.0] 2016-10-22
-
-- Upgrade CodeIgniter to version `3.1.0`
-- Major UI overhaul based on Bootstrap `3.0` and Bootswatch Themes
-- New tabular views with advanced filtering using Bootstrap Tables
-- New graphical reports with no more Adobe Flash dependency
-- Redesign of all modal dialogs
-- Updated Sales register with simplified payment flow
-- Improved security: MySQL injection, XSS, CSFR, BCrypt password encryption, safer project layout
-- Support for text messaging (interfacing to specific support required)
-- Email configuration
-- Improved Localisation support
-- Improved Store Config page
-- Docker container ready for cloud installation
-- Composer PHP support
-- More languages and integration with Weblate for continuous translation
-- About 280 closed issues under `3.0.0` release label, too many to produce a meaningful list
-- Various code cleanup, refactoring, optimization and etc.
-
-## [2.4.0] - 2016-10-03
-
-- Upgrade CodeIgniter to version `3.0.5`
-- Fix for spurious logouts
-- Apache `.htaccess` `mod_expiry` caching and security optimizations
-- Bulk item edit fixes (category, tax, and supplier fields)
-- Remove f-key shortcuts used for module navigation
-- Allow using custom invoice numbers when suspending a sale
-- PHP `7` fixes
-- Specific warnings to distinguish between reorder level and out of stock situation in sales
-- Fix malware detection issues due to usage of `base64` encoding for storing session variables
-- Improve language generation scripts (use PHP builtin functionality)
-- Add extra buttons for navigation and printing to receipt and invoice
-- Improve print layout for invoices
-- Make layout consistent for items between receipt and invoice templates
-- Minor bugfixes
-
-## [2.3.4] - 2016-02-08
-
-- Migration script fixes
-- Improved continuous integration setup
-- More integration tests
-- Virtualized container setup (`docker install`)
-- Live clock functionality and favicon
-- Improved PHP `7` compatibility
-- Added de_CH (German) as language
-- Minor code cleanup
-- Removal of annoying backup prompt on logout
-
-## [2.3.3] - 2016-01-06
-
-- Item kit fixes (search, list, ...)
-- Add date picker widgets in sale/receiving edit forms
-- Add date filter in items module
-- Add barcode generation logic for EAN8, EAN13
-- Add barcode validation and fallback logic for EAN8, EAN13
-- New config option to generate barcodes if `item_number` is empty
-- Add cost and count to inventory reports
-- Gift card fixes
-- Refactor sales overview (added date filtering + search options)
-- Better locale config support
-- Improve PHP compatibility
-- Fix invoice numbering bug on suspending a sale
-- Add configurable locale-dependent date format
-- Add grunt-cache-breaker plugin
-- Suspend button appears before adding a payment
-- Searching of deleted items, filtering part is removed
-- Remove infamous `0` after leaving sale or receiving comments empty
-- Add SQL script to clean zeroes in sales/receivings comments
-- Numerous other bug fixes
-
-## [2.3.2] - 2016-01-25
-
-- Nominatim (OpenStreetMap) customer address autocompletion
-- Sale invoice templating
-- Configurable barcode generation for items
-- Stock location filtering in detailed sales and receivings reports
-- Gift cards fixes
-- Proper pagination support for most modules
-- Language updates
-- Fix for decimal tax rates
-- Add gender and company name attributes to customer
-- Stock location config screen refactor
-- Basic Travis CI and PhantomJS setup
-- Database backup on admin logout
-- Modifiable item thumbnails
-- Email invoice PDF generation using DomPDF
-- Modifiable company logo
-- jQuery upgrade (`1.2` -> `1.8.3`)
-- JavaScript minification (using Grunt)
-- Numerous bugfixes
-
-## [2.3.1] - 2015-02-11
-
-- Extra report permissions (this includes a refactoring of the database model - new grants table)
-- Tax inclusive/exclusive pricing
-- Receivings amount multiplication (can be configured in items section)
-- Customizable sale and receiving numbering
-- Gift card improvements
-- Fix item import through CSV
-- Bug fixes for reports
-
-## [2.3.0] - 2014-08-20
-
-- Support for multiple stock locations
-
-## 2.2.2 - 2014-08-19
-
-- French language added
-- Thai language added
-- Upgrade CodeIgniter to version `2.2.0`
-- Database types for amounts all changed to decimal types (this will fix rounding errors in the sales and receivings reports)
-- Fix duplicated session cookies in HTTP headers (this broke the application when running on Nginx)
-
-## 2.1.1
-
-- Barcodes on the order receipt were not generated correctly
-- Sales edit screen for detailed sales reports is now available with ThickBox as in the rest of the application
-- Indonesian language files updated (Oktafianus)
-- Default language set to `en` in `config.php`
-- Fixed some CSS bugs in the suspended sales section
-- Default cookie `sess_time_expire` set to `86400` (24h)
-
-## 2.1.0
-
-- Various upgrades, too numerous to list here
-- Removed dependency on ofc upload library due to vulnerability found
-
-## 2.0.2
-
-- Fixed multiple gift cards issue per Bug #4 reported on Sourceforge where a second gift card added would have its balance set to `0` even if the sale did not require the total of the second gift card to pay the remaining amount due
-- Small code cleanup
-
-## 2.1.0
-
-- Upgrade CodeIgniter to version `2.1.0`
-- Various small improvements
+# Change Log
+
+Custom changes made to the upstream Open Source Point of Sale (OSPOS) codebase.
+Organized by feature area; the most recent work is listed first.
+
+## 1. Items screen — show quantities for multiple stock locations
+
+- **Item list per-location quantity columns** (`app/Views/items/manage.php`, `app/Models/Item.php`, `app/Helpers/tabular_helper.php`, `app/Controllers/Items.php`, `app/Libraries/Item_lib.php`)
+  - The Items table now has one quantity column **per stock location** (e.g. `1 LAOAG`, `2 WH BLDG`, ...) plus a **Total** column that sums all locations.
+  - A checkbox list lets you show/hide each location's column instantly (no page reload) via bootstrap-table `showColumn`/`hideColumn`.
+  - Search and row-refresh queries return every location column regardless of selection.
+  - Selected locations are persisted in the session/URL.
+
+## 2. Sales — customer required to complete a transaction
+
+- `app/Controllers/Sales.php` (`postComplete`): completing a sale now requires a selected customer. If no customer is set, the register reloads with the error `"A customer must be selected to complete the transaction."`
+- New `customer_required_error` language key added to all `app/Language/*/Sales.php` variants (English in `en`/`en-GB`, empty string elsewhere, per localization rules).
+
+## 3. Stock Transfers module (new)
+
+- **New module** to move stock between locations: `app/Controllers/Transfers.php`, `app/Models/Transfer.php`, `app/Libraries/Transfer_lib.php`, views `app/Views/transfers/register.php` and `receipt.php`.
+- New migration `20260813000000_AddTransfers.php`.
+- Permissions auto-created for new stock locations (`app/Models/Stock_location.php`), module registered in routes (`app/Config/Routes.php`), `Module` language keys for all languages.
+- Lot/supplier attribution is preserved on transfer (the same `receiving_id` is moved).
+
+## 4. Lot tracking by supplier (new)
+
+- New `app/Models/Item_lot.php` and migration `20260810000000_AddSupplierLotTracking.php` — tracks received quantity per lot and ties lots to a supplier.
+- `app/Models/Receiving.php` records received quantities as lots.
+- `app/Models/Reports/Detailed_sales.php` and Items search include the supplier ("Supplied By") for each line.
+- CLI smoke test: `app/Commands/LotTrackingSmokeTest.php`.
+
+## 5. Suspended sale stock reservations
+
+- New migration `20260811000000_AddSuspendedSaleReservations.php`.
+- `app/Models/Sale.php`: stock is reserved when a sale is suspended and released when it is completed or cancelled; inventory remarks distinguish `SUSPENDED` vs `POS`.
+- `app/Controllers/Sales.php`: new `postDeleteSuspended()` to cancel a suspended sale and release its stock.
+- `app/Views/sales/suspended.php`: added cancel button and fixed customer-name display.
+
+## 6. Reports
+
+- **Inventory by Location** report (`app/Models/Reports/Inventory_by_location.php`, `app/Views/reports/inventory_by_location.php`) — pivot of stock quantity per product per location with a total.
+- **Detailed Transfers** report (`app/Models/Reports/Detailed_transfers.php`, `app/Controllers/Reports.php` `date_input_transfers`, `app/Views/reports/tabular_details_transfers.php`) plus route and listing entry.
+- Detailed Sales report gains a "Supplied By" column.
+- `app/Views/reports/tabular_details.php`: removed the unused `init_dialog` block.
+
+## 7. Services workflow (work orders, quotes, invoices)
+
+- Services are modeled as **non-stock items** (Items screen → `Stock type = Non-stock`) so they ring up on the register without touching inventory. Create e.g. a "Services" category with items like "Desktop Reformat", "Cleaning", "CCTV Installation".
+- **Work Orders**: new migration `20260814000000_EnableServicesWorkflow.php` inserts any missing work-order/quote/invoice config keys (`INSERT IGNORE`) and enables Work Order support (`work_order_enable = 1`). The keys were historically only seeded by older upgrade scripts; `INSERT IGNORE` keeps this safe on both fresh and existing databases.
+- The register now offers **Receipt / Quote / Work Order / Invoice** modes for service jobs; work orders/invoices print and email with their own sequential numbering (`W%y{WSEQ:6}`, `Q%y{QSEQ:6}`, `$CO`).
+- Uses OSPOS's built-in invoice system — no separate service module needed.
+
+## 8. Bug fixes / hardening
+
+- `app/Config/Validation/OSPOSRules.php`: `themeExists()` now resolves the theme dir from `FCPATH` instead of a relative path.
+- `app/Controllers/Config.php` (`postSaveLocale`): `payment_reference_code_min/max` are sanitized before validation and no longer rejected when blank.
+- `app/Helpers/locale_helper.php`: `parse_decimals()` uses safe defaults for missing config values.
+- `app/Database/Migrations/20170501000000_initial_schema.php`: rollback no longer drops the framework `migrations` history table.
+- `app/Views/partial/header.php` and `app/Views/login.php`: restored the injected CSS/JS resource includes (gulp output).
+- Unit tests: session setup fixed for `ConfigTest`, `EmployeesControllerTest`, `HomeTest`, `SalesControllerTest`, `CustomersCsvImportTest`.
+
+## 9. Development tooling
+
+- `Dockerfile`: dev stage installs `composer`, `unzip`, `git` and the dev dependencies (PHPUnit, php-cs-fixer, faker) for running tests.
+- `docker-compose.override.yml`: local dev overrides (development environment, xdebug, source/test mounts).
+- `.dockerignore`: keeps `composer.json`/`composer.lock` in the build context.
+- `.gitignore`: ignores `phpunit.xml`.
+- `tests/run-tests.sh`: helper that runs the PHPUnit suite against a dedicated `ospos_test` database.
+- `tests/Models/TransferReversalTest.php`: tests for transfer stock reversal.
