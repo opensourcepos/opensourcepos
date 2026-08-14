@@ -349,10 +349,11 @@ class Config extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
+        helper('security');
 
         $file_info = [
             'orig_name' => $filename,
-            'raw_name'  => $info['filename'],
+            'raw_name'  => sanitize_filename($info['filename']),
             'file_ext'  => $file->guessExtension()
         ];
 
@@ -370,6 +371,14 @@ class Config extends Secure_Controller
      */
     public function postSaveGeneral(): ResponseInterface
     {
+        $rules = [
+            'theme' => 'permit_empty|themeExists',
+        ];
+        if (!$this->validate($rules)) {
+            $errors = $this->validator->getErrors();
+            return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
+        }
+
         $batchSaveData = [
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),

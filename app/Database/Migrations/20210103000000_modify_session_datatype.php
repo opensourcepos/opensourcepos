@@ -12,7 +12,7 @@ class Migration_modify_session_datatype extends Migration
     public function up(): void
     {
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.4_modify_session_datatype.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.4_modify_session_datatype.sql');
     }
 
     /**

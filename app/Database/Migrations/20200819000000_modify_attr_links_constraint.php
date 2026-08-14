@@ -12,7 +12,7 @@ class Migration_modify_attr_links_constraint extends Migration
     public function up(): void
     {
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.2_modify_attr_links_constraint.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.2_modify_attr_links_constraint.sql');
     }
 
     /**
