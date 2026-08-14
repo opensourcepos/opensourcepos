@@ -8,8 +8,8 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 
 /**
- * Regression tests for GHSA-995p-52qw-5hh2: decrementQuantity() must apply
- * its write in a single atomic UPDATE, so that two concurrent sales of the
+ * Regression tests for GHSA-995p-52qw-5hh2: changeQuantity() must apply
+ * its write in a single atomic upsert, so that two concurrent sales of the
  * same item/location can never both read the same stale quantity and
  * oversell stock. Unlike the gift card and reward point spends, there is
  * deliberately no floor guard here (see the fix's scope note) — negative
@@ -80,7 +80,7 @@ class Item_quantityTest extends CIUnitTestCase
         $this->createItemQuantityRow($itemId, 10);
         $itemQuantityModel = model(Item_quantity::class);
 
-        $result = $itemQuantityModel->decrementQuantity($itemId, self::LOCATION_ID, 3);
+        $result = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -3);
 
         $this->assertTrue($result);
         $this->assertEqualsWithDelta(7.0, $this->getQuantity($itemId), 0.001);
@@ -92,7 +92,7 @@ class Item_quantityTest extends CIUnitTestCase
         $this->createItemQuantityRow($itemId, 5);
         $itemQuantityModel = model(Item_quantity::class);
 
-        $result = $itemQuantityModel->decrementQuantity($itemId, self::LOCATION_ID, 8);
+        $result = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -8);
 
         $this->assertTrue($result);
         $this->assertEqualsWithDelta(-3.0, $this->getQuantity($itemId), 0.001);
@@ -104,8 +104,8 @@ class Item_quantityTest extends CIUnitTestCase
         $this->createItemQuantityRow($itemId, 10);
         $itemQuantityModel = model(Item_quantity::class);
 
-        $firstResult  = $itemQuantityModel->decrementQuantity($itemId, self::LOCATION_ID, 3);
-        $secondResult = $itemQuantityModel->decrementQuantity($itemId, self::LOCATION_ID, 3);
+        $firstResult  = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -3);
+        $secondResult = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -3);
 
         $this->assertTrue($firstResult);
         $this->assertTrue($secondResult);

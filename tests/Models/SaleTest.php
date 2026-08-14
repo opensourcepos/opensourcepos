@@ -346,4 +346,95 @@ class SaleTest extends CIUnitTestCase
         $this->assertGreaterThan(0, $result);
         $this->assertEqualsWithDelta(7.0, $this->getItemQuantity($itemId), 0.001);
     }
+
+    public function testSaveValueDecrementsStockOnCompletedSaleWhenNoQuantityRowExists(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId     = $this->createTestItem(HAS_STOCK);
+
+        // Deliberately no item_quantities row inserted for this item/location.
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items      = $this->buildCartLine($itemId, 3, 5.00);
+        $payments   = [
+            0 => [
+                'payment_type'    => lang('Sales.cash'),
+                'payment_amount'  => 15.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+        ];
+        $salesTaxes = [[], []];
+
+        $result = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $result);
+        $this->assertEqualsWithDelta(-3.0, $this->getItemQuantity($itemId), 0.001);
+    }
+
+    public function testDeleteRestoresStockOnCanceledSale(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId     = $this->createTestItem(HAS_STOCK);
+
+        \Config\Database::connect()->table('item_quantities')->insert([
+            'item_id'     => $itemId,
+            'location_id' => self::LOCATION_ID,
+            'quantity'    => 10,
+        ]);
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items      = $this->buildCartLine($itemId, 3, 5.00);
+        $payments   = [
+            0 => [
+                'payment_type'    => lang('Sales.cash'),
+                'payment_amount'  => 15.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+        ];
+        $salesTaxes = [[], []];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+        $this->assertEqualsWithDelta(7.0, $this->getItemQuantity($itemId), 0.001);
+
+        $deleteResult = $saleModel->delete($saleId, false, true, $employeeId);
+
+        $this->assertTrue($deleteResult);
+        $this->assertEqualsWithDelta(10.0, $this->getItemQuantity($itemId), 0.001);
+    }
 }

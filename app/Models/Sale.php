@@ -643,11 +643,15 @@ class Sale extends Model
 
             if ($cur_item_info->stock_type == HAS_STOCK && $saleStatus == COMPLETED) {    // TODO: === ?
                 // Update stock quantity if item type is a standard stock item and the sale is a standard sale
-                $item_quantity->decrementQuantity(
+                if (! $item_quantity->changeQuantity(
                     $item_data['item_id'],
                     $item_data['item_location'],
-                    (float) $item_data['quantity'],
-                );
+                    -(float) $item_data['quantity'],
+                )) {
+                    $this->db->transRollback();
+
+                    return INSUFFICIENT_STOCK;
+                }
 
                 // If an items was deleted but later returned it's restored with this rule
                 if ($item_data['quantity'] < 0) {
@@ -828,7 +832,7 @@ class Sale extends Model
                     $inventory->insert($inv_data, false);
 
                     // Update quantities
-                    $item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
+                    $item_quantity->changeQuantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
                 }
             }
         }

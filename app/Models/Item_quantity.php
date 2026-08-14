@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\RawSql;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -84,30 +85,22 @@ class Item_quantity extends Model
     }
 
     /**
-     * changes to quantity of an item according to the given amount.
-     * if $quantity_change is negative, it will be subtracted,
-     * if it is positive, it will be added to the current quantity
+     * Atomically changes an item's quantity at a location by a signed delta.
+     * Positive delta adds; negative delta subtracts. Creates the
+     * item_quantities row if it doesn't yet exist. Negative resulting
+     * quantity is allowed (no floor guard).
      */
-    public function change_quantity(int $item_id, int $location_id, int $quantity_change): bool
-    {
-        $quantity_old = $this->get_item_quantity($item_id, $location_id);
-        $quantity_new = $quantity_old->quantity + $quantity_change;
-        $location_detail = ['item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new];
-
-        return $this->save_value($location_detail, $item_id, $location_id);
-    }
-
-    /**
-     * Atomically decrements an item's quantity at a location
-     */
-    public function decrementQuantity(int $itemId, int $locationId, float $quantityChange): bool
+    public function changeQuantity(int $itemId, int $locationId, float $quantityChange): bool
     {
         $builder = $this->db->table('item_quantities');
-        $builder->where('item_id', $itemId);
-        $builder->where('location_id', $locationId);
-        $builder->set('quantity', 'quantity - ' . $this->db->escape($quantityChange), false);
+        $builder->set([
+            'item_id'     => $itemId,
+            'location_id' => $locationId,
+            'quantity'    => $quantityChange,
+        ]);
+        $builder->updateFields(['quantity' => new RawSql('quantity + ' . $this->db->escape($quantityChange))]);
 
-        return $builder->update();
+        return $builder->upsert() !== false;
     }
 
     /**
