@@ -541,10 +541,6 @@ class Sale extends Model
 
         $item_quantity = model(Item_quantity::class);
 
-        if ($saleId != NEW_ENTRY) {
-            $this->clear_suspended_sale_detail($saleId);
-        }
-
         if (count($items) == 0) {    // TODO: ===
             return -1;    // TODO: Replace -1 with a constant
         }
@@ -564,6 +560,10 @@ class Sale extends Model
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
+
+        if ($saleId != NEW_ENTRY) {
+            $this->clear_suspended_sale_detail($saleId);
+        }
 
         $builder = $this->db->table('sales');
         if ($saleId == NEW_ENTRY) {
