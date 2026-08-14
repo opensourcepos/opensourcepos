@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Item;
@@ -35,7 +36,9 @@ class ItemsCsvImportTest extends CIUnitTestCase
     protected function setUp(): void
     {
         if (self::$doneBootstrap === false) {
-            \CodeIgniter\Database\Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
             self::$doneBootstrap = true;
         }
 
