@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use App\Models\Reports\Detailed_receivings;
 use App\Models\Reports\Detailed_sales;
 use App\Models\Reports\Detailed_transfers;
+use App\Models\Reports\Inventory_by_location;
 use App\Models\Reports\Inventory_low;
 use App\Models\Reports\Inventory_summary;
 use App\Models\Reports\Specific_customer;
@@ -51,6 +52,7 @@ class Reports extends Secure_Controller
     private Detailed_transfers $detailed_transfers;
     private Supplier $supplier;
     private Detailed_receivings $detailed_receivings;
+    private Inventory_by_location $inventory_by_location;
     private Inventory_summary $inventory_summary;
 
     public function __construct()
@@ -79,6 +81,7 @@ class Reports extends Secure_Controller
         $this->detailed_transfers = model(Detailed_transfers::class);
         $this->supplier = model(Supplier::class);
         $this->detailed_receivings = model(Detailed_receivings::class);
+        $this->inventory_by_location = model(Inventory_by_location::class);
         $this->inventory_summary = model(Inventory_summary::class);
 
         if (sizeof($exploder) > 1) {
@@ -2184,6 +2187,49 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * Inventory by Location report: stock quantity per product per location.
+     *
+     * @return string
+     */
+    public function inventory_by_location(): string
+    {
+        $this->clearCache();
+
+        $locations = $this->stock_location->get_allowed_locations();
+        $headers = $this->inventory_by_location->getPivotColumns($locations);
+
+        $report_data = $this->inventory_by_location->getPivotData($locations);
+
+        $tabular_data = [];
+        foreach ($report_data as $row) {
+            $tabular_row = [
+                'item_name'   => $row['item_name'],
+                'item_number' => $row['item_number'],
+                'category'    => $row['category'],
+            ];
+
+            foreach ($locations as $location_id => $location_name) {
+                $key = 'location_' . $location_id;
+                $tabular_row[$key] = to_quantity_decimals($row[$key] ?? 0);
+            }
+
+            $tabular_row['total'] = to_quantity_decimals($row['total']);
+            $tabular_row['reorder_level'] = to_quantity_decimals($row['reorder_level']);
+
+            $tabular_data[] = $tabular_row;
+        }
+
+        $data = [
+            'title'    => lang('Reports.inventory_by_location_report'),
+            'subtitle' => '',
+            'headers'  => $headers,
+            'data'     => $tabular_data,
+        ];
+
+        return view('reports/inventory_by_location', $data);
     }
 
     /**
