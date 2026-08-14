@@ -192,12 +192,16 @@ if (isset($success)) {
 
         $("#finish_transfer_button").click(function(e) {
             e.preventDefault();
-            $("#finish_transfer_form").submit();
+            if (confirm("<?= lang('Transfers.confirm_finish_transfer') ?>")) {
+                $("#finish_transfer_form").submit();
+            }
         });
 
         $("#cancel_transfer_button").click(function(e) {
             e.preventDefault();
-            window.location = '<?= site_url("$controller_name") ?>';
+            if (confirm("<?= lang('Transfers.confirm_cancel_transfer') ?>")) {
+                window.location = '<?= site_url("$controller_name") ?>';
+            }
         });
 
         $("#comment").change(function() {

@@ -68,6 +68,7 @@ class Transfers extends Secure_Controller
         if ($this->stock_location->exists($stock_source) && $this->stock_location->exists($stock_destination)) {
             $this->transfer_lib->set_stock_source($stock_source);
             $this->transfer_lib->set_stock_destination($stock_destination);
+            $this->transfer_lib->refresh_cart_stock($stock_source);
         }
 
         return $this->_reload();

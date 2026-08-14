@@ -186,6 +186,24 @@ class Transfer_lib
         $this->set_cart($items);
     }
 
+    /**
+     * Re-points every cart line at the given source location and refreshes
+     * the in-stock figure, so the register reflects the current source.
+     */
+    public function refresh_cart_stock(int $stock_source): void
+    {
+        $items = $this->get_cart();
+
+        foreach ($items as &$item) {
+            $item['item_location'] = $stock_source;
+            $item['stock_name']    = $this->stock_location->get_location_name($stock_source);
+            $item['in_stock']      = (float) $this->item_quantity->get_item_quantity($item['item_id'], $stock_source)->quantity;
+        }
+        unset($item);
+
+        $this->set_cart($items);
+    }
+
     public function clear_all(): void
     {
         $this->empty_cart();
