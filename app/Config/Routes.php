@@ -36,6 +36,7 @@ $routes->add('reports/detailed_(:any)/(:any)/(:any)/(:any)', 'Reports::Detailed_
 $routes->add('reports/detailed_sales', 'Reports::date_input_sales');
 $routes->add('reports/detailed_receivings', 'Reports::date_input_recv');
 $routes->add('reports/detailed_transfers', 'Reports::date_input_transfers');
+$routes->add('reports/detailed_rmas', 'Reports::date_input_rmas');
 
 $routes->add('reports/specific_(:any)/(:any)/(:any)/(:any)', 'Reports::Specific_$1/$2/$3/$4');
 $routes->add('reports/specific_customers', 'Reports::specific_customer_input');
