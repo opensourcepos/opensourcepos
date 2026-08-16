@@ -191,6 +191,8 @@ class Stock_location extends Model
             $this->_insert_new_permission('sales', $location_id, $location_name);
             $this->_insert_new_permission('receivings', $location_id, $location_name);
             $this->_insert_new_permission('transfers', $location_id, $location_name);
+            $this->_insert_new_permission('requisitions', $location_id, $location_name);
+            $this->_insert_new_permission('rmas', $location_id, $location_name);
 
             // Insert quantities for existing items
             $item = model(Item::class);

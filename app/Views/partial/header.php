@@ -43,7 +43,7 @@ $request = Services::request();
         <link rel="stylesheet" href="resources/css/ospos-9ead7561a7.css">
         <link rel="stylesheet" href="resources/css/popupbox-7b616030b0.css">
         <link rel="stylesheet" href="resources/css/receipt-a171207d8e.css">
-        <link rel="stylesheet" href="resources/css/register-6dc560e4ef.css">
+        <link rel="stylesheet" href="resources/css/register-d45c2f137b.css">
         <link rel="stylesheet" href="resources/css/reports-407b727797.css">
         <!-- endinject -->
         <!-- inject:debug:js -->
