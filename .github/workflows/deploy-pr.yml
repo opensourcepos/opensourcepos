@@ -33,12 +33,15 @@ jobs:
       
       - name: Get image tag
         id: image
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          IMAGE_TAG="pr-${PR_NUMBER}-${PR_SHA:0:7}"
+          chmod +x .github/scripts/get-version.sh
+          IMAGE_TAG=$(.github/scripts/get-version.sh docker-tag 7)
           echo "tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
 
   deploy:
     name: Deploy to staging
