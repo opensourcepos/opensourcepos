@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Eklenen/Çıkarılan Adet.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Dip Nota izin ver",
     "amount_entry"                       => "Miktar Girişi",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Toplu Düzenleme",
     "buy_price_required"                 => "Alış Fiyatı zorunlu alandır.",
     "cannot_be_deleted"                  => "Seçili ürünler silinemedi, bazı ürünlerin satışı var.",

@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Tambah atau kurangi Inventori.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Izinkan Deskripsi Alternatif",
     "amount_entry"                       => "Jumlah entri",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Ubah Massal",
     "buy_price_required"                 => "Harga Beli wajib diisi.",
     "cannot_be_deleted"                  => "Tidak dapat menghapus item terpilih, satu atau lebih item yang dipilih memiliki penjualan.",

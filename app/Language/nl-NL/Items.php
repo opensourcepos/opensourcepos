@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Voorraad om toe te voegen of af te trekken.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Alternatieve beschrijving toestaan",
     "amount_entry"                       => "Aantal vermelding",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Bewerken in bulk",
     "buy_price_required"                 => "Inkoopprijs is een vereist veld.",
     "cannot_be_deleted"                  => "Kan de geselecteerde artikel(en) niet verwijderen, één of meer van de geselecteerde artikelen bevatten verkopen.",

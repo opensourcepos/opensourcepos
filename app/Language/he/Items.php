@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "הוספה או החסרה של מלאי.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "אפשר תיאור חלופי",
     "amount_entry"                       => "ערך כניסה",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "עריכה גורפת",
     "buy_price_required"                 => "מחיר הרכישה הינו שדה חובה.",
     "cannot_be_deleted"                  => "לא ניתן למחוק פריטים נבחרים, לאחד או יותר מהפריטים שנבחרו יש מכירות.",

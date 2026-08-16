@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Mennyiség hozzáadása/elvétele",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Alternativ leirás eng.",
     "amount_entry"                       => "",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Tömeges módosítás",
     "buy_price_required"                 => "Vételár kötelező mező",
     "cannot_be_deleted"                  => "Nem törölhető a kiválasztott termék, mert van folyamatban lévő eladás!",

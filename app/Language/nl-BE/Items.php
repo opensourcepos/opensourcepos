@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Correctie hoeveelheid.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Aanpasbare omschrijving",
     "amount_entry"                       => "Hoeveelheid",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Bewerk Selectie",
     "buy_price_required"                 => "Inkoopprijs is een verplicht veld.",
     "cannot_be_deleted"                  => "De geselecteerde producten konden niet worden verwijderd.",

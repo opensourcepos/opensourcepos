@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "增/減庫存.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "允許ALT描述",
     "amount_entry"                       => "金額輸入",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "批次編輯",
     "buy_price_required"                 => "進貨價為必填欄位.",
     "cannot_be_deleted"                  => "無法刪除選定產品，所選產品中的一個或多個有銷售紀綠。",

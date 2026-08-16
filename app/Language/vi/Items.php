@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Hàng tồn kho để thêm hay bớt.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Cho phép Mô tả thay thế",
     "amount_entry"                       => "Đầu mục tổng số",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Sửa hàng loạt",
     "buy_price_required"                 => "Trường Giá đặt mua là bắt buộc.",
     "cannot_be_deleted"                  => "Không thể xóa các Hàng hóa đã chọn, một hay nhiều cái đã chọn đã từng được bán.",

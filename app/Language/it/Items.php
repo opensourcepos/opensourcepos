@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Inventario da aggiungere o sottrarre.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Permetti Descrizione alternativa",
     "amount_entry"                       => "Importo Inserito",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Modifica collettiva",
     "buy_price_required"                 => "Prezzo d'acquisto è un campo obbligatorio.",
     "cannot_be_deleted"                  => "Non è possibile eliminare l'articolo/i selezionato, uno o più sono stati inseriti nelle vendite.",

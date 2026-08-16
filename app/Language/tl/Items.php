@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Inventory to add or subtract.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Allow Alternate Description",
     "amount_entry"                       => "Amount Entry",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Bulk Edit",
     "buy_price_required"                 => "Purchase Price is a required field.",
     "cannot_be_deleted"                  => "Could not delete selected customers, one or more of the selected customers has sales.",

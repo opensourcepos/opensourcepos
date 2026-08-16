@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Změna množství.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Povolit alternativní popis",
     "amount_entry"                       => "Množství",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Hromadná editace",
     "buy_price_required"                 => "Je nutno zadat nákupní cenu.",
     "cannot_be_deleted"                  => "Nelze smazat vybrané pokožky protože již mají záznamy o prodeji.",

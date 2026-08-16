@@ -2,8 +2,11 @@
 
 return [
     'add_minus' => "Ilość do dodania lub odjęcia.",
+    'all_branches'          => '',
     'allow_alt_description' => "",
     'amount_entry' => "",
+    'brand'        => '',
+    'brand_required' => '',
     'bulk_edit' => "",
     'buy_price_required' => "",
     'cannot_be_deleted' => "",

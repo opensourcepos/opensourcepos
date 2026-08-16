@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "الكمية المطلوب خصمها أو اضافتها.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "السماح بوصف بديل",
     "amount_entry"                       => "إدخال القيمة",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "تحرير جماعى",
     "buy_price_required"                 => "سعر الشراء مطلوب.",
     "cannot_be_deleted"                  => "لايمكن حذف الأصناف المختارة، واحد أو أكثر منها لديه مبيعات.",

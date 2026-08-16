@@ -2,8 +2,11 @@
 
 return [
     'add_minus' => "เพิ่ม/ลบ จำนวนสินค้าคงคลัง",
+    'all_branches'          => '',
     'allow_alt_description' => "แสดงข้อมูลเพิ่มเติม",
     'amount_entry' => "จำนวนเงิน",
+    'brand'        => '',
+    'brand_required' => '',
     'bulk_edit' => "แก้ไขความจุ",
     'buy_price_required' => "ราคาซื้อขายต้องกรอก",
     'cannot_be_deleted' => "ไม่สามารถลบสินค้าที่เลือก, สินค้าที่เลือกถูกขายไปแล้ว.",

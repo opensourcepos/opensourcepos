@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "İnventar + Topla və ya - Çıx.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Alternativ təsvirə icazə verin",
     "amount_entry"                       => "Məbləğ Əlavəsi",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Kütləvi Redaktə",
     "buy_price_required"                 => "Alış qiyməti tələb olunan sahədir.",
     "cannot_be_deleted"                  => "Seçilmiş Mal (lar) silmək mükün deyil, bir və ya birdən çox Mallarda Satışlar var.",

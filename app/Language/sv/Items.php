@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Lager att lägga till eller ta bort.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Tillåt alternativ beskrivning",
     "amount_entry"                       => "Belopp",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Massändra",
     "buy_price_required"                 => "Köppriset är ett obligatoriskt fält.",
     "cannot_be_deleted"                  => "Kunde inte radera valda objekt, en eller flera av de valda objekten har försäljning.",

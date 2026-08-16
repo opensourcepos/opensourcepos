@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Inventaire à ajouter ou soustraire.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Autoriser description alternative",
     "amount_entry"                       => "Entrée de quantité",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Éditions multiples",
     "buy_price_required"                 => "Le prix d'achat est requis.",
     "cannot_be_deleted"                  => "Impossible de supprimer car un ou plusiers des articles sélectionnés ont des ventes.",

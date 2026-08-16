@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "موجودی برای اضافه یا تفریق.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "اجازه توضیحات جایگزین",
     "amount_entry"                       => "مقدار ورود",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "ویرایش فله",
     "buy_price_required"                 => "قیمت خرید فیلد مورد نیاز است.",
     "cannot_be_deleted"                  => "نمی توان آیتم های انتخابی را حذف کرد ، یک یا چند مورد انتخاب شده فروش دارند.",

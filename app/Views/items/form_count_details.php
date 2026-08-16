@@ -149,7 +149,19 @@ use App\Models\Inventory;
                 tr.appendChild(td);
 
                 td = document.createElement('td');
-                td.appendChild(document.createTextNode(data['trans_comment']));
+
+                const remark = data['trans_comment'] || '';
+                const remarkMatch = remark.match(/^(POS|RECV)\s+(\d+)$/);
+                if (remarkMatch) {
+                    const link = document.createElement('a');
+                    link.href = (remarkMatch[1] === 'POS' ? 'sales/receipt/' : 'receivings/receipt/') + remarkMatch[2];
+                    link.target = '_blank';
+                    link.textContent = remark;
+                    td.appendChild(link);
+                } else {
+                    td.appendChild(document.createTextNode(remark));
+                }
+
                 tr.appendChild(td);
 
                 table.appendChild(tr);

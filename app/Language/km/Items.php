@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "ស្តុក​ សំរាប់បន្ថែម រឺក៏ដកទំនិញ។",
+    "all_branches"                       => "",
     "allow_alt_description"              => "យល់ព្រម ចំពោះការពិព៌ណនា ផ្សេងទៀត",
     "amount_entry"                       => "ចំនួន ត្រូវបញ្ជូល",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "កែប្រែជាក្រុម",
     "buy_price_required"                 => "តម្លៃទិញចូល ត្រូវតែបំពេញ។",
     "cannot_be_deleted"                  => "",

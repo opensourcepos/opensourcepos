@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Zaliha za dodavanje ili oduzimanje.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Dozvoli Alt opis",
     "amount_entry"                       => "Unos iznosa",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Skupno uređivanje",
     "buy_price_required"                 => "Nabavna cijena je obavezno polje.",
     "cannot_be_deleted"                  => "Nije moguće izbrisati izabrane artikle, jedan ili više izabranih predmeta imaju prodaju.",

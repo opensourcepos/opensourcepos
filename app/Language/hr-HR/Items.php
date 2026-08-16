@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Dodavanje/skidanje s inventure",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Dozvoli Alt opis",
     "amount_entry"                       => "",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Zajedno uređenje",
     "buy_price_required"                 => "Prodajna cijena je potrebna",
     "cannot_be_deleted"                  => "Nemožete obrisati odabranu stavku, jedna ili više odabranih stavki ima prodaju.",

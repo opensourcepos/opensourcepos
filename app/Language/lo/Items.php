@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "ເພີ່ມຫລືຫລຸດປະລິມານສິນຄ້າໃນສາງ",
+    "all_branches"                       => "",
     "allow_alt_description"              => "ອະນຸຍາດໃຫ້ມີລາຍລະອຽດເສີມ",
     "amount_entry"                       => "",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "ແກ້ໄຂເປັນກຸ່ມ",
     "buy_price_required"                 => "ກະລຸນາກຳນົດລາຄາ.",
     "cannot_be_deleted"                  => "ບໍ່ສາມາດລຶບສິນຄ້າທີ່ເລືອກໄດ້, ໃນສິນຄ້າທີ່ເລືອກໄດ້ມີການຂາຍແລ້ວ.",

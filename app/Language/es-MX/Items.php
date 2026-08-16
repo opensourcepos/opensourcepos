@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Inventario a agregar o disminuir.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Permitir Descripción Alternativa",
     "amount_entry"                       => "Ingrese Cantidad",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Edición Masiva",
     "buy_price_required"                 => "Precio de Compra es un campo requerido.",
     "cannot_be_deleted"                  => "No se puede borrar el item(s) seleccionado, uno a mas de los items seleccionados tienen ventas.",

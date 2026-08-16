@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Hisa ya kuongeza au kutoa.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Ruhusu Maelezo Mbadala",
     "amount_entry"                       => "Uingizaji wa Kiasi",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Hariri kwa Wingi",
     "buy_price_required"                 => "Bei ya Ununuzi ni kiashiria kinachohitajika.",
     "cannot_be_deleted"                  => "Haiwezekani kufuta Bidhaa ulizochagua, moja au zaidi tayari ina mauzo.",

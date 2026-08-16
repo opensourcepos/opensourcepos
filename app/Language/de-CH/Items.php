@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Bestandsänderung",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Erlaube Alt. Bez.",
     "amount_entry"                       => "",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Sammeländerung",
     "buy_price_required"                 => "Einkaufspreis ist erforderlich",
     "cannot_be_deleted"                  => "Gewählte Artikel können nicht gelöscht werden, einer odere mehrere weisen Verkäufe auf",

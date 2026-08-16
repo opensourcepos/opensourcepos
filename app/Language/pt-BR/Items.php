@@ -2,8 +2,11 @@
 
 return [
     "add_minus"                          => "Inventário para adicionar/subtrair.",
+    "all_branches"                       => "",
     "allow_alt_description"              => "Permitir atualizar descrição",
     "amount_entry"                       => "Entrada de montante",
+    "brand"                              => '',
+    "brand_required"                     => '',
     "bulk_edit"                          => "Editar Múltiplos Itens",
     "buy_price_required"                 => "Preço de compra é um campo obrigatório.",
     "cannot_be_deleted"                  => "Não foi possível excluir os itens selecionados um ou mais dos itens selecionados tem vendas.",
