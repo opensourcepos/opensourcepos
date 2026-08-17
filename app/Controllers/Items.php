@@ -116,7 +116,7 @@ class Items extends Secure_Controller
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
-        $definition_names = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
+        $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
@@ -129,7 +129,7 @@ class Items extends Secure_Controller
             'search_custom'     => false,
             'is_deleted'        => false,
             'temporary'         => false,
-            'definition_ids'    => array_keys($definition_names)
+            'definition_ids'    => array_keys($definitionNames)
         ];
 
         // Check if any filter is set in the multiselect dropdown
@@ -326,9 +326,9 @@ class Items extends Secure_Controller
 
         if ($data['category_dropdown'] === '1') {
             $categories = ['' => lang('Items.none')];
-            $category_options = $this->attribute->getDefinitionValues(CATEGORY_DEFINITION_ID);
-            $category_options = array_combine($category_options, $category_options);    // Overwrite indexes with values for saving in items table instead of attributes
-            $data['categories'] = array_merge($categories, $category_options);
+            $categoryOptions = $this->attribute->getDefinitionValues(CATEGORY_DEFINITION_ID);
+            $categoryOptions = array_combine($categoryOptions, $categoryOptions);    // Overwrite indexes with values for saving in items table instead of attributes
+            $data['categories'] = array_merge($categories, $categoryOptions);
 
             $data['selected_category'] = $item_info->category;
         }
@@ -985,8 +985,8 @@ class Items extends Secure_Controller
         helper('importfile');
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
-        $allowed_attributes = $this->attribute->getDefinitionNames();
-        $data = generate_import_items_csv($allowed_locations, $allowed_attributes);
+        $allowedAttributes = $this->attribute->getDefinitionNames();
+        $data = generate_import_items_csv($allowed_locations, $allowedAttributes);
 
         return $this->response->download($name, $data);
     }
