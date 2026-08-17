@@ -201,33 +201,43 @@ class EmployeeTest extends CIUnitTestCase
             ['permission_id' => 'customers', 'menu_group' => 'home']
         ]);
 
+        $originalDisallowGrantChange = getenv('DISALLOW_GRANT_CHANGE');
         putenv('DISALLOW_GRANT_CHANGE=true');
 
-        $employeeModel = model(Employee::class);
-        $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
-        $employeeData = ['username' => 'granttester', 'language_code' => 'en', 'language' => 'english'];
-        $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
+        try {
+            $employeeModel = model(Employee::class);
+            $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
+            $employeeData = ['username' => 'granttester', 'language_code' => 'en', 'language' => 'english'];
+            $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
 
-        $saveEmployeeResult = $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);
-        $this->assertTrue($saveEmployeeResult);
+            $saveEmployeeResult = $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);
+            $this->assertTrue($saveEmployeeResult);
 
-        putenv('DISALLOW_GRANT_CHANGE');
-
-        $this->assertTrue($employeeModel->has_grant('customers', $employeeId));
-        $this->assertFalse($employeeModel->has_grant('sales', $employeeId));
+            $this->assertTrue($employeeModel->has_grant('customers', $employeeId));
+            $this->assertFalse($employeeModel->has_grant('sales', $employeeId));
+        } finally {
+            $originalDisallowGrantChange === false
+                ? putenv('DISALLOW_GRANT_CHANGE')
+                : putenv("DISALLOW_GRANT_CHANGE={$originalDisallowGrantChange}");
+        }
     }
 
     public function testNewEmployeeCreationWithGrantsRejectedWhenGrantChangeDisallowed(): void
     {
+        $originalDisallowGrantChange = getenv('DISALLOW_GRANT_CHANGE');
         putenv('DISALLOW_GRANT_CHANGE=true');
 
-        $result = $this->createEmployeeWithGrantsExpectingFailure([
-            ['permission_id' => 'customers', 'menu_group' => 'home']
-        ]);
+        try {
+            $result = $this->createEmployeeWithGrantsExpectingFailure([
+                ['permission_id' => 'customers', 'menu_group' => 'home']
+            ]);
 
-        putenv('DISALLOW_GRANT_CHANGE');
-
-        $this->assertFalse($result);
+            $this->assertFalse($result);
+        } finally {
+            $originalDisallowGrantChange === false
+                ? putenv('DISALLOW_GRANT_CHANGE')
+                : putenv("DISALLOW_GRANT_CHANGE={$originalDisallowGrantChange}");
+        }
     }
 
     protected function createEmployeeWithGrantsExpectingFailure(array $grantsData): bool
