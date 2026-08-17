@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Taarifa za Msingi",
-    "cannot_be_deleted"                => "\"Haiwezekani kufuta M/Wafanyakazi aliyechaguliwa",
+    "cannot_be_deleted"                => "Haiwezekani kufuta M/Wafanyakazi aliyechaguliwa, mmoja au zaidi ameshashughulikia mauzo au unajaribu kufuta akaunti yako.",
     "change_employee"                  => "",
     "change_password"                  => "Badilisha Nenosiri",
     "clerk"                            => "",

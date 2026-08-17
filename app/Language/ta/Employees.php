@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Information",
-    "cannot_be_deleted"                => "\"Unable to delete selected employee(s)",
+    "cannot_be_deleted"                => "தேர்ந்தெடுக்கப்பட்ட ஊழியர்(களை) நீக்க முடியவில்லை, ஒன்று அல்லது அதற்கு மேற்பட்டவை விற்பனையை செயலாக்கியுள்ளன அல்லது நீங்கள் உங்கள் கணக்கை நீக்க முயற்சிக்கிறீர்கள்.",
     "change_employee"                  => "",
     "change_password"                  => "Change Password",
     "clerk"                            => "",

@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Information",
-    "cannot_be_deleted"                => "\"Unable to delete selected employee(s)",
+    "cannot_be_deleted"                => "Hindi maaaring tanggalin ang mga napiling empleyado, isa o higit pa sa kanila ang may naiprosesong benta o sinusubukan mong tanggalin ang iyong sariling account.",
     "change_employee"                  => "",
     "change_password"                  => "Change Password",
     "clerk"                            => "",

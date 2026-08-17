@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Information",
-    "cannot_be_deleted"                => "\"Det går inte att radera valda anställda",
+    "cannot_be_deleted"                => "Det går inte att radera valda anställda, en eller flera av de behandlade försäljningarna eller du försöker radera ditt konto.",
     "change_employee"                  => "",
     "change_password"                  => "Ändra lösenord",
     "clerk"                            => "",
