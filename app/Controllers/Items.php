@@ -638,12 +638,12 @@ class Items extends Secure_Controller
             if (!$this->validate($rules, $messages)) {
                 $errors = $this->validator->getErrors();
 
-                return $this->response->setJSON(['success' => false, 'message' => reset($errors), 'id' => $item_id]);
+                return $this->response->setJSON(['success' => false, 'message' => reset($errors), 'id' => $itemId]);
             }
         }
 
-        $upload_data = $this->upload_image();
-        $upload_success = empty($upload_data['error']);
+        $uploadData = $this->upload_image();
+        $uploadSuccess = empty($uploadData['error']);
 
         $rawReceivingQuantity = $this->request->getPost('receiving_quantity');
 
