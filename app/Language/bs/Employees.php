@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Informacije",
-    "cannot_be_deleted"                => "\"Nije moguće izbrisati odabrane zaposlenike",
+    "cannot_be_deleted"                => "Nije moguće izbrisati odabrane zaposlenike, jedan ili više njih su obradili prodaju ili pokušavate izbrisati svoj nalog.",
     "change_employee"                  => "",
     "change_password"                  => "Promijeni lozinku",
     "clerk"                            => "",

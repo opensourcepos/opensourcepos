@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Mitarbeiter-Information",
-    "cannot_be_deleted"                => "\"Konnte gewählten Mitarbeiter nicht löschen",
+    "cannot_be_deleted"                => "Konnte gewählten Mitarbeiter nicht löschen, einer oder mehrere weisen Verkäufe aus.",
     "change_employee"                  => "",
     "change_password"                  => "",
     "clerk"                            => "",
@@ -31,7 +31,7 @@ return [
     "password_must_match"              => "Passwörter passen nicht überein",
     "password_not_must_match"          => "",
     "password_required"                => "Passwort ist erforderlich",
-    "permission_desc"                  => "\"Klicken Sie unten",
+    "permission_desc"                  => "Klicken Sie unten, um die jeweiligen Zugangsrechte zu aktivieren",
     "permission_info"                  => "Mitarbeiter Zugangsrechte",
     "repeat_password"                  => "Wiederhole Passwort",
     "subpermission_required"           => "Fügen Sie mindestens ein Zugangsrecht pro Modul hinzu",
