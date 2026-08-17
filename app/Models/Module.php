@@ -53,7 +53,7 @@ class Module extends Model
             return lang('Module.' . $row->module_id . '_desc');
         }
 
-        return lang('Errors.unknown');
+        return lang('Error.unknown');
     }
 
     /**
