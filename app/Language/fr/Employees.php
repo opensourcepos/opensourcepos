@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "Administrateur",
     "basic_information"                => "Fiche",
-    "cannot_be_deleted"                => "\"Impossible de supprimer le(s) employé(s) sélectionné(s)",
+    "cannot_be_deleted"                => "Impossible de supprimer le(s) employé(s) sélectionné(s),car un ou plusieur a éffectué une vente, ou car vous essayez de vous supprimer vous-meme.",
     "change_employee"                  => "Changer d'employé",
     "change_password"                  => "Changement de mot de passe",
     "clerk"                            => "Employé",

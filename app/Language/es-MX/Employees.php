@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Información",
-    "cannot_be_deleted"                => "\"No se puede borrar los empleados seleccionados",
+    "cannot_be_deleted"                => "No se puede borrar los empleados seleccionados, uno o más de ellos tienen ventas registradas ó intentas borrar tu propia cuenta.",
     "change_employee"                  => "",
     "change_password"                  => "Cambiar contraseña",
     "clerk"                            => "",

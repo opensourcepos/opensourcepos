@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Informacije",
-    "cannot_be_deleted"                => "\"Ne možete obristi odabranog radnika",
+    "cannot_be_deleted"                => "Ne možete obristi odabranog radnika, jedan ili više radnika ima prodaju ili pokušavate obristi sebe :)",
     "change_employee"                  => "",
     "change_password"                  => "",
     "clerk"                            => "",

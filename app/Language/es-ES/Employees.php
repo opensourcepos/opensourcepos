@@ -27,7 +27,7 @@ return [
     "none_selected"                    => "No has seleccionado empleados para borrar.",
     "one_or_multiple"                  => "empleado(s)",
     "password"                         => "Contraseña",
-    "password_minlength"               => "\"La contraseña debe tener",
+    "password_minlength"               => "La contraseña debe tener, por lo menos, 8 caracteres.",
     "password_must_match"              => "Las Contraseñas no coinciden.",
     "password_not_must_match"          => "La contraseña actual y la nueva contraseña no deben ser iguales.",
     "password_required"                => "La Contraseña es requerida.",
@@ -44,6 +44,6 @@ return [
     "update"                           => "Actualizar Empleado",
     "username"                         => "Usuario",
     "username_duplicate"               => "Nombre de Usuario de Empleado yá está en uso. Por favor escoja otro.",
-    "username_minlength"               => "\"El nombre de usuario debe ser por lo menos",
+    "username_minlength"               => "El nombre de usuario debe ser por lo menos, 5 caracteres.",
     "username_required"                => "Nombre de usuario es requerido.",
 ];

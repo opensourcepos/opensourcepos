@@ -23,9 +23,9 @@ class EmployeeTest extends CIUnitTestCase
     public function testIsAdminReturnsTrueForPersonId1(): void
     {
         $employeeModel = model(Employee::class);
-        
+
         $result = $employeeModel->isAdmin(1);
-        
+
         $this->assertTrue($result);
     }
 
@@ -34,12 +34,12 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['has_grant'])
             ->getMock();
-        
+
         $employeeModel->method('has_grant')
             ->willReturn(true);
-        
+
         $result = $employeeModel->isAdmin(2);
-        
+
         $this->assertTrue($result);
     }
 
@@ -48,14 +48,14 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['has_grant'])
             ->getMock();
-        
+
         $employeeModel->method('has_grant')
             ->willReturnCallback(function($permissionId, $personId) {
                 return $permissionId !== 'config';
             });
-        
+
         $result = $employeeModel->isAdmin(3);
-        
+
         $this->assertFalse($result);
     }
 
@@ -64,12 +64,12 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
-        
+
         $employeeModel->method('isAdmin')
             ->willReturn(false);
-        
+
         $result = $employeeModel->canModifyEmployee(1, 1);
-        
+
         $this->assertTrue($result);
     }
 
@@ -78,12 +78,12 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
-        
+
         $employeeModel->method('isAdmin')
             ->willReturn(true);
-        
+
         $result = $employeeModel->canModifyEmployee(1, 1);
-        
+
         $this->assertTrue($result);
     }
 
@@ -92,14 +92,14 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
-        
+
         $employeeModel->method('isAdmin')
             ->willReturnCallback(function($personId) {
                 return $personId === 1;
             });
-        
+
         $result = $employeeModel->canModifyEmployee(1, 2);
-        
+
         $this->assertFalse($result);
     }
 
@@ -108,14 +108,14 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
-        
+
         $employeeModel->method('isAdmin')
             ->willReturnCallback(function($personId) {
                 return $personId === 1;
             });
-        
+
         $result = $employeeModel->canModifyEmployee(2, 1);
-        
+
         $this->assertTrue($result);
     }
 
@@ -124,12 +124,12 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
-        
+
         $employeeModel->method('isAdmin')
             ->willReturn(false);
-        
+
         $result = $employeeModel->canModifyEmployee(2, 3);
-        
+
         $this->assertTrue($result);
     }
 
@@ -138,23 +138,23 @@ class EmployeeTest extends CIUnitTestCase
         $employeeModel = $this->getMockBuilder(Employee::class)
             ->onlyMethods(['isAdmin'])
             ->getMock();
-        
+
         $employeeModel->method('isAdmin')
             ->willReturnCallback(function($personId) {
                 return $personId === 1;
             });
-        
+
         $result = $employeeModel->canModifyEmployee(1, 2);
-        
+
         $this->assertFalse($result);
     }
 
     public function testHasGrantReturnsTrueForActualGrant(): void
     {
         $employeeModel = model(Employee::class);
-        
+
         $result = $employeeModel->has_grant('employees', 1);
-        
+
         $this->assertTrue($result);
     }
 
@@ -208,7 +208,8 @@ class EmployeeTest extends CIUnitTestCase
         $employeeData = ['username' => 'granttester', 'language_code' => 'en', 'language' => 'english'];
         $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
 
-        $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);
+        $saveEmployeeResult = $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);
+        $this->assertTrue($saveEmployeeResult);
 
         putenv('DISALLOW_GRANT_CHANGE');
 

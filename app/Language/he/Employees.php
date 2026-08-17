@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "מידע",
-    "cannot_be_deleted"                => "\"לא ניתן למחוק עובדים נבחרים",
+    "cannot_be_deleted"                => "לא ניתן למחוק עובדים נבחרים, לאחד או יותר יש מכירות בתהליך או שאתה מנסה למחוק את החשבון שלך.",
     "change_employee"                  => "",
     "change_password"                  => "שנה סיסמה",
     "clerk"                            => "",
