@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "Amministratore",
     "basic_information"                => "Informazioni",
-    "cannot_be_deleted"                => "\"Eliminazione dell'impiegato/i non consentita",
+    "cannot_be_deleted"                => "Eliminazione dell'impiegato/i non consentita, uno o più hanno trattato delle vendite o stai cancellando il tuo account.",
     "change_employee"                  => "Cambia Impiegato",
     "change_password"                  => "Cambia Password",
     "clerk"                            => "Impiegato",

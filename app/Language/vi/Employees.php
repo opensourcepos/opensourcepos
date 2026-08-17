@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Thông tin",
-    "cannot_be_deleted"                => "\"Không thể xóa các nhân viên đã chọn",
+    "cannot_be_deleted"                => "Không thể xóa các nhân viên đã chọn, một hay nhiều nhân viên đã xử lý bán hàng hoặc bạn đang cố xóa tài khoản của mình.",
     "change_employee"                  => "",
     "change_password"                  => "Đổi mật khẩu",
     "clerk"                            => "",

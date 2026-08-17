@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "ຂໍ້ມູນ",
-    "cannot_be_deleted"                => "\"ບໍ່ສາມາດລຶບພະນັກງານທີ່ເລືອກໄດ້",
+    "cannot_be_deleted"                => "ບໍ່ສາມາດລຶບພະນັກງານທີ່ເລືອກໄດ້, ຢ່າງໜ້ອຍມີ 1 ລາຍການຫຼືຫຼາຍກວ່ານັ້ນ ຍັງມີການຊື້ຂາຍກັນຢູ່ ຫຼື ທ່ານກຳລັງພະຍາຍາມລຶບບັນຊີຂອງຕົວເອງ.",
     "change_employee"                  => "",
     "change_password"                  => "ປ່ຽນ Password",
     "clerk"                            => "",

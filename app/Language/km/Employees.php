@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "ព៌តមាន",
-    "cannot_be_deleted"                => "\"មិនអាចលុបបុគ្គលិកដែលបានជ្រើសរើស",
+    "cannot_be_deleted"                => "មិនអាចលុបបុគ្គលិកដែលបានជ្រើសរើស, មួយ ឬក៏ច្រើន នៃការលក់ ឬអ្នកកំពុងព្យាយាមលុបគណនីរបស់ខ្លួន។",
     "change_employee"                  => "",
     "change_password"                  => "ផ្លាស់ប្ដូរពាក្យសម្ងាត់",
     "clerk"                            => "",
