@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "Beheerder",
     "basic_information"                => "Informatie",
-    "cannot_be_deleted"                => "\"Kan geselecteerde werknemer(s) niet verwijderen",
+    "cannot_be_deleted"                => "Kan geselecteerde werknemer(s) niet verwijderen",
     "change_employee"                  => "Werknemer wijzigen",
     "change_password"                  => "Wachtwoord wijzigen",
     "clerk"                            => "Bediende",

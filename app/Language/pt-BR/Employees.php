@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "Administrador",
     "basic_information"                => "Informações do Funcionário",
-    "cannot_be_deleted"                => "\"Não foi possível excluir funcionários selecionados",
+    "cannot_be_deleted"                => "Não foi possível excluir funcionários selecionados",
     "change_employee"                  => "Alterar Funcionário",
     "change_password"                  => "Alterar senha",
     "clerk"                            => "Funcionário",

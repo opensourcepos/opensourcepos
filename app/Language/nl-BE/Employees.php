@@ -3,7 +3,7 @@
 return [
     "administrator"                    => "",
     "basic_information"                => "Informatie",
-    "cannot_be_deleted"                => "\"Kon de geselecteerde gebruilker(s) niet verwijderen",
+    "cannot_be_deleted"                => "Kon de geselecteerde gebruiker(s) niet verwijderen",
     "change_employee"                  => "",
     "change_password"                  => "Wijzig Paswoord",
     "clerk"                            => "",
