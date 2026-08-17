@@ -239,6 +239,7 @@ class SalesControllerTest extends CIUnitTestCase
 
         $itemModel = model(Item::class);
         $itemModel->save_value($itemData);
+        $this->assertTrue($itemModel->save_value($itemData));
 
         return (int) $itemData['item_id'];
     }
