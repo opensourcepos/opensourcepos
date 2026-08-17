@@ -1017,9 +1017,14 @@ class Items extends Secure_Controller
 
                     $failCodes = [];
                     $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
-                    $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
                     $allowedStockLocations = $this->stock_location->get_allowed_locations();
                     $attributeDefinitionNames    = $this->attribute->getDefinitionNames();
+
+                    if (!csvImportHasRequiredItemHeaders($csvRows, $allowedStockLocations, $attributeDefinitionNames)) {
+                        return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
+                    }
+
+                    $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
 
                     unset($attributeDefinitionNames[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
 
