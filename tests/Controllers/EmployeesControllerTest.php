@@ -248,6 +248,11 @@ class EmployeesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
+
+        $employeeModel = model(Employee::class);
+        $this->assertTrue($employeeModel->has_grant('customers', $employeeId));
+        $this->assertTrue($employeeModel->has_grant('sales', $employeeId));
+        $this->assertFalse($employeeModel->has_grant('employees', $employeeId));
     }
 
     public function testNewEmployeeCreationWithGrantsFailsWhenGrantChangeDisallowed(): void
@@ -268,6 +273,9 @@ class EmployeesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
+
+        $createdEmployee = $this->db->table('employees')->where('username', 'brandnew')->get()->getRow();
+        $this->assertNull($createdEmployee);
     }
 
     public function testGrantChangeRequestSucceedsWhenGrantChangeAllowed(): void
@@ -288,6 +296,11 @@ class EmployeesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
+
+        $employeeModel = model(Employee::class);
+        $this->assertTrue($employeeModel->has_grant('employees', $employeeId));
+        $this->assertFalse($employeeModel->has_grant('customers', $employeeId));
+        $this->assertFalse($employeeModel->has_grant('sales', $employeeId));
     }
 
     public function testNewEmployeeCreationWithGrantsSucceedsWhenGrantChangeAllowed(): void
@@ -308,5 +321,11 @@ class EmployeesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
+
+        $createdEmployee = $this->db->table('employees')->where('username', 'brandnew2')->get()->getRow();
+        $this->assertNotNull($createdEmployee);
+
+        $employeeModel = model(Employee::class);
+        $this->assertTrue($employeeModel->has_grant('customers', (int) $createdEmployee->person_id));
     }
 }

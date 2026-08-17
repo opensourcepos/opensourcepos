@@ -34,18 +34,18 @@ class No_access extends BaseController
         $data['module_name']   = $this->module->get_module_name($module_id);
         $data['permission_id'] = $permission_id;
 
-        $user_info = $this->employee->get_logged_in_employee_info();
-        if ($user_info === false) {
+        $userInfo = $this->employee->get_logged_in_employee_info();
+        if ($userInfo === false) {
             return view('no_access', $data);
         }
 
-        $menu_group = session()->get('menu_group');
-        $allowed_modules = $menu_group == 'home'
-            ? $this->module->get_allowed_home_modules($user_info->person_id)
-            : $this->module->get_allowed_office_modules($user_info->person_id);
+        $menuGroup = session()->get('menu_group');
+        $allowedModules = $menuGroup == 'home'
+            ? $this->module->get_allowed_home_modules($userInfo->person_id)
+            : $this->module->get_allowed_office_modules($userInfo->person_id);
 
-        $data['user_info']       = $user_info;
-        $data['allowed_modules'] = $allowed_modules->getResult();
+        $data['user_info']       = $userInfo;
+        $data['allowed_modules'] = $allowedModules->getResult();
         $data['config']          = config(OSPOS::class)->settings;
 
         return view('partial/header', $data) . view('no_access', $data) . view('partial/footer');

@@ -131,13 +131,13 @@ class Employee extends Person
     public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, int $employee_id = NEW_ENTRY): bool
     {
         $success = false;
-        $is_new_employee = ($employee_id == NEW_ENTRY || !$this->exists($employee_id));
-        $grant_change_disallowed = filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN);
+        $isNewEmployee = ($employee_id == NEW_ENTRY || !$this->exists($employee_id));
+        $grantChangeDisallowed = filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN);
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if ($grant_change_disallowed && $is_new_employee && !empty($grants_data)) {
+        if ($grantChangeDisallowed && $isNewEmployee && !empty($grants_data)) {
             $this->db->transComplete();
 
             return false;
@@ -145,7 +145,7 @@ class Employee extends Person
 
         if (parent::save_value($person_data, $employee_id)) {
             $builder = $this->db->table('employees');
-            if ($is_new_employee) {
+            if ($isNewEmployee) {
                 $employee_data['person_id'] = $employee_id = $person_data['person_id'];
                 $success = $builder->insert($employee_data);
             } else {
@@ -154,7 +154,7 @@ class Employee extends Person
             }
 
             // We have either inserted or updated a new employee, now lets set permissions.
-            if ($success && !$grant_change_disallowed) {
+            if ($success && !$grantChangeDisallowed) {
                 // First lets clear out any grants the employee currently has.
                 $builder = $this->db->table('grants');
                 $success = $builder->delete(['person_id' => $employee_id]);

@@ -12,9 +12,9 @@ class Home extends Secure_Controller
 {
     public function __construct()
     {
-        $method_name = Services::request()->getUri()->getSegment(2);
+        $methodName = Services::request()->getUri()->getSegment(2);
 
-        if ($method_name === 'logout') {
+        if ($methodName === 'logout') {
             $this->employee = model(Employee::class);
             return;
         }
