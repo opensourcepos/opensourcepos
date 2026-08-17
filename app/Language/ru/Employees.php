@@ -17,7 +17,7 @@ return [
     "error_deleting_admin"             => "",
     "error_deleting_demo_admin"        => "Вы не можете удалить демо-администратора.",
     "error_grant_change_disallowed"    => "Изменения прав доступа отключены в этой демонстрации.",
-    "error_password_change_disallowed" => "Изменение пароля отключены в этой демонстрации.",
+    "error_password_change_disallowed" => "Изменение пароля отключено в этой демонстрации.",
     "error_updating_admin"             => "",
     "error_updating_demo_admin"        => "Вы не можете изменить демо-администратора.",
     "language"                         => "Язык",
