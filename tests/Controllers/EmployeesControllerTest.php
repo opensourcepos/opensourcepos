@@ -19,9 +19,22 @@ class EmployeesControllerTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
+    protected $priorDisallowGrantChange;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->priorDisallowGrantChange = getenv('DISALLOW_GRANT_CHANGE');
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->priorDisallowGrantChange === false) {
+            putenv('DISALLOW_GRANT_CHANGE');
+        } else {
+            putenv('DISALLOW_GRANT_CHANGE=' . $this->priorDisallowGrantChange);
+        }
+        parent::tearDown();
     }
 
     protected function createNonAdminEmployee(): int
@@ -232,8 +245,6 @@ class EmployeesControllerTest extends CIUnitTestCase
             'grant_employees' => 'employees'
         ]);
 
-        putenv('DISALLOW_GRANT_CHANGE');
-
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
@@ -254,8 +265,6 @@ class EmployeesControllerTest extends CIUnitTestCase
             'grant_customers' => 'customers'
         ]);
 
-        putenv('DISALLOW_GRANT_CHANGE');
-
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
@@ -265,6 +274,8 @@ class EmployeesControllerTest extends CIUnitTestCase
     {
         $employeeId = $this->createNonAdminEmployee();
         $this->loginAsAdmin();
+
+        putenv('DISALLOW_GRANT_CHANGE=false');
 
         $response = $this->post('/employees/save/' . $employeeId, [
             'first_name'      => 'NonAdmin',
@@ -282,6 +293,8 @@ class EmployeesControllerTest extends CIUnitTestCase
     public function testNewEmployeeCreationWithGrantsSucceedsWhenGrantChangeAllowed(): void
     {
         $this->loginAsAdmin();
+
+        putenv('DISALLOW_GRANT_CHANGE=false');
 
         $response = $this->post('/employees/save', [
             'first_name'      => 'Brand',
