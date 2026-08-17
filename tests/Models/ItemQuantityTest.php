@@ -16,7 +16,7 @@ use Tests\Support\ConcurrentDbRaceTrait;
  * deliberately no floor guard here (see the fix's scope note) — negative
  * stock is allowed today and this fix does not change that.
  */
-class Item_quantityTest extends CIUnitTestCase
+class ItemQuantityTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use ConcurrentDbRaceTrait;
