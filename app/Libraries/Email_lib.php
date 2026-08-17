@@ -49,8 +49,8 @@ class Email_lib
             'SMTPHost'    => $this->config['smtp_host'] ?? '',
             'SMTPUser'    => $this->config['smtp_user'] ?? '',
             'SMTPPass'    => $smtp_pass,
-            'SMTPPort'    => (int)($this->config['smtp_port'] ?? 465),
-            'SMTPTimeout' => (int)($this->config['smtp_timeout'] ?? 5),
+            'SMTPPort'    => (int)(!empty($this->config['smtp_port']) ? $this->config['smtp_port'] : 465),
+            'SMTPTimeout' => (int)(!empty($this->config['smtp_timeout']) ? $this->config['smtp_timeout'] : 5),
             'SMTPCrypto'  => $this->config['smtp_crypto'] ?? 'ssl'
         ];
         $this->email->initialize($email_config);
