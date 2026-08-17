@@ -216,18 +216,33 @@ class EmployeesControllerTest extends CIUnitTestCase
 
     public function testAdminCanGrantAnyPermission(): void
     {
-        $permissionsRequested = ['customers', 'employees', 'sales', 'config'];
-        $userPermissions = ['customers', 'sales'];
-        $isAdmin = true;
+        $employeeId = $this->createNonAdminEmployee();
+        $this->loginAsAdmin();
 
-        $granted = [];
+        putenv('DISALLOW_GRANT_CHANGE=false');
+
+        $permissionsRequested = ['customers', 'employees', 'sales', 'config'];
+
+        $postData = [
+            'first_name' => 'NonAdmin',
+            'last_name'  => 'User',
+            'email'      => 'nonadmin@test.com',
+            'username'   => 'nonadmin'
+        ];
         foreach ($permissionsRequested as $perm) {
-            if ($isAdmin || in_array($perm, $userPermissions)) {
-                $granted[] = $perm;
-            }
+            $postData['grant_' . $perm] = $perm;
         }
 
-        $this->assertEquals($permissionsRequested, $granted);
+        $response = $this->post('/employees/save/' . $employeeId, $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $employeeModel = model(Employee::class);
+        foreach ($permissionsRequested as $perm) {
+            $this->assertTrue($employeeModel->has_grant($perm, $employeeId));
+        }
     }
 
     public function testGrantChangeRequestFailsWhenGrantChangeDisallowed(): void
