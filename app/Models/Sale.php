@@ -4,15 +4,11 @@ namespace App\Models;
 
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\Model;
 use App\Libraries\Sale_lib;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * Sale class
- */
-class Sale extends Model
+class Sale extends BaseModel
 {
     protected $table = 'sales';
     protected $primaryKey = 'sale_id';

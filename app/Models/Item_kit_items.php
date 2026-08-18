@@ -2,12 +2,7 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-/**
- * Item_kit_items class
- */
-class Item_kit_items extends Model
+class Item_kit_items extends BaseModel
 {
     protected $table = 'item_kit_items';
     protected $primaryKey = 'item_kit_id';
