@@ -3,7 +3,7 @@
 return [
     'administrator'                    => '',
     'basic_information'                => 'Personel Temel Bilgileri',
-    'cannot_be_deleted'                => 'Seçili personel silinemedi, personellerin satışları var yada kendinizi silmeye çalışıyorsunuz.',
+    'cannot_be_deleted'                => 'Seçili personel silinemedi, personellerin satışları var ya da kendinizi silmeye çalışıyorsunuz.',
     'change_employee'                  => '',
     'change_password'                  => 'Parolayı Değiştir',
     'clerk'                            => '',
