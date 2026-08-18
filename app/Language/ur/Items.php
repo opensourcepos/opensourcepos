@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "",
     "item_number_duplicate"              => "",
+    'item_number_invalid'                => 'آئٹم نمبر میں غیر مجاز حروف شامل ہیں۔',
     "kit"                                => "",
     "location"                           => "",
     "low_inventory_items"                => "",

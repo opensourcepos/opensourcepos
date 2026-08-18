@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Barcode",
     "item_number_duplicate"              => "Item Number is already present in the database.",
+    'item_number_invalid'                => 'பொருள் எண் அனுமதிக்கப்படாத எழுத்துக்களைக் கொண்டுள்ளது.',
     "kit"                                => "Kit",
     "location"                           => "Location",
     "low_inventory_items"                => "Out Of Stock Items",
