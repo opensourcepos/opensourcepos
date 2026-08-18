@@ -42,7 +42,7 @@ return [
     'system_language'                  => 'Sistem dili',
     'unsuccessful_change_password'     => 'Parola değişikliği başarısız oldu.',
     'update'                           => 'Personeli Güncelle',
-    'username'                         => 'Kullandı Adı',
+    'username'                         => 'Kullanıcı Adı',
     'username_duplicate'               => '',
     'username_minlength'               => 'Kullanıcı Adı en az 5 karakter olmalıdır.',
     'username_required'                => 'Kullanıcı Adı zorunlu alandır.',
