@@ -17,6 +17,7 @@ use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\Validation\FormatRules;
 use Config\Database;
 use Config\OSPOS;
 use Config\Services;
@@ -115,7 +116,7 @@ class Items extends Secure_Controller
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
-        $definition_names = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
+        $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
@@ -128,7 +129,7 @@ class Items extends Secure_Controller
             'search_custom'     => false,
             'is_deleted'        => false,
             'temporary'         => false,
-            'definition_ids'    => array_keys($definition_names)
+            'definition_ids'    => array_keys($definitionNames)
         ];
 
         // Check if any filter is set in the multiselect dropdown
@@ -325,9 +326,9 @@ class Items extends Secure_Controller
 
         if ($data['category_dropdown'] === '1') {
             $categories = ['' => lang('Items.none')];
-            $category_options = $this->attribute->getDefinitionValues(CATEGORY_DEFINITION_ID);
-            $category_options = array_combine($category_options, $category_options);    // Overwrite indexes with values for saving in items table instead of attributes
-            $data['categories'] = array_merge($categories, $category_options);
+            $categoryOptions = $this->attribute->getDefinitionValues(CATEGORY_DEFINITION_ID);
+            $categoryOptions = array_combine($categoryOptions, $categoryOptions);    // Overwrite indexes with values for saving in items table instead of attributes
+            $data['categories'] = array_merge($categories, $categoryOptions);
 
             $data['selected_category'] = $item_info->category;
         }
@@ -625,6 +626,25 @@ class Items extends Secure_Controller
      */
     public function postSave(int $itemId = NEW_ENTRY): ResponseInterface
     {
+        $itemNumber = $this->request->getPost('item_number');
+
+        if (!empty($itemNumber)) {
+            $rules = [
+                'item_number' => 'alpha_numeric_punct',
+            ];
+            $messages = [
+                'item_number' => [
+                    'alpha_numeric_punct' => lang('Items.item_number_invalid'),
+                ],
+            ];
+
+            if (!$this->validate($rules, $messages)) {
+                $errors = $this->validator->getErrors();
+
+                return $this->response->setJSON(['success' => false, 'message' => reset($errors), 'id' => $itemId]);
+            }
+        }
+
         $uploadData = $this->upload_image();
         $uploadSuccess = empty($uploadData['error']);
 
@@ -959,8 +979,8 @@ class Items extends Secure_Controller
         helper('importfile');
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
-        $allowed_attributes = $this->attribute->getDefinitionNames();
-        $data = generate_import_items_csv($allowed_locations, $allowed_attributes);
+        $allowedAttributes = $this->attribute->getDefinitionNames();
+        $data = generate_import_items_csv($allowed_locations, $allowedAttributes);
 
         return $this->response->download($name, $data);
     }
@@ -991,9 +1011,14 @@ class Items extends Secure_Controller
 
                     $failCodes = [];
                     $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
-                    $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
                     $allowedStockLocations = $this->stock_location->get_allowed_locations();
                     $attributeDefinitionNames    = $this->attribute->getDefinitionNames();
+
+                    if (!csvImportHasRequiredItemHeaders($csvRows, $allowedStockLocations, $attributeDefinitionNames)) {
+                        return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
+                    }
+
+                    $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
 
                     unset($attributeDefinitionNames[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
 
@@ -1204,6 +1229,16 @@ class Items extends Secure_Controller
         foreach ($valuesToCheckForNumeric as $key => $value) {
             if (!is_numeric($value) && !empty($value)) {
                 log_message('error', "non-numeric: '$value' for '$key' when numeric is required");
+                return true;
+            }
+        }
+
+        // Check item_number for disallowed characters
+        if (!empty($itemData['item_number'])) {
+            $formatRules = new FormatRules();
+
+            if (!$formatRules->alpha_numeric_punct($itemData['item_number'])) {
+                log_message('error', "invalid item_number: '{$itemData['item_number']}' contains disallowed characters");
                 return true;
             }
         }

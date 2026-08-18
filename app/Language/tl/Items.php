@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Barcode",
     "item_number_duplicate"              => "Account Number is already present in the database.",
+    'item_number_invalid'                => 'Ang numero ng item ay naglalaman ng hindi pinapayagang mga character.',
     "kit"                                => "Kit",
     "location"                           => "Location",
     "low_inventory_items"                => "Out Of Stock Items",

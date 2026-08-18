@@ -61,6 +61,7 @@ return [
     'item_id' => "",
     'item_number' => "باڕکۆد",
     'item_number_duplicate' => "ژمارەی ئایتم پێشتر لە داتابەیسدا ئامادەبووە.",
+    'item_number_invalid' => 'ژمارەی ئایتم پیتی ڕێگەپێنەدراوی تێدایە.',
     'kit' => "کیت",
     'location' => "شوێن",
     'low_inventory_items' => "ئایتمەکانی لە کۆگادا نەماون",

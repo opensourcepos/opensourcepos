@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "Mã vạch",
     "item_number_duplicate"              => "Số hàng hóa đã sẵn có trong cơ sở dữ liệu rồi.",
+    'item_number_invalid'                => 'Số hàng hóa chứa ký tự không được phép.',
     "kit"                                => "Kít",
     "location"                           => "Vị trí",
     "low_inventory_items"                => "Hàng hóa hết hàng trong kho",
