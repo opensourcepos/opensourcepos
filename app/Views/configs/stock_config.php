@@ -14,6 +14,7 @@
             <div id="stock_locations">
                 <?= view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
             </div>
+            <?= form_hidden('stock_location_order', '') ?>
 
             <?= form_submit([
                 'name'  => 'submit_stock',
@@ -32,10 +33,16 @@
         let location_count = <?= sizeof($stock_locations) ?>;
 
         const hide_show_remove = function() {
-            if ($("input[name*='stock_location']:enabled").length > 1) {
-                $(".remove_stock_location").show();
+            if ($('#stock_locations .stock_location_row').length > 1) {
+                $('.remove_stock_location').show();
             } else {
-                $(".remove_stock_location").hide();
+                $('.remove_stock_location').hide();
+            }
+        };
+
+        const ensure_default_selected = function() {
+            if ($('#stock_locations input.stock_location_default:checked').length === 0) {
+                $('#stock_locations .stock_location_row').first().find('input.stock_location_default').prop('checked', true);
             }
         };
 
@@ -43,14 +50,19 @@
             const block = $(this).parent().clone(true);
             const new_block = block.insertAfter($(this).parent());
             const new_block_id = 'stock_location[]';
+            $(new_block).removeAttr('data-location-id').find('input.stock_location_default').prop('checked', false).val('');
             $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
-            $(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
+            $(new_block).find('input.stock_location').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'stock_location valid_chars form-control input-sm required').val('');
             hide_show_remove();
+            ensure_default_selected();
+            update_sort_order_field();
         };
 
         const remove_stock_location = function() {
             $(this).parent().remove();
             hide_show_remove();
+            ensure_default_selected();
+            update_sort_order_field();
         };
 
         const init_add_remove_locations = function() {
@@ -59,6 +71,29 @@
             hide_show_remove();
         };
         init_add_remove_locations();
+
+        const update_sort_order_field = function() {
+            const orderedIds = $('#stock_locations .stock_location_row').map(function() {
+                return $(this).data('location-id');
+            }).get().filter(function(locationId) {
+                return locationId !== undefined && locationId !== '';
+            });
+            $("input[name='stock_location_order']").val(orderedIds.join(','));
+        };
+
+        const init_sortable_locations = function() {
+            const $stock_locations = $('#stock_locations');
+            if ($stock_locations.hasClass('ui-sortable')) {
+                $stock_locations.sortable('destroy');
+            }
+            $stock_locations.sortable({
+                handle: '.drag_handle',
+                items: '.stock_location_row',
+                update: update_sort_order_field
+            });
+            update_sort_order_field();
+        };
+        init_sortable_locations();
 
         const duplicate_found = false;
         // Run validator once for all fields
@@ -76,6 +111,7 @@
 
         $('#location_config_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
+                update_sort_order_field();
                 $(form).ajaxSubmit({
                     success: function(response) {
                         $.notify({
@@ -83,7 +119,10 @@
                         }, {
                             type: response.success ? 'success' : 'danger'
                         });
-                        $("#stock_locations").load('<?= "config/stockLocations" ?>', init_add_remove_locations);
+                        $("#stock_locations").load('<?= "config/stockLocations" ?>', function() {
+                            init_add_remove_locations();
+                            init_sortable_locations();
+                        });
                     },
                     dataType: 'json'
                 });
@@ -95,7 +134,7 @@
                 <?php
                 $i = 0;
 
-                foreach ($stock_locations as $location => $location_data) {
+                foreach ($stock_locations as $location => $locationData) {
                 ?>
                     <?= 'stock_location_' . ++$i ?>: {
                         required: true,
@@ -109,7 +148,7 @@
                 <?php
                 $i = 0;
 
-                foreach ($stock_locations as $location => $location_data) {
+                foreach ($stock_locations as $location => $locationData) {
                 ?>
                     <?= 'stock_location_' . ++$i ?>: "<?= lang('Config.stock_location_required') ?>",
                 <?php } ?>

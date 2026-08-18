@@ -727,7 +727,7 @@ class Sales extends Secure_Controller
         $__time = time();
         $data['transaction_time'] = to_datetime($__time);
         $data['transaction_date'] = to_date($__time);
-        $data['show_stock_locations'] = $this->stock_location->show_locations('sales');
+        $data['show_stock_locations'] = $this->stock_location->showLocations('sales');
         $data['comments'] = $this->sale_lib->get_comment();
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $employee_info = $this->employee->get_info($employee_id);
@@ -1124,7 +1124,7 @@ class Sales extends Secure_Controller
         $data['discount'] = $this->sale_lib->get_discount();
         $data['transaction_time'] = to_datetime(strtotime($sale_info['sale_time']));
         $data['transaction_date'] = to_date(strtotime($sale_info['sale_time']));
-        $data['show_stock_locations'] = $this->stock_location->show_locations('sales');
+        $data['show_stock_locations'] = $this->stock_location->showLocations('sales');
 
         $data['include_hsn'] = (bool)$this->config['include_hsn'];
 

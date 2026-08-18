@@ -410,7 +410,7 @@ class Items extends Secure_Controller
             $data['image_path']    = '';
         }
 
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -448,7 +448,7 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -456,6 +456,8 @@ class Items extends Secure_Controller
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
+
+        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
 
         return view('items/form_inventory', $data);
     }
@@ -475,7 +477,7 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -483,6 +485,8 @@ class Items extends Secure_Controller
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
+
+        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
 
         return view('items/form_count_details', $data);
     }
@@ -738,7 +742,7 @@ class Items extends Secure_Controller
             }
 
             // Save item quantity
-            $stockLocations = $this->stock_location->get_undeleted_all()->getResultArray();
+            $stockLocations = $this->stock_location->getUndeletedAll()->getResultArray();
             foreach ($stockLocations as $location) {
                 $updatedQuantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
 
