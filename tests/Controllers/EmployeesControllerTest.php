@@ -25,6 +25,7 @@ class EmployeesControllerTest extends CIUnitTestCase
     {
         parent::setUp();
         $this->priorDisallowGrantChange = getenv('DISALLOW_GRANT_CHANGE');
+        putenv('DISALLOW_GRANT_CHANGE=false');
     }
 
     protected function tearDown(): void
