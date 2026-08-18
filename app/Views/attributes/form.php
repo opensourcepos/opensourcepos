@@ -219,24 +219,39 @@
             $(this).find(':input').prop('disabled', false);
         });
 
+        const submit_attribute_form = function(form) {
+            $(form).ajaxSubmit({
+                beforeSerialize: function($form, options) {
+                    is_new && !$form.find('#definition_values').length && $('<input>').attr({
+                        id: 'definition_values',
+                        type: 'hidden',
+                        name: 'definition_values',
+                        value: JSON.stringify(values)
+                    }).appendTo($form);
+                },
+                success: function(response) {
+                    if (response.conflict) {
+                        if (confirm(response.message + (response.values && response.values.length ? '\n\n' + response.values.join(', ') : ''))) {
+                            $(form).find('input[name="force_type_conversion"]').remove();
+                            $('<input>').attr({
+                                type: 'hidden',
+                                name: 'force_type_conversion',
+                                value: '1'
+                            }).appendTo(form);
+                            submit_attribute_form(form);
+                        }
+                        return;
+                    }
+
+                    dialog_support.hide();
+                    table_support.handle_submit('<?= esc($controller_name) ?>', response);
+                },
+                dataType: 'json'
+            });
+        };
+
         $('#attribute_form').validate($.extend({
-            submitHandler: function(form) {
-                $(form).ajaxSubmit({
-                    beforeSerialize: function($form, options) {
-                        is_new && $('<input>').attr({
-                            id: 'definition_values',
-                            type: 'hidden',
-                            name: 'definition_values',
-                            value: JSON.stringify(values)
-                        }).appendTo($form);
-                    },
-                    success: function(response) {
-                        dialog_support.hide();
-                        table_support.handle_submit('<?= esc($controller_name) ?>', response);
-                    },
-                    dataType: 'json'
-                });
-            },
+            submitHandler: submit_attribute_form,
             rules: {
                 definition_name: 'required',
                 definition_value: 'valid_chars',
