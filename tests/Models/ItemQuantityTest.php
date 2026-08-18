@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Item_quantity;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
 
 /**
@@ -23,10 +24,16 @@ class ItemQuantityTest extends CIUnitTestCase
 
     protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $refresh     = true;
+    protected $refresh     = false;
     protected $namespace   = null;
 
     private const LOCATION_ID = 1;
+
+    public static function setUpBeforeClass(): void
+    {
+        $seeder = Database::seeder('tests');
+        $seeder->call('TestDatabaseBootstrapSeeder');
+    }
 
     protected function setUp(): void
     {
@@ -104,20 +111,15 @@ class ItemQuantityTest extends CIUnitTestCase
     {
         $itemId = $this->createTestItem();
         $this->createItemQuantityRow($itemId, 10);
-        $db    = \Config\Database::connect();
-        $table = $db->DBPrefix . 'item_quantities';
 
-        $sql = sprintf(
-            'INSERT INTO %s (item_id, location_id, quantity) VALUES (%s, %s, -3) ON DUPLICATE KEY UPDATE quantity = quantity + -3',
-            $table,
-            $db->escape($itemId),
-            $db->escape(self::LOCATION_ID)
+        [$result1, $result2] = $this->raceTwoProcesses(
+            'itemQuantity',
+            [$itemId, self::LOCATION_ID, -3.0],
+            [$itemId, self::LOCATION_ID, -3.0]
         );
 
-        [$affectedRows1, $affectedRows2] = $this->raceTwoUpdates($sql, $sql);
-
-        $this->assertSame(1, $affectedRows1);
-        $this->assertSame(1, $affectedRows2);
+        $this->assertTrue($result1);
+        $this->assertTrue($result2);
         $this->assertEqualsWithDelta(4.0, $this->getQuantity($itemId), 0.001);
     }
 }

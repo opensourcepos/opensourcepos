@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Giftcard;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
 
 /**
@@ -20,8 +21,14 @@ class GiftcardTest extends CIUnitTestCase
 
     protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $refresh     = true;
+    protected $refresh     = false;
     protected $namespace   = null;
+
+    public static function setUpBeforeClass(): void
+    {
+        $seeder = Database::seeder('tests');
+        $seeder->call('TestDatabaseBootstrapSeeder');
+    }
 
     protected function setUp(): void
     {
@@ -88,18 +95,14 @@ class GiftcardTest extends CIUnitTestCase
     public function testDecrementGiftcardValueConcurrentDecrementsOneWins(): void
     {
         $giftcardNumber = $this->createGiftcard(100.00);
-        $db             = \Config\Database::connect();
-        $table          = $db->DBPrefix . 'giftcards';
 
-        $sql = sprintf(
-            "UPDATE %s SET value = value - 60 WHERE giftcard_number = %s AND deleted = 0 AND value >= 60",
-            $table,
-            $db->escape($giftcardNumber)
+        [$result1, $result2] = $this->raceTwoProcesses(
+            'giftcard',
+            [$giftcardNumber, 60.00],
+            [$giftcardNumber, 60.00]
         );
 
-        [$affectedRows1, $affectedRows2] = $this->raceTwoUpdates($sql, $sql);
-
-        $this->assertSame(1, $affectedRows1 + $affectedRows2);
+        $this->assertSame(1, (int) $result1 + (int) $result2);
         $this->assertEqualsWithDelta(40.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
 }

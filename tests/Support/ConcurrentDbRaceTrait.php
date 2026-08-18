@@ -48,4 +48,55 @@ trait ConcurrentDbRaceTrait
 
         return [$affectedRows1, $affectedRows2];
     }
+
+    /**
+     * Races two model-method invocations against each other by running each
+     * in its own PHP CLI process (tests/Support/RaceWorker.php), so the two
+     * calls hit the database over genuinely separate connections at the same
+     * time instead of running sequentially on one connection.
+     *
+     * @return array{0: bool, 1: bool} return value of the model method for [call1, call2]
+     */
+    protected function raceTwoProcesses(string $method, array $args1, array $args2): array
+    {
+        $workerScript = __DIR__ . '/RaceWorker.php';
+        $php          = PHP_BINARY;
+
+        $descriptorSpec = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ];
+
+        $command1 = array_merge([$php, $workerScript, $method], array_map('strval', $args1));
+        $command2 = array_merge([$php, $workerScript, $method], array_map('strval', $args2));
+
+        $process1 = proc_open($command1, $descriptorSpec, $pipes1, ROOTPATH);
+        $process2 = proc_open($command2, $descriptorSpec, $pipes2, ROOTPATH);
+
+        fclose($pipes1[0]);
+        fclose($pipes2[0]);
+
+        $output1 = stream_get_contents($pipes1[1]);
+        $error1  = stream_get_contents($pipes1[2]);
+        fclose($pipes1[1]);
+        fclose($pipes1[2]);
+        $exitCode1 = proc_close($process1);
+
+        $output2 = stream_get_contents($pipes2[1]);
+        $error2  = stream_get_contents($pipes2[2]);
+        fclose($pipes2[1]);
+        fclose($pipes2[2]);
+        $exitCode2 = proc_close($process2);
+
+        if ($exitCode1 !== 0) {
+            throw new \RuntimeException("race_worker.php (call 1) exited with {$exitCode1}: {$error1}");
+        }
+
+        if ($exitCode2 !== 0) {
+            throw new \RuntimeException("race_worker.php (call 2) exited with {$exitCode2}: {$error2}");
+        }
+
+        return [trim($output1) === '1', trim($output2) === '1'];
+    }
 }

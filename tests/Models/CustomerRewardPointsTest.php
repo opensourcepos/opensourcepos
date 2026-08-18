@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Customer;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
 
 /**
@@ -20,8 +21,14 @@ class CustomerRewardPointsTest extends CIUnitTestCase
 
     protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $refresh     = true;
+    protected $refresh     = false;
     protected $namespace   = null;
+
+    public static function setUpBeforeClass(): void
+    {
+        $seeder = Database::seeder('tests');
+        $seeder->call('TestDatabaseBootstrapSeeder');
+    }
 
     protected function setUp(): void
     {
@@ -113,18 +120,14 @@ class CustomerRewardPointsTest extends CIUnitTestCase
     public function testAdjustRewardPointsConcurrentDecrementsOneWins(): void
     {
         $personId = $this->createCustomerWithPoints(100);
-        $db       = \Config\Database::connect();
-        $table    = $db->DBPrefix . 'customers';
 
-        $sql = sprintf(
-            'UPDATE %s SET points = points - 60 WHERE person_id = %s AND points >= 60',
-            $table,
-            $db->escape($personId)
+        [$result1, $result2] = $this->raceTwoProcesses(
+            'rewardPoints',
+            [$personId, -60],
+            [$personId, -60]
         );
 
-        [$affectedRows1, $affectedRows2] = $this->raceTwoUpdates($sql, $sql);
-
-        $this->assertSame(1, $affectedRows1 + $affectedRows2);
+        $this->assertSame(1, (int) $result1 + (int) $result2);
         $this->assertSame(40, $this->getCustomerPoints($personId));
     }
 }
