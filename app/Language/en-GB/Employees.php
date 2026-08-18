@@ -3,7 +3,7 @@
 return [
     'administrator'                    => '',
     'basic_information'                => 'Information',
-    'cannot_be_deleted'                => 'Unable to delete selected Employee(s), one or more of the has processed sales or you are trying to delete your account.',
+    'cannot_be_deleted'                => 'Unable to delete selected Employee(s), one or more of them has processed sales or you are trying to delete your account.',
     'change_employee'                  => '',
     'change_password'                  => 'Change Password',
     'clerk'                            => '',
