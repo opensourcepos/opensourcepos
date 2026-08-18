@@ -61,6 +61,7 @@ return [
     "item_id"                            => "",
     "item_number"                        => "",
     "item_number_duplicate"              => "",
+    'item_number_invalid'                => 'ഇനം നമ്പറിൽ അനുവദനീയമല്ലാത്ത അക്ഷരങ്ങൾ അടങ്ങിയിരിക്കുന്നു.',
     "kit"                                => "",
     "location"                           => "",
     "low_inventory_items"                => "",
