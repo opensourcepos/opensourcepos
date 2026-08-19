@@ -23,28 +23,30 @@ trait ConcurrentDbRaceTrait
         mysqli_query($link1, $sql1, MYSQLI_ASYNC);
         mysqli_query($link2, $sql2, MYSQLI_ASYNC);
 
-        $pending = [$link1, $link2];
+        try {
+            $pending = [$link1, $link2];
 
-        while ($pending !== []) {
-            $read = $pending;
-            $error = $pending;
-            $reject = $pending;
+            while ($pending !== []) {
+                $read = $pending;
+                $error = $pending;
+                $reject = $pending;
 
-            if (mysqli_poll($read, $error, $reject, 5) === false) {
-                break;
+                if (mysqli_poll($read, $error, $reject, 5) === false) {
+                    break;
+                }
+
+                foreach (array_merge($read, $error, $reject) as $link) {
+                    mysqli_reap_async_query($link);
+                    $pending = array_filter($pending, static fn ($pendingLink) => $pendingLink !== $link);
+                }
             }
 
-            foreach (array_merge($read, $error, $reject) as $link) {
-                mysqli_reap_async_query($link);
-                $pending = array_filter($pending, static fn ($pendingLink) => $pendingLink !== $link);
-            }
+            $affectedRows1 = mysqli_affected_rows($link1);
+            $affectedRows2 = mysqli_affected_rows($link2);
+        } finally {
+            mysqli_close($link1);
+            mysqli_close($link2);
         }
-
-        $affectedRows1 = mysqli_affected_rows($link1);
-        $affectedRows2 = mysqli_affected_rows($link2);
-
-        mysqli_close($link1);
-        mysqli_close($link2);
 
         return [$affectedRows1, $affectedRows2];
     }
