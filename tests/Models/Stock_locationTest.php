@@ -22,6 +22,8 @@ class Stock_locationTest extends CIUnitTestCase
 
     public static function setUpBeforeClass(): void
     {
+        parent::setUpBeforeClass();
+
         $seeder = Database::seeder('tests');
         $seeder->call('TestDatabaseBootstrapSeeder');
     }
@@ -42,9 +44,7 @@ class Stock_locationTest extends CIUnitTestCase
 
     private function nextSortOrder(): int
     {
-        $max = $this->db->table('stock_locations')->selectMax('sort_order')->get()->getRow()->sort_order;
-
-        return $max === null ? 0 : ((int) $max) + 1;
+        return $this->db->table('stock_locations')->where('deleted', 0)->countAllResults();
     }
 
     private function insertLocation(string $name, bool $isDefault = false, bool $withPermissions = true): int
@@ -187,17 +187,20 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertLessThan($sortOrders[$idB], $sortOrders[$idC]);
         $this->assertLessThan($sortOrders[$idA], $sortOrders[$idB]);
 
-        $distinctCount = $this->db->table('stock_locations')->distinct()->select('sort_order')->get()->getNumRows();
-        $totalCount = $this->db->table('stock_locations')->countAllResults();
+        $distinctCount = $this->db->table('stock_locations')
+            ->distinct()
+            ->select('sort_order')
+            ->where('deleted', 0)
+            ->get()
+            ->getNumRows();
+        $totalCount = $this->db->table('stock_locations')->where('deleted', 0)->countAllResults();
         $this->assertSame($totalCount, $distinctCount, 'sort_order values must remain unique after rotation');
     }
 
-    public function testDeletePushesSortOrderPastTableMax(): void
+    public function testDeleteClearsSortOrder(): void
     {
         $idA = $this->insertLocation('Xi', false, false);
         $idB = $this->insertLocation('Omicron', false, false);
-
-        $maxBefore = (int) $this->db->table('stock_locations')->selectMax('sort_order')->get()->getRow()->sort_order;
 
         $result = $this->stockLocation->delete($idB);
 
@@ -206,7 +209,7 @@ class Stock_locationTest extends CIUnitTestCase
         $deletedRow = $this->db->table('stock_locations')->where('location_id', $idB)->get()->getRow();
 
         $this->assertEquals(1, $deletedRow->deleted);
-        $this->assertGreaterThan($maxBefore, $deletedRow->sort_order);
+        $this->assertNull($deletedRow->sort_order);
     }
 
     public function testDeleteExcludesLocationFromGetAll(): void
@@ -224,7 +227,7 @@ class Stock_locationTest extends CIUnitTestCase
 
     public function testSaveValueNewInsertAssignsNextSortOrder(): void
     {
-        $maxBefore = (int) $this->db->table('stock_locations')->selectMax('sort_order')->get()->getRow()->sort_order;
+        $countBefore = $this->db->table('stock_locations')->where('deleted', 0)->countAllResults();
 
         $locationData = ['location_name' => 'Sigma New Location'];
 
@@ -236,6 +239,6 @@ class Stock_locationTest extends CIUnitTestCase
             ->get()
             ->getRow();
 
-        $this->assertSame($maxBefore + 1, (int) $savedRow->sort_order);
+        $this->assertSame($countBefore, (int) $savedRow->sort_order);
     }
 }

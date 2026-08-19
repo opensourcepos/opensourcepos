@@ -176,9 +176,9 @@ class Stock_location extends Model
     /**
      * Saves sort order of locations.
      * A rotation can still collide against the unique sort_order index mid-batch, so
-     * values are shifted to a temp range first, then to final. Temp offset uses the
-     * table-wide MAX(sort_order), not count($orderedLocationIds), since sort_order can
-     * already exceed the row count (uncompacted inserts).
+     * values are shifted to a temp range first, then to final. The temp offset only
+     * needs to clear count($orderedLocationIds), since active sort_order values are
+     * always kept as a dense 0..N-1 range (deleted rows are NULL, not part of it).
      */
     public function saveSortOrder(array $orderedLocationIds): bool
     {
@@ -187,10 +187,7 @@ class Stock_location extends Model
         }
 
         $table = $this->db->prefixTable('stock_locations');
-
-        $builder = $this->db->table('stock_locations');
-        $maxSortOrder = $builder->selectMax('sort_order')->get()->getRow()->sort_order;
-        $tempOffset = $maxSortOrder + 1;
+        $tempOffset = count($orderedLocationIds);
 
         $this->db->transStart();
 
@@ -257,8 +254,7 @@ class Stock_location extends Model
             $this->db->transStart();
 
             $builder = $this->db->table('stock_locations');
-            $maxSortOrder = $builder->selectMax('sort_order')->get()->getRow()->sort_order;
-            $locationDataToSave['sort_order'] = $maxSortOrder + 1;
+            $locationDataToSave['sort_order'] = $builder->where('deleted', 0)->countAllResults();
 
             $builder = $this->db->table('stock_locations');
             $builder->insert($locationDataToSave);
@@ -348,14 +344,12 @@ class Stock_location extends Model
     {
         $this->db->transStart();
 
-        // Push the deleted row's sort_order past the current table-wide max so it can
-        // never collide with the small active range saveSortOrder() reuses (0..N-1 / N..2N-1).
-        $builder = $this->db->table('stock_locations');
-        $maxSortOrder = $builder->selectMax('sort_order')->get()->getRow()->sort_order;
-
+        // Deleted rows don't occupy a sort position, so sort_order is cleared rather than
+        // pushed to some new high value. This keeps the active range a dense 0..N-1 no
+        // matter how many locations have been deleted over the life of the install.
         $builder = $this->db->table('stock_locations');
         $builder->where('location_id', $locationId);
-        $builder->update(['deleted' => 1, 'sort_order' => $maxSortOrder + 1]);
+        $builder->update(['deleted' => 1, 'sort_order' => null]);
 
         $builder = $this->db->table('permissions');
         $builder->delete(['location_id' => $locationId]);
