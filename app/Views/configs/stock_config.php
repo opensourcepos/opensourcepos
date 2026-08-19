@@ -42,7 +42,7 @@
 
         const ensure_default_selected = function() {
             if ($('#stock_locations input.stock_location_default:checked').length === 0) {
-                $('#stock_locations .stock_location_row').first().find('input.stock_location_default').prop('checked', true);
+                $('#stock_locations .stock_location_row[data-location-id]').first().find('input.stock_location_default').prop('checked', true);
             }
         };
 
@@ -50,7 +50,7 @@
             const block = $(this).parent().clone(true);
             const new_block = block.insertAfter($(this).parent());
             const new_block_id = 'stock_location[]';
-            $(new_block).removeAttr('data-location-id').find('input.stock_location_default').prop('checked', false).val('');
+            $(new_block).removeAttr('data-location-id').find('input.stock_location_default').prop('checked', false).prop('disabled', true).val('');
             $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
             $(new_block).find('input.stock_location').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'stock_location valid_chars form-control input-sm required').val('');
             hide_show_remove();
