@@ -24,8 +24,6 @@ class Throttle implements FilterInterface
             return null;
         }
 
-        check_encryption();
-
         $throttler = Services::throttler();
         $secret    = config('Encryption')->key;
 

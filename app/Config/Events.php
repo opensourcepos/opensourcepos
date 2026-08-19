@@ -3,6 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Events\Events;
+use CodeIgniter\Exceptions\ConfigException;
 use CodeIgniter\Exceptions\FrameworkException;
 use CodeIgniter\HotReloader\HotReloader;
 use App\Events\Db_log;
@@ -27,6 +28,11 @@ use App\Events\Method;
  */
 
 Events::on('pre_system', static function (): void {
+    $encryptionKey = config('Encryption')->key;
+    if (ENVIRONMENT !== 'testing' && (empty($encryptionKey) || strlen($encryptionKey) < 64)) {
+        throw new ConfigException('Encryption key is missing or invalid. Run the installer/migrations to provision one.');
+    }
+
     if (ENVIRONMENT !== 'testing') {
         if (ini_get('zlib.output_compression')) {
             throw FrameworkException::forEnabledZlibOutputCompression();

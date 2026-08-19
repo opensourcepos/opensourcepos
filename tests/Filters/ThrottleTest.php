@@ -16,7 +16,7 @@ class ThrottleTest extends CIUnitTestCase
     {
         parent::setUp();
 
-        check_encryption();
+        config('Encryption')->key = bin2hex(random_bytes(32));
 
         $this->filter = new Throttle();
     }
