@@ -761,23 +761,35 @@ class Config extends Secure_Controller
         }
 
         $notToDelete = [];
+        $newlyInsertedIds = [];
         foreach ($submittedLocations as $locationId => $locationName) {
+            $wasExisting = in_array($locationId, $submittedLocationIds);
             $locationData = ['location_name' => $locationName];
             if ($this->stock_location->saveValue($locationData, $locationId)) {
                 // saveValue() sets location_id on $locationData for new inserts (it stays
                 // as-is for updates); reading it back here avoids re-resolving by name,
                 // which is ambiguous when a deleted row still shares that name.
-                $notToDelete[] = $locationData['location_id'] ?? $locationId;
+                $savedLocationId = $locationData['location_id'] ?? $locationId;
+                $notToDelete[] = $savedLocationId;
+                if (!$wasExisting) {
+                    $newlyInsertedIds[] = $savedLocationId;
+                }
                 $this->_clear_session_state();
             }
         }
 
         $sortOrder = $this->request->getPost('stock_location_order');
-        $submittedOrderIds = $sortOrder ? array_map('intval', explode(',', $sortOrder)) : [];
+        $submittedOrderTokens = $sortOrder ? explode(',', $sortOrder) : [];
 
-        // The submitted order can be missing ids for locations added in this same submit
-        // (they have no location_id yet client-side), so reconcile it against the
-        // authoritative post-save id list before persisting, appending any missing ids.
+        // 'new-<n>' tokens are placeholders for rows with no location_id yet; resolve
+        // each to its real inserted id in submission order.
+        $submittedOrderIds = array_map(
+            function ($token) use (&$newlyInsertedIds) {
+                return str_starts_with($token, 'new-') ? array_shift($newlyInsertedIds) : (int) $token;
+            },
+            $submittedOrderTokens
+        );
+
         $orderedLocationIds = array_values(array_unique(array_intersect($submittedOrderIds, $notToDelete)));
         $orderedLocationIds = array_merge($orderedLocationIds, array_diff($notToDelete, $orderedLocationIds));
 

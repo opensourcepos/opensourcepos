@@ -31,6 +31,7 @@
     // Validation and submit handling
     $(document).ready(function() {
         let location_count = <?= sizeof($stock_locations) ?>;
+        let new_location_counter = 0;
 
         const hide_show_remove = function() {
             if ($('#stock_locations .stock_location_row').length > 1) {
@@ -42,7 +43,9 @@
 
         const ensure_default_selected = function() {
             if ($('#stock_locations input.stock_location_default:checked').length === 0) {
-                $('#stock_locations .stock_location_row[data-location-id]').first().find('input.stock_location_default').prop('checked', true);
+                $('#stock_locations .stock_location_row').filter(function() {
+                    return String($(this).data('location-id')).indexOf('new-') !== 0;
+                }).first().find('input.stock_location_default').prop('checked', true);
             }
         };
 
@@ -50,7 +53,7 @@
             const block = $(this).parent().clone(true);
             const new_block = block.insertAfter($(this).parent());
             const new_block_id = 'stock_location[]';
-            $(new_block).removeAttr('data-location-id').find('input.stock_location_default').prop('checked', false).prop('disabled', true).val('');
+            $(new_block).attr('data-location-id', 'new-' + ++new_location_counter).find('input.stock_location_default').prop('checked', false).prop('disabled', true).val('');
             $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
             $(new_block).find('input.stock_location').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'stock_location valid_chars form-control input-sm required').val('');
             hide_show_remove();
@@ -75,9 +78,7 @@
         const update_sort_order_field = function() {
             const orderedIds = $('#stock_locations .stock_location_row').map(function() {
                 return $(this).data('location-id');
-            }).get().filter(function(locationId) {
-                return locationId !== undefined && locationId !== '';
-            });
+            }).get();
             $("input[name='stock_location_order']").val(orderedIds.join(','));
         };
 
