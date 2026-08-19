@@ -84,6 +84,8 @@ return [
     'hsn'                               => '',
     'id'                                => '',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'Utilstrækkelig gavekortsaldo til denne betaling.',
+    'insufficient_reward_points'        => 'Utilstrækkelige belønningspoint til denne betaling.',
     'invoice'                           => '',
     'invoice_confirm'                   => '',
     'invoice_enable'                    => '',
