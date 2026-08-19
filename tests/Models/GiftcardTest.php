@@ -92,6 +92,22 @@ class GiftcardTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(0.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
 
+    public function testDecrementGiftcardValueFailsWhenDeleted(): void
+    {
+        $giftcardNumber = $this->createGiftcard(100.00);
+
+        \Config\Database::connect()->table('giftcards')
+            ->where('giftcard_number', $giftcardNumber)
+            ->update(['deleted' => 1]);
+
+        $giftcardModel = model(Giftcard::class);
+
+        $result = $giftcardModel->decrementGiftcardValue((string) $giftcardNumber, 60.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
     public function testDecrementGiftcardValueConcurrentDecrementsOneWins(): void
     {
         $giftcardNumber = $this->createGiftcard(100.00);
