@@ -182,6 +182,10 @@ class Stock_location extends Model
      */
     public function saveSortOrder(array $orderedLocationIds): bool
     {
+        if (empty($orderedLocationIds)) {
+            return true;
+        }
+
         $table = $this->db->prefixTable('stock_locations');
 
         $builder = $this->db->table('stock_locations');
