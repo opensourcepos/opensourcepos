@@ -2,6 +2,8 @@
 
 namespace Tests\Support;
 
+use RuntimeException;
+
 /**
  * Races two raw SQL statements against each other over two independent
  * mysqli connections, using MYSQLI_ASYNC so both are in flight before either
@@ -24,9 +26,14 @@ trait ConcurrentDbRaceTrait
         mysqli_query($link2, $sql2, MYSQLI_ASYNC);
 
         try {
-            $pending = [$link1, $link2];
+            $pending  = [$link1, $link2];
+            $deadline = hrtime(true) + 10_000_000_000;
 
             while ($pending !== []) {
+                if (hrtime(true) >= $deadline) {
+                    throw new RuntimeException('mysqli_poll failed to resolve pending queries before deadline');
+                }
+
                 $read = $pending;
                 $error = $pending;
                 $reject = $pending;
@@ -123,7 +130,7 @@ trait ConcurrentDbRaceTrait
                         !file_exists($readyFile2) ? 'call 2' : null,
                     ]);
 
-                    throw new \RuntimeException('race_worker.php failed to reach readiness barrier: ' . implode(', ', $waiting));
+                    throw new RuntimeException('race_worker.php failed to reach readiness barrier: ' . implode(', ', $waiting));
                 }
 
                 usleep(1000);
@@ -177,7 +184,7 @@ trait ConcurrentDbRaceTrait
                         $status2['running'] ? 'call 2' : null,
                     ]);
 
-                    throw new \RuntimeException('race_worker.php failed to complete before deadline: ' . implode(', ', $stillRunning));
+                    throw new RuntimeException('race_worker.php failed to complete before deadline: ' . implode(', ', $stillRunning));
                 }
 
                 usleep(1000);
@@ -199,11 +206,11 @@ trait ConcurrentDbRaceTrait
         }
 
         if ($exitCode1 !== 0) {
-            throw new \RuntimeException("race_worker.php (call 1) exited with {$exitCode1}: {$error1}");
+            throw new RuntimeException("race_worker.php (call 1) exited with {$exitCode1}: {$error1}");
         }
 
         if ($exitCode2 !== 0) {
-            throw new \RuntimeException("race_worker.php (call 2) exited with {$exitCode2}: {$error2}");
+            throw new RuntimeException("race_worker.php (call 2) exited with {$exitCode2}: {$error2}");
         }
 
         return [trim($output1) === '1', trim($output2) === '1'];
