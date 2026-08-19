@@ -781,6 +781,7 @@ class Config extends Secure_Controller
 
         $notToDelete = [];
         $newlyInsertedIds = [];
+        $saveFailed = false;
         foreach ($submittedLocations as $locationId => $locationName) {
             $wasExisting = in_array($locationId, $submittedLocationIds);
             if ($locationName === '') {
@@ -792,41 +793,47 @@ class Config extends Secure_Controller
             }
 
             $locationData = ['location_name' => $locationName];
-            if ($this->stock_location->saveValue($locationData, $locationId)) {
-                // saveValue() sets location_id on $locationData for new inserts (it stays
-                // as-is for updates); reading it back here avoids re-resolving by name,
-                // which is ambiguous when a deleted row still shares that name.
-                $savedLocationId = $locationData['location_id'] ?? $locationId;
-                $notToDelete[] = $savedLocationId;
-                if (!$wasExisting) {
-                    $newlyInsertedIds[] = $savedLocationId;
-                }
-                $this->_clear_session_state();
+            if (!$this->stock_location->saveValue($locationData, $locationId)) {
+                $saveFailed = true;
+
+                break;
             }
+
+            // saveValue() sets location_id on $locationData for new inserts (it stays
+            // as-is for updates); reading it back here avoids re-resolving by name,
+            // which is ambiguous when a deleted row still shares that name.
+            $savedLocationId = $locationData['location_id'] ?? $locationId;
+            $notToDelete[] = $savedLocationId;
+            if (!$wasExisting) {
+                $newlyInsertedIds[] = $savedLocationId;
+            }
+            $this->_clear_session_state();
         }
 
-        $sortOrder = $this->request->getPost('stock_location_order');
-        $submittedOrderTokens = $sortOrder ? explode(',', $sortOrder) : [];
+        if (!$saveFailed) {
+            $sortOrder = $this->request->getPost('stock_location_order');
+            $submittedOrderTokens = $sortOrder ? explode(',', $sortOrder) : [];
 
-        // 'new-<n>' tokens are placeholders for rows with no location_id yet; resolve
-        // each to its real inserted id in submission order.
-        $submittedOrderIds = array_map(
-            function ($token) use (&$newlyInsertedIds) {
-                return str_starts_with($token, 'new-') ? array_shift($newlyInsertedIds) : (int) $token;
-            },
-            $submittedOrderTokens
-        );
+            // 'new-<n>' tokens are placeholders for rows with no location_id yet; resolve
+            // each to its real inserted id in submission order.
+            $submittedOrderIds = array_map(
+                function ($token) use (&$newlyInsertedIds) {
+                    return str_starts_with($token, 'new-') ? array_shift($newlyInsertedIds) : (int) $token;
+                },
+                $submittedOrderTokens
+            );
 
-        $orderedLocationIds = array_values(array_unique(array_intersect($submittedOrderIds, $notToDelete)));
-        $orderedLocationIds = array_merge($orderedLocationIds, array_diff($notToDelete, $orderedLocationIds));
+            $orderedLocationIds = array_values(array_unique(array_intersect($submittedOrderIds, $notToDelete)));
+            $orderedLocationIds = array_merge($orderedLocationIds, array_diff($notToDelete, $orderedLocationIds));
 
-        if ($orderedLocationIds) {
-            $this->stock_location->saveSortOrder($orderedLocationIds);
-        }
+            if ($orderedLocationIds) {
+                $this->stock_location->saveSortOrder($orderedLocationIds);
+            }
 
-        $defaultLocationId = $this->request->getPost('stock_location_default', FILTER_SANITIZE_NUMBER_INT);
-        if ($defaultLocationId && in_array((int) $defaultLocationId, array_map('intval', $notToDelete), true)) {
-            $this->stock_location->setDefaultLocation((int) $defaultLocationId);
+            $defaultLocationId = $this->request->getPost('stock_location_default', FILTER_SANITIZE_NUMBER_INT);
+            if ($defaultLocationId && in_array((int) $defaultLocationId, array_map('intval', $notToDelete), true)) {
+                $this->stock_location->setDefaultLocation((int) $defaultLocationId);
+            }
         }
 
         $this->db->transComplete();
