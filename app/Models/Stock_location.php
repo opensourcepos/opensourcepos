@@ -159,6 +159,15 @@ class Stock_location extends Model
      */
     public function setDefaultLocation(int $locationId): bool
     {
+        $exists = $this->db->table('stock_locations')
+            ->where('location_id', $locationId)
+            ->where('deleted', 0)
+            ->countAllResults();
+
+        if ($exists === 0) {
+            return false;
+        }
+
         $this->db->transStart();
 
         $builder = $this->db->table('stock_locations');
