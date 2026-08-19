@@ -24,12 +24,15 @@ class Throttle implements FilterInterface
             return null;
         }
 
-        $throttler = Services::throttler();
+        check_encryption();
 
-        $ipKey       = 'login-ip-' . md5($request->getIPAddress());
+        $throttler = Services::throttler();
+        $secret    = config('Encryption')->key;
+
+        $ipKey       = 'login-ip-' . hash_hmac('sha256', $request->getIPAddress(), $secret);
         $rawUsername = $request->getPost('username');
         $username    = is_scalar($rawUsername) ? strtolower((string) $rawUsername) : '';
-        $usernameKey = $username !== '' ? 'login-user-' . md5($username) : null;
+        $usernameKey = $username !== '' ? 'login-user-' . hash_hmac('sha256', $username, $secret) : null;
 
         $ipOk       = $throttler->check($ipKey, self::CAPACITY, self::SECONDS);
         $usernameOk = $usernameKey === null || $throttler->check($usernameKey, self::CAPACITY, self::SECONDS);
