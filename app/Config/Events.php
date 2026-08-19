@@ -28,12 +28,15 @@ use App\Events\Method;
  */
 
 Events::on('pre_system', static function (): void {
-    $encryptionKey = config('Encryption')->key;
-    if (ENVIRONMENT !== 'testing' && (empty($encryptionKey) || strlen($encryptionKey) < 64)) {
-        throw new ConfigException('Encryption key is missing or invalid. Run the installer/migrations to provision one.');
-    }
-
     if (ENVIRONMENT !== 'testing') {
+        helper('security');
+        check_encryption();
+
+        $encryptionKey = config('Encryption')->key;
+        if (empty($encryptionKey) || strlen($encryptionKey) < 64) {
+            throw new ConfigException('Encryption key could not be provisioned. Check that .env is writable.');
+        }
+
         if (ini_get('zlib.output_compression')) {
             throw FrameworkException::forEnabledZlibOutputCompression();
         }
