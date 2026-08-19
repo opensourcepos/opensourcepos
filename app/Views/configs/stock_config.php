@@ -120,10 +120,12 @@
                         }, {
                             type: response.success ? 'success' : 'danger'
                         });
-                        $("#stock_locations").load('<?= "config/stockLocations" ?>', function() {
-                            init_add_remove_locations();
-                            init_sortable_locations();
-                        });
+                        if (response.success) {
+                            $("#stock_locations").load('<?= "config/stockLocations" ?>', function() {
+                                init_add_remove_locations();
+                                init_sortable_locations();
+                            });
+                        }
                     },
                     dataType: 'json'
                 });
