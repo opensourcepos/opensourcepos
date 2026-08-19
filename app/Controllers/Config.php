@@ -380,8 +380,6 @@ class Config extends Secure_Controller
         }
 
         $batchSaveData = [
-            'theme'                             => $this->request->getPost('theme'),
-            'login_form'                        => $this->request->getPost('login_form'),
             'default_sales_discount_type'       => $this->request->getPost('default_sales_discount_type') != null,
             'default_sales_discount'            => parse_decimals($this->request->getPost('default_sales_discount')),
             'default_receivings_discount_type'  => $this->request->getPost('default_receivings_discount_type') != null,
@@ -389,8 +387,6 @@ class Config extends Secure_Controller
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
-            'notify_horizontal_position'        => $this->request->getPost('notify_horizontal_position'),
-            'notify_vertical_position'          => $this->request->getPost('notify_vertical_position'),
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
             'image_max_height'                  => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
             'image_max_size'                    => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
@@ -430,6 +426,26 @@ class Config extends Secure_Controller
         $this->db->transComplete();
 
         $success = $success && $this->db->transStatus();
+
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    /**
+     * Saves Appearance configuration. Used in app/Views/configs/appearance_config.php
+     */
+    public function postSaveAppearance(): ResponseInterface
+    {
+        $batch_save_data = [
+            'theme'                      => $this->request->getPost('theme'),
+            'login_form'                 => $this->request->getPost('login_form'),
+            'notify_horizontal_position' => $this->request->getPost('notify_horizontal_position'),
+            'notify_vertical_position'   => $this->request->getPost('notify_vertical_position'),
+            'color_mode'                 => $this->request->getPost('color_mode'),
+            'config_menu_position'       => $this->request->getPost('config_menu_position'),
+            'responsive_design'          => $this->request->getPost('responsive_design') != null
+        ];
+
+        $success = $this->appconfig->batch_save($batch_save_data);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -495,26 +511,25 @@ class Config extends Secure_Controller
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
         $batch_save_data = [
-            'currency_symbol'            => htmlspecialchars($currency_symbol ?? ''),
-            'currency_code'              => $this->request->getPost('currency_code'),
-            'language_code'              => $exploded[0],
-            'language'                   => $exploded[1],
-            'timezone'                   => $this->request->getPost('timezone'),
-            'dateformat'                 => $this->request->getPost('dateformat'),
-            'timeformat'                 => $this->request->getPost('timeformat'),
-            'thousands_separator'        => $this->request->getPost('thousands_separator') != null,
-            'number_locale'              => $this->request->getPost('number_locale'),
-            'currency_decimals'          => $this->request->getPost('currency_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'tax_decimals'               => $this->request->getPost('tax_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'quantity_decimals'          => $this->request->getPost('quantity_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'country_codes'              => htmlspecialchars($this->request->getPost('country_codes')),
-            'payment_options_order'      => $this->request->getPost('payment_options_order'),
-            'payment_reference_code_min' => $this->request->getPost('payment_reference_code_min', FILTER_SANITIZE_NUMBER_INT),
-            'payment_reference_code_max' => $this->request->getPost('payment_reference_code_max', FILTER_SANITIZE_NUMBER_INT),
-            'date_or_time_format'        => $this->request->getPost('date_or_time_format') != null,
-            'cash_decimals'              => $this->request->getPost('cash_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'cash_rounding_code'         => $this->request->getPost('cash_rounding_code'),
-            'financial_year'             => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
+            'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
+            'currency_code'         => $this->request->getPost('currency_code'),
+            'language_code'         => $exploded[0],
+            'language'              => $exploded[1],
+            'rtl_language'          => $this->request->getPost('rtl_language') != null,
+            'timezone'              => $this->request->getPost('timezone'),
+            'dateformat'            => $this->request->getPost('dateformat'),
+            'timeformat'            => $this->request->getPost('timeformat'),
+            'thousands_separator'   => $this->request->getPost('thousands_separator') != null,
+            'number_locale'         => $this->request->getPost('number_locale'),
+            'currency_decimals'     => $this->request->getPost('currency_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'tax_decimals'          => $this->request->getPost('tax_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'quantity_decimals'     => $this->request->getPost('quantity_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'country_codes'         => htmlspecialchars($this->request->getPost('country_codes')),
+            'payment_options_order' => $this->request->getPost('payment_options_order'),
+            'date_or_time_format'   => $this->request->getPost('date_or_time_format') != null,
+            'cash_decimals'         => $this->request->getPost('cash_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'cash_rounding_code'    => $this->request->getPost('cash_rounding_code'),
+            'financial_year'        => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);
