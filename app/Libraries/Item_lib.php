@@ -30,7 +30,9 @@ class Item_lib
     {
         if (!$this->session->get('item_location')) {
             $location_id = $this->stock_location->getDefaultLocationId();
-            $this->set_item_location($location_id);
+            if ($location_id !== null) {
+                $this->set_item_location((string) $location_id);
+            }
         }
 
         return $this->session->get('item_location');
