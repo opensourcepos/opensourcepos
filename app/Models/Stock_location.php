@@ -260,10 +260,12 @@ class Stock_location extends Model
         $locationDataToSave = ['location_name' => $locationName, 'deleted' => 0];
 
         if (!$this->exists($locationId)) {
+            $table = $this->db->prefixTable('stock_locations');
+
             $this->db->transStart();
 
-            $builder = $this->db->table('stock_locations');
-            $locationDataToSave['sort_order'] = $builder->where('deleted', 0)->countAllResults();
+            $row = $this->db->query("SELECT COUNT(*) AS count FROM $table WHERE deleted = 0 FOR UPDATE")->getRow();
+            $locationDataToSave['sort_order'] = (int) $row->count;
 
             $builder = $this->db->table('stock_locations');
             $builder->insert($locationDataToSave);
