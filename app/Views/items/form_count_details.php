@@ -73,7 +73,7 @@ use App\Models\Inventory;
                     'id'       => 'quantity',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => to_quantity_decimals(current($item_quantities))
+                    'value'    => to_quantity_decimals($item_quantities[$stock_location] ?? current($item_quantities))
                 ]) ?>
             </div>
         </div>
@@ -112,7 +112,7 @@ use App\Models\Inventory;
 
 <script type="text/javascript">
     $(document).ready(function() {
-        display_stock(<?= json_encode(key(esc($stock_locations, 'raw'))) ?>);
+        display_stock(<?= json_encode($stock_location ?? key(esc($stock_locations, 'raw'))) ?>);
     });
 
     function display_stock(location_id) {
