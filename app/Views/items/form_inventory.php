@@ -74,7 +74,7 @@
                     'id'       => 'quantity',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => to_quantity_decimals(current($item_quantities))
+                    'value'    => to_quantity_decimals($item_quantities[$stock_location] ?? current($item_quantities))
                 ]) ?>
             </div>
         </div>
