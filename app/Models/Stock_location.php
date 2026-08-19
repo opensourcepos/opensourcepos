@@ -353,14 +353,31 @@ class Stock_location extends Model
      */
     public function delete($locationId = null, bool $purge = false): bool
     {
+        $table = $this->db->prefixTable('stock_locations');
+
         $this->db->transStart();
 
         // Deleted rows don't occupy a sort position, so sort_order is cleared rather than
-        // pushed to some new high value. This keeps the active range a dense 0..N-1 no
-        // matter how many locations have been deleted over the life of the install.
+        // pushed to some new high value. The remaining active rows are then compacted back
+        // to a dense 0..N-1 range so saveValue()'s COUNT(*)-based next sort_order can't
+        // collide with a surviving row left behind by a gap.
         $builder = $this->db->table('stock_locations');
         $builder->where('location_id', $locationId);
         $builder->update(['deleted' => 1, 'sort_order' => null]);
+
+        $remainingIds = array_column(
+            $this->db->table('stock_locations')
+                ->select('location_id')
+                ->where('deleted', 0)
+                ->orderBy('sort_order', 'ASC')
+                ->get()
+                ->getResultArray(),
+            'location_id'
+        );
+
+        if (!empty($remainingIds)) {
+            $this->runSortOrderCaseUpdate($table, $remainingIds, 0);
+        }
 
         $builder = $this->db->table('permissions');
         $builder->delete(['location_id' => $locationId]);

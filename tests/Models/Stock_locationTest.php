@@ -225,6 +225,26 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertNotContains($idB, $remainingIds);
     }
 
+    public function testDeleteCompactsRemainingSortOrderAndAllowsSubsequentInsert(): void
+    {
+        $idA = $this->insertLocation('Sigma', false, false);
+        $idB = $this->insertLocation('Tau', false, false);
+        $idC = $this->insertLocation('Upsilon', false, false);
+
+        $this->stockLocation->delete($idB);
+
+        $remainingSortOrders = array_column(
+            $this->db->table('stock_locations')->where('deleted', 0)->orderBy('sort_order', 'ASC')->get()->getResultArray(),
+            'sort_order'
+        );
+        $this->assertSame(range(0, count($remainingSortOrders) - 1), array_map('intval', $remainingSortOrders));
+
+        $locationData = ['location_name' => 'Phi New Location'];
+
+        $this->assertTrue($this->stockLocation->saveValue($locationData, NEW_ENTRY));
+        $this->assertNotEmpty($locationData['location_id']);
+    }
+
     public function testSaveValueNewInsertAssignsNextSortOrder(): void
     {
         $countBefore = $this->db->table('stock_locations')->where('deleted', 0)->countAllResults();
