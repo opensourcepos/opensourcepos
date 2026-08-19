@@ -564,19 +564,30 @@ class Sales extends Secure_Controller
                 $discount_type = $item_kit_info->kit_discount_type;
             }
 
-            $print_option = PRINT_ALL; // Always include in list of items on invoice // TODO: This variable is never used in the code
-
             if (!empty($kit_item_id)) {
-                if (!$this->sale_lib->add_item($kit_item_id, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price)) {
+                // Kit Only print must force the linked kit item line printable (item_type may not be ITEM_KIT).
+                $kit_line_print = ((int)$kit_print_option === PRINT_KIT) ? PRINT_YES : null;
+                if (!$this->sale_lib->add_item($kit_item_id, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price, null, null, null, false, $kit_line_print)) {
                     $data['error'] = lang('Sales.unable_to_add_item');
                 } else {
+                    // Show the Item Kit name on the receipt, not only the linked item's name.
+                    $cart = $this->sale_lib->get_cart();
+                    foreach ($cart as $line => $cart_item) {
+                        if ((string)$cart_item['item_id'] === (string)$kit_item_id) {
+                            $cart[$line]['name'] = $item_kit_info->name;
+                            if ((int)$kit_print_option === PRINT_KIT) {
+                                $cart[$line]['print_option'] = PRINT_YES;
+                            }
+                        }
+                    }
+                    $this->sale_lib->set_cart($cart);
                     $data['warning'] = $this->sale_lib->out_of_stock($item_kit_id, $item_location);
                 }
             }
 
             // Add item kit items to order
             $stock_warning = null;
-            if (!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type, $kit_price_option, $kit_print_option, $stock_warning)) {
+            if (!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type, (int)$kit_price_option, (int)$kit_print_option, $stock_warning)) {
                 $data['error'] = lang('Sales.unable_to_add_item');
             } elseif ($stock_warning != null) {
                 $data['warning'] = $stock_warning;
