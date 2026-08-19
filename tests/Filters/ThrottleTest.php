@@ -16,6 +16,8 @@ class ThrottleTest extends CIUnitTestCase
     {
         parent::setUp();
 
+        config('Encryption')->key = bin2hex(random_bytes(32));
+
         $this->filter = new Throttle();
     }
 
@@ -30,7 +32,7 @@ class ThrottleTest extends CIUnitTestCase
         parent::tearDown();
     }
 
-    private function makeRequest(string $method, string $ip, ?string $username = null): IncomingRequest
+    private function makeRequest(string $method, string $ip, mixed $username = null): IncomingRequest
     {
         $request = $this->createMock(IncomingRequest::class);
 
@@ -38,10 +40,12 @@ class ThrottleTest extends CIUnitTestCase
         $request->method('getIPAddress')->willReturn($ip);
         $request->method('getPost')->with('username')->willReturn($username);
 
-        $this->usedKeys[] = 'login-ip-' . $ip;
+        $secret = config('Encryption')->key;
 
-        if ($username !== null && $username !== '') {
-            $this->usedKeys[] = 'login-user-' . strtolower($username);
+        $this->usedKeys[] = 'login-ip-' . hash_hmac('sha256', $ip, $secret);
+
+        if (is_scalar($username) && (string) $username !== '') {
+            $this->usedKeys[] = 'login-user-' . hash_hmac('sha256', strtolower((string) $username), $secret);
         }
 
         return $request;
@@ -112,6 +116,21 @@ class ThrottleTest extends CIUnitTestCase
         $this->assertSame(lang('Login.too_many_attempts'), $body['message']);
     }
 
+    public function testHandlesIpv6AddressWithoutThrowing(): void
+    {
+        $ip = '::1';
+
+        for ($i = 0; $i < 5; $i++) {
+            $result = $this->filter->before($this->makeRequest('POST', $ip, "user{$i}"));
+            $this->assertNull($result, "Attempt {$i} should not be throttled");
+        }
+
+        $result = $this->filter->before($this->makeRequest('POST', $ip, 'user-final'));
+
+        $this->assertNotNull($result);
+        $this->assertSame(429, $result->getStatusCode());
+    }
+
     public function testMissingUsernameOnlyThrottlesByIp(): void
     {
         $ip = '203.0.113.5';
@@ -121,6 +140,23 @@ class ThrottleTest extends CIUnitTestCase
         }
 
         $result = $this->filter->before($this->makeRequest('POST', $ip, null));
+
+        $this->assertNotNull($result);
+        $this->assertSame(429, $result->getStatusCode());
+    }
+
+    public function testArrayUsernameIsIgnoredAndOnlyIpThrottles(): void
+    {
+        $ip       = '203.0.113.6';
+        $username = ['a', 'b'];
+
+        for ($i = 0; $i < 5; $i++) {
+            $result = $this->filter->before($this->makeRequest('POST', $ip, $username));
+
+            $this->assertNull($result, "Attempt {$i} should not be throttled");
+        }
+
+        $result = $this->filter->before($this->makeRequest('POST', $ip, $username));
 
         $this->assertNotNull($result);
         $this->assertSame(429, $result->getStatusCode());
