@@ -127,12 +127,15 @@ class Receiving_lib
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function get_stock_source(): int
+    public function get_stock_source(): ?int
     {
         if (!$this->session->get('recv_stock_source')) {
-            $this->set_stock_source($this->stock_location->getDefaultLocationId('receivings'));
+            $defaultId = $this->stock_location->getDefaultLocationId('receivings');
+            if ($defaultId !== null) {
+                $this->set_stock_source($defaultId);
+            }
         }
 
         return $this->session->get('recv_stock_source');

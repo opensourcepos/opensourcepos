@@ -918,12 +918,15 @@ class Sale_lib
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function get_sale_location(): int
+    public function get_sale_location(): ?int
     {
         if (!$this->session->get('sales_location')) {
-            $this->set_sale_location($this->stock_location->getDefaultLocationId('sales'));
+            $defaultId = $this->stock_location->getDefaultLocationId('sales');
+            if ($defaultId !== null) {
+                $this->set_sale_location($defaultId);
+            }
         }
 
         return $this->session->get('sales_location');
