@@ -38,12 +38,17 @@ trait ConcurrentDbRaceTrait
                 $error = $pending;
                 $reject = $pending;
 
-                if (mysqli_poll($read, $error, $reject, 5) === false) {
-                    break;
+                $ready = mysqli_poll($read, $error, $reject, 5);
+
+                if ($ready === false) {
+                    throw new RuntimeException('mysqli_poll returned false');
                 }
 
                 foreach (array_merge($read, $error, $reject) as $link) {
-                    mysqli_reap_async_query($link);
+                    if (mysqli_reap_async_query($link) === false) {
+                        throw new RuntimeException('mysqli_reap_async_query failed: ' . mysqli_error($link));
+                    }
+
                     $pending = array_filter($pending, static fn ($pendingLink) => $pendingLink !== $link);
                 }
             }
