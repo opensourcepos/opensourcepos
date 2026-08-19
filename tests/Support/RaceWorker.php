@@ -16,6 +16,15 @@ require __DIR__ . '/../../vendor/codeigniter4/framework/system/Test/bootstrap.ph
 $method = $argv[1];
 $args   = array_slice($argv, 2);
 
+$readyFile = getenv('RACE_READY_FILE');
+$goFile    = getenv('RACE_GO_FILE');
+
+file_put_contents($readyFile, '1');
+
+while (!file_exists($goFile)) {
+    usleep(1000);
+}
+
 $result = match ($method) {
     'giftcard' => model(App\Models\Giftcard::class)
         ->decrementGiftcardValue((string) $args[0], (float) $args[1]),

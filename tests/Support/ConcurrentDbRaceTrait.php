@@ -71,23 +71,77 @@ trait ConcurrentDbRaceTrait
         $command1 = array_merge([$php, $workerScript, $method], array_map('strval', $args1));
         $command2 = array_merge([$php, $workerScript, $method], array_map('strval', $args2));
 
-        $process1 = proc_open($command1, $descriptorSpec, $pipes1, ROOTPATH);
-        $process2 = proc_open($command2, $descriptorSpec, $pipes2, ROOTPATH);
+        $readyFile1 = tempnam(sys_get_temp_dir(), 'race_ready_');
+        $readyFile2 = tempnam(sys_get_temp_dir(), 'race_ready_');
+        $goFile     = tempnam(sys_get_temp_dir(), 'race_go_');
+        unlink($readyFile1);
+        unlink($readyFile2);
+        unlink($goFile);
+
+        $baseEnv = array_filter($_SERVER, static fn ($value) => is_scalar($value));
+        $env1    = array_merge($baseEnv, ['RACE_READY_FILE' => $readyFile1, 'RACE_GO_FILE' => $goFile]);
+        $env2    = array_merge($baseEnv, ['RACE_READY_FILE' => $readyFile2, 'RACE_GO_FILE' => $goFile]);
+
+        $process1 = proc_open($command1, $descriptorSpec, $pipes1, ROOTPATH, $env1);
+        $process2 = proc_open($command2, $descriptorSpec, $pipes2, ROOTPATH, $env2);
 
         fclose($pipes1[0]);
         fclose($pipes2[0]);
 
-        $output1 = stream_get_contents($pipes1[1]);
-        $error1  = stream_get_contents($pipes1[2]);
-        fclose($pipes1[1]);
-        fclose($pipes1[2]);
-        $exitCode1 = proc_close($process1);
+        try {
+            $deadline = microtime(true) + 5.0;
 
-        $output2 = stream_get_contents($pipes2[1]);
-        $error2  = stream_get_contents($pipes2[2]);
-        fclose($pipes2[1]);
-        fclose($pipes2[2]);
-        $exitCode2 = proc_close($process2);
+            while (!file_exists($readyFile1) || !file_exists($readyFile2)) {
+                if (microtime(true) >= $deadline) {
+                    $status1 = proc_get_status($process1);
+                    $status2 = proc_get_status($process2);
+
+                    if ($status1['running']) {
+                        proc_terminate($process1);
+                    }
+
+                    if ($status2['running']) {
+                        proc_terminate($process2);
+                    }
+
+                    fclose($pipes1[1]);
+                    fclose($pipes1[2]);
+                    fclose($pipes2[1]);
+                    fclose($pipes2[2]);
+                    proc_close($process1);
+                    proc_close($process2);
+
+                    $waiting = array_filter([
+                        !file_exists($readyFile1) ? 'call 1' : null,
+                        !file_exists($readyFile2) ? 'call 2' : null,
+                    ]);
+
+                    throw new \RuntimeException('race_worker.php failed to reach readiness barrier: ' . implode(', ', $waiting));
+                }
+
+                usleep(1000);
+            }
+
+            file_put_contents($goFile, '1');
+
+            $output1 = stream_get_contents($pipes1[1]);
+            $error1  = stream_get_contents($pipes1[2]);
+            fclose($pipes1[1]);
+            fclose($pipes1[2]);
+            $exitCode1 = proc_close($process1);
+
+            $output2 = stream_get_contents($pipes2[1]);
+            $error2  = stream_get_contents($pipes2[2]);
+            fclose($pipes2[1]);
+            fclose($pipes2[2]);
+            $exitCode2 = proc_close($process2);
+        } finally {
+            foreach ([$readyFile1, $readyFile2, $goFile] as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
+        }
 
         if ($exitCode1 !== 0) {
             throw new \RuntimeException("race_worker.php (call 1) exited with {$exitCode1}: {$error1}");
