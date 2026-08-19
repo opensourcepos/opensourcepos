@@ -16,6 +16,8 @@ class ThrottleTest extends CIUnitTestCase
     {
         parent::setUp();
 
+        check_encryption();
+
         $this->filter = new Throttle();
     }
 
@@ -38,10 +40,12 @@ class ThrottleTest extends CIUnitTestCase
         $request->method('getIPAddress')->willReturn($ip);
         $request->method('getPost')->with('username')->willReturn($username);
 
-        $this->usedKeys[] = 'login-ip-' . md5($ip);
+        $secret = config('Encryption')->key;
+
+        $this->usedKeys[] = 'login-ip-' . hash_hmac('sha256', $ip, $secret);
 
         if ($username !== null && $username !== '') {
-            $this->usedKeys[] = 'login-user-' . md5(strtolower($username));
+            $this->usedKeys[] = 'login-user-' . hash_hmac('sha256', strtolower($username), $secret);
         }
 
         return $request;
