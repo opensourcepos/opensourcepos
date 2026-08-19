@@ -131,12 +131,8 @@
             errorLabelContainer: "#stock_error_message_box",
 
             rules: {
-                <?php
-                $i = 0;
-
-                foreach ($stock_locations as $location => $locationData) {
-                ?>
-                    <?= 'stock_location_' . ++$i ?>: {
+                <?php foreach ($stock_locations as $location => $locationData) { ?>
+                    "<?= 'stock_location[' . esc($locationData['location_id'], 'js') . ']' ?>": {
                         required: true,
                         stock_location: true,
                         valid_chars: true
@@ -145,12 +141,8 @@
             },
 
             messages: {
-                <?php
-                $i = 0;
-
-                foreach ($stock_locations as $location => $locationData) {
-                ?>
-                    <?= 'stock_location_' . ++$i ?>: "<?= lang('Config.stock_location_required') ?>",
+                <?php foreach ($stock_locations as $location => $locationData) { ?>
+                    "<?= 'stock_location[' . esc($locationData['location_id'], 'js') . ']' ?>": "<?= lang('Config.stock_location_required') ?>",
                 <?php } ?>
             }
         }));
