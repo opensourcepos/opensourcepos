@@ -26,9 +26,9 @@ class Throttle implements FilterInterface
 
         $throttler = Services::throttler();
 
-        $ipKey       = 'login-ip-' . $request->getIPAddress();
+        $ipKey       = 'login-ip-' . md5($request->getIPAddress());
         $username    = strtolower((string) $request->getPost('username'));
-        $usernameKey = $username !== '' ? 'login-user-' . $username : null;
+        $usernameKey = $username !== '' ? 'login-user-' . md5($username) : null;
 
         $ipOk       = $throttler->check($ipKey, self::CAPACITY, self::SECONDS);
         $usernameOk = $usernameKey === null || $throttler->check($usernameKey, self::CAPACITY, self::SECONDS);
