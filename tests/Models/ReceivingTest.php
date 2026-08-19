@@ -2,10 +2,11 @@
 
 namespace Tests\Models;
 
-use App\Models\Item;
 use App\Models\Receiving;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\ItemFixtureTrait;
 
 /**
  * Regression tests for GHSA-995p-52qw-5hh2: Receiving::delete_value() must
@@ -16,6 +17,8 @@ use CodeIgniter\Test\DatabaseTestTrait;
 class ReceivingTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use EmployeeFixtureTrait;
+    use ItemFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -27,34 +30,6 @@ class ReceivingTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-    }
-
-    protected function createEmployee(): int
-    {
-        $db = \Config\Database::connect();
-
-        $db->table('people')->insert([
-            'first_name'   => 'Test',
-            'last_name'    => 'Employee',
-            'phone_number' => '555-0200',
-            'email'        => 'employee-' . uniqid() . '@test.com',
-            'address_1'    => '',
-            'address_2'    => '',
-            'city'         => '',
-            'state'        => '',
-            'zip'          => '',
-            'country'      => '',
-            'comments'     => '',
-        ]);
-        $personId = (int) $db->insertID();
-
-        $db->table('employees')->insert([
-            'username'  => 'employee_' . uniqid(),
-            'password'  => password_hash('password123', PASSWORD_DEFAULT),
-            'person_id' => $personId,
-        ]);
-
-        return $personId;
     }
 
     protected function createSupplier(): int
@@ -84,29 +59,6 @@ class ReceivingTest extends CIUnitTestCase
         return $personId;
     }
 
-    protected function createTestItem(int $stockType = HAS_STOCK): int
-    {
-        $itemData = [
-            'item_id'               => null,
-            'name'                  => 'Test Item',
-            'description'           => 'Test Item',
-            'category'              => 'Test Category',
-            'cost_price'            => 1.00,
-            'unit_price'            => 5.00,
-            'reorder_level'         => 0,
-            'item_number'           => 'TEST-' . uniqid(),
-            'allow_alt_description' => 0,
-            'is_serialized'         => 0,
-            'stock_type'            => $stockType,
-            'deleted'               => 0,
-        ];
-
-        $itemModel = model(Item::class);
-        $itemModel->save_value($itemData);
-
-        return (int) $itemData['item_id'];
-    }
-
     protected function buildReceivingLine(int $itemId, float $quantity, float $costPrice): array
     {
         return [
@@ -123,17 +75,6 @@ class ReceivingTest extends CIUnitTestCase
                 'item_location'      => self::LOCATION_ID,
             ],
         ];
-    }
-
-    protected function getItemQuantity(int $itemId): float
-    {
-        $row = \Config\Database::connect()->table('item_quantities')
-            ->where('item_id', $itemId)
-            ->where('location_id', self::LOCATION_ID)
-            ->get()
-            ->getRow();
-
-        return $row === null ? 0.0 : (float) $row->quantity;
     }
 
     public function testDeleteValueRestoresStockAfterReceiving(): void
@@ -157,11 +98,11 @@ class ReceivingTest extends CIUnitTestCase
         );
 
         $this->assertGreaterThan(0, $receivingId);
-        $this->assertEqualsWithDelta(5.0, $this->getItemQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(5.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
 
         $deleteResult = $receivingModel->delete_value($receivingId, $employeeId, true);
 
         $this->assertTrue($deleteResult);
-        $this->assertEqualsWithDelta(0.0, $this->getItemQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(0.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 }

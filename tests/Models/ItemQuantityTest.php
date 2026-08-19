@@ -2,12 +2,12 @@
 
 namespace Tests\Models;
 
-use App\Models\Item;
 use App\Models\Item_quantity;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
+use Tests\Support\ItemFixtureTrait;
 
 /**
  * Regression tests for GHSA-995p-52qw-5hh2: changeQuantity() must apply
@@ -21,6 +21,7 @@ class ItemQuantityTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use ConcurrentDbRaceTrait;
+    use ItemFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -40,29 +41,6 @@ class ItemQuantityTest extends CIUnitTestCase
         parent::setUp();
     }
 
-    protected function createTestItem(): int
-    {
-        $itemData = [
-            'item_id'               => null,
-            'name'                  => 'Test Item',
-            'description'           => 'Test Item',
-            'category'              => 'Test Category',
-            'cost_price'            => 1.00,
-            'unit_price'            => 5.00,
-            'reorder_level'         => 0,
-            'item_number'           => 'TEST-' . uniqid(),
-            'allow_alt_description' => 0,
-            'is_serialized'         => 0,
-            'stock_type'            => HAS_STOCK,
-            'deleted'               => 0,
-        ];
-
-        $itemModel = model(Item::class);
-        $itemModel->save_value($itemData);
-
-        return (int) $itemData['item_id'];
-    }
-
     protected function createItemQuantityRow(int $itemId, float $quantity): void
     {
         \Config\Database::connect()->table('item_quantities')->insert([
@@ -70,17 +48,6 @@ class ItemQuantityTest extends CIUnitTestCase
             'location_id' => self::LOCATION_ID,
             'quantity'    => $quantity,
         ]);
-    }
-
-    protected function getQuantity(int $itemId): float
-    {
-        $row = \Config\Database::connect()->table('item_quantities')
-            ->where('item_id', $itemId)
-            ->where('location_id', self::LOCATION_ID)
-            ->get()
-            ->getRow();
-
-        return (float) $row->quantity;
     }
 
     public function testDecrementQuantitySucceeds(): void
@@ -92,7 +59,7 @@ class ItemQuantityTest extends CIUnitTestCase
         $result = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -3);
 
         $this->assertTrue($result);
-        $this->assertEqualsWithDelta(7.0, $this->getQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(7.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 
     public function testDecrementQuantityAllowsGoingNegative(): void
@@ -104,7 +71,7 @@ class ItemQuantityTest extends CIUnitTestCase
         $result = $itemQuantityModel->changeQuantity($itemId, self::LOCATION_ID, -8);
 
         $this->assertTrue($result);
-        $this->assertEqualsWithDelta(-3.0, $this->getQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(-3.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 
     public function testDecrementQuantityConcurrentDecrementsBothApply(): void
@@ -120,6 +87,6 @@ class ItemQuantityTest extends CIUnitTestCase
 
         $this->assertTrue($result1);
         $this->assertTrue($result2);
-        $this->assertEqualsWithDelta(4.0, $this->getQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(4.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 }

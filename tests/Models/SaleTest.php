@@ -2,10 +2,11 @@
 
 namespace Tests\Models;
 
-use App\Models\Item;
 use App\Models\Sale;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\ItemFixtureTrait;
 
 /**
  * Regression tests for GHSA-995p-52qw-5hh2: Sale::save_value() must reject
@@ -15,6 +16,8 @@ use CodeIgniter\Test\DatabaseTestTrait;
 class SaleTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use EmployeeFixtureTrait;
+    use ItemFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -26,34 +29,6 @@ class SaleTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-    }
-
-    protected function createEmployee(): int
-    {
-        $db = \Config\Database::connect();
-
-        $db->table('people')->insert([
-            'first_name'   => 'Test',
-            'last_name'    => 'Employee',
-            'phone_number' => '555-0200',
-            'email'        => 'employee-' . uniqid() . '@test.com',
-            'address_1'    => '',
-            'address_2'    => '',
-            'city'         => '',
-            'state'        => '',
-            'zip'          => '',
-            'country'      => '',
-            'comments'     => '',
-        ]);
-        $personId = (int) $db->insertID();
-
-        $db->table('employees')->insert([
-            'username' => 'employee_' . uniqid(),
-            'password' => password_hash('password123', PASSWORD_DEFAULT),
-            'person_id' => $personId,
-        ]);
-
-        return $personId;
     }
 
     protected function createGiftcard(float $value): int
@@ -96,29 +71,6 @@ class SaleTest extends CIUnitTestCase
         ]);
 
         return $personId;
-    }
-
-    protected function createTestItem(int $stockType = HAS_NO_STOCK): int
-    {
-        $itemData = [
-            'item_id'               => null,
-            'name'                  => 'Test Item',
-            'description'           => 'Test Item',
-            'category'              => 'Test Category',
-            'cost_price'            => 1.00,
-            'unit_price'            => 5.00,
-            'reorder_level'         => 0,
-            'item_number'           => 'TEST-' . uniqid(),
-            'allow_alt_description' => 0,
-            'is_serialized'         => 0,
-            'stock_type'            => $stockType,
-            'deleted'               => 0,
-        ];
-
-        $itemModel = model(Item::class);
-        $itemModel->save_value($itemData);
-
-        return (int) $itemData['item_id'];
     }
 
     protected function buildCartLine(int $itemId, float $quantity, float $price): array
@@ -165,22 +117,11 @@ class SaleTest extends CIUnitTestCase
         return (int) $row->points;
     }
 
-    protected function getItemQuantity(int $itemId): float
-    {
-        $row = \Config\Database::connect()->table('item_quantities')
-            ->where('item_id', $itemId)
-            ->where('location_id', self::LOCATION_ID)
-            ->get()
-            ->getRow();
-
-        return (float) $row->quantity;
-    }
-
     public function testSaveValueSucceedsWithSufficientGiftcardBalance(): void
     {
         $employeeId     = $this->createEmployee();
         $giftcardNumber = $this->createGiftcard(100.00);
-        $itemId         = $this->createTestItem();
+        $itemId         = $this->createTestItem(HAS_NO_STOCK);
 
         $saleModel  = model(Sale::class);
         $saleStatus = COMPLETED;
@@ -220,7 +161,7 @@ class SaleTest extends CIUnitTestCase
     {
         $employeeId     = $this->createEmployee();
         $giftcardNumber = $this->createGiftcard(50.00);
-        $itemId         = $this->createTestItem();
+        $itemId         = $this->createTestItem(HAS_NO_STOCK);
 
         $salesCountBefore = $this->countSalesRows();
 
@@ -263,7 +204,7 @@ class SaleTest extends CIUnitTestCase
     {
         $employeeId = $this->createEmployee();
         $customerId = $this->createCustomerWithPoints(20);
-        $itemId     = $this->createTestItem();
+        $itemId     = $this->createTestItem(HAS_NO_STOCK);
 
         $salesCountBefore = $this->countSalesRows();
 
@@ -344,7 +285,7 @@ class SaleTest extends CIUnitTestCase
         );
 
         $this->assertGreaterThan(0, $result);
-        $this->assertEqualsWithDelta(7.0, $this->getItemQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(7.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 
     public function testSaveValueDecrementsStockOnCompletedSaleWhenNoQuantityRowExists(): void
@@ -385,7 +326,7 @@ class SaleTest extends CIUnitTestCase
         );
 
         $this->assertGreaterThan(0, $result);
-        $this->assertEqualsWithDelta(-3.0, $this->getItemQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(-3.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 
     public function testDeleteRestoresStockOnCanceledSale(): void
@@ -430,11 +371,11 @@ class SaleTest extends CIUnitTestCase
         );
 
         $this->assertGreaterThan(0, $saleId);
-        $this->assertEqualsWithDelta(7.0, $this->getItemQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(7.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
 
         $deleteResult = $saleModel->delete($saleId, false, true, $employeeId);
 
         $this->assertTrue($deleteResult);
-        $this->assertEqualsWithDelta(10.0, $this->getItemQuantity($itemId), 0.001);
+        $this->assertEqualsWithDelta(10.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 }
