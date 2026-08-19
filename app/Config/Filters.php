@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\Throttle;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -36,6 +37,7 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'isLoggedIn'    => IsLoggedIn::class,
+        'throttle'      => Throttle::class,
     ];
 
     /**
@@ -110,7 +112,9 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'throttle' => ['before' => ['login', 'migrate']],
+    ];
 
     /**
      * Constructor to conditionally disable CSRF filter in testing environment
