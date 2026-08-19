@@ -229,9 +229,9 @@ class Receiving_lib
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function get_stock_destination(): string
+    public function get_stock_destination(): ?string
     {
         if (!$this->session->get('recv_stock_destination')) {
             $defaultId = $this->stock_location->getDefaultLocationId('receivings');
