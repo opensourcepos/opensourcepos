@@ -151,12 +151,22 @@ trait ConcurrentDbRaceTrait
             };
 
             $completionDeadline = microtime(true) + 10.0;
+            $exitCode1          = null;
+            $exitCode2          = null;
 
             while (true) {
                 $drain();
 
                 $status1 = proc_get_status($process1);
                 $status2 = proc_get_status($process2);
+
+                if (!$status1['running'] && $exitCode1 === null) {
+                    $exitCode1 = $status1['exitcode'];
+                }
+
+                if (!$status2['running'] && $exitCode2 === null) {
+                    $exitCode2 = $status2['exitcode'];
+                }
 
                 if (!$status1['running'] && !$status2['running']) {
                     $drain();
@@ -179,6 +189,9 @@ trait ConcurrentDbRaceTrait
                     proc_close($process1);
                     proc_close($process2);
 
+                    $exitCode1 ??= -1;
+                    $exitCode2 ??= -1;
+
                     $stillRunning = array_filter([
                         $status1['running'] ? 'call 1' : null,
                         $status2['running'] ? 'call 2' : null,
@@ -192,11 +205,11 @@ trait ConcurrentDbRaceTrait
 
             fclose($pipes1[1]);
             fclose($pipes1[2]);
-            $exitCode1 = proc_close($process1);
+            proc_close($process1);
 
             fclose($pipes2[1]);
             fclose($pipes2[2]);
-            $exitCode2 = proc_close($process2);
+            proc_close($process2);
         } finally {
             foreach ([$readyFile1, $readyFile2, $goFile] as $file) {
                 if (file_exists($file)) {
