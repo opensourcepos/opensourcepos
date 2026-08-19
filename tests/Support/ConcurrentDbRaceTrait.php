@@ -88,6 +88,11 @@ trait ConcurrentDbRaceTrait
         fclose($pipes1[0]);
         fclose($pipes2[0]);
 
+        stream_set_blocking($pipes1[1], false);
+        stream_set_blocking($pipes1[2], false);
+        stream_set_blocking($pipes2[1], false);
+        stream_set_blocking($pipes2[2], false);
+
         try {
             $deadline = microtime(true) + 5.0;
 
@@ -124,14 +129,62 @@ trait ConcurrentDbRaceTrait
 
             file_put_contents($goFile, '1');
 
-            $output1 = stream_get_contents($pipes1[1]);
-            $error1  = stream_get_contents($pipes1[2]);
+            $output1 = '';
+            $error1  = '';
+            $output2 = '';
+            $error2  = '';
+
+            $drain = static function () use ($pipes1, $pipes2, &$output1, &$error1, &$output2, &$error2): void {
+                $output1 .= stream_get_contents($pipes1[1]);
+                $error1  .= stream_get_contents($pipes1[2]);
+                $output2 .= stream_get_contents($pipes2[1]);
+                $error2  .= stream_get_contents($pipes2[2]);
+            };
+
+            $completionDeadline = microtime(true) + 10.0;
+
+            while (true) {
+                $drain();
+
+                $status1 = proc_get_status($process1);
+                $status2 = proc_get_status($process2);
+
+                if (!$status1['running'] && !$status2['running']) {
+                    $drain();
+                    break;
+                }
+
+                if (microtime(true) >= $completionDeadline) {
+                    if ($status1['running']) {
+                        proc_terminate($process1);
+                    }
+
+                    if ($status2['running']) {
+                        proc_terminate($process2);
+                    }
+
+                    fclose($pipes1[1]);
+                    fclose($pipes1[2]);
+                    fclose($pipes2[1]);
+                    fclose($pipes2[2]);
+                    proc_close($process1);
+                    proc_close($process2);
+
+                    $stillRunning = array_filter([
+                        $status1['running'] ? 'call 1' : null,
+                        $status2['running'] ? 'call 2' : null,
+                    ]);
+
+                    throw new \RuntimeException('race_worker.php failed to complete before deadline: ' . implode(', ', $stillRunning));
+                }
+
+                usleep(1000);
+            }
+
             fclose($pipes1[1]);
             fclose($pipes1[2]);
             $exitCode1 = proc_close($process1);
 
-            $output2 = stream_get_contents($pipes2[1]);
-            $error2  = stream_get_contents($pipes2[2]);
             fclose($pipes2[1]);
             fclose($pipes2[2]);
             $exitCode2 = proc_close($process2);
