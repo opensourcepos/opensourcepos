@@ -786,7 +786,7 @@ class Config extends Secure_Controller
         }
 
         $defaultLocationId = $this->request->getPost('stock_location_default', FILTER_SANITIZE_NUMBER_INT);
-        if ($defaultLocationId) {
+        if ($defaultLocationId && in_array((int) $defaultLocationId, array_map('intval', $notToDelete), true)) {
             $this->stock_location->setDefaultLocation((int) $defaultLocationId);
         }
 
