@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "",
     "required_username"                   => "",
+    'too_many_attempts'                   => 'بہت زیادہ کوششیں۔ براہ کرم تھوڑی دیر انتظار کریں اور دوبارہ کوشش کریں۔',
     "username"                            => "",
     "welcome"                             => ""
 ];
