@@ -736,6 +736,26 @@ class Config extends Secure_Controller
      */
     public function postSaveLocations(): ResponseInterface
     {
+        $submittedLocations = $this->request->getPost('stock_location');
+
+        if (!is_array($submittedLocations)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Config.saved_unsuccessfully')]);
+        }
+
+        // Keys are either the empty-bracket form (new, not-yet-saved rows) or a numeric
+        // existing location_id; anything else is not a shape the view ever submits, so drop it.
+        // A blank/non-string name for an existing id is kept as a key (so the row below still
+        // counts it as "still present" and doesn't delete it) but is excluded from the save loop.
+        $submittedLocations = array_filter(
+            $submittedLocations,
+            fn ($locationId) => $locationId === '' || is_numeric($locationId),
+            ARRAY_FILTER_USE_KEY
+        );
+        $submittedLocations = array_map(
+            fn ($locationName) => is_string($locationName) ? trim($locationName) : '',
+            $submittedLocations
+        );
+
         $this->db->transStart();
 
         // Existing rows carry their real location_id as the array key (stock_location[$id]);
@@ -743,7 +763,6 @@ class Config extends Secure_Controller
         // auto-assigns the next integer key after the highest submitted key — that auto-key can
         // coincidentally collide with a real, unrelated location_id, so numeric-ness alone isn't
         // enough; only keys that actually exist as rows count as "still present" ids.
-        $submittedLocations = $this->request->getPost('stock_location') ?? [];
         $submittedLocationIds = array_filter(
             array_keys($submittedLocations),
             fn ($locationId) => is_numeric($locationId) && $this->stock_location->exists((int) $locationId)
@@ -764,6 +783,14 @@ class Config extends Secure_Controller
         $newlyInsertedIds = [];
         foreach ($submittedLocations as $locationId => $locationName) {
             $wasExisting = in_array($locationId, $submittedLocationIds);
+            if ($locationName === '') {
+                if ($wasExisting) {
+                    $notToDelete[] = (int) $locationId;
+                }
+
+                continue;
+            }
+
             $locationData = ['location_name' => $locationName];
             if ($this->stock_location->saveValue($locationData, $locationId)) {
                 // saveValue() sets location_id on $locationData for new inserts (it stays
