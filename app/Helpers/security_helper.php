@@ -6,57 +6,57 @@ use Config\Services;
 /**
  * @return bool
  */
-function check_encryption(): bool
+function checkEncryption(): bool
 {
-    $old_key = config('Encryption')->key;
+    $oldKey = config('Encryption')->key;
 
-    if ((empty($old_key)) || (strlen($old_key) < 64)) {
+    if ((empty($oldKey)) || (strlen($oldKey) < 64)) {
         $encryption = new Encryption();
         $key = bin2hex($encryption->createKey());
         config('Encryption')->key = $key;
 
-        $config_path = ROOTPATH . '.env';
-        $backup_path = WRITEPATH . '/backup/.env.bak';
-        $backup_folder = WRITEPATH . '/backup';
+        $configPath = ROOTPATH . '.env';
+        $backupPath = WRITEPATH . '/backup/.env.bak';
+        $backupFolder = WRITEPATH . '/backup';
 
-        if (!file_exists($backup_folder)) {
-            @mkdir($backup_folder, 0750, true);
+        if (!file_exists($backupFolder)) {
+            @mkdir($backupFolder, 0750, true);
         }
 
-        if (!file_exists($config_path)) {
-            $example_path = ROOTPATH . '.env.example';
-            if (file_exists($example_path)) {
-                @copy($example_path, $config_path);
+        if (!file_exists($configPath)) {
+            $examplePath = ROOTPATH . '.env.example';
+            if (file_exists($examplePath)) {
+                @copy($examplePath, $configPath);
             } else {
-                @file_put_contents($config_path, "# OSPOS Configuration\n\n");
+                @file_put_contents($configPath, "# OSPOS Configuration\n\n");
             }
-            @chmod($config_path, 0640);
+            @chmod($configPath, 0640);
         }
 
-        if (file_exists($config_path)) {
-            @copy($config_path, $backup_path);
-            @chmod($backup_path, 0640);
-            @chmod($config_path, 0640);
+        if (file_exists($configPath)) {
+            @copy($configPath, $backupPath);
+            @chmod($backupPath, 0640);
+            @chmod($configPath, 0640);
 
-            $config_file = file_get_contents($config_path);
+            $configFile = file_get_contents($configPath);
 
-            if (preg_match('/^\s*encryption\.key\s*=/m', $config_file)) {
-                $config_file = preg_replace("/^(\s*encryption\.key\s*=\s*).*/m", "\$1'$key'", $config_file, 1);
+            if (preg_match('/^\s*encryption\.key\s*=/m', $configFile)) {
+                $configFile = preg_replace("/^(\s*encryption\.key\s*=\s*).*/m", "\$1'$key'", $configFile, 1);
             } else {
-                $config_file .= "\nencryption.key = '$key'\n";
+                $configFile .= "\nencryption.key = '$key'\n";
             }
 
-            if (!empty($old_key)) {
-                $old_line = "# encryption.key = '$old_key' REMOVE IF UNNEEDED\r\n";
-                if (preg_match('/^encryption\.key\s*=/m', $config_file, $matches, PREG_OFFSET_CAPTURE)) {
-                    $config_file = substr_replace($config_file, $old_line, $matches[0][1], 0);
+            if (!empty($oldKey)) {
+                $oldLine = "# encryption.key = '$oldKey' REMOVE IF UNNEEDED\r\n";
+                if (preg_match('/^encryption\.key\s*=/m', $configFile, $matches, PREG_OFFSET_CAPTURE)) {
+                    $configFile = substr_replace($configFile, $oldLine, $matches[0][1], 0);
                 }
             }
 
-            @file_put_contents($config_path, $config_file);
-            @chmod($config_path, 0640);
+            @file_put_contents($configPath, $configFile);
+            @chmod($configPath, 0640);
 
-            log_message('info', "Updated encryption key in $config_path");
+            log_message('info', "Updated encryption key in $configPath");
         }
     }
 
@@ -66,30 +66,30 @@ function check_encryption(): bool
 /**
  * @return void
  */
-function abort_encryption_conversion(): void
+function abortEncryptionConversion(): void
 {
-    $config_path = ROOTPATH . '.env';
-    $backup_path = WRITEPATH . '/backup/.env.bak';
+    $configPath = ROOTPATH . '.env';
+    $backupPath = WRITEPATH . '/backup/.env.bak';
 
-    if (!file_exists($backup_path)) {
+    if (!file_exists($backupPath)) {
         return;
     }
 
-    @chmod($config_path, 0640);
-    $config_file = file_get_contents($backup_path);
-    @file_put_contents($config_path, $config_file);
-    log_message('info', "Restored $config_path from backup");
+    @chmod($configPath, 0640);
+    $configFile = file_get_contents($backupPath);
+    @file_put_contents($configPath, $configFile);
+    log_message('info', "Restored $configPath from backup");
 }
 
 /**
  * @return void
  */
-function remove_backup(): void
+function removeBackup(): void
 {
-    $backup_path = WRITEPATH . '/backup/.env.bak';
-    if (!file_exists($backup_path)) {
+    $backupPath = WRITEPATH . '/backup/.env.bak';
+    if (!file_exists($backupPath)) {
         return;
     }
-    @unlink($backup_path);
-    log_message('info', "Removed $backup_path");
+    @unlink($backupPath);
+    log_message('info', "Removed $backupPath");
 }

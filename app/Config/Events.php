@@ -30,7 +30,7 @@ use App\Events\Method;
 Events::on('pre_system', static function (): void {
     if (ENVIRONMENT !== 'testing') {
         helper('security');
-        check_encryption();
+        checkEncryption();
 
         $encryptionKey = config('Encryption')->key;
         if (empty($encryptionKey) || strlen($encryptionKey) < 64) {

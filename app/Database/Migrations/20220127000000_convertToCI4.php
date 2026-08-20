@@ -11,7 +11,7 @@ use Config\Encryption;
 use Config\Services;
 use ReflectionException;
 
-class Convert_to_ci4 extends Migration
+class ConvertToCI4 extends Migration
 {
     /**
      * Constructor.
@@ -28,15 +28,17 @@ class Convert_to_ci4 extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_ci4_conversion.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_CI4Conversion.sql');
 
-        if (!empty(config('Encryption')->key)) {
-            $this->convert_ci3_encrypted_data();
+        $existingKey = config('Encryption')->key;
+
+        if (!empty($existingKey) && strlen($existingKey) < 64) {
+            $this->convertCI3EncryptedData();
         } else {
-            check_encryption();
+            checkEncryption();
         }
 
-        remove_backup();
+        removeBackup();
     }
 
     /**
@@ -48,11 +50,11 @@ class Convert_to_ci4 extends Migration
      * @return RedirectResponse|void
      * @throws ReflectionException
      */
-    private function convert_ci3_encrypted_data()
+    private function convertCI3EncryptedData()
     {
-        $appconfig = model(Appconfig::class);
+        $appConfig = model(Appconfig::class);
 
-        $ci3_encrypted_data = [
+        $ci3EncryptedData = [
             'clcdesq_api_key'   => '',
             'clcdesq_api_url'   => '',
             'mailchimp_api_key' => '',
@@ -60,25 +62,25 @@ class Convert_to_ci4 extends Migration
             'smtp_pass'         => ''
         ];
 
-        foreach ($ci3_encrypted_data as $key => $value) {
-            $ci3_encrypted_data[$key] = $appconfig->get_value($key);
+        foreach ($ci3EncryptedData as $key => $value) {
+            $ci3EncryptedData[$key] = $appConfig->get_value($key);
         }
 
-        $decrypted_data = $this->decrypt_ci3_data($ci3_encrypted_data);
+        $decryptedData = $this->decryptCI3Data($ci3EncryptedData);
 
-        check_encryption();
+        checkEncryption();
 
         try {
-            $ci4_encrypted_data = $this->encrypt_data($decrypted_data);
+            $ci4EncryptedData = $this->encryptData($decryptedData);
 
-            $success = empty(array_diff_assoc($decrypted_data, $this->decrypt_data($ci4_encrypted_data)));
+            $success = empty(array_diff_assoc($decryptedData, $this->decryptData($ci4EncryptedData)));
             if (!$success) {
-                abort_encryption_conversion();
-                remove_backup();
+                abortEncryptionConversion();
+                removeBackup();
                 throw new RedirectException('login');
             }
 
-            $appconfig->batch_save($ci4_encrypted_data);
+            $appConfig->batch_save($ci4EncryptedData);
         } catch (RedirectException $e) {
             return redirect()->to('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
         }
@@ -87,10 +89,10 @@ class Convert_to_ci4 extends Migration
     /**
      * Decrypts CI3 encrypted data and returns the plaintext values.
      *
-     * @param array $encrypted_data Data encrypted using CI3 methodology.
+     * @param array $encryptedData Data encrypted using CI3 methodology.
      * @return array Plaintext, unencrypted data.
      */
-    private function decrypt_ci3_data(array $encrypted_data): array
+    private function decryptCI3Data(array $encryptedData): array
     {
         $config = new Encryption();
         $config->driver = 'OpenSSL';
@@ -102,47 +104,38 @@ class Convert_to_ci4 extends Migration
 
         $encrypter = Services::encrypter($config);
 
-        $decrypted_data = [];
-        foreach ($encrypted_data as $key => $value) {
-            $decrypted_data[$key] = !empty($value) ? $encrypter->decrypt($value) : '';
-        }
-
-        return $decrypted_data;
+        return array_map(function ($value) use ($encrypter) {
+            return !empty($value) ? $encrypter->decrypt($value) : '';
+        }, $encryptedData);
     }
 
     /**
      * Encrypts data using CI4 algorithms.
      *
-     * @param array $plain_data Data to be encrypted.
+     * @param array $plainData Data to be encrypted.
      * @return array Encrypted data.
      */
-    private function encrypt_data(array $plain_data): array
+    private function encryptData(array $plainData): array
     {
         $encrypter = Services::encrypter();
 
-        $encrypted_data = [];
-        foreach ($plain_data as $key => $value) {
-            $encrypted_data[$key] = !empty($value) ? $encrypter->encrypt($value) : '';
-        }
-
-        return $encrypted_data;
+        return array_map(function ($value) use ($encrypter) {
+            return !empty($value) ? $encrypter->encrypt($value) : '';
+        }, $plainData);
     }
 
     /**
      * Decrypts data using CI4 algorithms.
      *
-     * @param array $encrypted_data Data to be decrypted.
+     * @param array $encryptedData Data to be decrypted.
      * @return array Decrypted data.
      */
-    private function decrypt_data(array $encrypted_data): array
+    private function decryptData(array $encryptedData): array
     {
         $encrypter = Services::encrypter();
 
-        $decrypted_data = [];
-        foreach ($encrypted_data as $key => $value) {
-            $decrypted_data[$key] = !empty($value) ? $encrypter->decrypt($value) : '';
-        }
-
-        return $decrypted_data;
+        return array_map(function ($value) use ($encrypter) {
+            return !empty($value) ? $encrypter->decrypt($value) : '';
+        }, $encryptedData);
     }
 }
