@@ -84,6 +84,8 @@ return [
     'hsn'                               => '',
     'id'                                => 'Číslo dokladu',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'Nedostatečný zůstatek na dárkové kartě pro tuto platbu.',
+    'insufficient_reward_points'        => 'Nedostatečné body odměny pro tuto platbu.',
     'invoice'                           => 'Faktura',
     'invoice_confirm'                   => 'Tato faktura bude odeslána',
     'invoice_enable'                    => 'Vytvořit fakturu',
