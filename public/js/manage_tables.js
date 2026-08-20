@@ -157,21 +157,25 @@
                 $.post((url || options.resource) + '/' + action, {'ids[]': ids || selected_ids()}, function (response) {
                     // Delete was successful, remove checkbox rows
                     if (response.success) {
-                        const selector = ids ? row_selector(ids) : selected_rows();
-                        table().collapseAllRows();
-                        $(selector).each(function (index, element) {
-                            $(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
-                                .end().animate({opacity: 0}, 1200, "linear", function () {
-                                table().remove({
-                                    field: options.uniqueId,
-                                    values: selected_ids()
+                        if (options) {
+                            const selector = ids ? row_selector(ids) : selected_rows();
+                            table().collapseAllRows();
+                            $(selector).each(function (index, element) {
+                                $(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+                                    .end().animate({opacity: 0}, 1200, "linear", function () {
+                                    table().remove({
+                                        field: options.uniqueId,
+                                        values: selected_ids()
+                                    });
+                                    if (index == $(selector).length - 1) {
+                                        refresh();
+                                        enable_actions();
+                                    }
                                 });
-                                if (index == $(selector).length - 1) {
-                                    refresh();
-                                    enable_actions();
-                                }
                             });
-                        });
+                        } else {
+                            location.reload();
+                        }
                         $.notify(response.message, {type: 'success'});
                     } else {
                         $.notify(response.message, {type: 'danger'});

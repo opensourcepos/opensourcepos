@@ -85,6 +85,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Namba ya Mauzo',
     'include_prices'                    => 'Jumuisha Bei?',
+    'insufficient_giftcard_balance'     => 'Salio la kadi ya zawadi haitoshi kwa malipo haya.',
+    'insufficient_reward_points'        => 'Pointi za gantimpilo hazitoshi kwa malipo haya.',
     'invoice'                           => 'Ankara',
     'invoice_confirm'                   => 'Ankara hii itatumwa kwa',
     'invoice_enable'                    => 'Namba ya Ankara',

@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Försäljnings-ID',
     'include_prices'                    => 'Inkludera priser?',
+    'insufficient_giftcard_balance'     => 'Otillräckligt presentkortsaldo för denna betalning.',
+    'insufficient_reward_points'        => 'Otillräckliga belöningspoäng för denna betalning.',
     'invoice'                           => 'Faktura',
     'invoice_confirm'                   => 'Denna faktura skickas till',
     'invoice_enable'                    => 'Fakturanummer',

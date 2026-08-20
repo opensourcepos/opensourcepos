@@ -84,6 +84,8 @@ return [
     'hsn'                               => '',
     'id'                                => 'ID',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'Unzureichendes Geschenkguthaben für diese Zahlung.',
+    'insufficient_reward_points'        => 'Unzureichende Prämienpunkte für diese Zahlung.',
     'invoice'                           => 'Rechnung',
     'invoice_confirm'                   => 'Diese rechnung wird gesendet an',
     'invoice_enable'                    => 'Erzeuge Rechnung',
