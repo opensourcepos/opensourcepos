@@ -48,7 +48,7 @@ SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'return_pol
 --
 
 INSERT INTO `ospos_customers` (`person_id`, `account_number`, `taxable`, `deleted`)
-SELECT `person_id`, `account_number`, `taxable`, `deleted` FROM `phppos`.phppos_customers;   
+SELECT `person_id`, `account_number`, `taxable`, `deleted` FROM `phppos`.phppos_customers;
 UPDATE `ospos_customers` c1, `ospos_customers` c2 SET `c1`.`account_number` = NULL WHERE `c1`.`person_id` > `c2`.`person_id` AND `c1`.`account_number` = `c2`.`account_number`;
 
 --
@@ -69,7 +69,7 @@ SELECT `giftcard_id`, `giftcard_number`, `value`, `deleted`, `person_id` FROM `p
 -- Copy data to table `ospos_inventory`
 --
 
-INSERT INTO `ospos_inventory` (`trans_id`, `trans_items`, `trans_user`, `trans_date`, `trans_comment`, `trans_location`, `trans_inventory`) 
+INSERT INTO `ospos_inventory` (`trans_id`, `trans_items`, `trans_user`, `trans_date`, `trans_comment`, `trans_location`, `trans_inventory`)
 SELECT `trans_id`, `trans_items`, `trans_user`, `trans_date`, `trans_comment`, 1, `trans_inventory` FROM `phppos`.phppos_inventory;
 
 --
@@ -111,21 +111,21 @@ SELECT `first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address
 -- Copy data to table `ospos_receivings`
 --
 
-INSERT INTO `ospos_receivings` (`receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, `reference`) 
+INSERT INTO `ospos_receivings` (`receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, `reference`)
 SELECT `receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, NULL FROM `phppos`.phppos_receivings;
 
 --
 -- Copy data to table `ospos_receivings_items`
 --
 
-INSERT INTO `ospos_receivings_items` (`receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`, `item_location`) 
+INSERT INTO `ospos_receivings_items` (`receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`, `item_location`)
 SELECT `receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`, 1 FROM `phppos`.phppos_receivings_items;
 
 --
 -- Copy data to table `ospos_sales`
 --
 
-INSERT INTO `ospos_sales` (`sale_time`, `customer_id`, `employee_id`, `comment`, `sale_id`, `invoice_number`) 
+INSERT INTO `ospos_sales` (`sale_time`, `customer_id`, `employee_id`, `comment`, `sale_id`, `invoice_number`)
 SELECT `sale_time`, `customer_id`, `employee_id`, `comment`, `sale_id`, NULL FROM `phppos`.phppos_sales;
 
 --
@@ -139,14 +139,14 @@ SELECT `sale_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_pu
 -- Copy data to table `ospos_sales_items_taxes`
 --
 
-INSERT INTO `ospos_sales_items_taxes` (`sale_id`, `item_id`, `line`, `name`, `percent`) 
+INSERT INTO `ospos_sales_items_taxes` (`sale_id`, `item_id`, `line`, `name`, `percent`)
 SELECT `sale_id`, `item_id`, `line`, `name`, `percent` FROM `phppos`.phppos_sales_items_taxes;
 
 --
 -- Copy data to table `ospos_sales_payments`
 --
 
-INSERT INTO `ospos_sales_payments` (`sale_id`, `payment_type`, `payment_amount`) 
+INSERT INTO `ospos_sales_payments` (`sale_id`, `payment_type`, `payment_amount`)
 SELECT `sale_id`, `payment_type`, `payment_amount` FROM `phppos`.phppos_sales_payments;
 
 --
@@ -163,7 +163,7 @@ SELECT `item_id`, 1, `quantity` FROM `phppos`.`phppos_items`;
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`)
 SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
 
--- 
+--
 -- Copy data to table `ospos_dinner_tables`
 --
 

@@ -12,20 +12,20 @@ use App\Models\Sale;
  */
 class Token_year_quote_count extends Token
 {
-	/**
-	 * @return string
-	 */
-	public function token_id(): string
-	{
-		return 'QCO';
-	}
+    /**
+     * @return string
+     */
+    public function token_id(): string
+    {
+        return 'QCO';
+    }
 
-	/**
-	 * @return int
-	 */
-	public function get_value(): int
-	{
-		$sale = model(Sale::class);
-		return $sale->get_quote_number_for_year();
-	}
+    /**
+     * @return int
+     */
+    public function get_value(): int
+    {
+        $sale = model(Sale::class);
+        return $sale->get_quote_number_for_year();
+    }
 }

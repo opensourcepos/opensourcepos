@@ -4,149 +4,159 @@ namespace App\Libraries;
 
 use CodeIgniter\Database\MigrationRunner;
 use Config\Database;
+use Exception;
 use stdClass;
 
 class MY_Migration extends MigrationRunner
 {
-	/**
-	 * @return bool
-	 */
-	public function is_latest(): bool
-	{
-		$latest_version = $this->get_latest_migration();
-		$current_version = $this->get_current_version();
+    /**
+     * @return bool
+     */
+    public function isLatest(): bool
+    {
+        $latestVersion = $this->getLatestMigration();
+        $currentVersion = $this->getCurrentVersion();
 
-		return $latest_version === $current_version;
-	}
+        return $latestVersion === $currentVersion;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function get_latest_migration(): int
-	{
-		$migrations = $this->findMigrations();
-		return basename(end($migrations)->version);
-	}
+    /**
+     * @return int
+     */
+    public function getLatestMigration(): int
+    {
+        $migrations = $this->findMigrations();
+        return (int) basename(end($migrations)->version);
+    }
 
-	/**
-	 * Gets the database version number
-	 *
-	 * @return int The version number of the last successfully run database migration.
-	 */
-	public static function get_current_version(): int
-	{
-		$db = Database::connect();
-		if($db->tableExists('migrations'))
-		{
-			$builder = $db->table('migrations');
-			$builder->select('version')->orderBy('version', 'DESC')->limit(1);
-			return $builder->get()->getRow()->version;
-		}
+    /**
+     * Gets the database version number
+     *
+     * @return int|null The version number of the last successfully run database migration,
+     *                  0 for a confirmed empty database, or null if the database is unavailable.
+     */
+    public static function getCurrentVersion(): ?int
+    {
+        try {
+            $db = Database::connect();
+            if ($db->tableExists('migrations')) {
+                $builder = $db->table('migrations');
+                $builder->select('version')->orderBy('version', 'DESC')->limit(1);
+                $result = $builder->get()->getRow();
+                return $result ? (int) $result->version : 0;
+            }
+        } catch (Exception $e) {
+            // Database unavailable — distinct from a confirmed empty database.
+            // Catches mysqli_sql_exception which is not a DatabaseException.
+            return null;
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	/**
-	 * @return void
-	 */
-	public function migrate_to_ci4(): void
-	{
-		$ci3_migrations_version = $this->ci3_migrations_exists();
-		if($ci3_migrations_version)
-		{
-			$this->migrate_table($ci3_migrations_version);
-		}
-	}
+    /**
+     * @return void
+     */
+    public function migrateToCI4(): void
+    {
+        $ci3_migrations_version = $this->ci3MigrationsExists();
+        if ($ci3_migrations_version) {
+            $this->migrateTable($ci3_migrations_version);
+        }
+    }
 
-	/**
-	 * Checks to see if a ci3 version of the migrations table exists
-	 *
-	 * @return bool|string The version number of the last CI3 migration to run or false if the table is CI4 or doesn't exist
-	 */
-	private function ci3_migrations_exists(): bool|string
-	{
-		if($this->db->tableExists('migrations') && !$this->db->fieldExists('id','migrations'))
-		{
-			$builder = $this->db->table('migrations');
-			$builder->select('version');
-			return $builder->get()->getRow()->version;
-		}
+    /**
+     * Checks to see if a ci3 version of the migrations table exists
+     *
+     * @return bool|string The version number of the last CI3 migration to run or false if the table is CI4 or doesn't exist
+     */
+    private function ci3MigrationsExists(): bool|string
+    {
+        try {
+            if ($this->db->tableExists('migrations') && !$this->db->fieldExists('id', 'migrations')) {
+                $builder = $this->db->table('migrations');
+                $builder->select('version');
+                $result = $builder->get()->getRow();
+                return $result ? $result->version : false;
+            }
+        } catch (Exception $e) {
+            // Database not available yet (e.g. fresh install before schema).
+            // Catches mysqli_sql_exception which is not a DatabaseException.
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @param string $ci3_migrations_version
-	 * @return void
-	 */
-	private function migrate_table(string $ci3_migrations_version): void
-	{
-		$this->convert_table();
+    /**
+     * @param string $ci3_migrations_version
+     * @return void
+     */
+    private function migrateTable(string $ci3_migrations_version): void
+    {
+        $this->convertTable();
 
-		$available_migrations = $this->get_available_migrations();
+        $available_migrations = $this->getAvailableMigrations();
 
-		foreach($available_migrations as $version => $path)
-		{
-			if($version > (int)$ci3_migrations_version)
-			{
-				break;
-			}
+        foreach ($available_migrations as $version => $path) {
+            if ($version > (int)$ci3_migrations_version) {
+                break;
+            }
 
-			$migration = new stdClass();
-			$migration->version = $version;
-			$migration->class = $path;
-			$migration->namespace = 'App';
+            $migration = new stdClass();
+            $migration->version = $version;
+            $migration->class = $path;
+            $migration->namespace = 'App';
 
-			$this->addHistory($migration, 1);
-		}
-	}
+            $this->addHistory($migration, 1);
+        }
+    }
 
-	/**
-	 * @return void
-	 */
-	public function up(): void
-	{
-		// TODO: Implement up() method.
-	}
+    /**
+     * @return void
+     */
+    public function up(): void
+    {
+        // TODO: Implement up() method.
+    }
 
-	/**
-	 * @return void
-	 */
-	public function down(): void
-	{
-		// TODO: Implement down() method.
-	}
+    /**
+     * @return void
+     */
+    public function down(): void
+    {
+        // TODO: Implement down() method.
+    }
 
-	/**
-	 * @return array
-	 */
-	private function get_available_migrations(): array
-	{
-		$migrations = $this->findMigrations();
-		$exploded_migrations = [];
+    /**
+     * @return array
+     */
+    private function getAvailableMigrations(): array
+    {
+        $migrations = $this->findMigrations();
+        $explodedMigrations = [];
 
-		foreach($migrations as $migration)
-		{
-			$version = substr($migration->uid,0,14);
-			$path = substr($migration->uid, 14);
+        foreach ($migrations as $migration) {
+            $version = substr($migration->uid, 0, 14);
+            $path = substr($migration->uid, 14);
 
-			$exploded_migrations[$version] = $path;
-		}
+            $explodedMigrations[$version] = $path;
+        }
 
-		ksort($exploded_migrations);
+        ksort($explodedMigrations);
 
-		return $exploded_migrations;
-	}
+        return $explodedMigrations;
+    }
 
-	/**
-	 * Converts the CI3 migrations database to CI4
-	 * @return void
-	 */
-	public function convert_table(): void
-	{
-		$forge = Database::forge();
-		$forge->dropTable('migrations');
+    /**
+     * Converts the CI3 migrations database to CI4
+     * @return void
+     */
+    public function convertTable(): void
+    {
+        $forge = Database::forge();
+        $forge->dropTable('migrations');
 
-		$this->ensureTable();
-	}
+        $this->ensureTable();
+    }
+
 }

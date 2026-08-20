@@ -1,5 +1,8 @@
 ## How to Upgrade
 
+> [!WARNING]
+> Not updated for upcoming CodeIgniter4 release (3.4.0 and subsequent versions).
+
 1. Back up all your current database and OSPOS code.
 2. Make sure you have a copy of `application/config/config.php` and `application/config/database.php`.
 3. Remove all directories.

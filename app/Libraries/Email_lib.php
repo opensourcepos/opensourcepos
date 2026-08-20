@@ -5,6 +5,7 @@ namespace app\Libraries;
 use CodeIgniter\Email\Email;
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use CodeIgniter\Encryption\Exceptions\EncryptionException;
 use Config\OSPOS;
 use Config\Services;
 
@@ -17,64 +18,104 @@ use Config\Services;
 
 class Email_lib
 {
-	private Email $email;
-	private array $config;
+    private Email $email;
+    private array $config;
 
-  	public function __construct()
-	{
-		$this->email = new Email();
-		$this->config = config(OSPOS::class)->settings;
+    public function __construct()
+    {
+        $this->email = new Email();
+        $this->config = config(OSPOS::class)->settings;
 
-		$encrypter = Services::encrypter();
+        $encrypter = Services::encrypter();
 
-		$smtp_pass = $this->config['smtp_pass'];
-		if(!empty($smtp_pass))
-		{
-			$smtp_pass = $encrypter->decrypt($smtp_pass);
-		}
+        $smtp_pass = $this->config['smtp_pass'];
+        if (!empty($smtp_pass) && check_encryption()) {
+            try {
+                $smtp_pass = $encrypter->decrypt($smtp_pass);
+            } catch (\EncryptionException $e) {
+                // Decryption failed, use the original value
+                log_message('error', 'SMTP password decryption failed: ' . $e->getMessage());
+                $smtp_pass = '';
+            }
 
-		$email_config = [
-			'mailtype' => 'html',
-			'useragent' => 'OSPOS',
-			'validate' => true,
-			'protocol' => $this->config['protocol'],
-			'mailpath' => $this->config['mailpath'],
-			'smtp_host' => $this->config['smtp_host'],
-			'smtp_user' => $this->config['smtp_user'],
-			'smtp_pass' => $smtp_pass,
-			'smtp_port' => $this->config['smtp_port'],
-			'smtp_timeout' => $this->config['smtp_timeout'],
-			'smtp_crypto' => $this->config['smtp_crypto']
-		];
+        }
 
-		$this->email->initialize($email_config);
-	}
+        $email_config = [
+            'mailType'    => 'html',
+            'userAgent'   => 'OSPOS',
+            'validate'    => true,
+            'protocol'    => $this->config['protocol'],
+            'mailPath'    => $this->config['mailpath'],
+            'SMTPHost'    => $this->config['smtp_host'],
+            'SMTPUser'    => $this->config['smtp_user'],
+            'SMTPPass'    => $smtp_pass,
+            'SMTPPort'    => (int)$this->config['smtp_port'],
+            'SMTPTimeout' => (int)$this->config['smtp_timeout'],
+            'SMTPCrypto'  => $this->config['smtp_crypto']
+        ];
+        $this->email->initialize($email_config);
+    }
 
-	/**
-	 * Email sending function
-	 * Example of use: $response = sendEmail('john@doe.com', 'Hello', 'This is a message', $filename);
-	 */
-	public function sendEmail(string $to, string $subject, string $message, string $attachment = null): bool
-	{
-		$email = $this->email;
+    /**
+     * Email sending function
+     * Example of use: $response = sendEmail('john@doe.com', 'Hello', 'This is a message', $filename);
+     */
+    public function sendEmail(string $to, string $subject, string $message, ?string $attachment = null): bool
+    {
+        $email = $this->email;
 
-		$email->setFrom($this->config['email'], $this->config['company']);
-		$email->setTo($to);
-		$email->setSubject($subject);
-		$email->setMessage($message);
+        $email->setFrom($this->config['email'], $this->config['company']);
+        $email->setTo($to);
+        $email->setSubject($subject);
+        $email->setMessage($message);
 
-		if(!empty($attachment))
-		{
-			$email->attach($attachment);
-		}
+        if (!empty($attachment)) {
+            $email->attach($attachment);
+            $email->setAttachmentCID($attachment);
+        }
 
-		$result = $email->send();
+        $result = $email->send();
 
-		if(!$result)
-		{
-			error_log($email->printDebugger());
-		}
+        if (!$result) {
+            log_message('error', $email->printDebugger());
+        }
 
-		return $result;
-	}
+        return $result;
+    }
+
+    /**
+     * Gets the mime type of the company logo file.
+     *
+     * @return string Mime type or empty string if logo doesn't exist
+     */
+    public function getLogoMimeType(): string
+    {
+        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+
+        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
+            $mimeType = mime_content_type($logo_path);
+            return $mimeType !== false ? $mimeType : '';
+        }
+
+        return '';
+    }
+
+    /**
+     * Builds an img tag for the company logo to use in email templates.
+     *
+     * @return string HTML img tag with base64-encoded logo, or empty string if no logo
+     */
+    public function buildLogoImgTag(): string
+    {
+        $mimeType = $this->getLogoMimeType();
+
+        if ($mimeType === '') {
+            return '';
+        }
+
+        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+        $logo_data = base64_encode(file_get_contents($logo_path));
+
+        return '<img id="image" src="data:' . $mimeType . ';base64,' . $logo_data . '" alt="company_logo">';
+    }
 }

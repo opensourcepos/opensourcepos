@@ -1,0 +1,31 @@
+<?php
+
+return [
+    "gcaptcha"                            => "من ڕۆبۆت نیم.",
+    "go"                                  => "بەردەوامبە",
+    "initialization_message"              => "",
+    "initialization_required"             => "",
+    "initialize"                          => "",
+    "invalid_gcaptcha"                    => "تکایە دڵنیابکەرەوە لەوەی کە تۆ ڕۆبۆت نیت.",
+    "invalid_installation"                => "دابەزاندن دروست نییە، فایلیphp.ini ـەکەت بپشکنە.",
+    "invalid_username_and_password"       => "ناوی بەکارهێنەر و/یان وشەی نهێنی نادروست.",
+    "login"                               => "چوونەژوورەوە",
+    "logout"                              => "چوونەدەرەوە",
+    "migrating_database"                  => "",
+    "migration_auth_message"              => "",
+    "migration_complete"                  => "",
+    "migration_complete_login"            => "",
+    "migration_complete_migrate"          => "",
+    "migration_complete_redirect"         => "",
+    "migration_error_connection"          => "",
+    "migration_failed"                    => "",
+    "migration_initializing"              => "",
+    "migration_needed"                    => "گواستنەوەی داتابەیس بۆ {0} دوای چوونەژوورەوە دەست پێدەکات.",
+    "migration_required"                  => "",
+    "migration_running"                   => "",
+    "password"                            => "وشەی نهێنی",
+    "required_username"                   => "خانەی ناوی بەکارهێنەر پێویستە.",
+    'too_many_attempts'                   => 'هەوڵدانی زۆر زیادە. تکایە کەمێک چاوەڕێ بکە و دووبارە هەوڵ بدەرەوە.',
+    "username"                            => "ناوی بەکارهێنەر",
+    "welcome"                             => "بەخێربێن بۆ {0}!"
+];

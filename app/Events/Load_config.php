@@ -4,6 +4,8 @@ namespace App\Events;
 
 use App\Libraries\MY_Migration;
 use App\Models\Appconfig;
+use CodeIgniter\Session\Handlers\DatabaseHandler;
+use CodeIgniter\Session\Handlers\FileHandler;
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
 use Config\Services;
@@ -17,42 +19,49 @@ use Config\Services;
  */
 class Load_config
 {
-	public Session $session;
+    public Session $session;
 
-	/**
-	 * Loads configuration from database into App CI config and then applies those settings
-	 */
-	public function load_config(): void
-	{
-		//Migrations
-		$migration_config = config('Migrations');
-		$migration = new MY_Migration($migration_config);
+    public function load_config(): void
+    {
+        $migration_config = config('Migrations');
+        $migration = new MY_Migration($migration_config);
 
-		$this->session = session();
+        $this->session = session();
 
-		//Database Configuration
-		$config = config(OSPOS::class);
+        $config = config(OSPOS::class);
 
-		if (!$migration->is_latest())
-		{
-			$this->session->destroy();
-		}
+        if (!$migration->isLatest()) {
+            $this->session->destroy();
+        }
 
-		//Language
-		$language_exists = file_exists('../app/Language/' . current_language_code());
+        $this->setDefaultLanguage($config);
 
-		if(current_language_code() == null || current_language() == null || !$language_exists)	//TODO: current_language() is undefined
-		{
-			$config->settings['language'] = 'english';
-			$config->settings['language_code'] = 'en';
-		}
+        $language = Services::language();
+        $language->setLocale(current_language_code());
 
-		$language = Services::language();
-		$language->setLocale($config->settings['language_code']);
+        date_default_timezone_set($config->settings['timezone'] ?? ini_get('date.timezone'));
 
-		//Time Zone
-		date_default_timezone_set($config->settings['timezone'] ?? ini_get('date.timezone'));
+        bcscale(max(2, totals_decimals() + tax_decimals()));
+    }
 
-		bcscale(max(2, totals_decimals() + tax_decimals()));
-	}
+    private function setDefaultLanguage(OSPOS $config): void
+    {
+        $languageCode = $config->settings['language_code'] ?? null;
+
+        if (empty($config->settings) || $languageCode === null) {
+            $config->settings['language'] = 'english';
+            $config->settings['language_code'] = 'en';
+            return;
+        }
+
+        if (!$this->languageExists($languageCode)) {
+            $config->settings['language'] = 'english';
+            $config->settings['language_code'] = 'en';
+        }
+    }
+
+    private function languageExists(string $languageCode): bool
+    {
+        return file_exists(APPPATH . 'Language/' . $languageCode);
+    }
 }

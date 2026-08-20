@@ -3,7 +3,7 @@
     --main-text-color: #555;
     --dark-text-color: #222;
     --light-text-color: #c7c7c7;
-    --brand-primary-color: #E06E3F;
+    --brand-primary-color: #DC4814;
     --light-bg-color: #ededee;
     --dark-bg-color: #404040;
 }
@@ -41,6 +41,7 @@ p.lead {
 .header {
     background: var(--light-bg-color);
     color: var(--dark-text-color);
+    margin-top: 2.17rem;
 }
 .header .container {
     padding: 1rem;
@@ -65,10 +66,13 @@ p.lead {
 }
 
 .environment {
-    background: var(--dark-bg-color);
-    color: var(--light-text-color);
+    background: var(--brand-primary-color);
+    color: var(--main-bg-color);
     text-align: center;
-    padding: 0.2rem;
+    padding: calc(4px + 0.2083vw);
+    width: 100%;
+    top: 0;
+    position: fixed;
 }
 
 .source {

@@ -1,0 +1,31 @@
+<?php
+
+return [
+    "gcaptcha"                            => "Mimi si roboti.",
+    "go"                                  => "Nenda",
+    "initialization_message"              => "",
+    "initialization_required"             => "",
+    "initialize"                          => "",
+    "invalid_gcaptcha"                    => "Tafadhali thibitisha kuwa wewe si roboti.",
+    "invalid_installation"                => "Usakinishaji si sahihi, angalia faili yako ya php.ini.",
+    "invalid_username_and_password"       => "Jina la mtumiaji na/au nenosiri si sahihi.",
+    "login"                               => "Ingia",
+    "logout"                              => "Toka",
+    "migrating_database"                  => "Inahama hifadhidata",
+    "migration_auth_message"              => "",
+    "migration_complete"                  => "",
+    "migration_complete_login"            => "",
+    "migration_complete_migrate"          => "Hifadhidata imehama!",
+    "migration_complete_redirect"         => "",
+    "migration_error_connection"          => "",
+    "migration_failed"                    => "",
+    "migration_initializing"              => "",
+    "migration_needed"                    => "Uhamishaji wa kanzidata hadi {0} utaanza baada ya kuingia.",
+    "migration_required"                  => "",
+    "migration_running"                   => "",
+    "password"                            => "Nenosiri",
+    "required_username"                   => "Jina la mtumiaji ni lazima.",
+    'too_many_attempts'                   => 'Majaribio mengi mno. Tafadhali subiri kidogo kisha ujaribu tena.',
+    "username"                            => "Jina la Mtumiaji",
+    "welcome"                             => "Karibu kwenye {0}!"
+];

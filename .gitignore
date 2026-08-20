@@ -2,8 +2,13 @@
 node_modules
 vendor
 public/resources
+public/images/menubar/*
+!public/images/menubar/.gitkeep
+public/license/*
+!public/license/.gitkeep
 app/Config/email.php
 npm-debug.log*
+.vscode
 
 # Docker
 !docker/.env
@@ -51,6 +56,7 @@ $RECYCLE.BIN/
 .com.apple.timemachine.donotpresent
 
 # Other
+build/
 generate_languages.php
 dist
 docs
@@ -80,5 +86,5 @@ auth.json
 /writable/logs/*.log
 /writable/debugbar/*.json
 /app/Database/database.sql
-/writable/cache/settings
+/writable/cache/*
 /.env.bak

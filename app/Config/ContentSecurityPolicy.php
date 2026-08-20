@@ -31,6 +31,11 @@ class ContentSecurityPolicy extends BaseConfig
     public ?string $reportURI = null;
 
     /**
+     * Specifies a reporting endpoint to which violation reports ought to be sent.
+     */
+    public ?string $reportTo = null;
+
+    /**
      * Instructs user agents to rewrite URL schemes, changing
      * HTTP to HTTPS. This directive is for websites with
      * large numbers of old URLs that need to be rewritten.
@@ -38,19 +43,19 @@ class ContentSecurityPolicy extends BaseConfig
     public bool $upgradeInsecureRequests = false;
 
     // -------------------------------------------------------------------------
-    // Sources allowed
+    // CSP DIRECTIVES SETTINGS
     // NOTE: once you set a policy to 'none', it cannot be further restricted
     // -------------------------------------------------------------------------
 
     /**
-     * Will default to self if not overridden
+     * Will default to `'self'` if not overridden
      *
      * @var list<string>|string|null
      */
     public $defaultSrc = [
-		'self',
-		'www.google.com',
-	];
+        'self',
+        'www.google.com',
+    ];
 
     /**
      * Lists allowed scripts' URLs.
@@ -58,23 +63,53 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string
      */
     public $scriptSrc = [
-		'self',
-		'unsafe-inline',
-		'unsafe-eval',
-		'www.google.com www.gstatic.com'
-	];
+        'self',
+        'unsafe-inline',
+        'unsafe-eval',
+        'www.google.com www.gstatic.com'
+    ];
+
+    /**
+     * Specifies valid sources for JavaScript <script> elements.
+     *
+     * @var list<string>|string
+     */
+    public array|string $scriptSrcElem = 'self';
+
+    /**
+     * Specifies valid sources for JavaScript inline event
+     * handlers and JavaScript URLs.
+     *
+     * @var list<string>|string
+     */
+    public array|string $scriptSrcAttr = 'self';
 
     /**
      * Lists allowed stylesheets' URLs.
      *
      * @var list<string>|string
      */
-	public $styleSrc = [
-		'self',
-		'unsafe-inline',
-		'nonce-{csp-style-nonce}',
-		'https://fonts.googleapis.com',
-	];
+    public $styleSrc = [
+        'self',
+        'unsafe-inline',
+        'nonce-{csp-style-nonce}',
+        'https://fonts.googleapis.com',
+    ];
+
+    /**
+     * Specifies valid sources for stylesheets <link> elements.
+     *
+     * @var list<string>|string
+     */
+    public array|string $styleSrcElem = 'self';
+
+    /**
+     * Specifies valid sources for stylesheets inline
+     * style attributes and `<style>` elements.
+     *
+     * @var list<string>|string
+     */
+    public array|string $styleSrcAttr = 'self';
 
     /**
      * Defines the origins from which images can be loaded.
@@ -82,10 +117,10 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string
      */
     public $imageSrc = [
-		'self',
-		'data:',
-		'blob:',
-	];
+        'self',
+        'data:',
+        'blob:',
+    ];
 
     /**
      * Restricts the URLs that can appear in a page's `<base>` element.
@@ -110,9 +145,9 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string
      */
     public $connectSrc = [
-		'self',
-		'nominatim.openstreetmap.org',
-	];
+        'self',
+        'nominatim.openstreetmap.org',
+    ];
 
     /**
      * Specifies the origins that can serve web fonts.
@@ -120,10 +155,10 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string
      */
     public $fontSrc = [
-		'self',
-		'fonts.googleapis.com',
-		'fonts.gstatic.com',
-	];
+        'self',
+        'fonts.googleapis.com',
+        'fonts.gstatic.com',
+    ];
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.
@@ -170,6 +205,11 @@ class ContentSecurityPolicy extends BaseConfig
     public $manifestSrc;
 
     /**
+     * @var list<string>|string
+     */
+    public array|string $workerSrc = [];
+
+    /**
      * Limits the kinds of plugins a page may invoke.
      *
      * @var list<string>|string|null
@@ -184,17 +224,17 @@ class ContentSecurityPolicy extends BaseConfig
     public $sandbox;
 
     /**
-     * Nonce tag for style
+     * Nonce placeholder for style tags.
      */
     public string $styleNonceTag = '{csp-style-nonce}';
 
     /**
-     * Nonce tag for script
+     * Nonce placeholder for script tags.
      */
     public string $scriptNonceTag = '{csp-script-nonce}';
 
     /**
-     * Replace nonce tag automatically
+     * Replace nonce tag automatically?
      */
     public bool $autoNonce = true;
 }

@@ -2,12 +2,13 @@
 
 namespace Config;
 
+use CodeIgniter\Events\Events;
+use CodeIgniter\Exceptions\ConfigException;
+use CodeIgniter\Exceptions\FrameworkException;
+use CodeIgniter\HotReloader\HotReloader;
 use App\Events\Db_log;
 use App\Events\Load_config;
 use App\Events\Method;
-use CodeIgniter\Events\Events;
-use CodeIgniter\Exceptions\FrameworkException;
-use CodeIgniter\HotReloader\HotReloader;
 
 /*
  * --------------------------------------------------------------------
@@ -28,6 +29,14 @@ use CodeIgniter\HotReloader\HotReloader;
 
 Events::on('pre_system', static function (): void {
     if (ENVIRONMENT !== 'testing') {
+        helper('security');
+        check_encryption();
+
+        $encryptionKey = config('Encryption')->key;
+        if (empty($encryptionKey) || strlen($encryptionKey) < 64) {
+            throw new ConfigException('Encryption key could not be provisioned. Check that .env is writable.');
+        }
+
         if (ini_get('zlib.output_compression')) {
             throw FrameworkException::forEnabledZlibOutputCompression();
         }
@@ -47,10 +56,10 @@ Events::on('pre_system', static function (): void {
      */
     if (CI_DEBUG && ! is_cli()) {
         Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
-        Services::toolbar()->respond();
+        service('toolbar')->respond();
         // Hot Reload route - for framework use on the hot reloader.
         if (ENVIRONMENT === 'development') {
-            Services::routes()->get('__hot-reload', static function (): void {
+            service('routes')->get('__hot-reload', static function (): void {
                 (new HotReloader())->run();
             });
         }

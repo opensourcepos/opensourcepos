@@ -7,74 +7,73 @@ use Config\App;
 
 class Db_log
 {
-	private App $config;
+    private App $config;
 
-	/**
-	 * @return void
-	 */
-	public function db_log_queries(): void
-	{
-		$this->config = config('App');
+    /**
+     * @return void
+     */
+    public function db_log_queries(): void
+    {
+        $this->config = config('App');
 
-		if($this->config->db_log_enabled)
-		{
-			$filepath = WRITEPATH . 'logs/Query-log-' . date('Y-m-d') . '.log';
-			$handle = fopen($filepath, "a+");
-			$message = $this->generate_message();
+        if ($this->config->db_log_enabled) {
+            $filepath = WRITEPATH . 'logs/Query-log-' . date('Y-m-d') . '.log';
+            $handle = fopen($filepath, "a+");
+            $message = $this->generate_message();
 
-			if(strlen($message) > 0)
-			{
-				fwrite($handle, $message . "\n\n");
-			}
+            if (strlen($message) > 0) {
+                fwrite($handle, $message . "\n\n");
+            }
 
-			// Close the file
-			fclose($handle);
-		}
-	}
+            // Close the file
+            fclose($handle);
+        }
+    }
 
-	/**
-	 * @return string
-	 */
-	private function generate_message(): string
-	{
-		$db = Database::connect();
-		$last_query = $db->getLastQuery();
-		$affected_rows = $db->affectedRows();
-		$execution_time = $this->convert_time($last_query->getDuration());
+    /**
+     * @return string
+     */
+    private function generate_message(): string
+    {
+        $db = Database::connect();
+        $lastQuery = $db->getLastQuery();
 
-		$message = '*** Query: ' . date('Y-m-d H:i:s T') . ' *******************'
-			. "\n" . $last_query->getQuery()
-			. "\n Affected rows: $affected_rows"
-			. "\n Execution Time: " . $execution_time['time'] . ' ' . $execution_time['unit'];
+        if ($lastQuery === null) {
+            return '';
+        }
 
-		$long_query = ($execution_time['unit'] === 's') && ($execution_time['time'] > 0.5);
-		if($long_query)
-		{
-			$message .= ' [LONG RUNNING QUERY]';
-		}
+        $affectedRows = $db->affectedRows();
+        $executionTime = $this->convert_time($lastQuery->getDuration());
 
-		return $this->config->db_log_only_long && !$long_query ? '' : $message;
-	}
+        $message = '*** Query: ' . date('Y-m-d H:i:s T') . ' *******************'
+            . "\n" . $lastQuery->getQuery()
+            . "\n Affected rows: $affectedRows"
+            . "\n Execution Time: " . $executionTime['time'] . ' ' . $executionTime['unit'];
 
-	/**
-	 * @param float $time
-	 * @return array
-	 */
-	private function convert_time(float $time): array
-	{
-		$unit = 's';
+        $longQuery = ($executionTime['unit'] === 's') && ($executionTime['time'] > 0.5);
+        if ($longQuery) {
+            $message .= ' [LONG RUNNING QUERY]';
+        }
 
-		if($time <= 0.1 && $time > 0.0001)
-		{
-			$time = $time * 1000;
-			$unit = 'ms';
-		}
-		elseif($time <= 0.0001)
-		{
-			$time = $time * 1000000;
-			$unit = 'µs';
-		}
+        return $this->config->db_log_only_long && !$longQuery ? '' : $message;
+    }
 
-		return ['time' => $time, 'unit' => $unit];
-	}
+    /**
+     * @param float $time
+     * @return array
+     */
+    private function convert_time(float $time): array
+    {
+        $unit = 's';
+
+        if ($time <= 0.1 && $time > 0.0001) {
+            $time = $time * 1000;
+            $unit = 'ms';
+        } elseif ($time <= 0.0001) {
+            $time = $time * 1000000;
+            $unit = 'µs';
+        }
+
+        return ['time' => $time, 'unit' => $unit];
+    }
 }

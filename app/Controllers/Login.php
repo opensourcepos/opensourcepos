@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
 use CodeIgniter\HTTP\RedirectResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
 use Config\OSPOS;
 use Config\Services;
@@ -14,65 +15,126 @@ use Config\Services;
  */
 class Login extends BaseController
 {
-	public Model $employee;
+    public Model $employee;
 
-	/**
-	 * @return RedirectResponse|string
-	 */
-	public function index(): string|RedirectResponse
-	{
-		$this->employee = model(Employee::class);
-		if(!$this->employee->is_logged_in())
-		{
-			$migration = new MY_Migration(config('Migrations'));
-			$config = config(OSPOS::class)->settings;
+    /**
+     * @return RedirectResponse|ResponseInterface|string
+     */
+    public function index(): string|RedirectResponse|ResponseInterface
+    {
+        $this->employee = model(Employee::class);
+        if (!$this->employee->is_logged_in()) {
+            $migration = new MY_Migration(config('Migrations'));
+            $config = config(OSPOS::class)->settings;
 
-			$gcaptcha_enabled = array_key_exists('gcaptcha_enable', $config)
-				? $config['gcaptcha_enable']
-				: false;
+            $gcaptchaEnabled = array_key_exists('gcaptcha_enable', $config)
+                ? $config['gcaptcha_enable']
+                : false;
 
-			$migration->migrate_to_ci4();
+            $migration->migrateToCI4();
 
-			$validation = Services::validation();
+            $currentVersion = MY_Migration::getCurrentVersion();
 
-			$data = [
-				'has_errors' => false,
-				'is_latest' => $migration->is_latest(),
-				'latest_version' => $migration->get_latest_migration(),
-				'gcaptcha_enabled' => $gcaptcha_enabled,
-				'config' => $config,
-				'validation' => $validation
-			];
+            if ($currentVersion === null) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.migration_error_connection')
+                ])->setStatusCode(503);
+            }
 
-			if($this->request->getMethod() !== 'POST')
-			{
-				return view('login', $data);
-			}
+            $latestVersion = $migration->getLatestMigration();
 
-			$rules = ['username' => 'required|login_check[data]'];
-			$messages = [
-				'username' => [
-					'required' => lang('Login.required_username'),
-					'login_check' => lang('Login.invalid_username_and_password'),
-				]
-			];
+            $validation = Services::validation();
 
-			if(!$this->validate($rules, $messages))
-			{
-				$data['has_errors'] = !empty($validation->getErrors());
+            $data = [
+                'hasErrors'       => false,
+                'isNewInstall'   => $currentVersion === 0,
+                'isLatest'        => $latestVersion === $currentVersion,
+                'latestVersion'   => $latestVersion,
+                'gcaptchaEnabled' => $gcaptchaEnabled,
+                'config'           => $config,
+                'validation'       => $validation
+            ];
 
-				return view('login', $data);
-			}
+            if ($this->request->getMethod() !== 'POST') {
+                return view('login', $data);
+            }
 
-			if(!$data['is_latest'])
-			{
-				set_time_limit(3600);
+            if (!$data['isLatest'] || $data['isNewInstall']) {
+                set_time_limit(3600);
 
-				$migration->setNamespace('App')->latest();
-				return redirect()->to('login');
-			}
-		}
+                $migration->setNamespace('App')->latest();
+                return redirect()->to('login');
+            }
 
-		return redirect()->to('home');
-	}
+            $rules = ['username' => 'required|login_check[data]'];
+            $messages = [
+                'username' => [
+                    'required'    => lang('Login.required_username'),
+                    'login_check' => lang('Login.invalid_username_and_password'),
+                ]
+            ];
+
+            if (!$this->validate($rules, $messages)) {
+                $data['hasErrors'] = !empty($validation->getErrors());
+
+                return view('login', $data);
+            }
+        }
+
+        return redirect()->to('home');
+    }
+
+    public function migrate(): ResponseInterface
+    {
+        $currentVersion = MY_Migration::getCurrentVersion();
+
+        if ($currentVersion === null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Login.migration_error_connection')
+            ])->setStatusCode(503);
+        }
+
+        // Only a confirmed empty database counts as a new install with no credentials to check.
+        $isNewInstall = $currentVersion === 0;
+
+        if (!$isNewInstall) {
+            $rules = ['username' => 'required|login_check[data]'];
+            $messages = [
+                'username' => [
+                    'required'    => lang('Login.required_username'),
+                    'login_check' => lang('Login.invalid_username_and_password'),
+                ]
+            ];
+
+            if (!$this->validate($rules, $messages)) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.invalid_username_and_password')
+                ])->setStatusCode(401);
+            }
+        }
+
+        try {
+            $migration = new MY_Migration(config('Migrations'));
+            $migration->migrateToCI4();
+
+            set_time_limit(3600);
+            $migration->setNamespace('App')->latest();
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Migration completed successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Migration failed: ' . $e->getMessage());
+
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Migration failed: ' . $e->getMessage()
+            ])->setStatusCode(500);
+        }
+    }
 }

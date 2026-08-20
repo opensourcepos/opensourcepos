@@ -2,11 +2,13 @@
 
 namespace Config;
 
-use CodeIgniter\Config\BaseService;
-use CodeIgniter\HTTP\IncomingRequest;
-use Config\Services as AppServices;
+use App\Libraries\MY_Language;
+use Locale;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use CodeIgniter\Config\BaseService;
+use Config\Services as AppServices;
+use CodeIgniter\HTTP\IncomingRequest;
 
 /**
  * Services Configuration file.
@@ -34,44 +36,44 @@ class Services extends BaseService
      * }
      */
 
-	/**
-	 * Responsible for loading the language string translations.
-	 *
-	 * @return MY_Language
-	 */
-	public static function language(?string $locale = null, bool $getShared = true)
-	{
-		if ($getShared) {
-			return static::getSharedInstance('language', $locale)->setLocale($locale);
-		}
+    /**
+     * Responsible for loading the language string translations.
+     *
+     * @param string|null $locale
+     * @param bool $getShared
+     * @return MY_Language
+     */
+    public static function language(?string $locale = null, bool $getShared = true): MY_Language
+    {
+        if ($getShared) {
+            return static::getSharedInstance('language', $locale)->setLocale($locale);
+        }
 
-		if (AppServices::get('request') instanceof IncomingRequest) {
-			$requestLocale = AppServices::get('request')->getLocale();
-		} else {
-			$requestLocale = Locale::getDefault();
-		}
+        if (AppServices::get('request') instanceof IncomingRequest) {
+            $requestLocale = AppServices::get('request')->getLocale();
+        } else {
+            $requestLocale = Locale::getDefault();
+        }
 
-		// Use '?:' for empty string check
-		$locale = $locale ?: $requestLocale;
+        // Use '?:' for empty string check
+        $locale = $locale ?: $requestLocale;
 
-		return new \App\Libraries\MY_Language($locale);
-	}
+        return new MY_Language($locale);
+    }
 
-	private static $htmlPurifier;
+    private static HTMLPurifier $htmlPurifier;
 
-	public static function htmlPurifier($getShared = true)
-	{
-		if ($getShared)
-		{
-			return static::getSharedInstance('htmlPurifier');
-		}
+    public static function htmlPurifier($getShared = true): object
+    {
+        if ($getShared) {
+            return static::getSharedInstance('htmlPurifier');
+        }
 
-		if (!isset(static::$htmlPurifier))
-		{
-			$config = HTMLPurifier_Config::createDefault();
-			static::$htmlPurifier = new HTMLPurifier($config);
-		}
+        if (!isset(static::$htmlPurifier)) {
+            $config = HTMLPurifier_Config::createDefault();
+            static::$htmlPurifier = new HTMLPurifier($config);
+        }
 
-		return static::$htmlPurifier;
-	}
+        return static::$htmlPurifier;
+    }
 }

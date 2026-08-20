@@ -3,77 +3,87 @@
  * @var array $config
  */
 ?>
-<script type="application/javascript">
-	// live clock
-	var clock_tick = function clock_tick() {
-		setInterval('update_clock();', 1000);
-	}
 
-	// start the clock immediately
-	clock_tick();
+<script type="text/javascript">
+    // Live clock
+    const clock_tick = function clock_tick() {
+        setInterval('update_clock();', 1000);
+    }
 
-	var update_clock = function update_clock() {
-		document.getElementById('liveclock').innerHTML = moment().format("<?= dateformat_momentjs($config['dateformat'] . ' ' . $config['timeformat']) ?>");
-	}
+    // Start the clock immediately
+    clock_tick();
 
-	$.notifyDefaults({ placement: {
-		align: "<?= esc($config['notify_horizontal_position'], 'js') ?>",
-		from: "<?= esc($config['notify_vertical_position'], 'js') ?>"
-	}});
+    const update_clock = function update_clock() {
+        document.getElementById('liveclock').innerHTML = moment().format("<?= dateformat_momentjs($config['dateformat'] . ' ' . $config['timeformat']) ?>");
+    }
 
-	var cookie_name = "<?= esc(config('Cookie')->prefix, 'js') . esc(config('Security')->cookieName, 'js') ?>";
+    const notify = $.notify;
 
-	var csrf_token = function() {
-		return Cookies.get(cookie_name);
-	};
+    $.notify = function(content, options) {
+        const message = typeof content === "object" ? content.message : content;
+        const sanitizedMessage = DOMPurify.sanitize(message);
+        return notify(sanitizedMessage, options);
+    };
 
-	var csrf_form_base = function() {
-		return { <?= esc(config('Security')->tokenName, 'js') ?> : function () { return csrf_token() } }
-	};
+    $.notifyDefaults({
+        placement: {
+            align: "<?= esc($config['notify_horizontal_position'], 'js') ?>",
+            from: "<?= esc($config['notify_vertical_position'], 'js') ?>"
+        }
+    });
 
-	var setup_csrf_token = function() {
-		$('input[name="<?= esc(config('Security')->tokenName, 'js') ?>"]').val(csrf_token());
-	};
+    const csrf_token = function() {
+        return "<?= esc(csrf_hash(), 'js') ?>";
+    };
 
-	var ajax = $.ajax;
+    const csrf_form_base = function() {
+        return {
+            <?= esc(config('Security')->tokenName, 'js') ?>: function() {
+                return csrf_token()
+            }
+        }
+    };
 
-	$.ajax = function() {
-		var args = arguments[0];
-		if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
-			if (typeof args['data'] === 'string')
-			{
-				args['data'] += '&' + $.param(csrf_form_base());
-			}
-			else
-			{
-				args['data'] = $.extend(args['data'], csrf_form_base());
-			}
-		}
+    const setup_csrf_token = function() {
+        $('input[name="<?= esc(config('Security')->tokenName, 'js') ?>"]').val(csrf_token());
+    };
 
-		return ajax.apply(this, arguments);
-	};
+    const ajax = $.ajax;
 
-	$(document).ajaxComplete(setup_csrf_token);
-	$(document).ready(function(){
-		$("#logout").click(function(event) {
-			event.preventDefault();
-			$.ajax({
-				url: "<?= site_url('home/logout'); ?>",
-				data: {
-					"<?= esc(config('Security')->tokenName, 'js'); ?>": csrf_token()
-				},
-				success: function() {
-					window.location.href = '<?= site_url(); ?>';
-				},
-				method: "POST"
-			});
-		});
-	});
+    $.ajax = function() {
+        let args = arguments[0];
+        if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
+            if (typeof args['data'] === 'string') {
+                args['data'] += '&' + $.param(csrf_form_base());
+            } else {
+                args['data'] = $.extend(args['data'], csrf_form_base());
+            }
+        }
 
-	var submit = $.fn.submit;
+        return ajax.apply(this, arguments);
+    };
 
-	$.fn.submit = function() {
-		setup_csrf_token();
-		submit.apply(this, arguments);
-	};
+    $(document).ajaxComplete(setup_csrf_token);
+    $(document).ready(function() {
+        $("#logout").click(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "<?= site_url('home/logout'); ?>",
+                data: {
+                    "<?= esc(config('Security')->tokenName, 'js'); ?>": csrf_token()
+                },
+                success: function() {
+                    window.location.href = '<?= site_url(); ?>';
+                },
+                method: "POST"
+            });
+        });
+    });
+
+    const submit = $.fn.submit;
+
+    $.fn.submit = function() {
+        setup_csrf_token();
+        submit.apply(this, arguments);
+    };
 </script>

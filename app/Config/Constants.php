@@ -41,10 +41,9 @@ defined('WEEK')   || define('WEEK', 604800);
 defined('MONTH')  || define('MONTH', 2_592_000);
 defined('YEAR')   || define('YEAR', 31_536_000);
 defined('DECADE') || define('DECADE', 315_360_000);
-defined('DEFAULT_DATE') || define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
+defined('DEFAULT_DATE')     || define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 defined('DEFAULT_DATETIME') || define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
-defined('NOW') || define('NOW', time());
-
+defined('NOW')    || define('NOW', time());
 
 /*
  | --------------------------------------------------------------------------
@@ -83,26 +82,14 @@ defined('EXIT__AUTO_MIN')      || define('EXIT__AUTO_MIN', 9);      // lowest au
 defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest automatically-assigned error code
 
 /**
- * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_LOW instead.
- */
-define('EVENT_PRIORITY_LOW', 200);
-
-/**
- * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_NORMAL instead.
- */
-define('EVENT_PRIORITY_NORMAL', 100);
-
-/**
- * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_HIGH instead.
- */
-define('EVENT_PRIORITY_HIGH', 10);
-
-/**
  * Global Constants.
  */
-const NEW_ENTRY = -1;
-const ACTIVE = 0;
-const DELETED = 1;
+const NEW_ENTRY                     = -1;
+const ACTIVE                        = 0;
+const DELETED                       = 1;
+const INSUFFICIENT_GIFTCARD_BALANCE = -2;
+const INSUFFICIENT_REWARD_POINTS    = -3;
+const INSUFFICIENT_STOCK            = -4;
 
 /**
  * Attribute Related Constants.
@@ -185,3 +172,8 @@ const MAX_PRECISION = 1e14;
 const DEFAULT_PRECISION = 2;
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en';
+
+/**
+ * Admin modules - list of modules required for admin privileges
+ */
+const ADMIN_MODULES = ['customers', 'employees', 'giftcards', 'items', 'item_kits', 'messages', 'receivings', 'reports', 'sales', 'config', 'suppliers'];

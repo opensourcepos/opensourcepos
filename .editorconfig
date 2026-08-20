@@ -1,22 +1,15 @@
+# editorconfig.org
+
 root = true
 
 [*]
 charset = utf-8
 end_of_line = lf
 indent_size = 4
-indent_style = tab
+indent_style = space
 insert_final_newline = true
+trim_trailing_whitespace = true
 max_line_length = 120
-tab_width = 4
 
-[{*.cjs,*.js}]
-indent_style = tab
-
-[{*.ctp,*.hphp,*.inc,*.module,*.php,*.php4,*.php5,*.phtml}]
-indent_style = tab
-
-[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,composer.lock,jest.config}]
-indent_style = tab
-
-[{*.htm,*.html,*.ng,*.sht,*.shtm,*.shtml}]
-indent_style = tab
+[*.md]
+trim_trailing_whitespace = false

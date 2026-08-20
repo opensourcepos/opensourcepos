@@ -40,7 +40,7 @@ IndexIgnore *
   </Files>
 
   # prevent access to csv, txt and md files
-  <FilesMatch "\.(csv|txt|md|yml|json|lock)$">
+  <FilesMatch "\.(csv|txt|md|yml|json|lock|env)$">
     Require all denied
   </FilesMatch>
 </IfModule>

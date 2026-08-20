@@ -39,7 +39,7 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('receivings_stock', 'receivings');
 
 -- add permissions for existing stock locations
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
+INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
 (SELECT CONCAT('items_', location_name), 'items', location_id FROM ospos_stock_locations);
 
 CREATE TABLE `ospos_grants` (
@@ -50,21 +50,21 @@ CREATE TABLE `ospos_grants` (
 
 ALTER TABLE `ospos_grants`
   ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ospos_grants_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `ospos_permissions`(`permission_id`) ON DELETE CASCADE; 
+  ADD CONSTRAINT `ospos_grants_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `ospos_permissions`(`permission_id`) ON DELETE CASCADE;
 
 -- add grants for all employees
 INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('reports_customers', 1),
-('reports_receivings', 1), 
+('reports_receivings', 1),
 ('reports_items', 1),
 ('reports_inventory', 1),
 ('reports_employees', 1),
 ('reports_suppliers', 1),
 ('reports_sales', 1),
 ('reports_categories', 1),
-('reports_discounts', 1),    
-('reports_payments', 1),    
-('reports_taxes', 1),    
+('reports_discounts', 1),
+('reports_payments', 1),
+('reports_taxes', 1),
 ('customers', 1),
 ('employees', 1),
 ('giftcards', 1),
@@ -80,28 +80,28 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('suppliers', 1);
 
 -- add config options for tax inclusive sales
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES 
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('tax_included', '0'),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO');
 
 -- add invoice_number column to receivings table
-ALTER TABLE `ospos_receivings` 
+ALTER TABLE `ospos_receivings`
    ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
    ADD UNIQUE `invoice_number` (`invoice_number`);
 
 -- add invoice_number column to sales table
-ALTER TABLE `ospos_sales` 
+ALTER TABLE `ospos_sales`
    ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
    ADD UNIQUE `invoice_number` (`invoice_number`);
 
 -- add invoice_number column to suspended sales table
-ALTER TABLE `ospos_sales_suspended` 
+ALTER TABLE `ospos_sales_suspended`
    ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
    ADD UNIQUE `invoice_number` (`invoice_number`);
-   
+
 -- add invoice_number column to receivings table
-ALTER TABLE `ospos_items` 
+ALTER TABLE `ospos_items`
    ADD COLUMN `receiving_quantity` int(11) DEFAULT '1',
    DROP COLUMN `quantity`;
 

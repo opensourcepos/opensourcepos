@@ -7,12 +7,12 @@
  */
 function generate_import_items_csv(array $stock_locations, array $attributes): string
 {
-	$csv_headers = pack('CCC',0xef,0xbb,0xbf);	//Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
-	$csv_headers .= 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN';
-	$csv_headers .= generate_stock_location_headers($stock_locations);
-	$csv_headers .= generate_attribute_headers($attributes);
+    $csv_headers = pack('CCC', 0xef, 0xbb, 0xbf);    // Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
+    $csv_headers .= 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN';
+    $csv_headers .= generate_stock_location_headers($stock_locations);
+    $csv_headers .= generate_attribute_headers($attributes);
 
-	return $csv_headers;
+    return $csv_headers;
 }
 
 /**
@@ -21,14 +21,13 @@ function generate_import_items_csv(array $stock_locations, array $attributes): s
  */
 function generate_stock_location_headers(array $locations): string
 {
-	$location_headers = '';
+    $location_headers = '';
 
-	foreach($locations as $location_name)
-	{
-		$location_headers .= ',"location_' . $location_name . '"';
-	}
+    foreach ($locations as $location_name) {
+        $location_headers .= ',"location_' . $location_name . '"';
+    }
 
-	return $location_headers;
+    return $location_headers;
 }
 
 /**
@@ -37,15 +36,14 @@ function generate_stock_location_headers(array $locations): string
  */
 function generate_attribute_headers(array $attribute_names): string
 {
-	$attribute_headers = '';
-	unset($attribute_names[-1]);
+    $attribute_headers = '';
+    unset($attribute_names[-1]);
 
-	foreach($attribute_names as $attribute_name)
-	{
-		$attribute_headers .= ',"attribute_' . $attribute_name . '"';
-	}
+    foreach ($attribute_names as $attribute_name) {
+        $attribute_headers .= ',"attribute_' . $attribute_name . '"';
+    }
 
-	return $attribute_headers;
+    return $attribute_headers;
 }
 
 /**
@@ -55,34 +53,30 @@ function generate_attribute_headers(array $attribute_names): string
  */
 function get_csv_file(string $file_name): array
 {
-	$csv_rows = false;
+    $csv_rows = false;
 
-	if(($csv_file = fopen($file_name,'r')) !== false)
-	{
-		helper('security');
+    if (($csv_file = fopen($file_name, 'r')) !== false) {
+        helper('security');
 
-		$csv_rows = [];
+        $csv_rows = [];
 
-		//Skip Byte-Order Mark
-		if(bom_exists($csv_file))
-		{
-			fseek($csv_file, 3);
-		}
+        // Skip Byte-Order Mark
+        if (bom_exists($csv_file)) {
+            fseek($csv_file, 3);
+        }
 
-		$headers = fgetcsv($csv_file);
+        $headers = fgetcsv($csv_file);
 
-		while(($row = fgetcsv($csv_file)) !== false)
-		{
-			if($row !== [null])
-			{
-				$csv_rows[] = array_combine($headers, $row);
-			}
-		}
+        while (($row = fgetcsv($csv_file)) !== false) {
+            if ($row !== [null]) {
+                $csv_rows[] = array_combine($headers, $row);
+            }
+        }
 
-		fclose($csv_file);
-	}
+        fclose($csv_file);
+    }
 
-	return $csv_rows;
+    return $csv_rows;
 }
 
 /**
@@ -91,17 +85,45 @@ function get_csv_file(string $file_name): array
  */
 function bom_exists(&$file_handle): bool
 {
-	$result		= false;
-	$candidate	= fread($file_handle, 3);
+    $result        = false;
+    $candidate    = fread($file_handle, 3);
 
-	rewind($file_handle);
+    rewind($file_handle);
 
-	$bom = pack('CCC', 0xef, 0xbb, 0xbf);
+    $bom = pack('CCC', 0xef, 0xbb, 0xbf);
 
-	if (0 === strncmp($candidate, $bom, 3))
-	{
-		$result = true;
-	}
+    if (0 === strncmp($candidate, $bom, 3)) {
+        $result = true;
+    }
 
-	return $result;
+    return $result;
+}
+
+/**
+ * Checks that the parsed item import rows expose the columns the current
+ * template requires. A file whose header row does not match the template
+ * (for example when the "Id" column is missing, an attribute column was
+ * renamed, or a stock location was added since the file was last downloaded)
+ * would otherwise trigger "Undefined array key" errors while building each
+ * item. The required columns are derived from generate_import_items_csv(),
+ * the same function that builds the downloadable template, so location and
+ * attribute columns stay in sync automatically.
+ *
+ * @param array $csv_rows Rows returned by get_csv_file().
+ * @param array $stock_locations Stock locations, as returned by Stock_location::get_allowed_locations().
+ * @param array $attribute_names Attribute definition names, as returned by Attribute::get_definition_names().
+ * @return bool True when the required columns are present.
+ */
+function csvImportHasRequiredItemHeaders(array $csv_rows, array $stock_locations, array $attribute_names): bool
+{
+    if (empty($csv_rows)) {
+        return false;
+    }
+
+    $template_header_line = substr(generate_import_items_csv($stock_locations, $attribute_names), 3);
+    $required_headers = str_getcsv($template_header_line);
+
+    $present_headers = array_keys(reset($csv_rows));
+
+    return empty(array_diff($required_headers, $present_headers));
 }

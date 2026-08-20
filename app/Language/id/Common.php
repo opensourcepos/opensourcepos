@@ -1,5 +1,6 @@
 <?php
- return [
+
+return [
     'address_1' => "Alamat 1",
     'address_2' => "Alamat 2",
     'admin' => "",
@@ -16,11 +17,11 @@
     'dashboard' => "",
     'date' => "Tanggal",
     'delete' => "Hapus",
-    'det' => "detil",
+    'det' => "detail",
     'download_import_template' => "Unduh yang Diimpor dalam format CSV (CSV)",
     'edit' => "ubah",
-    'email' => "Email",
-    'email_invalid_format' => "Alamat email tidak dalam format yang benar.",
+    'email' => "Surel",
+    'email_invalid_format' => "Alamat surel tidak dalam format yang benar.",
     'export_csv' => "Ekspor ke CSV",
     'export_csv_no' => "Tidak",
     'export_csv_yes' => "Ya",
@@ -33,8 +34,8 @@
     'gender_female' => "P",
     'gender_male' => "L",
     'gender_undefined' => "",
-    'icon' => "ikon",
-    'id' => "Nomor ID",
+    'icon' => "Ikon",
+    'id' => "ID",
     'import' => "Impor",
     'import_change_file' => "Ubah",
     'import_csv' => "Impor dari CSV",

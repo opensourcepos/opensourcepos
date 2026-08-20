@@ -1,44 +1,41 @@
 <?php
+
 namespace app\Libraries;
 
 use CodeIgniter\Language\Language;
 
-class MY_Language extends Language {
+class MY_Language extends Language
+{
+    public function getLine(string $line, array $args = []): array|string
+    {
+        // If no file is given, just parse the line
+        if (! str_contains($line, '.')) {
+            return $this->formatMessage($line, $args);
+        }
 
-	public function getLine(string $line, array $args = [])
-	{
-// if no file is given, just parse the line
-		if ( ! str_contains($line, '.'))
-		{
-			return $this->formatMessage($line, $args);
-		}
+        // Parse out the file name and the actual alias.
+        // Will load the language file and strings.
+        [$file, $parsedLine] = $this->parseLine($line, $this->locale);
 
-// Parse out the file name and the actual alias.
-// Will load the language file and strings.
-		[$file, $parsedLine] = $this->parseLine($line, $this->locale);
+        $output = $this->getTranslationOutput($this->locale, $file, $parsedLine);
 
-		$output = $this->getTranslationOutput($this->locale, $file, $parsedLine);
+        if ($output === null && strpos($this->locale, '-')) {
+            [$locale] = explode('-', $this->locale, 2);
 
-		if ($output === NULL && strpos($this->locale, '-'))
-		{
-			[$locale] = explode('-', $this->locale, 2);
+            [$file, $parsedLine] = $this->parseLine($line, $locale);
 
-			[$file, $parsedLine] = $this->parseLine($line, $locale);
+            $output = $this->getTranslationOutput($locale, $file, $parsedLine);
+        }
 
-			$output = $this->getTranslationOutput($locale, $file, $parsedLine);
-		}
+        // If still not found, try English
+        if ($output === null || $output === "") {
+            [$file, $parsedLine] = $this->parseLine($line, 'en');
 
-		// if still not found, try English
-		if ($output === NULL || $output === "")
-		{
-			[$file, $parsedLine] = $this->parseLine($line, 'en');
+            $output = $this->getTranslationOutput('en', $file, $parsedLine);
+        }
 
-			$output = $this->getTranslationOutput('en', $file, $parsedLine);
-		}
+        $output ??= $line;
 
-		$output ??= $line;
-
-		return $this->formatMessage($output, $args);
-	}
-
+        return $this->formatMessage($output, $args);
+    }
 }

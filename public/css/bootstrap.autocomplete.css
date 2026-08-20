@@ -1,5 +1,4 @@
-.ui-autocomplete
-{
+.ui-autocomplete {
     position: absolute;
     top: 100%;
     left: 0;
@@ -11,7 +10,7 @@
     padding: 5px 0;
     margin: 2px 0 0 0;
     list-style: none;
-	font-size: 13px;
+    font-size: 13px;
     background-color: #ffffff;
     border-color: #cccccc;
     border-color: rgba(0, 0, 0, 0.15);
@@ -30,8 +29,7 @@
     *border-bottom-width: 2px;
 }
 
-.ui-autocomplete .ui-menu-item > a.ui-corner-all 
-{
+.ui-autocomplete .ui-menu-item>a.ui-corner-all {
     display: block;
     padding: 3px 15px;
     clear: both;
@@ -41,8 +39,8 @@
     white-space: nowrap;
 }
 
-.ui-autocomplete .ui-menu-item > a.ui-corner-all.ui-state-hover, .ui-autocomplete .ui-menu-item > a.ui-corner-all.ui-state-active
-{
+.ui-autocomplete .ui-menu-item>a.ui-corner-all.ui-state-hover,
+.ui-autocomplete .ui-menu-item>a.ui-corner-all.ui-state-active {
     color: #ffffff;
     text-decoration: none;
     background-color: #f5f5f5;

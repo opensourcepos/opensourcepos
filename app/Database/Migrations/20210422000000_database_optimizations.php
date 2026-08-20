@@ -11,150 +11,172 @@ use DateTime;
 
 class Migration_database_optimizations extends Migration
 {
-	/**
-	 * Perform a migration step.
-	 */
-	public function up(): void
-	{
-		error_log('Migrating database_optimizations');
+    /**
+     * Perform a migration step.
+     */
+    public function up(): void
+    {
+        log_message('info', 'Migrating database optimizations.');
 
-		$attribute = model(Attribute::class);
+        helper('migration');
 
-		$attribute->delete_orphaned_values();
+        dropForeignKeyConstraints(['ospos_customers_ibfk_1'], 'customers');
+        dropForeignKeyConstraints(['ospos_customers_points_ibfk_1'], 'customers_points');
+        dropForeignKeyConstraints(['ospos_sales_ibfk_2'], 'sales');
+        dropForeignKeyConstraints(['ospos_sales_payments_ibfk_2'], 'sales_payments');
+        dropForeignKeyConstraints(['ospos_sales_ibfk_1'], 'sales');
+        dropForeignKeyConstraints(['ospos_receivings_ibfk_1'], 'receivings');
+        dropForeignKeyConstraints(['ospos_inventory_ibfk_2'], 'inventory');
+        dropForeignKeyConstraints(['ospos_grants_ibfk_2'], 'grants');
+        dropForeignKeyConstraints(['ospos_expenses_ibfk_2'], 'expenses');
+        dropForeignKeyConstraints(['ospos_employees_ibfk_1'], 'employees');
+        dropForeignKeyConstraints(['ospos_cash_up_ibfk_1'], 'cash_up');
+        dropForeignKeyConstraints(['ospos_cash_up_ibfk_2'], 'cash_up');
+        dropForeignKeyConstraints(['ospos_items_ibfk_1'], 'items');
+        dropForeignKeyConstraints(['ospos_expenses_ibfk_3'], 'expenses');
+        dropForeignKeyConstraints(['ospos_receivings_ibfk_2'], 'receivings');
+        dropForeignKeyConstraints(['ospos_suppliers_ibfk_1'], 'suppliers');
 
-		$this->migrate_duplicate_attribute_values(DECIMAL);
-		$this->migrate_duplicate_attribute_values(DATE);
+        createPrimaryKey('customers', 'person_id');
+        createPrimaryKey('employees', 'person_id');
+        createPrimaryKey('suppliers', 'person_id');
 
-		//Select all attributes that have data in more than one column
-		$builder = $this->db->table('attribute_values');
-		$builder->select('attribute_id, attribute_value, attribute_decimal, attribute_date');
-		$builder->groupStart();
-		$builder->where('attribute_value IS NOT NULL');
-		$builder->where('attribute_date IS NOT NULL');
-		$builder->groupEnd();
-		$builder->orGroupStart();
-		$builder->where('attribute_value IS NOT NULL');
-		$builder->where('attribute_decimal IS NOT NULL');
-		$builder->groupEnd();
-		$attribute_values = $builder->get();
+        $attribute = model(Attribute::class);
 
-		$this->db->transStart();
+        $attribute->deleteOrphanedValues();
 
-		//Clean up Attribute values table where there is an attribute value and an attribute_date/attribute_decimal
-		foreach($attribute_values->getResultArray() as $attribute_value)
-		{
-			$builder = $this->db->table('attribute_values');
-			$builder->delete(['attribute_id' => $attribute_value['attribute_id']]);
+        $this->migrateDuplicateAttributeValues(DECIMAL);
+        $this->migrateDuplicateAttributeValues(DATE);
 
-			$builder = $this->db->table('attribute_links');
-			$builder->select('links.definition_id, links.item_id, links.attribute_id, defs.definition_type');
-			$builder->join('attribute_definitions defs', 'defs.definition_id = links.definition_id');
-			$builder->where('attribute_id', $attribute_value['attribute_id']);
-			$attribute_links = $builder->get();
+        // Select all attributes that have data in more than one column
+        $builder = $this->db->table('attribute_values');
+        $builder->select('attribute_id, attribute_value, attribute_decimal, attribute_date');
+        $builder->groupStart();
+        $builder->where('attribute_value IS NOT NULL');
+        $builder->where('attribute_date IS NOT NULL');
+        $builder->groupEnd();
+        $builder->orGroupStart();
+        $builder->where('attribute_value IS NOT NULL');
+        $builder->where('attribute_decimal IS NOT NULL');
+        $builder->groupEnd();
+        $attributeValues = $builder->get();
 
-			if($attribute_links)
-			{
-				$builder = $this->db->table('attribute_links');
-				$attribute_links = $attribute_links->getResultArray() ?: [];
+        $this->db->transStart();
 
-				foreach($attribute_links->getResultArray() as $attribute_link)
-				{
-					$builder->where('attribute_id', $attribute_link['attribute_id']);
-					$builder->where('item_id', $attribute_link['item_id']);
-					$builder->delete();
+        // Clean up Attribute values table where there is an attribute value and an attribute_date/attribute_decimal
+        foreach ($attributeValues->getResultArray() as $attributeValue) {
+            $builder = $this->db->table('attribute_values');
+            $builder->delete(['attribute_id' => $attributeValue['attribute_id']]);
 
-					switch($attribute_link['definition_type'])
-					{
-						case DECIMAL:
-							$value = $attribute_value['attribute_decimal'];
-							break;
-						case DATE:
-							$config = config(OSPOS::class)->settings;
-							$attribute_date = DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
-							$value = $attribute_date->format($config['dateformat']);
-							break;
-						default:
-							$value = $attribute_value['attribute_value'];
-							break;
-					}
+            $builder = $this->db->table('attribute_links');
+            $builder->select('links.definition_id, links.item_id, links.attribute_id, defs.definition_type');
+            $builder->join('attribute_definitions defs', 'defs.definition_id = links.definition_id');
+            $builder->where('attribute_id', $attributeValue['attribute_id']);
+            $attributeLinks = $builder->get();
 
-					$attribute->saveAttributeValue($value, $attribute_link['definition_id'], $attribute_link['item_id'], false, $attribute_link['definition_type']);
-				}
-			}
-		}
-		$this->db->transComplete();
+            if ($attributeLinks) {
+                $builder = $this->db->table('attribute_links');
+                $attributeLinks = $attributeLinks->getResultArray() ?: [];
 
-		helper('migration');
-		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
-		error_log('Migrating database_optimizations completed');
-	}
+                foreach ($attributeLinks as $attributeLink) {
+                    $builder->where('attribute_id', $attributeLink['attribute_id']);
+                    $builder->where('item_id', $attributeLink['item_id']);
+                    $builder->delete();
 
-	/**
-	 * Given the type of attribute, deletes any duplicates it finds in the attribute_values table and reassigns those
-	 */
-	private function migrate_duplicate_attribute_values($attribute_type): void
-	{
-		//Remove duplicate attribute values needed to make attribute_decimals and attribute_dates unique
-		$this->db->transStart();
+                    switch ($attributeLink['definition_type']) {
+                        case DECIMAL:
+                            $value = $attributeValue['attribute_decimal'];
+                            break;
+                        case DATE:
+                            $config = config(OSPOS::class)->settings;
+                            $attributeDate = DateTime::createFromFormat('Y-m-d', (string) $attributeValue['attribute_date']);
 
-		$column = 'attribute_' . strtolower($attribute_type);
+                            if ($attributeDate === false) {
+                                log_message('warning', 'Migration 20210422000000: unparseable attribute_date "' . $attributeValue['attribute_date'] . '" for attribute_id ' . $attributeValue['attribute_id'] . ' — preserving raw value.');
+                                $value = (string) $attributeValue['attribute_date'];
+                            } else {
+                                $dateFormat = empty($config['dateformat']) ? 'Y-m-d' : $config['dateformat'];
+                                if (empty($config['dateformat'])) {
+                                    log_message('warning', 'Migration 20210422000000: dateformat config empty, falling back to Y-m-d for attribute_id ' . $attributeValue['attribute_id'] . '.');
+                                }
+                                $value = $attributeDate->format($dateFormat);
+                            }
+                            break;
+                        default:
+                            $value = $attributeValue['attribute_value'];
+                            break;
+                    }
 
-		$builder = $this->db->table('attribute_values');
-		$builder->select("$column");
-		$builder->groupBy($column);
-		$builder->having("COUNT($column) > 1");
-		$duplicated_values = $builder->get();
+                    $attribute->saveAttributeValue($value, $attributeLink['definition_id'], $attributeLink['item_id'], false, $attributeLink['definition_type']);
+                }
+            }
+        }
+        $this->db->transComplete();
 
-		foreach($duplicated_values->getResultArray() as $duplicated_value)
-		{
-			$subquery_builder = $this->db->table('attribute_values');
-			$subquery_builder->select('attribute_id');
-			$subquery_builder->where($column, $duplicated_value[$column]);
-			$subquery = $subquery_builder->getCompiledSelect();
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
+        log_message('info', 'Finished migrating database optimizations.');
+    }
 
-			$builder = $this->db->table('attribute_values');
-			$builder->select('attribute_id');
-			$builder->where($column, $duplicated_value[$column]);
-			$builder->where("attribute_id IN ($subquery)", null, false);
-			$attribute_ids_to_fix = $builder->get();
+    /**
+     * Given the type of attribute, deletes any duplicates it finds in the attribute_values table and reassigns those
+     */
+    private function migrateDuplicateAttributeValues(string $attributeType): void
+    {
+        // Remove duplicate attribute values needed to make attribute_decimals and attribute_dates unique
+        $this->db->transStart();
 
-			$this->reassign_duplicate_attribute_values($attribute_ids_to_fix, $duplicated_value);
-		}
+        $column = 'attribute_' . strtolower($attributeType);
 
-		$this->db->transComplete();
-	}
+        $builder = $this->db->table('attribute_values');
+        $builder->select("$column");
+        $builder->groupBy($column);
+        $builder->having("COUNT($column) > 1");
+        $duplicatedValues = $builder->get();
 
-	/**
-	 * Updates the attribute_id in all attribute_link rows with duplicated attribute_ids then deletes unneeded rows from attribute_values
-	 *
-	 * @param ResultInterface $attribute_ids_to_fix All attribute_ids that need to parsed
-	 * @param array $attribute_value The attribute value in question.
-	 */
-	private function reassign_duplicate_attribute_values(ResultInterface $attribute_ids_to_fix, array $attribute_value): void
-	{
-		$attribute_ids = $attribute_ids_to_fix->getResultArray();
-		$retain_attribute_id = $attribute_ids[0]['attribute_id'];
+        foreach ($duplicatedValues->getResultArray() as $duplicatedValue) {
+            $subqueryBuilder = $this->db->table('attribute_values');
+            $subqueryBuilder->select('attribute_id');
+            $subqueryBuilder->where($column, $duplicatedValue[$column]);
+            $subquery = $subqueryBuilder->getCompiledSelect();
 
-		foreach($attribute_ids as $attribute_id)
-		{
-			//Update attribute_link with the attribute_id we are keeping
-			$builder = $this->db->table('attribute_links');
-			$builder->where('attribute_id', $attribute_id['attribute_id']);
-			$builder->update(['attribute_id' => $retain_attribute_id]);
+            $builder = $this->db->table('attribute_values');
+            $builder->select('attribute_id');
+            $builder->where($column, $duplicatedValue[$column]);
+            $builder->where("attribute_id IN ($subquery)", null, false);
+            $attributeIdsToFix = $builder->get();
 
-			//Delete the row from attribute_values if it isn't our keeper
-			if($attribute_id['attribute_id'] !== $retain_attribute_id)
-			{
-				$builder = $this->db->table('attribute_values');
-				$builder->delete(['attribute_id' => $attribute_id['attribute_id']]);
-			}
-		}
-	}
+            $this->reassignDuplicateAttributeValues($attributeIdsToFix);
+        }
 
-	/**
-	 * Revert a migration step.
-	 */
-	public function down(): void
-	{
-	}
+        $this->db->transComplete();
+    }
+
+    /**
+     * Updates the attribute_id in all attribute_link rows with duplicated attributeIds then deletes unneeded rows from attributeValues
+     *
+     * @param ResultInterface $attributeIdsToFix All attributeIds that need to parsed
+     */
+    private function reassignDuplicateAttributeValues(ResultInterface $attributeIdsToFix): void
+    {
+        $attributeIds = $attributeIdsToFix->getResultArray();
+        $retainAttributeId = $attributeIds[0]['attribute_id'];
+
+        foreach ($attributeIds as $attributeId) {
+            // Update attribute_link with the attribute_id we are keeping
+            $builder = $this->db->table('attribute_links');
+            $builder->where('attribute_id', $attributeId['attribute_id']);
+            $builder->update(['attribute_id' => $retainAttributeId]);
+
+            // Delete the row from attribute_values if it isn't our keeper
+            if ($attributeId['attribute_id'] !== $retainAttributeId) {
+                $builder = $this->db->table('attribute_values');
+                $builder->delete(['attribute_id' => $attributeId['attribute_id']]);
+            }
+        }
+    }
+
+    /**
+     * Revert a migration step.
+     */
+    public function down(): void {}
 }

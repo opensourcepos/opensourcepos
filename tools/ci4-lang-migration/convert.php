@@ -8,5 +8,3 @@ foreach ($lang as $key=>$value) {
     echo "\t\"$key\" => \"".addcslashes($value, '"')."\",\n";
 }
 echo "];";
-?>
-
