@@ -117,6 +117,7 @@ class Items extends Secure_Controller
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
         $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
+        $definitionNamesWithTypes = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
@@ -133,21 +134,69 @@ class Items extends Secure_Controller
         ];
 
         // Check if any filter is set in the multiselect dropdown
-        $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-        $filters = array_merge($filters, $request_filters);
-        $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
-        $total_rows = $this->item->get_found_rows($search, $filters);
-        $data_rows = [];
+        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $requestFilters);
 
-        foreach ($items->getResult() as $item) {
-            $data_rows[] = get_item_data_row($item);
+        $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
+        $itemResults = $items->getResult();
+        $totalRows = $this->item->get_found_rows($search, $filters);
+        $taxPercentsByItemId = $this->buildTaxPercentsByItem($itemResults);
+
+        $dataRows = [];
+
+        foreach ($itemResults as $item) {
+            $dataRows[] = get_item_data_row($item, $definitionNamesWithTypes, $taxPercentsByItemId);
 
             if ($item->pic_filename !== null) {
                 $this->update_pic_filename($item);
             }
         }
 
-        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+        return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
+    }
+
+    /**
+     * @return array item_id => formatted tax percents string
+     */
+    private function buildTaxPercentsByItem(array $items): array
+    {
+        $config = config(OSPOS::class)->settings;
+        $taxPercentsByItemId = [];
+
+        if ($config['use_destination_based_tax']) {
+            $taxCategoryIds = array_unique(array_filter(array_map(fn ($item) => $item->tax_category_id, $items)));
+
+            if (empty($taxCategoryIds)) {
+                return [];
+            }
+
+            $taxCategoryNames = [];
+            foreach ($this->tax_category->get_multiple_info($taxCategoryIds)->getResult() as $taxCategoryInfo) {
+                $taxCategoryNames[$taxCategoryInfo->tax_category_id] = $taxCategoryInfo->tax_category;
+            }
+
+            foreach ($items as $item) {
+                if ($item->tax_category_id !== null && isset($taxCategoryNames[$item->tax_category_id])) {
+                    $taxPercentsByItemId[$item->item_id] = $taxCategoryNames[$item->tax_category_id];
+                }
+            }
+        } else {
+            $itemIds = array_map(fn ($item) => $item->item_id, $items);
+            $itemTaxesByItemId = $this->item_taxes->getInfoMultiple($itemIds);
+
+            foreach ($itemIds as $itemId) {
+                $taxPercents = '';
+                foreach ($itemTaxesByItemId[$itemId] ?? [] as $taxInfo) {
+                    $taxPercents .= to_tax_decimals($taxInfo['percent']) . '%, ';
+                }
+
+                // Remove ', ' from last item
+                $taxPercents = substr($taxPercents, 0, -2);
+                $taxPercentsByItemId[$itemId] = !$taxPercents ? '-' : $taxPercents;
+            }
+        }
+
+        return $taxPercentsByItemId;
     }
 
     /**
@@ -276,17 +325,21 @@ class Items extends Secure_Controller
     }
 
     /**
-     * @param string $item_ids
+     * @param string $itemIds
      * @return ResponseInterface
      */
-    public function getRow(string $item_ids): ResponseInterface    // TODO: An array would be better for parameter.
+    public function getRow(string $itemIds): ResponseInterface    // TODO: An array would be better for parameter.
     {
-        $item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
+        $itemInfos = $this->item->get_multiple_info(explode(':', $itemIds), $this->item_lib->get_item_location());
+        $itemResults = $itemInfos->getResult();
+
+        $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
+        $taxPercentsByItemId = $this->buildTaxPercentsByItem($itemResults);
 
         $result = [];
 
-        foreach ($item_infos->getResult() as $item_info) {
-            $result[$item_info->item_id] = get_item_data_row($item_info);
+        foreach ($itemResults as $itemInfo) {
+            $result[$itemInfo->item_id] = get_item_data_row($itemInfo, $definitionNames, $taxPercentsByItemId);
         }
 
         return $this->response->setJSON($result);
