@@ -128,6 +128,7 @@ return [
     'enable_new_look'                           => '',
     'enable_right_bar'                          => '',
     'enable_right_bar_tooltip'                  => '',
+    'encryption_failed'                         => 'Failed to encrypt data. Please check encryption configuration.',
     'enforce_privacy'                           => 'Enforce privacy',
     'enforce_privacy_tooltip'                   => 'Protect Customers privacy enforcing data scrambling in case of their data being deleted',
     'fax'                                       => 'Fax',
