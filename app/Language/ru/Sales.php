@@ -84,6 +84,8 @@ return [
     'hsn'                               => '',
     'id'                                => '№ продажи',
     'include_prices'                    => 'Включить цены?',
+    'insufficient_giftcard_balance'     => 'Недостаточный баланс подарочной карты для этого платежа.',
+    'insufficient_reward_points'        => 'Недостаточно баллов вознаграждения для этого платежа.',
     'invoice'                           => 'Накладная',
     'invoice_confirm'                   => 'Эта накладная будет отправлена',
     'invoice_enable'                    => 'Номер накладной',
