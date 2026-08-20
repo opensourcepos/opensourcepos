@@ -24,8 +24,10 @@ class Throttle implements FilterInterface
             return null;
         }
 
+        helper('security');
+
         $throttler = Services::throttler();
-        $secret    = config('Encryption')->key;
+        $secret    = checkThrottleEncryption();
 
         $ipKey       = 'login-ip-' . hash_hmac('sha256', $request->getIPAddress(), $secret);
         $rawUsername = $request->getPost('username');

@@ -3,7 +3,6 @@
 namespace Config;
 
 use CodeIgniter\Events\Events;
-use CodeIgniter\Exceptions\ConfigException;
 use CodeIgniter\Exceptions\FrameworkException;
 use CodeIgniter\HotReloader\HotReloader;
 use App\Events\Db_log;
@@ -30,12 +29,7 @@ use App\Events\Method;
 Events::on('pre_system', static function (): void {
     if (ENVIRONMENT !== 'testing') {
         helper('security');
-        checkEncryption();
-
-        $encryptionKey = config('Encryption')->key;
-        if (empty($encryptionKey) || strlen($encryptionKey) < 64) {
-            throw new ConfigException('Encryption key could not be provisioned. Check that .env is writable.');
-        }
+        checkThrottleEncryption();
 
         if (ini_get('zlib.output_compression')) {
             throw FrameworkException::forEnabledZlibOutputCompression();
