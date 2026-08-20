@@ -83,6 +83,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'เลขที่ขาย',
     'include_prices'                    => 'รวมในราคา?',
+    'insufficient_giftcard_balance'     => 'ยอดเงินบัตรของขวัญไม่พอสำหรับการชำระเงินนี้.',
+    'insufficient_reward_points'        => 'คะแนนรางวัลไม่พอสำหรับการชำระเงินนี้.',
     'invoice'                           => 'ใบแจ้งหนี้',
     'invoice_confirm'                   => 'ใบแจ้งหนี้นี้จะถูกส่งไปที่',
     'invoice_enable'                    => 'เลขที่ใบแจ้งหนี้',

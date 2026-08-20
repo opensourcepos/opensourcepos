@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Sale ID',
     'include_prices'                    => 'Include Prices?',
+    'insufficient_giftcard_balance'     => 'Insufficient gift card balance for this payment.',
+    'insufficient_reward_points'        => 'Insufficient reward points for this payment.',
     'invoice'                           => 'Invoice',
     'invoice_confirm'                   => 'This invoice will be sent to',
     'invoice_enable'                    => 'Invoice Number',

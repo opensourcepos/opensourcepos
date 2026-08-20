@@ -83,6 +83,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'ID Penjualan',
     'include_prices'                    => 'Termasuk Harga?',
+    'insufficient_giftcard_balance'     => 'Saldo kartu hadiah tidak mencukupi untuk pembayaran ini.',
+    'insufficient_reward_points'        => 'Poin reward tidak cukup untuk pembayaran ini.',
     'invoice'                           => 'Faktur',
     'invoice_confirm'                   => 'Faktur ini akan dikirim ke',
     'invoice_enable'                    => 'Nomor Faktur',

@@ -658,6 +658,14 @@ class Sales extends Secure_Controller
                 return $this->reload($data);
             }
 
+            // sales_change_price grant is enforced server-side here; the UI-only "change_price" flag must not be trusted
+            $current_price = $this->sale_lib->get_cart()[$line]['price'] ?? null;
+            $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+            if ($current_price !== null && bccomp((string)$price, (string)$current_price, $precision) != 0 && !$this->employee->has_grant('sales_change_price', $employee_id)) {
+                $data['error'] = lang('Sales.not_authorized');
+                return $this->reload($data);
+            }
+
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
             $discounted_total = $this->request->getPost('discounted_total') != ''
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
@@ -849,7 +857,13 @@ class Sales extends Secure_Controller
                 // Resort and filter cart lines for printing
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
-                if ($data['sale_id_num'] == NEW_ENTRY) {
+                if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
+                    $data['error_message'] = lang('Sales.insufficient_giftcard_balance');
+                    return $this->reload($data);
+                } elseif ($data['sale_id_num'] === INSUFFICIENT_REWARD_POINTS) {
+                    $data['error_message'] = lang('Sales.insufficient_reward_points');
+                    return $this->reload($data);
+                } elseif ($data['sale_id_num'] == NEW_ENTRY) {
                     $data['error_message'] = lang('Sales.transaction_failed');
                     return $this->reload($data);
                 } else {
@@ -882,6 +896,18 @@ class Sales extends Secure_Controller
                 $sale_type = SALE_TYPE_WORK_ORDER;
 
                 $data['sale_id_num'] = $this->sale->save_value($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $tax_details);
+
+                if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
+                    $data['error_message'] = lang('Sales.insufficient_giftcard_balance');
+                    return $this->reload($data);
+                } elseif ($data['sale_id_num'] === INSUFFICIENT_REWARD_POINTS) {
+                    $data['error_message'] = lang('Sales.insufficient_reward_points');
+                    return $this->reload($data);
+                } elseif ($data['sale_id_num'] == NEW_ENTRY) {
+                    $data['error_message'] = lang('Sales.transaction_failed');
+                    return $this->reload($data);
+                }
+
                 $this->sale_lib->set_suspended_id($data['sale_id_num']);
 
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
@@ -910,6 +936,18 @@ class Sales extends Secure_Controller
                 $sale_type = SALE_TYPE_QUOTE;
 
                 $data['sale_id_num'] = $this->sale->save_value($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $tax_details);
+
+                if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
+                    $data['error_message'] = lang('Sales.insufficient_giftcard_balance');
+                    return $this->reload($data);
+                } elseif ($data['sale_id_num'] === INSUFFICIENT_REWARD_POINTS) {
+                    $data['error_message'] = lang('Sales.insufficient_reward_points');
+                    return $this->reload($data);
+                } elseif ($data['sale_id_num'] == NEW_ENTRY) {
+                    $data['error_message'] = lang('Sales.transaction_failed');
+                    return $this->reload($data);
+                }
+
                 $this->sale_lib->set_suspended_id($data['sale_id_num']);
 
                 $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
@@ -933,7 +971,13 @@ class Sales extends Secure_Controller
 
             $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
-            if ($data['sale_id_num'] == NEW_ENTRY) {
+            if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
+                $data['error_message'] = lang('Sales.insufficient_giftcard_balance');
+                return $this->reload($data);
+            } elseif ($data['sale_id_num'] === INSUFFICIENT_REWARD_POINTS) {
+                $data['error_message'] = lang('Sales.insufficient_reward_points');
+                return $this->reload($data);
+            } elseif ($data['sale_id_num'] == NEW_ENTRY) {
                 $data['error_message'] = lang('Sales.transaction_failed');
                 return $this->reload($data);
             } else {
@@ -1677,13 +1721,19 @@ class Sales extends Secure_Controller
         $data = [];
         $sales_taxes = [[], []];
 
-        if ($this->sale->save_value($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes) == '-1') {
+        $saleIdNum = $this->sale->save_value($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes);
+
+        if ($saleIdNum === INSUFFICIENT_GIFTCARD_BALANCE) {
+            $data['error'] = lang('Sales.insufficient_giftcard_balance');
+        } elseif ($saleIdNum === INSUFFICIENT_REWARD_POINTS) {
+            $data['error'] = lang('Sales.insufficient_reward_points');
+        } elseif ($saleIdNum === NEW_ENTRY) {
             $data['error'] = lang('Sales.unsuccessfully_suspended_sale');
+            $this->sale_lib->clear_all();
         } else {
             $data['success'] = lang('Sales.successfully_suspended_sale');
+            $this->sale_lib->clear_all();
         }
-
-        $this->sale_lib->clear_all();
 
         return $this->reload($data);
     }

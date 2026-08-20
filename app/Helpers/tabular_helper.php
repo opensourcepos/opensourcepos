@@ -409,7 +409,7 @@ function get_items_manage_table_headers(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
-    $definitionsWithTypes = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
+    $definitionsWithTypes = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
     $headers = item_headers();
 
@@ -480,7 +480,7 @@ function get_item_data_row(object $item): array
         $item->name .= NAME_SEPARATOR . $item->pack_name;
     }
 
-    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
+    $definition_names = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
     $columns = [
         'items.item_id' => $item->item_id,
@@ -699,7 +699,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
     $attribute = model(Attribute::class);
     $controller = get_controller();
 
-    if (count($attribute->get_definition_flags()) == 0) {
+    if (count($attribute->getDefinitionFlags()) == 0) {
         $definition_flags = lang('Common.none_selected_text');
     } elseif ($attribute->definition_type == GROUP) {
         $definition_flags = "-";

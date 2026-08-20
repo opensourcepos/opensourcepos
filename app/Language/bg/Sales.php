@@ -83,6 +83,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Номер на продажба',
     'include_prices'                    => 'Включва цени?',
+    'insufficient_giftcard_balance'     => 'Недостатъчен баланс на подаръчната карта за това плащане.',
+    'insufficient_reward_points'        => 'Недостатъчни наградни точки за това плащане.',
     'invoice'                           => 'Фактура',
     'invoice_confirm'                   => 'Тази фактура ще бъде изпратена до',
     'invoice_enable'                    => 'Създаване на фактура',

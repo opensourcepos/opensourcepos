@@ -83,6 +83,8 @@ return [
     'hsn'                               => '',
     'id'                                => '',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'Նվեր քարտի անբավարար մնացորդ այս վճարման համար.',
+    'insufficient_reward_points'        => 'Անբավարար պարգևավճարային միավորներ այս վճարման համար.',
     'invoice'                           => '',
     'invoice_confirm'                   => '',
     'invoice_enable'                    => '',

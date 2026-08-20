@@ -83,6 +83,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'شناسه فروش',
     'include_prices'                    => 'شامل قیمت ها می شوید؟',
+    'insufficient_giftcard_balance'     => 'موجودی ناکافی کارت هدیه برای این پرداخت.',
+    'insufficient_reward_points'        => 'امتیازات پاداش ناکافی برای این پرداخت.',
     'invoice'                           => 'صورتحساب',
     'invoice_confirm'                   => 'این فاکتور به ارسال می شود',
     'invoice_enable'                    => 'شماره فاکتور',

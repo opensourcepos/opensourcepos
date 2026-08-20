@@ -83,6 +83,8 @@ return [
     'hsn'                               => 'رمز نظام منسق',
     'id'                                => 'رقم عملية البيع',
     'include_prices'                    => 'يشمل الاسعار؟',
+    'insufficient_giftcard_balance'     => 'رصيد بطاقة الهدية غير كافي لهذه الدفعة.',
+    'insufficient_reward_points'        => 'نقاط المكافأة غير كافية لهذه الدفعة.',
     'invoice'                           => 'فاتورة',
     'invoice_confirm'                   => 'هذه الفاتورة سوف ترسل إلى',
     'invoice_enable'                    => 'رقم فاتورة',

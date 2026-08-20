@@ -83,6 +83,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'Sale ID',
     'include_prices'                    => 'Include Prices?',
+    'insufficient_giftcard_balance'     => 'Walang sapat na balanse ng gift card para sa pagbabayad na ito.',
+    'insufficient_reward_points'        => 'Walang sapat na reward points para sa pagbabayad na ito.',
     'invoice'                           => 'Invoice',
     'invoice_confirm'                   => 'This invoice will be sent to',
     'invoice_enable'                    => 'Create Invoice',

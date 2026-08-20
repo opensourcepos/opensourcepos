@@ -83,6 +83,8 @@ return [
     'hsn'                               => '',
     'id'                                => '',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'Niewystarczające saldo karty podarunkowej dla tej płatności.',
+    'insufficient_reward_points'        => 'Niewystarczające punkty nagród dla tej płatności.',
     'invoice'                           => '',
     'invoice_confirm'                   => '',
     'invoice_enable'                    => '',

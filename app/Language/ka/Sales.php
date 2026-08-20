@@ -84,6 +84,8 @@ return [
     'hsn'                               => '',
     'id'                                => '',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'საჩუქრის ბარათის არასაკმარისი ბალანსი ამ გადახდისთვის.',
+    'insufficient_reward_points'        => 'არასაკმარისი ჯილდოს პოინტები ამ გადახდისთვის.',
     'invoice'                           => '',
     'invoice_confirm'                   => '',
     'invoice_enable'                    => '',

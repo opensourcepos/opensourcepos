@@ -83,6 +83,8 @@ return [
     'hsn'                               => '',
     'id'                                => '',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'ഈ പേയ്‌മെന്റിനായി പര്യാപ്ത ഗിഫ്റ്റ് കാർഡ് ബാലൻസ് ഇല്ല.',
+    'insufficient_reward_points'        => 'ഈ പേയ്‌മെന്റിനായി പര്യാപ്ത പുരസ്‌കാര പോയിന്‍റ് ഇല്ല.',
     'invoice'                           => '',
     'invoice_confirm'                   => '',
     'invoice_enable'                    => '',

@@ -243,6 +243,25 @@ class Customer extends Person
     }
 
     /**
+     * Atomically adjusts a customer's reward points by a signed delta, failing if a
+     * negative delta would take the balance below zero
+     */
+    public function adjustRewardPoints(int $customerId, float $delta): bool
+    {
+        $builder = $this->db->table('customers');
+        $builder->where('person_id', $customerId);
+
+        if ($delta < 0) {
+            $builder->where('points >=', abs($delta));
+        }
+
+        $operator = $delta >= 0 ? '+' : '-';
+        $builder->set('points', 'points ' . $operator . ' ' . $this->db->escape(abs($delta)), false);
+
+        return $builder->update() && $this->db->affectedRows() > 0;
+    }
+
+    /**
      * @param $customer_id
      * @param bool $purge
      * @return bool

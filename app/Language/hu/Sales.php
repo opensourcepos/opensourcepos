@@ -83,6 +83,8 @@ return [
     'hsn'                               => '',
     'id'                                => 'Eladási s.szám',
     'include_prices'                    => '',
+    'insufficient_giftcard_balance'     => 'Elégtelen ajándékutalvány egyenleg ehhez a fizetéshez.',
+    'insufficient_reward_points'        => 'Elégtelen jutalmi pontok ehhez a fizetéshez.',
     'invoice'                           => 'Számla',
     'invoice_confirm'                   => 'Ez a számla el lesz küldve ',
     'invoice_enable'                    => 'Számla elkészítése',

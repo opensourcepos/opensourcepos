@@ -83,6 +83,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'מזהה מכירה',
     'include_prices'                    => 'לכלול מחירים?',
+    'insufficient_giftcard_balance'     => 'יתרת כרטיסי מתנה לא מספקת לתשלום זה.',
+    'insufficient_reward_points'        => 'נקודות חיזוק לא מספקות לתשלום זה.',
     'invoice'                           => 'חשבונית',
     'invoice_confirm'                   => 'חשבונית זו תישלח אל',
     'invoice_enable'                    => 'צור חשבונית',
