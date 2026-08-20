@@ -43,11 +43,11 @@ function checkEncryption(): bool
             if (preg_match('/^\s*encryption\.key\s*=/m', $configFile)) {
                 $configFile = preg_replace("/^(\s*encryption\.key\s*=\s*).*/m", "\$1'$key'", $configFile, 1);
             } else {
-                $configFile .= "\nencryption.key = '$key'\n";
+                $configFile .= "\nencryption.key='$key'\n";
             }
 
             if (!empty($oldKey)) {
-                $oldLine = "# encryption.key = '$oldKey' REMOVE IF UNNEEDED\r\n";
+                $oldLine = "# encryption.key='$oldKey' REMOVE IF UNNEEDED\r\n";
                 if (preg_match('/^encryption\.key\s*=/m', $configFile, $matches, PREG_OFFSET_CAPTURE)) {
                     $configFile = substr_replace($configFile, $oldLine, $matches[0][1], 0);
                 }
