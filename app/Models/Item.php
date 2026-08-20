@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\RawSql;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use Config\OSPOS;
@@ -141,15 +142,18 @@ class Item extends Model
 
     /**
      * Perform a search on items
+     *
+     * Resolves qualifying item_ids first (Phase A), then joins the expensive display-only
+     * tables scoped to just those ids (Phase B) instead of the whole matching set.
      */
-    public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = false)
+    public function search(string $search, array $filters, ?int $rows = 0, ?int $limitFrom = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $countOnly = false)
     {
         // Set default values
         if ($rows == null) {
             $rows = 0;
         }
-        if ($limit_from == null) {
-            $limit_from = 0;
+        if ($limitFrom == null) {
+            $limitFrom = 0;
         }
         if ($sort == null) {
             $sort = 'items.name';
@@ -157,53 +161,150 @@ class Item extends Model
         if ($order == null) {
             $order = 'asc';
         }
-        if ($count_only == null) {
-            $count_only = false;
+        if ($countOnly == null) {
+            $countOnly = false;
         }
 
         $config = config(OSPOS::class)->settings;
-        $builder = $this->db->table('items AS items');    // TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
+
+        $dateFormatEnabled = empty($config['date_or_time_format']);
+        $rangeStart = $dateFormatEnabled ? $filters['start_date'] : rawurldecode($filters['start_date']);
+        $rangeEnd = $dateFormatEnabled ? $filters['end_date'] : rawurldecode($filters['end_date']);
+        $applyTransDateRange = function ($builder) use ($dateFormatEnabled, $rangeStart, $rangeEnd) {
+            $column = $dateFormatEnabled ? 'DATE_FORMAT(trans_date, "%Y-%m-%d")' : 'trans_date';
+            $builder->groupStart();
+            $builder->where("$column >=", $rangeStart);
+            $builder->where("$column <=", $rangeEnd);
+            $builder->groupEnd();
+        };
+
+        $attributesEnabled = count($filters['definition_ids']) > 0;
+        $customAttributeSearch = $attributesEnabled && $filters['search_custom'] && !empty($search);
+
+        if ($attributesEnabled) {
+            $this->db->simpleQuery('SET SESSION group_concat_max_len=49152');
+        }
+
+        $idBuilder = $this->db->table('items AS items');
+
+        if ($customAttributeSearch) {
+            // Matching is per attribute row (WHERE, pre-GROUP BY), not against a GROUP_CONCAT
+            // blob (HAVING, post-GROUP BY), so a match can't bleed across definitions.
+            $idBuilder->select('items.item_id');
+            $idBuilder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
+            $idBuilder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
+        } else {
+            $idBuilder->select('items.item_id');
+        }
+
+        $idBuilder->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+        $idBuilder->join('inventory AS inventory', 'inventory.trans_items = items.item_id');
+
+        if ($filters['stock_location_id'] > -1) {
+            $idBuilder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id');
+            $idBuilder->where('location_id', $filters['stock_location_id']);
+        }
+
+        $applyTransDateRange($idBuilder);
+
+        if (!empty($search)) {
+            if ($customAttributeSearch) {
+                $format = $this->db->escape(dateformat_mysql());
+                $idBuilder->groupStart();
+                $idBuilder->like('attribute_value', $search);
+                $idBuilder->orLike(new RawSql("DATE_FORMAT(attribute_date, $format)"), $search);
+                $idBuilder->orLike('attribute_decimal', $search);
+                $idBuilder->groupEnd();
+            } else {
+                $idBuilder->groupStart();
+                $idBuilder->like('name', $search);
+                $idBuilder->orLike('item_number', $search);
+                $idBuilder->orLike('items.item_id', $search);
+                $idBuilder->orLike('company_name', $search);
+                $idBuilder->orLike('items.category', $search);
+                $idBuilder->groupEnd();
+            }
+        }
+
+        $idBuilder->where('items.deleted', $filters['is_deleted']);
+
+        if ($filters['empty_upc']) {
+            $idBuilder->where('item_number', null);
+        }
+        if ($filters['low_inventory']) {
+            $idBuilder->where('quantity <=', 'reorder_level');
+        }
+        if ($filters['is_serialized']) {
+            $idBuilder->where('is_serialized', 1);
+        }
+        if ($filters['no_description']) {
+            $idBuilder->where('items.description', '');
+        }
+        if ($filters['temporary']) {
+            $idBuilder->where('items.item_type', ITEM_TEMP);
+        } else {
+            $nonTemp = [ITEM, ITEM_KIT, ITEM_AMOUNT_ENTRY];
+            $idBuilder->whereIn('items.item_type', $nonTemp);
+        }
+
+        // Avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
+        $idBuilder->groupBy('items.item_id');
 
         // get_found_rows case
-        if ($count_only) {
-            $builder->select('COUNT(DISTINCT items.item_id) AS count');
-        } else {
-            $builder->select('MAX(items.item_id) AS item_id');
-            $builder->select('MAX(items.name) AS name');
-            $builder->select('MAX(items.category) AS category');
-            $builder->select('MAX(items.supplier_id) AS supplier_id');
-            $builder->select('MAX(items.item_number) AS item_number');
-            $builder->select('MAX(items.description) AS description');
-            $builder->select('MAX(items.cost_price) AS cost_price');
-            $builder->select('MAX(items.unit_price) AS unit_price');
-            $builder->select('MAX(items.reorder_level) AS reorder_level');
-            $builder->select('MAX(items.receiving_quantity) AS receiving_quantity');
-            $builder->select('MAX(items.pic_filename) AS pic_filename');
-            $builder->select('MAX(items.allow_alt_description) AS allow_alt_description');
-            $builder->select('MAX(items.is_serialized) AS is_serialized');
-            $builder->select('MAX(items.pack_name) AS pack_name');
-            $builder->select('MAX(items.tax_category_id) AS tax_category_id');
-            $builder->select('MAX(items.deleted) AS deleted');
+        if ($countOnly) {
+            return $idBuilder->countAllResults();
+        }
 
-            $builder->select('MAX(suppliers.person_id) AS person_id');
-            $builder->select('MAX(suppliers.company_name) AS company_name');
-            $builder->select('MAX(suppliers.agency_name) AS agency_name');
-            $builder->select('MAX(suppliers.account_number) AS account_number');
-            $builder->select('MAX(suppliers.deleted) AS deleted');
+        // Order by name of item by default
+        $idBuilder->orderBy($sort, $order);
 
-            $builder->select('MAX(inventory.trans_id) AS trans_id');
-            $builder->select('MAX(inventory.trans_items) AS trans_items');
-            $builder->select('MAX(inventory.trans_user) AS trans_user');
-            $builder->select('MAX(inventory.trans_date) AS trans_date');
-            $builder->select('MAX(inventory.trans_comment) AS trans_comment');
-            $builder->select('MAX(inventory.trans_location) AS trans_location');
-            $builder->select('MAX(inventory.trans_inventory) AS trans_inventory');
+        if ($rows > 0) {
+            $idBuilder->limit($rows, $limitFrom);
+        }
 
-            if ($filters['stock_location_id'] > -1) {
-                $builder->select('MAX(item_quantities.item_id) AS qty_item_id');
-                $builder->select('MAX(item_quantities.location_id) AS location_id');
-                $builder->select('MAX(item_quantities.quantity) AS quantity');
-            }
+        $itemIds = array_column($idBuilder->get()->getResultArray(), 'item_id');
+
+        if (empty($itemIds)) {
+            return $this->db->table('items AS items')->where('1 = 0')->get();
+        }
+
+        $builder = $this->db->table('items AS items');
+
+        $builder->select('MAX(items.item_id) AS item_id');
+        $builder->select('MAX(items.name) AS name');
+        $builder->select('MAX(items.category) AS category');
+        $builder->select('MAX(items.supplier_id) AS supplier_id');
+        $builder->select('MAX(items.item_number) AS item_number');
+        $builder->select('MAX(items.description) AS description');
+        $builder->select('MAX(items.cost_price) AS cost_price');
+        $builder->select('MAX(items.unit_price) AS unit_price');
+        $builder->select('MAX(items.reorder_level) AS reorder_level');
+        $builder->select('MAX(items.receiving_quantity) AS receiving_quantity');
+        $builder->select('MAX(items.pic_filename) AS pic_filename');
+        $builder->select('MAX(items.allow_alt_description) AS allow_alt_description');
+        $builder->select('MAX(items.is_serialized) AS is_serialized');
+        $builder->select('MAX(items.pack_name) AS pack_name');
+        $builder->select('MAX(items.tax_category_id) AS tax_category_id');
+        $builder->select('MAX(items.deleted) AS deleted');
+
+        $builder->select('MAX(suppliers.person_id) AS person_id');
+        $builder->select('MAX(suppliers.company_name) AS company_name');
+        $builder->select('MAX(suppliers.agency_name) AS agency_name');
+        $builder->select('MAX(suppliers.account_number) AS account_number');
+        $builder->select('MAX(suppliers.deleted) AS deleted');
+
+        $builder->select('MAX(inventory.trans_id) AS trans_id');
+        $builder->select('MAX(inventory.trans_items) AS trans_items');
+        $builder->select('MAX(inventory.trans_user) AS trans_user');
+        $builder->select('MAX(inventory.trans_date) AS trans_date');
+        $builder->select('MAX(inventory.trans_comment) AS trans_comment');
+        $builder->select('MAX(inventory.trans_location) AS trans_location');
+        $builder->select('MAX(inventory.trans_inventory) AS trans_inventory');
+
+        if ($filters['stock_location_id'] > -1) {
+            $builder->select('MAX(item_quantities.item_id) AS qty_item_id');
+            $builder->select('MAX(item_quantities.location_id) AS location_id');
+            $builder->select('MAX(item_quantities.quantity) AS quantity');
         }
 
         $builder->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -214,32 +315,10 @@ class Item extends Model
             $builder->where('location_id', $filters['stock_location_id']);
         }
 
-        $where = empty($config['date_or_time_format'])
-            ? 'DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date'])
-            : 'trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
-        $builder->where($where);
+        $applyTransDateRange($builder);
 
-        $attributes_enabled = count($filters['definition_ids']) > 0;
-
-        if (!empty($search)) {
-            if ($attributes_enabled && $filters['search_custom']) {
-                $builder->havingLike('attribute_values', $search);
-                $builder->orHavingLike('attribute_dtvalues', $search);
-                $builder->orHavingLike('attribute_dvalues', $search);
-            } else {
-                $builder->groupStart();
-                $builder->like('name', $search);
-                $builder->orLike('item_number', $search);
-                $builder->orLike('items.item_id', $search);
-                $builder->orLike('company_name', $search);
-                $builder->orLike('items.category', $search);
-                $builder->groupEnd();
-            }
-        }
-
-        if ($attributes_enabled) {
+        if ($attributesEnabled) {
             $format = $this->db->escape(dateformat_mysql());
-            $this->db->simpleQuery('SET SESSION group_concat_max_len=49152');
             $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
             $builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
             $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
@@ -247,41 +326,12 @@ class Item extends Model
             $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
         }
 
-        $builder->where('items.deleted', $filters['is_deleted']);
+        $builder->whereIn('items.item_id', $itemIds);
 
-        if ($filters['empty_upc']) {
-            $builder->where('item_number', null);
-        }
-        if ($filters['low_inventory']) {
-            $builder->where('quantity <=', 'reorder_level');
-        }
-        if ($filters['is_serialized']) {
-            $builder->where('is_serialized', 1);
-        }
-        if ($filters['no_description']) {
-            $builder->where('items.description', '');
-        }
-        if ($filters['temporary']) {
-            $builder->where('items.item_type', ITEM_TEMP);
-        } else {
-            $non_temp = [ITEM, ITEM_KIT, ITEM_AMOUNT_ENTRY];
-            $builder->whereIn('items.item_type', $non_temp);
-        }
-
-        // get_found_rows case
-        if ($count_only) {
-            return $builder->get()->getRow()->count;
-        }
-
-        // Avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
         $builder->groupBy('items.item_id');
 
-        // Order by name of item by default
+        // Re-apply order: WHERE...IN + GROUP BY do not preserve Phase A's row order
         $builder->orderBy($sort, $order);
-
-        if ($rows > 0) {
-            $builder->limit($rows, $limit_from);
-        }
 
         return $builder->get();
     }
