@@ -270,7 +270,7 @@ class Item extends Model
             }
         }
 
-        $builder->orderBy($sortColumn, $order);
+        $builder->orderBy("MAX($sortColumn)", $order);
     }
 
     /**
@@ -495,10 +495,12 @@ class Item extends Model
 
         if ($attributesEnabled) {
             $format = $this->db->escape(dateformat_mysql());
-            $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
-            $builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
-            $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
-            $builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $definitionIds) . ')', 'left');
+            $attributeLinksTable = $this->db->prefixTable('attribute_links');
+            $attributeValuesTable = $this->db->prefixTable('attribute_values');
+            $builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', $attributeLinksTable.definition_id, $attributeValuesTable.attribute_value) ORDER BY $attributeLinksTable.definition_id SEPARATOR '|') AS attribute_values");
+            $builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', $attributeLinksTable.definition_id, DATE_FORMAT($attributeValuesTable.attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
+            $builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', $attributeLinksTable.definition_id, $attributeValuesTable.attribute_decimal) SEPARATOR '|') AS attribute_dvalues");
+            $builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND attribute_links.definition_id IN (' . implode(',', $definitionIds) . ')', 'left');
             $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
         }
 
