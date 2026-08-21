@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "Aggiorna Database.",
     "office"                     => "Ufficio",
     "office_desc"                => "Elenco Moduli Ufficio.",
+    'plugins'                    => 'Plugin',
     "receivings"                 => "Movimentazioni",
     "receivings_desc"            => "Elabora Ordine di Acquisto.",
     "reports"                    => "Resoconti",

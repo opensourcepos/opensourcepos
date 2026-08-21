@@ -88,7 +88,7 @@ class Tax_lib
         $register_mode = $this->sale_lib->get_mode();
         $tax_decimals = tax_decimals();
         $customer_id = $this->sale_lib->get_customer();
-        $customer_info = $this->customer->get_info($customer_id);
+        $customer_info = $this->customer->getInfo($customer_id);
         $taxes = [];
         $item_taxes = [];
 

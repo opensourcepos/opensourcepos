@@ -66,7 +66,7 @@ class Supplier extends Person
     /**
      * Gets information about a particular supplier
      */
-    public function get_info(?int $person_id): object
+    public function getInfo(?int $person_id): object
     {
         $builder = $this->db->table('suppliers');
         $builder->join('people', 'people.person_id = suppliers.person_id');
@@ -76,8 +76,7 @@ class Supplier extends Person
         if ($query->getNumRows() == 1) {    // TODO: ===
             return $query->getRow();
         } else {
-            // Get empty base parent object, as $supplier_id is NOT a supplier
-            $person_obj = parent::get_info(NEW_ENTRY);
+            $person_obj = parent::getInfo(NEW_ENTRY);
 
             // Get all the fields from supplier table
             // Append those fields to base parent object, we have a complete empty object
@@ -89,21 +88,19 @@ class Supplier extends Person
         }
     }
 
-    /**
-     * Gets information about multiple suppliers
-     */
-    public function get_multiple_info(array $person_ids): ResultInterface
+    public function getMultipleInfo(array $personIds, array $columns = []): array
     {
-        $builder = $this->db->table('suppliers');
-        $builder->join('people', 'people.person_id = suppliers.person_id');
-        $builder->whereIn('suppliers.person_id', $person_ids);
-        $builder->orderBy('last_name', 'asc');
-
-        return $builder->get();
+        $builder = $this->db->table('suppliers')
+            ->join('people', 'people.person_id = suppliers.person_id')
+            ->whereIn('suppliers.person_id', $personIds);
+        if (!empty($columns)) {
+            $builder->select(implode(', ', $columns));
+        }
+        return $builder->get()->getResultArray();
     }
 
     /**
-     * Inserts or updates a suppliers
+     * Inserts or updates a supplier
      */
     public function save_supplier(array &$person_data, array &$supplier_data, int $supplier_id = NEW_ENTRY): bool
     {

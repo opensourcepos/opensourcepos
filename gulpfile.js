@@ -136,7 +136,8 @@ gulp.task('debug-js', function() {
         './node_modules/clipboard/dist/clipboard.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
-        './public/js/nominatim.autocomplete.js']).pipe(rev()).pipe(gulp.dest('public/resources/js'));
+        './public/js/nominatim.autocomplete.js',
+        './public/js/plugin_data_helper.js']).pipe(rev()).pipe(gulp.dest('public/resources/js'));
     return gulp.src('./app/Views/partial/header.php').pipe(inject(debugjs,{addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:debug:js -->'})).pipe(gulp.dest('./app/Views/partial'));
 });
 
@@ -179,7 +180,8 @@ gulp.task('prod-js', function() {
     const opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
-        './public/js/nominatim.autocomplete.js']).pipe(uglify());
+        './public/js/nominatim.autocomplete.js',
+        './public/js/plugin_data_helper.js']).pipe(uglify());
 
 
     const prod1js = series(opensourcepos1js, opensourcepos2js).pipe(concat('opensourcepos.min.js'))
@@ -291,6 +293,7 @@ gulp.task('copy-menubar', function() {
     pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/smartphone.svg"),rename("messages.svg"),gulp.dest("public/images/menubar"));
     pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/tools.svg"),rename("migrate.svg"),gulp.dest("public/images/menubar"));
     pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/door.svg"),rename("office.svg"),gulp.dest("public/images/menubar"));
+    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/plugin.svg"),rename("plugins.svg"),gulp.dest("public/images/menubar"));
     pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/dolly.svg"),rename("receivings.svg"),gulp.dest("public/images/menubar"));
     pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/bar-chart.svg"),rename("reports.svg"),gulp.dest("public/images/menubar"));
     pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/cart.svg"),rename("sales.svg"),gulp.dest("public/images/menubar"));

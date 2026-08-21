@@ -1312,6 +1312,7 @@ class Sale_lib
         // POS #
         $pieces = explode(' ', $receipt_sale_id);
         $sale_id = $pieces[1];
+        $this->session->set('return_original_sale_id', (int)$sale_id);
 
         $this->empty_cart();
         $this->remove_customer();
@@ -1370,7 +1371,7 @@ class Sale_lib
         // Establish cash_mode for this sale by inspecting the payments
         if ($this->session->get('cash_rounding')) {
             $cash_types_only = true;
-            foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
+            foreach ($this->sale->getSalePayments($sale_id)->getResult() as $row) {
                 if ($row->payment_type != lang('Sales.cash') && $row->payment_type != lang('Sales.cash_adjustment')) {
                     $cash_types_only = false;
                 }
@@ -1387,7 +1388,7 @@ class Sale_lib
         }
 
         // Now load payments
-        foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
+        foreach ($this->sale->getSalePayments($sale_id)->getResult() as $row) {
             $this->addPayment($row->payment_type, $row->payment_amount, $row->reference_code ?? null, $row->cash_adjustment);
         }
 
@@ -1409,6 +1410,11 @@ class Sale_lib
         return $this->session->get('sale_id');
     }
 
+    public function getReturnOriginalSaleId(): int
+    {
+        return (int)($this->session->get('return_original_sale_id') ?? 0);
+    }
+
     /**
      * @return void
      */
@@ -1428,6 +1434,7 @@ class Sale_lib
         $this->empty_payments();
         $this->remove_customer();
         $this->clear_cash_flags();
+        $this->session->remove('return_original_sale_id');
     }
 
     /**
@@ -1466,7 +1473,7 @@ class Sale_lib
     public function is_customer_taxable(): bool    // TODO: This function is never called in the code
     {
         $customer_id = $this->get_customer();
-        $customer = $this->customer->get_info($customer_id);
+        $customer = $this->customer->getInfo($customer_id);
 
         // Do not charge sales tax if we have a customer that is not taxable
         return $customer->taxable or $customer_id == -1;    // TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.

@@ -51,7 +51,7 @@ class Home extends Secure_Controller
             return $this->response->setStatusCode(403)->setBody(lang('Employees.unauthorized_modify'));
         }
 
-        $person_info = $this->employee->get_info($employeeId);
+        $person_info = $this->employee->getInfo($employeeId);
         foreach (get_object_vars($person_info) as $property => $value) {
             $person_info->$property = $value;
         }

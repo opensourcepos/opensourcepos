@@ -44,7 +44,7 @@ class Customer extends Person
     }
 
     /**
-     * Checks if account number exists
+     * Checks if the account number exists
      */
     public function check_account_number_exists(string $account_number, string $person_id = ''): bool
     {
@@ -89,7 +89,7 @@ class Customer extends Person
     /**
      * Gets information about a particular customer
      */
-    public function get_info(?int $person_id): object
+    public function getInfo(?int $person_id): object
     {
         $builder = $this->db->table('customers');
         $builder->join('people', 'people.person_id = customers.person_id');
@@ -109,7 +109,7 @@ class Customer extends Person
     private function getEmptyObject(string $table_name): object
     {
         // Return an empty base parent object, as $item_id is NOT an item
-        $empty_obj = parent::get_info(NEW_ENTRY);
+        $empty_obj = parent::getInfo(NEW_ENTRY);
 
         // Iterate through field definitions to determine how the fields should be initialized
         foreach ($this->db->getFieldData($table_name) as $field) {
@@ -210,27 +210,26 @@ class Customer extends Person
     /**
      * Inserts or updates a customer
      */
-    public function save_customer(array &$person_data, array &$customer_data, int $customer_id = NEW_ENTRY): bool
+    public function saveCustomer(array &$personData, array &$customerData, int $customerId = NEW_ENTRY): bool
     {
         $success = false;
         $this->db->transStart();
 
-        if (parent::save_value($person_data, $customer_id)) {
+        if (parent::save_value($personData, $customerId)) {
             $builder = $this->db->table('customers');
-            if ($customer_id == NEW_ENTRY || !$customer_id || !$this->exists($customer_id)) {
-                $customer_data['person_id'] = $person_data['person_id'];
-                $success = $builder->insert($customer_data);
+            if ($customerId == NEW_ENTRY || !$customerId || !$this->exists($customerId)) {
+                $customerData['person_id'] = $personData['person_id'];
+                $success = $builder->insert($customerData);
             } else {
-                $builder->where('person_id', $customer_id);
-                $success = $builder->update($customer_data);
+                $builder->where('person_id', $customerId);
+                $success = $builder->update($customerData);
+                $customerData['person_id'] = $customerId;
             }
         }
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $success && $this->db->transStatus();
     }
 
     /**
