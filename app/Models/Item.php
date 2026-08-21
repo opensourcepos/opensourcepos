@@ -258,8 +258,13 @@ class Item extends Model
 
         // Order by name of item by default
         if ($sort === 'quantity' && $filters['stock_location_id'] <= -1) {
-            $idBuilder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id', 'left');
-            $idBuilder->orderBy('SUM(item_quantities.quantity)', $order);
+            $itemQuantitiesTable = $this->db->prefixTable('item_quantities');
+            $idBuilder->join(
+                "(SELECT item_id, SUM(quantity) AS total_quantity FROM $itemQuantitiesTable GROUP BY item_id) AS item_quantity_totals",
+                'item_quantity_totals.item_id = items.item_id',
+                'left'
+            );
+            $idBuilder->orderBy('item_quantity_totals.total_quantity', $order);
         } else {
             $idBuilder->orderBy($sort, $order);
         }
@@ -314,7 +319,7 @@ class Item extends Model
             $builder->select('MAX(item_quantities.location_id) AS location_id');
             $builder->select('MAX(item_quantities.quantity) AS quantity');
         } elseif ($sortByQuantityAllLocations) {
-            $builder->select('SUM(item_quantities.quantity) AS quantity');
+            $builder->select('item_quantity_totals.total_quantity AS quantity');
         }
 
         $builder->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -324,7 +329,12 @@ class Item extends Model
             $builder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id');
             $builder->where('location_id', $filters['stock_location_id']);
         } elseif ($sortByQuantityAllLocations) {
-            $builder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id', 'left');
+            $itemQuantitiesTable = $this->db->prefixTable('item_quantities');
+            $builder->join(
+                "(SELECT item_id, SUM(quantity) AS total_quantity FROM $itemQuantitiesTable GROUP BY item_id) AS item_quantity_totals",
+                'item_quantity_totals.item_id = items.item_id',
+                'left'
+            );
         }
 
         $applyTransDateRange($builder);
@@ -344,7 +354,7 @@ class Item extends Model
 
         // Re-apply order: WHERE...IN + GROUP BY do not preserve Phase A's row order
         if ($sortByQuantityAllLocations) {
-            $builder->orderBy('SUM(item_quantities.quantity)', $order);
+            $builder->orderBy('item_quantity_totals.total_quantity', $order);
         } else {
             $builder->orderBy($sort, $order);
         }

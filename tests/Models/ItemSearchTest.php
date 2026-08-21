@@ -190,4 +190,31 @@ class ItemSearchTest extends CIUnitTestCase
         $this->assertCount(1, $resultsWhenTemporary);
         $this->assertCount(0, $resultsWhenNotTemporary);
     }
+
+    public function testSearchSortByQuantitySumsAcrossLocationsWithoutMultiplication(): void
+    {
+        $itemId = $this->createSearchableItem(['name' => 'Multi Location Item ' . uniqid()]);
+
+        // createSearchableItem already inserts one inventory row; add two more
+        // inventory transactions so a naive SUM-after-join (which multiplies
+        // item_quantities rows by the inventory join) would triple-count.
+        $this->addInventoryRecord($itemId, 1);
+        $this->addInventoryRecord($itemId, 1);
+
+        $this->addItemQuantity($itemId, 1, 10);
+
+        $results = $this->item->search(
+            '',
+            $this->defaultSearchFilters(),
+            0,
+            0,
+            'quantity',
+            'desc'
+        )->getResult();
+
+        $match = array_values(array_filter($results, static fn ($r) => (int) $r->item_id === $itemId));
+
+        $this->assertCount(1, $match);
+        $this->assertEquals(10, (float) $match[0]->quantity);
+    }
 }
