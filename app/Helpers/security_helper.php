@@ -114,16 +114,36 @@ function applyEnvKeyReplacement(string $configFile, string $envKey, string $valu
  */
 function atomicWriteFile(string $path, string $contents): bool
 {
-    $tmpPath = $path . '.tmp.' . uniqid();
+    $tmpPath = $path . '.tmp.' . bin2hex(random_bytes(8));
 
-    $written = @file_put_contents($tmpPath, $contents);
-    if ($written === false || $written !== strlen($contents)) {
+    $handle = @fopen($tmpPath, 'x');
+    if ($handle === false) {
+        return false;
+    }
+
+    if (!@chmod($tmpPath, 0640)) {
+        fclose($handle);
         @unlink($tmpPath);
 
         return false;
     }
 
-    @chmod($tmpPath, 0640);
+    $written = fwrite($handle, $contents);
+    if ($written === false || $written !== strlen($contents) || !fflush($handle)) {
+        fclose($handle);
+        @unlink($tmpPath);
+
+        return false;
+    }
+
+    if (function_exists('fsync') && !fsync($handle)) {
+        fclose($handle);
+        @unlink($tmpPath);
+
+        return false;
+    }
+
+    fclose($handle);
 
     // rename() overwrites an existing destination on POSIX. On Windows it
     // does not, so fall back to unlink()+rename() there. Callers must not
