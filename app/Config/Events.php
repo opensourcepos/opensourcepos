@@ -37,7 +37,8 @@ Events::on('pre_system', static function (): void {
             throw new ConfigException('Encryption key could not be provisioned. Check that .env is writable.');
         }
 
-        if (ini_get('zlib.output_compression')) {
+        $value = ini_get('zlib.output_compression');
+        if (filter_var($value, FILTER_VALIDATE_BOOLEAN) || (int) $value > 0) {
             throw FrameworkException::forEnabledZlibOutputCompression();
         }
 
