@@ -297,7 +297,7 @@ class Item extends Model
         $builder->select('MAX(suppliers.company_name) AS company_name');
         $builder->select('MAX(suppliers.agency_name) AS agency_name');
         $builder->select('MAX(suppliers.account_number) AS account_number');
-        $builder->select('MAX(suppliers.deleted) AS deleted');
+        $builder->select('MAX(suppliers.deleted) AS supplier_deleted');
 
         $builder->select('MAX(inventory.trans_id) AS trans_id');
         $builder->select('MAX(inventory.trans_items) AS trans_items');
