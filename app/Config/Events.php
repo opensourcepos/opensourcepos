@@ -31,7 +31,8 @@ Events::on('pre_system', static function (): void {
         helper('security');
         checkThrottleEncryption();
 
-        if (ini_get('zlib.output_compression')) {
+        $value = ini_get('zlib.output_compression');
+        if (filter_var($value, FILTER_VALIDATE_BOOLEAN) || (int) $value > 0) {
             throw FrameworkException::forEnabledZlibOutputCompression();
         }
 
