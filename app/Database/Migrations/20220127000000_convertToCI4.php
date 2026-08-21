@@ -120,7 +120,7 @@ class ConvertToCI4 extends Migration
         $encrypter = Services::encrypter();
 
         return array_map(function ($value) use ($encrypter) {
-            return !empty($value) ? $encrypter->encrypt($value) : '';
+            return $value !== '' ? $encrypter->encrypt($value) : '';
         }, $plainData);
     }
 
