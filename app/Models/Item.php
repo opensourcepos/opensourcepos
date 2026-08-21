@@ -247,7 +247,7 @@ class Item extends Model
                     $builder->orWhere("{$valuesAlias}.attribute_date", $date->format('Y-m-d'));
                     $matched = true;
                 } else {
-                    $builder->orLike("{$valuesAlias}.attribute_value", $value);
+                    $builder->orWhere("{$valuesAlias}.attribute_value", $value);
                     $matched = true;
                 }
             }
