@@ -38,7 +38,10 @@ class ConvertToCI4 extends Migration
         if (!empty($existingKey) && strlen($existingKey) < 64) {
             $this->convertCI3EncryptedData();
         } else {
-            checkEncryption();
+            if (!checkEncryption()) {
+                abortEncryptionConversion();
+                throw new DatabaseException('Failed to persist encryption key. Check logs for details.');
+            }
         }
 
         removeBackup();
@@ -70,7 +73,10 @@ class ConvertToCI4 extends Migration
 
         $decryptedData = $this->decryptCI3Data($ci3EncryptedData);
 
-        checkEncryption();
+        if (!checkEncryption()) {
+            abortEncryptionConversion();
+            throw new DatabaseException('Failed to persist encryption key. Check logs for details.');
+        }
 
         $ci4EncryptedData = $this->encryptData($decryptedData);
 

@@ -177,7 +177,9 @@ function checkEncryption(): bool
             @chmod($backupPath, 0640);
             @chmod($configPath, 0640);
 
-            writeEnvKey('encryption.key', $key);
+            if (!writeEnvKey('encryption.key', $key)) {
+                return false;
+            }
 
             if (!empty($oldKey)) {
                 $configFile = file_get_contents($configPath);
