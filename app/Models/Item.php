@@ -257,7 +257,12 @@ class Item extends Model
         }
 
         // Order by name of item by default
-        $idBuilder->orderBy($sort, $order);
+        if ($sort === 'quantity' && $filters['stock_location_id'] <= -1) {
+            $idBuilder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id', 'left');
+            $idBuilder->orderBy('SUM(item_quantities.quantity)', $order);
+        } else {
+            $idBuilder->orderBy($sort, $order);
+        }
 
         if ($rows > 0) {
             $idBuilder->limit($rows, $limitFrom);
@@ -302,10 +307,14 @@ class Item extends Model
         $builder->select('MAX(inventory.trans_location) AS trans_location');
         $builder->select('MAX(inventory.trans_inventory) AS trans_inventory');
 
+        $sortByQuantityAllLocations = $sort === 'quantity' && $filters['stock_location_id'] <= -1;
+
         if ($filters['stock_location_id'] > -1) {
             $builder->select('MAX(item_quantities.item_id) AS qty_item_id');
             $builder->select('MAX(item_quantities.location_id) AS location_id');
             $builder->select('MAX(item_quantities.quantity) AS quantity');
+        } elseif ($sortByQuantityAllLocations) {
+            $builder->select('SUM(item_quantities.quantity) AS quantity');
         }
 
         $builder->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -314,6 +323,8 @@ class Item extends Model
         if ($filters['stock_location_id'] > -1) {
             $builder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id');
             $builder->where('location_id', $filters['stock_location_id']);
+        } elseif ($sortByQuantityAllLocations) {
+            $builder->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id', 'left');
         }
 
         $applyTransDateRange($builder);
@@ -332,7 +343,11 @@ class Item extends Model
         $builder->groupBy('items.item_id');
 
         // Re-apply order: WHERE...IN + GROUP BY do not preserve Phase A's row order
-        $builder->orderBy($sort, $order);
+        if ($sortByQuantityAllLocations) {
+            $builder->orderBy('SUM(item_quantities.quantity)', $order);
+        } else {
+            $builder->orderBy($sort, $order);
+        }
 
         return $builder->get();
     }
