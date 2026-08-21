@@ -458,7 +458,7 @@ class Item extends Model
                 'item_quantity_totals.item_id = items.item_id',
                 'left'
             );
-            $idBuilder->orderBy('item_quantity_totals.total_quantity', $order);
+            $idBuilder->orderBy('MAX(item_quantity_totals.total_quantity)', $order);
         } elseif ($sortDefinitionId !== null) {
             $this->applyAttributeSort($idBuilder, $definitionInfo, $sortDefinitionId, $order);
         } else {
@@ -515,7 +515,7 @@ class Item extends Model
             $builder->select('MAX(item_quantities.location_id) AS location_id');
             $builder->select('MAX(item_quantities.quantity) AS quantity');
         } elseif ($sortByQuantityAllLocations) {
-            $builder->select('item_quantity_totals.total_quantity AS quantity');
+            $builder->select('MAX(item_quantity_totals.total_quantity) AS quantity');
         }
 
         $builder->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -552,7 +552,7 @@ class Item extends Model
 
         // Re-apply order: WHERE...IN + GROUP BY do not preserve Phase A's row order
         if ($sortByQuantityAllLocations) {
-            $builder->orderBy('item_quantity_totals.total_quantity', $order);
+            $builder->orderBy('MAX(item_quantity_totals.total_quantity)', $order);
         } elseif ($sortDefinitionId !== null) {
             $this->applyAttributeSort($builder, $definitionInfo, $sortDefinitionId, $order);
         } else {
