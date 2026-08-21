@@ -3,9 +3,9 @@
 namespace App\Database\Migrations;
 
 use App\Models\Appconfig;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
-use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
 use Config\Encryption;
 use Config\Services;
@@ -28,7 +28,10 @@ class ConvertToCI4 extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_CI4Conversion.sql');
+
+        if (!executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_CI4Conversion.sql')) {
+            throw new DatabaseException('Migration script 3.4.0_CI4Conversion.sql failed. Check logs for details.');
+        }
 
         $existingKey = config('Encryption')->key;
 
@@ -47,10 +50,9 @@ class ConvertToCI4 extends Migration
     public function down(): void {}
 
     /**
-     * @return RedirectResponse|void
      * @throws ReflectionException
      */
-    private function convertCI3EncryptedData()
+    private function convertCI3EncryptedData(): void
     {
         $appConfig = model(Appconfig::class);
 
@@ -70,19 +72,17 @@ class ConvertToCI4 extends Migration
 
         checkEncryption();
 
-        try {
-            $ci4EncryptedData = $this->encryptData($decryptedData);
+        $ci4EncryptedData = $this->encryptData($decryptedData);
 
-            $success = empty(array_diff_assoc($decryptedData, $this->decryptData($ci4EncryptedData)));
-            if (!$success) {
-                abortEncryptionConversion();
-                removeBackup();
-                throw new RedirectException('login');
-            }
+        $success = empty(array_diff_assoc($decryptedData, $this->decryptData($ci4EncryptedData)));
+        if (!$success) {
+            abortEncryptionConversion();
+            throw new RedirectException('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
+        }
 
-            $appConfig->batch_save($ci4EncryptedData);
-        } catch (RedirectException $e) {
-            return redirect()->to('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
+        if (!$appConfig->batch_save($ci4EncryptedData)) {
+            abortEncryptionConversion();
+            throw new DatabaseException('Failed to save converted encryption data. Check logs for details.');
         }
     }
 
