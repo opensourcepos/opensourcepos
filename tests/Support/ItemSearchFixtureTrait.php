@@ -47,8 +47,22 @@ trait ItemSearchFixtureTrait
         ]);
     }
 
+    protected function ensureStockLocation(int $locationId): void
+    {
+        $db = db_connect();
+        $exists = $db->table('stock_locations')->where('location_id', $locationId)->get()->getRow();
+        if ($exists === null) {
+            $db->query(
+                'INSERT INTO ' . $db->prefixTable('stock_locations') . ' (location_id, location_name, deleted) VALUES (?, ?, 0)',
+                [$locationId, 'Test Location ' . $locationId]
+            );
+        }
+    }
+
     protected function addItemQuantity(int $itemId, int $locationId, float $quantity): void
     {
+        $this->ensureStockLocation($locationId);
+
         $itemQuantityModel = model(Item_quantity::class);
         $itemQuantityModel->save_value(
             [
