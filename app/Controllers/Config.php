@@ -64,7 +64,7 @@ class Config extends Secure_Controller
         $this->db = Database::connect();
 
         helper('security');
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $this->encrypter = Services::encrypter();
         } else {
             log_message('alert', 'Error preparing encryption key');
@@ -256,7 +256,7 @@ class Config extends Secure_Controller
         // Integrations Related fields
         $data['mailchimp']    = [];
 
-        if (check_encryption()) {    // TODO: Hungarian notation
+        if (checkEncryption()) {    // TODO: Hungarian notation
             if (!isset($this->encrypter)) {
                 helper('security');
                 $this->encrypter = Services::encrypter();
@@ -271,7 +271,7 @@ class Config extends Secure_Controller
                 : '';
 
             // Remove any backup of .env created by check_encryption()
-            remove_backup();
+            removeBackup();
         } else {
             $data['mailchimp']['api_key'] = '';
             $data['mailchimp']['list_id'] = '';
@@ -533,7 +533,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('smtp_pass'))) {
+        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
@@ -579,7 +579,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('msg_pwd'))) {
+        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
         }
 
@@ -646,7 +646,7 @@ class Config extends Secure_Controller
         $api_key = '';
         $list_id = '';
 
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
             if (!empty($api_key_unencrypted)) {
                 $api_key = $this->encrypter->encrypt($api_key_unencrypted);
