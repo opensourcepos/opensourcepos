@@ -178,6 +178,7 @@ class Item extends Model
             $builder->groupEnd();
         };
 
+        $definitionIds = array_map('intval', $filters['definition_ids']);
         $attributesEnabled = count($filters['definition_ids']) > 0;
         $customAttributeSearch = $attributesEnabled && $filters['search_custom'] && !empty($search);
 
@@ -191,7 +192,7 @@ class Item extends Model
             // Matching is per attribute row (WHERE, pre-GROUP BY), not against a GROUP_CONCAT
             // blob (HAVING, post-GROUP BY), so a match can't bleed across definitions.
             $idBuilder->select('items.item_id');
-            $idBuilder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
+            $idBuilder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $definitionIds) . ')', 'left');
             $idBuilder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
         } else {
             $idBuilder->select('items.item_id');
@@ -231,8 +232,8 @@ class Item extends Model
         if ($filters['empty_upc']) {
             $idBuilder->where('item_number', null);
         }
-        if ($filters['low_inventory']) {
-            $idBuilder->where('quantity <=', 'reorder_level');
+        if ($filters['low_inventory'] && $filters['stock_location_id'] > -1) {
+            $idBuilder->where('item_quantities.quantity <=', new RawSql('items.reorder_level'));
         }
         if ($filters['is_serialized']) {
             $idBuilder->where('is_serialized', 1);
@@ -322,7 +323,7 @@ class Item extends Model
             $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
             $builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
             $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
-            $builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
+            $builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $definitionIds) . ')', 'left');
             $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
         }
 
