@@ -80,7 +80,19 @@ class Secure_Controller extends BaseController
 
     public function sanitizeSortColumn($headers, $field, $default): string
     {
-        return $field != null && in_array($field, array_keys(array_merge(...$headers))) ? $field : $default;
+        if ($field === null) {
+            return $default;
+        }
+
+        // Flatten keys directly as array_merge() renumbers numeric string keys
+        $validColumns = [];
+        foreach ($headers as $header) {
+            foreach (array_keys($header) as $key) {
+                $validColumns[] = (string) $key;
+            }
+        }
+
+        return in_array((string) $field, $validColumns, true) ? $field : $default;
     }
 
     /**

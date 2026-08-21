@@ -178,21 +178,11 @@ class Item extends Model
     }
 
     /**
-     * Adds one inner join per parsed attribute name (each on its own alias, so an item
-     * matching on both "color" and "size" isn't forced into a single shared row), scoped to
-     * the given definition_ids. Multiple values for the same name are OR'd within that name's
-     * join condition. Attribute names that don't resolve to one of those definitions are
-     * ignored rather than erroring, since the search string is free-form user input.
+     * Joins rather than correlated EXISTS per name: EXISTS made MySQL materialize one
+     * subquery as a full attribute_links scan instead of using attribute_links_uq2 (~400ms vs ~150ms).
      *
-     * Deliberately joins rather than using a correlated EXISTS per name: measured against the
-     * real dataset, two EXISTS subqueries caused MySQL to materialize one of them as a full
-     * scan of attribute_links instead of using the attribute_links_uq2 index (~400ms vs the
-     * equivalent joined form's ~150ms, both returning the same rows).
-     *
-     * $definitionInfo must be resolved by the caller before any joins are added to $builder —
-     * querying through the Attribute model here would run a second query on the same shared
-     * connection, which resets CodeIgniter's table-alias tracking and corrupts $builder's own
-     * "items" alias by the time $builder->get() runs.
+     * $definitionInfo must be resolved by the caller before $builder exists - a query here
+     * would reset CodeIgniter's table-alias tracking and corrupt $builder's "items" alias.
      *
      * @param array<int, array{name: string, type: string}> $definitionInfo definition_id => info, from getDefinitionsByFlags(..., true)
      * @param array<string, string[]> $parsedAttributes Attribute name => list of search values
@@ -329,9 +319,7 @@ class Item extends Model
         $attributesEnabled = count($filters['definition_ids']) > 0;
         $customAttributeSearch = $attributesEnabled && $filters['search_custom'] && !empty($search);
 
-        // Resolved once, up front: any query issued on $this->db after $idBuilder is
-        // constructed but before $idBuilder->get() runs resets CodeIgniter's table-alias
-        // tracking and corrupts $idBuilder's own "items" alias (see applyNamedAttributeSearch()).
+        // Resolved before $idBuilder exists - see applyNamedAttributeSearch() for why.
         $attribute = model(Attribute::class);
         $definitionInfo = $attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH, true);
 

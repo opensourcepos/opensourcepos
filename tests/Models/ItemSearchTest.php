@@ -35,12 +35,8 @@ class ItemSearchTest extends CIUnitTestCase
 
         $this->item = model(Item::class);
 
-        // Force a fresh read of app_config: the OSPOS settings cache can predate the
-        // seeded config rows, which otherwise leaves keys like 'dateformat' missing.
-        // OSPOS::set_settings() decides whether app_config is readable via a cached
-        // tableExists() check on the shared connection; that cache can go stale mid-suite
-        // and silently fall back to defaults (no 'dateformat' key). Set the setting this
-        // test needs directly rather than depending on that cache being fresh.
+        // OSPOS's app_config cache can go stale mid-suite and fall back to defaults with
+        // no 'dateformat' key, so set it directly rather than depending on that cache.
         config(OSPOS::class)->settings['dateformat'] = 'm/d/Y';
     }
 
