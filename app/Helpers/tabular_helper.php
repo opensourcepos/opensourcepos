@@ -403,12 +403,16 @@ function item_headers(): array
 /**
  * Get all sortable column keys for items table, including dynamic attribute columns.
  *
+ * @param array|null $definitionIds Attribute definition IDs to append as sortable columns.
+ *                                  If null, resolved via a query against SHOW_IN_ITEMS.
  * @return array Array of column headers in the format sanitizeSortColumn() expects
  */
-function itemSortColumns(): array
+function itemSortColumns(?array $definitionIds = null): array
 {
-    $attribute = model(Attribute::class);
-    $definitionIds = array_keys($attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS));
+    if ($definitionIds === null) {
+        $attribute = model(Attribute::class);
+        $definitionIds = array_keys($attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS));
+    }
 
     $headers = item_headers();
 

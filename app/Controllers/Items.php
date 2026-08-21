@@ -111,13 +111,14 @@ class Items extends Secure_Controller
         $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-        $sort = $this->sanitizeSortColumn(itemSortColumns(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
-        $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
         $definitionNamesWithTypes = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
+        $definitionIds = array_keys($definitionNamesWithTypes);
+
+        $sort = $this->sanitizeSortColumn(itemSortColumns($definitionIds), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
@@ -130,7 +131,7 @@ class Items extends Secure_Controller
             'search_custom'     => false,
             'is_deleted'        => false,
             'temporary'         => false,
-            'definition_ids'    => array_keys($definitionNames)
+            'definition_ids'    => $definitionIds
         ];
 
         // Check if any filter is set in the multiselect dropdown
