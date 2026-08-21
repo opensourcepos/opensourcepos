@@ -178,6 +178,68 @@ class Item extends Model
     }
 
     /**
+     * Adds one inner join per parsed attribute name (each on its own alias, so an item
+     * matching on both "color" and "size" isn't forced into a single shared row), scoped to
+     * the given definition_ids. Multiple values for the same name are OR'd within that name's
+     * join condition. Attribute names that don't resolve to one of those definitions are
+     * ignored rather than erroring, since the search string is free-form user input.
+     *
+     * Deliberately joins rather than using a correlated EXISTS per name: measured against the
+     * real dataset, two EXISTS subqueries caused MySQL to materialize one of them as a full
+     * scan of attribute_links instead of using the attribute_links_uq2 index (~400ms vs the
+     * equivalent joined form's ~150ms, both returning the same rows).
+     *
+     * $definitionInfo must be resolved by the caller before any joins are added to $builder —
+     * querying through the Attribute model here would run a second query on the same shared
+     * connection, which resets CodeIgniter's table-alias tracking and corrupts $builder's own
+     * "items" alias by the time $builder->get() runs.
+     *
+     * @param array<int, array{name: string, type: string}> $definitionInfo definition_id => info, from getDefinitionsByFlags(..., true)
+     * @param array<string, string[]> $parsedAttributes Attribute name => list of search values
+     * @param int[] $allowedDefinitionIds Definition ids this search is scoped to
+     */
+    private function applyNamedAttributeSearch($builder, array $definitionInfo, array $parsedAttributes, array $allowedDefinitionIds): void
+    {
+        $definitionIdByName = [];
+        foreach ($definitionInfo as $id => $info) {
+            $name = is_array($info) ? $info['name'] : $info;
+            $definitionIdByName[strtolower($name)] = (int) $id;
+        }
+
+        $index = 0;
+        foreach ($parsedAttributes as $attrName => $values) {
+            if (!isset($definitionIdByName[$attrName])) {
+                continue;
+            }
+
+            $definitionId = $definitionIdByName[$attrName];
+
+            if (!in_array($definitionId, $allowedDefinitionIds, true)) {
+                continue;
+            }
+
+            $linksAlias = "named_attr_links_{$index}";
+            $valuesAlias = "named_attr_values_{$index}";
+            $index++;
+
+            $builder->join(
+                "attribute_links AS {$linksAlias}",
+                "{$linksAlias}.item_id = items.item_id AND {$linksAlias}.definition_id = {$definitionId} AND {$linksAlias}.receiving_id IS NULL AND {$linksAlias}.sale_id IS NULL"
+            );
+            $builder->join(
+                "attribute_values AS {$valuesAlias}",
+                "{$valuesAlias}.attribute_id = {$linksAlias}.attribute_id"
+            );
+
+            $builder->groupStart();
+            foreach ($values as $value) {
+                $builder->orLike("{$valuesAlias}.attribute_value", $value);
+            }
+            $builder->groupEnd();
+        }
+    }
+
+    /**
      * Get attribute definition ID from column name for sorting
      *
      * @param string $sortColumn The sort column name
@@ -195,15 +257,18 @@ class Item extends Model
     /**
      * Left-joins the attribute tables needed to sort by a given attribute definition,
      * and applies the order-by using the type-appropriate value column.
+     *
+     * $definitionInfo must be resolved by the caller before any joins are added to $builder —
+     * see the note on applyNamedAttributeSearch() for why a query here would corrupt $builder.
+     *
+     * @param array<int, array{name: string, type: string}> $definitionInfo definition_id => info, from getDefinitionsByFlags(..., true)
      */
-    private function applyAttributeSort($builder, int $sortDefinitionId, string $order): void
+    private function applyAttributeSort($builder, array $definitionInfo, int $sortDefinitionId, string $order): void
     {
         $sortAlias = "sort_attr_{$sortDefinitionId}";
         $builder->join("attribute_links AS {$sortAlias}", "{$sortAlias}.item_id = items.item_id AND {$sortAlias}.definition_id = {$sortDefinitionId} AND {$sortAlias}.sale_id IS NULL AND {$sortAlias}.receiving_id IS NULL", 'left');
         $builder->join("attribute_values AS {$sortAlias}_val", "{$sortAlias}_val.attribute_id = {$sortAlias}.attribute_id", 'left');
 
-        $attribute = model(Attribute::class);
-        $definitionInfo = $attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
         $sortColumn = "{$sortAlias}_val.attribute_value";
 
         if (isset($definitionInfo[$sortDefinitionId])) {
@@ -264,6 +329,12 @@ class Item extends Model
         $attributesEnabled = count($filters['definition_ids']) > 0;
         $customAttributeSearch = $attributesEnabled && $filters['search_custom'] && !empty($search);
 
+        // Resolved once, up front: any query issued on $this->db after $idBuilder is
+        // constructed but before $idBuilder->get() runs resets CodeIgniter's table-alias
+        // tracking and corrupts $idBuilder's own "items" alias (see applyNamedAttributeSearch()).
+        $attribute = model(Attribute::class);
+        $definitionInfo = $attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH, true);
+
         if ($attributesEnabled) {
             $this->db->simpleQuery('SET SESSION group_concat_max_len=49152');
         }
@@ -290,13 +361,23 @@ class Item extends Model
 
         $applyTransDateRange($idBuilder);
 
-        if (!empty($search)) {
+        $parsedAttributeSearch = $customAttributeSearch ? $this->parseAttributeSearch($search) : null;
+        $freeTextSearch = $parsedAttributeSearch !== null && !empty($parsedAttributeSearch['attributes'])
+            ? implode(' ', $parsedAttributeSearch['terms'])
+            : $search;
+
+        if ($parsedAttributeSearch !== null && !empty($parsedAttributeSearch['attributes'])) {
+            $this->applyNamedAttributeSearch($idBuilder, $definitionInfo, $parsedAttributeSearch['attributes'], $definitionIds);
+        }
+
+        if (!empty($freeTextSearch)) {
             if ($customAttributeSearch) {
                 $format = $this->db->escape(dateformat_mysql());
+                $attributeValuesTable = $this->db->prefixTable('attribute_values');
                 $idBuilder->groupStart();
-                $idBuilder->like('attribute_value', $search);
-                $idBuilder->orLike(new RawSql("DATE_FORMAT(attribute_date, $format)"), $search);
-                $idBuilder->orLike('attribute_decimal', $search);
+                $idBuilder->like('attribute_values.attribute_value', $freeTextSearch);
+                $idBuilder->orLike(new RawSql("DATE_FORMAT($attributeValuesTable.attribute_date, $format)"), $freeTextSearch);
+                $idBuilder->orLike('attribute_values.attribute_decimal', $freeTextSearch);
                 $idBuilder->groupEnd();
             } else {
                 $idBuilder->groupStart();
@@ -349,7 +430,7 @@ class Item extends Model
             );
             $idBuilder->orderBy('item_quantity_totals.total_quantity', $order);
         } elseif ($sortDefinitionId !== null) {
-            $this->applyAttributeSort($idBuilder, $sortDefinitionId, $order);
+            $this->applyAttributeSort($idBuilder, $definitionInfo, $sortDefinitionId, $order);
         } else {
             $idBuilder->orderBy($sort, $order);
         }
@@ -441,7 +522,7 @@ class Item extends Model
         if ($sortByQuantityAllLocations) {
             $builder->orderBy('item_quantity_totals.total_quantity', $order);
         } elseif ($sortDefinitionId !== null) {
-            $this->applyAttributeSort($builder, $sortDefinitionId, $order);
+            $this->applyAttributeSort($builder, $definitionInfo, $sortDefinitionId, $order);
         } else {
             $builder->orderBy($sort, $order);
         }

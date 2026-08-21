@@ -76,4 +76,37 @@ trait ItemSearchFixtureTrait
             'definition_ids'    => [],
         ], $overrides);
     }
+
+    protected function createAttributeDefinition(string $name, string $type = TEXT, int $flags = 1): int
+    {
+        $db = db_connect();
+        $db->table('attribute_definitions')->insert([
+            'definition_name' => $name,
+            'definition_type' => $type,
+            'definition_flags' => $flags,
+            'deleted' => 0,
+        ]);
+
+        return (int) $db->insertID();
+    }
+
+    protected function linkAttributeValue(int $itemId, int $definitionId, string $value): void
+    {
+        $db = db_connect();
+
+        // attribute_value is unique: reuse the existing attribute_id if this value already exists
+        $existing = $db->table('attribute_values')->select('attribute_id')->where('attribute_value', $value)->get()->getRow();
+        if ($existing !== null) {
+            $attributeId = (int) $existing->attribute_id;
+        } else {
+            $db->table('attribute_values')->insert(['attribute_value' => $value]);
+            $attributeId = (int) $db->insertID();
+        }
+
+        $db->table('attribute_links')->insert([
+            'definition_id' => $definitionId,
+            'attribute_id'  => $attributeId,
+            'item_id'       => $itemId,
+        ]);
+    }
 }

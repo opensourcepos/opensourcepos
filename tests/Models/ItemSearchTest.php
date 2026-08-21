@@ -6,6 +6,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Item;
 use Config\Database;
+use Config\OSPOS;
 use Tests\Support\ItemSearchFixtureTrait;
 
 class ItemSearchTest extends CIUnitTestCase
@@ -33,6 +34,19 @@ class ItemSearchTest extends CIUnitTestCase
         parent::setUp();
 
         $this->item = model(Item::class);
+
+        // Force a fresh read of app_config: the OSPOS settings cache can predate the
+        // seeded config rows, which otherwise leaves keys like 'dateformat' missing.
+        // OSPOS::set_settings() decides whether app_config is readable via a cached
+        // tableExists() check on the shared connection; that cache can go stale mid-suite
+        // and silently fall back to defaults (no 'dateformat' key). Set the setting this
+        // test needs directly rather than depending on that cache being fresh.
+        config(OSPOS::class)->settings['dateformat'] = 'm/d/Y';
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
     }
 
     public function testSearchReturnsMatchingItemByName(): void
@@ -217,5 +231,114 @@ class ItemSearchTest extends CIUnitTestCase
 
         $this->assertCount(1, $match);
         $this->assertEquals(15, (float) $match[0]->quantity);
+    }
+
+    public function testSearchByNamedAttributeSyntax(): void
+    {
+        $colorDefinitionId = $this->createAttributeDefinition('Color ' . uniqid());
+        $sizeDefinitionId = $this->createAttributeDefinition('Size ' . uniqid());
+        $blueValue = 'Blue' . uniqid();
+        $redValue = 'Red' . uniqid();
+        $largeValue = 'Large' . uniqid();
+
+        $matchingId = $this->createSearchableItem(['name' => 'Named Attr Match ' . uniqid()]);
+        $this->linkAttributeValue($matchingId, $colorDefinitionId, $blueValue);
+        $this->linkAttributeValue($matchingId, $sizeDefinitionId, $largeValue);
+
+        $wrongColorId = $this->createSearchableItem(['name' => 'Named Attr WrongColor ' . uniqid()]);
+        $this->linkAttributeValue($wrongColorId, $colorDefinitionId, $redValue);
+        $this->linkAttributeValue($wrongColorId, $sizeDefinitionId, $largeValue);
+
+        $filters = $this->defaultSearchFilters([
+            'search_custom'  => true,
+            'definition_ids' => [$colorDefinitionId, $sizeDefinitionId],
+        ]);
+
+        $colorAttrName = $this->getDefinitionName($colorDefinitionId);
+        $sizeAttrName = $this->getDefinitionName($sizeDefinitionId);
+
+        $results = $this->item->search("{$colorAttrName}:{$blueValue} {$sizeAttrName}:{$largeValue}", $filters)->getResult();
+        $ids = array_map(static fn ($item) => (int) $item->item_id, $results);
+
+        $this->assertContains($matchingId, $ids);
+        $this->assertNotContains($wrongColorId, $ids);
+    }
+
+    public function testSearchByNamedAttributeCombinedWithFreeText(): void
+    {
+        // When search_custom is on, the free-text remainder matches attribute values
+        // (not item name/category/etc) - see the customAttributeSearch branch of search().
+        // An item can only have one attribute_links row per definition_id (attribute_links_uq3),
+        // so the name:value attribute and the free-text-matched attribute must be different
+        // definitions.
+        $colorDefinitionId = $this->createAttributeDefinition('Color ' . uniqid());
+        $materialDefinitionId = $this->createAttributeDefinition('Material ' . uniqid());
+        $greenValue = 'Green' . uniqid();
+        $freeTextValue = 'Cotton' . uniqid();
+
+        $matchingId = $this->createSearchableItem(['name' => 'Combo Search Widget ' . uniqid()]);
+        $this->linkAttributeValue($matchingId, $colorDefinitionId, $greenValue);
+        $this->linkAttributeValue($matchingId, $materialDefinitionId, $freeTextValue);
+
+        $wrongFreeTextId = $this->createSearchableItem(['name' => 'Combo Search Other ' . uniqid()]);
+        $this->linkAttributeValue($wrongFreeTextId, $colorDefinitionId, $greenValue);
+
+        $filters = $this->defaultSearchFilters([
+            'search_custom'  => true,
+            'definition_ids' => [$colorDefinitionId, $materialDefinitionId],
+        ]);
+
+        $colorAttrName = $this->getDefinitionName($colorDefinitionId);
+
+        $results = $this->item->search("{$colorAttrName}:{$greenValue} {$freeTextValue}", $filters)->getResult();
+        $ids = array_map(static fn ($item) => (int) $item->item_id, $results);
+
+        $this->assertContains($matchingId, $ids);
+        $this->assertNotContains($wrongFreeTextId, $ids);
+    }
+
+    public function testPlainFreeTextSearchUnaffectedByAttributeParsing(): void
+    {
+        // search_custom is off here, so this exercises the plain by-name search path -
+        // parseAttributeSearch() is never even called in this branch of search().
+        $uniqueName = 'Plain Search Widget ' . uniqid();
+        $this->createSearchableItem(['name' => $uniqueName]);
+
+        $results = $this->item->search($uniqueName, $this->defaultSearchFilters())->getResult();
+
+        $this->assertCount(1, $results);
+        $this->assertEquals($uniqueName, $results[0]->name);
+    }
+
+    public function testSearchCustomWithoutNamedAttributeSyntaxMatchesAttributeValueAsBefore(): void
+    {
+        // No "name:value" syntax present, so parseAttributeSearch() finds no attributes and
+        // $freeTextSearch falls back to the raw $search - this is the pre-Feature-C behavior
+        // for search_custom, unaffected by the new named-attribute join.
+        $definitionId = $this->createAttributeDefinition('Material ' . uniqid());
+        $searchValue = 'Cotton' . uniqid();
+
+        $matchingId = $this->createSearchableItem(['name' => 'Search Custom Widget ' . uniqid()]);
+        $this->linkAttributeValue($matchingId, $definitionId, $searchValue);
+
+        $filters = $this->defaultSearchFilters([
+            'search_custom'  => true,
+            'definition_ids' => [$definitionId],
+        ]);
+
+        $results = $this->item->search($searchValue, $filters)->getResult();
+        $ids = array_map(static fn ($item) => (int) $item->item_id, $results);
+
+        $this->assertContains($matchingId, $ids);
+    }
+
+    private function getDefinitionName(int $definitionId): string
+    {
+        return db_connect()->table('attribute_definitions')
+            ->select('definition_name')
+            ->where('definition_id', $definitionId)
+            ->get()
+            ->getRow()
+            ->definition_name;
     }
 }
