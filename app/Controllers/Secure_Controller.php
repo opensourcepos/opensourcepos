@@ -87,9 +87,7 @@ class Secure_Controller extends BaseController
         // Flatten keys directly as array_merge() renumbers numeric string keys
         $validColumns = [];
         foreach ($headers as $header) {
-            foreach (array_keys($header) as $key) {
-                $validColumns[] = (string) $key;
-            }
+            $validColumns[] = (string) array_key_first($header);
         }
 
         return in_array((string) $field, $validColumns, true) ? $field : $default;
