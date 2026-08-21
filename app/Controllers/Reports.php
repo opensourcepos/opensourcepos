@@ -25,6 +25,7 @@ use App\Models\Reports\Summary_sales;
 use App\Models\Reports\Summary_sales_taxes;
 use App\Models\Reports\Summary_suppliers;
 use App\Models\Reports\Summary_taxes;
+use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
@@ -85,8 +86,7 @@ class Reports extends Secure_Controller
 
             // Check access to report submodule
             if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
-                header('Location: ' . base_url('no_access/reports/reports_' . $submodule_id));
-                exit();
+                throw new RedirectException('no_access/reports/reports_' . $submodule_id);
             }
         }
 
