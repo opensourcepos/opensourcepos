@@ -168,9 +168,13 @@ class Item extends Model
         $config = config(OSPOS::class)->settings;
 
         $dateFormatEnabled = empty($config['date_or_time_format']);
-        $rangeStart = $dateFormatEnabled ? $filters['start_date'] : rawurldecode($filters['start_date']);
-        $rangeEnd = $dateFormatEnabled ? $filters['end_date'] : rawurldecode($filters['end_date']);
-        $applyTransDateRange = function ($builder) use ($dateFormatEnabled, $rangeStart, $rangeEnd) {
+        $hasTransDateRange = !empty($filters['start_date']) && !empty($filters['end_date']);
+        $rangeStart = $hasTransDateRange ? ($dateFormatEnabled ? $filters['start_date'] : rawurldecode($filters['start_date'])) : null;
+        $rangeEnd = $hasTransDateRange ? ($dateFormatEnabled ? $filters['end_date'] : rawurldecode($filters['end_date'])) : null;
+        $applyTransDateRange = function ($builder) use ($hasTransDateRange, $dateFormatEnabled, $rangeStart, $rangeEnd) {
+            if (!$hasTransDateRange) {
+                return;
+            }
             $column = $dateFormatEnabled ? 'DATE_FORMAT(trans_date, "%Y-%m-%d")' : 'trans_date';
             $builder->groupStart();
             $builder->where("$column >=", $rangeStart);
