@@ -202,6 +202,7 @@ class ItemSearchTest extends CIUnitTestCase
         $this->addInventoryRecord($itemId, 1);
 
         $this->addItemQuantity($itemId, 1, 10);
+        $this->addItemQuantity($itemId, 2, 5);
 
         $results = $this->item->search(
             '',
@@ -215,6 +216,6 @@ class ItemSearchTest extends CIUnitTestCase
         $match = array_values(array_filter($results, static fn ($r) => (int) $r->item_id === $itemId));
 
         $this->assertCount(1, $match);
-        $this->assertEquals(10, (float) $match[0]->quantity);
+        $this->assertEquals(15, (float) $match[0]->quantity);
     }
 }
