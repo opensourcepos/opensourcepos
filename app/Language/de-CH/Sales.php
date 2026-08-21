@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Entferne Kunde',
     'return'                            => 'Retoure',
     'rewards'                           => '',
+    'rewards_package'                   => '',
     'rewards_remaining_balance'         => '',
     'sale'                              => 'Verkauf',
     'sale_time'                         => 'Zeit',

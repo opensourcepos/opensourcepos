@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'ลบลูกค้า',
     'return'                            => 'คืน',
     'rewards'                           => 'คะแนนสะสม',
+    'rewards_package'                   => 'คะแนนสะสม',
     'rewards_remaining_balance'         => 'คะแนนสะสมคงเหลือ ',
     'sale'                              => 'ขาย',
     'sale_time'                         => 'เวลา',

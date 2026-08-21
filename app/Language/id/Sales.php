@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Hapus Pelanggan',
     'return'                            => 'Retur',
     'rewards'                           => 'Poin Penghargaan',
+    'rewards_package'                   => 'Hadiah',
     'rewards_remaining_balance'         => 'Poin hadiah yang tersisa adalah ',
     'sale'                              => 'Penjualan',
     'sale_time'                         => 'Waktu',

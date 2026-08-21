@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Премахване на клиент',
     'return'                            => 'Връщане',
     'rewards'                           => 'Наградни точки',
+    'rewards_package'                   => 'Награди',
     'rewards_remaining_balance'         => 'Оставащата стойност на точките за награда е ',
     'sale'                              => 'Продажба',
     'sale_time'                         => 'Време',

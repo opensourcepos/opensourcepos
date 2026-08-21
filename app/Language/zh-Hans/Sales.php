@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => '移除客戶',
     'return'                            => '退貨',
     'rewards'                           => '',
+    'rewards_package'                   => '',
     'rewards_remaining_balance'         => '',
     'sale'                              => '銷售',
     'sale_time'                         => 'Time',

@@ -154,6 +154,7 @@ return [
     'remove_customer'                   => 'Enlever Client',
     'return'                            => 'Reprise',
     'rewards'                           => 'Points de fidélité',
+    'rewards_package'                   => 'Récompenses',
     'rewards_remaining_balance'         => 'Vos points fidélité restants ',
     'sale'                              => 'Vente',
     'sale_time'                         => 'Heure',

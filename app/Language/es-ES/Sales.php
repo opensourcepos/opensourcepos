@@ -154,6 +154,7 @@ return [
     'remove_customer'                   => 'Borrar Cliente',
     'return'                            => 'Devolución',
     'rewards'                           => 'Puntos',
+    'rewards_package'                   => 'Paquete de recompensas',
     'rewards_remaining_balance'         => 'El remanente de puntos es ',
     'sale'                              => 'Venta',
     'sale_time'                         => 'Hora',

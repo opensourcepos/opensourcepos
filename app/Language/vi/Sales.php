@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Xóa bỏ khách hàng',
     'return'                            => 'Trả hàng',
     'rewards'                           => 'Điểm thưởng',
+    'rewards_package'                   => 'Điểm thưởng',
     'rewards_remaining_balance'         => 'Giá trị còn lại của điểm thưởng là ',
     'sale'                              => 'Bán hàng',
     'sale_time'                         => 'Thời gian',

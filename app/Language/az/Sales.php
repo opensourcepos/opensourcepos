@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'müştəriləri silmək',
     'return'                            => 'qaytarmaq',
     'rewards'                           => 'Mükafat Balları',
+    'rewards_package'                   => 'Mükafatlar',
     'rewards_remaining_balance'         => 'Mükafatın yerdə qalan bal dəyəri ',
     'sale'                              => 'satış',
     'sale_time'                         => 'Vaxt',

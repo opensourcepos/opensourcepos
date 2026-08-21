@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Eliminati Clientul',
     'return'                            => 'Inapoiere',
     'rewards'                           => 'Puncte fidelizare',
+    'rewards_package'                   => 'Recompense',
     'rewards_remaining_balance'         => 'Valoarea ramasa a punctelor de fidelizare este ',
     'sale'                              => 'Vanzare',
     'sale_time'                         => 'Timp',

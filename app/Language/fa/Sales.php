@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'حذف مشتری',
     'return'                            => 'برگشت',
     'rewards'                           => 'امتیاز پاداش',
+    'rewards_package'                   => 'پاداش',
     'rewards_remaining_balance'         => 'امتیاز باقی مانده مقدار باقی مانده است',
     'sale'                              => 'فروش',
     'sale_time'                         => 'زمان',

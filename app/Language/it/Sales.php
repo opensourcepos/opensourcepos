@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Rimuovi Cliente',
     'return'                            => 'Reso',
     'rewards'                           => 'Punti Raccolta',
+    'rewards_package'                   => 'Punti Fedeltà',
     'rewards_remaining_balance'         => 'Valore Punti Rimanenti è ',
     'sale'                              => 'Vendita',
     'sale_time'                         => 'Tempo',

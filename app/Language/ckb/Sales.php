@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'لابردنی کڕیار',
     'return'                            => 'گەڕانەوە',
     'rewards'                           => 'خاڵەکانی پاداشت',
+    'rewards_package'                   => 'پاداشتەکان',
     'rewards_remaining_balance'         => 'بەهای پاداشتی خاڵە ماووەکان بریتییە لە ',
     'sale'                              => 'فرۆشتن',
     'sale_time'                         => 'کات',

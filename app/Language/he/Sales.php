@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'הסר לקוח',
     'return'                            => 'החזרה',
     'rewards'                           => 'נקודות פרס',
+    'rewards_package'                   => 'פרסים',
     'rewards_remaining_balance'         => 'נקודות הפרס הנותרות הן ',
     'sale'                              => 'מכירה',
     'sale_time'                         => 'זמן',

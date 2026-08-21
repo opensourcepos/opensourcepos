@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Uklonite kupca',
     'return'                            => 'Povrat',
     'rewards'                           => 'Nagradni bodovi',
+    'rewards_package'                   => 'Nagrade',
     'rewards_remaining_balance'         => 'Preostala vrijednost nagradnih bodova je ',
     'sale'                              => 'Prodaja',
     'sale_time'                         => 'Vrijeme',

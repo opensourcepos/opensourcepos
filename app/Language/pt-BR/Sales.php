@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Remover Cliente',
     'return'                            => 'Devolução',
     'rewards'                           => 'Pontos de recompensa',
+    'rewards_package'                   => 'Recompensa',
     'rewards_remaining_balance'         => 'O valor restante dos pontos de recompensa é ',
     'sale'                              => 'Venda',
     'sale_time'                         => 'Data',

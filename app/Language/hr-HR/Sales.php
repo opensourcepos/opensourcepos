@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Ukloni kupca',
     'return'                            => 'Povrat',
     'rewards'                           => '',
+    'rewards_package'                   => '',
     'rewards_remaining_balance'         => '',
     'sale'                              => 'Prodaja',
     'sale_time'                         => 'Vrijeme',

@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => '',
     'return'                            => '',
     'rewards'                           => '',
+    'rewards_package'                   => '',
     'rewards_remaining_balance'         => '',
     'sale'                              => '',
     'sale_time'                         => '',

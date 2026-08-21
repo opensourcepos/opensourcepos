@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Видалити клієнта',
     'return'                            => 'Повернути',
     'rewards'                           => 'Бонусні бали',
+    'rewards_package'                   => 'Винагороди',
     'rewards_remaining_balance'         => 'Залишкова цінність бонусних балів становить ',
     'sale'                              => 'Продаж',
     'sale_time'                         => 'Час продажу',

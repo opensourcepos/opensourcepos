@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Удалить клиента',
     'return'                            => 'Возврат',
     'rewards'                           => 'Бонусные баллы',
+    'rewards_package'                   => 'Награды',
     'rewards_remaining_balance'         => 'Остаток бонусных баллов составляет ',
     'sale'                              => 'Продажа',
     'sale_time'                         => 'Время',

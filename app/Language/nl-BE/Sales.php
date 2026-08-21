@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Verwijder Klant',
     'return'                            => 'Retour',
     'rewards'                           => 'Punten',
+    'rewards_package'                   => 'Spaarpunten',
     'rewards_remaining_balance'         => 'Saldo Spaarpunten is ',
     'sale'                              => 'Verkoop',
     'sale_time'                         => 'Datum',

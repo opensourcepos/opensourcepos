@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Müşteriyi Kaldır',
     'return'                            => 'İade',
     'rewards'                           => 'Ödül Puanları',
+    'rewards_package'                   => 'Ödüller',
     'rewards_remaining_balance'         => 'Ödül Puanı kalan değeri ',
     'sale'                              => 'Satış',
     'sale_time'                         => 'Saat',

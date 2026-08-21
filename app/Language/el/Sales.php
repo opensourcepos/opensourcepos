@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Αφαίρεση Πελάτη',
     'return'                            => 'Επιστροφή',
     'rewards'                           => 'Πόντοι Ανταμοιβής',
+    'rewards_package'                   => 'Ανταμοιβές',
     'rewards_remaining_balance'         => 'Η αξία των υπολειπόμενων πόντων ανταμοιβής είναι ',
     'sale'                              => 'Πώληση',
     'sale_time'                         => 'Ώρα',

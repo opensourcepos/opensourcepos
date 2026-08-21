@@ -154,6 +154,7 @@ return [
     'remove_customer'                   => 'Ondoa Mteja',
     'return'                            => 'Rudisha',
     'rewards'                           => 'Pointi za Zawadi',
+    'rewards_package'                   => 'Zawadi',
     'rewards_remaining_balance'         => 'Thamani ya pointi za zawadi zilizobaki ni ',
     'sale'                              => 'Mauzo',
     'sale_time'                         => 'Muda',

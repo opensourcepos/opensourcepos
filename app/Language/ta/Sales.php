@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'வாடிக்கையாளரை அகற்று',
     'return'                            => 'Return',
     'rewards'                           => 'வெகுமதி புள்ளிகள்',
+    'rewards_package'                   => 'வெகுமதிகள்',
     'rewards_remaining_balance'         => 'வெகுமதி புள்ளிகள் மீதமுள்ள மதிப்பு ',
     'sale'                              => 'விற்பனை',
     'sale_time'                         => 'நேரம்',

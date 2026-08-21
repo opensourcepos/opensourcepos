@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => '',
     'return'                            => '',
     'rewards'                           => '',
+    'rewards_package'                   => 'រង្វាន់',
     'rewards_remaining_balance'         => 'ពន្ទុកសំរាប់ដូរយករង្វាន់នៅសល់ ',
     'sale'                              => '',
     'sale_time'                         => '',

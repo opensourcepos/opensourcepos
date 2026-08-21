@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Ta bort kund',
     'return'                            => 'Retur',
     'rewards'                           => 'Belöningspoäng',
+    'rewards_package'                   => 'Belöning',
     'rewards_remaining_balance'         => 'Beloppets återstående värde är ',
     'sale'                              => 'Försäljning',
     'sale_time'                         => 'Tid',

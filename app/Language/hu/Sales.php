@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Vásárló eltávolítása',
     'return'                            => 'Visszavétel',
     'rewards'                           => '',
+    'rewards_package'                   => '',
     'rewards_remaining_balance'         => '',
     'sale'                              => 'Eladás',
     'sale_time'                         => 'Idő',

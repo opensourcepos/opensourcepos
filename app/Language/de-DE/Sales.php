@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Entferne Kunde',
     'return'                            => 'Retoure',
     'rewards'                           => 'Prämienpunkte',
+    'rewards_package'                   => 'Prämie',
     'rewards_remaining_balance'         => 'Verbleibende Prämienpunkte ',
     'sale'                              => 'Verkauf',
     'sale_time'                         => 'Zeit',

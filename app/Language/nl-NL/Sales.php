@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'Klant verwijderen',
     'return'                            => 'Retourneren',
     'rewards'                           => 'Beloningspunten',
+    'rewards_package'                   => 'Beloningen',
     'rewards_remaining_balance'         => 'Resterende beloningspunten waarde is ',
     'sale'                              => 'Verkoop',
     'sale_time'                         => 'Tijd',

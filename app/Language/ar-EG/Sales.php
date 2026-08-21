@@ -153,6 +153,7 @@ return [
     'remove_customer'                   => 'حذف عميل',
     'return'                            => 'إرتجاع',
     'rewards'                           => 'نقاط المكافئة',
+    'rewards_package'                   => 'فئة المكافئة',
     'rewards_remaining_balance'         => 'رصيد النقاط المتبقي هو ',
     'sale'                              => 'بيع',
     'sale_time'                         => 'الوقت',
