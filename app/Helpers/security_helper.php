@@ -5,6 +5,42 @@ use Config\Services;
 use Random\RandomException;
 
 /**
+ * Opens (creating if needed) and exclusively locks a dedicated mutex file
+ * for coordinating .env writes. Windows can't rename/delete a file while
+ * any handle to it is open, so the mutex must be a separate file from
+ * .env itself — never fopen()/flock() .env directly.
+ *
+ * @return resource
+ */
+function lockEnvFile()
+{
+    $lockPath = ROOTPATH . '.env.lock';
+
+    $handle = @fopen($lockPath, 'c+');
+    if ($handle === false) {
+        throw new RuntimeException("Unable to open $lockPath");
+    }
+
+    if (!flock($handle, LOCK_EX)) {
+        fclose($handle);
+
+        throw new RuntimeException("Unable to lock $lockPath");
+    }
+
+    return $handle;
+}
+
+/**
+ * @param resource $handle
+ * @return void
+ */
+function unlockEnvFile($handle): void
+{
+    flock($handle, LOCK_UN);
+    fclose($handle);
+}
+
+/**
  * Replaces or inserts a single `key='value'` line in .env
  *
  * @param string $envKey
@@ -29,17 +65,10 @@ function writeEnvKey(string $envKey, string $value): bool
         return false;
     }
 
-    $handle = @fopen($configPath, 'c+');
-    if ($handle === false) {
-        return false;
-    }
+    $lock = lockEnvFile();
 
     try {
-        if (!flock($handle, LOCK_EX)) {
-            return false;
-        }
-
-        $configFile = stream_get_contents($handle);
+        $configFile = file_get_contents($configPath);
         if ($configFile === false) {
             return false;
         }
@@ -48,8 +77,7 @@ function writeEnvKey(string $envKey, string $value): bool
 
         return atomicWriteFile($configPath, $configFile);
     } finally {
-        flock($handle, LOCK_UN);
-        fclose($handle);
+        unlockEnvFile($lock);
     }
 }
 
@@ -88,16 +116,25 @@ function atomicWriteFile(string $path, string $contents): bool
 {
     $tmpPath = $path . '.tmp.' . uniqid();
 
-    if (@file_put_contents($tmpPath, $contents) === false) {
+    $written = @file_put_contents($tmpPath, $contents);
+    if ($written === false || $written !== strlen($contents)) {
+        @unlink($tmpPath);
+
         return false;
     }
 
     @chmod($tmpPath, 0640);
 
+    // rename() overwrites an existing destination on POSIX. On Windows it
+    // does not, so fall back to unlink()+rename() there. Callers must not
+    // hold any open handle on $path — Windows can't unlink/rename a path
+    // that's still open, even by the same process.
     if (!@rename($tmpPath, $path)) {
-        @unlink($tmpPath);
+        if (PHP_OS_FAMILY !== 'Windows' || !@unlink($path) || !@rename($tmpPath, $path)) {
+            @unlink($tmpPath);
 
-        return false;
+            return false;
+        }
     }
 
     @chmod($path, 0640);
@@ -194,17 +231,10 @@ function checkThrottleEncryption(): string
         throw new RuntimeException("Unable to create $configPath to provision throttle.key");
     }
 
-    $handle = @fopen($configPath, 'c+');
-    if ($handle === false) {
-        throw new RuntimeException("Unable to open $configPath to provision throttle.key");
-    }
+    $lock = lockEnvFile();
 
     try {
-        if (!flock($handle, LOCK_EX)) {
-            throw new RuntimeException("Unable to lock $configPath to provision throttle.key");
-        }
-
-        $configFile = stream_get_contents($handle);
+        $configFile = file_get_contents($configPath);
         if ($configFile === false) {
             throw new RuntimeException("Unable to read $configPath to provision throttle.key");
         }
@@ -226,8 +256,7 @@ function checkThrottleEncryption(): string
             }
         }
     } finally {
-        flock($handle, LOCK_UN);
-        fclose($handle);
+        unlockEnvFile($lock);
     }
 
     putenv("throttle.key=$key");
