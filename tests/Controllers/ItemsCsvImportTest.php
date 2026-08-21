@@ -800,7 +800,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
                 'deleted' => 0
             ];
 
-            $this->assertTrue($this->stock_location->save_value($locationData, NEW_ENTRY));
+            $this->assertTrue($this->stock_location->saveValue($locationData, NEW_ENTRY));
             $this->assertNotEmpty($locationData['location_id']);
 
             $locationIds[$locationName] = $locationData['location_id'];
@@ -1105,7 +1105,7 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $allowedLocations = [];
         foreach ($locations as $locationName) {
             $currentLocation = ['location_name' => $locationName, 'deleted' => 0];
-            $this->assertTrue($this->stock_location->save_value($currentLocation, NEW_ENTRY));
+            $this->assertTrue($this->stock_location->saveValue($currentLocation, NEW_ENTRY));
             $allowedLocations[$currentLocation['location_id']] = $locationName;
         }
 

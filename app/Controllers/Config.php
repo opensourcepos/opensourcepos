@@ -222,7 +222,7 @@ class Config extends Secure_Controller
     public function getIndex(): string
     {
         $data['config'] = $this->config;
-        $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
+        $data['stock_locations'] = $this->stock_location->getAll()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
         $data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
         $data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
@@ -673,7 +673,7 @@ class Config extends Secure_Controller
      */
     public function getStockLocations(): string
     {
-        $stock_locations = $this->stock_location->get_all()->getResultArray();
+        $stock_locations = $this->stock_location->getAll()->getResultArray();
 
         return view('partial/stock_locations', ['stock_locations' => $stock_locations]);
     }
@@ -736,29 +736,103 @@ class Config extends Secure_Controller
      */
     public function postSaveLocations(): ResponseInterface
     {
+        $submittedLocations = $this->request->getPost('stock_location');
+
+        if (!is_array($submittedLocations)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Config.saved_unsuccessfully')]);
+        }
+
+        // Keys are either the empty-bracket form (new, not-yet-saved rows) or a numeric
+        // existing location_id; anything else is not a shape the view ever submits, so drop it.
+        // A blank/non-string name for an existing id is kept as a key (so the row below still
+        // counts it as "still present" and doesn't delete it) but is excluded from the save loop.
+        $submittedLocations = array_filter(
+            $submittedLocations,
+            fn ($locationId) => $locationId === '' || is_numeric($locationId),
+            ARRAY_FILTER_USE_KEY
+        );
+        $submittedLocations = array_map(
+            fn ($locationName) => is_string($locationName) ? trim($locationName) : '',
+            $submittedLocations
+        );
+
         $this->db->transStart();
 
-        $not_to_delete = [];
-        foreach ($this->request->getPost() as $key => $value) {
-            if (str_contains($key, 'stock_location')) {
-                // Save or update
-                foreach ($value as $location_id => $location_name) {
-                    $location_data = ['location_name' => $location_name];
-                    if ($this->stock_location->save_value($location_data, $location_id)) {
-                        $location_id = $this->stock_location->get_location_id($location_name);
-                        $not_to_delete[] = $location_id;
-                        $this->_clear_session_state();
-                    }
-                }
+        // Existing rows carry their real location_id as the array key (stock_location[$id]);
+        // brand-new, not-yet-saved rows use the empty-bracket form (stock_location[]), which PHP
+        // auto-assigns the next integer key after the highest submitted key — that auto-key can
+        // coincidentally collide with a real, unrelated location_id, so numeric-ness alone isn't
+        // enough; only keys that actually exist as rows count as "still present" ids.
+        $submittedLocationIds = array_filter(
+            array_keys($submittedLocations),
+            fn ($locationId) => is_numeric($locationId) && $this->stock_location->exists((int) $locationId)
+        );
+
+        // Delete removed locations BEFORE saving/inserting new ones. Otherwise, reusing a
+        // just-deleted location's name in the same submit collides on the name-derived
+        // permission_id, since the old row's permissions wouldn't be gone yet.
+        $existingLocations = $this->stock_location->getAll()->getResultArray();
+
+        foreach ($existingLocations as $locationData) {
+            if (!in_array((string) $locationData['location_id'], $submittedLocationIds)) {
+                $this->stock_location->delete($locationData['location_id']);
             }
         }
 
-        // All locations not available in post will be deleted now
-        $deleted_locations = $this->stock_location->get_all()->getResultArray();
+        $notToDelete = [];
+        $newlyInsertedIds = [];
+        $saveFailed = false;
+        foreach ($submittedLocations as $locationId => $locationName) {
+            $wasExisting = in_array($locationId, $submittedLocationIds);
+            if ($locationName === '') {
+                if ($wasExisting) {
+                    $notToDelete[] = (int) $locationId;
+                }
 
-        foreach ($deleted_locations as $location => $location_data) {
-            if (!in_array($location_data['location_id'], $not_to_delete)) {
-                $this->stock_location->delete($location_data['location_id']);
+                continue;
+            }
+
+            $locationData = ['location_name' => $locationName];
+            if (!$this->stock_location->saveValue($locationData, $locationId)) {
+                $saveFailed = true;
+
+                break;
+            }
+
+            // saveValue() sets location_id on $locationData for new inserts (it stays
+            // as-is for updates); reading it back here avoids re-resolving by name,
+            // which is ambiguous when a deleted row still shares that name.
+            $savedLocationId = $locationData['location_id'] ?? $locationId;
+            $notToDelete[] = $savedLocationId;
+            if (!$wasExisting) {
+                $newlyInsertedIds[] = $savedLocationId;
+            }
+            $this->_clear_session_state();
+        }
+
+        if (!$saveFailed) {
+            $sortOrder = $this->request->getPost('stock_location_order');
+            $submittedOrderTokens = $sortOrder ? explode(',', $sortOrder) : [];
+
+            // 'new-<n>' tokens are placeholders for rows with no location_id yet; resolve
+            // each to its real inserted id in submission order.
+            $submittedOrderIds = array_map(
+                function ($token) use (&$newlyInsertedIds) {
+                    return str_starts_with($token, 'new-') ? array_shift($newlyInsertedIds) : (int) $token;
+                },
+                $submittedOrderTokens
+            );
+
+            $orderedLocationIds = array_values(array_unique(array_intersect($submittedOrderIds, $notToDelete)));
+            $orderedLocationIds = array_merge($orderedLocationIds, array_diff($notToDelete, $orderedLocationIds));
+
+            if ($orderedLocationIds) {
+                $this->stock_location->saveSortOrder($orderedLocationIds);
+            }
+
+            $defaultLocationId = $this->request->getPost('stock_location_default', FILTER_SANITIZE_NUMBER_INT);
+            if ($defaultLocationId && in_array((int) $defaultLocationId, array_map('intval', $notToDelete), true)) {
+                $this->stock_location->setDefaultLocation((int) $defaultLocationId);
             }
         }
 
