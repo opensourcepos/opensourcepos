@@ -2,6 +2,7 @@
 
 namespace Tests\Support;
 
+use App\Models\Attribute;
 use App\Models\Inventory;
 use App\Models\Item;
 use App\Models\Item_quantity;
@@ -108,5 +109,11 @@ trait ItemSearchFixtureTrait
             'attribute_id'  => $attributeId,
             'item_id'       => $itemId,
         ]);
+    }
+
+    protected function linkTypedAttributeValue(int $itemId, int $definitionId, string $value, string $definitionType): void
+    {
+        $attributeModel = model(Attribute::class);
+        $attributeModel->saveAttributeValue($value, $definitionId, $itemId, false, $definitionType);
     }
 }

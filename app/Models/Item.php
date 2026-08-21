@@ -6,6 +6,7 @@ use CodeIgniter\Database\RawSql;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use Config\OSPOS;
+use DateTime;
 use ReflectionException;
 use stdClass;
 
@@ -158,7 +159,7 @@ class Item extends Model
             return $result;
         }
 
-        $pattern = '/([[:alpha:]][[:alnum:] _-]*?)\s*:\s*([^\s,]+)(?:\s+(?:AND|OR)\s+)?/iu';
+        $pattern = '/([[:alpha:]][[:alnum:] _-]*?)\s*:\s*([0-9]+,[0-9]+|[^\s,]+)(?:\s*,\s*|\s+(?:AND|OR)\s+)?/iu';
         $remaining = preg_replace($pattern, '', $search);
 
         if (preg_match_all($pattern, $search, $matches, PREG_SET_ORDER)) {
@@ -187,8 +188,9 @@ class Item extends Model
      * @param array<int, array{name: string, type: string}> $definitionInfo definition_id => info, from getDefinitionsByFlags(..., true)
      * @param array<string, string[]> $parsedAttributes Attribute name => list of search values
      * @param int[] $allowedDefinitionIds Definition ids this search is scoped to
+     * @return string[] Attribute names that resolved to a known, allowed definition and were joined into $builder
      */
-    private function applyNamedAttributeSearch($builder, array $definitionInfo, array $parsedAttributes, array $allowedDefinitionIds): void
+    private function applyNamedAttributeSearch($builder, array $definitionInfo, array $parsedAttributes, array $allowedDefinitionIds): array
     {
         $definitionIdByName = [];
         foreach ($definitionInfo as $id => $info) {
@@ -196,6 +198,7 @@ class Item extends Model
             $definitionIdByName[strtolower($name)] = (int) $id;
         }
 
+        $consumedNames = [];
         $index = 0;
         foreach ($parsedAttributes as $attrName => $values) {
             if (!isset($definitionIdByName[$attrName])) {
@@ -207,6 +210,10 @@ class Item extends Model
             if (!in_array($definitionId, $allowedDefinitionIds, true)) {
                 continue;
             }
+
+            $consumedNames[] = $attrName;
+
+            $defType = is_array($definitionInfo[$definitionId]) ? ($definitionInfo[$definitionId]['type'] ?? TEXT) : TEXT;
 
             $linksAlias = "named_attr_links_{$index}";
             $valuesAlias = "named_attr_values_{$index}";
@@ -222,11 +229,36 @@ class Item extends Model
             );
 
             $builder->groupStart();
+            $matched = false;
             foreach ($values as $value) {
-                $builder->orLike("{$valuesAlias}.attribute_value", $value);
+                if ($defType === DECIMAL) {
+                    $parsedValue = parse_decimals($value);
+                    if ($parsedValue === false) {
+                        continue;
+                    }
+                    $builder->orWhere("{$valuesAlias}.attribute_decimal", $parsedValue);
+                    $matched = true;
+                } elseif ($defType === DATE) {
+                    $config = config(OSPOS::class)->settings;
+                    $date = DateTime::createFromFormat($config['dateformat'], $value);
+                    if ($date === false) {
+                        continue;
+                    }
+                    $builder->orWhere("{$valuesAlias}.attribute_date", $date->format('Y-m-d'));
+                    $matched = true;
+                } else {
+                    $builder->orLike("{$valuesAlias}.attribute_value", $value);
+                    $matched = true;
+                }
             }
             $builder->groupEnd();
+
+            if (!$matched) {
+                $builder->where('1 = 0', null, false);
+            }
         }
+
+        return $consumedNames;
     }
 
     /**
@@ -350,12 +382,22 @@ class Item extends Model
         $applyTransDateRange($idBuilder);
 
         $parsedAttributeSearch = $customAttributeSearch ? $this->parseAttributeSearch($search) : null;
-        $freeTextSearch = $parsedAttributeSearch !== null && !empty($parsedAttributeSearch['attributes'])
-            ? implode(' ', $parsedAttributeSearch['terms'])
-            : $search;
+        $freeTextSearch = $search;
 
         if ($parsedAttributeSearch !== null && !empty($parsedAttributeSearch['attributes'])) {
-            $this->applyNamedAttributeSearch($idBuilder, $definitionInfo, $parsedAttributeSearch['attributes'], $definitionIds);
+            $consumedNames = $this->applyNamedAttributeSearch($idBuilder, $definitionInfo, $parsedAttributeSearch['attributes'], $definitionIds);
+
+            $unconsumedTerms = $parsedAttributeSearch['terms'];
+            foreach ($parsedAttributeSearch['attributes'] as $attrName => $values) {
+                if (in_array($attrName, $consumedNames, true)) {
+                    continue;
+                }
+                foreach ($values as $value) {
+                    $unconsumedTerms[] = $value;
+                }
+            }
+
+            $freeTextSearch = implode(' ', $unconsumedTerms);
         }
 
         if (!empty($freeTextSearch)) {

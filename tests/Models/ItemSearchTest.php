@@ -38,6 +38,8 @@ class ItemSearchTest extends CIUnitTestCase
         // OSPOS's app_config cache can go stale mid-suite and fall back to defaults with
         // no 'dateformat' key, so set it directly rather than depending on that cache.
         config(OSPOS::class)->settings['dateformat'] = 'm/d/Y';
+        config(OSPOS::class)->settings['number_locale'] = 'en_US';
+        config(OSPOS::class)->settings['currency_decimals'] = 2;
     }
 
     protected function tearDown(): void
@@ -260,6 +262,33 @@ class ItemSearchTest extends CIUnitTestCase
         $this->assertNotContains($wrongColorId, $ids);
     }
 
+    public function testSearchByNamedAttributeSyntaxWithCommaSeparator(): void
+    {
+        // parseAttributeSearch() treats a bare comma between name:value pairs as an implicit
+        // separator (like AND/OR), so "color:blue, size:large" must parse both attributes.
+        $colorDefinitionId = $this->createAttributeDefinition('Color ' . uniqid());
+        $sizeDefinitionId = $this->createAttributeDefinition('Size ' . uniqid());
+        $blueValue = 'Blue' . uniqid();
+        $largeValue = 'Large' . uniqid();
+
+        $matchingId = $this->createSearchableItem(['name' => 'Comma Sep Match ' . uniqid()]);
+        $this->linkAttributeValue($matchingId, $colorDefinitionId, $blueValue);
+        $this->linkAttributeValue($matchingId, $sizeDefinitionId, $largeValue);
+
+        $filters = $this->defaultSearchFilters([
+            'search_custom'  => true,
+            'definition_ids' => [$colorDefinitionId, $sizeDefinitionId],
+        ]);
+
+        $colorAttrName = $this->getDefinitionName($colorDefinitionId);
+        $sizeAttrName = $this->getDefinitionName($sizeDefinitionId);
+
+        $results = $this->item->search("{$colorAttrName}:{$blueValue}, {$sizeAttrName}:{$largeValue}", $filters)->getResult();
+        $ids = array_map(static fn ($item) => (int) $item->item_id, $results);
+
+        $this->assertContains($matchingId, $ids);
+    }
+
     public function testSearchByNamedAttributeCombinedWithFreeText(): void
     {
         // When search_custom is on, the free-text remainder matches attribute values
@@ -326,6 +355,105 @@ class ItemSearchTest extends CIUnitTestCase
         $ids = array_map(static fn ($item) => (int) $item->item_id, $results);
 
         $this->assertContains($matchingId, $ids);
+    }
+
+    public function testSearchByNamedAttributeMatchesDecimalAttribute(): void
+    {
+        $priceDefinitionId = $this->createAttributeDefinition('Price ' . uniqid(), DECIMAL);
+
+        $matchingId = $this->createSearchableItem(['name' => 'Decimal Attr Match ' . uniqid()]);
+        $this->linkTypedAttributeValue($matchingId, $priceDefinitionId, '19.99', DECIMAL);
+
+        $otherId = $this->createSearchableItem(['name' => 'Decimal Attr Other ' . uniqid()]);
+        $this->linkTypedAttributeValue($otherId, $priceDefinitionId, '5.00', DECIMAL);
+
+        $filters = $this->defaultSearchFilters([
+            'search_custom'  => true,
+            'definition_ids' => [$priceDefinitionId],
+        ]);
+
+        $priceAttrName = $this->getDefinitionName($priceDefinitionId);
+
+        $results = $this->item->search("{$priceAttrName}:19.99", $filters)->getResult();
+        $ids = array_map(static fn ($item) => (int) $item->item_id, $results);
+
+        $this->assertContains($matchingId, $ids);
+        $this->assertNotContains($otherId, $ids);
+    }
+
+    public function testSearchByNamedAttributeMatchesDateAttribute(): void
+    {
+        config(OSPOS::class)->settings['dateformat'] = 'm/d/Y';
+
+        $expiryDefinitionId = $this->createAttributeDefinition('Expiry ' . uniqid(), DATE);
+
+        $matchingId = $this->createSearchableItem(['name' => 'Date Attr Match ' . uniqid()]);
+        $this->linkTypedAttributeValue($matchingId, $expiryDefinitionId, '01/15/2027', DATE);
+
+        $otherId = $this->createSearchableItem(['name' => 'Date Attr Other ' . uniqid()]);
+        $this->linkTypedAttributeValue($otherId, $expiryDefinitionId, '02/20/2027', DATE);
+
+        $filters = $this->defaultSearchFilters([
+            'search_custom'  => true,
+            'definition_ids' => [$expiryDefinitionId],
+        ]);
+
+        $expiryAttrName = $this->getDefinitionName($expiryDefinitionId);
+
+        $results = $this->item->search("{$expiryAttrName}:01/15/2027", $filters)->getResult();
+        $ids = array_map(static fn ($item) => (int) $item->item_id, $results);
+
+        $this->assertContains($matchingId, $ids);
+        $this->assertNotContains($otherId, $ids);
+    }
+
+    public function testSearchByNamedAttributeDecimalRespectsLocaleDecimalSeparator(): void
+    {
+        $config = config(OSPOS::class);
+        $originalLocale = $config->settings['number_locale'];
+        $originalDecimals = $config->settings['currency_decimals'];
+        $config->settings['number_locale'] = 'de_DE';
+        $config->settings['currency_decimals'] = 2;
+
+        try {
+            $priceDefinitionId = $this->createAttributeDefinition('LocalePrice ' . uniqid(), DECIMAL);
+
+            $matchingId = $this->createSearchableItem(['name' => 'Locale Decimal Match ' . uniqid()]);
+            $this->linkTypedAttributeValue($matchingId, $priceDefinitionId, '19.99', DECIMAL);
+
+            $filters = $this->defaultSearchFilters([
+                'search_custom'  => true,
+                'definition_ids' => [$priceDefinitionId],
+            ]);
+
+            $priceAttrName = $this->getDefinitionName($priceDefinitionId);
+
+            // Comma decimal separator, matching the de_DE locale, should parse and match.
+            $commaResults = $this->item->search("{$priceAttrName}:19,99", $filters)->getResult();
+            $commaIds = array_map(static fn ($item) => (int) $item->item_id, $commaResults);
+            $this->assertContains($matchingId, $commaIds);
+        } finally {
+            $config->settings['number_locale'] = $originalLocale;
+            $config->settings['currency_decimals'] = $originalDecimals;
+        }
+    }
+
+    public function testSearchByUnknownNamedAttributeDoesNotReturnAllItems(): void
+    {
+        $definitionId = $this->createAttributeDefinition('Known ' . uniqid());
+        $knownAttrName = $this->getDefinitionName($definitionId);
+
+        $this->createSearchableItem(['name' => 'Unrelated Item ' . uniqid()]);
+        $this->createSearchableItem(['name' => 'Another Unrelated Item ' . uniqid()]);
+
+        $filters = $this->defaultSearchFilters([
+            'search_custom'  => true,
+            'definition_ids' => [$definitionId],
+        ]);
+
+        $results = $this->item->search("{$knownAttrName}:nomatch nosuchattr:{$knownAttrName}", $filters)->getResult();
+
+        $this->assertCount(0, $results);
     }
 
     private function getDefinitionName(int $definitionId): string
