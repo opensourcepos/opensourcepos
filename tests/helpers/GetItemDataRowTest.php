@@ -63,7 +63,7 @@ class GetItemDataRowTest extends CIUnitTestCase
     {
         $item = $this->makeItem(['item_id' => 42]);
 
-        $columns = get_item_data_row($item, [], [42 => '20.00%']);
+        $columns = getItemDataRow($item, [], [42 => '20.00%']);
 
         $this->assertEquals('20.00%', $columns['tax_percents']);
     }
@@ -72,7 +72,7 @@ class GetItemDataRowTest extends CIUnitTestCase
     {
         $item = $this->makeItem(['item_id' => 99]);
 
-        $columns = get_item_data_row($item, [], []);
+        $columns = getItemDataRow($item, [], []);
 
         $this->assertEquals('-', $columns['tax_percents']);
     }
@@ -88,7 +88,7 @@ class GetItemDataRowTest extends CIUnitTestCase
             3 => ['name' => 'Color', 'type' => TEXT],
         ];
 
-        $columns = get_item_data_row($item, $definitionNames, []);
+        $columns = getItemDataRow($item, $definitionNames, []);
 
         $this->assertArrayHasKey(3, $columns);
         $this->assertEquals('Red', $columns[3]);
@@ -100,7 +100,7 @@ class GetItemDataRowTest extends CIUnitTestCase
 
         $item = $this->makeItem(['name' => 'Base Item', 'pack_name' => 'Pack of 6']);
 
-        $columns = get_item_data_row($item, [], []);
+        $columns = getItemDataRow($item, [], []);
 
         $this->assertEquals('Base Item' . NAME_SEPARATOR . 'Pack of 6', $columns['name']);
     }

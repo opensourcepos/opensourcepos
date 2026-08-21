@@ -76,7 +76,7 @@ class Items extends Secure_Controller
     {
         $this->session->set('allow_temp_items', 0);
 
-        $data['table_headers'] = get_items_manage_table_headers();
+        $data['table_headers'] = getItemsManageTableHeaders();
 
         // Restore stock_location from URL or session
         $stockLocation = $this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT);
@@ -111,7 +111,7 @@ class Items extends Secure_Controller
         $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-        $sort = $this->sanitizeSortColumn(item_sort_columns(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
+        $sort = $this->sanitizeSortColumn(itemSortColumns(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
@@ -151,7 +151,7 @@ class Items extends Secure_Controller
         $dataRows = [];
 
         foreach ($itemResults as $item) {
-            $dataRows[] = get_item_data_row($item, $definitionNamesWithTypes, $taxPercentsByItemId);
+            $dataRows[] = getItemDataRow($item, $definitionNamesWithTypes, $taxPercentsByItemId);
 
             if ($item->pic_filename !== null) {
                 $this->update_pic_filename($item);
@@ -345,7 +345,7 @@ class Items extends Secure_Controller
         $result = [];
 
         foreach ($itemResults as $itemInfo) {
-            $result[$itemInfo->item_id] = get_item_data_row($itemInfo, $definitionNames, $taxPercentsByItemId);
+            $result[$itemInfo->item_id] = getItemDataRow($itemInfo, $definitionNames, $taxPercentsByItemId);
         }
 
         return $this->response->setJSON($result);

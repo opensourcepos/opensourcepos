@@ -405,7 +405,7 @@ function item_headers(): array
  *
  * @return array Array of column headers in the format sanitizeSortColumn() expects
  */
-function item_sort_columns(): array
+function itemSortColumns(): array
 {
     $attribute = model(Attribute::class);
     $definitionIds = array_keys($attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS));
@@ -422,7 +422,7 @@ function item_sort_columns(): array
 /**
  * Get the header for the items tabular view
  */
-function get_items_manage_table_headers(): string
+function getItemsManageTableHeaders(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
@@ -438,8 +438,8 @@ function get_items_manage_table_headers(): string
 
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
-    foreach ($definitionsWithTypes as $definition_id => $definitionInfo) {
-        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => true];
+    foreach ($definitionsWithTypes as $definitionId => $definitionInfo) {
+        $headers[] = [$definitionId => $definitionInfo['name'], 'sortable' => true];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];
@@ -456,7 +456,7 @@ function get_items_manage_table_headers(): string
  * @param array $taxPercentsByItemId Pre-computed tax percent strings, keyed by item_id (see Items::buildTaxPercentsByItem())
  * @return array
  */
-function get_item_data_row(object $item, array $definitionNames, array $taxPercentsByItemId): array
+function getItemDataRow(object $item, array $definitionNames, array $taxPercentsByItemId): array
 {
     $config = config(OSPOS::class)->settings;
 
