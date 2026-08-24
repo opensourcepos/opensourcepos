@@ -29,7 +29,7 @@ class Email_lib
         $encrypter = Services::encrypter();
 
         $smtp_pass = $this->config['smtp_pass'] ?? '';
-        if (!empty($smtp_pass) && check_encryption()) {
+        if (!empty($smtp_pass) && checkEncryption()) {
             try {
                 $smtp_pass = $encrypter->decrypt($smtp_pass);
             } catch (\EncryptionException $e) {
