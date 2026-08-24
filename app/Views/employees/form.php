@@ -26,7 +26,7 @@
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="employee_basic_info">
+        <div class="tab-pane active" id="employee_basic_info">
             <fieldset>
                 <?= view('people/form_basic_info') ?>
             </fieldset>
@@ -166,7 +166,7 @@
             ignore: []
         });
 
-        $.validator.addMethod('module', function(value, element) {
+        $.validator.addMethod('module', function() {
             let result = $('#permission_list input').is(':checked');
             $('.module').each(function(index, element) {
                 const parent = $(element);
