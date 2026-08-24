@@ -73,23 +73,25 @@ function writeEnvKey(string $envKey, string $value): bool
             return false;
         }
 
-        $configFile = applyEnvKeyReplacement($configFile, $envKey, $value);
+        $updated = applyEnvKeyReplacement($configFile, $envKey, $value);
+        if ($updated === null) {
+            return false;
+        }
 
-        return atomicWriteFile($configPath, $configFile);
+        return atomicWriteFile($configPath, $updated);
     } finally {
         unlockEnvFile($lock);
     }
 }
 
-function applyEnvKeyReplacement(string $configFile, string $envKey, string $value): string
+function applyEnvKeyReplacement(string $configFile, string $envKey, string $value): ?string
 {
     $pattern = '/^\s*' . preg_quote($envKey, '/') . '\s*=.*/m';
 
     if (preg_match($pattern, $configFile)) {
         $escapedValue = str_replace(['\\', '$'], ['\\\\', '\\$'], $value);
-        $replaced = preg_replace($pattern, "$envKey='$escapedValue'", $configFile, 1);
 
-        return $replaced ?? $configFile;
+        return preg_replace($pattern, "$envKey='$escapedValue'", $configFile, 1);
     }
 
     // New keys insert right after encryption.key so it stays first for easy backup/rotation.
@@ -269,9 +271,9 @@ function checkThrottleEncryption(): string
 
         if (empty($key)) {
             $key = bin2hex(random_bytes(32));
-            $configFile = applyEnvKeyReplacement($configFile, 'throttle.key', $key);
+            $updated = applyEnvKeyReplacement($configFile, 'throttle.key', $key);
 
-            if (!atomicWriteFile($configPath, $configFile)) {
+            if ($updated === null || !atomicWriteFile($configPath, $updated)) {
                 throw new RuntimeException("Unable to persist throttle.key to $configPath");
             }
         }
