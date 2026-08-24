@@ -13,7 +13,7 @@ return [
     'definition_name'                  => 'Atribut əlavə et',
     'definition_name_required'         => 'Atribut adı tələb olunan sahədir',
     'definition_one_or_multiple'       => 'atribut(lar)',
-    'definition_successful_adding'     => 'Malı uğurla əlavə etdiniz',
+    'definition_successful_adding'     => 'Atributu uğurla əlavə etdiniz',
     'definition_successful_deleted'    => 'Uğurla sildiniz',
     'definition_successful_updating'   => 'Atributu uğurla yenilədiniz',
     'definition_type'                  => 'Atribut Tipi',
