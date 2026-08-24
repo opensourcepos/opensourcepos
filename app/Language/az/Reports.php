@@ -128,6 +128,7 @@ return [
     'tax_rate'                                => 'Vergi Dərəcəsi',
     'taxes'                                   => 'Vergilər',
     'taxes_summary_report'                    => 'Vergilərin Yekun Hesabatı',
+    'toggle_cost_and_profit'                  => 'Maya Dəyəri və Qazancı Gizlət/Göstər',
     'total'                                   => 'Cəm',
     'total_inventory_value'                   => 'Ümumi İnventar Dəyəri',
     'total_low_sell_quantity'                 => 'Ümumi Aşağı Satış Miqdarı',
@@ -146,5 +147,4 @@ return [
     'used'                                    => 'İstifadə Olunan Xallar',
     'work_orders'                             => 'İş Sifarişləri',
     'zero_and_less'                           => 'Sıfır və aşağı',
-    'toggle_cost_and_profit'                  => 'Maya Dəyəri və Qazancı Gizlət/Göstər',
 ];
