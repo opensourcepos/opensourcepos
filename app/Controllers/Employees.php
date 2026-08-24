@@ -169,6 +169,15 @@ class Employees extends Persons
             }
         }
 
+        if ($isAdmin && $employeeId == $currentUser->person_id
+            && !in_array('employees', array_column($grantsArray, 'permission_id'), true)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Employees.error_cannot_remove_own_employees_grant'),
+                'id'      => $employeeId
+            ]);
+        }
+
         if (filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN)
             && $this->hasGrantsChanged($employeeId, $isAdmin, $currentUser, $grantsArray)) {
             return $this->response->setJSON([
