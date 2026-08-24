@@ -14,7 +14,7 @@ return [
     'current_password_invalid'                => 'Current Password is invalid.',
     'employee'                                => 'Employee',
     'error_adding_updating'                   => 'Employee add or update failed.',
-    'error_cannot_remove_own_employees_grant' => 'You cannot remove your own Employees module access.',
+    'error_cannot_remove_own_minimum_grant'   => 'You cannot remove your own minimum module access grants.',
     'error_deleting_admin'                    => 'You cannot delete an admin user.',
     'error_deleting_demo_admin'               => 'You can not delete the demo admin user.',
     'error_grant_change_disallowed'           => 'Grant changes are disabled in this demo.',
