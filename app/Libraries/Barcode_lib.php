@@ -159,28 +159,28 @@ class Barcode_lib
     }
 
     /**
-     * @param $layout_type
+     * @param $layoutType
      * @param array $item
-     * @param array $barcode_config
+     * @param array $barcodeConfig
      * @return string
      */
-    private function manage_display_layout($layout_type, array $item, array $barcode_config): string
+    private function manage_display_layout($layoutType, array $item, array $barcodeConfig): string
     {
         $result = '';
         helper('text');
 
-        if ($layout_type == 'name') {
+        if ($layoutType == 'name') {
             $result = esc($item['name']);
-        } elseif ($layout_type == 'category' && isset($item['category'])) {
+        } elseif ($layoutType == 'category' && isset($item['category'])) {
             $result = lang('Items.category') . " " . esc($item['category']);
-        } elseif ($layout_type == 'cost_price' && isset($item['cost_price'])) {
+        } elseif ($layoutType == 'cost_price' && isset($item['cost_price'])) {
             $result = lang('Items.cost_price') . " " . to_currency($item['cost_price']);
-        } elseif ($layout_type == 'unit_price' && isset($item['unit_price'])) {
+        } elseif ($layoutType == 'unit_price' && isset($item['unit_price'])) {
             $result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
-        } elseif ($layout_type == 'company_name') {
-            $result = $barcode_config['company'];
-        } elseif ($layout_type == 'item_code') {
-            $result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
+        } elseif ($layoutType == 'company_name') {
+            $result = $barcodeConfig['company'];
+        } elseif ($layoutType == 'item_code') {
+            $result = $barcodeConfig['barcode_content'] !== "id" && isset($item['item_number'])
                 ? esc($item['item_number'])
                 : esc($item['item_id']);
         }

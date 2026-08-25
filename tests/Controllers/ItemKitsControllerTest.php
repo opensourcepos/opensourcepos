@@ -11,7 +11,7 @@ use App\Models\Item;
 use App\Models\Item_kit;
 use Config\OSPOS;
 
-class Item_kitsControllerTest extends CIUnitTestCase
+class ItemKitsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;

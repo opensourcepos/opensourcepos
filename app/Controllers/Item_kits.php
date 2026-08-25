@@ -265,16 +265,16 @@ class Item_kits extends Secure_Controller
         $result = [];
 
         $item_kit_ids = explode(':', $item_kit_ids);
-        foreach ($item_kit_ids as $item_kid_id) {
+        foreach ($item_kit_ids as $itemKitId) {
             // Calculate the total cost and retail price of the Kit, so it can be added to the barcode text at the bottom
-            $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($item_kid_id));
+            $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($itemKitId));
 
-            $item_kid_id = 'KIT ' . $item_kid_id;
+            $itemKitId = 'KIT ' . $itemKitId;
 
             $result[] = [
                 'name'        => $item_kit->name,
-                'item_id'     => $item_kid_id,
-                'item_number' => $item_kid_id,
+                'item_id'     => $itemKitId,
+                'item_number' => $itemKitId,
                 'cost_price'  => $item_kit->total_cost_price,
                 'unit_price'  => $item_kit->total_unit_price
             ];
