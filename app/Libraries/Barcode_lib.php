@@ -146,10 +146,10 @@ class Barcode_lib
         if ((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id'])) {
             $barcode = $this->generate_barcode($item, $barcode_config);
             $display_table = '<table>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
             $display_table .= '<tr><td style="text-align: center;"><div class="barcode">'.$barcode.'</div></td></tr>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
             $display_table .= '</table>';
 
             return $display_table;
@@ -164,7 +164,7 @@ class Barcode_lib
      * @param array $barcodeConfig
      * @return string
      */
-    private function manage_display_layout($layoutType, array $item, array $barcodeConfig): string
+    private function manageDisplayLayout($layoutType, array $item, array $barcodeConfig): string
     {
         $result = '';
         helper('text');
