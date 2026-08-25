@@ -13,7 +13,7 @@ return [
     "definition_name"                  => "Add Attribute",
     "definition_name_required"         => "Attribute name is a required field",
     "definition_one_or_multiple"       => "attribute(s)",
-    "definition_successful_adding"     => "You have successfully added the attribute.",
+    "definition_successful_adding"     => "You have successfully added the attribute",
     "definition_successful_deleted"    => "You have successfully deleted",
     "definition_successful_updating"   => "You have successfully updated the attribute",
     "definition_type"                  => "Attribute Type",
