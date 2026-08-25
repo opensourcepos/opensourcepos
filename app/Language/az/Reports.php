@@ -74,7 +74,7 @@ return [
     'low_sell_quantity'                       => 'Aşağı Satış Miqdarı',
     'more_than_zero'                          => 'Sıfırdan çox',
     'name'                                    => 'Ad',
-    'no_reports_to_display'                   => 'Göstəriləcək mal yoxdur.',
+    'no_reports_to_display'                   => 'Göstəriləcək hesabat yoxdur.',
     'payment_type'                            => 'Ödəniş Növü',
     'payments'                                => 'Ödənişlər',
     'payments_summary_report'                 => 'Ödənişlərin Yekun Hesabatı',
