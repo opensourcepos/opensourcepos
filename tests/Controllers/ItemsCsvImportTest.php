@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Item;
@@ -11,7 +12,6 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
-use Config\Database;
 
 class ItemsCsvImportTest extends CIUnitTestCase
 {
@@ -19,10 +19,11 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     protected $migrate = true;
     protected $migrateOnce = true;
-    protected $seed = '';
     protected $seedOnce = true;
-    protected $refresh = true;
+    protected $refresh = false;
     protected $namespace = null;
+
+    private static $doneBootstrap = false;
 
     protected $item;
     protected $item_quantity;
@@ -32,15 +33,15 @@ class ItemsCsvImportTest extends CIUnitTestCase
     protected $stock_location;
     protected $supplier;
 
-    public static function setUpBeforeClass(): void
-    {
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
-
     protected function setUp(): void
     {
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
+
         parent::setUp();
 
         helper('importfile');
@@ -236,8 +237,8 @@ class ItemsCsvImportTest extends CIUnitTestCase
 
     public function testMissingAttributeColumnIsRejected(): void
     {
-        $csvContent = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN' . "\n";
-        $csvContent .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001\n";
+        $csvContent = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN,"location_Warehouse"' . "\n";
+        $csvContent .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001,100\n";
 
         $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_no_attribute_');
         file_put_contents($tempFile, $csvContent);
