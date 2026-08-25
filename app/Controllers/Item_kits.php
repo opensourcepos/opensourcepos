@@ -269,7 +269,7 @@ class Item_kits extends Secure_Controller
             // Calculate the total cost and retail price of the Kit, so it can be added to the barcode text at the bottom
             $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($item_kid_id));
 
-            $item_kid_id = 'KIT ' . urldecode($item_kid_id);
+            $item_kid_id = 'KIT ' . $item_kid_id;
 
             $result[] = [
                 'name'        => $item_kit->name,

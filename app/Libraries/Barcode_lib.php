@@ -170,7 +170,7 @@ class Barcode_lib
         helper('text');
 
         if ($layout_type == 'name') {
-            $result = $item['name'];
+            $result = esc($item['name']);
         } elseif ($layout_type == 'category' && isset($item['category'])) {
             $result = lang('Items.category') . " " . esc($item['category']);
         } elseif ($layout_type == 'cost_price' && isset($item['cost_price'])) {
@@ -181,8 +181,8 @@ class Barcode_lib
             $result = $barcode_config['company'];
         } elseif ($layout_type == 'item_code') {
             $result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
-                ? $item['item_number']
-                : $item['item_id'];
+                ? esc($item['item_number'])
+                : esc($item['item_id']);
         }
 
         return character_limiter($result, 40);
