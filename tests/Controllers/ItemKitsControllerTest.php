@@ -10,6 +10,7 @@ use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Item;
 use App\Models\Item_kit;
 use Config\OSPOS;
+use Exception;
 
 class ItemKitsControllerTest extends CIUnitTestCase
 {
@@ -22,10 +23,10 @@ class ItemKitsControllerTest extends CIUnitTestCase
     protected $refresh = false;
     protected $namespace = null;
 
-    private static $doneBootstrap = false;
+    private static bool $doneBootstrap = false;
 
-    protected $item;
-    protected $item_kit;
+    protected Item $item;
+    protected Item_kit $itemKit;
 
     protected function setUp(): void
     {
@@ -59,7 +60,7 @@ class ItemKitsControllerTest extends CIUnitTestCase
         Factories::injectMock('config', OSPOS::class, $ospos);
 
         $this->item = model(Item::class);
-        $this->item_kit = model(Item_kit::class);
+        $this->itemKit = model(Item_kit::class);
     }
 
     protected function tearDown(): void
@@ -97,11 +98,14 @@ class ItemKitsControllerTest extends CIUnitTestCase
             'price_option' => 0,
             'print_option' => 0
         ];
-        $this->assertTrue($this->item_kit->save_value($itemKitData));
+        $this->assertTrue($this->itemKit->save_value($itemKitData));
 
         return (int) $itemKitData['item_kit_id'];
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGenerateBarcodesDoesNotDecodeTripleEncodedPayload(): void
     {
         $itemKitId = $this->createItemKit();
@@ -115,6 +119,7 @@ class ItemKitsControllerTest extends CIUnitTestCase
         $payload = $itemKitId . '%25253Csvg%252520onload%25253Dalert%252528document.domain%252529%25253E';
 
         $response = $this->get('/item_kits/generateBarcodes/' . $payload);
+        $response->assertStatus(200);
 
         $body = $response->getBody();
         $this->assertStringNotContainsString('<svg onload', $body);
