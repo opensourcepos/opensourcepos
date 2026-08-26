@@ -97,6 +97,22 @@ class Barcode_libTest extends CIUnitTestCase
         $this->assertStringContainsString('&lt;svg', $result);
     }
 
+    public function testCompanyNamePayloadIsEscaped(): void
+    {
+        $item = [
+            'name'    => 'Item Name',
+            'item_id' => '1',
+        ];
+
+        $config = $this->baseBarcodeConfig('company_name');
+        $config['company'] = '<svg onload=alert(document.domain)>';
+
+        $result = $this->barcodeLib->display_barcode($item, $config);
+
+        $this->assertStringNotContainsString('<svg onload', $result);
+        $this->assertStringContainsString('&lt;svg', $result);
+    }
+
     public function testCleanNameIsUnaffected(): void
     {
         $item = [

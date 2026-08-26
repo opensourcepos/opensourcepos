@@ -178,7 +178,7 @@ class Barcode_lib
         } elseif ($layoutType == 'unit_price' && isset($item['unit_price'])) {
             $result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
         } elseif ($layoutType == 'company_name') {
-            $result = $barcodeConfig['company'];
+            $result = esc($barcodeConfig['company']);
         } elseif ($layoutType == 'item_code') {
             $result = $barcodeConfig['barcode_content'] !== "id" && isset($item['item_number'])
                 ? esc($item['item_number'])
