@@ -56,7 +56,7 @@ class Reports extends Secure_Controller
     {
         parent::__construct('reports');
         $request = Services::request();
-        $method_name = $request->getUri()->getSegment(2);
+        $method_name = urldecode($request->getUri()->getSegment(2));
         $exploder = explode('_', $method_name);
 
         $this->attribute = config(Attribute::class);
@@ -83,11 +83,13 @@ class Reports extends Secure_Controller
             preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);
             preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
             $submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
+        } else {
+            $submodule_id = null;
+        }
 
-            // Check access to report submodule
-            if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
-                throw new RedirectException('no_access/reports/reports_' . $submodule_id);
-            }
+        // Check access to report submodule
+        if ($submodule_id === null || !$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
+            throw new RedirectException('no_access/reports/reports_' . $submodule_id);
         }
 
         helper('report');
