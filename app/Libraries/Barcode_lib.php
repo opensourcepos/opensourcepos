@@ -159,12 +159,12 @@ class Barcode_lib
     }
 
     /**
-     * @param $layoutType
+     * @param string $layoutType
      * @param array $item
      * @param array $barcodeConfig
      * @return string
      */
-    private function manageDisplayLayout($layoutType, array $item, array $barcodeConfig): string
+    private function manageDisplayLayout(string $layoutType, array $item, array $barcodeConfig): string
     {
         $result = '';
         helper('text');
