@@ -35,7 +35,7 @@ class No_access extends BaseController
         $data['permission_id'] = $permission_id;
 
         $userInfo = $this->employee->get_logged_in_employee_info();
-        if ($userInfo === false) {
+        if ($userInfo === false || $this->request->isAJAX()) {
             return view('no_access', $data);
         }
 
