@@ -141,24 +141,26 @@ class HomeTest extends CIUnitTestCase
     {
         $this->resetSession();
 
-        $response = $this->post('/home/save', [
-            'employee_id' => 1,
-            'username' => 'admin',
-            'current_password' => 'pointofsale',
-            'password' => '        ' // 8 spaces: exactly meets the byte-length minimum
-        ]);
+        try {
+            $response = $this->post('/home/save', [
+                'employee_id' => 1,
+                'username' => 'admin',
+                'current_password' => 'pointofsale',
+                'password' => '        ' // 8 spaces: exactly meets the byte-length minimum
+            ]);
 
-        $response->assertStatus(200);
-        $result = json_decode($response->getJSON(), true);
-        $this->assertTrue($result['success'], 'strlen()-based validation accepts 8 spaces as meeting the minimum length');
-
-        // Restore original password
-        $employee = model(Employee::class);
-        $employee->change_password([
-            'username' => 'admin',
-            'password' => password_hash('pointofsale', PASSWORD_DEFAULT),
-            'hash_version' => 2
-        ], 1);
+            $response->assertStatus(200);
+            $result = json_decode($response->getJSON(), true);
+            $this->assertTrue($result['success'], 'strlen()-based validation accepts 8 spaces as meeting the minimum length');
+        } finally {
+            // Restore original password
+            $employee = model(Employee::class);
+            $employee->change_password([
+                'username' => 'admin',
+                'password' => password_hash('pointofsale', PASSWORD_DEFAULT),
+                'hash_version' => 2
+            ], 1);
+        }
     }
 
     /**
