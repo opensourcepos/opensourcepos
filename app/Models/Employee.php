@@ -387,13 +387,17 @@ class Employee extends Person
                 $updated = $builder->update(['hash_version' => 2, 'password' => $passwordHash]);
 
                 if ($updated) {
-                    $this->session->regenerate(true);
+                    if (session_status() === PHP_SESSION_ACTIVE) {
+                        $this->session->regenerate(true);
+                    }
                     $this->session->set('person_id', $row->person_id);
                 }
 
                 return $updated;
             } elseif ($row->hash_version === '2' && password_verify($password, $row->password)) {
-                $this->session->regenerate(true);
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    $this->session->regenerate(true);
+                }
                 $this->session->set('person_id', $row->person_id);
 
                 return true;
