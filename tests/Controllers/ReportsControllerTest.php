@@ -31,6 +31,9 @@ class ReportsControllerTest extends CIUnitTestCase
 
     private static $doneBootstrap = false;
 
+    /**
+     * Set up test environment
+     */
     protected function setUp(): void
     {
         if (self::$doneBootstrap === false) {
@@ -43,6 +46,12 @@ class ReportsControllerTest extends CIUnitTestCase
         parent::setUp();
     }
 
+    /**
+     * Create a non-admin employee for testing
+     *
+     * @param array $overrides
+     * @return int
+     */
     protected function createNonAdminEmployee(array $overrides = []): int
     {
         $uniqueSuffix = uniqid();
@@ -73,6 +82,12 @@ class ReportsControllerTest extends CIUnitTestCase
         return (int) $personData['person_id'];
     }
 
+    /**
+     * Log in as the given employee
+     *
+     * @param int $personId
+     * @return void
+     */
     protected function loginAs(int $personId): void
     {
         $this->withSession([
@@ -81,6 +96,12 @@ class ReportsControllerTest extends CIUnitTestCase
         ]);
     }
 
+    /**
+     * A non-admin employee with no reports_customers grant must be denied
+     * access to the summary_customers report.
+     *
+     * @return void
+     */
     public function testNonAdminWithoutReportGrantIsDeniedSummaryCustomers(): void
     {
         $nonAdminId = $this->createNonAdminEmployee();
@@ -96,6 +117,8 @@ class ReportsControllerTest extends CIUnitTestCase
      * Regression test for the double-URL-encoding bypass itself: replacing
      * the underscore with %255F must not change the outcome versus the
      * plain request in testNonAdminWithoutReportGrantIsDeniedSummaryCustomers().
+     *
+     * @return void
      */
     public function testDoubleEncodedUnderscoreCannotBypassSummaryCustomersGrantCheck(): void
     {
@@ -111,6 +134,8 @@ class ReportsControllerTest extends CIUnitTestCase
     /**
      * Same bypass attempt against a different report prefix, to confirm the
      * fix isn't narrowly specific to the summary_ prefix's regex path.
+     *
+     * @return void
      */
     public function testDoubleEncodedUnderscoreCannotBypassDetailedSalesGrantCheck(): void
     {
@@ -123,6 +148,12 @@ class ReportsControllerTest extends CIUnitTestCase
         $this->assertStringContainsString('no_access', $response->getRedirectUrl());
     }
 
+    /**
+     * An employee with the reports_customers grant must be able to access
+     * the summary_customers report.
+     *
+     * @return void
+     */
     public function testEmployeeWithReportGrantCanAccessSummaryCustomers(): void
     {
         $employeeId = $this->createNonAdminEmployee([
