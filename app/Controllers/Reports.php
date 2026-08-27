@@ -56,8 +56,8 @@ class Reports extends Secure_Controller
     {
         parent::__construct('reports');
         $request = Services::request();
-        $method_name = urldecode($request->getUri()->getSegment(2));
-        $exploder = explode('_', $method_name);
+        $methodName = urldecode($request->getUri()->getSegment(2));
+        $exploder = explode('_', $methodName);
 
         $this->attribute = config(Attribute::class);
         $this->config = config(OSPOS::class)->settings;
@@ -80,16 +80,16 @@ class Reports extends Secure_Controller
         $this->inventory_summary = model(Inventory_summary::class);
 
         if (sizeof($exploder) > 1) {
-            preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);
+            preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $methodName, $matches);
             preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
-            $submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
+            $submoduleId = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
         } else {
-            $submodule_id = null;
+            $submoduleId = null;
         }
 
         // Check access to report submodule
-        if ($submodule_id === null || !$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
-            throw new RedirectException('no_access/reports/reports_' . $submodule_id);
+        if ($submoduleId !== null && !$this->employee->has_grant('reports_' . $submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
+            throw new RedirectException('no_access/reports/reports_' . $submoduleId);
         }
 
         helper('report');

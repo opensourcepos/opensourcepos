@@ -170,4 +170,26 @@ class ReportsControllerTest extends CIUnitTestCase
 
         $response->assertStatus(200);
     }
+
+    /**
+     * An employee with only the base reports grant must be able to access
+     * the base /reports listing route (no submodule id derivable).
+     *
+     * @return void
+     */
+    public function testEmployeeWithReportsGrantCanAccessBaseReportsIndex(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'reportsindexviewer',
+            'email'    => 'reportsindexviewer@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports');
+
+        $response->assertStatus(200);
+    }
 }
