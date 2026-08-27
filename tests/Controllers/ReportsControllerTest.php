@@ -79,7 +79,10 @@ class ReportsControllerTest extends CIUnitTestCase
         ];
 
         $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        $saved = $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+
+        $this->assertTrue($saved, 'Failed to save non-admin employee fixture.');
+        $this->assertArrayHasKey('person_id', $personData, 'Saved employee fixture missing person_id.');
 
         return (int) $personData['person_id'];
     }
