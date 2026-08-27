@@ -169,6 +169,17 @@ class Employees extends Persons
             }
         }
 
+        $minimumGrants = ['employees', 'home', 'office'];
+        $missingMinimumGrant = array_diff($minimumGrants, array_column($grantsArray, 'permission_id'));
+
+        if ($isAdmin && $employeeId == $currentUser->person_id && !empty($missingMinimumGrant)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Employees.error_cannot_remove_own_minimum_grant'),
+                'id'      => $employeeId
+            ]);
+        }
+
         if (filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN)
             && $this->hasGrantsChanged($employeeId, $isAdmin, $currentUser, $grantsArray)) {
             return $this->response->setJSON([
