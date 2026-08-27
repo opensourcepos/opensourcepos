@@ -18,13 +18,19 @@ function lockEnvFile()
 
     $handle = @fopen($lockPath, 'c+');
     if ($handle === false) {
-        throw new RuntimeException("Unable to open $lockPath");
+        $reason = error_get_last()['message'] ?? 'unknown error';
+        log_message('critical', "Unable to open $lockPath: $reason");
+
+        throw new RuntimeException("Unable to open $lockPath: $reason");
     }
 
     if (!flock($handle, LOCK_EX)) {
         fclose($handle);
 
-        throw new RuntimeException("Unable to lock $lockPath");
+        $reason = error_get_last()['message'] ?? 'unknown error';
+        log_message('critical', "Unable to lock $lockPath: $reason");
+
+        throw new RuntimeException("Unable to lock $lockPath: $reason");
     }
 
     return $handle;
