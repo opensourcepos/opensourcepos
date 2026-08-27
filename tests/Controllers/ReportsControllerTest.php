@@ -2,11 +2,12 @@
 
 namespace Tests\Controllers;
 
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use App\Database\Seeds\TestDatabaseBootstrapSeeder;
 use App\Models\Employee;
+use Config\OSPOS;
 
 /**
  * Regression tests for GHSA-9gr6-4mm4-4wrq
@@ -29,7 +30,7 @@ class ReportsControllerTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static $doneBootstrap = false;
+    private static bool $doneBootstrap = false;
 
     /**
      * Set up test environment
@@ -37,13 +38,14 @@ class ReportsControllerTest extends CIUnitTestCase
     protected function setUp(): void
     {
         if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
+            TestDatabaseBootstrapSeeder::reset();
 
             self::$doneBootstrap = true;
         }
 
         parent::setUp();
+
+        config(OSPOS::class)->update_settings();
     }
 
     /**
@@ -172,8 +174,8 @@ class ReportsControllerTest extends CIUnitTestCase
     }
 
     /**
-     * An employee with only the base reports grant must be able to access
-     * the base /reports listing route (no submodule id derivable).
+     * An employee with the base reports grant plus a submodule grant must be
+     * able to access the base /reports listing route (no submodule id derivable).
      *
      * @return void
      */
@@ -183,7 +185,8 @@ class ReportsControllerTest extends CIUnitTestCase
             'username' => 'reportsindexviewer',
             'email'    => 'reportsindexviewer@test.com',
             'grants'   => [
-                ['permission_id' => 'reports', 'menu_group' => 'home']
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
             ]
         ]);
         $this->loginAs($employeeId);
