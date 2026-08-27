@@ -7,6 +7,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Employee;
+use RuntimeException;
 
 /**
  * Test suite for Home controller password validation
@@ -273,7 +274,11 @@ class HomeTest extends CIUnitTestCase
         ];
 
         $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+        $saved = $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
+
+        if (!$saved || empty($personData['person_id'])) {
+            throw new RuntimeException('Failed to create non-admin employee for testing');
+        }
 
         return (int) $personData['person_id'];
     }
