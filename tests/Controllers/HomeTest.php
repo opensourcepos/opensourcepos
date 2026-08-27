@@ -512,12 +512,16 @@ class HomeTest extends CIUnitTestCase
      */
     public function testLogoutStillBypassesGrantCheckAfterFix(): void
     {
-        $nonAdminId = $this->createNonAdminEmployee();
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'logoutnograntuser',
+            'email' => 'logoutnograntuser@test.com',
+            'grants' => []
+        ]);
         $this->loginAs($nonAdminId);
 
         $response = $this->get('/home/logout');
 
-        $response->assertRedirect();
+        $response->assertRedirectTo('login');
     }
 
     /**
