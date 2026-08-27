@@ -25,11 +25,8 @@ class HomeTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static $doneBootstrap = false;
+    private static bool $doneBootstrap = false;
 
-    /**
-     * Set up test environment
-     */
     protected function setUp(): void
     {
         if (self::$doneBootstrap === false) {
@@ -44,13 +41,13 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test password validation rejects passwords shorter than 8 characters
-     * 
+     *
      * @return void
      */
     public function testPasswordMinLength_Rejects7Characters(): void
     {
         $this->resetSession();
-        
+
         // Attempt to change password to 7 characters
         $response = $this->post('/home/save', [
             'employee_id' => 1,
@@ -58,29 +55,29 @@ class HomeTest extends CIUnitTestCase
             'current_password' => 'pointofsale',
             'password' => '1234567' // 7 characters
         ]);
-        
+
         // Assert failure response
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success'], 'Password with 7 chars should be rejected');
         $this->assertEquals(-1, $result['id']);
-        
+
         // Verify password was not changed
         $employee = model(Employee::class);
         $admin = $employee->get_info(1);
-        $this->assertTrue(password_verify('pointofsale', $admin->password), 
+        $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Password should not have been changed');
     }
-    
+
     /**
      * Test password validation accepts passwords with exactly 8 characters
-     * 
+     *
      * @return void
      */
     public function testPasswordMinLength_Accepts8Characters(): void
     {
         $this->resetSession();
-        
+
         // Change password to exactly 8 characters
         $response = $this->post('/home/save', [
             'employee_id' => 1,
@@ -88,19 +85,19 @@ class HomeTest extends CIUnitTestCase
             'current_password' => 'pointofsale',
             'password' => 'pa$$w0rd' // Exactly 8 characters including special chars
         ]);
-        
+
         // Assert success response
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success'], 'Password with 8 chars should be accepted');
         $this->assertEquals(1, $result['id']);
-        
+
         // Verify password was changed
         $employee = model(Employee::class);
         $admin = $employee->get_info(1);
-        $this->assertTrue(password_verify('pa$$w0rd', $admin->password), 
+        $this->assertTrue(password_verify('pa$$w0rd', $admin->password),
             'Password with 8 chars should be accepted');
-        
+
         // Restore original password
         $employee->change_password([
             'username' => 'admin',
@@ -108,16 +105,16 @@ class HomeTest extends CIUnitTestCase
             'hash_version' => 2
         ], 1);
     }
-    
+
     /**
      * Test password validation rejects empty password
-     * 
+     *
      * @return void
      */
     public function testPasswordMinLength_RejectsEmptyString(): void
     {
         $this->resetSession();
-        
+
         // Attempt to set empty password
         $response = $this->post('/home/save', [
             'employee_id' => 1,
@@ -125,13 +122,13 @@ class HomeTest extends CIUnitTestCase
             'current_password' => 'pointofsale',
             'password' => '' // Empty string
         ]);
-        
+
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success'], 'Empty password should be rejected');
         $this->assertEquals(-1, $result['id']);
     }
-    
+
     /**
      * Password validation is a raw strlen() check with no whitespace
      * handling, so a password consisting entirely of spaces still counts
@@ -162,36 +159,36 @@ class HomeTest extends CIUnitTestCase
             'hash_version' => 2
         ], 1);
     }
-    
+
     /**
      * Test password validation accepts passwords with special characters
      * as long as they meet minimum length
-     * 
+     *
      * @return void
      */
     public function testPasswordMinLength_AcceptsSpecialCharacters(): void
     {
         $this->resetSession();
-        
+
         $specialPassword = 'Str0ng!@#$'; // 11 characters with special chars
-        
+
         $response = $this->post('/home/save', [
             'employee_id' => 1,
             'username' => 'admin',
             'current_password' => 'pointofsale',
             'password' => $specialPassword
         ]);
-        
+
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success'], 'Password with special chars should be accepted');
         $this->assertEquals(1, $result['id']);
-        
+
         // Verify password works
         $employee = model(Employee::class);
         $admin = $employee->get_info(1);
         $this->assertTrue(password_verify($specialPassword, $admin->password));
-        
+
         // Restore original password
         $employee->change_password([
             'username' => 'admin',
@@ -199,20 +196,20 @@ class HomeTest extends CIUnitTestCase
             'hash_version' => 2
         ], 1);
     }
-    
+
     /**
      * Regression test: Verify previous vulnerable behavior is fixed
-     * 
+     *
      * Before fix: 1-character passwords like "a" were accepted because
      * code checked len(hashed_password) which is always 60 for bcrypt
      * After fix: Raw password is validated before hashing
-     * 
+     *
      * @return void
      */
     public function testPasswordMinLength_RejectsPreviousBehavior(): void
     {
         $this->resetSession();
-        
+
         // Attempt the previously vulnerable case: single character password
         $response = $this->post('/home/save', [
             'employee_id' => 1,
@@ -220,33 +217,33 @@ class HomeTest extends CIUnitTestCase
             'current_password' => 'pointofsale',
             'password' => 'a' // Previously allowed due to bug
         ]);
-        
+
         // This should now fail
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success'], 'Single character password should be rejected (CVE fix)');
         $this->assertEquals(-1, $result['id']);
-        
+
         // Verify password was NOT changed
         $employee = model(Employee::class);
         $admin = $employee->get_info(1);
-        $this->assertTrue(password_verify('pointofsale', $admin->password), 
+        $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Single character password should be rejected (CVE fix)');
     }
-    
+
     /**
      * Helper method to reset session
-     * 
+     *
      * @return void
      */
     protected function resetSession(): void
     {
         $this->withSession(['person_id' => 1]); // Admin user
     }
-    
+
     /**
      * Create a non-admin employee for testing
-     * 
+     *
      * @param array $overrides Optional overrides for username, email, password, etc.
      * @return int The person_id of the created employee
      */
@@ -268,7 +265,7 @@ class HomeTest extends CIUnitTestCase
             'language_code' => 'en',
             'language'      => 'english'
         ];
-        
+
         $grantsData = $overrides['grants'] ?? [
             ['permission_id' => 'home', 'menu_group' => 'home'],
             ['permission_id' => 'customers', 'menu_group' => 'home'],
@@ -280,10 +277,10 @@ class HomeTest extends CIUnitTestCase
 
         return (int) $personData['person_id'];
     }
-    
+
     /**
      * Login as a specific user
-     * 
+     *
      * @param int $personId
      * @return void
      */
@@ -294,72 +291,72 @@ class HomeTest extends CIUnitTestCase
             'menu_group' => 'home',
         ]);
     }
-    
+
     // ========== BOLA Authorization Tests ==========
-    
+
     /**
      * Test non-admin cannot view admin password change form
      * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
-     * 
+     *
      * @return void
      */
     public function testNonAdminCannotViewAdminPasswordForm(): void
     {
         $nonAdminId = $this->createNonAdminEmployee();
         $this->loginAs($nonAdminId);
-        
+
         $response = $this->get('/home/changePassword/1');
-        
+
         $response->assertStatus(403);
     }
-    
+
     /**
      * Test non-admin cannot change admin password
      * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
-     * 
+     *
      * @return void
      */
     public function testNonAdminCannotChangeAdminPassword(): void
     {
         $nonAdminId = $this->createNonAdminEmployee();
         $this->loginAs($nonAdminId);
-        
+
         $response = $this->post('/home/save/1', [
             'username' => 'admin',
             'current_password' => 'pointofsale',
             'password' => 'hacked123'
         ]);
-        
+
         $response->assertStatus(403);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
-        
+
         // Verify admin password was NOT changed
         $employee = model(Employee::class);
         $admin = $employee->get_info(1);
-        $this->assertTrue(password_verify('pointofsale', $admin->password), 
+        $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Admin password should not have been changed by non-admin');
     }
-    
+
     /**
      * Test user can view their own password change form
-     * 
+     *
      * @return void
      */
     public function testUserCanViewOwnPasswordForm(): void
     {
         $nonAdminId = $this->createNonAdminEmployee();
         $this->loginAs($nonAdminId);
-        
+
         $response = $this->get('/home/changePassword/' . $nonAdminId);
-        
+
         $response->assertStatus(200);
         $response->assertSee('nonadmin'); // Username should be visible
     }
-    
+
     /**
      * Test user can change their own password
-     * 
+     *
      * @return void
      */
     public function testUserCanChangeOwnPassword(): void
@@ -372,36 +369,36 @@ class HomeTest extends CIUnitTestCase
             'current_password' => 'password123',
             'password' => 'newpassword123'
         ]);
-        
+
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
-        
+
         // Verify password was changed
         $employee = model(Employee::class);
         $user = $employee->get_info($nonAdminId);
         $this->assertTrue(password_verify('newpassword123', $user->password));
     }
-    
+
     /**
      * Test admin can view any user's password form
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewAnyPasswordForm(): void
     {
         $nonAdminId = $this->createNonAdminEmployee();
         $this->resetSession(); // Login as admin
-        
+
         $response = $this->get('/home/changePassword/' . $nonAdminId);
-        
+
         $response->assertStatus(200);
         $response->assertSee('nonadmin');
     }
-    
+
     /**
      * Test admin can change any user's password
-     * 
+     *
      * @return void
      */
     public function testAdminCanChangeAnyPassword(): void
@@ -414,30 +411,30 @@ class HomeTest extends CIUnitTestCase
             'current_password' => 'password123',
             'password' => 'adminset123'
         ]);
-        
+
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
-        
+
         // Verify password was changed
         $employee = model(Employee::class);
         $user = $employee->get_info($nonAdminId);
         $this->assertTrue(password_verify('adminset123', $user->password));
     }
-    
+
     /**
      * Test default employee_id parameter uses current user
-     * 
+     *
      * @return void
      */
     public function testDefaultEmployeeIdUsesCurrentUser(): void
     {
         $nonAdminId = $this->createNonAdminEmployee();
         $this->loginAs($nonAdminId);
-        
+
         // Calling without employee_id should use current user
         $response = $this->get('/home/changePassword');
-        
+
         $response->assertStatus(200);
         $response->assertSee('nonadmin');
     }
@@ -445,22 +442,22 @@ class HomeTest extends CIUnitTestCase
     /**
      * Test non-admin cannot view another non-admin's password form
      * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
-     * 
+     *
      * @return void
      */
     public function testNonAdminCannotViewOtherNonAdminPasswordForm(): void
     {
         $nonAdminId1 = $this->createNonAdminEmployee();
         $this->loginAs($nonAdminId1);
-        
+
         $otherUserId = $this->createNonAdminEmployee([
             'username' => 'otheruser',
             'email' => 'other@test.com',
             'password' => 'password456'
         ]);
-        
+
         $response = $this->get('/home/changePassword/' . $otherUserId);
-        
+
         $response->assertStatus(403);
     }
 
