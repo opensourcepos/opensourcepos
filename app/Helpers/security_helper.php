@@ -104,10 +104,9 @@ function writeEnvKey(string $envKey, string $value): bool
 function applyEnvKeyReplacement(string $configFile, string $envKey, string $value): ?string
 {
     $pattern = '/^\s*' . preg_quote($envKey, '/') . '\s*=.*/m';
+    $escapedValue = str_replace(['\\', '$'], ['\\\\', '\\$'], $value);
 
     if (preg_match($pattern, $configFile)) {
-        $escapedValue = str_replace(['\\', '$'], ['\\\\', '\\$'], $value);
-
         return preg_replace_callback($pattern, static fn () => "$envKey='$escapedValue'", $configFile, 1);
     }
 
@@ -115,10 +114,10 @@ function applyEnvKeyReplacement(string $configFile, string $envKey, string $valu
     if (preg_match('/^encryption\.key\s*=.*$/m', $configFile, $matches, PREG_OFFSET_CAPTURE)) {
         $insertAt = (int) $matches[0][1] + strlen($matches[0][0]);
 
-        return substr_replace($configFile, "\n$envKey='$value'", $insertAt, 0);
+        return substr_replace($configFile, "\n$envKey='$escapedValue'", $insertAt, 0);
     }
 
-    return $configFile . "\n$envKey='$value'\n";
+    return $configFile . "\n$envKey='$escapedValue'\n";
 }
 
 /**
