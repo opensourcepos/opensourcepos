@@ -742,35 +742,51 @@ class Config extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => lang('Config.saved_unsuccessfully')]);
         }
 
-        // Keys are either the empty-bracket form (new, not-yet-saved rows) or a numeric
-        // existing location_id; anything else is not a shape the view ever submits, so drop it.
-        // A blank/non-string name for an existing id is kept as a key (so the row below still
-        // counts it as "still present" and doesn't delete it) but is excluded from the save loop.
-        $submittedLocations = array_filter(
-            $submittedLocations,
-            fn ($locationId) => $locationId === '' || is_numeric($locationId),
-            ARRAY_FILTER_USE_KEY
-        );
-        $submittedLocations = array_map(
-            fn ($locationName) => is_string($locationName) ? trim($locationName) : '',
-            $submittedLocations
-        );
+        $submittedLocations = $this->sanitizeSubmittedLocations($submittedLocations);
 
         $this->db->transStart();
 
-        // Existing rows carry their real location_id as the array key (stock_location[$id]);
-        // brand-new, not-yet-saved rows use the empty-bracket form (stock_location[]), which PHP
-        // auto-assigns the next integer key after the highest submitted key — that auto-key can
-        // coincidentally collide with a real, unrelated location_id, so numeric-ness alone isn't
-        // enough; only keys that actually exist as rows count as "still present" ids.
+        // Prevents collisions between auto-assigned indexes with real location_ids.
         $submittedLocationIds = array_filter(
             array_keys($submittedLocations),
             fn ($locationId) => is_numeric($locationId) && $this->stock_location->exists((int) $locationId)
         );
 
-        // Delete removed locations BEFORE saving/inserting new ones. Otherwise, reusing a
-        // just-deleted location's name in the same submit collides on the name-derived
-        // permission_id, since the old row's permissions wouldn't be gone yet.
+        // Delete removed locations first so a reused name doesn't collide with the old row's still-present permission_id.
+        $this->deleteRemovedLocations($submittedLocationIds);
+
+        $saveResult = $this->saveSubmittedLocations($submittedLocations, $submittedLocationIds);
+
+        if (!$saveResult['saveFailed']) {
+            $this->saveLocationOrderAndDefault($saveResult['notToDelete'], $saveResult['newlyInsertedIds']);
+        }
+
+        $this->db->transComplete();
+
+        $success = $this->db->transStatus();
+
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    /**
+     * Keeps only new-row (empty-bracket) keys and numeric location_id keys, and trims names.
+     */
+    private function sanitizeSubmittedLocations(array $submittedLocations): array
+    {
+        $submittedLocations = array_filter(
+            $submittedLocations,
+            fn ($locationId) => $locationId === '' || is_numeric($locationId),
+            ARRAY_FILTER_USE_KEY
+        );
+
+        return array_map(
+            fn ($locationName) => is_string($locationName) ? trim($locationName) : '',
+            $submittedLocations
+        );
+    }
+
+    private function deleteRemovedLocations(array $submittedLocationIds): void
+    {
         $existingLocations = $this->stock_location->getAll()->getResultArray();
 
         foreach ($existingLocations as $locationData) {
@@ -778,10 +794,13 @@ class Config extends Secure_Controller
                 $this->stock_location->delete($locationData['location_id']);
             }
         }
+    }
 
+    private function saveSubmittedLocations(array $submittedLocations, array $submittedLocationIds): array
+    {
         $notToDelete = [];
         $newlyInsertedIds = [];
-        $saveFailed = false;
+
         foreach ($submittedLocations as $locationId => $locationName) {
             $wasExisting = in_array($locationId, $submittedLocationIds);
             if ($locationName === '') {
@@ -794,14 +813,11 @@ class Config extends Secure_Controller
 
             $locationData = ['location_name' => $locationName];
             if (!$this->stock_location->saveValue($locationData, $locationId)) {
-                $saveFailed = true;
-
-                break;
+                return ['notToDelete' => $notToDelete, 'newlyInsertedIds' => $newlyInsertedIds, 'saveFailed' => true];
             }
 
-            // saveValue() sets location_id on $locationData for new inserts (it stays
-            // as-is for updates); reading it back here avoids re-resolving by name,
-            // which is ambiguous when a deleted row still shares that name.
+            // saveValue() fills in location_id for new inserts; read it back instead of
+            // re-resolving by name, which is ambiguous after a same-named delete.
             $savedLocationId = $locationData['location_id'] ?? $locationId;
             $notToDelete[] = $savedLocationId;
             if (!$wasExisting) {
@@ -810,37 +826,33 @@ class Config extends Secure_Controller
             $this->_clear_session_state();
         }
 
-        if (!$saveFailed) {
-            $sortOrder = $this->request->getPost('stock_location_order');
-            $submittedOrderTokens = $sortOrder ? explode(',', $sortOrder) : [];
+        return ['notToDelete' => $notToDelete, 'newlyInsertedIds' => $newlyInsertedIds, 'saveFailed' => false];
+    }
 
-            // 'new-<n>' tokens are placeholders for rows with no location_id yet; resolve
-            // each to its real inserted id in submission order.
-            $submittedOrderIds = array_map(
-                function ($token) use (&$newlyInsertedIds) {
-                    return str_starts_with($token, 'new-') ? array_shift($newlyInsertedIds) : (int) $token;
-                },
-                $submittedOrderTokens
-            );
+    private function saveLocationOrderAndDefault(array $notToDelete, array $newlyInsertedIds): void
+    {
+        $sortOrder = $this->request->getPost('stock_location_order');
+        $submittedOrderTokens = $sortOrder ? explode(',', $sortOrder) : [];
 
-            $orderedLocationIds = array_values(array_unique(array_intersect($submittedOrderIds, $notToDelete)));
-            $orderedLocationIds = array_merge($orderedLocationIds, array_diff($notToDelete, $orderedLocationIds));
+        // 'new-<n>' tokens resolve to real inserted ids in submission order.
+        $submittedOrderIds = array_map(
+            function ($token) use (&$newlyInsertedIds) {
+                return str_starts_with($token, 'new-') ? array_shift($newlyInsertedIds) : (int) $token;
+            },
+            $submittedOrderTokens
+        );
 
-            if ($orderedLocationIds) {
-                $this->stock_location->saveSortOrder($orderedLocationIds);
-            }
+        $orderedLocationIds = array_values(array_unique(array_intersect($submittedOrderIds, $notToDelete)));
+        $orderedLocationIds = array_merge($orderedLocationIds, array_diff($notToDelete, $orderedLocationIds));
 
-            $defaultLocationId = $this->request->getPost('stock_location_default', FILTER_SANITIZE_NUMBER_INT);
-            if ($defaultLocationId && in_array((int) $defaultLocationId, array_map('intval', $notToDelete), true)) {
-                $this->stock_location->setDefaultLocation((int) $defaultLocationId);
-            }
+        if ($orderedLocationIds) {
+            $this->stock_location->saveSortOrder($orderedLocationIds);
         }
 
-        $this->db->transComplete();
-
-        $success = $this->db->transStatus();
-
-        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+        $defaultLocationId = $this->request->getPost('stock_location_default', FILTER_SANITIZE_NUMBER_INT);
+        if ($defaultLocationId && in_array((int) $defaultLocationId, array_map('intval', $notToDelete), true)) {
+            $this->stock_location->setDefaultLocation((int) $defaultLocationId);
+        }
     }
 
     /**
