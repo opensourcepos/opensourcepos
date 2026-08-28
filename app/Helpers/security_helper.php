@@ -74,7 +74,7 @@ function writeEnvKey(string $envKey, string $value): bool
     $lock = lockEnvFile();
 
     try {
-        $configFile = file_get_contents($configPath);
+        $configFile = @file_get_contents($configPath);
         if ($configFile === false) {
             return false;
         }
@@ -97,7 +97,7 @@ function applyEnvKeyReplacement(string $configFile, string $envKey, string $valu
     if (preg_match($pattern, $configFile)) {
         $escapedValue = str_replace(['\\', '$'], ['\\\\', '\\$'], $value);
 
-        return preg_replace($pattern, "$envKey='$escapedValue'", $configFile, 1);
+        return preg_replace_callback($pattern, static fn () => "$envKey='$escapedValue'", $configFile, 1);
     }
 
     // New keys insert right after encryption.key so it stays first for easy backup/rotation.
