@@ -23,6 +23,9 @@ use Config\Services;
  */
 class Secure_Controller extends BaseController
 {
+    private const DEFAULT_TABLE_PAGE_SIZE = 25;
+    private const MAX_TABLE_PAGE_SIZE = 100;
+
     public array $global_view_data;
     protected Employee $employee;
     protected Module $module;
@@ -76,6 +79,38 @@ class Secure_Controller extends BaseController
     public function sanitizeSortColumn($headers, $field, $default): string
     {
         return $field != null && in_array($field, array_keys(array_merge(...$headers))) ? $field : $default;
+    }
+
+    protected static function sanitizeTablePagination(mixed $limit, mixed $offset): array
+    {
+        $pageSize = self::sanitizeTablePageSize($limit);
+
+        return [$pageSize, self::sanitizeTableOffset($offset)];
+    }
+
+    protected static function sanitizeTablePageSize(mixed $limit): int
+    {
+        if (! is_int($limit) && ! is_string($limit)) {
+            return self::DEFAULT_TABLE_PAGE_SIZE;
+        }
+
+        $pageSize = (string) $limit;
+        if ($pageSize === '' || !ctype_digit($pageSize) || $pageSize === '0') {
+            return self::DEFAULT_TABLE_PAGE_SIZE;
+        }
+
+        return min((int) $pageSize, self::MAX_TABLE_PAGE_SIZE);
+    }
+
+    protected static function sanitizeTableOffset(mixed $offset): int
+    {
+        if (! is_int($offset) && ! is_string($offset)) {
+            return 0;
+        }
+
+        $offset = (string) $offset;
+
+        return $offset !== '' && ctype_digit($offset) ? (int) $offset : 0;
     }
 
     /**
