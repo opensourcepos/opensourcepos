@@ -109,7 +109,11 @@ class ReportsControllerTest extends CIUnitTestCase
      */
     public function testNonAdminWithoutReportGrantIsDeniedSummaryCustomers(): void
     {
-        $nonAdminId = $this->createNonAdminEmployee();
+        $nonAdminId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
         $this->loginAs($nonAdminId);
 
         $response = $this->get('/reports/summary_customers');
@@ -127,7 +131,11 @@ class ReportsControllerTest extends CIUnitTestCase
      */
     public function testDoubleEncodedUnderscoreCannotBypassSummaryCustomersGrantCheck(): void
     {
-        $nonAdminId = $this->createNonAdminEmployee();
+        $nonAdminId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
         $this->loginAs($nonAdminId);
 
         $response = $this->get('/reports/summary%255Fcustomers');
@@ -144,7 +152,11 @@ class ReportsControllerTest extends CIUnitTestCase
      */
     public function testDoubleEncodedUnderscoreCannotBypassDetailedSalesGrantCheck(): void
     {
-        $nonAdminId = $this->createNonAdminEmployee();
+        $nonAdminId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
         $this->loginAs($nonAdminId);
 
         $response = $this->get('/reports/detailed%255Fsales');
