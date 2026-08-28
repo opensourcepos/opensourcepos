@@ -94,6 +94,24 @@ class security_helperTest extends CIUnitTestCase
         $this->assertSame("encryption.key='a\\\\b\\\$c'\n", $result);
     }
 
+    public function testApplyEnvKeyReplacementInsertEscapesBackslashAndDollar(): void
+    {
+        $configFile = "encryption.key='abc'\nfoo='bar'\n";
+
+        $result = applyEnvKeyReplacement($configFile, 'throttle.key', 'a\\b$c');
+
+        $this->assertSame("encryption.key='abc'\nthrottle.key='a\\\\b\\\$c'\nfoo='bar'\n", $result);
+    }
+
+    public function testApplyEnvKeyReplacementAppendEscapesBackslashAndDollar(): void
+    {
+        $configFile = "foo='bar'\n";
+
+        $result = applyEnvKeyReplacement($configFile, 'throttle.key', 'a\\b$c');
+
+        $this->assertSame("foo='bar'\n\nthrottle.key='a\\\\b\\\$c'\n", $result);
+    }
+
     // -- writeEnvKey() / atomicWriteFile() — real filesystem --
 
     public function testWriteEnvKeyReplacesExistingKeyOnDisk(): void
