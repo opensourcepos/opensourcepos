@@ -146,10 +146,10 @@ class Barcode_lib
         if ((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id'])) {
             $barcode = $this->generate_barcode($item, $barcode_config);
             $display_table = '<table>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
             $display_table .= '<tr><td style="text-align: center;"><div class="barcode">'.$barcode.'</div></td></tr>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
             $display_table .= '</table>';
 
             return $display_table;
@@ -159,30 +159,30 @@ class Barcode_lib
     }
 
     /**
-     * @param $layout_type
+     * @param string $layoutType
      * @param array $item
-     * @param array $barcode_config
+     * @param array $barcodeConfig
      * @return string
      */
-    private function manage_display_layout($layout_type, array $item, array $barcode_config): string
+    private function manageDisplayLayout(string $layoutType, array $item, array $barcodeConfig): string
     {
         $result = '';
         helper('text');
 
-        if ($layout_type == 'name') {
-            $result = $item['name'];
-        } elseif ($layout_type == 'category' && isset($item['category'])) {
+        if ($layoutType == 'name') {
+            $result = esc($item['name']);
+        } elseif ($layoutType == 'category' && isset($item['category'])) {
             $result = lang('Items.category') . " " . esc($item['category']);
-        } elseif ($layout_type == 'cost_price' && isset($item['cost_price'])) {
+        } elseif ($layoutType == 'cost_price' && isset($item['cost_price'])) {
             $result = lang('Items.cost_price') . " " . to_currency($item['cost_price']);
-        } elseif ($layout_type == 'unit_price' && isset($item['unit_price'])) {
+        } elseif ($layoutType == 'unit_price' && isset($item['unit_price'])) {
             $result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
-        } elseif ($layout_type == 'company_name') {
-            $result = $barcode_config['company'];
-        } elseif ($layout_type == 'item_code') {
-            $result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
-                ? $item['item_number']
-                : $item['item_id'];
+        } elseif ($layoutType == 'company_name') {
+            $result = esc($barcodeConfig['company']);
+        } elseif ($layoutType == 'item_code') {
+            $result = $barcodeConfig['barcode_content'] !== "id" && isset($item['item_number'])
+                ? esc($item['item_number'])
+                : esc($item['item_id']);
         }
 
         return character_limiter($result, 40);
