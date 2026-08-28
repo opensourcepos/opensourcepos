@@ -168,6 +168,7 @@ function atomicWriteFile(string $path, string $contents): bool
 
 /**
  * @return bool
+ * @throws RandomException
  */
 function checkEncryption(): bool
 {
@@ -200,21 +201,34 @@ function checkEncryption(): bool
             @chmod($backupPath, 0640);
             @chmod($configPath, 0640);
 
-            if (!writeEnvKey('encryption.key', $key)) {
-                return false;
+            $lock = lockEnvFile();
+
+            try {
+                $configFile = @file_get_contents($configPath);
+                if ($configFile === false) {
+                    return false;
+                }
+
+                $updated = applyEnvKeyReplacement($configFile, 'encryption.key', $key);
+                if ($updated === null) {
+                    return false;
+                }
+
+                if (!empty($oldKey)) {
+                    $oldLine = "# encryption.key='$oldKey' REMOVE IF UNNEEDED\r\n";
+                    if (preg_match('/^encryption\.key\s*=/m', $updated, $matches, PREG_OFFSET_CAPTURE)) {
+                        $updated = substr_replace($updated, $oldLine, $matches[0][1], 0);
+                    }
+                }
+
+                if (!atomicWriteFile($configPath, $updated)) {
+                    return false;
+                }
+            } finally {
+                unlockEnvFile($lock);
             }
 
             config('Encryption')->key = $key;
-
-            if (!empty($oldKey)) {
-                $configFile = file_get_contents($configPath);
-                $oldLine = "# encryption.key='$oldKey' REMOVE IF UNNEEDED\r\n";
-                if (preg_match('/^encryption\.key\s*=/m', $configFile, $matches, PREG_OFFSET_CAPTURE)) {
-                    $configFile = substr_replace($configFile, $oldLine, $matches[0][1], 0);
-                    @file_put_contents($configPath, $configFile);
-                    @chmod($configPath, 0640);
-                }
-            }
 
             log_message('info', "Updated encryption key in $configPath");
         }
