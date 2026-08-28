@@ -112,11 +112,12 @@ function applyEnvKeyReplacement(string $configFile, string $envKey, string $valu
 
 /**
  * Writes $contents to a temp file in the same directory as $path, then
- * renames it onto $path so readers never observe a partially-written file.
+ * renames it onto $path so readers never observe a partially written file.
  *
  * @param string $path
  * @param string $contents
  * @return bool
+ * @throws RandomException
  */
 function atomicWriteFile(string $path, string $contents): bool
 {
@@ -151,10 +152,7 @@ function atomicWriteFile(string $path, string $contents): bool
 
     fclose($handle);
 
-    // rename() overwrites an existing destination on POSIX. On Windows it
-    // does not, so fall back to unlink()+rename() there. Callers must not
-    // hold any open handle on $path — Windows can't unlink/rename a path
-    // that's still open, even by the same process.
+    // On Windows rename() does not overwrite an existing destination. Fall back to unlink()+rename().
     if (!@rename($tmpPath, $path)) {
         if (PHP_OS_FAMILY !== 'Windows' || !@unlink($path) || !@rename($tmpPath, $path)) {
             @unlink($tmpPath);
@@ -178,7 +176,6 @@ function checkEncryption(): bool
     if ((empty($oldKey)) || (strlen($oldKey) < 64)) {
         $encryption = new Encryption();
         $key = bin2hex($encryption->createKey());
-        config('Encryption')->key = $key;
 
         $configPath = ROOTPATH . '.env';
         $backupPath = WRITEPATH . '/backup/.env.bak';
@@ -206,6 +203,8 @@ function checkEncryption(): bool
             if (!writeEnvKey('encryption.key', $key)) {
                 return false;
             }
+
+            config('Encryption')->key = $key;
 
             if (!empty($oldKey)) {
                 $configFile = file_get_contents($configPath);
