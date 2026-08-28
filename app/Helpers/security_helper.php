@@ -21,7 +21,7 @@ function lockEnvFile()
         $reason = error_get_last()['message'] ?? 'unknown error';
         log_message('critical', "Unable to open $lockPath: $reason");
 
-        throw new RuntimeException("Unable to open $lockPath: $reason");
+        throw new RuntimeException(lang('Error.unable_to_open_lock_file', ['filePath' => $lockPath, 'reason' => $reason]));
     }
 
     if (!flock($handle, LOCK_EX)) {
@@ -30,7 +30,7 @@ function lockEnvFile()
         $reason = error_get_last()['message'] ?? 'unknown error';
         log_message('critical', "Unable to lock $lockPath: $reason");
 
-        throw new RuntimeException("Unable to lock $lockPath: $reason");
+        throw new RuntimeException(lang('Error.unable_to_lock_file', ['filePath' => $lockPath, 'reason' => $reason]));
     }
 
     return $handle;
@@ -293,7 +293,7 @@ function checkThrottleEncryption(): string
     $configPath = ROOTPATH . '.env';
 
     if (!initializeEnvFile($configPath)) {
-        throw new RuntimeException("Unable to create $configPath to provision throttle.key");
+        throw new RuntimeException(lang('Error.unable_to_create_env_file', ['filePath' => $configPath]));
     }
 
     $lock = lockEnvFile();
@@ -301,7 +301,7 @@ function checkThrottleEncryption(): string
     try {
         $configFile = file_get_contents($configPath);
         if ($configFile === false) {
-            throw new RuntimeException("Unable to read $configPath to provision throttle.key");
+            throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $configPath]));
         }
 
         // Another process may have provisioned the key while we waited for the lock.
@@ -317,7 +317,7 @@ function checkThrottleEncryption(): string
             $updated = applyEnvKeyReplacement($configFile, 'throttle.key', $key);
 
             if ($updated === null || !atomicWriteFile($configPath, $updated)) {
-                throw new RuntimeException("Unable to persist throttle.key to $configPath");
+                throw new RuntimeException(lang('Error.unable_to_persist_throttle_key', ['filePath' => $configPath]));
             }
         }
     } finally {
