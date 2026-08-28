@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => '已收帳款必須輸入數值.',
     'must_enter_numeric_giftcard'       => '禮金券編號必須輸入數值.',
     'must_enter_reference_code'         => '必須輸入參考/檢索編號。',
+    'negative_amount_tendered'           => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

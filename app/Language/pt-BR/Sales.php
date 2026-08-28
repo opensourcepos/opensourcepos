@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => 'Deve entrar valor numérico para montante da proposta apresentada.',
     'must_enter_numeric_giftcard'       => 'Deve entrar valor numérico para o número de cartão presente.',
     'must_enter_reference_code'         => 'O número de referência/recuperação deve ser informado.',
+    'negative_amount_tendered'           => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

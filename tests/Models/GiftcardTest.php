@@ -108,6 +108,36 @@ class GiftcardTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
 
+    /**
+     * Regression test for GHSA-9847 (negative gift-card amount minting).
+     *
+     * decrementGiftcardValue() must REJECT a non-positive amount instead of
+     * executing `value - <amount>`. A negative amount would otherwise INCREASE
+     * the card balance (value - (-N) = value + N), letting a low-privilege
+     * user mint store credit at will.
+     */
+    public function testDecrementGiftcardValueRejectsNegativeAmount(): void
+    {
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $giftcardModel  = model(Giftcard::class);
+
+        $result = $giftcardModel->decrementGiftcardValue((string) $giftcardNumber, -500.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testDecrementGiftcardValueRejectsZeroAmount(): void
+    {
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $giftcardModel  = model(Giftcard::class);
+
+        $result = $giftcardModel->decrementGiftcardValue((string) $giftcardNumber, 0.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
     public function testDecrementGiftcardValueConcurrentDecrementsOneWins(): void
     {
         $giftcardNumber = $this->createGiftcard(100.00);

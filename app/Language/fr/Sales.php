@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Veuillez entrer une valeur numérique pour la somme.',
     'must_enter_numeric_giftcard'       => 'Veuillez entrer une valeur numérique pour le numéro de carte.',
     'must_enter_reference_code'         => 'Le numéro de référence/récupération doit être saisi.',
+    'negative_amount_tendered'           => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

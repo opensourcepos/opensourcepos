@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => 'Számot kell megadnia a megrendelt mennyiséghez',
     'must_enter_numeric_giftcard'       => 'Vásárlási utalvány számát adja meg',
     'must_enter_reference_code'         => 'A hivatkozási/visszakeresési számot meg kell adni.',
+    'negative_amount_tendered'           => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

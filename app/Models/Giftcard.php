@@ -316,6 +316,11 @@ class Giftcard extends Model
      */
     public function decrementGiftcardValue(string $giftcardNumber, float $amount): bool
     {
+        // A non-positive amount could add balance (value - $amount) or be a no-op; reject it.
+        if ($amount <= 0.0) {
+            return false;
+        }
+
         $builder = $this->db->table('giftcards');
         $builder->where('giftcard_number', $giftcardNumber);
         $builder->where('deleted', 0);

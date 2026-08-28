@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => 'Số tiền thanh toán phải là dạng số.',
     'must_enter_numeric_giftcard'       => 'Số Thẻ quà tặng phải là dạng số.',
     'must_enter_reference_code'         => 'Số tham chiếu/truy xuất phải được nhập.',
+    'negative_amount_tendered'           => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

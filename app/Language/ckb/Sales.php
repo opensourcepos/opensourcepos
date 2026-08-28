@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => 'بڕی پێشکەشکراو دەبێت ژمارەیەک بێت.',
     'must_enter_numeric_giftcard'       => 'ژمارەی کارتی دیاری دەبێت ژمارەیەک بێت.',
     'must_enter_reference_code'         => 'ژمارەی مەرجع/وەرگرتن دەبێت بنووسرێت.',
+    'negative_amount_tendered'           => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',
