@@ -47,16 +47,13 @@ function unlockEnvFile($handle): void
 }
 
 /**
- * Replaces or inserts a single `key='value'` line in .env
+ * Copies .env.example to .env (or creates a stub) if .env does not exist yet.
  *
- * @param string $envKey
- * @param string $value
- * @return bool true on success, false if the write could not be completed
+ * @param string $configPath
+ * @return bool true if $configPath exists (already did, or was just created)
  */
-function writeEnvKey(string $envKey, string $value): bool
+function initializeEnvFile(string $configPath): bool
 {
-    $configPath = ROOTPATH . '.env';
-
     if (!file_exists($configPath)) {
         $examplePath = ROOTPATH . '.env.example';
         if (file_exists($examplePath)) {
@@ -67,7 +64,21 @@ function writeEnvKey(string $envKey, string $value): bool
         @chmod($configPath, 0640);
     }
 
-    if (!file_exists($configPath)) {
+    return file_exists($configPath);
+}
+
+/**
+ * Replaces or inserts a single `key='value'` line in .env
+ *
+ * @param string $envKey
+ * @param string $value
+ * @return bool true on success, false if the write could not be completed
+ */
+function writeEnvKey(string $envKey, string $value): bool
+{
+    $configPath = ROOTPATH . '.env';
+
+    if (!initializeEnvFile($configPath)) {
         return false;
     }
 
@@ -167,6 +178,52 @@ function atomicWriteFile(string $path, string $contents): bool
 }
 
 /**
+ * Copies $configPath to $backupPath, creating the backup folder if needed.
+ *
+ * @param string $configPath
+ * @param string $backupPath
+ * @return void
+ */
+function backupEnvFile(string $configPath, string $backupPath): void
+{
+    $backupFolder = dirname($backupPath);
+
+    if (!file_exists($backupFolder)) {
+        @mkdir($backupFolder, 0750, true);
+    }
+
+    @copy($configPath, $backupPath);
+    @chmod($backupPath, 0640);
+    @chmod($configPath, 0640);
+}
+
+/**
+ * Applies the new encryption.key to $configFile, preserving $oldKey as a
+ * commented-out backup line immediately before it.
+ *
+ * @param string $configFile
+ * @param string $key
+ * @param string $oldKey
+ * @return string|null updated file contents, or null if the replacement failed
+ */
+function writeNewEncryptionKey(string $configFile, string $key, string $oldKey): ?string
+{
+    $updated = applyEnvKeyReplacement($configFile, 'encryption.key', $key);
+    if ($updated === null) {
+        return null;
+    }
+
+    if (!empty($oldKey)) {
+        $oldLine = "# encryption.key='$oldKey' REMOVE IF UNNEEDED\r\n";
+        if (preg_match('/^encryption\.key\s*=/m', $updated, $matches, PREG_OFFSET_CAPTURE)) {
+            $updated = substr_replace($updated, $oldLine, $matches[0][1], 0);
+        }
+    }
+
+    return $updated;
+}
+
+/**
  * @return bool
  * @throws RandomException
  */
@@ -180,58 +237,36 @@ function checkEncryption(): bool
 
         $configPath = ROOTPATH . '.env';
         $backupPath = WRITEPATH . '/backup/.env.bak';
-        $backupFolder = WRITEPATH . '/backup';
 
-        if (!file_exists($backupFolder)) {
-            @mkdir($backupFolder, 0750, true);
+        if (!initializeEnvFile($configPath)) {
+            return true;
         }
 
-        if (!file_exists($configPath)) {
-            $examplePath = ROOTPATH . '.env.example';
-            if (file_exists($examplePath)) {
-                @copy($examplePath, $configPath);
-            } else {
-                @file_put_contents($configPath, "# OSPOS Configuration\n\n");
-            }
-            @chmod($configPath, 0640);
-        }
+        backupEnvFile($configPath, $backupPath);
 
-        if (file_exists($configPath)) {
-            @copy($configPath, $backupPath);
-            @chmod($backupPath, 0640);
-            @chmod($configPath, 0640);
+        $lock = lockEnvFile();
 
-            $lock = lockEnvFile();
-
-            try {
-                $configFile = @file_get_contents($configPath);
-                if ($configFile === false) {
-                    return false;
-                }
-
-                $updated = applyEnvKeyReplacement($configFile, 'encryption.key', $key);
-                if ($updated === null) {
-                    return false;
-                }
-
-                if (!empty($oldKey)) {
-                    $oldLine = "# encryption.key='$oldKey' REMOVE IF UNNEEDED\r\n";
-                    if (preg_match('/^encryption\.key\s*=/m', $updated, $matches, PREG_OFFSET_CAPTURE)) {
-                        $updated = substr_replace($updated, $oldLine, $matches[0][1], 0);
-                    }
-                }
-
-                if (!atomicWriteFile($configPath, $updated)) {
-                    return false;
-                }
-            } finally {
-                unlockEnvFile($lock);
+        try {
+            $configFile = @file_get_contents($configPath);
+            if ($configFile === false) {
+                return false;
             }
 
-            config('Encryption')->key = $key;
+            $updated = writeNewEncryptionKey($configFile, $key, $oldKey);
+            if ($updated === null) {
+                return false;
+            }
 
-            log_message('info', "Updated encryption key in $configPath");
+            if (!atomicWriteFile($configPath, $updated)) {
+                return false;
+            }
+        } finally {
+            unlockEnvFile($lock);
         }
+
+        config('Encryption')->key = $key;
+
+        log_message('info', "Updated encryption key in $configPath");
     }
 
     return true;
@@ -258,17 +293,7 @@ function checkThrottleEncryption(): string
 
     $configPath = ROOTPATH . '.env';
 
-    if (!file_exists($configPath)) {
-        $examplePath = ROOTPATH . '.env.example';
-        if (file_exists($examplePath)) {
-            @copy($examplePath, $configPath);
-        } else {
-            @file_put_contents($configPath, "# OSPOS Configuration\n\n");
-        }
-        @chmod($configPath, 0640);
-    }
-
-    if (!file_exists($configPath)) {
+    if (!initializeEnvFile($configPath)) {
         throw new RuntimeException("Unable to create $configPath to provision throttle.key");
     }
 
