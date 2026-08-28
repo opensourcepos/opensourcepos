@@ -50,6 +50,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 - **When explicitly asked to translate a phrase for a non-English language file, always provide the actual translation** — never leave the value as an empty string, and never leave source English text in a non-English language file
 - Never copy English text from a neighboring key as a value for a non-English language file, even if that neighboring key is already untranslated — evaluate each key independently
 - Only `app/Language/en/` and `app/Language/en-GB/` should contain English strings
+- When translating a string containing placeholders (e.g. `{filePath}`, `{reason}`) or literal filenames/keys (e.g. `throttle.key`, `.env`), keep that placeholder or filename text unchanged and untranslated — move it to whatever position is grammatically correct in the translated sentence
 - Plugin language files (`app/Plugins/*/Language/`) follow the same localization rules as `app/Language/`
 - Use `'` to encapsulate key and string values. If the value contains `'` then it should be escaped as `\'`
 - Align the `=>` of a newly inserted key with the `=>` column already used by the rest of the file, if that file pads keys to a fixed column (not all do — some files have no padding at all). If the new key is longer than the widest existing key and would push the alignment column further right, reformat the whole file to the new wider column rather than leaving only the new line at a different width
