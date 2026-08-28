@@ -224,7 +224,7 @@ function writeNewEncryptionKey(string $configFile, string $key, string $oldKey):
 }
 
 /**
- * @return bool
+ * @return bool true on successful encryption check.
  * @throws RandomException
  */
 function checkEncryption(): bool
