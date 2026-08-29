@@ -14,8 +14,12 @@ use App\Models\Item;
  *
  * A cashier holding only the base "sales" grant (no "reports_sales") must
  * not be able to reach the per-sale endpoints that getManage() gates
- * behind reports_sales: getRow, getEdit, postSave, getReceipt, getInvoice,
- * getSendPdf, getSendReceipt.
+ * behind reports_sales: getSearch, getRow, getEdit, postSave, getReceipt,
+ * getInvoice, getSendPdf, getSendReceipt.
+ *
+ * Also covers GHSA-3gxx-gpwf-rcjh: getSearch() (the AJAX endpoint that
+ * supplies every row of the Sales Takings list) was the one sibling that
+ * returned the full ledger and was missing the reports_sales check.
  */
 class SalesControllerTest extends CIUnitTestCase
 {
@@ -297,6 +301,20 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
     }
 
+    public function testCashierWithoutReportsSalesCannotGetSearch(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $this->createSale($cashierId);
+        $this->loginAs($cashierId);
+
+        $response = $this->get('/sales/search');
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertSame(lang('Sales.not_authorized'), $result['message']);
+    }
+
     public function testCashierWithoutReportsSalesCannotGetEdit(): void
     {
         $cashierId = $this->createCashierEmployee();
@@ -393,6 +411,21 @@ class SalesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertArrayNotHasKey('success', $result);
+    }
+
+    public function testEmployeeWithReportsSalesCanGetSearch(): void
+    {
+        $supervisorId = $this->createReportsSalesEmployee();
+        $this->createSale($supervisorId);
+        $this->loginAs($supervisorId);
+
+        $response = $this->get('/sales/search');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertArrayHasKey('total', $result);
+        $this->assertArrayHasKey('rows', $result);
+        $this->assertArrayHasKey('payment_summary', $result);
     }
 
     public function testEmployeeWithReportsSalesCanGetEdit(): void
