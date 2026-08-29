@@ -131,7 +131,7 @@ return [
     'must_enter_numeric'                => 'Belopp som anslås måste vara ett nummer.',
     'must_enter_numeric_giftcard'       => 'Presentkortets nummer måste vara ett nummer.',
     'must_enter_reference_code'         => 'Referens-/hämtningsnummer måste anges.',
-    'negative_amount_tendered'           => '',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

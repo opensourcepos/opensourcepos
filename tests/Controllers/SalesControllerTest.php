@@ -477,18 +477,6 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertEquals('0.01', $cart[1]['price']);
     }
 
-    /**
-     * Regression test for GHSA-9847 (negative gift-card amount minting).
-     *
-     * A low-privilege cashier can POST a forged `payment_type` of
-     * `Gift Card:<number>` (which fails the exact `=== lang('Sales.giftcard')`
-     * branch and lands in the plain-decimal catch-all) with a negative
-     * `amount_tendered`. Pre-fix, that negative value passed `decimal_locale`
-     * validation and — once the sale was saved — inflated the gift-card
-     * balance (value - (-N) = value + N), i.e. minting store credit.
-     *
-     * The catch-all validation rule must reject a negative amount_tendered.
-     */
     public function testPostAddPaymentRejectsNegativeAmountTendered(): void
     {
         $cashierId = $this->createCashierWithoutChangePriceGrant();
@@ -504,12 +492,31 @@ class SalesControllerTest extends CIUnitTestCase
         ]);
 
         $response->assertStatus(200);
-        // The negative amount must be rejected at the controller boundary.
         $response->assertSee(lang('Sales.negative_amount_tendered'));
 
         // ... and the negative payment must NOT have been added to the cart.
         $session  = Services::session();
         $payments = $session->get('sales_payments');
         $this->assertArrayNotHasKey($forgedPaymentType, (array) $payments);
+    }
+
+    public function testPostAddPaymentRejectsMalformedAmountTendered(): void
+    {
+        $cashierId = $this->createCashierWithoutChangePriceGrant();
+        $this->loginAs($cashierId);
+        $itemId = $this->createTestItem();
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $response = $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.cash'),
+            'amount_tendered' => 'ABC123',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.must_enter_numeric'));
+
+        $session  = Services::session();
+        $payments = $session->get('sales_payments');
+        $this->assertArrayNotHasKey(lang('Sales.cash'), (array) $payments);
     }
 }

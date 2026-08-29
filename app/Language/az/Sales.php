@@ -131,7 +131,7 @@ return [
     'must_enter_numeric'                => 'Ödəniş məbləği rəqəm ilə olmalıdır.',
     'must_enter_numeric_giftcard'       => 'Hədiyyə Kartın nömrəsi rəqəmlə olmalıdır.',
     'must_enter_reference_code'         => 'İstinad/Axtarış nömrəsi daxil edilməlidir.',
-    'negative_amount_tendered'           => '',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

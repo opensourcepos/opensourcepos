@@ -131,7 +131,7 @@ return [
     'must_enter_numeric'                => 'Morate unijeti numeričku vrijednost za količinu',
     'must_enter_numeric_giftcard'       => 'Morate unijeti numeričku vrijednost za poklon bon',
     'must_enter_reference_code'         => 'Referentni/broj za preuzimanje mora biti unesen.',
-    'negative_amount_tendered'           => '',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

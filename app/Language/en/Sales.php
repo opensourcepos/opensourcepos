@@ -132,7 +132,7 @@ return [
     'must_enter_numeric'                => 'Amount Tendered must be a number.',
     'must_enter_numeric_giftcard'       => 'Gift Card Number must be a number.',
     'must_enter_reference_code'         => 'Reference/Retrieval Number must be entered.',
-    'negative_amount_tendered'           => 'Amount Tendered cannot be negative.',
+    'negative_amount_tendered'          => 'Amount Tendered cannot be negative.',
     'negative_discount_invalid'         => 'Discount cannot be negative.',
     'negative_price_invalid'            => 'Price cannot be negative.',
     'negative_quantity_invalid'         => 'Quantity cannot be negative.',

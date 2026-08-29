@@ -132,7 +132,7 @@ return [
     'must_enter_numeric'                => 'Cantidad Recibida debe ser número.',
     'must_enter_numeric_giftcard'       => 'Número de Tarjeta de Regalo debe ser número.',
     'must_enter_reference_code'         => 'Se debe ingresar el número de referencia/recuperación.',
-    'negative_amount_tendered'           => '',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

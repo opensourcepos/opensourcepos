@@ -131,7 +131,7 @@ return [
     'must_enter_numeric'                => 'தொகை ஒரு எண்ணாக இருக்க வேண்டும்.',
     'must_enter_numeric_giftcard'       => 'பரிசு அட்டை எண் ஒரு எண்ணாக இருக்க வேண்டும்.',
     'must_enter_reference_code'         => 'குறிப்பு/மீட்டெடுப்பு எண் உள்ளிட வேண்டும்.',
-    'negative_amount_tendered'           => '',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

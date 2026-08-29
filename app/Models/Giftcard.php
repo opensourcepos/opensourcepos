@@ -311,12 +311,8 @@ class Giftcard extends Model
         $builder->update(['value' => $value]);
     }
 
-    /**
-     * Atomically decrements a gift card's value, failing if the balance is insufficient
-     */
     public function decrementGiftcardValue(string $giftcardNumber, float $amount): bool
     {
-        // A non-positive amount could add balance (value - $amount) or be a no-op; reject it.
         if ($amount <= 0.0) {
             return false;
         }
