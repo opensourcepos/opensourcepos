@@ -8,6 +8,7 @@ use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
 use App\Models\Employee;
+use Config\Database;
 use Tests\Support\ItemFixtureTrait;
 
 /**
@@ -222,7 +223,7 @@ class SalesControllerTest extends CIUnitTestCase
     protected function createSale(int $employeeId): int
     {
         $unique = uniqid();
-        $db = \Config\Database::connect();
+        $db = Database::connect();
 
         $db->table('items')->insert([
             'name'        => "Test Item $unique",
@@ -523,7 +524,7 @@ class SalesControllerTest extends CIUnitTestCase
         $cashierId = $this->createCashierEmployee();
         $itemId = $this->createTestItem();
 
-        \Config\Database::connect()->table('items_taxes')->insert([
+        Database::connect()->table('items_taxes')->insert([
             'item_id' => $itemId,
             'name'    => '<svg onload=alert(1)>',
             'percent' => 5,
