@@ -63,7 +63,7 @@ class Config extends Secure_Controller
         $this->db = Database::connect();
 
         helper('security');
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $this->encrypter = Services::encrypter();
         } else {
             log_message('alert', 'Error preparing encryption key');
@@ -505,7 +505,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('smtp_pass'))) {
+        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
@@ -551,7 +551,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('msg_pwd'))) {
+        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
         }
 

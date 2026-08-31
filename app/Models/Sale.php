@@ -210,7 +210,7 @@ class Sale extends Model
     /**
      * Get the payment summary for the takings (sales/manage) view
      */
-    public function get_payments_summary(?string $search, array $filters): array
+    public function getPaymentsSummary(?string $search, array $filters): array
     {
         $config = config(OSPOS::class)->settings;
 
