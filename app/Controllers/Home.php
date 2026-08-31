@@ -6,13 +6,12 @@ use App\Libraries\MY_Migration;
 use App\Models\Employee;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
-use Config\Services;
 
 class Home extends Secure_Controller
 {
     public function __construct()
     {
-        $methodName = Services::request()->getUri()->getSegment(2);
+        $methodName = urldecode(service('request')->getUri()->getSegment(2));
 
         if ($methodName === 'logout') {
             $this->employee = model(Employee::class);
