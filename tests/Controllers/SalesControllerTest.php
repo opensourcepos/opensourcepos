@@ -518,11 +518,6 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertEquals('0.01', $cart[1]['price']);
     }
 
-    /**
-     * Regression test for GHSA-92cx-fc8x-7wmm: a malicious `items_taxes.name` value
-     * (bypassing the write-side validation, e.g. from data written before this fix)
-     * must still render safely on the register page.
-     */
     public function testRegisterEscapesMaliciousTaxName(): void
     {
         $cashierId = $this->createCashierEmployee();
