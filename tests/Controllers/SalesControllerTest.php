@@ -6,8 +6,10 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
+use App\Database\Seeds\TestDatabaseBootstrapSeeder;
 use App\Models\Employee;
-use App\Models\Item;
+use Config\OSPOS;
+use Tests\Support\ItemFixtureTrait;
 
 /**
  * Regression tests for GHSA-3xf6-8fmq-44wg.
@@ -21,11 +23,33 @@ class SalesControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;
+    use ItemFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
+    protected $seedOnce    = true;
     protected $refresh     = false;
     protected $namespace   = null;
+
+    private static bool $doneBootstrap = false;
+
+    protected function setUp(): void
+    {
+        if (self::$doneBootstrap === false) {
+            TestDatabaseBootstrapSeeder::reset();
+
+            self::$doneBootstrap = true;
+        }
+
+        parent::setUp();
+
+        config(OSPOS::class)->update_settings();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
 
     protected function createCashierEmployee(): int
     {
@@ -35,7 +59,14 @@ class SalesControllerTest extends CIUnitTestCase
             'first_name'   => 'Cashier',
             'last_name'    => 'NoReports',
             'email'        => "cashier.$unique@test.com",
-            'phone_number' => '555-0001'
+            'phone_number' => '555-0001',
+            'address_1'    => '',
+            'address_2'    => '',
+            'city'         => '',
+            'state'        => '',
+            'zip'          => '',
+            'country'      => '',
+            'comments'     => '',
         ];
 
         $employeeData = [
@@ -69,7 +100,14 @@ class SalesControllerTest extends CIUnitTestCase
             'first_name'   => 'Supervisor',
             'last_name'    => 'WithReports',
             'email'        => "supervisor.$unique@test.com",
-            'phone_number' => '555-0002'
+            'phone_number' => '555-0002',
+            'address_1'    => '',
+            'address_2'    => '',
+            'city'         => '',
+            'state'        => '',
+            'zip'          => '',
+            'country'      => '',
+            'comments'     => '',
         ];
 
         $employeeData = [
@@ -220,30 +258,6 @@ class SalesControllerTest extends CIUnitTestCase
         return $saleId;
     }
 
-    protected function createTestItem(): int
-    {
-        $itemData = [
-            'item_id'               => null,
-            'name'                  => 'Test Item',
-            'description'           => 'Test Item',
-            'category'              => 'Test Category',
-            'cost_price'            => 1.00,
-            'unit_price'            => 5.00,
-            'reorder_level'         => 0,
-            'item_number'           => 'TEST-' . uniqid(),
-            'allow_alt_description' => 0,
-            'is_serialized'         => 0,
-            'stock_type'            => HAS_NO_STOCK,
-            'deleted'               => 0,
-        ];
-
-        $itemModel = model(Item::class);
-        $itemModel->save_value($itemData);
-        $this->assertTrue($itemModel->save_value($itemData));
-
-        return (int) $itemData['item_id'];
-    }
-
     /**
      * Seeds a single cart line directly in the session, mirroring the shape
      * Sale_lib::add_item() produces, so tests can target postEditItem's
@@ -382,6 +396,35 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertSame(lang('Sales.not_authorized'), $result['message']);
     }
 
+    public function testCashierWithoutReportsSalesCannotGetSearch(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $this->createSale($cashierId);
+        $this->loginAs($cashierId);
+
+        $response = $this->get('/sales/search');
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testEmployeeWithReportsSalesCanGetSearch(): void
+    {
+        $supervisorId = $this->createReportsSalesEmployee();
+        $this->createSale($supervisorId);
+        $this->loginAs($supervisorId);
+
+        $response = $this->get('/sales/search');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertArrayNotHasKey('success', $result);
+        $this->assertArrayHasKey('total', $result);
+        $this->assertArrayHasKey('rows', $result);
+        $this->assertArrayHasKey('payment_summary', $result);
+    }
+
     public function testEmployeeWithReportsSalesCanGetRow(): void
     {
         $supervisorId = $this->createReportsSalesEmployee();
@@ -410,7 +453,7 @@ class SalesControllerTest extends CIUnitTestCase
     {
         $cashierId = $this->createCashierWithoutChangePriceGrant();
         $this->loginAs($cashierId);
-        $itemId = $this->createTestItem();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
         $this->seedCartLine(1, '5.00', $itemId);
 
         $response = $this->post('/sales/editItem/1', [
@@ -434,7 +477,7 @@ class SalesControllerTest extends CIUnitTestCase
     {
         $cashierId = $this->createCashierWithoutChangePriceGrant();
         $this->loginAs($cashierId);
-        $itemId = $this->createTestItem();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
         $this->seedCartLine(1, '5.00', $itemId);
 
         $response = $this->post('/sales/editItem/1', [
@@ -458,7 +501,7 @@ class SalesControllerTest extends CIUnitTestCase
     {
         $cashierId = $this->createCashierWithChangePriceGrant();
         $this->loginAs($cashierId);
-        $itemId = $this->createTestItem();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
         $this->seedCartLine(1, '5.00', $itemId);
 
         $response = $this->post('/sales/editItem/1', [
