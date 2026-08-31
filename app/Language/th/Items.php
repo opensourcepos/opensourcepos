@@ -108,6 +108,7 @@ return [
     'tax_2' => "ภาษี 2",
     'tax_3' => "",
     'tax_category' => "ประเภทภาษี",
+    'tax_name_invalid' => 'ชื่อภาษีมีอักขระที่ไม่อนุญาต.',
     'tax_percent' => "ภาษี(%)",
     'tax_percent_number' => "เปอร์เซ็นต์ภาษีต้องเป็นค่าตัวเลข",
     'tax_percent_required' => "เปอร์เซ็นต์ต้องกรอก",

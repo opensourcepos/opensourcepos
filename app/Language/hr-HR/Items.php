@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Porez 2",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => 'Naziv poreza sadrži nedopuštene znakove.',
     "tax_percent"                        => "% poreza",
     "tax_percent_number"                 => "",
     "tax_percent_required"               => "% poreza je obavezan",

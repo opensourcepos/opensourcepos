@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Tax 2",
     "tax_3"                              => "",
     "tax_category"                       => "Tax Category",
+    'tax_name_invalid'                   => 'Ang pangalan ng buwis ay may mga hindi pinapayagang karakter.',
     "tax_percent"                        => "",
     "tax_percent_number"                 => "Tax Percent must be a numeric value",
     "tax_percent_required"               => "Tax Percent is a required field.",

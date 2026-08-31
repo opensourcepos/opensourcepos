@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "מס 2",
     "tax_3"                              => "",
     "tax_category"                       => "קטגוריה מס",
+    'tax_name_invalid'                   => 'שם המס מכיל תווים אסורים.',
     "tax_percent"                        => "",
     "tax_percent_number"                 => "אחוז המס חייב להיות ערך מספרי",
     "tax_percent_required"               => "אחוז המס הינו שדה חובה.",

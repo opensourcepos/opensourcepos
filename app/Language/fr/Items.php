@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Taxe 2",
     "tax_3"                              => "",
     "tax_category"                       => "Catégorie fiscale",
+    'tax_name_invalid'                   => 'Le nom de la taxe contient des caractères non autorisés.',
     "tax_percent"                        => "Pourcentage d'imposition",
     "tax_percent_number"                 => "Le pourcentage d'imposition doit être une valeur numérique",
     "tax_percent_required"               => "Le pourcentage d'imposition est requis.",

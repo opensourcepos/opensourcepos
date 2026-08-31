@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Tax 2",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => 'ຊື່ພາສີມີຕົວອັກສອນທີ່ບໍ່ອະນຸຍາດ.',
     "tax_percent"                        => "Tax Percent",
     "tax_percent_number"                 => "",
     "tax_percent_required"               => "Tax Percent is a required field.",

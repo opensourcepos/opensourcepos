@@ -108,6 +108,7 @@ return [
     'tax_2' => "باج ٢",
     'tax_3' => "",
     'tax_category' => "پۆلێنی باج",
+    'tax_name_invalid' => 'ناوی باج پیتی ڕێگە پێنەدراوی تێدایە.',
     'tax_percent' => "",
     'tax_percent_number' => "ڕێژەی سەدی باج دەبێت بەهایەکی ژمارەیی بێت",
     'tax_percent_required' => "ڕێژەی سەدی باج خانەیەکی پێویستە.",

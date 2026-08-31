@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => 'Հարկի անվանումը պարունակում է անթույլատրելի նիշեր։',
     "tax_percent"                        => "",
     "tax_percent_number"                 => "",
     "tax_percent_required"               => "",

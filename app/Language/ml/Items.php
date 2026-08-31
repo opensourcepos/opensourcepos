@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => 'നികുതി പേരിൽ അനുവദനീയമല്ലാത്ത അക്ഷരങ്ങൾ അടങ്ങിയിരിക്കുന്നു.',
     "tax_percent"                        => "",
     "tax_percent_number"                 => "",
     "tax_percent_required"               => "",

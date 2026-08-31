@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Kodi 2",
     "tax_3"                              => "",
     "tax_category"                       => "Aina ya Kodi",
+    'tax_name_invalid'                   => 'Jina la kodi lina herufi zisizoruhusiwa.',
     "tax_percent"                        => "Asilimia ya Kodi",
     "tax_percent_number"                 => "Asilimia ya Kodi lazima iwe namba",
     "tax_percent_required"               => "Asilimia ya Kodi ni kiashiria kinachohitajika.",

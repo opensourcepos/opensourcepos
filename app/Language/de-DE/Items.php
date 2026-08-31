@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Steuer 2",
     "tax_3"                              => "",
     "tax_category"                       => "Steuerkategorie",
+    'tax_name_invalid'                   => 'Der Steuername enthält nicht erlaubte Zeichen.',
     "tax_percent"                        => "MWSt %",
     "tax_percent_number"                 => "Steuer Prozent muss ein Zahlenwert sein",
     "tax_percent_required"               => "Steuerprozentsatz ist ein Pflichtfeld.",

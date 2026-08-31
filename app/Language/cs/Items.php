@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "DPH snížená",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => 'Název daně obsahuje nepovolené znaky.',
     "tax_percent"                        => "Sazba (procenta)",
     "tax_percent_number"                 => "Sazba daně musí být číslo",
     "tax_percent_required"               => "Musíte zadat sazbu daně.",

@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Imposta 2",
     "tax_3"                              => "",
     "tax_category"                       => "Categoria fiscale",
+    'tax_name_invalid'                   => 'Il nome dell\'imposta contiene caratteri non consentiti.',
     "tax_percent"                        => "Percentuale Imposta",
     "tax_percent_number"                 => "Percentuale Imposta deve essere un numero",
     "tax_percent_required"               => "Percentuale Imposta è un campo richiesto.",

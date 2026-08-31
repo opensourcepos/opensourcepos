@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "الضريبة 2",
     "tax_3"                              => "",
     "tax_category"                       => "الفئة الضريبية",
+    'tax_name_invalid'                   => 'اسم الضريبة يحتوي على أحرف غير مسموح بها.',
     "tax_percent"                        => "نسبة الضريبة",
     "tax_percent_number"                 => "نسبة الضريبة يجب ان تكون رقم",
     "tax_percent_required"               => "نسبة الضريبة مطلوبة.",

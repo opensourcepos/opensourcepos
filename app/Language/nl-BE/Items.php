@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "VAT 2",
     "tax_3"                              => "",
     "tax_category"                       => "BTW-Categorie",
+    'tax_name_invalid'                   => 'Belastingnaam bevat niet-toegestane tekens.',
     "tax_percent"                        => "VAT %",
     "tax_percent_number"                 => "Tax Percentage moet een numerieke waarde zijn",
     "tax_percent_required"               => "BTW Percentage is een verplicht veld.",

@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "稅額 2",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => '税项名称包含不允许的字符。',
     "tax_percent"                        => "稅率",
     "tax_percent_number"                 => "",
     "tax_percent_required"               => "稅率為必填欄位",

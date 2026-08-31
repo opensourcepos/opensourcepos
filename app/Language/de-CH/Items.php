@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "MWSt 2",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => 'Der Steuername enthält nicht erlaubte Zeichen.',
     "tax_percent"                        => "MWSt %",
     "tax_percent_number"                 => "",
     "tax_percent_required"               => "MWSt % ist erforderlich",

@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Pajak 2",
     "tax_3"                              => "",
     "tax_category"                       => "Kategori Pajak",
+    'tax_name_invalid'                   => 'Nama pajak mengandung karakter yang tidak diizinkan.',
     "tax_percent"                        => "Tarif Pajak",
     "tax_percent_number"                 => "Nilai persen pajak harus berupa angka",
     "tax_percent_required"               => "Tarif Pajak wajib diisi.",

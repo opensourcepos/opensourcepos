@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Vergi 2",
     "tax_3"                              => "",
     "tax_category"                       => "Vergi Kategorisi",
+    'tax_name_invalid'                   => 'Vergi adı izin verilmeyen karakterler içeriyor.',
     "tax_percent"                        => "Vergi Yüzdesi",
     "tax_percent_number"                 => "Vergi Yüzdesi ondalıklı sayı olmalı",
     "tax_percent_required"               => "Vergi Oranı zorunlu alandır.",

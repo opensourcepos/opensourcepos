@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "مالیات 2",
     "tax_3"                              => "",
     "tax_category"                       => "طبقه بندی مالیات",
+    'tax_name_invalid'                   => 'نام مالیات حاوی کاراکترهای غیرمجاز است.',
     "tax_percent"                        => "",
     "tax_percent_number"                 => "درصد مالیات باید عددی باشد",
     "tax_percent_required"               => "درصد مالیات یک زمینه مورد نیاز است.",

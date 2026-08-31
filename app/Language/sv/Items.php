@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Skatt 2",
     "tax_3"                              => "",
     "tax_category"                       => "Skattekategori",
+    'tax_name_invalid'                   => 'Skattenamnet innehåller otillåtna tecken.',
     "tax_percent"                        => "Skatt %",
     "tax_percent_number"                 => "Skattprocent måste vara ett numeriskt värde",
     "tax_percent_required"               => "Skattprocent är ett obligatoriskt fält.",

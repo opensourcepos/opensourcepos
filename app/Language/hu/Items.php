@@ -108,6 +108,7 @@ return [
     "tax_2"                              => "Adó 2",
     "tax_3"                              => "",
     "tax_category"                       => "",
+    'tax_name_invalid'                   => 'Az adó neve nem megengedett karaktereket tartalmaz.',
     "tax_percent"                        => "Adó %",
     "tax_percent_number"                 => "",
     "tax_percent_required"               => "Adó % kötelező mező",
