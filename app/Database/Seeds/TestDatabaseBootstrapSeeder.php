@@ -7,7 +7,7 @@ use Config\Database;
 
 class TestDatabaseBootstrapSeeder extends Seeder
 {
-    public function run(): void
+    public static function reset(): void
     {
         if (ENVIRONMENT !== 'testing') {
             throw new \RuntimeException('TestDatabaseBootstrapSeeder can only run in the testing environment.');
@@ -33,5 +33,10 @@ class TestDatabaseBootstrapSeeder extends Seeder
 
         $serverConn->query("DROP DATABASE IF EXISTS `{$dbName}`");
         $serverConn->query("CREATE DATABASE IF NOT EXISTS `{$dbName}`");
+    }
+
+    public function run(): void
+    {
+        self::reset();
     }
 }

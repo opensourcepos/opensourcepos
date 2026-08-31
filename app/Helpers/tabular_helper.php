@@ -59,7 +59,7 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
 }
 
 
-function sales_headers(): array
+function salesHeaders(): array
 {
     return [
         ['sale_id'         => lang('Common.id')],
@@ -77,7 +77,7 @@ function sales_headers(): array
  */
 function get_sales_manage_table_headers(): string
 {
-    $headers = sales_headers();
+    $headers = salesHeaders();
     $config = config(OSPOS::class)->settings;
 
     if ($config['invoice_enable']) {
@@ -93,7 +93,7 @@ function get_sales_manage_table_headers(): string
 /**
  * Get the html data row for the sales
  */
-function get_sale_data_row(object $sale): array
+function getSaleDataRow(object $sale): array
 {
     $uri = current_url(true);
     $controller = $uri->getSegment(1);
@@ -143,7 +143,7 @@ function get_sale_data_row(object $sale): array
 /**
  * Get the html data last row for the sales
  */
-function get_sale_data_last_row(ResultInterface $sales): array
+function getSaleDataLastRow(ResultInterface $sales): array
 {
     $sum_amount_due = 0;
     $sum_amount_tendered = 0;
@@ -167,7 +167,7 @@ function get_sale_data_last_row(ResultInterface $sales): array
 /**
  * Get the sales payments summary
  */
-function get_sales_manage_payments_summary(array $payments): string
+function getSalesManagePaymentsSummary(array $payments): string
 {
     $table = '<div id="report_summary">';
     $total = 0;
