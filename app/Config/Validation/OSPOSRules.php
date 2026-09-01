@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use Config\OSPOS;
 use Config\Services;
 use DirectoryIterator;
+use IntlChar;
 
 /**
  * @property Employee employee
@@ -176,5 +177,52 @@ class OSPOSRules
         }
 
         return false;
+    }
+
+    /**
+     * Unicode-aware version of CodeIgniter's built-in `alpha_numeric_punct` rule, which only
+     * matches ASCII (`preg_match('\A[A-Z0-9 ~!#$%\&\*\-_+=|:.]+\z/i', ...)`) and so rejects
+     * legitimate non-English text (e.g. accented or CJK characters). Allows unicode letters,
+     * combining marks (so base+diacritic sequences pass), and digits in place of `A-Z0-9`, and
+     * reuses the exact same punctuation set as the original rule (`~!#$%&*-_+=|:.` plus space),
+     * extended with `'` and `,` to accommodate real-world tax names (e.g. "O'Brien's Tax",
+     * "Impôt, incl."). `<` and `>` are deliberately absent from the punctuation set, same as in
+     * the original rule, so this also serves as a defense-in-depth backstop against HTML
+     * injection (the primary fix is escaping at render time).
+     *
+     * @param string $candidate
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function unicode_alpha_numeric_punct(string $candidate, ?string &$error = null): bool
+    {
+        $allowedPunctuation = ['~', '!', '#', '$', '%', '&', '*', '-', '_', '+', '=', '|', ':', '.', ' ', "'", ','];
+
+        $allowedCategories = [
+            IntlChar::CHAR_CATEGORY_UPPERCASE_LETTER,
+            IntlChar::CHAR_CATEGORY_LOWERCASE_LETTER,
+            IntlChar::CHAR_CATEGORY_TITLECASE_LETTER,
+            IntlChar::CHAR_CATEGORY_MODIFIER_LETTER,
+            IntlChar::CHAR_CATEGORY_OTHER_LETTER,
+            IntlChar::CHAR_CATEGORY_NON_SPACING_MARK,
+            IntlChar::CHAR_CATEGORY_COMBINING_SPACING_MARK,
+            IntlChar::CHAR_CATEGORY_ENCLOSING_MARK,
+            IntlChar::CHAR_CATEGORY_DECIMAL_DIGIT_NUMBER,
+            IntlChar::CHAR_CATEGORY_LETTER_NUMBER,
+            IntlChar::CHAR_CATEGORY_OTHER_NUMBER,
+        ];
+
+        foreach (mb_str_split($candidate) as $character) {
+            if (in_array($character, $allowedPunctuation, true)) {
+                continue;
+            }
+
+            if (!in_array(IntlChar::charType($character), $allowedCategories, true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
