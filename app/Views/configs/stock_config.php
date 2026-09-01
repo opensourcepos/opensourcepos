@@ -52,7 +52,7 @@
         const add_stock_location = function() {
             const block = $(this).parent().clone(true);
             const new_block = block.insertAfter($(this).parent());
-            const new_block_id = 'stock_location[]';
+            const new_block_id = 'stock_location_new[]';
             $(new_block).attr('data-location-id', 'new-' + ++new_location_counter).find('input.stock_location_default').prop('checked', false).prop('disabled', true).val('');
             $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
             $(new_block).find('input.stock_location').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'stock_location valid_chars form-control input-sm required').val('');

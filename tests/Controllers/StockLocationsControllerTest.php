@@ -70,7 +70,8 @@ class StockLocationsControllerTest extends CIUnitTestCase
         $this->loginAsAdminWithGrants(['config']);
 
         $response = $this->post('/config/saveLocations', [
-            'stock_location' => [0 => 'Warehouse'],
+            'stock_location'     => [],
+            'stock_location_new' => ['Warehouse'],
         ]);
 
         $response->assertStatus(200);
@@ -138,8 +139,8 @@ class StockLocationsControllerTest extends CIUnitTestCase
         $response = $this->post('/config/saveLocations', [
             'stock_location'       => [
                 (string) $existingId => 'Existing',
-                0                    => 'Brand New',
             ],
+            'stock_location_new'   => ['Brand New'],
             'stock_location_order' => 'new-0,' . $existingId,
         ]);
 

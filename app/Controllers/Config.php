@@ -737,25 +737,23 @@ class Config extends Secure_Controller
     public function postSaveLocations(): ResponseInterface
     {
         $submittedLocations = $this->request->getPost('stock_location');
+        $submittedNewLocations = $this->request->getPost('stock_location_new');
 
         if (!is_array($submittedLocations)) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Config.saved_unsuccessfully')]);
         }
 
         $submittedLocations = $this->sanitizeSubmittedLocations($submittedLocations);
+        $submittedNewLocations = $this->sanitizeSubmittedLocations((array) $submittedNewLocations);
 
         $this->db->transStart();
 
-        // Prevents collisions between auto-assigned indexes with real location_ids.
-        $submittedLocationIds = array_filter(
-            array_keys($submittedLocations),
-            fn ($locationId) => is_numeric($locationId) && $this->stock_location->exists((int) $locationId)
-        );
+        $submittedLocationIds = array_keys($submittedLocations);
 
         // Delete removed locations first so a reused name doesn't collide with the old row's still-present permission_id.
         $this->deleteRemovedLocations($submittedLocationIds);
 
-        $saveResult = $this->saveSubmittedLocations($submittedLocations, $submittedLocationIds);
+        $saveResult = $this->saveSubmittedLocations($submittedLocations, $submittedNewLocations);
 
         if (!$saveResult['saveFailed']) {
             $this->saveLocationOrderAndDefault($saveResult['notToDelete'], $saveResult['newlyInsertedIds']);
@@ -769,13 +767,13 @@ class Config extends Secure_Controller
     }
 
     /**
-     * Keeps only new-row (empty-bracket) keys and numeric location_id keys, and trims names.
+     * Keeps only numeric-keyed (existing location_id) or plain-indexed (new row) entries, and trims names.
      */
     private function sanitizeSubmittedLocations(array $submittedLocations): array
     {
         $submittedLocations = array_filter(
             $submittedLocations,
-            fn ($locationId) => $locationId === '' || is_numeric($locationId),
+            fn ($locationId) => is_numeric($locationId),
             ARRAY_FILTER_USE_KEY
         );
 
@@ -796,33 +794,40 @@ class Config extends Secure_Controller
         }
     }
 
-    private function saveSubmittedLocations(array $submittedLocations, array $submittedLocationIds): array
+    private function saveSubmittedLocations(array $submittedLocations, array $submittedNewLocations): array
     {
         $notToDelete = [];
         $newlyInsertedIds = [];
 
         foreach ($submittedLocations as $locationId => $locationName) {
-            $wasExisting = in_array($locationId, $submittedLocationIds);
             if ($locationName === '') {
-                if ($wasExisting) {
-                    $notToDelete[] = (int) $locationId;
-                }
+                $notToDelete[] = (int) $locationId;
 
                 continue;
             }
 
             $locationData = ['location_name' => $locationName];
-            if (!$this->stock_location->saveValue($locationData, $locationId)) {
+            if (!$this->stock_location->saveValue($locationData, (int) $locationId)) {
                 return ['notToDelete' => $notToDelete, 'newlyInsertedIds' => $newlyInsertedIds, 'saveFailed' => true];
             }
 
-            // saveValue() fills in location_id for new inserts; read it back instead of
-            // re-resolving by name, which is ambiguous after a same-named delete.
-            $savedLocationId = $locationData['location_id'] ?? $locationId;
-            $notToDelete[] = $savedLocationId;
-            if (!$wasExisting) {
-                $newlyInsertedIds[] = $savedLocationId;
+            $notToDelete[] = (int) $locationId;
+            $this->_clear_session_state();
+        }
+
+        foreach ($submittedNewLocations as $locationName) {
+            if ($locationName === '') {
+                continue;
             }
+
+            $locationData = ['location_name' => $locationName];
+            if (!$this->stock_location->saveValue($locationData, NEW_ENTRY)) {
+                return ['notToDelete' => $notToDelete, 'newlyInsertedIds' => $newlyInsertedIds, 'saveFailed' => true];
+            }
+
+            $savedLocationId = $locationData['location_id'];
+            $notToDelete[] = $savedLocationId;
+            $newlyInsertedIds[] = $savedLocationId;
             $this->_clear_session_state();
         }
 
