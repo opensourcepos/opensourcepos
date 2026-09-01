@@ -408,6 +408,12 @@ class Sales extends Secure_Controller
         $giftcard = model(Giftcard::class);
         $paymentType = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+        if (!is_string($paymentType) || $paymentType === '') {
+            $data['error'] = lang('Sales.must_enter_numeric');
+
+            return $this->reload($data);
+        }
+
         if (
             $paymentType !== lang('Sales.giftcard')
             && $paymentType !== lang('Sales.rewards')

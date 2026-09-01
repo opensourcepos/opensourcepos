@@ -185,7 +185,7 @@ class SaleTest extends CIUnitTestCase
         $payments   = [
             0 => [
                 'payment_type'    => 'Foo ' . lang('Sales.giftcard') . ':' . $giftcardNumber,
-                'payment_amount'  => -500.00,
+                'payment_amount'  => 60.00,
                 'cash_refund'     => 0,
                 'cash_adjustment' => 0,
                 'reference_code'  => null,
