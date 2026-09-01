@@ -316,6 +316,10 @@ class Giftcard extends Model
      */
     public function decrementGiftcardValue(string $giftcardNumber, float $amount): bool
     {
+        if ($amount <= 0) {
+            return false;
+        }
+
         $builder = $this->db->table('giftcards');
         $builder->where('giftcard_number', $giftcardNumber);
         $builder->where('deleted', 0);

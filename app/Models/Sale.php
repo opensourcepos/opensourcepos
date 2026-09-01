@@ -578,15 +578,16 @@ class Sale extends Model
         $totalAmountUsed = 0;
 
         foreach ($payments as $payment_id => $payment) {
-            if (!empty(strstr($payment['payment_type'], lang('Sales.giftcard')))) {
-                $splitPayment = explode(':', $payment['payment_type']);
+            $splitPayment = explode(':', $payment['payment_type'], 2);
+            $paymentPrefix = $splitPayment[0];
 
+            if ($paymentPrefix === lang('Sales.giftcard')) {
                 if (! $giftcard->decrementGiftcardValue($splitPayment[1], (float) $payment['payment_amount'])) {
                     $this->db->transRollback();
 
                     return INSUFFICIENT_GIFTCARD_BALANCE;
                 }
-            } elseif (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
+            } elseif ($paymentPrefix === lang('Sales.rewards')) {
                 if (! $customer->adjustRewardPoints($customerId, -(float) $payment['payment_amount'])) {
                     $this->db->transRollback();
 

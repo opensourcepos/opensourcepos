@@ -408,6 +408,16 @@ class Sales extends Secure_Controller
         $giftcard = model(Giftcard::class);
         $paymentType = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+        if (
+            $paymentType !== lang('Sales.giftcard')
+            && $paymentType !== lang('Sales.rewards')
+            && (str_contains($paymentType, lang('Sales.giftcard')) || str_contains($paymentType, lang('Sales.rewards')))
+        ) {
+            $data['error'] = lang('Sales.must_enter_numeric');
+
+            return $this->reload($data);
+        }
+
         if ($paymentType === lang('Sales.giftcard')) {
             $rules    = ['amount_tendered' => 'trim|required|integer']; //For giftcards, amount_tendered becomes the giftcard number which must be an integer
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
@@ -430,7 +440,7 @@ class Sales extends Secure_Controller
                 ],
             ];
         } else {
-            $rules    = ['amount_tendered' => 'trim|required|decimal_locale'];
+            $rules    = ['amount_tendered' => 'trim|required|decimal_locale|nonNegativeDecimal'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
         }
 
@@ -797,6 +807,11 @@ class Sales extends Secure_Controller
         // Prevent negative total sales (fraud/theft vector) - returns can have negative totals for legitimate refunds
         if ($this->sale_lib->get_mode() != 'return' && bccomp($totals['total'], '0') < 0) {
             $data['error'] = lang('Sales.negative_total_invalid');
+            return $this->reload($data);
+        }
+
+        if (!$totals['payments_cover_total']) {
+            $data['error'] = lang('Sales.amount_due_not_covered');
             return $this->reload($data);
         }
 
