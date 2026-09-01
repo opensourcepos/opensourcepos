@@ -3,6 +3,7 @@
 namespace Tests\Models;
 
 use App\Models\Sale;
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Tests\Support\EmployeeFixtureTrait;
@@ -21,14 +22,29 @@ class SaleTest extends CIUnitTestCase
 
     protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $refresh     = true;
+    protected $seedOnce    = true;
+    protected $refresh     = false;
     protected $namespace   = null;
+
+    private static bool $doneBootstrap = false;
 
     private const LOCATION_ID = 1;
 
     protected function setUp(): void
     {
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
+
         parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
     }
 
     protected function createGiftcard(float $value): int
@@ -155,6 +171,46 @@ class SaleTest extends CIUnitTestCase
 
         $this->assertGreaterThan(0, $result);
         $this->assertEqualsWithDelta(40.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testSaveValueDoesNotMatchGiftcardSinkOnSubstringOnly(): void
+    {
+        $employeeId     = $this->createEmployee();
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $itemId         = $this->createTestItem(HAS_NO_STOCK);
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items      = $this->buildCartLine($itemId, 1, 60.00);
+        $payments   = [
+            0 => [
+                'payment_type'    => 'Foo ' . lang('Sales.giftcard') . ':' . $giftcardNumber,
+                'payment_amount'  => -500.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+        ];
+        $salesTaxes = [[], []];
+
+        $result = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $result);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
 
     public function testSaveValueReturnsInsufficientGiftcardBalanceSentinel(): void

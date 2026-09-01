@@ -519,6 +519,82 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertEquals('0.01', $cart[1]['price']);
     }
 
+    protected function createGiftcard(float $value): int
+    {
+        $giftcardNumber = random_int(1000000, 9999999);
+
+        Database::connect()->table('giftcards')->insert([
+            'giftcard_number' => $giftcardNumber,
+            'value'           => $value,
+            'deleted'         => 0,
+            'person_id'       => null,
+        ]);
+
+        return $giftcardNumber;
+    }
+
+    protected function getGiftcardValue(int $giftcardNumber): float
+    {
+        $row = Database::connect()->table('giftcards')
+            ->where('giftcard_number', $giftcardNumber)
+            ->get()
+            ->getRow();
+
+        return (float) $row->value;
+    }
+
+    public function testCashierCannotForgeGiftcardPaymentTypeWithNegativeAmount(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.giftcard') . ':' . $giftcardNumber,
+            'amount_tendered' => '-500',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertEmpty($payments);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testCashierCanUseLegitimateGiftcardPayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.giftcard'),
+            'amount_tendered' => (string) $giftcardNumber,
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertNotEmpty($payments);
+        $this->assertArrayHasKey(lang('Sales.giftcard') . ':' . $giftcardNumber, $payments);
+    }
+
+    public function testPostCompleteRejectsSaleWithInsufficientPayments(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '100.00', $itemId);
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY]));
+
+        $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+        $this->post('/sales/complete');
+
+        $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+        $this->assertSame($salesCountBefore, $salesCountAfter);
+    }
+
     public function testRegisterEscapesMaliciousTaxName(): void
     {
         $cashierId = $this->createCashierEmployee();
