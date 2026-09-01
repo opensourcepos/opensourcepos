@@ -824,7 +824,7 @@ class Sales extends Secure_Controller
             return $this->reload($data);
         }
 
-        if (!$totals['payments_cover_total']) {
+        if (!$totals['payments_cover_total'] && !$this->sale_lib->is_invoice_mode() && !$this->sale_lib->is_quote_mode()) {
             $data['error'] = lang('Sales.amount_due_not_covered');
             return $this->reload($data);
         }
