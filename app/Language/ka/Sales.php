@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => '',
     'amount_due'                        => '',
+    'amount_due_not_covered'            => 'გადახდები არ ფარავს გადასახდელ თანხას.',
     'amount_tendered'                   => '',
     'authorized_signature'              => '',
     'bank_transfer'                     => '',

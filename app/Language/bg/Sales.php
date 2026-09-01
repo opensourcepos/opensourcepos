@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Номер на акаунт',
     'add_payment'                       => 'Добавяне на плащане',
     'amount_due'                        => 'Дължима сума',
+    'amount_due_not_covered'            => 'Плащанията не покриват дължимата сума.',
     'amount_tendered'                   => 'Предоставена сума',
     'authorized_signature'              => 'Оторизиран подпис',
     'cancel_sale'                       => 'Отказ',

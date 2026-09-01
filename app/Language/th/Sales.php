@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'บัญชี #',
     'add_payment'                       => 'เพิ่มบิล',
     'amount_due'                        => 'ยอดค้างชำระ',
+    'amount_due_not_covered'            => 'การชำระเงินไม่ครอบคลุมจำนวนที่ต้องชำระ',
     'amount_tendered'                   => 'ชำระเข้ามา',
     'authorized_signature'              => 'ลายเซ็นผู้มีอำนาจ',
     'cancel_sale'                       => 'ยกเลิกการขาย',

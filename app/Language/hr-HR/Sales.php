@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => 'Dodaj plaćanje',
     'amount_due'                        => 'Iznos duga',
+    'amount_due_not_covered'            => 'Uplate ne pokrivaju dospjeli iznos.',
     'amount_tendered'                   => 'Ponuđeni iznos',
     'authorized_signature'              => '',
     'cancel_sale'                       => 'Otkaži',

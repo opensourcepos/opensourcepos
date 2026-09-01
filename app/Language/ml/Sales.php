@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => '',
     'amount_due'                        => '',
+    'amount_due_not_covered'            => 'പേയ്‌മെന്റുകൾ അടയ്‌ക്കേണ്ട തുക ഉൾക്കൊള്ളുന്നില്ല.',
     'amount_tendered'                   => '',
     'authorized_signature'              => '',
     'cancel_sale'                       => '',

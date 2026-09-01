@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'حساب #',
     'add_payment'                       => 'افزودن پرداخت',
     'amount_due'                        => 'مبلغ پرداختی',
+    'amount_due_not_covered'            => 'پرداخت‌ها مبلغ بدهی را پوشش نمی‌دهند.',
     'amount_tendered'                   => 'مبلغ مناقصه',
     'authorized_signature'              => 'امضای مجاز',
     'cancel_sale'                       => 'لغو',

@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Kundennummer',
     'add_payment'                       => 'Zahlung',
     'amount_due'                        => 'fälliger Betrag',
+    'amount_due_not_covered'            => 'Die Zahlungen decken den fälligen Betrag nicht.',
     'amount_tendered'                   => 'Erhalten',
     'authorized_signature'              => 'Unterschrift',
     'cancel_sale'                       => 'Annullieren',

@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Hesap Numarası',
     'add_payment'                       => 'Ödeme Ekle',
     'amount_due'                        => 'Kalan Ödeme',
+    'amount_due_not_covered'            => 'Ödemeler, ödenmesi gereken tutarı karşılamıyor.',
     'amount_tendered'                   => 'Ödenen Tutar',
     'authorized_signature'              => 'Yetkili İmza',
     'cancel_sale'                       => 'İptal Et',

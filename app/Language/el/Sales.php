@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Λογαριασμός #',
     'add_payment'                       => 'Προσθήκη Πληρωμής',
     'amount_due'                        => 'Ποσό επιστροφής',
+    'amount_due_not_covered'            => 'Οι πληρωμές δεν καλύπτουν το οφειλόμενο ποσό.',
     'amount_tendered'                   => 'Ποσό Είσπραξης',
     'authorized_signature'              => 'Εγκεκριμένη Υπογραφή',
     'cancel_sale'                       => 'Ακύρωση',

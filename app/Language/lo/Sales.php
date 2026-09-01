@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => 'Add Payment',
     'amount_due'                        => 'Amount Due',
+    'amount_due_not_covered'            => 'ການຊຳລະເງິນບໍ່ຄຸ້ມຈຳນວນທີ່ຕ້ອງຈ່າຍ.',
     'amount_tendered'                   => 'Amount Tendered',
     'authorized_signature'              => '',
     'cancel_sale'                       => 'Cancel',

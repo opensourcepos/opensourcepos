@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Номер рахунку',
     'add_payment'                       => 'Додати платіж',
     'amount_due'                        => 'Сума заборгованості',
+    'amount_due_not_covered'            => 'Платежі не покривають суму до сплати.',
     'amount_tendered'                   => 'Запропонована сума',
     'authorized_signature'              => 'Підпис уповноваженої особи',
     'cancel_sale'                       => 'Відмінити',

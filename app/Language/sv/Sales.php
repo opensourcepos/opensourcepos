@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Konto #',
     'add_payment'                       => 'Lägg till betalning',
     'amount_due'                        => 'Belopp',
+    'amount_due_not_covered'            => 'Betalningarna täcker inte det förfallna beloppet.',
     'amount_tendered'                   => 'Upplagt belopp',
     'authorized_signature'              => 'Auktoriserad signatur',
     'cancel_sale'                       => 'Avbryt',

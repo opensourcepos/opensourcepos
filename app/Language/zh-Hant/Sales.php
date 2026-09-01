@@ -4,6 +4,7 @@ return [
     'account_number'                    => '帳戶 #',
     'add_payment'                       => '新增付款',
     'amount_due'                        => '商品金額',
+    'amount_due_not_covered'            => '付款金額未涵蓋應付金額。',
     'amount_tendered'                   => '已收帳款',
     'authorized_signature'              => '授權簽名',
     'cancel_sale'                       => '取消銷售',

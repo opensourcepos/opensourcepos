@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'חשבון מס #',
     'add_payment'                       => 'הוסף תשלום',
     'amount_due'                        => 'סכום לתשלום',
+    'amount_due_not_covered'            => 'התשלומים אינם מכסים את הסכום לתשלום.',
     'amount_tendered'                   => 'סכום ההצעה',
     'authorized_signature'              => 'חתימת מורשה',
     'cancel_sale'                       => 'בטל',

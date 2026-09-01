@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Montante º',
     'add_payment'                       => 'Pagar',
     'amount_due'                        => 'Diferença',
+    'amount_due_not_covered'            => 'Os pagamentos não cobrem o valor devido.',
     'amount_tendered'                   => 'A Pagar',
     'authorized_signature'              => 'Assinatura autorizada',
     'cancel_sale'                       => 'Cancelar',

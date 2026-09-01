@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => 'Přidat platbu',
     'amount_due'                        => 'K úhradě',
+    'amount_due_not_covered'            => 'Platby nepokrývají splatnou částku.',
     'amount_tendered'                   => 'Uhrazeno',
     'authorized_signature'              => '',
     'cancel_sale'                       => 'Zrušit',

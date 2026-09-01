@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Tài khoản #',
     'add_payment'                       => 'Thêm thanh toán',
     'amount_due'                        => 'Số còn lại phải thanh toán',
+    'amount_due_not_covered'            => 'Các khoản thanh toán không đủ để trang trải số tiền phải trả.',
     'amount_tendered'                   => 'Số tiền thanh toán',
     'authorized_signature'              => 'Chữ ký ủy quyền',
     'cancel_sale'                       => 'Thôi',

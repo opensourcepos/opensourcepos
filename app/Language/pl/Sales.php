@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => '',
     'amount_due'                        => '',
+    'amount_due_not_covered'            => 'Płatności nie pokrywają należnej kwoty.',
     'amount_tendered'                   => '',
     'authorized_signature'              => '',
     'cancel_sale'                       => '',

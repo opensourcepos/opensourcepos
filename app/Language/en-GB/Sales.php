@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Account #',
     'add_payment'                       => 'Add Payment',
     'amount_due'                        => 'Amount Due',
+    'amount_due_not_covered'            => 'Payments do not cover the amount due.',
     'amount_tendered'                   => 'Amount Tendered',
     'authorized_signature'              => 'Authorised Signature',
     'bank_transfer'                     => 'Bank Transfer',

@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Счет #',
     'add_payment'                       => 'Добавить оплату',
     'amount_due'                        => 'Сумма задолженности',
+    'amount_due_not_covered'            => 'Платежи не покрывают причитающуюся сумму.',
     'amount_tendered'                   => 'Предложенная сумма',
     'authorized_signature'              => 'Подпись уполномоченного лица',
     'cancel_sale'                       => 'Отменить продажу',

@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Btw-nummer',
     'add_payment'                       => 'Betaal',
     'amount_due'                        => 'Te betalen',
+    'amount_due_not_covered'            => 'De betalingen dekken het verschuldigde bedrag niet.',
     'amount_tendered'                   => 'Ontvangen bedrag',
     'authorized_signature'              => 'Handtekening',
     'cancel_sale'                       => 'Annuleer',

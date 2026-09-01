@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'حساب',
     'add_payment'                       => 'إضافة دفع',
     'amount_due'                        => 'المبلغ المطلوب',
+    'amount_due_not_covered'            => 'المدفوعات لا تغطي المبلغ المستحق.',
     'amount_tendered'                   => 'المبلغ المدفوع',
     'authorized_signature'              => 'توقيع معتمد',
     'cancel_sale'                       => 'الغاء عملية البيع',

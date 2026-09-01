@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Account #',
     'add_payment'                       => 'Betaling toevoegen',
     'amount_due'                        => 'Te betalen bedrag',
+    'amount_due_not_covered'            => 'De betalingen dekken het verschuldigde bedrag niet.',
     'amount_tendered'                   => 'Betaald bedrag',
     'authorized_signature'              => 'Geautoriseerde handtekening',
     'cancel_sale'                       => 'Annuleren',

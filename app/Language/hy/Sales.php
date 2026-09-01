@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => '',
     'amount_due'                        => '',
+    'amount_due_not_covered'            => 'Վճարումները չեն ծածկում վճարման ենթակա գումարը.',
     'amount_tendered'                   => '',
     'authorized_signature'              => '',
     'cancel_sale'                       => '',

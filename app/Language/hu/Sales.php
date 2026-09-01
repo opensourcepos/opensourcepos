@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => 'Fiz. hozzáad.',
     'amount_due'                        => 'Fennmaradó',
+    'amount_due_not_covered'            => 'A befizetések nem fedezik az esedékes összeget.',
     'amount_tendered'                   => 'Összeg',
     'authorized_signature'              => '',
     'cancel_sale'                       => 'Mégsem',

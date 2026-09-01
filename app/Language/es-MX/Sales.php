@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Cuenta #',
     'add_payment'                       => 'Agregar Pago',
     'amount_due'                        => 'Monto de adeudo',
+    'amount_due_not_covered'            => 'Los pagos no cubren el monto adeudado.',
     'amount_tendered'                   => 'Cantidad Recibida',
     'authorized_signature'              => 'Firma Autorizada',
     'bank_transfer'                     => 'Transferencia Bancaria',

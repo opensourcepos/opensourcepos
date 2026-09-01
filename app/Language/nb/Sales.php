@@ -4,6 +4,7 @@ return [
     'account_number'                    => '',
     'add_payment'                       => '',
     'amount_due'                        => '',
+    'amount_due_not_covered'            => 'Betalingene dekker ikke det skyldige beløpet.',
     'amount_tendered'                   => '',
     'authorized_signature'              => '',
     'cancel_sale'                       => '',

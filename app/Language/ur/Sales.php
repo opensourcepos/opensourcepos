@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'اکاوٗنٹ',
     'add_payment'                       => '',
     'amount_due'                        => '',
+    'amount_due_not_covered'            => 'ادائیگیاں واجب الادا رقم کو پورا نہیں کرتیں۔',
     'amount_tendered'                   => '',
     'authorized_signature'              => '',
     'cancel_sale'                       => '',

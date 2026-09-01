@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'கணக்கு #',
     'add_payment'                       => 'கட்டணத்தைச் சேர்க்கவும்',
     'amount_due'                        => 'செலுத்த வேண்டிய தொகை',
+    'amount_due_not_covered'            => 'செலுத்தப்பட்ட தொகை நிலுவைத் தொகையை ஈடுசெய்யவில்லை.',
     'amount_tendered'                   => 'கொடுத்த தொகை',
     'authorized_signature'              => 'அங்கீகரிக்கப்பட்ட கையெழுத்து',
     'cancel_sale'                       => 'ரத்துசெய்',

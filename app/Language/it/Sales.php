@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Account #',
     'add_payment'                       => 'Aggiungi Pagamento',
     'amount_due'                        => 'Importo Dovuto',
+    'amount_due_not_covered'            => 'I pagamenti non coprono l\'importo dovuto.',
     'amount_tendered'                   => 'Importo Offerto',
     'authorized_signature'              => 'Firma Autorizzata',
     'cancel_sale'                       => 'Annulla',

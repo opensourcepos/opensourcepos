@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Account #',
     'add_payment'                       => 'Add Payment',
     'amount_due'                        => 'Amount Due',
+    'amount_due_not_covered'            => 'Hindi sapat ang mga bayad para sa kabuuang dapat bayaran.',
     'amount_tendered'                   => 'Amount Tendered',
     'authorized_signature'              => 'Authorized Signature',
     'cancel_sale'                       => 'Cancel',

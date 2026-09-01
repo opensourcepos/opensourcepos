@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Akun #',
     'add_payment'                       => 'Terima',
     'amount_due'                        => 'Uang Kembalian',
+    'amount_due_not_covered'            => 'Pembayaran tidak menutupi jumlah yang harus dibayar.',
     'amount_tendered'                   => 'Nilai Pembayaran',
     'authorized_signature'              => 'Tanda tangan',
     'cancel_sale'                       => 'Batal Jual',

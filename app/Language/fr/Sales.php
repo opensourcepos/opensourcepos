@@ -4,6 +4,7 @@ return [
     'account_number'                    => '# Compte',
     'add_payment'                       => 'Ajout Paiement',
     'amount_due'                        => 'Montant à Payer',
+    'amount_due_not_covered'            => 'Les paiements ne couvrent pas le montant dû.',
     'amount_tendered'                   => 'Montant Présenté',
     'authorized_signature'              => 'Signature autorisée',
     'bank_transfer'                     => 'Virement Bancaire',

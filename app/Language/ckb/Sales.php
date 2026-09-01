@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'هەژمار #',
     'add_payment'                       => 'زیادکردنی پارەدان',
     'amount_due'                        => 'بڕی پارە کە دەبێ بدرێت',
+    'amount_due_not_covered'            => 'پارەدانەکان بڕی پێویست دانپۆشین نەکردووە.',
     'amount_tendered'                   => 'بڕی پێشکەشکراو',
     'authorized_signature'              => 'واژۆی ڕێگەپێدراو',
     'cancel_sale'                       => 'هەڵوەشاندنەوە',

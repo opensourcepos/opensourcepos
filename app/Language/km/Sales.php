@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'លេខគណនី',
     'add_payment'                       => 'បញ្ជូលរបៀបបង់ប្រាក់',
     'amount_due'                        => 'ទឹកប្រាក់ដែលត្រូវបង់',
+    'amount_due_not_covered'            => 'ការទូទាត់មិនគ្របដណ្តប់ចំនួនទឹកប្រាក់ដែលត្រូវបង់ទេ។',
     'amount_tendered'                   => 'ទឹកប្រាក់បានមកពីការបង់ទាំងផ្សេងៗ',
     'authorized_signature'              => 'ហត្ថលេខា',
     'cancel_sale'                       => 'បោះបង់',

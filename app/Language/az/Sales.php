@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Hesab #',
     'add_payment'                       => 'Ödəniş Əlavə Etmək',
     'amount_due'                        => 'Qalıq',
+    'amount_due_not_covered'            => 'Ödənişlər ödəniləcək məbləği əhatə etmir.',
     'amount_tendered'                   => 'Ödənilən məbləğ',
     'authorized_signature'              => 'Səlahiyyətli İmza',
     'cancel_sale'                       => 'İmtina',

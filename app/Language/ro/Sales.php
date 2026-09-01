@@ -4,6 +4,7 @@ return [
     'account_number'                    => 'Cont #',
     'add_payment'                       => 'Adauga Plata',
     'amount_due'                        => 'Suma datorata',
+    'amount_due_not_covered'            => 'Plățile nu acoperă suma datorată.',
     'amount_tendered'                   => 'Suma Oferita',
     'authorized_signature'              => 'Semnatura Autorizata',
     'cancel_sale'                       => 'Anuleaza',
