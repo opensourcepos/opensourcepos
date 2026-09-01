@@ -137,20 +137,26 @@ class Sales extends Secure_Controller
         }
 
         $saleInfo = $this->sale->get_info($rowId)->getRow();
-        $dataRow = get_sale_data_row($saleInfo);
+        $dataRow = getSaleDataRow($saleInfo);
 
         return $this->response->setJSON($dataRow);
     }
 
     /**
-     * @return void
+     * @return ResponseInterface
      */
     public function getSearch(): ResponseInterface
     {
+        $personId = $this->session->get('person_id');
+
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
         $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-        $sort = $this->sanitizeSortColumn(sales_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'sale_id');
+        $sort = $this->sanitizeSortColumn(salesHeaders(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'sale_id');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $filters = [
@@ -171,24 +177,24 @@ class Sales extends Secure_Controller
         ];
 
         // Check if any filter is set in the multiselect dropdown
-        $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-        $filters = array_merge($filters, $request_filters);
+        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $requestFilters);
 
         $sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
-        $total_rows = $this->sale->get_found_rows($search, $filters);
-        $payments = $this->sale->get_payments_summary($search, $filters);
-        $payment_summary = get_sales_manage_payments_summary($payments);
+        $totalRows = $this->sale->get_found_rows($search, $filters);
+        $payments = $this->sale->getPaymentsSummary($search, $filters);
+        $paymentSummary = getSalesManagePaymentsSummary($payments);
 
-        $data_rows = [];
+        $dataRows = [];
         foreach ($sales->getResult() as $sale) {
-            $data_rows[] = get_sale_data_row($sale);
+            $dataRows[] = getSaleDataRow($sale);
         }
 
-        if ($total_rows > 0) {
-            $data_rows[] = get_sale_data_last_row($sales);
+        if ($totalRows > 0) {
+            $dataRows[] = getSaleDataLastRow($sales);
         }
 
-        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
+        return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows, 'payment_summary' => $paymentSummary]);
     }
 
     /**
