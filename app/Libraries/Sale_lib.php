@@ -333,7 +333,7 @@ class Sale_lib
      */
     public function get_sale_type(): ?int
     {
-        return $this->session->get('sale_type', 0);
+        return $this->session->get('sale_type') ?? 0;
     }
 
     /**

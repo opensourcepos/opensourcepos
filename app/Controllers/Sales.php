@@ -1789,10 +1789,17 @@ class Sales extends Secure_Controller
      */
     public function postUnsuspend(): ResponseInterface|string
     {
+        $personId = $this->session->get('person_id');
+
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return $this->response->setStatusCode(403)
+                ->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
         $sale_id = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
         $this->sale_lib->clear_all();
 
-        if ($sale_id > 0) {
+        if ($sale_id > 0 && $this->sale->get_sale_status($sale_id) == SUSPENDED) {
             $this->sale_lib->copy_entire_sale($sale_id);
         }
 
