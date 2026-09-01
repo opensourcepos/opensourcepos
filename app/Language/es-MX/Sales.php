@@ -85,6 +85,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => 'ID de Venta',
     'include_prices'                    => '¿Incluir precios?',
+    'insufficient_giftcard_balance'     => 'Saldo insuficiente de tarjeta de regalo para este pago.',
+    'insufficient_reward_points'        => 'Puntos de recompensa insuficientes para este pago.',
     'invoice'                           => 'Factura de venta',
     'invoice_confirm'                   => 'Esta factura sera enviada a',
     'invoice_enable'                    => 'Crear factura',

@@ -84,6 +84,8 @@ return [
     'hsn'                               => 'HSN',
     'id'                                => '銷售編號',
     'include_prices'                    => '包括價格？',
+    'insufficient_giftcard_balance'     => '此次支付的禮品卡餘額不足。',
+    'insufficient_reward_points'        => '此次支付的獎勵積分不足。',
     'invoice'                           => '發票',
     'invoice_confirm'                   => '已傳送發票到',
     'invoice_enable'                    => '建立發票',

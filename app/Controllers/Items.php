@@ -17,6 +17,7 @@ use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\Validation\FormatRules;
 use Config\Database;
 use Config\OSPOS;
 use Config\Services;
@@ -115,7 +116,7 @@ class Items extends Secure_Controller
 
         $this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
-        $definition_names = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
+        $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS);
 
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
@@ -128,7 +129,7 @@ class Items extends Secure_Controller
             'search_custom'     => false,
             'is_deleted'        => false,
             'temporary'         => false,
-            'definition_ids'    => array_keys($definition_names)
+            'definition_ids'    => array_keys($definitionNames)
         ];
 
         // Check if any filter is set in the multiselect dropdown
@@ -325,9 +326,9 @@ class Items extends Secure_Controller
 
         if ($data['category_dropdown'] === '1') {
             $categories = ['' => lang('Items.none')];
-            $category_options = $this->attribute->getDefinitionValues(CATEGORY_DEFINITION_ID);
-            $category_options = array_combine($category_options, $category_options);    // Overwrite indexes with values for saving in items table instead of attributes
-            $data['categories'] = array_merge($categories, $category_options);
+            $categoryOptions = $this->attribute->getDefinitionValues(CATEGORY_DEFINITION_ID);
+            $categoryOptions = array_combine($categoryOptions, $categoryOptions);    // Overwrite indexes with values for saving in items table instead of attributes
+            $data['categories'] = array_merge($categories, $categoryOptions);
 
             $data['selected_category'] = $item_info->category;
         }
@@ -593,7 +594,10 @@ class Items extends Secure_Controller
      */
     public function getBulkEdit(): string
     {
-        $suppliers = ['' => lang('Items.none')];
+        $suppliers = [
+            ''                          => lang('Items.do_nothing'),
+            Item::CLEAR_SUPPLIER_OPTION => lang('Items.none')
+        ];
 
         foreach ($this->supplier->get_all()->getResultArray() as $row) {
             $suppliers[$row['person_id']] = $row['company_name'];
@@ -615,6 +619,70 @@ class Items extends Secure_Controller
         return view('items/form_bulk', $data);
     }
 
+    private function validateItemFields(int $itemId): ?ResponseInterface
+    {
+        $itemNumber = $this->request->getPost('item_number');
+
+        if (!empty($itemNumber)) {
+            $rules = [
+                'item_number' => 'alpha_numeric_punct',
+            ];
+            $messages = [
+                'item_number' => [
+                    'alpha_numeric_punct' => lang('Items.item_number_invalid'),
+                ],
+            ];
+
+            $error = $this->validateFields($rules, $messages, $itemId);
+            if ($error !== null) {
+                return $error;
+            }
+        }
+
+        $taxNamesInput = $this->request->getPost('tax_names');
+
+        if (!empty($taxNamesInput)) {
+            $rules = [
+                'tax_names.*' => 'required|max_length[255]|unicode_alpha_numeric_punct',
+            ];
+            $messages = [
+                'tax_names.*' => [
+                    'required'                    => lang('Items.tax_name_invalid'),
+                    'max_length'                  => lang('Items.tax_name_invalid'),
+                    'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+            ];
+
+            $error = $this->validateFields($rules, $messages, $itemId);
+            if ($error !== null) {
+                return $error;
+            }
+        }
+
+        return null;
+    }
+
+    private function validateBulkUpdateFields(): ?ResponseInterface
+    {
+        $taxNamesInput = $this->request->getPost('tax_names');
+
+        if (!empty($taxNamesInput)) {
+            $rules = [
+                'tax_names.*' => 'max_length[255]|unicode_alpha_numeric_punct',
+            ];
+            $messages = [
+                'tax_names.*' => [
+                    'max_length'                  => lang('Items.tax_name_invalid'),
+                    'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+            ];
+
+            return $this->validateFields($rules, $messages, NEW_ENTRY);
+        }
+
+        return null;
+    }
+
     /**
      * @param int $itemId
      * @return ResponseInterface
@@ -622,6 +690,12 @@ class Items extends Secure_Controller
      */
     public function postSave(int $itemId = NEW_ENTRY): ResponseInterface
     {
+        $validationError = $this->validateItemFields($itemId);
+
+        if ($validationError !== null) {
+            return $validationError;
+        }
+
         $uploadData = $this->upload_image();
         $uploadSuccess = empty($uploadData['error']);
 
@@ -903,37 +977,34 @@ class Items extends Secure_Controller
      */
     public function postBulkUpdate(): ResponseInterface
     {
-        $items_to_update = $this->request->getPost('item_ids');
-        $item_data = [];
+        $validationError = $this->validateBulkUpdateFields();
 
-        foreach (Item::ALLOWED_BULK_EDIT_FIELDS as $field) {
-            $value = $this->request->getPost($field);
-            if ($field === 'supplier_id' && $value !== '') {
-                $item_data[$field] = $value;
-            } elseif ($value !== null && $value !== '') {
-                $item_data[$field] = $value;
-            }
+        if ($validationError !== null) {
+            return $validationError;
         }
 
-        // Item data could be empty if tax information is being updated
-        if (empty($item_data) || $this->item->update_multiple($item_data, $items_to_update)) {
-            $items_taxes_data = [];
-            $tax_names = $this->request->getPost('tax_names');
-            $tax_percents = $this->request->getPost('tax_percents');
-            $tax_updated = false;
+        $itemsToUpdate = $this->request->getPost('item_ids');
+        $itemData = Item::filterBulkEditFields($this->request->getPost() ?? []);
 
-            foreach ($tax_percents as $tax_percent) {
-                if (!empty($tax_names[$tax_percent]) && is_numeric($tax_percents[$tax_percent])) {
-                    $tax_updated = true;
-                    $items_taxes_data[] = ['name' => $tax_names[$tax_percent], 'percent' => $tax_percents[$tax_percent]];
+        // Item data could be empty if tax information is being updated
+        if (empty($itemData) || $this->item->updateMultiple($itemData, $itemsToUpdate)) {
+            $itemsTaxesData = [];
+            $taxNames = $this->request->getPost('tax_names');
+            $taxPercents = $this->request->getPost('tax_percents');
+            $taxUpdated = false;
+
+            foreach ($taxPercents as $tax_percent) {
+                if (!empty($taxNames[$tax_percent]) && is_numeric($taxPercents[$tax_percent])) {
+                    $taxUpdated = true;
+                    $itemsTaxesData[] = ['name' => $taxNames[$tax_percent], 'percent' => $taxPercents[$tax_percent]];
                 }
             }
 
-            if ($tax_updated) {
-                $this->item_taxes->save_multiple($items_taxes_data, $items_to_update);
+            if ($taxUpdated) {
+                $this->item_taxes->save_multiple($itemsTaxesData, $itemsToUpdate);
             }
 
-            return $this->response->setJSON(['success' => true, 'message' => lang('Items.successful_bulk_edit'), 'id' => $items_to_update]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Items.successful_bulk_edit'), 'id' => $itemsToUpdate]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => lang('Items.error_updating_multiple')]);
         }
@@ -965,8 +1036,8 @@ class Items extends Secure_Controller
         helper('importfile');
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
-        $allowed_attributes = $this->attribute->getDefinitionNames();
-        $data = generate_import_items_csv($allowed_locations, $allowed_attributes);
+        $allowedAttributes = $this->attribute->getDefinitionNames();
+        $data = generate_import_items_csv($allowed_locations, $allowedAttributes);
 
         return $this->response->download($name, $data);
     }
@@ -1215,6 +1286,16 @@ class Items extends Secure_Controller
         foreach ($valuesToCheckForNumeric as $key => $value) {
             if (!is_numeric($value) && !empty($value)) {
                 log_message('error', "non-numeric: '$value' for '$key' when numeric is required");
+                return true;
+            }
+        }
+
+        // Check item_number for disallowed characters
+        if (!empty($itemData['item_number'])) {
+            $formatRules = new FormatRules();
+
+            if (!$formatRules->alpha_numeric_punct($itemData['item_number'])) {
+                log_message('error', "invalid item_number: '{$itemData['item_number']}' contains disallowed characters");
                 return true;
             }
         }
