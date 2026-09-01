@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Το Ποσό Είσπραξης πρέπει να είναι Αριθμός.',
     'must_enter_numeric_giftcard'       => 'Ο Αριθμός της Δωροκάρτας πρέπει να είναι αριθμός.',
     'must_enter_reference_code'         => 'Πρέπει να εισαχθεί αριθμός αναφοράς/ανάκτησης.',
+    'negative_amount_invalid'           => 'Το ποσό είσπραξης δεν μπορεί να είναι αρνητικό.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

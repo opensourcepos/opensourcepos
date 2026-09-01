@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Ponuđeni iznos mora biti broj.',
     'must_enter_numeric_giftcard'       => 'Broj poklon kartice mora biti broj.',
     'must_enter_reference_code'         => 'Referentni/broj za preuzimanje mora biti unesen.',
+    'negative_amount_invalid'           => 'Ponuđeni iznos ne može biti negativan.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

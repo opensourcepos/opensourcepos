@@ -441,7 +441,13 @@ class Sales extends Secure_Controller
             ];
         } else {
             $rules    = ['amount_tendered' => 'trim|required|decimal_locale|nonNegativeDecimal'];
-            $messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
+            $messages = [
+                'amount_tendered' => [
+                    'required'           => lang('Sales.must_enter_numeric'),
+                    'decimal_locale'     => lang('Sales.must_enter_numeric'),
+                    'nonNegativeDecimal' => lang('Sales.negative_amount_invalid'),
+                ],
+            ];
         }
 
         if (!$this->validate($rules, $messages)) {

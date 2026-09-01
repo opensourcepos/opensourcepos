@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Import Offerto deve essere un numero.',
     'must_enter_numeric_giftcard'       => 'Numero Carta Regalo deve essere un numero.',
     'must_enter_reference_code'         => 'Il numero di riferimento/recupero deve essere inserito.',
+    'negative_amount_invalid'           => 'L\'importo offerto non può essere negativo.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

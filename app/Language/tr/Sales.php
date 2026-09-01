@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Ödenen Tutar sayı olmalıdır.',
     'must_enter_numeric_giftcard'       => 'Hediye Çeki Numarası sayı olmalıdır.',
     'must_enter_reference_code'         => 'Referans/Alım numarası girilmelidir.',
+    'negative_amount_invalid'           => 'Ödenen tutar negatif olamaz.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

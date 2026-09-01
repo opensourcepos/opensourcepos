@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Valoare ofertata trebuie sa fie numerica.',
     'must_enter_numeric_giftcard'       => 'Numar Card Cadou trebuie sa fie numeric.',
     'must_enter_reference_code'         => 'Numărul de referință/recuperare trebuie introdus.',
+    'negative_amount_invalid'           => 'Suma oferită nu poate fi negativă.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

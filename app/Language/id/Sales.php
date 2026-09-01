@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Nilai yang dimasukkan harus berupa angka.',
     'must_enter_numeric_giftcard'       => 'Nomor Gift Card harus berupa angka.',
     'must_enter_reference_code'         => 'Nomor referensi/pengambilan harus dimasukkan.',
+    'negative_amount_invalid'           => 'Nilai pembayaran tidak boleh negatif.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

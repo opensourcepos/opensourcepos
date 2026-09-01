@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Eingabe muss eine Zahl sein.',
     'must_enter_numeric_giftcard'       => 'Gutschein-Nr. muss eine Zahl sein.',
     'must_enter_reference_code'         => 'Referenz-/Abrufnummer muss eingegeben werden.',
+    'negative_amount_invalid'           => 'Der erhaltene Betrag darf nicht negativ sein.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'סכום ההצעה חייב להיות מספר.',
     'must_enter_numeric_giftcard'       => 'מספר כרטיס המתנה חייב להיות מספר.',
     'must_enter_reference_code'         => 'יש להזין מספר אסמכתא/אחזור.',
+    'negative_amount_invalid'           => 'סכום ההצעה לא יכול להיות שלילי.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

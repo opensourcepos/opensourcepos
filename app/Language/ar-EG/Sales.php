@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'يجب إدخال رقم للمبلغ الفعلى المدفوع.',
     'must_enter_numeric_giftcard'       => 'رقم بطاقة الهدية يجب أن يكون رقم.',
     'must_enter_reference_code'         => 'يجب إدخال رقم المرجع/الاسترداد.',
+    'negative_amount_invalid'           => 'لا يمكن أن يكون المبلغ المدفوع سالبًا.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

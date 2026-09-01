@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'مقدار پیشنهادی باید یک عدد باشد.',
     'must_enter_numeric_giftcard'       => 'شماره کارت هدیه باید یک عدد باشد.',
     'must_enter_reference_code'         => 'شماره مرجع/بازیابی باید وارد شود.',
+    'negative_amount_invalid'           => 'مبلغ مناقصه نمی‌تواند منفی باشد.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

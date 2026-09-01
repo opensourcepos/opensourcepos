@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Введена сума повинна бути числом.',
     'must_enter_numeric_giftcard'       => 'Номер подарункової картки повинен бути цифровим.',
     'must_enter_reference_code'         => 'Необхідно ввести довідковий/пошуковий номер.',
+    'negative_amount_invalid'           => 'Запропонована сума не може бути від\'ємною.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Het ontvangen bedrag moet een numerieke waarde zijn.',
     'must_enter_numeric_giftcard'       => 'Er moet een geldige code worden ingevuld voor de cadeaubon.',
     'must_enter_reference_code'         => 'Referentie-/ophaalnummer moet worden ingevoerd.',
+    'negative_amount_invalid'           => 'Het ontvangen bedrag mag niet negatief zijn.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Amount Tendered must be a number.',
     'must_enter_numeric_giftcard'       => 'Gift Card Number must be a number.',
     'must_enter_reference_code'         => 'Ang Numero ng Sanggunian/Pagkuha ay dapat ipasok.',
+    'negative_amount_invalid'           => 'Hindi maaaring negatibo ang halagang ibinayad.',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',
