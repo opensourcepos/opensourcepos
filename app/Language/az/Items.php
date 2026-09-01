@@ -108,6 +108,7 @@ return [
     'tax_2'                              => 'Vergi 2',
     'tax_3'                              => 'Vergi 3',
     'tax_category'                       => 'Vergi Bölməsi',
+    'tax_name_invalid'                   => 'Vergi adında icazə verilməyən simvollar var.',
     'tax_percent'                        => 'Vergi Faizi',
     'tax_percent_number'                 => 'Vergi Faizi rəqəm dəyəri olmalıdır',
     'tax_percent_required'               => 'Vergi Faizi tələb olunan sahədir.',
