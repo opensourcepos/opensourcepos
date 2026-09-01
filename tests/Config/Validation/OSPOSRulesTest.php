@@ -100,6 +100,32 @@ class OSPOSRulesTest extends CIUnitTestCase
         $this->assertNull($error);
     }
 
+    /**
+     * @dataProvider validPathStrictProvider
+     */
+    public function testValidPathStrict(string $candidate, bool $expected): void
+    {
+        $rules = new OSPOSRules();
+
+        $this->assertSame($expected, $rules->valid_path_strict($candidate));
+    }
+
+    public static function validPathStrictProvider(): array
+    {
+        return [
+            'plain sendmail path'                   => ['/usr/sbin/sendmail', true],
+            'plain php path'                        => ['/usr/bin/php', true],
+            'path with dash and underscore'         => ['/opt/my-mail_bin/sendmail.exe', true],
+            'empty string'                           => ['', false],
+            'trailing newline bypass payload'       => ["/usr/bin/php\n", false],
+            'trailing newline plus injected command' => ["/usr/bin/php\nid", false],
+            'embedded newline mid-string'           => ["/usr/bin/php\n/bin/sh", false],
+            'semicolon injection'                   => ['/usr/bin/php;id', false],
+            'pipe injection'                        => ['/usr/bin/php|id', false],
+            'space separated args'                  => ['/usr/bin/php -r "phpinfo();"', false],
+        ];
+    }
+
     private function injectSettings(array $settings): void
     {
         $ospos = new OSPOS();
