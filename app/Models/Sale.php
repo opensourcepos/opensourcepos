@@ -582,7 +582,7 @@ class Sale extends Model
             $paymentPrefix = $splitPayment[0];
 
             if ($paymentPrefix === lang('Sales.giftcard')) {
-                if (! $giftcard->decrementGiftcardValue($splitPayment[1], (float) $payment['payment_amount'])) {
+                if (empty($splitPayment[1]) || ! $giftcard->decrementGiftcardValue($splitPayment[1], (float) $payment['payment_amount'])) {
                     $this->db->transRollback();
 
                     return INSUFFICIENT_GIFTCARD_BALANCE;
