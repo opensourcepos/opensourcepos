@@ -2,13 +2,13 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
-use App\Database\Seeds\TestDatabaseBootstrapSeeder;
 use App\Models\Employee;
-use Config\OSPOS;
+use Config\Database;
 use Tests\Support\ItemFixtureTrait;
 
 /**
@@ -36,14 +36,13 @@ class SalesControllerTest extends CIUnitTestCase
     protected function setUp(): void
     {
         if (self::$doneBootstrap === false) {
-            TestDatabaseBootstrapSeeder::reset();
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
 
             self::$doneBootstrap = true;
         }
 
         parent::setUp();
-
-        config(OSPOS::class)->update_settings();
     }
 
     protected function tearDown(): void
@@ -224,7 +223,7 @@ class SalesControllerTest extends CIUnitTestCase
     protected function createSale(int $employeeId): int
     {
         $unique = uniqid();
-        $db = \Config\Database::connect();
+        $db = Database::connect();
 
         $db->table('items')->insert([
             'name'        => "Test Item $unique",
@@ -518,5 +517,27 @@ class SalesControllerTest extends CIUnitTestCase
         $session = Services::session();
         $cart = $session->get('sales_cart');
         $this->assertEquals('0.01', $cart[1]['price']);
+    }
+
+    public function testRegisterEscapesMaliciousTaxName(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem();
+
+        Database::connect()->table('items_taxes')->insert([
+            'item_id' => $itemId,
+            'name'    => '<svg onload=alert(1)>',
+            'percent' => 5,
+        ]);
+
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '5.00', $itemId);
+
+        $response = $this->get('/sales');
+
+        $response->assertStatus(200);
+        $body = $response->getBody();
+        $this->assertStringNotContainsString('<svg onload', $body);
+        $this->assertStringContainsString('&lt;svg', $body);
     }
 }
