@@ -331,7 +331,7 @@ class Sale_lib
     /**
      * @return int|null
      */
-    public function get_sale_type(): ?int
+    public function getSaleType(): ?int
     {
         return $this->session->get('sale_type') ?? 0;
     }
