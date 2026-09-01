@@ -44,7 +44,7 @@
         const ensure_default_selected = function() {
             if ($('#stock_locations input.stock_location_default:checked').length === 0) {
                 $('#stock_locations .stock_location_row').filter(function() {
-                    return String($(this).data('location-id')).indexOf('new-') !== 0;
+                    return String($(this).attr('data-location-id')).indexOf('new-') !== 0;
                 }).first().find('input.stock_location_default').prop('checked', true);
             }
         };
@@ -77,7 +77,7 @@
 
         const update_sort_order_field = function() {
             const orderedIds = $('#stock_locations .stock_location_row').map(function() {
-                return $(this).data('location-id');
+                return $(this).attr('data-location-id');
             }).get();
             $("input[name='stock_location_order']").val(orderedIds.join(','));
         };
