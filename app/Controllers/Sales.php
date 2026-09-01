@@ -431,12 +431,14 @@ class Sales extends Secure_Controller
             $min      = (int)($this->config['payment_reference_code_min'] ?? 3);
             $max      = (int)($this->config['payment_reference_code_max'] ?? 20);
             $rules    = [
-                'amount_tendered' => 'trim|required|decimal_locale',
+                'amount_tendered' => 'trim|required|decimal_locale|nonNegativeDecimal',
                 'reference_code'  => "trim|required|alpha_numeric|min_length[$min]|max_length[$max]",
             ];
             $messages = [
                 'amount_tendered' => [
-                    'required'   => lang('Sales.must_enter_numeric'),
+                    'required'           => lang('Sales.must_enter_numeric'),
+                    'decimal_locale'     => lang('Sales.must_enter_numeric'),
+                    'nonNegativeDecimal' => lang('Sales.negative_amount_invalid'),
                 ],
                 'reference_code'  => [
                     'required'      => lang('Sales.must_enter_reference_code'),

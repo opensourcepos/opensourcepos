@@ -579,6 +579,75 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertArrayHasKey(lang('Sales.giftcard') . ':' . $giftcardNumber, $payments);
     }
 
+    public function testCashierCannotSubmitNegativeAmountForReferenceCodePayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.debit'),
+            'amount_tendered' => '-25',
+            'reference_code'  => 'ABC123',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertEmpty($payments);
+    }
+
+    public function testCashierCanUseLegitimateReferenceCodePayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.debit'),
+            'amount_tendered' => '25.00',
+            'reference_code'  => 'ABC123',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertNotEmpty($payments);
+        $this->assertArrayHasKey(lang('Sales.debit'), $payments);
+        $this->assertSame('ABC123', $payments[lang('Sales.debit')]['reference_code']);
+    }
+
+    public function testCashierCannotSubmitNegativeAmountForCashPayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.cash'),
+            'amount_tendered' => '-10',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertEmpty($payments);
+    }
+
+    public function testCashierCanUseLegitimateCashPayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.cash'),
+            'amount_tendered' => '10.00',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertNotEmpty($payments);
+        $this->assertArrayHasKey(lang('Sales.cash'), $payments);
+    }
+
     public function testPostCompleteRejectsSaleWithInsufficientPayments(): void
     {
         $cashierId = $this->createCashierEmployee();
