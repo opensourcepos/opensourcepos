@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => '',
     'must_enter_numeric_giftcard'       => '',
     'must_enter_reference_code'         => 'Պետք է մուտքագրվի հղման/որոնման համարը։',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

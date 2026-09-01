@@ -519,6 +519,48 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertEquals('0.01', $cart[1]['price']);
     }
 
+    public function testPostAddPaymentRejectsNegativeAmountTendered(): void
+    {
+        $cashierId = $this->createCashierWithoutChangePriceGrant();
+        $this->loginAs($cashierId);
+        $itemId = $this->createTestItem();
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $forgedPaymentType = lang('Sales.giftcard') . ':AUDIT-100';
+
+        $response = $this->post('/sales/addPayment', [
+            'payment_type'    => $forgedPaymentType,
+            'amount_tendered' => '-500',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.negative_amount_tendered'));
+
+        // ... and the negative payment must NOT have been added to the cart.
+        $session  = Services::session();
+        $payments = $session->get('sales_payments');
+        $this->assertArrayNotHasKey($forgedPaymentType, (array) $payments);
+    }
+
+    public function testPostAddPaymentRejectsMalformedAmountTendered(): void
+    {
+        $cashierId = $this->createCashierWithoutChangePriceGrant();
+        $this->loginAs($cashierId);
+        $itemId = $this->createTestItem();
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $response = $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.cash'),
+            'amount_tendered' => 'ABC123',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.must_enter_numeric'));
+
+        $session  = Services::session();
+        $payments = $session->get('sales_payments');
+        $this->assertArrayNotHasKey(lang('Sales.cash'), (array) $payments);
+
     public function testRegisterEscapesMaliciousTaxName(): void
     {
         $cashierId = $this->createCashierEmployee();

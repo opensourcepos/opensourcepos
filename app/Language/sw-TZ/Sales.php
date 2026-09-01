@@ -132,6 +132,7 @@ return [
     'must_enter_numeric'                => 'Kiasi Kilicholipwa lazima kiwe Namba.',
     'must_enter_numeric_giftcard'       => 'Namba ya Kadi ya Zawadi lazima iwe Namba.',
     'must_enter_reference_code'         => 'Nambari ya Kumbukumbu/Upatikanaji lazima iingizwe.',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',

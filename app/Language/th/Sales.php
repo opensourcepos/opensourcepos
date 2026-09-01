@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => 'จำนวนที่ถุกประมูลต้องใส่ข้อมุลที่เปนตัวเลข',
     'must_enter_numeric_giftcard'       => 'เลขที่บัตรของขวัญ ต้องใส่ตัวเลขเท่านั้น',
     'must_enter_reference_code'         => 'ต้องระบุหมายเลขอ้างอิง/การดึงข้อมูล',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => 'ส่วนลดไม่สามารถเป็นค่าติดลบได้',
     'negative_price_invalid'            => 'ราคาไม่สามารถเป็นค่าติดลบได้',
     'negative_quantity_invalid'         => 'จำนวนไม่สามารถเป็นค่าติดลบได้',

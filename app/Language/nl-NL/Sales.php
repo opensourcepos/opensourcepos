@@ -131,6 +131,7 @@ return [
     'must_enter_numeric'                => 'Betaald bedrag moet een getal zijn.',
     'must_enter_numeric_giftcard'       => 'Cadeaubonnummer moet een getal zijn.',
     'must_enter_reference_code'         => 'Referentie-/ophaalnummer moet worden ingevoerd.',
+    'negative_amount_tendered'          => '',
     'negative_discount_invalid'         => '',
     'negative_price_invalid'            => '',
     'negative_quantity_invalid'         => '',
