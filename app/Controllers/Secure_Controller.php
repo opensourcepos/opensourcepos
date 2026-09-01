@@ -89,6 +89,25 @@ class Secure_Controller extends BaseController
     }
 
     /**
+     * Validates the given rules and, on failure, returns a JSON error response.
+     *
+     * @param array $rules
+     * @param array $messages
+     * @param mixed $id
+     * @return ResponseInterface|null
+     */
+    protected function validateFields(array $rules, array $messages, $id = NEW_ENTRY): ?ResponseInterface
+    {
+        if (!$this->validate($rules, $messages)) {
+            $errors = $this->validator->getErrors();
+
+            return $this->response->setJSON(['success' => false, 'message' => reset($errors), 'id' => $id]);
+        }
+
+        return null;
+    }
+
+    /**
      * AJAX function used to confirm whether values sent in the request are numeric
      * @return ResponseInterface
      * @noinspection PhpUnused

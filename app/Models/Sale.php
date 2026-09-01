@@ -179,7 +179,7 @@ class Sale extends Model
         $builder->join('sales', '`sales_items`.`sale_id` = `' . $db_prefix . 'sales`.`sale_id`', 'inner');
         $builder->join('people AS customer_p', '`' . $db_prefix . 'sales`.`customer_id` = `customer_p`.`person_id`', 'LEFT');
         $builder->join('customers AS customer', '`' . $db_prefix . 'sales`.`customer_id` = `customer`.`person_id`', 'LEFT');
-        $builder->join('sales_payments_temp AS payments', '`' . $db_prefix . 'sales`.`sale_id` = `payments`.`sale_id`', 'LEFT OUTER');
+        $builder->join('sales_search_payments_temp AS payments', '`' . $db_prefix . 'sales`.`sale_id` = `payments`.`sale_id`', 'LEFT OUTER');
         $builder->join(
             'sales_items_taxes_temp AS sales_items_taxes',
             'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
@@ -1430,7 +1430,7 @@ class Sale extends Model
         log_message('error', $sub_query);
 
         $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
-            . $this->db->prefixTable('sales_payments_temp')
+            . $this->db->prefixTable('sales_search_payments_temp')
             . ' (PRIMARY KEY(`sale_id`), INDEX(`sale_id`)) AS (' . $sub_query . ')');
     }
 
