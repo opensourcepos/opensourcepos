@@ -620,12 +620,7 @@ class Items extends Secure_Controller
         return view('items/form_bulk', $data);
     }
 
-    /**
-     * @param int $itemId
-     * @return ResponseInterface
-     * @throws ReflectionException
-     */
-    public function postSave(int $itemId = NEW_ENTRY): ResponseInterface
+    private function validateItemFields(int $itemId): ?ResponseInterface
     {
         $itemNumber = $this->request->getPost('item_number');
 
@@ -639,11 +634,67 @@ class Items extends Secure_Controller
                 ],
             ];
 
-            if (!$this->validate($rules, $messages)) {
-                $errors = $this->validator->getErrors();
-
-                return $this->response->setJSON(['success' => false, 'message' => reset($errors), 'id' => $itemId]);
+            $error = $this->validateFields($rules, $messages, $itemId);
+            if ($error !== null) {
+                return $error;
             }
+        }
+
+        $taxNamesInput = $this->request->getPost('tax_names');
+
+        if (!empty($taxNamesInput)) {
+            $rules = [
+                'tax_names.*' => 'required|max_length[255]|unicode_alpha_numeric_punct',
+            ];
+            $messages = [
+                'tax_names.*' => [
+                    'required'                    => lang('Items.tax_name_invalid'),
+                    'max_length'                  => lang('Items.tax_name_invalid'),
+                    'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+            ];
+
+            $error = $this->validateFields($rules, $messages, $itemId);
+            if ($error !== null) {
+                return $error;
+            }
+        }
+
+        return null;
+    }
+
+    private function validateBulkUpdateFields(): ?ResponseInterface
+    {
+        $taxNamesInput = $this->request->getPost('tax_names');
+
+        if (!empty($taxNamesInput)) {
+            $rules = [
+                'tax_names.*' => 'max_length[255]|unicode_alpha_numeric_punct',
+            ];
+            $messages = [
+                'tax_names.*' => [
+                    'max_length'                  => lang('Items.tax_name_invalid'),
+                    'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+            ];
+
+            return $this->validateFields($rules, $messages, NEW_ENTRY);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param int $itemId
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function postSave(int $itemId = NEW_ENTRY): ResponseInterface
+    {
+        $validationError = $this->validateItemFields($itemId);
+
+        if ($validationError !== null) {
+            return $validationError;
         }
 
         $uploadData = $this->upload_image();
@@ -933,6 +984,12 @@ class Items extends Secure_Controller
      */
     public function postBulkUpdate(): ResponseInterface
     {
+        $validationError = $this->validateBulkUpdateFields();
+
+        if ($validationError !== null) {
+            return $validationError;
+        }
+
         $itemsToUpdate = $this->request->getPost('item_ids');
         $itemData = Item::filterBulkEditFields($this->request->getPost() ?? []);
 

@@ -5,6 +5,7 @@ namespace Tests\Controllers;
 use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Item;
 use App\Models\Item_quantity;
 use App\Models\Inventory;
@@ -12,10 +13,13 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use Tests\Support\EmployeeFixtureTrait;
 
-class ItemsCsvImportTest extends CIUnitTestCase
+class ItemsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use FeatureTestTrait;
+    use EmployeeFixtureTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
@@ -59,6 +63,130 @@ class ItemsCsvImportTest extends CIUnitTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+    }
+
+    protected function createItemsEmployee(): int
+    {
+        $personId = $this->createEmployee();
+
+        $db = Config::connect($this->DBGroup);
+        $db->table('grants')->insertBatch([
+            ['person_id' => $personId, 'permission_id' => 'items', 'menu_group' => 'home'],
+            ['person_id' => $personId, 'permission_id' => 'items_stock', 'menu_group' => 'home'],
+        ]);
+
+        return $personId;
+    }
+
+    protected function loginAsItemsEmployee(int $personId): void
+    {
+        $this->withSession([
+            'person_id'  => $personId,
+            'menu_group' => 'home',
+        ]);
+    }
+
+    protected function baseItemPostData(): array
+    {
+        return [
+            'name'          => 'Test Item ' . uniqid(),
+            'category'      => 'Test Category',
+            'description'   => 'Test Item',
+            'cost_price'    => '1.00',
+            'unit_price'    => '5.00',
+            'reorder_level' => '0',
+            'receiving_quantity' => '0',
+            'quantity_1'    => '0',
+            'item_type'     => (string) ITEM,
+            'tax_percents'  => ['5'],
+        ];
+    }
+
+    /**
+     * Regression test for GHSA-92cx-fc8x-7wmm: `tax_names[]` containing `<`/`>`
+     * (the stored-XSS vector) must be rejected by postSave.
+     */
+    public function testPostSaveRejectsMaliciousTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ['<svg onload=alert(1)>'];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    /**
+     * Legitimate unicode tax names must not be rejected by the XSS guard.
+     */
+    public function testPostSaveAcceptsUnicodeTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ["Impôt, incl."];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * Apostrophes are common in real tax names (e.g. possessives) and must not be rejected.
+     */
+    public function testPostSaveAcceptsApostropheInTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ["O'Brien's Tax"];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testPostBulkUpdateRejectsMaliciousTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => '1',
+            'tax_names'    => ['<svg onload=alert(1)>'],
+            'tax_percents' => ['5'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostBulkUpdateAcceptsUnicodeTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => '1',
+            'tax_names'    => ["Impôt, incl."],
+            'tax_percents' => ['5'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
     }
 
     public function testGenerateCsvHeaderBasic(): void

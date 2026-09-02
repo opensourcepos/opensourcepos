@@ -512,16 +512,21 @@ class Config extends Secure_Controller
         $protocol = $this->request->getPost('protocol');
         $mailpath = $this->request->getPost('mailpath');
 
-        // Validate mailpath: required for sendmail, optional for others but must be safe if provided
-        $isMailpathRequired = ($protocol === 'sendmail');
-        $isMailpathProvided = !empty($mailpath);
-        $isMailpathValid = $isMailpathProvided && preg_match('/^[a-zA-Z0-9_\-\/.]+$/', $mailpath);
+        $rules = [
+            'mailpath' => [
+                'label' => lang('Config.email_mailpath'),
+                'rules' => ($protocol === 'sendmail' ? 'required' : 'permit_empty') . '|valid_path_strict'
+            ]
+        ];
+        $messages = [
+            'mailpath' => [
+                'required'          => lang('Config.mailpath_invalid'),
+                'valid_path_strict' => lang('Config.mailpath_invalid')
+            ]
+        ];
 
-        if (($isMailpathRequired && !$isMailpathProvided) || ($isMailpathProvided && !$isMailpathValid)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => lang('Config.mailpath_invalid')
-            ]);
+        if ($error = $this->validateFields($rules, $messages)) {
+            return $error;
         }
 
         $batch_save_data = [
