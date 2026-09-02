@@ -241,7 +241,7 @@ class Receiving extends Model
                 $inventory->insert($inv_data, false);
 
                 // Update quantities
-                $item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
+                $item_quantity->changeQuantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
             }
         }
 
@@ -294,7 +294,9 @@ class Receiving extends Model
             lang('Sales.check') => lang('Sales.check'),
             lang('Sales.debit') => lang('Sales.debit'),
             lang('Sales.credit') => lang('Sales.credit'),
-            lang('Sales.due') => lang('Sales.due')
+            lang('Sales.due') => lang('Sales.due'),
+            lang('Sales.bank_transfer') => lang('Sales.bank_transfer'),
+            lang('Sales.wallet') => lang('Sales.wallet')
         ];
     }
 

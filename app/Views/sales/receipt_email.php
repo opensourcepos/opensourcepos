@@ -106,7 +106,7 @@
             </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
-                    <td colspan="3" style="text-align: right;"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?>:</td>
+                    <td colspan="3" style="text-align: right;"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?>:</td>
                     <td style="text-align: right;"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
                 </tr>
         <?php

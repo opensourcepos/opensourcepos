@@ -15,7 +15,7 @@
 ?>
 
 <!doctype html>
-<html lang="<?= $this->request->getLocale() ?>">
+<html lang="<?= current_language_code() ?>">
 
 <head>
     <meta charset="utf-8">
@@ -58,7 +58,7 @@
                     </div>
                 </td>
                 <td id="meta">
-                    <table id="meta-content" align="right">
+                    <table id="meta-content" style="text-align: right;">
                         <tr>
                             <td class="meta-head"><?= lang('Sales.quote_number') ?> </td>
                             <td><?= esc($quote_number) ?></td>
@@ -116,7 +116,7 @@
             ?>
 
             <tr>
-                <td colspan="<?= $quote_columns ?>" align="center"><?= '&nbsp;' //TODO: Replace the php echo for nbsp with just straight html? ?></td>
+                <td colspan="<?= $quote_columns ?>" style="text-align: center;"><?= '&nbsp;' //TODO: Replace the php echo for nbsp with just straight html? ?></td>
             </tr>
 
             <tr>
@@ -149,7 +149,7 @@
                 <?= nl2br(esc($config['return_policy'])) ?>
             </div>
             <div id="barcode">
-                <?= $quote_number ?>
+                <?= esc($quote_number) ?>
             </div>
         </div>
     </div>

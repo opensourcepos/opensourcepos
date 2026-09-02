@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
+use App\Models\Employee;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -10,6 +11,13 @@ class Home extends Secure_Controller
 {
     public function __construct()
     {
+        $methodName = urldecode(service('request')->getUri()->getSegment(2));
+
+        if ($methodName === 'logout') {
+            $this->employee = model(Employee::class);
+            return;
+        }
+
         parent::__construct('home', null, 'home');
     }
 
@@ -35,15 +43,15 @@ class Home extends Secure_Controller
     }
 
     /**
-     * Load "change employee password" form
+     * Load the "change employee password" form
      *
+     * @param int $employeeId
      * @return ResponseInterface|string
-     * @noinspection PhpUnused
      */
-    public function getChangePassword(int $employeeId = NEW_ENTRY)
+    public function getChangePassword(int $employeeId = NEW_ENTRY): ResponseInterface|string
     {
         $loggedInEmployee = $this->employee->get_logged_in_employee_info();
-        $currentPersonId = $loggedInEmployee->person_id;
+        $currentPersonId = (int) $loggedInEmployee->person_id;
 
         $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
 
@@ -68,10 +76,11 @@ class Home extends Secure_Controller
     public function postSave(int $employeeId = NEW_ENTRY): ResponseInterface
     {
         $currentUser = $this->employee->get_logged_in_employee_info();
+        $currentPersonId = (int) $currentUser->person_id;
 
-        $employeeId = $employeeId === NEW_ENTRY ? $currentUser->person_id : $employeeId;
+        $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
 
-        if (!$this->employee->isAdmin($currentUser->person_id) && $employeeId !== $currentUser->person_id) {
+        if (!$this->employee->isAdmin($currentPersonId) && $employeeId !== $currentPersonId) {
             return $this->response->setStatusCode(403)->setJSON([
                 'success' => false,
                 'message' => lang('Employees.unauthorized_modify')

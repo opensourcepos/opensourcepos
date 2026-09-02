@@ -12,14 +12,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: PHP Lint 8.0
-        uses: dbfx/github-phplint/8.0@master
-        with:
-          folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./folder/excluded/*\""   
-      - name: PHP Lint 8.1
-        uses: dbfx/github-phplint/8.1@master
-        with:
-          folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./folder/excluded/*\""
       - name: PHP Lint 8.2
         uses: dbfx/github-phplint/8.2@master
         with:

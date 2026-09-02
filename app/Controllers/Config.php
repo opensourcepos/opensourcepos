@@ -64,7 +64,7 @@ class Config extends Secure_Controller
         $this->db = Database::connect();
 
         helper('security');
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $this->encrypter = Services::encrypter();
         } else {
             log_message('alert', 'Error preparing encryption key');
@@ -82,7 +82,7 @@ class Config extends Secure_Controller
         $npmDev = false;
         $license = [];
 
-        $license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
+        $license[$i]['title'] = 'Open Source Point of Sale ' . config('App')->application_version;
 
         if (file_exists('license/LICENSE')) {
             $license[$i]['text'] = file_get_contents('license/LICENSE', false, null, 0, 3000);
@@ -221,6 +221,7 @@ class Config extends Secure_Controller
      */
     public function getIndex(): string
     {
+        $data['config'] = $this->config;
         $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
         $data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
@@ -231,6 +232,8 @@ class Config extends Secure_Controller
         $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
         $data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
         $data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
+        $data['keyboardShortcutOptions'] = $this->sale_lib->getKeyShortcutsOptions();
+        $data['keyboardShortcuts'] = $this->sale_lib->getKeyShortcuts();
         $data['rounding_options'] = rounding_mode::get_rounding_options();
         $data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
         $data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
@@ -253,7 +256,7 @@ class Config extends Secure_Controller
         // Integrations Related fields
         $data['mailchimp']    = [];
 
-        if (check_encryption()) {    // TODO: Hungarian notation
+        if (checkEncryption()) {    // TODO: Hungarian notation
             if (!isset($this->encrypter)) {
                 helper('security');
                 $this->encrypter = Services::encrypter();
@@ -268,7 +271,7 @@ class Config extends Secure_Controller
                 : '';
 
             // Remove any backup of .env created by check_encryption()
-            remove_backup();
+            removeBackup();
         } else {
             $data['mailchimp']['api_key'] = '';
             $data['mailchimp']['list_id'] = '';
@@ -346,10 +349,11 @@ class Config extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
+        helper('security');
 
         $file_info = [
             'orig_name' => $filename,
-            'raw_name'  => $info['filename'],
+            'raw_name'  => sanitize_filename($info['filename']),
             'file_ext'  => $file->guessExtension()
         ];
 
@@ -367,6 +371,14 @@ class Config extends Secure_Controller
      */
     public function postSaveGeneral(): ResponseInterface
     {
+        $rules = [
+            'theme' => 'permit_empty|themeExists',
+        ];
+        if (!$this->validate($rules)) {
+            $errors = $this->validator->getErrors();
+            return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
+        }
+
         $batchSaveData = [
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),
@@ -398,6 +410,9 @@ class Config extends Secure_Controller
 
         $this->module->set_show_office_group($this->request->getPost('show_office_group') != null);
 
+        $this->db->transStart();
+
+        $attributeSuccess = true;
         if ($batchSaveData['category_dropdown']) {
             $definitionData['definition_name'] = 'ospos_category';
             $definitionData['definition_flags'] = 0;
@@ -405,12 +420,16 @@ class Config extends Secure_Controller
             $definitionData['definition_id'] = CATEGORY_DEFINITION_ID;
             $definitionData['deleted'] = 0;
 
-            $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
+            $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
         } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
-            $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
+            $attributeSuccess = $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
         }
 
-        $success = $this->appconfig->batch_save($batchSaveData);
+        $success = $attributeSuccess && $this->appconfig->batch_save($batchSaveData);
+
+        $this->db->transComplete();
+
+        $success = $success && $this->db->transStatus();
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -423,32 +442,35 @@ class Config extends Secure_Controller
      */
     public function postCheckNumberLocale(): ResponseInterface
     {
-        $number_locale = $this->request->getPost('number_locale');
-        $save_number_locale = $this->request->getPost('save_number_locale');
+        $numberLocale = $this->request->getPost('number_locale');
+        $saveNumberLocale = $this->request->getPost('save_number_locale');
+        $postedCurrencySymbol = $this->request->getPost('currency_symbol');
+        $postedCurrencyCode = $this->request->getPost('currency_code');
 
-        $fmt = new NumberFormatter($number_locale, NumberFormatter::CURRENCY);
-        if ($number_locale != $save_number_locale) {
-            $currency_symbol = $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
-            $currency_code = $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE);
-            $save_number_locale = $number_locale;
-        } else {
-            $currency_symbol = empty($this->request->getPost('currency_symbol')) ? $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL) : $this->request->getPost('currency_symbol');
-            $currency_code = empty($this->request->getPost('currency_code')) ? $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE) : $this->request->getPost('currency_code');
+        $fmt = new NumberFormatter($numberLocale, NumberFormatter::CURRENCY);
+
+        // Use posted values if provided, otherwise fall back to locale defaults
+        $currencySymbol = $postedCurrencySymbol !== '' ? $postedCurrencySymbol : $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+        $currencyCode = $postedCurrencyCode !== '' ? $postedCurrencyCode : $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE);
+
+        // Update saved locale if it changed
+        if ($numberLocale !== $saveNumberLocale) {
+            $saveNumberLocale = $numberLocale;
         }
 
         if ($this->request->getPost('thousands_separator') == 'false') {
             $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
         }
 
-        $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
-        $number_local_example = $fmt->format(1234567890.12300);
+        $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currencySymbol);
+        $numberLocaleExample = $fmt->format(1234567890.12300);
 
         return $this->response->setJSON([
-            'success'               => $number_local_example != false,
-            'save_number_locale'    => $save_number_locale,
-            'number_locale_example' => $number_local_example,
-            'currency_symbol'       => $currency_symbol,
-            'currency_code'         => $currency_code,
+            'success'               => $numberLocaleExample != false,
+            'save_number_locale'    => $saveNumberLocale,
+            'number_locale_example' => $numberLocaleExample,
+            'currency_symbol'       => $currencySymbol,
+            'currency_code'         => $currencyCode,
         ]);
     }
 
@@ -461,27 +483,38 @@ class Config extends Secure_Controller
      */
     public function postSaveLocale(): ResponseInterface
     {
+        $rules = [
+            'payment_reference_code_min' => 'required|integer|greater_than[0]',
+            'payment_reference_code_max' => 'required|integer|greater_than_equal_to[payment_reference_code_min]',
+        ];
+        if (!$this->validate($rules)) {
+            $errors = $this->validator->getErrors();
+            return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
+        }
+
         $exploded = explode(":", $this->request->getPost('language'));
         $currency_symbol = $this->request->getPost('currency_symbol');
         $batch_save_data = [
-            'currency_symbol'       => htmlspecialchars($currency_symbol ?? ''),
-            'currency_code'         => $this->request->getPost('currency_code'),
-            'language_code'         => $exploded[0],
-            'language'              => $exploded[1],
-            'timezone'              => $this->request->getPost('timezone'),
-            'dateformat'            => $this->request->getPost('dateformat'),
-            'timeformat'            => $this->request->getPost('timeformat'),
-            'thousands_separator'   => $this->request->getPost('thousands_separator') != null,
-            'number_locale'         => $this->request->getPost('number_locale'),
-            'currency_decimals'     => $this->request->getPost('currency_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'tax_decimals'          => $this->request->getPost('tax_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'quantity_decimals'     => $this->request->getPost('quantity_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'country_codes'         => htmlspecialchars($this->request->getPost('country_codes')),
-            'payment_options_order' => $this->request->getPost('payment_options_order'),
-            'date_or_time_format'   => $this->request->getPost('date_or_time_format') != null,
-            'cash_decimals'         => $this->request->getPost('cash_decimals', FILTER_SANITIZE_NUMBER_INT),
-            'cash_rounding_code'    => $this->request->getPost('cash_rounding_code'),
-            'financial_year'        => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
+            'currency_symbol'            => htmlspecialchars($currency_symbol ?? ''),
+            'currency_code'              => $this->request->getPost('currency_code'),
+            'language_code'              => $exploded[0],
+            'language'                   => $exploded[1],
+            'timezone'                   => $this->request->getPost('timezone'),
+            'dateformat'                 => $this->request->getPost('dateformat'),
+            'timeformat'                 => $this->request->getPost('timeformat'),
+            'thousands_separator'        => $this->request->getPost('thousands_separator') != null,
+            'number_locale'              => $this->request->getPost('number_locale'),
+            'currency_decimals'          => $this->request->getPost('currency_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'tax_decimals'               => $this->request->getPost('tax_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'quantity_decimals'          => $this->request->getPost('quantity_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'country_codes'              => htmlspecialchars($this->request->getPost('country_codes')),
+            'payment_options_order'      => $this->request->getPost('payment_options_order'),
+            'payment_reference_code_min' => $this->request->getPost('payment_reference_code_min', FILTER_SANITIZE_NUMBER_INT),
+            'payment_reference_code_max' => $this->request->getPost('payment_reference_code_max', FILTER_SANITIZE_NUMBER_INT),
+            'date_or_time_format'        => $this->request->getPost('date_or_time_format') != null,
+            'cash_decimals'              => $this->request->getPost('cash_decimals', FILTER_SANITIZE_NUMBER_INT),
+            'cash_rounding_code'         => $this->request->getPost('cash_rounding_code'),
+            'financial_year'             => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);
@@ -500,23 +533,28 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('smtp_pass'))) {
+        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
         $protocol = $this->request->getPost('protocol');
         $mailpath = $this->request->getPost('mailpath');
 
-        // Validate mailpath: required for sendmail, optional for others but must be safe if provided
-        $isMailpathRequired = ($protocol === 'sendmail');
-        $isMailpathProvided = !empty($mailpath);
-        $isMailpathValid = $isMailpathProvided && preg_match('/^[a-zA-Z0-9_\-\/.]+$/', $mailpath);
+        $rules = [
+            'mailpath' => [
+                'label' => lang('Config.email_mailpath'),
+                'rules' => ($protocol === 'sendmail' ? 'required' : 'permit_empty') . '|valid_path_strict'
+            ]
+        ];
+        $messages = [
+            'mailpath' => [
+                'required'          => lang('Config.mailpath_invalid'),
+                'valid_path_strict' => lang('Config.mailpath_invalid')
+            ]
+        ];
 
-        if (($isMailpathRequired && !$isMailpathProvided) || ($isMailpathProvided && !$isMailpathValid)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => lang('Config.mailpath_invalid')
-            ]);
+        if ($error = $this->validateFields($rules, $messages)) {
+            return $error;
         }
 
         $batch_save_data = [
@@ -546,7 +584,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('msg_pwd'))) {
+        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
         }
 
@@ -613,7 +651,7 @@ class Config extends Secure_Controller
         $api_key = '';
         $list_id = '';
 
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
             if (!empty($api_key_unencrypted)) {
                 $api_key = $this->encrypter->encrypt($api_key_unencrypted);
@@ -911,7 +949,9 @@ class Config extends Secure_Controller
     public function postSaveReceipt(): ResponseInterface
     {
         $batch_save_data = [
-            'receipt_template'              => $this->request->getPost('receipt_template'),
+            'receipt_template'              => Sale_lib::isValidReceiptTemplate($this->request->getPost('receipt_template'))
+                ? $this->request->getPost('receipt_template')
+                : 'receipt_default',
             'receipt_font_size'             => $this->request->getPost('receipt_font_size', FILTER_SANITIZE_NUMBER_INT),
             'print_delay_autoreturn'        => $this->request->getPost('print_delay_autoreturn', FILTER_SANITIZE_NUMBER_INT),
             'email_receipt_check_behaviour' => $this->request->getPost('email_receipt_check_behaviour'),
@@ -937,6 +977,44 @@ class Config extends Secure_Controller
     }
 
     /**
+     * Saves keyboard shortcut bindings.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveShortcuts(): ResponseInterface
+    {
+        $allowedShortcuts = array_keys($this->sale_lib->getKeyShortcutsOptions());
+        $currentShortcuts = $this->sale_lib->getKeyShortcuts();
+        $batchSaveData = [];
+
+        foreach ($currentShortcuts as $name => $shortcut) {
+            $postedValue = trim((string)$this->request->getPost('key_' . $name));
+
+            if (!in_array($postedValue, $allowedShortcuts, true)) {
+                $postedValue = $shortcut['value'];
+            }
+
+            $batchSaveData['key_' . $name] = $postedValue;
+        }
+
+        $duplicateValues = array_filter(array_count_values($batchSaveData), static fn(int $count): bool => $count > 1);
+        if (!empty($duplicateValues)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Config.shortcuts_duplicate_bindings')
+            ]);
+        }
+
+        $success = $this->appconfig->batch_save($batchSaveData);
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')
+        ]);
+    }
+
+    /**
      * Saves invoice configuration. Used in app/Views/configs/invoice_config.php.
      *
      * @throws ReflectionException
@@ -959,8 +1037,8 @@ class Config extends Secure_Controller
             'work_order_enable'           => $this->request->getPost('work_order_enable') != null,
             'work_order_format'           => $this->request->getPost('work_order_format'),
             'last_used_work_order_number' => $this->request->getPost('last_used_work_order_number', FILTER_SANITIZE_NUMBER_INT),
-            'invoice_type'                => Sale_lib::isValidInvoiceType($this->request->getPost('invoice_type')) 
-                ? $this->request->getPost('invoice_type') 
+            'invoice_type'                => Sale_lib::isValidInvoiceType($this->request->getPost('invoice_type'))
+                ? $this->request->getPost('invoice_type')
                 : 'invoice'
         ];
 
@@ -1006,8 +1084,8 @@ class Config extends Secure_Controller
             return $fieldType === 'first' ? 'name' : '';
         }
 
-        $allowed = $fieldType === 'first' 
-            ? Item::ALLOWED_SUGGESTIONS_COLUMNS 
+        $allowed = $fieldType === 'first'
+            ? Item::ALLOWED_SUGGESTIONS_COLUMNS
             : Item::ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY;
 
         $fallback = $fieldType === 'first' ? 'name' : '';

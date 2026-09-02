@@ -34,6 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
+          - '8.2'
           - '8.3'
           - '8.4'
         db-image:
@@ -131,4 +132,4 @@ jobs:
 
       - name: Stop database
         if: always()
-        run: docker rm -f mysql || true
+        run: docker stop mysql && docker rm mysql

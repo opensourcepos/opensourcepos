@@ -1,0 +1,79 @@
+name: PR Deploy
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
+jobs:
+  prepare:
+    name: Prepare deployment
+    runs-on: ubuntu-latest
+    if: >
+      github.event.review.state == 'approved' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    outputs:
+      image_tag: ${{ steps.image.outputs.tag }}
+      sha: ${{ github.event.pull_request.head.sha }}
+      pr_number: ${{ github.event.pull_request.number }}
+    
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      
+      - name: Get image tag
+        id: image
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          IMAGE_TAG="pr-${PR_NUMBER}-${PR_SHA:0:7}"
+          echo "tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Deploy to staging
+    needs: prepare
+    uses: ./.github/workflows/deploy-core.yml
+    with:
+      image_tag: ${{ needs.prepare.outputs.image_tag }}
+      sha: ${{ needs.prepare.outputs.sha }}
+      description: Deploy PR #${{ needs.prepare.outputs.pr_number }} to staging
+      pr_number: ${{ needs.prepare.outputs.pr_number }}
+    secrets: inherit
+
+  comment:
+    name: Comment deployment status
+    needs: [prepare, deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      IMAGE_TAG: ${{ needs.prepare.outputs.image_tag }}
+      PR_NUMBER: ${{ needs.prepare.outputs.pr_number }}
+      REF_SHA: ${{ needs.prepare.outputs.sha }}
+      STATUS: ${{ needs.deploy.outputs.status }}
+    
+    steps:
+      - name: Comment on PR
+        run: |
+          if [ "$STATUS" = "success" ]; then
+            BODY=$(jq -nr --arg tag "$IMAGE_TAG" --arg sha "$REF_SHA" --arg url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+              '"✅ **Staging deployment completed**\n\n🔗 **URL**: https://dev.opensourcepos.org\n📦 **Image Tag**: `\($tag)`\n🔨 **Commit**: \($sha)\n\nView logs: \($url)"')
+          else
+            BODY=$(jq -nr --arg url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+              '"❌ **Staging deployment failed**\n\nCheck the [workflow logs](\($url)) for details."')
+          fi
+          
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
+            -X POST \
+            -f body="$BODY"

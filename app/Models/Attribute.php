@@ -60,7 +60,7 @@ class Attribute extends Model
     /**
      * @return array
      */
-    public static function get_definition_flags(): array
+    public static function getDefinitionFlags(): array
     {
         $class = new ReflectionClass(__CLASS__);
 
@@ -245,7 +245,7 @@ class Attribute extends Model
      * @param int $definition_id
      * @return array
      */
-    public function get_definitions_by_type(string $attribute_type, int $definition_id = NO_DEFINITION_ID): array
+    public function getDefinitionsByType(string $attribute_type, int $definition_id = NO_DEFINITION_ID): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where('definition_type', $attribute_type);
@@ -266,7 +266,7 @@ class Attribute extends Model
      * @param bool $include_types If true, returns array with definition_id => ['name' => name, 'type' => type]
      * @return array
      */
-    public function get_definitions_by_flags(int $definition_flags, bool $include_types = false): array
+    public function getDefinitionsByFlags(int $definition_flags, bool $include_types = false): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where(new RawSql("definition_flags & $definition_flags"));    // TODO: we need to heed CI warnings to escape properly
@@ -296,7 +296,7 @@ class Attribute extends Model
      * @param     boolean        $groups        If false does not return GROUP type attributes in the array
      * @return    array                    Array containing definition IDs, attribute names and -1 index with the local language '[SELECT]' line.
      */
-    public function get_definition_names(bool $groups = true): array
+    public function getDefinitionNames(bool $groups = true): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where('deleted', 0);
@@ -316,7 +316,7 @@ class Attribute extends Model
      * @param int $definition_id
      * @return array
      */
-    public function get_definition_values(int $definition_id): array
+    public function getDefinitionValues(int $definition_id): array
     {
         $attribute_values = [];
 
@@ -388,7 +388,7 @@ class Attribute extends Model
             foreach ($builder->get()->getResult() as $attribute) {
                 switch ($to) {
                     case DATE:
-                        $success = valid_date($attribute->attribute_value);
+                        $success = isValidDate($attribute->attribute_value);
                         break;
                     case DECIMAL:
                         $success = valid_decimal($attribute->attribute_value);
@@ -397,12 +397,10 @@ class Attribute extends Model
 
                 if (!$success) {
                     $affected_items = $this->get_items_by_value($attribute->attribute_value, $definition_id);
-                    foreach ($affected_items as $affected_item) {
-                        $affected_items[] = $affected_item['item_id'];
-                    }
+                    $affected_item_ids = array_column($affected_items, 'item_id');
 
-                    log_message('error', "Attribute_value: '$attribute->attribute_value' cannot be converted to $to. Affected Items: " . implode(',', $affected_items));
-                    unset($affected_items);
+                    log_message('error', "Attribute_value: '$attribute->attribute_value' cannot be converted to $to. Affected Items: " . implode(',', $affected_item_ids));
+                    unset($affected_items, $affected_item_ids);
                 }
             }
         }
@@ -574,11 +572,13 @@ class Attribute extends Model
     }
 
     /**
-     * @param string $definition_name
-     * @param $definition_type
-     * @return array
+     * Looks up a single, non-deleted attribute definition by name.
+     *
+     * @param string $definition_name Name of the definition to look up
+     * @param string|bool $definition_type Optional definition type used to further constrain the lookup
+     * @return array The matching definition row as an associative array, or an empty array when no definition matches
      */
-    public function get_definition_by_name(string $definition_name, $definition_type = false): array
+    public function getDefinitionByName(string $definition_name, string|bool $definition_type = false): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->where('definition_name', $definition_name);
@@ -588,7 +588,8 @@ class Attribute extends Model
             $builder->where('definition_type', $definition_type);
         }
 
-        return $builder->get()->getResultArray();
+        $row = $builder->get()->getRowArray();
+        return $row ?? [];
     }
 
     /**
@@ -601,27 +602,52 @@ class Attribute extends Model
      */
     public function saveAttributeLink(int $itemId, int $definitionId, int $attributeId): bool
     {
+        if ($attributeId <= 0) {
+            return false;
+        }
+
         $normalizedItemId = empty($itemId) ? null : $itemId;
         $normalizedAttributeId = empty($attributeId) ? null : $attributeId;
 
         $this->db->transStart();
 
+        $definitionType = $this->getAttributeInfo($definitionId)->definition_type ?? '';
+
         $builder = $this->db->table('attribute_links');
 
-        if ($this->attributeLinkExists($normalizedItemId, $definitionId)) {
-            $builder->set(['attribute_id' => $normalizedAttributeId]);
-            $builder->where('definition_id', $definitionId);
+        if ($definitionType === DROPDOWN && $normalizedItemId === null) {
             $builder->where('item_id', $normalizedItemId);
+            $builder->where('definition_id', $definitionId);
+            $builder->where('attribute_id', $normalizedAttributeId);
             $builder->where('sale_id', null);
             $builder->where('receiving_id', null);
-            $builder->update();
+
+            $dropdownAttributeLinkExists = $builder->countAllResults(false) !== 0;
+
+            if (!$dropdownAttributeLinkExists) {
+                $data = [
+                    'attribute_id'  => $normalizedAttributeId,
+                    'item_id'       => $normalizedItemId,
+                    'definition_id' => $definitionId
+                ];
+                $builder->insert($data);
+            }
         } else {
-            $data = [
-                'attribute_id'  => $normalizedAttributeId,
-                'item_id'       => $normalizedItemId,
-                'definition_id' => $definitionId
-            ];
-            $builder->insert($data);
+            if ($this->attributeLinkExists($normalizedItemId, $definitionId)) {
+                $builder->set(['attribute_id' => $normalizedAttributeId]);
+                $builder->where('definition_id', $definitionId);
+                $builder->where('item_id', $normalizedItemId);
+                $builder->where('sale_id', null);
+                $builder->where('receiving_id', null);
+                $builder->update();
+            } else {
+                $data = [
+                    'attribute_id' => $normalizedAttributeId,
+                    'item_id' => $normalizedItemId,
+                    'definition_id' => $definitionId
+                ];
+                $builder->insert($data);
+            }
         }
 
         $this->db->transComplete();

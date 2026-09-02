@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
+use stdClass;
 
 /**
  * Employee class
@@ -130,13 +131,21 @@ class Employee extends Person
     public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, int $employee_id = NEW_ENTRY): bool
     {
         $success = false;
+        $isNewEmployee = ($employee_id == NEW_ENTRY || !$this->exists($employee_id));
+        $grantChangeDisallowed = filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN);
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if (ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id)) {
+        if ($grantChangeDisallowed && $isNewEmployee && !empty($grants_data)) {
+            $this->db->transComplete();
+
+            return false;
+        }
+
+        if (parent::save_value($person_data, $employee_id)) {
             $builder = $this->db->table('employees');
-            if ($employee_id == NEW_ENTRY || !$this->exists($employee_id)) {
+            if ($isNewEmployee) {
                 $employee_data['person_id'] = $employee_id = $person_data['person_id'];
                 $success = $builder->insert($employee_data);
             } else {
@@ -145,7 +154,7 @@ class Employee extends Person
             }
 
             // We have either inserted or updated a new employee, now lets set permissions.
-            if ($success) {
+            if ($success && !$grantChangeDisallowed) {
                 // First lets clear out any grants the employee currently has.
                 $builder = $this->db->table('grants');
                 $success = $builder->delete(['person_id' => $employee_id]);
@@ -374,11 +383,21 @@ class Employee extends Person
             // Compare passwords depending on the hash version
             if ($row->hash_version === '1' && $row->password === md5($password)) {
                 $builder->where('person_id', $row->person_id);
-                $this->session->set('person_id', $row->person_id);
-                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                $updated = $builder->update(['hash_version' => 2, 'password' => $passwordHash]);
 
-                return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
+                if ($updated) {
+                    if (session_status() === PHP_SESSION_ACTIVE) {
+                        $this->session->regenerate(true);
+                    }
+                    $this->session->set('person_id', $row->person_id);
+                }
+
+                return $updated;
             } elseif ($row->hash_version === '2' && password_verify($password, $row->password)) {
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    $this->session->regenerate(true);
+                }
                 $this->session->set('person_id', $row->person_id);
 
                 return true;
@@ -407,7 +426,7 @@ class Employee extends Person
     /**
      * Gets information about the currently logged in employee.
      */
-    public function get_logged_in_employee_info()
+    public function get_logged_in_employee_info(): float|false|array|int|string|stdClass|null
     {
         if ($this->is_logged_in()) {
             return $this->get_info($this->session->get('person_id'));
@@ -520,7 +539,7 @@ class Employee extends Person
     {
         $success = false;
 
-        if (!getenv('DISALLOW_PASSWORD_CHANGE')) {
+        if (!filter_var(getenv('DISALLOW_PASSWORD_CHANGE'), FILTER_VALIDATE_BOOLEAN)) {
             $this->db->transStart();
 
             $builder = $this->db->table('employees');

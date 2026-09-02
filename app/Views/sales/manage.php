@@ -73,7 +73,7 @@
 <?= view('partial/print_receipt', ['print_after_sale' => false, 'selected_printer' => 'takings_printer']) ?>
 
 <div id="title_bar" class="print_hide btn-toolbar">
-    <button onclick="javascript:printdoc()" class="btn btn-info btn-sm pull-right">
+    <button onclick="printdoc()" class="btn btn-info btn-sm pull-right">
         <span class="glyphicon glyphicon-print">&nbsp;</span><?= lang('Common.print') ?>
     </button>
     <?= anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp;</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm pull-right', 'id' => 'show_sales_button']) ?>

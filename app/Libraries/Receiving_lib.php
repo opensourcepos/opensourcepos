@@ -394,7 +394,7 @@ class Receiving_lib
     /**
      * @param $line int|string The item_number or item_id of the item to be removed from the receiving.
      */
-    public function delete_item($line): void
+    public function delete_item(int|string $line): void
     {
         $items = $this->get_cart();
         unset($items[$line]);
