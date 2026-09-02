@@ -730,4 +730,42 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertStringNotContainsString('<svg onload', $body);
         $this->assertStringContainsString('&lt;svg', $body);
     }
+
+    public function testPostUnsuspendRejectsNonSuspendedSaleWithoutClearingActiveCart(): void
+    {
+        $employeeId = $this->createReportsSalesEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $notSuspendedSaleId = $this->createSale($employeeId);
+        $this->loginAs($employeeId);
+        $this->seedCartLine(1, '1.00', $itemId);
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY]));
+
+        $this->post('/sales/unsuspend', [
+            'suspended_sale_id' => (string) $notSuspendedSaleId,
+        ]);
+
+        $cart = Services::session()->get('sales_cart');
+        $this->assertNotEmpty($cart);
+        $this->assertArrayHasKey(1, $cart);
+        $this->assertSame($itemId, $cart[1]['item_id']);
+        $this->assertSame(NEW_ENTRY, Services::session()->get('sale_id'));
+    }
+
+    public function testPostUnsuspendReplacesCartForValidSuspendedSale(): void
+    {
+        $employeeId = $this->createReportsSalesEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $suspendedSaleId = $this->createSuspendedSale($employeeId);
+        $this->loginAs($employeeId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/unsuspend', [
+            'suspended_sale_id' => (string) $suspendedSaleId,
+        ]);
+
+        $this->assertSame($suspendedSaleId, Services::session()->get('sale_id'));
+        $cart = Services::session()->get('sales_cart');
+        $this->assertNotEmpty($cart);
+        $this->assertNotSame($itemId, array_values($cart)[0]['item_id']);
+    }
 }
