@@ -43,10 +43,12 @@ class WhatsAppConnector
      */
     public function sendText(string $phone, string $message, ?int $personId = null): bool
     {
-        $to = $this->normalizePhone($phone);
+        $to       = $this->normalizePhone($phone);
+        $logEntry = new OutboundMessage($to, 'text', $message, $personId);
 
         if (! $this->isConfigured() || $to === '' || $message === '') {
-            $this->logOutbound($to, 'text', $message, null, null, null, 'failed', lang('WhatsAppPlugin.not_configured'), $personId);
+            $logEntry->error = lang('WhatsAppPlugin.not_configured');
+            $this->logOutbound($logEntry);
 
             return false;
         }
@@ -62,17 +64,11 @@ class WhatsAppConnector
         $waMessageId = $this->extractMessageId($response);
         $success     = $waMessageId !== null;
 
-        $this->logOutbound(
-            $to,
-            'text',
-            $message,
-            null,
-            null,
-            $waMessageId,
-            $success ? 'sent' : 'failed',
-            $success ? null : $this->extractError($response),
-            $personId,
-        );
+        $logEntry->waMessageId = $waMessageId;
+        $logEntry->status      = $success ? 'sent' : 'failed';
+        $logEntry->error       = $success ? null : $this->extractError($response);
+
+        $this->logOutbound($logEntry);
 
         return $success;
     }
@@ -86,10 +82,13 @@ class WhatsAppConnector
      */
     public function sendDocument(string $phone, string $filepath, string $filename, string $caption = '', ?int $personId = null): bool
     {
-        $to = $this->normalizePhone($phone);
+        $to                 = $this->normalizePhone($phone);
+        $logEntry           = new OutboundMessage($to, 'document', $caption, $personId);
+        $logEntry->filename = $filename;
 
         if (! $this->isConfigured() || $to === '' || ! is_file($filepath)) {
-            $this->logOutbound($to, 'document', $caption, null, $filename, null, 'failed', lang('WhatsAppPlugin.not_configured'), $personId);
+            $logEntry->error = lang('WhatsAppPlugin.not_configured');
+            $this->logOutbound($logEntry);
 
             return false;
         }
@@ -97,12 +96,14 @@ class WhatsAppConnector
         $mediaId = $this->uploadMedia($filepath, 'application/pdf');
 
         if ($mediaId === null) {
-            $this->logOutbound($to, 'document', $caption, null, $filename, null, 'failed', lang('WhatsAppPlugin.media_upload_failed'), $personId);
+            $logEntry->error = lang('WhatsAppPlugin.media_upload_failed');
+            $this->logOutbound($logEntry);
 
             return false;
         }
 
-        $document = ['id' => $mediaId, 'filename' => $filename];
+        $logEntry->mediaId = $mediaId;
+        $document          = ['id' => $mediaId, 'filename' => $filename];
 
         if ($caption !== '') {
             $document['caption'] = $caption;
@@ -119,17 +120,11 @@ class WhatsAppConnector
         $waMessageId = $this->extractMessageId($response);
         $success     = $waMessageId !== null;
 
-        $this->logOutbound(
-            $to,
-            'document',
-            $caption,
-            $mediaId,
-            $filename,
-            $waMessageId,
-            $success ? 'sent' : 'failed',
-            $success ? null : $this->extractError($response),
-            $personId,
-        );
+        $logEntry->waMessageId = $waMessageId;
+        $logEntry->status      = $success ? 'sent' : 'failed';
+        $logEntry->error       = $success ? null : $this->extractError($response);
+
+        $this->logOutbound($logEntry);
 
         return $success;
     }
@@ -231,21 +226,10 @@ class WhatsAppConnector
         }
     }
 
-    private function logOutbound(string $phone, string $type, ?string $body, ?string $mediaId, ?string $filename, ?string $waMessageId, string $status, ?string $error, ?int $personId): void
+    private function logOutbound(OutboundMessage $message): void
     {
         try {
-            $this->messageModel->log([
-                'person_id'     => $personId,
-                'phone'         => $phone,
-                'direction'     => 'out',
-                'type'          => $type,
-                'body'          => $body,
-                'media_id'      => $mediaId,
-                'filename'      => $filename,
-                'wa_message_id' => $waMessageId,
-                'status'        => $status,
-                'error'         => $error,
-            ]);
+            $this->messageModel->storeWhatsAppMessage($message->toArray());
         } catch (Throwable $e) {
             log_plugin_message('error', 'Conversation log write failed: ' . $e->getMessage(), self::PLUGIN_ID);
         }

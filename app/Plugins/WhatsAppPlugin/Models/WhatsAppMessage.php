@@ -32,11 +32,13 @@ class WhatsAppMessage extends Model
     ];
 
     /**
+     * Records one message — outbound or inbound — in the conversation log.
+     *
      * @return int The inserted message_id, or 0 on failure.
      *
      * @throws ReflectionException
      */
-    public function log(array $data): int
+    public function storeWhatsAppMessage(array $data): int
     {
         if (empty($data['created_at'])) {
             $data['created_at'] = date('Y-m-d H:i:s');

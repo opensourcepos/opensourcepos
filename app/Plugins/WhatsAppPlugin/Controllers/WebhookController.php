@@ -83,7 +83,7 @@ class WebhookController extends BaseController
             return $this->acknowledge();
         }
 
-        if (! $this->signatureValid($raw, $appSecret)) {
+        if (! $this->hasValidSignature($raw, $appSecret)) {
             $this->log('warning', 'Invalid signature, ignoring payload.');
 
             return $this->acknowledge();
@@ -126,7 +126,7 @@ class WebhookController extends BaseController
 
                     $type = (string) ($message['type'] ?? 'text');
 
-                    $messageModel->log([
+                    $messageModel->storeWhatsAppMessage([
                         'person_id'     => null,
                         'phone'         => $phone,
                         'direction'     => 'in',
@@ -159,11 +159,7 @@ class WebhookController extends BaseController
         };
     }
 
-    /**
-     * Validates the X-Hub-Signature-256 header against the app secret.
-     * Fails closed: an empty secret or missing/mismatched header is rejected.
-     */
-    private function signatureValid(string $raw, string $appSecret): bool
+    private function hasValidSignature(string $raw, string $appSecret): bool
     {
         if ($appSecret === '') {
             return false;

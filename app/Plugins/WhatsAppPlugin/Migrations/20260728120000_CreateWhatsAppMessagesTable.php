@@ -4,6 +4,7 @@ namespace App\Plugins\WhatsAppPlugin\Migrations;
 
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\Forge;
+use CodeIgniter\Database\ResultInterface;
 
 /**
  * Conversation log table.
@@ -48,7 +49,26 @@ class CreateWhatsAppMessagesTable
         // utf8mb4 so emoji and full multilingual message content can be stored.
         $this->forge->createTable('whatsapp_messages', true, [
             'CHARSET' => 'utf8mb4',
-            'COLLATE' => 'utf8mb4_unicode_ci',
+            'COLLATE' => $this->collation(),
         ]);
+    }
+
+    /**
+     * utf8mb4_0900_ai_ci is the current recommendation and where core is heading,
+     * but it only exists on MySQL 8+; MariaDB and MySQL 5.7 would reject the
+     * CREATE TABLE outright, so the older collation is used where it is absent.
+     */
+    private function collation(): string
+    {
+        $preferred = 'utf8mb4_0900_ai_ci';
+
+        $result = $this->db->query(
+            'SELECT 1 FROM information_schema.COLLATIONS WHERE COLLATION_NAME = ? LIMIT 1',
+            [$preferred],
+        );
+
+        $supported = $result instanceof ResultInterface && $result->getRowArray() !== null;
+
+        return $supported ? $preferred : 'utf8mb4_unicode_ci';
     }
 }
