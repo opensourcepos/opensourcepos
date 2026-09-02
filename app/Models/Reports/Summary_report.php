@@ -61,7 +61,7 @@ abstract class Summary_report extends Report
         );
 
         $this->db->query(
-            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_report_payments_temp') .
                 ' (PRIMARY KEY(sale_id), INDEX(sale_id))
             (
                 SELECT payments.sale_id AS sale_id,
@@ -98,7 +98,7 @@ abstract class Summary_report extends Report
             'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
             'left outer'
         );
-        $builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
+        $builder->join('sales_report_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
     }
 
     /**
