@@ -1827,7 +1827,7 @@ class Sales extends Secure_Controller
 
         $saleId = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
 
-        if ($saleId > 0 && $this->sale->get_sale_status($saleId) == SUSPENDED) {
+        if ($saleId > 0 && $this->sale->getSaleStatus($saleId) == SUSPENDED) {
             $this->sale_lib->clear_all();
             $this->sale_lib->copy_entire_sale($saleId);
         }
