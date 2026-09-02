@@ -560,7 +560,8 @@ class SalesControllerTest extends CIUnitTestCase
         $session  = Services::session();
         $payments = $session->get('sales_payments');
         $this->assertArrayNotHasKey(lang('Sales.cash'), (array) $payments);
-
+    }
+    
     public function testRegisterEscapesMaliciousTaxName(): void
     {
         $cashierId = $this->createCashierEmployee();
