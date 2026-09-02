@@ -115,27 +115,27 @@ use App\Models\Inventory;
     });
 
     function display_stock(location_id) {
-        var item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
+        const item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
         document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?= quantity_decimals() ?>);
 
-        var inventory_data = <?= json_encode(esc($inventory_array, 'raw')) ?>;
-        var employee_data = <?= json_encode(esc($employee_name, 'raw')) ?>;
+        const inventory_data = <?= json_encode(esc($inventory_array, 'raw')) ?>;
+        const employee_data = <?= json_encode(esc($employee_name, 'raw')) ?>;
 
-        var table = document.getElementById("inventory_result");
+        const table = document.getElementById("inventory_result");
 
         // Remove old query from tbody
-        var rowCount = table.rows.length;
-        for (var index = rowCount; index > 0; index--) {
+        const rowCount = table.rows.length;
+        for (let index = rowCount; index > 0; index--) {
             table.deleteRow(index - 1);
         }
 
         // Add new query to tbody
-        for (var index = 0; index < inventory_data.length; index++) {
-            var data = inventory_data[index];
+        for (let index = 0; index < inventory_data.length; index++) {
+            const data = inventory_data[index];
             if (data['trans_location'] == location_id) {
-                var tr = document.createElement('tr');
+                const tr = document.createElement('tr');
 
-                var td = document.createElement('td');
+                let td = document.createElement('td');
                 td.appendChild(document.createTextNode(data['trans_date']));
                 tr.appendChild(td);
 

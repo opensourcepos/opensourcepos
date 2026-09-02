@@ -2,8 +2,10 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Item;
 use App\Models\Item_quantity;
 use App\Models\Inventory;
@@ -11,18 +13,21 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
-use Config\Database;
+use Tests\Support\EmployeeFixtureTrait;
 
-class ItemsCsvImportTest extends CIUnitTestCase
+class ItemsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use FeatureTestTrait;
+    use EmployeeFixtureTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
-    protected $seed = '';
     protected $seedOnce = true;
-    protected $refresh = true;
+    protected $refresh = false;
     protected $namespace = null;
+
+    private static $doneBootstrap = false;
 
     protected $item;
     protected $item_quantity;
@@ -32,15 +37,15 @@ class ItemsCsvImportTest extends CIUnitTestCase
     protected $stock_location;
     protected $supplier;
 
-    public static function setUpBeforeClass(): void
-    {
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
-
     protected function setUp(): void
     {
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
+
         parent::setUp();
 
         helper('importfile');
@@ -58,6 +63,130 @@ class ItemsCsvImportTest extends CIUnitTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+    }
+
+    protected function createItemsEmployee(): int
+    {
+        $personId = $this->createEmployee();
+
+        $db = Config::connect($this->DBGroup);
+        $db->table('grants')->insertBatch([
+            ['person_id' => $personId, 'permission_id' => 'items', 'menu_group' => 'home'],
+            ['person_id' => $personId, 'permission_id' => 'items_stock', 'menu_group' => 'home'],
+        ]);
+
+        return $personId;
+    }
+
+    protected function loginAsItemsEmployee(int $personId): void
+    {
+        $this->withSession([
+            'person_id'  => $personId,
+            'menu_group' => 'home',
+        ]);
+    }
+
+    protected function baseItemPostData(): array
+    {
+        return [
+            'name'          => 'Test Item ' . uniqid(),
+            'category'      => 'Test Category',
+            'description'   => 'Test Item',
+            'cost_price'    => '1.00',
+            'unit_price'    => '5.00',
+            'reorder_level' => '0',
+            'receiving_quantity' => '0',
+            'quantity_1'    => '0',
+            'item_type'     => (string) ITEM,
+            'tax_percents'  => ['5'],
+        ];
+    }
+
+    /**
+     * Regression test for GHSA-92cx-fc8x-7wmm: `tax_names[]` containing `<`/`>`
+     * (the stored-XSS vector) must be rejected by postSave.
+     */
+    public function testPostSaveRejectsMaliciousTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ['<svg onload=alert(1)>'];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    /**
+     * Legitimate unicode tax names must not be rejected by the XSS guard.
+     */
+    public function testPostSaveAcceptsUnicodeTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ["Impôt, incl."];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * Apostrophes are common in real tax names (e.g. possessives) and must not be rejected.
+     */
+    public function testPostSaveAcceptsApostropheInTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ["O'Brien's Tax"];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testPostBulkUpdateRejectsMaliciousTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => '1',
+            'tax_names'    => ['<svg onload=alert(1)>'],
+            'tax_percents' => ['5'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostBulkUpdateAcceptsUnicodeTaxName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => '1',
+            'tax_names'    => ["Impôt, incl."],
+            'tax_percents' => ['5'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
     }
 
     public function testGenerateCsvHeaderBasic(): void
@@ -187,6 +316,71 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertEquals('Item Three', $rows[2]['Item Name']);
 
         unlink($tempFile);
+    }
+
+    public function testRequiredHeadersDetectedForTemplate(): void
+    {
+        $csvContent = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN' . "\n";
+        $csvContent .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_ok_');
+        file_put_contents($tempFile, $csvContent);
+
+        $rows = get_csv_file($tempFile);
+
+        $this->assertTrue(csvImportHasRequiredItemHeaders($rows, [], []));
+
+        unlink($tempFile);
+    }
+
+    public function testMissingIdHeaderIsRejected(): void
+    {
+        $csvContent = "Barcode,\"Item Name\",Category\n";
+        $csvContent .= "ITEM001,Test Item,Electronics\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_bad_');
+        file_put_contents($tempFile, $csvContent);
+
+        $rows = get_csv_file($tempFile);
+
+        $this->assertFalse(csvImportHasRequiredItemHeaders($rows, [], []));
+
+        unlink($tempFile);
+    }
+
+    public function testMissingSupplierIdHeaderIsRejected(): void
+    {
+        $csvContent = 'Id,Barcode,"Item Name",Category,"Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN' . "\n";
+        $csvContent .= ",ITEM001,Test Item,Electronics,10.00,15.00,,,,,5,Test Description,0,0,,HSN001\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_no_supplier_');
+        file_put_contents($tempFile, $csvContent);
+
+        $rows = get_csv_file($tempFile);
+
+        $this->assertFalse(csvImportHasRequiredItemHeaders($rows, [], []));
+
+        unlink($tempFile);
+    }
+
+    public function testMissingAttributeColumnIsRejected(): void
+    {
+        $csvContent = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN,"location_Warehouse"' . "\n";
+        $csvContent .= ",ITEM001,Test Item,Electronics,1,10.00,15.00,,,,,5,Test Description,0,0,,HSN001,100\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_headers_no_attribute_');
+        file_put_contents($tempFile, $csvContent);
+
+        $rows = get_csv_file($tempFile);
+
+        $this->assertFalse(csvImportHasRequiredItemHeaders($rows, ['Warehouse'], ['Color']));
+
+        unlink($tempFile);
+    }
+
+    public function testEmptyCsvHasNoRequiredHeaders(): void
+    {
+        $this->assertFalse(csvImportHasRequiredItemHeaders([], [], []));
     }
 
     public function testBomExists(): void
@@ -1112,3 +1306,4 @@ class ItemsCsvImportTest extends CIUnitTestCase
         $this->assertTrue($isValid, 'Valid location name should pass validation');
     }
 }
+

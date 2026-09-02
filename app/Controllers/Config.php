@@ -63,7 +63,7 @@ class Config extends Secure_Controller
         $this->db = Database::connect();
 
         helper('security');
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $this->encrypter = Services::encrypter();
         } else {
             log_message('alert', 'Error preparing encryption key');
@@ -321,10 +321,11 @@ class Config extends Secure_Controller
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
+        helper('security');
 
         $file_info = [
             'orig_name' => $filename,
-            'raw_name'  => $info['filename'],
+            'raw_name'  => sanitize_filename($info['filename']),
             'file_ext'  => $file->guessExtension()
         ];
 
@@ -342,6 +343,14 @@ class Config extends Secure_Controller
      */
     public function postSaveGeneral(): ResponseInterface
     {
+        $rules = [
+            'theme' => 'permit_empty|themeExists',
+        ];
+        if (!$this->validate($rules)) {
+            $errors = $this->validator->getErrors();
+            return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
+        }
+
         $batchSaveData = [
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),
@@ -496,23 +505,28 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('smtp_pass'))) {
+        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
         $protocol = $this->request->getPost('protocol');
         $mailpath = $this->request->getPost('mailpath');
 
-        // Validate mailpath: required for sendmail, optional for others but must be safe if provided
-        $isMailpathRequired = ($protocol === 'sendmail');
-        $isMailpathProvided = !empty($mailpath);
-        $isMailpathValid = $isMailpathProvided && preg_match('/^[a-zA-Z0-9_\-\/.]+$/', $mailpath);
+        $rules = [
+            'mailpath' => [
+                'label' => lang('Config.email_mailpath'),
+                'rules' => ($protocol === 'sendmail' ? 'required' : 'permit_empty') . '|valid_path_strict'
+            ]
+        ];
+        $messages = [
+            'mailpath' => [
+                'required'          => lang('Config.mailpath_invalid'),
+                'valid_path_strict' => lang('Config.mailpath_invalid')
+            ]
+        ];
 
-        if (($isMailpathRequired && !$isMailpathProvided) || ($isMailpathProvided && !$isMailpathValid)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => lang('Config.mailpath_invalid')
-            ]);
+        if ($error = $this->validateFields($rules, $messages)) {
+            return $error;
         }
 
         $batch_save_data = [
@@ -542,7 +556,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('msg_pwd'))) {
+        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
         }
 

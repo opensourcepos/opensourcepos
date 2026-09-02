@@ -77,7 +77,7 @@ class Login extends BaseController
             ];
 
             if (!$this->validate($rules, $messages)) {
-                $data['has_errors'] = !empty($validation->getErrors());
+                $data['hasErrors'] = !empty($validation->getErrors());
 
                 return view('login', $data);
             }
