@@ -19,7 +19,7 @@ use Tests\Support\ItemFixtureTrait;
  * behind reports_sales: getSearch, getRow, getEdit, postSave, getReceipt,
  * getInvoice, getSendPdf, getSendReceipt.
  *
- * Also covers GHSA-3gxx-gpwf-rcjh: getSearch() (the AJAX endpoint that
+ * Also covers: getSearch() (the AJAX endpoint that
  * supplies every row of the Sales Takings list) was the one sibling that
  * returned the full ledger and was missing the reports_sales check.
  */
