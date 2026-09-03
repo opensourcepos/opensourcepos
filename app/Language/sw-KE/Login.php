@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Nenosiri",
     "required_username"                   => "Jina la mtumiaji ni lazima.",
+    'too_many_attempts'                   => 'Majaribio mengi mno. Tafadhali subiri kidogo kisha ujaribu tena.',
     "username"                            => "Jina la Mtumiaji",
     "welcome"                             => "Karibu kwenye {0}!"
 ];

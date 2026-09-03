@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Kata kunci",
     "required_username"                   => "Kolom nama pengguna wajib diisi.",
+    'too_many_attempts'                   => 'Terlalu banyak percobaan. Harap tunggu sebentar dan coba lagi.',
     "username"                            => "Nama Anda",
     "welcome"                             => "Selamat Datang di {0}!"
 ];
