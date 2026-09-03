@@ -2,32 +2,46 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use CodeIgniter\Config\Services;
+use Tests\Support\AdminAuthTrait;
 
-class ConfigTest extends CIUnitTestCase
+class ConfigControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;
+    use AdminAuthTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
+    protected $seedOnce    = true;
     protected $refresh     = false;
     protected $namespace   = null;
 
+    private static $doneBootstrap = false;
+
     protected function setUp(): void
     {
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
+
         parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
     }
 
     protected function resetSession(): void
     {
-        $session = Services::session();
-        $session->destroy();
-        $session->set('person_id', 1);
-        $session->set('menu_group', 'office');
+        $this->loginAsAdminWithGrants(['config']);
     }
 
     // ========== Valid Mailpath Tests ==========

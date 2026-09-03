@@ -334,7 +334,7 @@ class Receivings extends Secure_Controller
         $data['comment'] = $this->receiving_lib->get_comment();
         $data['reference'] = $this->receiving_lib->get_reference();
         $data['payment_type'] = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
+        $data['show_stock_locations'] = $this->stock_location->showLocations('receivings');
         $data['stock_location'] = $this->receiving_lib->get_stock_source();
         if ($this->request->getPost('amount_tendered') != null) {
             $data['amount_tendered'] = parse_decimals($this->request->getPost('amount_tendered'));
@@ -417,7 +417,7 @@ class Receivings extends Secure_Controller
         $data['total'] = $this->receiving_lib->get_total();
         $data['mode'] = $this->receiving_lib->get_mode();
         $data['transaction_time'] = to_datetime(strtotime($receiving_info['receiving_time']));
-        $data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
+        $data['show_stock_locations'] = $this->stock_location->showLocations('receivings');
         $data['payment_type'] = $receiving_info['payment_type'];
         $data['reference'] = $this->receiving_lib->get_reference();
         $data['receiving_id'] = 'RECV ' . $receiving_id;
