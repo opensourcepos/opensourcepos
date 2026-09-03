@@ -29,6 +29,7 @@ return [
     "date"                                    => "Data",
     "date_range"                              => "Intervallo Data",
     "description"                             => "Descrizione",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Resoconto d'incasso dettagliato",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Incasso dettagliato",

@@ -29,6 +29,7 @@ return [
     "date"                                    => "Fecha",
     "date_range"                              => "Rango de Fecha",
     "description"                             => "Descripción",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Reporte Detallado de Recepciones",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Reportes detallados",
