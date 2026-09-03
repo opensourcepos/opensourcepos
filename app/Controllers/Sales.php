@@ -20,6 +20,7 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Config\OSPOS;
@@ -210,9 +211,15 @@ class Sales extends Secure_Controller
             ? $this->request->getGet('term')
             : null;
 
-        if ($this->sale_lib->get_mode() == 'return' && $this->sale->isValidReceipt($receipt)) {
-            // If a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
-            $suggestions[] = $receipt;
+        if ($this->sale_lib->get_mode() == 'return') {
+            if (ctype_digit(trim($receipt))) {
+                $receipt = 'POS ' . trim($receipt);
+            }
+
+            if ($this->sale->isValidReceipt($receipt)) {
+                // If a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
+                $suggestions[] = $receipt;
+            }
         }
         $suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true));
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
@@ -245,8 +252,8 @@ class Sales extends Secure_Controller
         $customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
         if ($this->customer->exists($customer_id)) {
             $this->sale_lib->set_customer($customer_id);
-            $discount = $this->customer->get_info($customer_id)->discount;
-            $discount_type = $this->customer->get_info($customer_id)->discount_type;
+            $discount = $this->customer->getInfo($customer_id)->discount;
+            $discount_type = $this->customer->getInfo($customer_id)->discount_type;
 
             // Apply customer default discount to items that have 0 discount
             if ($discount != '') {
@@ -490,9 +497,9 @@ class Sales extends Secure_Controller
                 }
             } elseif ($paymentType === lang('Sales.rewards')) {
                 $customerId = $this->sale_lib->get_customer();
-                $packageId = $this->customer->get_info($customerId)->package_id;
+                $packageId = $this->customer->getInfo($customerId)->package_id;
                 if (!empty($packageId)) {
-                    $points = $this->customer->get_info($customerId)->points;
+                    $points = $this->customer->getInfo($customerId)->points;
                     $points = ($points == null ? 0 : $points);
 
                     $payments = $this->sale_lib->getPayments();
@@ -565,8 +572,8 @@ class Sales extends Secure_Controller
         $customer_id = $this->sale_lib->get_customer();
         if ($customer_id != NEW_ENTRY) {
             // Load the customer discount if any
-            $customer_discount = $this->customer->get_info($customer_id)->discount;
-            $customer_discount_type = $this->customer->get_info($customer_id)->discount_type;
+            $customer_discount = $this->customer->getInfo($customer_id)->discount;
+            $customer_discount_type = $this->customer->getInfo($customer_id)->discount_type;
             if ($customer_discount != '') {
                 $discount = $customer_discount;
                 $discount_type = $customer_discount_type;
@@ -578,6 +585,10 @@ class Sales extends Secure_Controller
         $mode = $this->sale_lib->get_mode();
         $quantity = ($mode == 'return') ? -$quantity : $quantity;
         $item_location = $this->sale_lib->get_sale_location();
+
+        if ($mode == 'return' && ctype_digit(trim($item_id_or_number_or_item_kit_or_receipt))) {
+            $item_id_or_number_or_item_kit_or_receipt = 'POS ' . trim($item_id_or_number_or_item_kit_or_receipt);
+        }
 
         if ($mode == 'return' && $this->sale->isValidReceipt($item_id_or_number_or_item_kit_or_receipt)) {
             $this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
@@ -767,7 +778,7 @@ class Sales extends Secure_Controller
         $data['show_stock_locations'] = $this->stock_location->show_locations('sales');
         $data['comments'] = $this->sale_lib->get_comment();
         $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
-        $employeeInfo = $this->employee->get_info($employeeId);
+        $employeeInfo = $this->employee->getInfo($employeeId);
         $data['employee'] = $employeeInfo->first_name . ' ' . mb_substr($employeeInfo->last_name, 0, 1);
 
         $data['company_info'] = implode("\n", [$this->config['address'], $this->config['phone']]);
@@ -1021,6 +1032,14 @@ class Sales extends Secure_Controller
                 }
                 $data['receipt_template_view'] = $receiptTemplate;
 
+                $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                if ($this->sale_lib->is_return_mode()) {
+                    $originalSaleId = $this->sale_lib->getReturnOriginalSaleId();
+                    Events::trigger('return_completed', $data['sale_id_num'], $originalSaleId, $pluginData);
+                } else {
+                    Events::trigger('sale_completed', $data['sale_id_num'], $sale_type, $pluginData);
+                }
+
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);
             }
@@ -1135,7 +1154,7 @@ class Sales extends Secure_Controller
         $customer_info = '';
 
         if ($customer_id != NEW_ENTRY) {
-            $customer_info = $this->customer->get_info($customer_id);
+            $customer_info = $this->customer->getInfo($customer_id);
             $data['customer_id'] = $customer_id;
 
             if (!empty($customer_info->company_name)) {
@@ -1158,11 +1177,11 @@ class Sales extends Secure_Controller
             $data['customer_account_number'] = $customer_info->account_number;
             $data['customer_discount'] = $customer_info->discount;
             $data['customer_discount_type'] = $customer_info->discount_type;
-            $package_id = $this->customer->get_info($customer_id)->package_id;
+            $package_id = $this->customer->getInfo($customer_id)->package_id;
 
             if ($package_id != null) {
                 $package_name = $this->customer_rewards->get_name($package_id);
-                $points = $this->customer->get_info($customer_id)->points;
+                $points = $this->customer->getInfo($customer_id)->points;
                 $data['customer_rewards']['package_id'] = $package_id;
                 $data['customer_rewards']['points'] = empty($points) ? 0 : $points;
                 $data['customer_rewards']['package_name'] = $package_name;
@@ -1202,7 +1221,7 @@ class Sales extends Secure_Controller
         $cash_rounding = $this->sale_lib->reset_cash_rounding();
         $data['cash_rounding'] = $cash_rounding;
 
-        $sale_info = $this->sale->get_info($sale_id)->getRowArray();
+        $sale_info = $this->sale->getInfo($sale_id)->getRowArray();
         $this->sale_lib->copy_entire_sale($sale_id);
         $data = [];
         $data['cart'] = $this->sale_lib->get_cart();
@@ -1241,7 +1260,7 @@ class Sales extends Secure_Controller
 
         $data['amount_change'] = $data['amount_due'] * -1;
 
-        $employee_info = $this->employee->get_info($this->sale_lib->get_employee());
+        $employee_info = $this->employee->getInfo($this->sale_lib->get_employee());
         $data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
         $this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
@@ -1488,7 +1507,7 @@ class Sales extends Secure_Controller
 
         $data['payments'] = [];
 
-        foreach ($this->sale->get_sale_payments($saleId)->getResult() as $payment) {
+        foreach ($this->sale->getSalePayments($sale_id)->getResult() as $payment) {
             foreach (get_object_vars($payment) as $property => $value) {
                 $payment->$property = $value;
             }
@@ -1672,9 +1691,9 @@ class Sales extends Secure_Controller
             if ($paymentType == lang('Sales.cash_adjustment')) {
                 $cashAdjustment = CASH_ADJUSTMENT_TRUE;
             } else {
-                $cashAdjustment = CASH_ADJUSTMENT_FALSE;
-                $amountTendered += $paymentAmount;
-                $saleInfo = $this->sale->get_info($saleId)->getRowArray();
+                $cash_adjustment = CASH_ADJUSTMENT_FALSE;
+                $amount_tendered += $payment_amount;
+                $sale_info = $this->sale->getInfo($sale_id)->getRowArray();
 
                 if ($amountTendered > $saleInfo['amount_due']) {
                     $cashRefund = $amountTendered - $saleInfo['amount_due'];

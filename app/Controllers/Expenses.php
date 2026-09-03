@@ -106,7 +106,7 @@ class Expenses extends Secure_Controller
             }
         } else {
             $stored_employee_id = $expense_id == NEW_ENTRY ? $current_employee_id : $data['expenses_info']->employee_id;
-            $stored_employee = $this->employee->get_info($stored_employee_id);
+            $stored_employee = $this->employee->getInfo($stored_employee_id);
             $data['employees'][$stored_employee_id] = $stored_employee->first_name . ' ' . $stored_employee->last_name;
         }
         $data['can_assign_employee'] = $can_assign_employee;

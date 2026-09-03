@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "",
     "office"                     => "",
     "office_desc"                => "",
+    'plugins'                    => 'Plugins',
     "receivings"                 => "",
     "receivings_desc"            => "",
     "reports"                    => "",

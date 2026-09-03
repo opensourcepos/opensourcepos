@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
@@ -80,6 +81,8 @@ class Login extends BaseController
 
                 return view('login', $data);
             }
+
+            Events::trigger('user_logged_in', (int)session('person_id'), []);
         }
 
         return redirect()->to('home');
