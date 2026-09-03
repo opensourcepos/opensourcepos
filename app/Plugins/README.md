@@ -918,6 +918,40 @@ log_plugin_message('myplugin', 'debug', 'API call', 'api');
 
 Check logs in `writable/logs/`.
 
+### Gating Debug-Only Log Lines
+
+`'debug'` is a log *level*, not an on/off switch — passing it as the level does not stop the line from being written. If a plugin has its own `debug_mode` setting (a toggle in its config view), every debug-only call (request/response dumps, timing, verbose traces) must be wrapped in an explicit check against that setting, so users who haven't enabled it don't get a log file full of noise:
+
+```php
+// Before — always logs, regardless of the plugin's debug_mode setting
+log_plugin_message('debug', 'Request Headers: ' . json_encode($headers), 'myplugin', 'api');
+
+// After — only logs when debug_mode is enabled
+if ($this->debugMode) {
+    log_plugin_message('debug', 'Request Headers: ' . json_encode($headers), 'myplugin', 'api');
+}
+```
+
+Real errors are the opposite case: log them at `error` (or `warning`) to the plugin's **standard** log — `$this->log('error', ...)` or `log_plugin_message('error', ..., $pluginId)` with no channel argument — so they show up in `plugin-{id}-{date}.log` without the user needing to know to open a named channel file. Reserve `logTo()` / named channels (e.g. `'api'`) for high-volume or verbose diagnostic data, not for the error signal itself — an error logged only to a named channel is effectively invisible to anyone not already debugging that specific subsystem.
+
+### Interpreting HTTP API Responses
+
+When calling an external API, a response body that successfully parses as JSON is **not** evidence that the call succeeded. Error responses are frequently valid JSON too (e.g. `{"message": "Api Key not found!"}` on a 422). Always branch on the HTTP status code first, and only decode/use the body once the status confirms success:
+
+```php
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+if ($httpCode < 200 || $httpCode >= 300) {
+    log_plugin_message('error', "Request failed: HTTP {$httpCode}: {$response}", 'myplugin');
+    return false;
+}
+
+return json_decode($response, true) ?? true;
+```
+
+Checking `json_decode($response) !== null` alone will treat a well-formed error body as success — the failure never gets logged as an error, and callers upstream never learn the call failed.
+
 ## Toast Notifications (Pop-up Alerts)
 
 OSPOS uses [Bootstrap Notify](https://github.com/mouse0270/bootstrap-notify) for in-page toast notifications via `$.notify()`. It is loaded globally on every page.
@@ -943,6 +977,8 @@ $.ajax({
 Available `type` values: `success`, `danger`, `warning`, `info`.
 
 ### From PHP (after a page load or redirect)
+
+Use this approach only when the form actually navigates to a new page afterward (e.g. `sale_completed` → the receipt view). If the form instead closes as a JS-driven modal and the underlying page is refreshed by AJAX (e.g. `item_saved`, `customer_saved`), flash data will not be read — see [From a Non-Navigating Form](#from-a-non-navigating-form-eg-item_saved-customer_saved) below instead.
 
 When an event handler runs server-side and needs to surface an error or message on the next rendered page, use CI4 session flash data. Store the message in the event handler:
 
@@ -972,6 +1008,63 @@ $(document).ready(function() {
 ```
 
 Flash data is consumed on the first read and automatically cleared — no cleanup needed. Use `json_encode()` to safely embed the PHP string into JS without XSS risk.
+
+### From a Non-Navigating Form (e.g. `item_saved`, `customer_saved`)
+
+Some core forms submit via AJAX and never navigate to a new page — the item and customer edit forms are modals that close via JS, and the table behind them refreshes through `table_support.handle_submit()` (`public/js/manage_tables.js`), a pure client-side operation with no server-side page render. Flash data set in an `item_saved`/`customer_saved` listener sits unread until some unrelated future full page load, which is not useful feedback for the user who just clicked Submit.
+
+Instead, follow the same self-contained pattern as [AJAX Calls to Plugin Controllers](#ajax-calls-to-plugin-controllers) above: store the outcome, expose it through a small endpoint, and have the injected view partial fetch and toast it right after the core form's own AJAX call completes.
+
+1. **Store the outcome** on the plugin's own row, keyed by the relevant id, inside the event listener:
+
+```php
+public function onItemSaved(array $itemIds, array $pluginData = []): void
+{
+    $result = $this->myLibrary->sync($itemIds);
+
+    $this->getDataModel()->setLastError(
+        $itemIds[0],
+        $result->isSuccess() ? null : $result->getMessage()
+    );
+}
+```
+
+2. **Expose a small endpoint** to read it back:
+
+```php
+// Controllers/MyPluginController.php
+public function getLastError(int $itemId): ResponseInterface
+{
+    $error = $this->getDataModel()->getLastError($itemId);
+    return $this->response->setJSON(['error' => $error]);
+}
+```
+
+```php
+// Config/Routes.php
+$routes->get('plugins/myplugin/lastError/(:num)', '\App\Plugins\MyPlugin\Controllers\MyPluginController::getLastError/$1');
+```
+
+3. **Poll it from the injected view partial**, right after the core form's save call finishes, using `$(document).ajaxSuccess()` filtered to the core form's endpoint:
+
+```javascript
+// In your plugin view partial (e.g. Views/my_item_field.php)
+$(document).ajaxSuccess(function(event, xhr, settings) {
+    if (!settings.url || settings.url.indexOf('items/save') === -1) {
+        return;
+    }
+
+    const itemId = $('#item_id').val();
+
+    $.get('<?= site_url('plugins/myplugin/lastError') ?>/' + itemId, {}, function(response) {
+        if (response.error) {
+            $.notify({ message: response.error }, { type: 'danger' });
+        }
+    }, 'json');
+});
+```
+
+This fires the toast the moment the modal closes, without any change to core JS or the core save endpoint's response shape.
 
 ## Registering Modules (Admin Menu Entries)
 
