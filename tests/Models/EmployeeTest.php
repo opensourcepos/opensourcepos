@@ -5,10 +5,12 @@ namespace Tests\Models;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Employee;
+use Tests\Support\EmployeeFixtureTrait;
 
 class EmployeeTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use EmployeeFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -167,46 +169,22 @@ class EmployeeTest extends CIUnitTestCase
         $this->assertFalse($result);
     }
 
-    protected function createEmployeeWithGrants(array $grantsData): int
-    {
-        $uniqueSuffix = uniqid();
-
-        $personData = [
-            'first_name'   => 'Grant',
-            'last_name'    => 'Tester',
-            'email'        => "granttester{$uniqueSuffix}@test.com",
-            'phone_number' => '555-5678'
-        ];
-
-        $employeeData = [
-            'username'      => "granttester{$uniqueSuffix}",
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
-        $employeeModel = model(Employee::class);
-        $result = $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
-
-        $this->assertTrue($result);
-        $this->assertArrayHasKey('person_id', $personData);
-
-        return $personData['person_id'];
-    }
-
     public function testExistingEmployeeKeepsOriginalGrantsWhenGrantChangeDisallowed(): void
     {
-        $employeeId = $this->createEmployeeWithGrants([
-            ['permission_id' => 'customers', 'menu_group' => 'home']
-        ]);
+        $employeeId = $this->createEmployee(
+            first_name: 'Grant',
+            last_name:  'Tester',
+            grants: [
+                ['permission_id' => 'customers', 'menu_group' => 'home']
+            ],
+        );
 
         $originalDisallowGrantChange = getenv('DISALLOW_GRANT_CHANGE');
         putenv('DISALLOW_GRANT_CHANGE=true');
 
         try {
             $employeeModel = model(Employee::class);
-            $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
+            $personData = ['first_name' => 'Grant', 'last_name' => 'Tester', 'email' => "granttester_upd_{$employeeId}@test.com"];
             $employeeData = ['username' => "granttester_upd_{$employeeId}", 'language_code' => 'en', 'language' => 'english'];
             $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
 
@@ -228,9 +206,13 @@ class EmployeeTest extends CIUnitTestCase
         putenv('DISALLOW_GRANT_CHANGE=true');
 
         try {
-            $result = $this->createEmployeeWithGrantsExpectingFailure([
-                ['permission_id' => 'customers', 'menu_group' => 'home']
-            ]);
+            $result = $this->createEmployeeExpectingFailure(
+                first_name: 'Rejected',
+                last_name:  'Tester',
+                grants: [
+                    ['permission_id' => 'customers', 'menu_group' => 'home']
+                ],
+            );
 
             $this->assertFalse($result);
         } finally {
@@ -240,38 +222,18 @@ class EmployeeTest extends CIUnitTestCase
         }
     }
 
-    protected function createEmployeeWithGrantsExpectingFailure(array $grantsData): bool
-    {
-        $uniqueSuffix = uniqid();
-
-        $personData = [
-            'first_name'   => 'Rejected',
-            'last_name'    => 'Tester',
-            'email'        => "rejectedtester{$uniqueSuffix}@test.com",
-            'phone_number' => '555-9999'
-        ];
-
-        $employeeData = [
-            'username'      => "rejectedtester{$uniqueSuffix}",
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
-        $employeeModel = model(Employee::class);
-
-        return $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
-    }
-
     public function testExistingEmployeeGrantsUpdateWhenGrantChangeAllowed(): void
     {
-        $employeeId = $this->createEmployeeWithGrants([
-            ['permission_id' => 'customers', 'menu_group' => 'home']
-        ]);
+        $employeeId = $this->createEmployee(
+            first_name: 'Grant',
+            last_name:  'Tester',
+            grants: [
+                ['permission_id' => 'customers', 'menu_group' => 'home']
+            ],
+        );
 
         $employeeModel = model(Employee::class);
-        $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
+        $personData = ['first_name' => 'Grant', 'last_name' => 'Tester', 'email' => "granttester_upd_{$employeeId}@test.com"];
         $employeeData = ['username' => "granttester_upd_{$employeeId}", 'language_code' => 'en', 'language' => 'english'];
         $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
 
@@ -283,9 +245,13 @@ class EmployeeTest extends CIUnitTestCase
 
     public function testNewEmployeeCreationWithGrantsSucceedsWhenGrantChangeAllowed(): void
     {
-        $result = $this->createEmployeeWithGrantsExpectingFailure([
-            ['permission_id' => 'customers', 'menu_group' => 'home']
-        ]);
+        $result = $this->createEmployeeExpectingFailure(
+            first_name: 'Granted',
+            last_name:  'Tester',
+            grants: [
+                ['permission_id' => 'customers', 'menu_group' => 'home']
+            ],
+        );
 
         $this->assertTrue((bool) $result);
     }

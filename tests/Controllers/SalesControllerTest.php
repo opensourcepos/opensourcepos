@@ -10,6 +10,7 @@ use App\Database\Seeds\TestDatabaseBootstrapSeeder;
 use App\Models\Employee;
 use Config\OSPOS;
 use Tests\Support\ItemFixtureTrait;
+use Tests\Support\EmployeeFixtureTrait;
 
 /**
  * Regression tests for GHSA-3xf6-8fmq-44wg.
@@ -24,6 +25,7 @@ class SalesControllerTest extends CIUnitTestCase
     use DatabaseTestTrait;
     use FeatureTestTrait;
     use ItemFixtureTrait;
+    use EmployeeFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -51,160 +53,70 @@ class SalesControllerTest extends CIUnitTestCase
         parent::tearDown();
     }
 
+    /**
+     * Cashier with bare "sales" + "sales_stock" grants. "sales_stock" is
+     * required alongside "sales": Employee::has_module_grant('sales', ...)
+     * treats the bare "sales" grant as insufficient once any sales_*
+     * submodule permission exists in the permissions table (see
+     * has_subpermissions()). Deliberately NOT "reports_sales" — that is the
+     * grant this test exercises the gate on.
+     */
     protected function createCashierEmployee(): int
     {
-        $unique = uniqid();
-
-        $personData = [
-            'first_name'   => 'Cashier',
-            'last_name'    => 'NoReports',
-            'email'        => "cashier.$unique@test.com",
-            'phone_number' => '555-0001',
-            'address_1'    => '',
-            'address_2'    => '',
-            'city'         => '',
-            'state'        => '',
-            'zip'          => '',
-            'country'      => '',
-            'comments'     => '',
-        ];
-
-        $employeeData = [
-            'username'      => "cashier.$unique",
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
-        // Deliberately grants "sales" (register access) but NOT "reports_sales".
-        // "sales_stock" is also required: Employee::has_module_grant('sales', ...)
-        // treats the bare "sales" grant as insufficient once any sales_* submodule
-        // permission exists in the permissions table (see has_subpermissions()).
-        $grantsData = [
-            ['permission_id' => 'sales', 'menu_group' => 'home'],
-            ['permission_id' => 'sales_stock', 'menu_group' => 'home']
-        ];
-
-        $employeeModel = model(Employee::class);
-        $this->assertTrue($employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY));
-
-        return (int) $personData['person_id'];
+        return $this->createEmployee(
+            first_name: 'Cashier',
+            last_name:  'NoReports',
+            email:      'cashier.' . uniqid() . '@test.com',
+            username:   'cashier_' . uniqid(),
+            grants: [
+                ['permission_id' => 'sales', 'menu_group' => 'home'],
+                ['permission_id' => 'sales_stock', 'menu_group' => 'home'],
+            ],
+        );
     }
 
     protected function createReportsSalesEmployee(): int
     {
-        $unique = uniqid();
-
-        $personData = [
-            'first_name'   => 'Supervisor',
-            'last_name'    => 'WithReports',
-            'email'        => "supervisor.$unique@test.com",
-            'phone_number' => '555-0002',
-            'address_1'    => '',
-            'address_2'    => '',
-            'city'         => '',
-            'state'        => '',
-            'zip'          => '',
-            'country'      => '',
-            'comments'     => '',
-        ];
-
-        $employeeData = [
-            'username'      => "supervisor.$unique",
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
-        $grantsData = [
-            ['permission_id' => 'sales', 'menu_group' => 'home'],
-            ['permission_id' => 'sales_stock', 'menu_group' => 'home'],
-            ['permission_id' => 'reports_sales', 'menu_group' => 'home']
-        ];
-
-        $employeeModel = model(Employee::class);
-        $this->assertTrue($employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY));
-
-        return (int) $personData['person_id'];
+        return $this->createEmployee(
+            first_name: 'Supervisor',
+            last_name:  'WithReports',
+            email:      'supervisor.' . uniqid() . '@test.com',
+            username:   'supervisor_' . uniqid(),
+            grants: [
+                ['permission_id' => 'sales', 'menu_group' => 'home'],
+                ['permission_id' => 'sales_stock', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home'],
+            ],
+        );
     }
 
     protected function createCashierWithoutChangePriceGrant(): int
     {
-        $unique = uniqid();
-
-        $personData = [
-            'first_name'   => 'Cashier',
-            'last_name'    => 'NoChangePrice',
-            'email'        => "cashier-nochangeprice.$unique@test.com",
-            'phone_number' => '555-0001',
-            'address_1'    => '',
-            'address_2'    => '',
-            'city'         => '',
-            'state'        => '',
-            'zip'          => '',
-            'country'      => '',
-            'comments'     => '',
-        ];
-
-        $employeeData = [
-            'username'      => "cashier_nochangeprice.$unique",
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
-        // "sales_stock" is required alongside "sales": see the has_module_grant/
-        // has_subpermissions note on createCashierEmployee() above.
-        $grantsData = [
-            ['permission_id' => 'sales', 'menu_group' => 'home'],
-            ['permission_id' => 'sales_stock', 'menu_group' => 'home'],
-        ];
-
-        $employeeModel = model(Employee::class);
-        $this->assertTrue($employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY));
-
-        return (int) $personData['person_id'];
+        return $this->createEmployee(
+            first_name: 'Cashier',
+            last_name:  'NoChangePrice',
+            email:      'cashier-nochangeprice.' . uniqid() . '@test.com',
+            username:   'cashier_nochangeprice_' . uniqid(),
+            grants: [
+                ['permission_id' => 'sales', 'menu_group' => 'home'],
+                ['permission_id' => 'sales_stock', 'menu_group' => 'home'],
+            ],
+        );
     }
 
     protected function createCashierWithChangePriceGrant(): int
     {
-        $unique = uniqid();
-
-        $personData = [
-            'first_name'   => 'Cashier',
-            'last_name'    => 'ChangePrice',
-            'email'        => "cashier-changeprice.$unique@test.com",
-            'phone_number' => '555-0002',
-            'address_1'    => '',
-            'address_2'    => '',
-            'city'         => '',
-            'state'        => '',
-            'zip'          => '',
-            'country'      => '',
-            'comments'     => '',
-        ];
-
-        $employeeData = [
-            'username'      => "cashier_changeprice.$unique",
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
-        $grantsData = [
-            ['permission_id' => 'sales', 'menu_group' => 'home'],
-            ['permission_id' => 'sales_stock', 'menu_group' => 'home'],
-            ['permission_id' => 'sales_change_price', 'menu_group' => 'home'],
-        ];
-
-        $employeeModel = model(Employee::class);
-        $this->assertTrue($employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY));
-
-        return (int) $personData['person_id'];
+        return $this->createEmployee(
+            first_name: 'Cashier',
+            last_name:  'ChangePrice',
+            email:      'cashier-changeprice.' . uniqid() . '@test.com',
+            username:   'cashier_changeprice_' . uniqid(),
+            grants: [
+                ['permission_id' => 'sales', 'menu_group' => 'home'],
+                ['permission_id' => 'sales_stock', 'menu_group' => 'home'],
+                ['permission_id' => 'sales_change_price', 'menu_group' => 'home'],
+            ],
+        );
     }
 
     protected function loginAs(int $personId): void

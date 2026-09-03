@@ -9,11 +9,13 @@ use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use App\Models\Module;
+use Tests\Support\EmployeeFixtureTrait;
 
 class EmployeesControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;
+    use EmployeeFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -58,38 +60,18 @@ class EmployeesControllerTest extends CIUnitTestCase
 
     protected function createNonAdminEmployee(): int
     {
-        $uniqueSuffix = uniqid();
-
-        $personData = [
-            'first_name'   => 'NonAdmin',
-            'last_name'    => 'User',
-            'email'        => "nonadmin{$uniqueSuffix}@test.com",
-            'phone_number' => '555-1234'
-        ];
-
-        $employeeData = [
-            'username'      => "nonadmin{$uniqueSuffix}",
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
-        $grantsData = [
-            ['permission_id' => 'employees', 'menu_group' => 'home'],
-            ['permission_id' => 'customers', 'menu_group' => 'home'],
-            ['permission_id' => 'sales', 'menu_group' => 'home']
-        ];
-
-        $employeeModel = model(Employee::class);
-        $ok = $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
-
-        $row = $this->db->table('people')->where('email', $personData['email'])->get()->getRowArray();
-        if (!empty($row['person_id'])) {
-            return (int) $row['person_id'];
-        }
-
-        return (int) $personData['person_id'];
+        return $this->createEmployee(
+            first_name:   'NonAdmin',
+            last_name:    'User',
+            email:        'nonadmin' . uniqid() . '@test.com',
+            username:     'nonadmin_' . uniqid(),
+            phone_number: '555-1234',
+            grants: [
+                ['permission_id' => 'employees', 'menu_group' => 'home'],
+                ['permission_id' => 'customers', 'menu_group' => 'home'],
+                ['permission_id' => 'sales', 'menu_group' => 'home'],
+            ],
+        );
     }
 
     protected function loginAsAdmin(): void
@@ -100,27 +82,6 @@ class EmployeesControllerTest extends CIUnitTestCase
     protected function loginAsNonAdmin(int $personId): void
     {
         $this->withSession(['person_id' => $personId, 'menu_group' => 'home']);
-    }
-
-    protected function createEmployee(string $email, string $username, array $grants = []): int
-    {
-        $personData = [
-            'first_name'   => 'Temp',
-            'last_name'    => 'Employee',
-            'email'        => $email,
-            'phone_number' => '555-0000',
-        ];
-        $employeeData = [
-            'username'      => $username,
-            'password'      => password_hash('password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english',
-        ];
-        $employeeModel = model(Employee::class);
-        $employeeModel->save_employee($personData, $employeeData, $grants, NEW_ENTRY);
-
-        return (int) $this->db->table('people')->where('people.email', $email)->get()->getRowArray()['person_id'];
     }
 
     public function testNonAdminCannotViewAdminAccount(): void
@@ -172,7 +133,7 @@ class EmployeesControllerTest extends CIUnitTestCase
         $nonAdminId = $this->createNonAdminEmployee();
         $this->loginAsNonAdmin($nonAdminId);
 
-        $targetEmployeeId = $this->createEmployee('test@test.com', 'testuser');
+        $targetEmployeeId = $this->createEmployee(email: 'test@test.com', username: 'testuser');
 
         $response = $this->post('/employees/save/' . $targetEmployeeId, [
             'first_name' => 'Test',
@@ -296,10 +257,14 @@ class EmployeesControllerTest extends CIUnitTestCase
         // employees grant is a genuine change that DISALLOW_GRANT_CHANGE=true
         // must reject (leaving the grant set untouched).
         $unique = uniqid();
-        $employeeId = $this->createEmployee("disallow{$unique}@test.com", "disallow{$unique}", [
-            ['permission_id' => 'customers', 'menu_group' => 'home'],
-            ['permission_id' => 'sales', 'menu_group' => 'home'],
-        ]);
+        $employeeId = $this->createEmployee(
+            email:    "disallow{$unique}@test.com",
+            username: "disallow{$unique}",
+            grants: [
+                ['permission_id' => 'customers', 'menu_group' => 'home'],
+                ['permission_id' => 'sales', 'menu_group' => 'home'],
+            ],
+        );
         $this->loginAsAdmin();
 
         putenv('DISALLOW_GRANT_CHANGE=true');
