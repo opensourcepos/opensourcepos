@@ -81,7 +81,7 @@ class Item extends Model
             $builder->where('deleted', $deleted);
         }
 
-        return ($builder->get()->getNumRows() === 1);
+        return ($builder->get()->getNumRows() >= 1);
     }
 
     /**
