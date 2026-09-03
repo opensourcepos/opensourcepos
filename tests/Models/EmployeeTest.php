@@ -207,7 +207,7 @@ class EmployeeTest extends CIUnitTestCase
         try {
             $employeeModel = model(Employee::class);
             $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
-            $employeeData = ['username' => 'granttester', 'language_code' => 'en', 'language' => 'english'];
+            $employeeData = ['username' => "granttester_upd_{$employeeId}", 'language_code' => 'en', 'language' => 'english'];
             $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
 
             $saveEmployeeResult = $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);
@@ -272,7 +272,7 @@ class EmployeeTest extends CIUnitTestCase
 
         $employeeModel = model(Employee::class);
         $personData = ['first_name' => 'Grant', 'last_name' => 'Tester'];
-        $employeeData = ['username' => 'granttester', 'language_code' => 'en', 'language' => 'english'];
+        $employeeData = ['username' => "granttester_upd_{$employeeId}", 'language_code' => 'en', 'language' => 'english'];
         $newGrantsData = [['permission_id' => 'sales', 'menu_group' => 'home']];
 
         $employeeModel->save_employee($personData, $employeeData, $newGrantsData, $employeeId);

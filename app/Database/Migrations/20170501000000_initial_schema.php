@@ -13,48 +13,56 @@ class Migration_Initial_Schema extends Migration
 
     /**
      * Perform a migration step.
-     * Only runs on fresh installs - skips if database already has tables.
      *
-     * For testing: CI4's DatabaseTestTrait with $refresh=true handles table
-     * cleanup/creation automatically. This migration only loads initial schema
-     * on fresh databases where no application tables exist.
+     * Deterministically (re)applies the base 3.0.2 schema. Down() is
+     * responsible for clearing the application tables first, so this method
+     * always runs the initial schema script. We intentionally do NOT skip on
+     * "tables already exist": CodeIgniter's listTables() result is cached on
+     * the connection, so a prior down()/regress() cycle in the same process
+     * can leave a stale table list and a naive "skip if present" check would
+     * refuse to rebuild tables that were just dropped.
      */
     public function up(): void
     {
-        // Check if core application tables exist (existing install)
-        // Note: migrations table may exist even on fresh DB due to migration tracking
-        $tables = $this->db->listTables();
-
-        // Check for a core application table, not just migrations table
-        foreach ($tables as $table) {
-            // Strip prefix if present for comparison
-            $tableName = str_replace($this->db->getPrefix(), '', $table);
-            if (in_array($tableName, ['app_config', 'items', 'employees', 'people'])) {
-                // Database already populated - skip initial schema
-                // This is an existing installation upgrading from older version
-                return;
-            }
-        }
-
-        // Fresh install - load initial schema
         helper('migration');
         executeScript(APPPATH . 'Database/Migrations/sqlscripts/initial_schema.sql');
     }
 
     /**
      * Revert a migration step.
-     * Cannot revert initial schema - would lose all data.
+     *
+     * Drops the base application tables (and the migrations tracking table)
+     * so the next up() re-creates a clean 3.0.2 baseline. Disables FK checks
+     * so drop order doesn't matter.
      */
     public function down(): void
     {
-        // Cannot safely revert initial schema
-        // Would require dropping all tables which would lose all data
-        $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
-        
-        foreach ($this->db->listTables() as $table) {
-            $this->db->query('DROP TABLE IF EXISTS `' . $table . '`');
+        // Query the table list straight from the database. We must NOT use
+        // $this->db->listTables(): CI4 caches the result in dataCache and, in a
+        // long-lived test process, that cached list is stale (populated by a
+        // prior test class's connection), so drops would be skipped and the
+        // next up() would hit "Table ... already exists".
+        $db    = $this->db;
+        $result = $db->query('SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = ?', [$db->database]);
+
+        $tables = $result ? array_column($result->getResultArray(), 'TABLE_NAME') : [];
+
+        // Preserve the migrations tracking table: MigrationRunner::regress()
+        // calls removeHistory() AFTER down(), so dropping it here would raise
+        // "Table '...ospos_migrations' doesn't exist".
+        $migrationsTable = $db->getPrefix() . 'migrations';
+
+        $db->query('SET FOREIGN_KEY_CHECKS = 0');
+        foreach ($tables as $table) {
+            if ($table === $migrationsTable) {
+                continue;
+            }
+            $db->query('DROP TABLE IF EXISTS `' . $table . '`');
         }
-        
-        $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+        $db->query('SET FOREIGN_KEY_CHECKS = 1');
+
+        // Invalidate the stale in-connection table-name cache so a subsequent
+        // listTables() in the same process sees the fresh state.
+        $db->dataCache['table_names'] = [];
     }
 }
