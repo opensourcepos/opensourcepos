@@ -1714,7 +1714,7 @@ class Sales extends Secure_Controller
     {
         $sale_id = $this->sale_lib->get_sale_id();
         if ($sale_id != NEW_ENTRY && $sale_id != '') {
-            $sale_type = $this->sale_lib->get_sale_type();
+            $sale_type = $this->sale_lib->getSaleType();
 
             if ($this->config['dinner_table_enable']) {
                 $dinner_table = $this->sale_lib->get_dinner_table();
@@ -1768,7 +1768,7 @@ class Sales extends Secure_Controller
         $invoice_number = $this->sale_lib->get_invoice_number();
         $work_order_number = $this->sale_lib->get_work_order_number();
         $quote_number = $this->sale_lib->get_quote_number();
-        $sale_type = $this->sale_lib->get_sale_type();
+        $sale_type = $this->sale_lib->getSaleType();
 
         if ($sale_type == '') {
             $sale_type = SALE_TYPE_POS;
@@ -1818,15 +1818,22 @@ class Sales extends Secure_Controller
      */
     public function postUnsuspend(): ResponseInterface|string
     {
-        $sale_id = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
-        $this->sale_lib->clear_all();
+        $personId = $this->session->get('person_id');
 
-        if ($sale_id > 0) {
-            $this->sale_lib->copy_entire_sale($sale_id);
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return $this->response->setStatusCode(403)
+                ->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
+        $saleId = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
+
+        if ($saleId > 0 && $this->sale->getSaleStatus($saleId) == SUSPENDED) {
+            $this->sale_lib->clear_all();
+            $this->sale_lib->copy_entire_sale($saleId);
         }
 
         // Set current register mode to reflect that of unsuspended order type
-        $this->change_register_mode($this->sale_lib->get_sale_type());
+        $this->change_register_mode($this->sale_lib->getSaleType());
 
         return $this->reload();
     }

@@ -10,6 +10,7 @@ use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use Config\Database;
 use Tests\Support\ItemFixtureTrait;
+use Tests\Support\SaleFixtureTrait;
 
 /**
  * Regression tests for GHSA-3xf6-8fmq-44wg.
@@ -24,6 +25,7 @@ class SalesControllerTest extends CIUnitTestCase
     use DatabaseTestTrait;
     use FeatureTestTrait;
     use ItemFixtureTrait;
+    use SaleFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -212,49 +214,6 @@ class SalesControllerTest extends CIUnitTestCase
             'person_id'  => $personId,
             'menu_group' => 'home',
         ]);
-    }
-
-    /**
-     * Inserts a minimal completed sale row directly, bypassing Sale::save_value()
-     * (which requires a full cart/inventory/tax pipeline unrelated to this
-     * authorization check). Sale::get_info() inner-joins sales_items, so a
-     * matching item/sales_items row is required for the sale to be found.
-     */
-    protected function createSale(int $employeeId): int
-    {
-        $unique = uniqid();
-        $db = Database::connect();
-
-        $db->table('items')->insert([
-            'name'        => "Test Item $unique",
-            'category'    => 'Test',
-            'description' => 'Test item',
-            'cost_price'  => 1,
-            'unit_price'  => 1,
-            'item_number' => "TEST-$unique",
-        ]);
-        $itemId = (int) $db->insertID();
-
-        $db->table('sales')->insert([
-            'sale_time'      => date('Y-m-d H:i:s'),
-            'customer_id'    => null,
-            'employee_id'    => $employeeId,
-            'comment'        => 'test sale',
-            'invoice_number' => null,
-        ]);
-        $saleId = (int) $db->insertID();
-
-        $db->table('sales_items')->insert([
-            'sale_id'            => $saleId,
-            'item_id'            => $itemId,
-            'line'               => 1,
-            'quantity_purchased' => 1,
-            'item_cost_price'    => 1,
-            'item_unit_price'    => 1,
-            'item_location'      => 1,
-        ]);
-
-        return $saleId;
     }
 
     /**
@@ -519,6 +478,58 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertEquals('0.01', $cart[1]['price']);
     }
 
+    public function testCashierWithoutReportsSalesCannotUnsuspend(): void
+    {
+        $victimId = $this->createReportsSalesEmployee();
+        $saleId = $this->createSuspendedSale($victimId);
+
+        $cashierId = $this->createCashierEmployee();
+        $this->loginAs($cashierId);
+
+        $response = $this->post('/sales/unsuspend', [
+            'suspended_sale_id' => $saleId,
+        ]);
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+
+        $session = Services::session();
+        $this->assertNotEquals($saleId, $session->get('sale_id'));
+    }
+
+    public function testEmployeeWithReportsSalesCannotUnsuspendCompletedSale(): void
+    {
+        $victimId = $this->createReportsSalesEmployee();
+        $saleId = $this->createSale($victimId);
+
+        $supervisorId = $this->createReportsSalesEmployee();
+        $this->loginAs($supervisorId);
+
+        $this->post('/sales/unsuspend', [
+            'suspended_sale_id' => $saleId,
+        ]);
+
+        $session = Services::session();
+        $this->assertNotEquals($saleId, $session->get('sale_id'));
+    }
+
+    public function testEmployeeWithReportsSalesCanUnsuspendSale(): void
+    {
+        $ownerId = $this->createReportsSalesEmployee();
+        $saleId = $this->createSuspendedSale($ownerId);
+
+        $supervisorId = $this->createReportsSalesEmployee();
+        $this->loginAs($supervisorId);
+
+        $this->post('/sales/unsuspend', [
+            'suspended_sale_id' => $saleId,
+        ]);
+
+        $session = Services::session();
+        $this->assertEquals($saleId, $session->get('sale_id'));
+    }
+  
     protected function createGiftcard(float $value): int
     {
         $giftcardNumber = random_int(1000000, 9999999);
@@ -718,5 +729,43 @@ class SalesControllerTest extends CIUnitTestCase
         $body = $response->getBody();
         $this->assertStringNotContainsString('<svg onload', $body);
         $this->assertStringContainsString('&lt;svg', $body);
+    }
+
+    public function testPostUnsuspendRejectsNonSuspendedSaleWithoutClearingActiveCart(): void
+    {
+        $employeeId = $this->createReportsSalesEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $notSuspendedSaleId = $this->createSale($employeeId);
+        $this->loginAs($employeeId);
+        $this->seedCartLine(1, '1.00', $itemId);
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY]));
+
+        $this->post('/sales/unsuspend', [
+            'suspended_sale_id' => (string) $notSuspendedSaleId,
+        ]);
+
+        $cart = Services::session()->get('sales_cart');
+        $this->assertNotEmpty($cart);
+        $this->assertArrayHasKey(1, $cart);
+        $this->assertSame($itemId, $cart[1]['item_id']);
+        $this->assertSame(NEW_ENTRY, Services::session()->get('sale_id'));
+    }
+
+    public function testPostUnsuspendReplacesCartForValidSuspendedSale(): void
+    {
+        $employeeId = $this->createReportsSalesEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $suspendedSaleId = $this->createSuspendedSale($employeeId);
+        $this->loginAs($employeeId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/unsuspend', [
+            'suspended_sale_id' => (string) $suspendedSaleId,
+        ]);
+
+        $this->assertSame($suspendedSaleId, Services::session()->get('sale_id'));
+        $cart = Services::session()->get('sales_cart');
+        $this->assertNotEmpty($cart);
+        $this->assertNotSame($itemId, array_values($cart)[0]['item_id']);
     }
 }

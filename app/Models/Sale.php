@@ -805,7 +805,7 @@ class Sale extends Model
         // Start a transaction to assure data integrity
         $this->db->transStart();
 
-        $sale_status = $this->get_sale_status($sale_id);
+        $sale_status = $this->getSaleStatus($sale_id);
 
         if ($update_inventory && $sale_status == COMPLETED) {
             // Defect, not all item deletions will be undone?
@@ -1225,12 +1225,14 @@ class Sale extends Model
     /**
      * Gets the sale status for the selected sale
      */
-    public function get_sale_status(int $sale_id): int
+    public function getSaleStatus(int $sale_id): ?int
     {
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
 
-        return $builder->get()->getRow()->sale_status;
+        $row = $builder->get()->getRow();
+
+        return $row === null ? null : $row->sale_status;
     }
 
     /**
