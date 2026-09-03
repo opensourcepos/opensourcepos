@@ -58,6 +58,8 @@
             </div>
         </div>
 
+        <?= pluginContent('item_form_plugin_fields', ['item' => $item_info]) ?>
+
         <div class="form-group form-group-sm">
             <?= form_label(lang('Items.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-8">

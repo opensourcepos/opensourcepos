@@ -230,6 +230,7 @@ These hook points are currently defined in core views:
 | `view:sales_quote_buttons`    | `app/Views/sales/quote.php:55`          | `['saleId' => $sale_id_num]`      | Add buttons to the quote view                       |
 | `view:sales_work_order_buttons` | `app/Views/sales/work_order.php:57`   | `['saleId' => $sale_id_num]`      | Add buttons to the work order view                  |
 | `view:sales_register_buttons` | `app/Views/sales/register.php`          | *(none)*                          | Add UI controls to the register checkout area       |
+| `view:item_form_plugin_fields` | `app/Views/items/form.php:61`          | `['item' => $item_info]`          | Add UI controls (e.g. checkboxes, inputs) to the item add/edit form — any number of plugins may hook this |
 
 The four sales document hooks are deliberately symmetrical: a plugin that delivers a
 sale document (print, email, messaging) can register the same callback for all four and
