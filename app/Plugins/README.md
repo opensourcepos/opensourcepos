@@ -812,6 +812,20 @@ Migration state is stored in `ospos_plugin_migrations`:
 
 Each plugin tracks its version independently. The table is created by the core migration `20260627000000_PluginMigrationsTableCreate`.
 
+### Changing a Schema After the Plugin Has Shipped
+
+Editing an existing migration file does nothing for an installation that already has that plugin installed. `runPendingMigrations()` only executes files whose timestamp is *greater than* the version already recorded in `ospos_plugin_migrations` for that plugin — a file that already ran is never re-run, no matter what you change inside it.
+
+This means: once a migration file has been part of any real install (yours, a tester's, a released version — anything beyond your own machine before the plugin's first install), any schema change must ship as a **new** migration file with a later timestamp, never as an edit to the existing one:
+
+```
+Migrations/
+├── 20260627120000_CreateExampleTable.php   ← already shipped, don't touch
+└── 20260701090000_AddLastErrorColumn.php   ← new file for the new column
+```
+
+Editing an already-applied file only *appears* to work on a machine where the plugin has never been installed yet (a fresh `install()` run picks up the edited file's current contents, because it's the first time it runs at all). It silently does nothing on any machine where the plugin was installed before the edit — including your own, after an uninstall/reinstall cycle masks the problem by re-running `install()` from scratch. Don't rely on that as a workaround; ship a new migration file instead so existing installs pick up the change on their next request, without requiring an uninstall/reinstall.
+
 ## Unit Tests
 
 Plugins can ship their own test suite inside a `Tests/` subdirectory. PHPUnit discovers them automatically — no separate `phpunit.xml` per plugin is needed or wanted.
