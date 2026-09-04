@@ -109,15 +109,6 @@ jobs:
       - name: Create .env file
         run: cp .env.example .env
 
-      - name: Provision theme fixtures
-        run: |
-          mkdir -p resources/bootswatch/darkly resources/bootswatch/flatly
-          for theme in darkly flatly; do
-            [ -e "resources/bootswatch/${theme}/bootstrap.min.css" ] \
-              || ln -s "$(pwd)/node_modules/bootswatch/${theme}/bootstrap.min.css" \
-                       "resources/bootswatch/${theme}/bootstrap.min.css"
-          done
-
       - name: Run PHPUnit tests
         env:
           CI_ENVIRONMENT: testing
