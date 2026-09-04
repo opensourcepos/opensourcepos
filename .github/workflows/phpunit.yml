@@ -113,7 +113,7 @@ jobs:
         env:
           CI_ENVIRONMENT: testing
           MYSQL_HOST_NAME: 127.0.0.1
-        run: composer test -- --log-junit test-results/junit.xml
+        run: composer test -- --no-coverage --log-junit test-results/junit.xml
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
