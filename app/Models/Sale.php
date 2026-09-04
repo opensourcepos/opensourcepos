@@ -1421,7 +1421,9 @@ class Sale extends Model
             'payments.sale_id',
             'SUM(CASE WHEN `payments`.`cash_adjustment` = 0 THEN `payments`.`payment_amount` ELSE 0 END) AS sale_payment_amount',
             'SUM(CASE WHEN `payments`.`cash_adjustment` = 1 THEN `payments`.`payment_amount` ELSE 0 END) AS sale_cash_adjustment',
-            'GROUP_CONCAT(CONCAT(`payments`.`payment_type`, " ", (`payments`.`payment_amount` - `payments`.`cash_refund`)) SEPARATOR ", ") AS payment_type'
+            'SUM(`payments`.`cash_refund`) AS sale_cash_refund',
+            'GROUP_CONCAT(CONCAT(`payments`.`payment_type`, " ", (`payments`.`payment_amount` - `payments`.`cash_refund`)) SEPARATOR ", ") AS payment_type',
+            'GROUP_CONCAT(NULLIF(`payments`.`reference_code`, "") SEPARATOR ", ") AS reference_code'
         ]);
         $builder->join('sales', 'sales.sale_id = payments.sale_id', 'inner');
         $builder->where($where);

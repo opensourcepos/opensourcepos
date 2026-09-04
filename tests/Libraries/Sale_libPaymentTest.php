@@ -20,9 +20,19 @@ class Sale_libPaymentTest extends CIUnitTestCase
 {
     private Sale_lib $saleLib;
 
+    protected int $priorBcscale;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        // The app sets a global bcscale() from app config on config load
+        // (see app/Events/Load_config.php), and whichever value a prior test
+        // class triggered leaks into bcadd/bcmul here. Pin a known scale so the
+        // accumulation math in these tests is deterministic regardless of suite
+        // order; restore it in tearDown.
+        $this->priorBcscale = bcscale();
+        bcscale(0);
 
         // Inject mock OSPOS config so Sale_lib constructor and helpers don't need real settings
         $ospos           = new OSPOS();
@@ -60,6 +70,7 @@ class Sale_libPaymentTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
+        bcscale($this->priorBcscale);
         Factories::reset();
         parent::tearDown();
     }

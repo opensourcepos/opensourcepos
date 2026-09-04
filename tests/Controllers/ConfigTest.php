@@ -5,7 +5,6 @@ namespace Tests\Controllers;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use CodeIgniter\Config\Services;
 
 class ConfigTest extends CIUnitTestCase
 {
@@ -24,10 +23,7 @@ class ConfigTest extends CIUnitTestCase
 
     protected function resetSession(): void
     {
-        $session = Services::session();
-        $session->destroy();
-        $session->set('person_id', 1);
-        $session->set('menu_group', 'office');
+        $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
     }
 
     // ========== Valid Mailpath Tests ==========

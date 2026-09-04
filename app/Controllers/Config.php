@@ -484,8 +484,8 @@ class Config extends Secure_Controller
     public function postSaveLocale(): ResponseInterface
     {
         $rules = [
-            'payment_reference_code_min' => 'required|integer|greater_than[0]',
-            'payment_reference_code_max' => 'required|integer|greater_than_equal_to[payment_reference_code_min]',
+            'payment_reference_code_min' => 'required',
+            'payment_reference_code_max' => 'required',
         ];
         if (!$this->validate($rules)) {
             $errors = $this->validator->getErrors();
