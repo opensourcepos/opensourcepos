@@ -3,4 +3,4 @@ CREATE TABLE IF NOT EXISTS `ospos_plugin_migrations` (
     `version`   bigint(20) UNSIGNED NOT NULL DEFAULT 0,
     `ran_at`    datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
     PRIMARY KEY (`plugin_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
