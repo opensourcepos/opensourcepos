@@ -539,7 +539,7 @@ class SalesControllerTest extends CIUnitTestCase
         ]);
 
         $response->assertStatus(200);
-        $response->assertSee(lang('Sales.negative_amount_tendered'));
+        $response->assertSee(lang('Sales.must_enter_numeric'));
 
         // ... and the negative payment must NOT have been added to the cart.
         $session  = Services::session();
