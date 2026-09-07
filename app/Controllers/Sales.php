@@ -431,21 +431,24 @@ class Sales extends Secure_Controller
             return $this->reload($data);
         }
 
+        $isReturnMode = $this->sale_lib->get_mode() === 'return';
+        $amountTenderedRule = $isReturnMode ? 'trim|required|decimal_locale' : 'trim|required|decimal_locale|nonNegativeDecimal';
+
         if ($paymentType === lang('Sales.giftcard')) {
-            $rules    = ['amount_tendered' => 'trim|required|integer']; //For giftcards, amount_tendered becomes the giftcard number which must be an integer
+            $rules    = ['amount_tendered' => 'trim|required|integer'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
         } elseif (in_array($paymentType, get_reference_code_payment_types())) {
             $min      = (int)($this->config['payment_reference_code_min'] ?? 3);
             $max      = (int)($this->config['payment_reference_code_max'] ?? 20);
             $rules    = [
-                'amount_tendered' => 'trim|required|decimal_locale|nonNegativeDecimal',
+                'amount_tendered' => $amountTenderedRule,
                 'reference_code'  => "trim|required|alpha_numeric|min_length[$min]|max_length[$max]",
             ];
             $messages = [
                 'amount_tendered' => [
                     'required'           => lang('Sales.must_enter_numeric'),
                     'decimal_locale'     => lang('Sales.must_enter_numeric'),
-                    'nonNegativeDecimal' => lang('Sales.negative_amount_invalid'),
+                    'nonNegativeDecimal' => lang('Sales.negative_amount_tendered'),
                 ],
                 'reference_code'  => [
                     'required'      => lang('Sales.must_enter_reference_code'),
@@ -455,12 +458,12 @@ class Sales extends Secure_Controller
                 ],
             ];
         } else {
-            $rules    = ['amount_tendered' => 'trim|required|decimal_locale|nonNegativeDecimal'];
+            $rules    = ['amount_tendered' => $amountTenderedRule];
             $messages = [
                 'amount_tendered' => [
                     'required'           => lang('Sales.must_enter_numeric'),
                     'decimal_locale'     => lang('Sales.must_enter_numeric'),
-                    'nonNegativeDecimal' => lang('Sales.negative_amount_invalid'),
+                    'nonNegativeDecimal' => lang('Sales.negative_amount_tendered'),
                 ],
             ];
         }
@@ -1733,7 +1736,7 @@ class Sales extends Secure_Controller
     {
         $sale_id = $this->sale_lib->get_sale_id();
         if ($sale_id != NEW_ENTRY && $sale_id != '') {
-            $sale_type = $this->sale_lib->get_sale_type();
+            $sale_type = $this->sale_lib->getSaleType();
 
             if ($this->config['dinner_table_enable']) {
                 $dinner_table = $this->sale_lib->get_dinner_table();
@@ -1787,7 +1790,7 @@ class Sales extends Secure_Controller
         $invoice_number = $this->sale_lib->get_invoice_number();
         $work_order_number = $this->sale_lib->get_work_order_number();
         $quote_number = $this->sale_lib->get_quote_number();
-        $sale_type = $this->sale_lib->get_sale_type();
+        $sale_type = $this->sale_lib->getSaleType();
 
         if ($sale_type == '') {
             $sale_type = SALE_TYPE_POS;
@@ -1837,15 +1840,22 @@ class Sales extends Secure_Controller
      */
     public function postUnsuspend(): ResponseInterface|string
     {
-        $sale_id = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
-        $this->sale_lib->clear_all();
+        $personId = $this->session->get('person_id');
 
-        if ($sale_id > 0) {
-            $this->sale_lib->copy_entire_sale($sale_id);
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return $this->response->setStatusCode(403)
+                ->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
+        $saleId = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
+
+        if ($saleId > 0 && $this->sale->getSaleStatus($saleId) == SUSPENDED) {
+            $this->sale_lib->clear_all();
+            $this->sale_lib->copy_entire_sale($saleId);
         }
 
         // Set current register mode to reflect that of unsuspended order type
-        $this->change_register_mode($this->sale_lib->get_sale_type());
+        $this->change_register_mode($this->sale_lib->getSaleType());
 
         return $this->reload();
     }
