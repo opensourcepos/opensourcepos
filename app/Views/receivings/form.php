@@ -55,7 +55,7 @@
                     <?= form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
                 <?php else: ?>
                     <?= form_hidden('employee_id', $receiving_info['employee_id']) ?>
-                    <?= form_input(['name' => 'employee_name', 'value' => esc($employees[$receiving_info['employee_id']] ?? ''), 'class' => 'form-control input-sm', 'readonly' => 'readonly']) ?>
+                    <?= form_input(['name' => 'employee_name', 'value' => $employees[$receiving_info['employee_id']] ?? '', 'class' => 'form-control input-sm', 'readonly' => 'readonly']) ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -76,7 +76,7 @@
 
         $('#datetime').datetimepicker(pickerconfig);
 
-        var fill_value = function(event, ui) {
+        const fill_value = function(event, ui) {
             event.preventDefault();
             $("input[name='supplier_id']").val(ui.item.value);
             $("input[name='supplier_name']").val(ui.item.label);

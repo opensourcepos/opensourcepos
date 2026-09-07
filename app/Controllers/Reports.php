@@ -25,6 +25,7 @@ use App\Models\Reports\Summary_sales;
 use App\Models\Reports\Summary_sales_taxes;
 use App\Models\Reports\Summary_suppliers;
 use App\Models\Reports\Summary_taxes;
+use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
@@ -55,8 +56,8 @@ class Reports extends Secure_Controller
     {
         parent::__construct('reports');
         $request = Services::request();
-        $method_name = $request->getUri()->getSegment(2);
-        $exploder = explode('_', $method_name);
+        $methodName = urldecode($request->getUri()->getSegment(2));
+        $exploder = explode('_', $methodName);
 
         $this->attribute = config(Attribute::class);
         $this->config = config(OSPOS::class)->settings;
@@ -79,15 +80,16 @@ class Reports extends Secure_Controller
         $this->inventory_summary = model(Inventory_summary::class);
 
         if (sizeof($exploder) > 1) {
-            preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);
+            preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $methodName, $matches);
             preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
-            $submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
+            $submoduleId = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
+        } else {
+            $submoduleId = null;
+        }
 
-            // Check access to report submodule
-            if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
-                header('Location: ' . base_url('no_access/reports/reports_' . $submodule_id));
-                exit();
-            }
+        // Check access to report submodule
+        if ($submoduleId !== null && !$this->employee->has_grant('reports_' . $submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
+            throw new RedirectException('no_access/reports/reports_' . $submoduleId);
         }
 
         helper('report');
@@ -1778,7 +1780,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_SALES, true);
+        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_SALES, true);
 
         $inputs = [
             'start_date'     => $start_date,
@@ -1937,7 +1939,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_RECEIVINGS, true);
+        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_RECEIVINGS, true);
 
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
 

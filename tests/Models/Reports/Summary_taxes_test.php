@@ -14,7 +14,7 @@ class Summary_taxes_test extends CIUnitTestCase
 
     protected $migrate = true;
     protected $migrateOnce = true;
-    protected $refresh = true;
+    protected $refresh = false;
     protected $namespace = null;
 
     private array $seededSaleIds = [];

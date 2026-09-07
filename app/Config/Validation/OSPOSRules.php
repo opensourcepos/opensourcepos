@@ -6,6 +6,8 @@ use App\Models\Employee;
 use CodeIgniter\HTTP\IncomingRequest;
 use Config\OSPOS;
 use Config\Services;
+use DirectoryIterator;
+use IntlChar;
 
 /**
  * @property Employee employee
@@ -39,13 +41,6 @@ class OSPOSRules
             return false;
         }
 
-        $password = $data['password'];
-        if (!$employee->login($username, $password)) {
-            $error = lang('Login.invalid_username_and_password');
-
-            return false;
-        }
-
         $gcaptcha_enabled = array_key_exists('gcaptcha_enable', $this->config) && $this->config['gcaptcha_enable'];
         if ($gcaptcha_enabled) {
             $g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
@@ -57,6 +52,13 @@ class OSPOSRules
             }
         }
 
+        $password = $data['password'];
+        if (!$employee->login($username, $password)) {
+            $error = lang('Login.invalid_username_and_password');
+
+            return false;
+        }
+
         return true;
     }
 
@@ -66,7 +68,7 @@ class OSPOSRules
      * @param $response
      * @return bool true on successful GCaptcha verification or false if GCaptcha failed.
      */
-    private function gcaptcha_check($response): bool
+    protected function gcaptcha_check($response): bool
     {
         if (!empty($response)) {
             $check = [
@@ -149,5 +151,98 @@ class OSPOSRules
         $value = parse_decimals($candidate);
 
         return $value !== false && $value >= 0;
+    }
+
+    /**
+     * Validates that the candidate theme name matches an installed bootswatch theme directory.
+     *
+     * @param string $theme
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function themeExists(string $theme, ?string &$error = null): bool
+    {
+        $dir = new DirectoryIterator('resources/bootswatch');
+
+        foreach ($dir as $fileInfo) {
+            if (
+                $fileInfo->isDir()
+                && !$fileInfo->isDot()
+                && $fileInfo->getFilename() !== 'fonts'
+                && $fileInfo->getFilename() === $theme
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Unicode-aware version of CodeIgniter's built-in `alpha_numeric_punct` rule, which only
+     * matches ASCII (`preg_match('\A[A-Z0-9 ~!#$%\&\*\-_+=|:.]+\z/i', ...)`) and so rejects
+     * legitimate non-English text (e.g. accented or CJK characters). Allows unicode letters,
+     * combining marks (so base+diacritic sequences pass), and digits in place of `A-Z0-9`, and
+     * reuses the exact same punctuation set as the original rule (`~!#$%&*-_+=|:.` plus space),
+     * extended with `'` and `,` to accommodate real-world tax names (e.g. "O'Brien's Tax",
+     * "Impôt, incl."). `<` and `>` are deliberately absent from the punctuation set, same as in
+     * the original rule, so this also serves as a defense-in-depth backstop against HTML
+     * injection (the primary fix is escaping at render time).
+     *
+     * @param string $candidate
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function unicode_alpha_numeric_punct(string $candidate, ?string &$error = null): bool
+    {
+        $allowedPunctuation = ['~', '!', '#', '$', '%', '&', '*', '-', '_', '+', '=', '|', ':', '.', ' ', "'", ','];
+
+        $allowedCategories = [
+            IntlChar::CHAR_CATEGORY_UPPERCASE_LETTER,
+            IntlChar::CHAR_CATEGORY_LOWERCASE_LETTER,
+            IntlChar::CHAR_CATEGORY_TITLECASE_LETTER,
+            IntlChar::CHAR_CATEGORY_MODIFIER_LETTER,
+            IntlChar::CHAR_CATEGORY_OTHER_LETTER,
+            IntlChar::CHAR_CATEGORY_NON_SPACING_MARK,
+            IntlChar::CHAR_CATEGORY_COMBINING_SPACING_MARK,
+            IntlChar::CHAR_CATEGORY_ENCLOSING_MARK,
+            IntlChar::CHAR_CATEGORY_DECIMAL_DIGIT_NUMBER,
+            IntlChar::CHAR_CATEGORY_LETTER_NUMBER,
+            IntlChar::CHAR_CATEGORY_OTHER_NUMBER,
+        ];
+
+        foreach (mb_str_split($candidate) as $character) {
+            if (in_array($character, $allowedPunctuation, true)) {
+                continue;
+            }
+
+            if (!in_array(IntlChar::charType($character), $allowedCategories, true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Validates that the candidate is a plain filesystem path: only letters, digits,
+     * underscore, dash, dot and forward slash. Uses \A...\z (not ^...$) because PCRE's $
+     * also matches immediately before a single trailing newline, which would let a
+     * value like "/usr/bin/php\n" slip through — the bug behind GHSA-jc56-j8m6-q627.
+     *
+     * @param string $candidate
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function valid_path_strict(string $candidate, ?string &$error = null): bool
+    {
+        if ($candidate === '') {
+            return false;
+        }
+
+        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.]+\z/', $candidate);
     }
 }

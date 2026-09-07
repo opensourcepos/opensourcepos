@@ -56,7 +56,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
         $foreignKeyExists = $this->db->query($checkSql)->getRow();
 
         if ($foreignKeyExists) {
-            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes') . ' DROP CONSTRAINT ospos_sales_items_taxes_ibfk_1');
+            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes') . ' DROP FOREIGN KEY ospos_sales_items_taxes_ibfk_1');
         }
 
         $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes')

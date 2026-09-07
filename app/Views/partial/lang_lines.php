@@ -1,7 +1,7 @@
 <script type="text/javascript">
     (function(lang, $) {
 
-        var lines = {
+        const lines = {
             'common_submit': "<?= lang('Common.submit') ?>",
             'common_close': "<?= lang('Common.close') ?>"
         };

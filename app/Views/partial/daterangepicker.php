@@ -6,8 +6,8 @@
 
 <?php if (empty($config['date_or_time_format'])) { ?>
     $('#daterangepicker').css("width", "180");
-    var start_date = "<?= date('Y-m-d') ?>";
-    var end_date = "<?= date('Y-m-d') ?>";
+    let start_date = "<?= date('Y-m-d') ?>";
+    let end_date = "<?= date('Y-m-d') ?>";
 
     $('#daterangepicker').daterangepicker({
     "ranges": {
@@ -112,8 +112,8 @@
     });
 <?php } else { ?>
     $('#daterangepicker').css("width", "305");
-    var start_date = "<?= date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) ?>";
-    var end_date = "<?= date('Y-m-d H:i:s', mktime(23, 59, 59, date("m"), date("d"), date("Y"))) ?>";
+    let start_date = "<?= date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) ?>";
+    let end_date = "<?= date('Y-m-d H:i:s', mktime(23, 59, 59, date("m"), date("d"), date("Y"))) ?>";
     $('#daterangepicker').daterangepicker({
     "ranges": {
     "<?= lang('Datepicker.today') ?>": [

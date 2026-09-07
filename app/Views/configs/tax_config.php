@@ -143,8 +143,8 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        var enable_disable_use_destination_based_tax = (function() {
-            var use_destination_based_tax = $("#use_destination_based_tax").is(":checked");
+        const enable_disable_use_destination_based_tax = (function() {
+            const use_destination_based_tax = $("#use_destination_based_tax").is(":checked");
             $("select[name='default_tax_code']").prop("disabled", !use_destination_based_tax);
             $("select[name='default_tax_category']").prop("disabled", !use_destination_based_tax);
             $("select[name='default_tax_jurisdiction']").prop("disabled", !use_destination_based_tax);

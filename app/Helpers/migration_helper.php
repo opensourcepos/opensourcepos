@@ -3,77 +3,43 @@
 use Config\Database;
 
 /**
- * Migration helper.
+ * Executes a SQL migration script.
  * @param string $path Path to migration script.
+ * @param bool $withTransaction Whether to wrap execution in a transaction.
  * @return bool Whether the migration executed successfully.
  */
-function execute_script(string $path): bool
+function executeScript(string $path, bool $withTransaction = false): bool
 {
-    $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
+    $version = explode('_', basename($path, '.sql'), 2)[0];
     log_message('info', "Migrating to $version (file: $path)");
 
-    $sql = file_get_contents($path);
-    $sqls = explode(';', $sql);
+    $sqls = explode(';', file_get_contents($path));
     array_pop($sqls);
 
     $db = Database::connect();
+
+    if ($withTransaction) {
+        $db->transStart();
+    }
 
     $success = true; // whether *all* queries succeeded
-    foreach ($sqls as $statement) {
-        $statement = "$statement;";
-        $hadError = !$db->simpleQuery($statement);
-
-        if ($hadError) {
-            $success = false;
-            foreach ($db->error() as $error) {
-                log_message('error', "error: $error");
-            }
-        }
-    }
-
-    if ($success) {
-        log_message('info', "Successfully migrated to $version");
-    }
-    else {
-        log_message('info', "Could not migrate to $version.");
-    }
-
-    return $success;
-}
-
-/**
- * Migration helper that uses a transaction.
- * @param string $path Path to migration script.
- * @return bool Whether the migration executed successfully.
- */
-function executeScriptWithTransaction(string $path): bool
-{
-    $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
-    log_message('info', "Migrating to $version (file: $path) with transaction");
-
-    $sql = file_get_contents($path);
-    $sqls = explode(';', $sql);
-    array_pop($sqls);
-
-    $db = Database::connect();
-    $db->transStart();
-
-    $success = true;
     try {
         foreach ($sqls as $statement) {
             $statement = "$statement;";
-            $hadError = !$db->query($statement);
+            $hadError = $withTransaction ? !$db->query($statement) : !$db->simpleQuery($statement);
 
             if ($hadError) {
                 $success = false;
                 foreach ($db->error() as $error) {
-                    log_message('info', "error: $error");
+                    log_message('error', "error: $error");
                 }
             }
         }
     } catch (Exception $e) {
-        log_message('info', "Could not migrate to $version: " . $e->getMessage());
-        $db->transRollback();
+        log_message('error', "Could not migrate to $version: " . $e->getMessage());
+        if ($withTransaction) {
+            $db->transRollback();
+        }
         return false;
     }
 
@@ -83,7 +49,10 @@ function executeScriptWithTransaction(string $path): bool
         log_message('info', "Could not migrate to $version.");
     }
 
-    $db->transComplete();
+    if ($withTransaction) {
+        $db->transComplete();
+    }
+
     return $success;
 }
 

@@ -37,9 +37,6 @@ class Item_taxes extends Model
     {
         $success = true;
 
-        // Run these queries as a transaction, we want to make sure we do all or nothing
-        $this->db->transStart();
-
         $this->delete($item_id);
 
         $builder = $this->db->table('items_taxes');
@@ -48,10 +45,6 @@ class Item_taxes extends Model
             $row['item_id'] = $item_id;
             $success &= $builder->insert($row);
         }
-
-        $this->db->transComplete();
-
-        $success &= $this->db->transStatus();
 
         return $success;
     }

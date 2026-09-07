@@ -149,7 +149,7 @@
                 <?= nl2br(esc($config['return_policy'])) ?>
             </div>
             <div id="barcode">
-                <?= $quote_number ?>
+                <?= esc($quote_number) ?>
             </div>
         </div>
     </div>

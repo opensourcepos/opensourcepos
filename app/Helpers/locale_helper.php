@@ -485,7 +485,7 @@ function parse_decimals(string $number, ?int $decimals = null): mixed
     $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
 
     if (!$decimals) {
-        $decimals = intVal($config['currency_decimals']);
+        $decimals = intVal($config['currency_decimals'] ?? 2);
         $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
     }
 

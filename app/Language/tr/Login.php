@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "Veritabanı göçleri çalışıyor...",
     "password"                            => "Parola",
     "required_username"                   => "Kullanıcı adı alanı gereklidir.",
+    'too_many_attempts'                   => 'Çok fazla deneme yapıldı. Lütfen bir süre bekleyip tekrar deneyin.',
     "username"                            => "Kullanıcı Adı",
     "welcome"                             => "{0}'e Hoş Geldiniz!"
 ];

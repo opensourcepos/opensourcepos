@@ -284,4 +284,107 @@ class ConfigTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
     }
+
+    // ========== postSaveGeneral: theme validation ==========
+
+    private function baseGeneralPayload(array $overrides = []): array
+    {
+        return array_merge([
+            'theme'                          => 'flatly',
+            'login_form'                     => 'floating_labels',
+            'default_sales_discount_type'    => '',
+            'default_sales_discount'         => '0.00',
+            'default_receivings_discount_type' => '',
+            'default_receivings_discount'    => '0.00',
+            'enforce_privacy'                => '',
+            'receiving_calculate_average_price' => '',
+            'lines_per_page'                 => '20',
+            'notify_horizontal_position'     => 'bottom',
+            'notify_vertical_position'       => 'right',
+            'image_max_width'                => '1000',
+            'image_max_height'               => '1000',
+            'image_max_size'                 => '5120',
+            'image_allowed_types'            => ['jpg', 'jpeg', 'gif', 'png'],
+            'gcaptcha_enable'                => '',
+            'gcaptcha_secret_key'            => '',
+            'gcaptcha_site_key'              => '',
+            'suggestions_first_column'       => 'name',
+            'suggestions_second_column'      => '',
+            'suggestions_third_column'       => '',
+            'giftcard_number'                => '',
+            'derive_sale_quantity'           => '',
+            'multi_pack_enabled'             => '',
+            'include_hsn'                    => '',
+            'category_dropdown'              => '',
+            'show_office_group'              => '',
+        ], $overrides);
+    }
+
+    public function testSaveGeneral_AcceptsValidTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'darkly',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testSaveGeneral_AcceptsEmptyTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => '',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testSaveGeneral_RejectsUnknownTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'nonexistent',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
+
+    public function testSaveGeneral_RejectsXssPayloadInTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'x" onerror="alert(document.domain)" x="',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
+
+    public function testSaveGeneral_RejectsNonThemeDirectory(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'fonts',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
 }

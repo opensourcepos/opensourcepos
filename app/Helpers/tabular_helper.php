@@ -61,7 +61,7 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
 }
 
 
-function sales_headers(): array
+function salesHeaders(): array
 {
     return [
         ['sale_id'         => lang('Common.id')],
@@ -79,7 +79,7 @@ function sales_headers(): array
  */
 function get_sales_manage_table_headers(): string
 {
-    $headers = sales_headers();
+    $headers = salesHeaders();
     $config = config(OSPOS::class)->settings;
 
     if ($config['invoice_enable']) {
@@ -95,7 +95,7 @@ function get_sales_manage_table_headers(): string
 /**
  * Get the html data row for the sales
  */
-function get_sale_data_row(object $sale): array
+function getSaleDataRow(object $sale): array
 {
     $uri = current_url(true);
     $controller = $uri->getSegment(1);
@@ -145,7 +145,7 @@ function get_sale_data_row(object $sale): array
 /**
  * Get the html data last row for the sales
  */
-function get_sale_data_last_row(ResultInterface $sales): array
+function getSaleDataLastRow(ResultInterface $sales): array
 {
     $sum_amount_due = 0;
     $sum_amount_tendered = 0;
@@ -169,7 +169,7 @@ function get_sale_data_last_row(ResultInterface $sales): array
 /**
  * Get the sales payments summary
  */
-function get_sales_manage_payments_summary(array $payments): string
+function getSalesManagePaymentsSummary(array $payments): string
 {
     $table = '<div id="report_summary">';
     $total = 0;
@@ -409,7 +409,7 @@ function get_items_manage_table_headers(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
-    $definitionsWithTypes = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
+    $definitionsWithTypes = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
     $headers = item_headers();
 
@@ -480,7 +480,7 @@ function get_item_data_row(object $item): array
         $item->name .= NAME_SEPARATOR . $item->pack_name;
     }
 
-    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
+    $definition_names = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
     $columns = [
         'items.item_id' => $item->item_id,
@@ -699,7 +699,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
     $attribute = model(Attribute::class);
     $controller = get_controller();
 
-    if (count($attribute->get_definition_flags()) == 0) {
+    if (count($attribute->getDefinitionFlags()) == 0) {
         $definition_flags = lang('Common.none_selected_text');
     } elseif ($attribute->definition_type == GROUP) {
         $definition_flags = "-";

@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "Datenbank-Migrationen werden ausgeführt...",
     "password"                            => "Passwort",
     "required_username"                   => "Das Feld Benutzername ist erforderlich.",
+    'too_many_attempts'                   => 'Zu viele Versuche. Bitte warten Sie einen Moment und versuchen Sie es erneut.',
     "username"                            => "Benutzername",
     "welcome"                             => "Willkommen bei {0}!"
 ];

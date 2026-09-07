@@ -12,7 +12,7 @@ class Migration_sessions_migration extends Migration
     public function up(): void
     {
         helper('migration');
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_migrate_sessions_table.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_migrate_sessions_table.sql');
     }
 
     /**

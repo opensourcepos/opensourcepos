@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Password",
     "required_username"                   => "",
+    'too_many_attempts'                   => 'Твърде много опити. Моля, изчакайте малко и опитайте отново.',
     "username"                            => "Username",
     "welcome"                             => ""
 ];

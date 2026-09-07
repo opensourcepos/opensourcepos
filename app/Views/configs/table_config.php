@@ -43,8 +43,8 @@
     // Validation and submit handling
     $(document).ready(function() {
 
-        var enable_disable_dinner_table_enable = (function() {
-            var dinner_table_enable = $("#dinner_table_enable").is(":checked");
+        const enable_disable_dinner_table_enable = (function() {
+            const dinner_table_enable = $("#dinner_table_enable").is(":checked");
             $("input[name*='dinner_table']:not(input[name=dinner_table_enable])").prop("disabled", !dinner_table_enable);
             if (dinner_table_enable) {
                 $(".add_dinner_table, .remove_dinner_table").show();
@@ -56,9 +56,9 @@
 
         $("#dinner_table_enable").change(enable_disable_dinner_table_enable);
 
-        var table_count = <?= sizeof($dinner_tables) ?>;
+        let table_count = <?= sizeof($dinner_tables) ?>;
 
-        var hide_show_remove = function() {
+        const hide_show_remove = function() {
             if ($("input[name*='dinner_tables']:enabled").length > 1) {
                 $(".remove_dinner_tables").show();
             } else {
@@ -66,23 +66,23 @@
             }
         };
 
-        var add_dinner_table = function() {
-            var id = $(this).parent().find('input').attr('id');
+        const add_dinner_table = function() {
+            let id = $(this).parent().find('input').attr('id');
             id = id.replace(/.*?_(\d+)$/g, "$1");
-            var block = $(this).parent().clone(true);
-            var new_block = block.insertAfter($(this).parent());
-            var new_block_id = 'dinner_table_' + ++id;
+            const block = $(this).parent().clone(true);
+            const new_block = block.insertAfter($(this).parent());
+            const new_block_id = 'dinner_table_' + ++id;
             $(new_block).find('label').html("<?= lang('Config.dinner_table') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
             $(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
             hide_show_remove();
         };
 
-        var remove_dinner_table = function() {
+        const remove_dinner_table = function() {
             $(this).parent().remove();
             hide_show_remove();
         };
 
-        var init_add_remove_tables = function() {
+        const init_add_remove_tables = function() {
             $('.add_dinner_table').click(add_dinner_table);
             $('.remove_dinner_table').click(remove_dinner_table);
             hide_show_remove();
@@ -91,10 +91,10 @@
         };
         init_add_remove_tables();
 
-        var duplicate_found = false;
+        const duplicate_found = false;
         // Run validator once for all fields
         $.validator.addMethod('dinner_table', function(value, element) {
-            var value_count = 0;
+            let value_count = 0;
             $("input[name*='dinner_table']:not(input[name=dinner_table_enable])").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
             });

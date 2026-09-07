@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Attribute;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
+use JsonException;
 
 require_once('Secure_Controller.php');
 
@@ -64,8 +65,14 @@ class Attributes extends Secure_Controller
      */
     public function postSaveAttributeValue(): ResponseInterface
     {
+        $attributeValue = $this->request->getPost('attribute_value');
+
+        if (!is_string($attributeValue) || $attributeValue === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->saveAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $attributeValue,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
             $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT) ?? false,
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
@@ -81,8 +88,14 @@ class Attributes extends Secure_Controller
      */
     public function postDeleteDropdownAttributeValue(): ResponseInterface
     {
+        $attributeValue = $this->request->getPost('attribute_value');
+
+        if (!is_string($attributeValue) || $attributeValue === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->deleteDropdownAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $attributeValue,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
 
@@ -132,11 +145,25 @@ class Attributes extends Secure_Controller
 
         $definition_name = $definition_data['definition_name'];
 
+        if ($definition_id == NO_DEFINITION_ID) {
+            try {
+                $definition_values = json_decode($this->request->getPost('definition_values') ?? '', false, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                $definition_values = null;
+            }
+
+            if (!is_array($definition_values) || array_filter($definition_values, static fn ($value) => !is_string($value)) !== []) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
+                    'id'      => NEW_ENTRY
+                ]);
+            }
+        }
+
         if ($this->attribute->saveDefinition($definition_data, $definition_id)) {
             // New definition
             if ($definition_id == NO_DEFINITION_ID) {
-                $definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
-
                 foreach ($definition_values as $definition_value) {
                     $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
                 }
@@ -221,7 +248,7 @@ class Attributes extends Secure_Controller
     private function get_attributes(int $definition_flags = 0): array
     {
         $definition_flag_names = [];
-        foreach (Attribute::get_definition_flags() as $id => $term) {
+        foreach (Attribute::getDefinitionFlags() as $id => $term) {
             if ($id & $definition_flags) {
                 $definition_flag_names[$id] = lang('Attributes.' . strtolower($term) . '_visibility');
             }
@@ -241,8 +268,8 @@ class Attributes extends Secure_Controller
         }
 
         $data['definition_id'] = $definition_id;
-        $data['definition_values'] = $this->attribute->get_definition_values($definition_id);
-        $data['definition_group'] = $this->attribute->get_definitions_by_type(GROUP, $definition_id);
+        $data['definition_values'] = $this->attribute->getDefinitionValues($definition_id);
+        $data['definition_group'] = $this->attribute->getDefinitionsByType(GROUP, $definition_id);
         $data['definition_group'][''] = lang('Common.none_selected_text');
         $data['definition_info'] = $info;
 

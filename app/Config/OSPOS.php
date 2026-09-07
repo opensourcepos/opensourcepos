@@ -39,6 +39,7 @@ class OSPOS extends BaseConfig
 
         try {
             $db = Database::connect();
+            $db->resetDataCache();
 
             if (!$db->tableExists('app_config')) {
                 $this->settings = $this->getDefaultSettings();

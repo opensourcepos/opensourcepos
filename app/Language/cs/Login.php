@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Heslo",
     "required_username"                   => "",
+    'too_many_attempts'                   => 'Příliš mnoho pokusů. Počkejte chvíli a zkuste to znovu.',
     "username"                            => "Uživatelské jméno",
     "welcome"                             => ""
 ];
