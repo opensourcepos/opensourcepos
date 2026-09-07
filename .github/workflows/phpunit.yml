@@ -85,11 +85,11 @@ jobs:
           echo "MariaDB is ready!"
 
           # Grant admin the CREATE/DROP privileges it needs to drop and
-          # recreate the test database at the start of each test class. The
-          # official MariaDB image only grants DB-scoped privileges on the
-          # database named by MYSQL_DATABASE.
+          # recreate the test database at the start of each test class.
+          # Scoped to ospos_test only — never global *.* — so a compromised
+          # test process cannot alter or drop unrelated schemas.
           docker exec mysql mysql -u root -proot \
-            --execute="GRANT CREATE, DROP ON *.* TO 'admin'@'%'; FLUSH PRIVILEGES;"
+            --execute="GRANT CREATE, DROP ON ospos_test.* TO 'admin'@'%'; FLUSH PRIVILEGES;"
 
       - name: Get composer cache directory
         run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
@@ -108,6 +108,16 @@ jobs:
 
       - name: Create .env file
         run: cp .env.example .env
+
+      - name: Provision per-run encryption key
+        # Generates a unique key for this run and exports it so the PHP
+        # runtime picks it up as a real OS env var. CodeIgniter's DotEnv
+        # loader never overwrites an already-set OS env var (see
+        # DotEnv::setVariable()), so this wins over the blank value in the
+        # copied .env file — no shared key is committed or shipped.
+        run: |
+          KEY=$(openssl rand -hex 32)
+          printf 'encryption.key=%s\n' "$KEY" >> "$GITHUB_ENV"
 
       - name: Run PHPUnit tests
         env:

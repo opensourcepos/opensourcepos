@@ -266,11 +266,11 @@ class ConfigTest extends CIUnitTestCase
         $this->assertTrue($result['success']);
     }
 
-    public function testSaveLocale_SanitizesNonNumericReferenceCodeLimits(): void
+    public function testSaveLocale_RejectsNonNumericReferenceCodeLimits(): void
     {
         $this->resetSession();
 
-        // FILTER_SANITIZE_NUMBER_INT strips non-numeric chars — controller accepts without error
+        // Non-numeric values fail integer validation, so the controller returns success===false.
         $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
             'payment_reference_code_min' => 'abc',
             'payment_reference_code_max' => 'xyz',
@@ -278,7 +278,49 @@ class ConfigTest extends CIUnitTestCase
 
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
-        $this->assertTrue($result['success']);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsZeroReferenceCodeMin(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '0',
+            'payment_reference_code_max' => '20',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsNegativeReferenceCodeMin(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '-1',
+            'payment_reference_code_max' => '20',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsMaxLessThanMin(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '10',
+            'payment_reference_code_max' => '5',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
     }
 
     // ========== postSaveGeneral: theme validation ==========
