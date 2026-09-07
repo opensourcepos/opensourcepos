@@ -110,14 +110,13 @@ jobs:
         run: cp .env.example .env
 
       - name: Provision per-run encryption key
-        # Generates a unique key for this run and exports it so the PHP
-        # runtime picks it up as a real OS env var. CodeIgniter's DotEnv
-        # loader never overwrites an already-set OS env var (see
-        # DotEnv::setVariable()), so this wins over the blank value in the
-        # copied .env file — no shared key is committed or shipped.
+        # Generates a unique key for this run and exports it as a real OS env
+        # var (ENCRYPTION_KEY), which the app's Encryption config reads as a
+        # fallback after the normal .env lookup. This is supported explicitly,
+        # so no shared key is committed or shipped.
         run: |
           KEY=$(openssl rand -hex 32)
-          printf 'encryption.key=%s\n' "$KEY" >> "$GITHUB_ENV"
+          printf 'ENCRYPTION_KEY=%s\n' "$KEY" >> "$GITHUB_ENV"
 
       - name: Run PHPUnit tests
         env:
