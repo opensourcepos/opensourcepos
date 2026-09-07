@@ -127,12 +127,15 @@ class Receiving_lib
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function get_stock_source(): int
+    public function get_stock_source(): ?int
     {
         if (!$this->session->get('recv_stock_source')) {
-            $this->set_stock_source($this->stock_location->get_default_location_id('receivings'));
+            $defaultId = $this->stock_location->getDefaultLocationId('receivings');
+            if ($defaultId !== null) {
+                $this->set_stock_source($defaultId);
+            }
         }
 
         return $this->session->get('recv_stock_source');
@@ -226,12 +229,15 @@ class Receiving_lib
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function get_stock_destination(): string
+    public function get_stock_destination(): ?string
     {
         if (!$this->session->get('recv_stock_destination')) {
-            $this->set_stock_destination($this->stock_location->get_default_location_id('receivings'));
+            $defaultId = $this->stock_location->getDefaultLocationId('receivings');
+            if ($defaultId !== null) {
+                $this->set_stock_destination((string) $defaultId);
+            }
         }
 
         return $this->session->get('recv_stock_destination');
@@ -325,7 +331,7 @@ class Receiving_lib
                 'item_id'                    => $itemId,
                 'item_location'              => $itemLocation,
                 'item_number'                => $itemInfo->item_number,
-                'stock_name'                 => $this->stock_location->get_location_name($itemLocation),
+                'stock_name'                 => $this->stock_location->getLocationName($itemLocation),
                 'line'                       => $insertKey,
                 'name'                       => $itemInfo->name,
                 'description'                => $description != null ? $description : $itemInfo->description,

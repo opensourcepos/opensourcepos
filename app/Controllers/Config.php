@@ -222,7 +222,7 @@ class Config extends Secure_Controller
     public function getIndex(): string
     {
         $data['config'] = $this->config;
-        $data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
+        $data['stock_locations'] = $this->stock_location->getAll()->getResultArray();
         $data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
         $data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
         $data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
@@ -678,7 +678,7 @@ class Config extends Secure_Controller
      */
     public function getStockLocations(): string
     {
-        $stock_locations = $this->stock_location->get_all()->getResultArray();
+        $stock_locations = $this->stock_location->getAll()->getResultArray();
 
         return view('partial/stock_locations', ['stock_locations' => $stock_locations]);
     }
@@ -741,30 +741,27 @@ class Config extends Secure_Controller
      */
     public function postSaveLocations(): ResponseInterface
     {
-        $this->db->transStart();
+        $submittedLocations = $this->request->getPost('stock_location');
+        $submittedNewLocations = $this->request->getPost('stock_location_new');
 
-        $not_to_delete = [];
-        foreach ($this->request->getPost() as $key => $value) {
-            if (str_contains($key, 'stock_location')) {
-                // Save or update
-                foreach ($value as $location_id => $location_name) {
-                    $location_data = ['location_name' => $location_name];
-                    if ($this->stock_location->save_value($location_data, $location_id)) {
-                        $location_id = $this->stock_location->get_location_id($location_name);
-                        $not_to_delete[] = $location_id;
-                        $this->_clear_session_state();
-                    }
-                }
-            }
+        if (!is_array($submittedLocations)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Config.saved_unsuccessfully')]);
         }
 
-        // All locations not available in post will be deleted now
-        $deleted_locations = $this->stock_location->get_all()->getResultArray();
+        $submittedLocations = $this->sanitizeSubmittedLocations($submittedLocations);
+        $submittedNewLocations = $this->sanitizeSubmittedLocations((array) $submittedNewLocations);
 
-        foreach ($deleted_locations as $location => $location_data) {
-            if (!in_array($location_data['location_id'], $not_to_delete)) {
-                $this->stock_location->delete($location_data['location_id']);
-            }
+        $this->db->transStart();
+
+        $submittedLocationIds = array_keys($submittedLocations);
+
+        // Delete removed locations first so a reused name doesn't collide with the old row's still-present permission_id.
+        $this->deleteRemovedLocations($submittedLocationIds);
+
+        $saveResult = $this->saveSubmittedLocations($submittedLocations, $submittedNewLocations);
+
+        if (!$saveResult['saveFailed']) {
+            $this->saveLocationOrderAndDefault($saveResult['notToDelete'], $saveResult['newlyInsertedIds']);
         }
 
         $this->db->transComplete();
@@ -772,6 +769,100 @@ class Config extends Secure_Controller
         $success = $this->db->transStatus();
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    /**
+     * Keeps only numeric-keyed (existing location_id) or plain-indexed (new row) entries, and trims names.
+     */
+    private function sanitizeSubmittedLocations(array $submittedLocations): array
+    {
+        $submittedLocations = array_filter(
+            $submittedLocations,
+            fn ($locationId) => is_numeric($locationId),
+            ARRAY_FILTER_USE_KEY
+        );
+
+        return array_map(
+            fn ($locationName) => is_string($locationName) ? trim($locationName) : '',
+            $submittedLocations
+        );
+    }
+
+    private function deleteRemovedLocations(array $submittedLocationIds): void
+    {
+        $existingLocations = $this->stock_location->getAll()->getResultArray();
+
+        foreach ($existingLocations as $locationData) {
+            if (!in_array((string) $locationData['location_id'], $submittedLocationIds)) {
+                $this->stock_location->delete($locationData['location_id']);
+            }
+        }
+    }
+
+    private function saveSubmittedLocations(array $submittedLocations, array $submittedNewLocations): array
+    {
+        $notToDelete = [];
+        $newlyInsertedIds = [];
+
+        foreach ($submittedLocations as $locationId => $locationName) {
+            if ($locationName === '') {
+                $notToDelete[] = (int) $locationId;
+
+                continue;
+            }
+
+            $locationData = ['location_name' => $locationName];
+            if (!$this->stock_location->saveValue($locationData, (int) $locationId)) {
+                return ['notToDelete' => $notToDelete, 'newlyInsertedIds' => $newlyInsertedIds, 'saveFailed' => true];
+            }
+
+            $notToDelete[] = (int) $locationId;
+            $this->_clear_session_state();
+        }
+
+        foreach ($submittedNewLocations as $locationName) {
+            if ($locationName === '') {
+                continue;
+            }
+
+            $locationData = ['location_name' => $locationName];
+            if (!$this->stock_location->saveValue($locationData, NEW_ENTRY)) {
+                return ['notToDelete' => $notToDelete, 'newlyInsertedIds' => $newlyInsertedIds, 'saveFailed' => true];
+            }
+
+            $savedLocationId = $locationData['location_id'];
+            $notToDelete[] = $savedLocationId;
+            $newlyInsertedIds[] = $savedLocationId;
+            $this->_clear_session_state();
+        }
+
+        return ['notToDelete' => $notToDelete, 'newlyInsertedIds' => $newlyInsertedIds, 'saveFailed' => false];
+    }
+
+    private function saveLocationOrderAndDefault(array $notToDelete, array $newlyInsertedIds): void
+    {
+        $sortOrder = $this->request->getPost('stock_location_order');
+        $submittedOrderTokens = $sortOrder ? explode(',', $sortOrder) : [];
+
+        // 'new-<n>' tokens resolve to real inserted ids in submission order.
+        $submittedOrderIds = array_map(
+            function ($token) use (&$newlyInsertedIds) {
+                return str_starts_with($token, 'new-') ? array_shift($newlyInsertedIds) : (int) $token;
+            },
+            $submittedOrderTokens
+        );
+
+        $orderedLocationIds = array_values(array_unique(array_intersect($submittedOrderIds, $notToDelete)));
+        $orderedLocationIds = array_merge($orderedLocationIds, array_diff($notToDelete, $orderedLocationIds));
+
+        if ($orderedLocationIds) {
+            $this->stock_location->saveSortOrder($orderedLocationIds);
+        }
+
+        $defaultLocationId = $this->request->getPost('stock_location_default', FILTER_SANITIZE_NUMBER_INT);
+        if ($defaultLocationId && in_array((int) $defaultLocationId, array_map('intval', $notToDelete), true)) {
+            $this->stock_location->setDefaultLocation((int) $defaultLocationId);
+        }
     }
 
     /**

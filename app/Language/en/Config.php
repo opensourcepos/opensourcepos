@@ -296,6 +296,7 @@ return [
     'statistics'                                => 'Send Statistics',
     'statistics_tooltip'                        => 'Send statistics for development and feature improvement purposes.',
     'stock_location'                            => 'Stock location',
+    'stock_location_default'                    => 'Default stock location',
     'stock_location_duplicate'                  => 'Stock Location must be unique.',
     'stock_location_invalid_chars'              => "Stock Location can not contain '_'.",
     'stock_location_required'                   => 'Stock location is a required field.',

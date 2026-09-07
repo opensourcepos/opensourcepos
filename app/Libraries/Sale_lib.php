@@ -918,12 +918,15 @@ class Sale_lib
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function get_sale_location(): int
+    public function get_sale_location(): ?int
     {
         if (!$this->session->get('sales_location')) {
-            $this->set_sale_location($this->stock_location->get_default_location_id('sales'));
+            $defaultId = $this->stock_location->getDefaultLocationId('sales');
+            if ($defaultId !== null) {
+                $this->set_sale_location($defaultId);
+            }
         }
 
         return $this->session->get('sales_location');
@@ -1147,7 +1150,7 @@ class Sale_lib
                 $insertkey => [
                     'item_id'               => $item_id,
                     'item_location'         => $item_location,
-                    'stock_name'            => $this->stock_location->get_location_name($item_location),
+                    'stock_name'            => $this->stock_location->getLocationName($item_location),
                     'line'                  => $insertkey,
                     'name'                  => $item_info->name,
                     'item_number'           => $item_info->item_number,

@@ -1808,7 +1808,7 @@ class Reports extends Secure_Controller
         $details_data = [];
         $details_data_rewards = [];
 
-        $show_locations = $this->stock_location->multiple_locations();
+        $show_locations = $this->stock_location->multipleLocations();
 
         foreach ($report_data['summary'] as $key => $row) {    // TODO: Duplicated Code
             if ($row['sale_status'] == CANCELED) {
@@ -1848,7 +1848,7 @@ class Reports extends Secure_Controller
             foreach ($report_data['details'][$key] as $drow) {
                 $quantity_purchased = to_quantity_decimals($drow['quantity_purchased']);
                 if ($show_locations) {
-                    $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
+                    $quantity_purchased .= ' [' . $this->stock_location->getLocationName($drow['item_location']) . ']';
                 }
 
                 $attribute_values = expand_attribute_values($definition_names, $drow);
@@ -1959,7 +1959,7 @@ class Reports extends Secure_Controller
         $summary_data = [];
         $details_data = [];
 
-        $show_locations = $this->stock_location->multiple_locations();
+        $show_locations = $this->stock_location->multipleLocations();
 
         foreach ($report_data['summary'] as $key => $row) {
             $summary_data[] = [
@@ -1988,7 +1988,7 @@ class Reports extends Secure_Controller
             foreach ($report_data['details'][$key] as $drow) {
                 $quantity_purchased = $drow['receiving_quantity'] > 1 ? to_quantity_decimals($drow['quantity_purchased']) . ' x ' . to_quantity_decimals($drow['receiving_quantity']) : to_quantity_decimals($drow['quantity_purchased']);
                 if ($show_locations) {
-                    $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
+                    $quantity_purchased .= ' [' . $this->stock_location->getLocationName($drow['item_location']) . ']';
                 }
 
                 $attribute_values = expand_attribute_values($definition_names, $drow);

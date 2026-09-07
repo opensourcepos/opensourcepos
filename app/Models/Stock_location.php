@@ -22,7 +22,9 @@ class Stock_location extends Model
     protected $useSoftDeletes = false;
     protected $allowedFields = [
         'location_name',
-        'deleted'
+        'deleted',
+        'is_default',
+        'sort_order'
     ];
 
     private Session $session;
@@ -50,26 +52,28 @@ class Stock_location extends Model
     /**
      * @return ResultInterface
      */
-    public function get_all(): ResultInterface
+    public function getAll(): ResultInterface
     {
         $builder = $this->db->table('stock_locations');
         $builder->where('deleted', 0);
+        $builder->orderBy('sort_order', 'ASC');
 
         return $builder->get();
     }
 
     /**
-     * @param string $module_id
+     * @param string $moduleId
      * @return ResultInterface
      */
-    public function get_undeleted_all(string $module_id = 'items'): ResultInterface
+    public function getUndeletedAll(string $moduleId = 'items'): ResultInterface
     {
         $builder = $this->db->table('stock_locations');
         $builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
         $builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
         $builder->where('person_id', $this->session->get('person_id'));
-        $builder->like('permissions.permission_id', $module_id, 'after');
+        $builder->like('permissions.permission_id', $moduleId, 'after');
         $builder->where('deleted', 0);
+        $builder->orderBy('stock_locations.sort_order', 'ASC');
 
         return $builder->get();
     }
@@ -78,19 +82,19 @@ class Stock_location extends Model
      * @param string $module_id
      * @return bool
      */
-    public function show_locations(string $module_id = 'items'): bool
+    public function showLocations(string $module_id = 'items'): bool
     {
-        $stock_locations = $this->get_allowed_locations($module_id);
+        $stockLocations = $this->get_allowed_locations($module_id);
 
-        return count($stock_locations) > 1;
+        return count($stockLocations) > 1;
     }
 
     /**
      * @return bool
      */
-    public function multiple_locations(): bool
+    public function multipleLocations(): bool
     {
-        return $this->get_all()->getNumRows() > 1;
+        return $this->getAll()->getNumRows() > 1;
     }
 
     /**
@@ -99,14 +103,14 @@ class Stock_location extends Model
      */
     public function get_allowed_locations(string $module_id = 'items'): array
     {
-        $stock = $this->get_undeleted_all($module_id)->getResultArray();
-        $stock_locations = [];
+        $stock = $this->getUndeletedAll($module_id)->getResultArray();
+        $stockLocations = [];
 
-        foreach ($stock as $location_data) {
-            $stock_locations[$location_data['location_id']] = $location_data['location_name'];
+        foreach ($stock as $locationData) {
+            $stockLocations[$locationData['location_id']] = $locationData['location_name'];
         }
 
-        return $stock_locations;
+        return $stockLocations;
     }
 
     /**
@@ -128,27 +132,115 @@ class Stock_location extends Model
     }
 
     /**
-     * @param string $module_id
-     * @return int
+     * @param string $moduleId
+     * @return int|null
      */
-    public function get_default_location_id(string $module_id = 'items'): int
+    public function getDefaultLocationId(string $moduleId = 'items'): ?int
     {
         $builder = $this->db->table('stock_locations');
         $builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
         $builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
         $builder->where('person_id', $this->session->get('person_id'));
-        $builder->like('permissions.permission_id', $module_id, 'after');
+        $builder->like('permissions.permission_id', $moduleId, 'after');
         $builder->where('deleted', 0);
+        $builder->orderBy('stock_locations.is_default', 'DESC');
+        $builder->orderBy('stock_locations.sort_order', 'ASC');
         $builder->limit(1);
 
-        return $builder->get()->getRow()->location_id;    // TODO: this is puking. Trying to get property 'location_id' of non-object
+        $row = $builder->get()->getRow();
+
+        return $row?->location_id;
+    }
+
+    /**
+     * Marks a single stock location as the default, clearing the flag on all others.
+     * @param int $locationId
+     * @return bool
+     */
+    public function setDefaultLocation(int $locationId): bool
+    {
+        $exists = $this->db->table('stock_locations')
+            ->where('location_id', $locationId)
+            ->where('deleted', 0)
+            ->countAllResults();
+
+        if ($exists === 0) {
+            return false;
+        }
+
+        $this->db->transStart();
+
+        $builder = $this->db->table('stock_locations');
+        $builder->update(['is_default' => 0]);
+
+        $builder = $this->db->table('stock_locations');
+        $builder->where('location_id', $locationId);
+        $builder->update(['is_default' => 1]);
+
+        $this->db->transComplete();
+
+        return $this->db->transStatus();
+    }
+
+    /**
+     * Saves sort order of locations.
+     * A rotation can still collide against the unique sort_order index mid-batch, so
+     * values are shifted to a temp range first, then to final. The temp offset only
+     * needs to clear count($orderedLocationIds), since active sort_order values are
+     * always kept as a dense 0..N-1 range (deleted rows are NULL, not part of it).
+     */
+    public function saveSortOrder(array $orderedLocationIds): bool
+    {
+        if (empty($orderedLocationIds)) {
+            return true;
+        }
+
+        $table = $this->db->prefixTable('stock_locations');
+        $tempOffset = count($orderedLocationIds);
+
+        $this->db->transStart();
+
+        $this->runSortOrderCaseUpdate($table, $orderedLocationIds, $tempOffset);
+        $this->runSortOrderCaseUpdate($table, $orderedLocationIds, 0);
+
+        $this->db->transComplete();
+
+        return $this->db->transStatus();
+    }
+
+    /**
+     * @param string $table
+     * @param array $orderedLocationIds
+     * @param int $offset
+     * @return void
+     */
+    private function runSortOrderCaseUpdate(string $table, array $orderedLocationIds, int $offset): void
+    {
+        $caseSql = 'CASE location_id';
+        $bindings = [];
+
+        foreach ($orderedLocationIds as $index => $locationId) {
+            $caseSql .= ' WHEN ? THEN ?';
+            $bindings[] = $locationId;
+            $bindings[] = $index + $offset;
+        }
+
+        $caseSql .= ' END';
+
+        $placeholders = implode(',', array_fill(0, count($orderedLocationIds), '?'));
+        $bindings = array_merge($bindings, $orderedLocationIds);
+
+        $this->db->query(
+            "UPDATE $table SET sort_order = $caseSql WHERE location_id IN ($placeholders)",
+            $bindings
+        );
     }
 
     /**
      * @param int $location_id
      * @return string
      */
-    public function get_location_name(int $location_id): string
+    public function getLocationName(int $location_id): string
     {
         $builder = $this->db->table('stock_locations');
         $builder->where('location_id', $location_id);
@@ -157,39 +249,32 @@ class Stock_location extends Model
     }
 
     /**
-     * @param string $location_name
-     * @return int
-     */
-    public function get_location_id(string $location_name): int
-    {
-        $builder = $this->db->table('stock_locations');
-        $builder->where('location_name', $location_name);
-
-        return $builder->get()->getRow()->location_id;
-    }
-
-    /**
-     * @param array $location_data
-     * @param int $location_id
+     * @param array $locationData
+     * @param int $locationId
      * @return bool
      */
-    public function save_value(array &$location_data, int $location_id): bool
+    public function saveValue(array &$locationData, int $locationId): bool
     {
-        $location_name = $location_data['location_name'];
+        $locationName = $locationData['location_name'];
 
-        $location_data_to_save = ['location_name' => $location_name, 'deleted' => 0];
+        $locationDataToSave = ['location_name' => $locationName, 'deleted' => 0];
 
-        if (!$this->exists($location_id)) {
+        if (!$this->exists($locationId)) {
+            $table = $this->db->prefixTable('stock_locations');
+
             $this->db->transStart();
 
-            $builder = $this->db->table('stock_locations');
-            $builder->insert($location_data_to_save);
-            $location_id = $this->db->insertID();
-            $location_data['location_id'] = $location_id;
+            $row = $this->db->query("SELECT COUNT(*) AS count FROM $table WHERE deleted = 0 FOR UPDATE")->getRow();
+            $locationDataToSave['sort_order'] = (int) $row->count;
 
-            $this->_insert_new_permission('items', $location_id, $location_name);    // TODO: need to refactor out the hungarian notation.
-            $this->_insert_new_permission('sales', $location_id, $location_name);
-            $this->_insert_new_permission('receivings', $location_id, $location_name);
+            $builder = $this->db->table('stock_locations');
+            $builder->insert($locationDataToSave);
+            $locationId = $this->db->insertID();
+            $locationData['location_id'] = $locationId;
+
+            $this->_insert_new_permission('items', $locationId, $locationName);    // TODO: need to refactor out the hungarian notation.
+            $this->_insert_new_permission('sales', $locationId, $locationName);
+            $this->_insert_new_permission('receivings', $locationId, $locationName);
 
             // Insert quantities for existing items
             $item = model(Item::class);
@@ -197,12 +282,12 @@ class Stock_location extends Model
             $items = $item->get_all();
 
             foreach ($items->getResultArray() as $item) {
-                $quantity_data = [
+                $quantityData = [
                     'item_id'     => $item['item_id'],
-                    'location_id' => $location_id,
+                    'location_id' => $locationId,
                     'quantity'    => 0
                 ];
-                $builder->insert($quantity_data);
+                $builder->insert($quantityData);
             }
 
             $this->db->transComplete();
@@ -210,21 +295,21 @@ class Stock_location extends Model
             return $this->db->transStatus();
         }
 
-        $original_location_name = $this->get_location_name($location_id);
+        $originalLocationName = $this->getLocationName($locationId);
 
-        if ($original_location_name != $location_name) {
+        if ($originalLocationName != $locationName) {
             $builder = $this->db->table('permissions');
-            $builder->delete(['location_id' => $location_id]);
+            $builder->delete(['location_id' => $locationId]);
 
-            $this->_insert_new_permission('items', $location_id, $location_name);
-            $this->_insert_new_permission('sales', $location_id, $location_name);
-            $this->_insert_new_permission('receivings', $location_id, $location_name);
+            $this->_insert_new_permission('items', $locationId, $locationName);
+            $this->_insert_new_permission('sales', $locationId, $locationName);
+            $this->_insert_new_permission('receivings', $locationId, $locationName);
         }
 
         $builder = $this->db->table('stock_locations');
-        $builder->where('location_id', $location_id);
+        $builder->where('location_id', $locationId);
 
-        return $builder->update($location_data_to_save);
+        return $builder->update($locationDataToSave);
     }
 
     /**
@@ -262,20 +347,40 @@ class Stock_location extends Model
 
     /**
      * Deletes one item
-     * @param int|null $location_id
+     * @param int|null $locationId
      * @param bool $purge
      * @return bool
      */
-    public function delete($location_id = null, bool $purge = false): bool
+    public function delete($locationId = null, bool $purge = false): bool
     {
+        $table = $this->db->prefixTable('stock_locations');
+
         $this->db->transStart();
 
+        // Deleted rows don't occupy a sort position, so sort_order is cleared rather than
+        // pushed to some new high value. The remaining active rows are then compacted back
+        // to a dense 0..N-1 range so saveValue()'s COUNT(*)-based next sort_order can't
+        // collide with a surviving row left behind by a gap.
         $builder = $this->db->table('stock_locations');
-        $builder->where('location_id', $location_id);
-        $builder->update(['deleted' => 1]);
+        $builder->where('location_id', $locationId);
+        $builder->update(['deleted' => 1, 'sort_order' => null]);
+
+        $remainingIds = array_column(
+            $this->db->table('stock_locations')
+                ->select('location_id')
+                ->where('deleted', 0)
+                ->orderBy('sort_order', 'ASC')
+                ->get()
+                ->getResultArray(),
+            'location_id'
+        );
+
+        if (!empty($remainingIds)) {
+            $this->runSortOrderCaseUpdate($table, $remainingIds, 0);
+        }
 
         $builder = $this->db->table('permissions');
-        $builder->delete(['location_id' => $location_id]);
+        $builder->delete(['location_id' => $locationId]);
 
         $this->db->transComplete();
 
