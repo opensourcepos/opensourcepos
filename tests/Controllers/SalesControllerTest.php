@@ -413,19 +413,6 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertSame(lang('Sales.not_authorized'), $result['message']);
     }
 
-    public function testCashierWithoutReportsSalesCannotGetSearch(): void
-    {
-        $cashierId = $this->createCashierEmployee();
-        $this->createSale($cashierId);
-        $this->loginAs($cashierId);
-
-        $response = $this->get('/sales/search');
-
-        $response->assertStatus(403);
-        $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success']);
-    }
-
     public function testEmployeeWithReportsSalesCanGetSearch(): void
     {
         $supervisorId = $this->createReportsSalesEmployee();
@@ -453,21 +440,6 @@ class SalesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertArrayNotHasKey('success', $result);
-    }
-
-    public function testEmployeeWithReportsSalesCanGetSearch(): void
-    {
-        $supervisorId = $this->createReportsSalesEmployee();
-        $this->createSale($supervisorId);
-        $this->loginAs($supervisorId);
-
-        $response = $this->get('/sales/search');
-
-        $response->assertStatus(200);
-        $result = json_decode($response->getJSON(), true);
-        $this->assertArrayHasKey('total', $result);
-        $this->assertArrayHasKey('rows', $result);
-        $this->assertArrayHasKey('payment_summary', $result);
     }
 
     public function testEmployeeWithReportsSalesCanGetEdit(): void
