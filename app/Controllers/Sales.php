@@ -424,14 +424,17 @@ class Sales extends Secure_Controller
             return $this->reload($data);
         }
 
+        $isReturnMode = $this->sale_lib->get_mode() === 'return';
+        $amountTenderedRule = $isReturnMode ? 'trim|required|decimal_locale' : 'trim|required|decimal_locale|nonNegativeDecimal';
+
         if ($paymentType === lang('Sales.giftcard')) {
-            $rules    = ['amount_tendered' => 'trim|required|integer']; //For giftcards, amount_tendered becomes the giftcard number which must be an integer
+            $rules    = ['amount_tendered' => 'trim|required|integer'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
         } elseif (in_array($paymentType, get_reference_code_payment_types())) {
             $min      = (int)($this->config['payment_reference_code_min'] ?? 3);
             $max      = (int)($this->config['payment_reference_code_max'] ?? 20);
             $rules    = [
-                'amount_tendered' => 'trim|required|decimal_locale|nonNegativeDecimal',
+                'amount_tendered' => $amountTenderedRule,
                 'reference_code'  => "trim|required|alpha_numeric|min_length[$min]|max_length[$max]",
             ];
             $messages = [
@@ -448,7 +451,7 @@ class Sales extends Secure_Controller
                 ],
             ];
         } else {
-            $rules    = ['amount_tendered' => 'trim|required|decimal_locale|nonNegativeDecimal'];
+            $rules    = ['amount_tendered' => $amountTenderedRule];
             $messages = [
                 'amount_tendered' => [
                     'required'           => lang('Sales.must_enter_numeric'),
