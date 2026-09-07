@@ -438,7 +438,7 @@ class Sales extends Secure_Controller
                 'amount_tendered' => [
                     'required'           => lang('Sales.must_enter_numeric'),
                     'decimal_locale'     => lang('Sales.must_enter_numeric'),
-                    'nonNegativeDecimal' => lang('Sales.negative_amount_invalid'),
+                    'nonNegativeDecimal' => lang('Sales.negative_amount_tendered'),
                 ],
                 'reference_code'  => [
                     'required'      => lang('Sales.must_enter_reference_code'),
