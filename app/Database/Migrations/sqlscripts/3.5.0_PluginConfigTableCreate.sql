@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `ospos_plugin_config` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `uq_plugin_key` (`plugin_id`, `key`),
     KEY `idx_plugin_id` (`plugin_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 INSERT IGNORE INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
     ('module_plugins', 'module_plugins_desc', 111, 'plugins');
