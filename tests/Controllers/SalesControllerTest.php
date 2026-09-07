@@ -17,8 +17,12 @@ use Tests\Support\SaleFixtureTrait;
  *
  * A cashier holding only the base "sales" grant (no "reports_sales") must
  * not be able to reach the per-sale endpoints that getManage() gates
- * behind reports_sales: getRow, getEdit, postSave, getReceipt, getInvoice,
- * getSendPdf, getSendReceipt.
+ * behind reports_sales: getSearch, getRow, getEdit, postSave, getReceipt,
+ * getInvoice, getSendPdf, getSendReceipt.
+ *
+ * Also covers: getSearch() (the AJAX endpoint that
+ * supplies every row of the Sales Takings list) was the one sibling that
+ * returned the full ledger and was missing the reports_sales check.
  */
 class SalesControllerTest extends CIUnitTestCase
 {
@@ -269,6 +273,20 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
     }
 
+    public function testCashierWithoutReportsSalesCannotGetSearch(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $this->createSale($cashierId);
+        $this->loginAs($cashierId);
+
+        $response = $this->get('/sales/search');
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertSame(lang('Sales.not_authorized'), $result['message']);
+    }
+
     public function testCashierWithoutReportsSalesCannotGetEdit(): void
     {
         $cashierId = $this->createCashierEmployee();
@@ -352,19 +370,6 @@ class SalesControllerTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
         $this->assertSame(lang('Sales.not_authorized'), $result['message']);
-    }
-
-    public function testCashierWithoutReportsSalesCannotGetSearch(): void
-    {
-        $cashierId = $this->createCashierEmployee();
-        $this->createSale($cashierId);
-        $this->loginAs($cashierId);
-
-        $response = $this->get('/sales/search');
-
-        $response->assertStatus(403);
-        $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success']);
     }
 
     public function testEmployeeWithReportsSalesCanGetSearch(): void
@@ -478,6 +483,49 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertEquals('0.01', $cart[1]['price']);
     }
 
+    public function testPostAddPaymentRejectsNegativeAmountTendered(): void
+    {
+        $cashierId = $this->createCashierWithoutChangePriceGrant();
+        $this->loginAs($cashierId);
+        $itemId = $this->createTestItem();
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $forgedPaymentType = lang('Sales.giftcard') . ':AUDIT-100';
+
+        $response = $this->post('/sales/addPayment', [
+            'payment_type'    => $forgedPaymentType,
+            'amount_tendered' => '-500',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.must_enter_numeric'));
+
+        // ... and the negative payment must NOT have been added to the cart.
+        $session  = Services::session();
+        $payments = $session->get('sales_payments');
+        $this->assertArrayNotHasKey($forgedPaymentType, (array) $payments);
+    }
+
+    public function testPostAddPaymentRejectsMalformedAmountTendered(): void
+    {
+        $cashierId = $this->createCashierWithoutChangePriceGrant();
+        $this->loginAs($cashierId);
+        $itemId = $this->createTestItem();
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $response = $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.cash'),
+            'amount_tendered' => 'ABC123',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.must_enter_numeric'));
+
+        $session  = Services::session();
+        $payments = $session->get('sales_payments');
+        $this->assertArrayNotHasKey(lang('Sales.cash'), (array) $payments);
+    }
+
     public function testCashierWithoutReportsSalesCannotUnsuspend(): void
     {
         $victimId = $this->createReportsSalesEmployee();
@@ -529,7 +577,7 @@ class SalesControllerTest extends CIUnitTestCase
         $session = Services::session();
         $this->assertEquals($saleId, $session->get('sale_id'));
     }
-  
+
     protected function createGiftcard(float $value): int
     {
         $giftcardNumber = random_int(1000000, 9999999);
