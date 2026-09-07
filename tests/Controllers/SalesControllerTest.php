@@ -16,8 +16,12 @@ use Tests\Support\ItemFixtureTrait;
  *
  * A cashier holding only the base "sales" grant (no "reports_sales") must
  * not be able to reach the per-sale endpoints that getManage() gates
- * behind reports_sales: getRow, getEdit, postSave, getReceipt, getInvoice,
- * getSendPdf, getSendReceipt.
+ * behind reports_sales: getSearch, getRow, getEdit, postSave, getReceipt,
+ * getInvoice, getSendPdf, getSendReceipt.
+ *
+ * Also covers: getSearch() (the AJAX endpoint that
+ * supplies every row of the Sales Takings list) was the one sibling that
+ * returned the full ledger and was missing the reports_sales check.
  */
 class SalesControllerTest extends CIUnitTestCase
 {
@@ -287,7 +291,7 @@ class SalesControllerTest extends CIUnitTestCase
                     'cost_price'            => '1.00',
                     'total'                 => $price,
                     'discounted_total'      => $price,
-                    'print_option'          => 1,
+                    'print_option'          => PRINT_YES,
                     'stock_type'            => HAS_NO_STOCK,
                     'item_type'             => ITEM,
                     'hsn_code'              => null,
@@ -308,6 +312,20 @@ class SalesControllerTest extends CIUnitTestCase
         $response->assertStatus(403);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
+    }
+
+    public function testCashierWithoutReportsSalesCannotGetSearch(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $this->createSale($cashierId);
+        $this->loginAs($cashierId);
+
+        $response = $this->get('/sales/search');
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertSame(lang('Sales.not_authorized'), $result['message']);
     }
 
     public function testCashierWithoutReportsSalesCannotGetEdit(): void
@@ -393,19 +411,6 @@ class SalesControllerTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
         $this->assertSame(lang('Sales.not_authorized'), $result['message']);
-    }
-
-    public function testCashierWithoutReportsSalesCannotGetSearch(): void
-    {
-        $cashierId = $this->createCashierEmployee();
-        $this->createSale($cashierId);
-        $this->loginAs($cashierId);
-
-        $response = $this->get('/sales/search');
-
-        $response->assertStatus(403);
-        $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success']);
     }
 
     public function testEmployeeWithReportsSalesCanGetSearch(): void
@@ -561,7 +566,186 @@ class SalesControllerTest extends CIUnitTestCase
         $payments = $session->get('sales_payments');
         $this->assertArrayNotHasKey(lang('Sales.cash'), (array) $payments);
     }
-    
+
+    protected function createGiftcard(float $value): int
+    {
+        $giftcardNumber = random_int(1000000, 9999999);
+
+        Database::connect()->table('giftcards')->insert([
+            'giftcard_number' => $giftcardNumber,
+            'value'           => $value,
+            'deleted'         => 0,
+            'person_id'       => null,
+        ]);
+
+        return $giftcardNumber;
+    }
+
+    protected function getGiftcardValue(int $giftcardNumber): float
+    {
+        $row = Database::connect()->table('giftcards')
+            ->where('giftcard_number', $giftcardNumber)
+            ->get()
+            ->getRow();
+
+        return (float) $row->value;
+    }
+
+    public function testCashierCannotForgeGiftcardPaymentTypeWithNegativeAmount(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.giftcard') . ':' . $giftcardNumber,
+            'amount_tendered' => '-500',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertEmpty($payments);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testCashierCanUseLegitimateGiftcardPayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.giftcard'),
+            'amount_tendered' => (string) $giftcardNumber,
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertNotEmpty($payments);
+        $this->assertArrayHasKey(lang('Sales.giftcard') . ':' . $giftcardNumber, $payments);
+    }
+
+    public function testCashierCannotSubmitNegativeAmountForReferenceCodePayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.debit'),
+            'amount_tendered' => '-25',
+            'reference_code'  => 'ABC123',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertEmpty($payments);
+    }
+
+    public function testCashierCanUseLegitimateReferenceCodePayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.debit'),
+            'amount_tendered' => '25.00',
+            'reference_code'  => 'ABC123',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertNotEmpty($payments);
+        $this->assertArrayHasKey(lang('Sales.debit'), $payments);
+        $this->assertSame('ABC123', $payments[lang('Sales.debit')]['reference_code']);
+    }
+
+    public function testCashierCannotSubmitNegativeAmountForCashPayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.cash'),
+            'amount_tendered' => '-10',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertEmpty($payments);
+    }
+
+    public function testCashierCanUseLegitimateCashPayment(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '1.00', $itemId);
+
+        $this->post('/sales/addPayment', [
+            'payment_type'    => lang('Sales.cash'),
+            'amount_tendered' => '10.00',
+        ]);
+
+        $payments = Services::session()->get('sales_payments');
+        $this->assertNotEmpty($payments);
+        $this->assertArrayHasKey(lang('Sales.cash'), $payments);
+    }
+
+    public function testPostCompleteRejectsSaleWithInsufficientPayments(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '100.00', $itemId);
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY]));
+
+        $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+        $this->post('/sales/complete');
+
+        $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+        $this->assertSame($salesCountBefore, $salesCountAfter);
+    }
+
+    public function testPostCompleteAllowsZeroPaymentQuoteCompletion(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '100.00', $itemId);
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY, 'sales_mode' => 'sale_quote']));
+
+        $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+        $response = $this->post('/sales/complete');
+
+        $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+        $this->assertSame($salesCountBefore + 1, $salesCountAfter);
+        $response->assertDontSee(lang('Sales.amount_due_not_covered'));
+    }
+
+    public function testPostCompleteAllowsZeroPaymentInvoiceCompletion(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '100.00', $itemId);
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY, 'sales_mode' => 'sale_invoice']));
+
+        $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+        $response = $this->post('/sales/complete');
+
+        $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+        $this->assertSame($salesCountBefore + 1, $salesCountAfter);
+        $response->assertDontSee(lang('Sales.amount_due_not_covered'));
+    }
+
     public function testRegisterEscapesMaliciousTaxName(): void
     {
         $cashierId = $this->createCashierEmployee();

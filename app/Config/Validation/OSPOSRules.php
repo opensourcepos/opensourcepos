@@ -225,4 +225,24 @@ class OSPOSRules
 
         return true;
     }
+
+    /**
+     * Validates that the candidate is a plain filesystem path: only letters, digits,
+     * underscore, dash, dot and forward slash. Uses \A...\z (not ^...$) because PCRE's $
+     * also matches immediately before a single trailing newline, which would let a
+     * value like "/usr/bin/php\n" slip through — the bug behind GHSA-jc56-j8m6-q627.
+     *
+     * @param string $candidate
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function valid_path_strict(string $candidate, ?string &$error = null): bool
+    {
+        if ($candidate === '') {
+            return false;
+        }
+
+        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.]+\z/', $candidate);
+    }
 }
