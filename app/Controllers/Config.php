@@ -485,7 +485,7 @@ class Config extends Secure_Controller
     {
         $rules = [
             'payment_reference_code_min' => 'required|integer|greater_than[0]',
-            'payment_reference_code_max' => 'required|integer|greater_than_equal_to[payment_reference_code_min]',
+            'payment_reference_code_max' => 'required|integer|gte_field[payment_reference_code_min]',
         ];
         if (!$this->validate($rules)) {
             $errors = $this->validator->getErrors();
