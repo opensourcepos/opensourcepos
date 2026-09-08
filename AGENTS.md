@@ -52,6 +52,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Only `app/Language/en/` and `app/Language/en-GB/` should contain English strings
 - Plugin language files (`app/Plugins/*/Language/`) follow the same localization rules as `app/Language/`
 - Use `'` to encapsulate key and string values. If the value contains `'` then it should be escaped as `\'`
+- Align the `=>` of a newly inserted key with the `=>` column already used by the rest of the file, if that file pads keys to a fixed column (not all do — some files have no padding at all). If the new key is longer than the widest existing key and would push the alignment column further right, reformat the whole file to the new wider column rather than leaving only the new line at a different width
 
 ## Security
 

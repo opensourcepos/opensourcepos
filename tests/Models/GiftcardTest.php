@@ -81,6 +81,28 @@ class GiftcardTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
 
+    public function testDecrementGiftcardValueRejectsNegativeAmount(): void
+    {
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $giftcardModel  = model(Giftcard::class);
+
+        $result = $giftcardModel->decrementGiftcardValue((string) $giftcardNumber, -500.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testDecrementGiftcardValueRejectsZeroAmount(): void
+    {
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $giftcardModel  = model(Giftcard::class);
+
+        $result = $giftcardModel->decrementGiftcardValue((string) $giftcardNumber, 0.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
     public function testDecrementGiftcardValueExactBalanceSucceeds(): void
     {
         $giftcardNumber = $this->createGiftcard(60.00);
