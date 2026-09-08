@@ -51,7 +51,6 @@ use App\Models\Employee;
             headers: <?= $table_headers ?>,
             pageSize: <?= $config['lines_per_page'] ?>,
             uniqueId: 'items.item_id',
-            showExportAllToggle: true,
             queryParams: function() {
                 return $.extend(arguments[0], {
                     "start_date": start_date,

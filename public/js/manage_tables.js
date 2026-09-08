@@ -270,10 +270,6 @@
     };
 
     const init_export_all_toggle = function () {
-        if (!options.showExportAllToggle) {
-            return;
-        }
-
         const $toggleInput = $('<input>', {
             type: 'checkbox',
             id: 'export_all_rows',
@@ -281,12 +277,12 @@
             'data-size': 'small',
             'data-onstyle': 'info',
             'data-offstyle': 'default',
-            'data-on': options.exportAllToggleOnLabel || 'Export All',
-            'data-off': options.exportAllToggleOffLabel || 'Export Page'
+            'data-on': 'Export All',
+            'data-off': 'Export Page'
         }).prependTo('#title_bar');
 
         $toggleInput.bootstrapToggle();
-        $toggleInput.closest('.toggle').find('.btn').css('float', 'none');
+        $toggleInput.closest('.toggle').addClass('pull-right print_hide').find('.btn').css('float', 'none');
 
         $toggleInput.on('change', function() {
             $('#table').bootstrapTable('refreshOptions', { exportDataType: this.checked ? 'all' : 'basic' });
