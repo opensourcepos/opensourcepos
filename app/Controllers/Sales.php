@@ -1040,7 +1040,7 @@ class Sales extends Secure_Controller
                     $originalSaleId = $this->sale_lib->getReturnOriginalSaleId();
                     Events::trigger('return_completed', $data['sale_id_num'], $originalSaleId, $pluginData);
                 } else {
-                    Events::trigger('sale_completed', $data['sale_id_num'], $sale_type, $pluginData);
+                    Events::trigger('sale_completed', $data['sale_id_num'], $saleType, $pluginData);
                 }
 
                 $this->sale_lib->clear_all();

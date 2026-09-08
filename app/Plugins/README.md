@@ -1227,6 +1227,43 @@ public function getIcon(): \CodeIgniter\HTTP\ResponseInterface
 
 Store the SVG file directly in your plugin directory (e.g. `app/Plugins/MyPlugin/my-icon.svg`). PNG is also supported — use `image/png` as the content type.
 
+### Manage Screens (Bootstrap Table) — Lang File Mismatch
+
+If your plugin builds a paginated list/manage screen using the core `table_support` JS module (the same `Bootstrap Table` pattern used by Items, Attributes, etc. — see `app/Views/attributes/manage.php` for a reference implementation), you'll load `app/Views/partial/bootstrap_tables_locale.php` to supply the table's "no data"/confirm-delete/confirm-restore strings:
+
+```php
+<script>
+$(document).ready(function() {
+    <?= view('partial/bootstrap_tables_locale') ?>
+
+    table_support.init({ resource: 'myplugin/items', headers: ..., pageSize: ..., uniqueId: 'item_id' });
+});
+</script>
+```
+
+By default that partial builds its lang keys from `$controller_name` — the `module_id` your controller passes to `Secure_Controller::__construct()` (e.g. `'myplugin'`). It looks up `ucfirst($controller_name) . '.no_' . $controller_name . '_to_display'`, i.e. a lang file literally named `Myplugin.php`.
+
+**This will not match your plugin's real lang file.** Every plugin in this codebase names its main lang file `{PluginName}Plugin.php` (e.g. `MyPlugin.php` → language file `MyPlugin.php`, not `Myplugin.php` derived from the module_id) — the same convention documented in [Language Files](#internationalization-language-files) above. Since the two names rarely match, the default lookup silently renders a raw, untranslated key string like `Myplugin.no_myplugin_to_display` directly in the UI instead of failing loudly.
+
+**Fix:** pass an `editable` override pointing at your plugin's actual lang file basename when rendering the partial:
+
+```php
+<?= view('partial/bootstrap_tables_locale', ['editable' => 'MyPlugin']) ?>
+```
+
+Then add these 3 keys to that lang file (`app/Plugins/MyPlugin/Language/en/MyPlugin.php`), using your literal `module_id` — not the plugin name — in the `no_..._to_display` key body:
+
+```php
+return [
+    // ... your other keys ...
+    'no_myplugin_to_display' => 'No items to display',
+    'confirm_delete'         => 'Are you sure you want to delete the selected item(s)?',
+    'confirm_restore'        => 'Are you sure you want to restore the selected item(s)?', // only reachable if your screen supports restore/soft-delete
+];
+```
+
+Omitting the `editable` override is not a hard error — the screen still renders — but the "no data" and delete-confirmation text will silently show as an untranslated raw key instead of a real message.
+
 ### Sub-permissions
 
 For finer-grained access control within a module, register sub-permissions after the module:

@@ -835,7 +835,7 @@ class Attribute extends Model
         }
 
         $builder = $this->db->table('attribute_links');
-        $builder->select('attribute_links.item_id, attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
+        $builder->select('attribute_links.item_id, attribute_links.attribute_id, attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
         $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
         $builder->whereIn('item_id', $itemIds);
         $builder->where('attribute_links.sale_id', null);
@@ -848,6 +848,7 @@ class Attribute extends Model
             $itemId = $row['item_id'];
             $defId = $row['definition_id'];
             $map[$itemId][$defId] = [
+                'attribute_id'      => $row['attribute_id'],
                 'attribute_value'   => $row['attribute_value'],
                 'attribute_decimal' => $row['attribute_decimal'],
                 'attribute_date'    => $row['attribute_date'],
