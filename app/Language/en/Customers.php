@@ -16,7 +16,7 @@ return [
     "consent_required"              => "Registration consent is a required field.",
     "csv_import_failed"             => "CSV import failed",
     "csv_import_nodata_wrongformat" => "The uploaded file has no data or is incorrectly formatted.",
-    "csv_import_partially_failed"   => "Customer import successful with some failures:",
+    "csv_import_partially_failed"   => "{0} customer(s) failed to import on line(s): {1}.",
     "csv_import_success"            => "Customer import successful.",
     "customer"                      => "Customer",
     "date"                          => "Date",
