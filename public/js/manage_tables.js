@@ -282,9 +282,25 @@
         }).prependTo('#title_bar');
 
         $toggleInput.bootstrapToggle();
-        $toggleInput.closest('.toggle').addClass('pull-right print_hide').find('.btn').css('float', 'none');
+
+        const $toggleWrapper = $toggleInput.closest('.toggle');
+        $toggleWrapper.addClass('pull-right print_hide').find('.btn').css('float', 'none');
+        $toggleWrapper.attr({
+            role: 'switch',
+            tabindex: '0',
+            'aria-label': 'Export all rows',
+            'aria-checked': $toggleInput.prop('checked')
+        });
+
+        $toggleWrapper.on('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                $toggleWrapper.trigger('click');
+            }
+        });
 
         $toggleInput.on('change', function() {
+            $toggleWrapper.attr('aria-checked', this.checked);
             $('#table').bootstrapTable('refreshOptions', { exportDataType: this.checked ? 'all' : 'basic' });
         });
     };
