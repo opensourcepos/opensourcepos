@@ -98,10 +98,6 @@ class PluginManager
 
     private function runPendingMigrations(): void
     {
-        if (session()->get('plugin_migrations_ran')) {
-            return;
-        }
-
         $db = Database::connect();
 
         if (!$db->tableExists('plugin_migrations')) {
@@ -162,8 +158,6 @@ class PluginManager
                 }
             }
         }
-
-        session()->set('plugin_migrations_ran', true);
     }
 
     public function getAllPlugins(): array
