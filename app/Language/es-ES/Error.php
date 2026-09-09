@@ -6,6 +6,9 @@ return [
     'unable_to_lock_file'            => 'No se pudo bloquear {filePath}: {reason}',
     'unable_to_open_lock_file'       => 'No se pudo abrir {filePath}: {reason}',
     'unable_to_persist_throttle_key' => 'No se pudo guardar throttle.key en {filePath}',
+    'unable_to_persist_encryption_key' => '',
+    'encryption_key_not_provisioned' => '',
+    'throttle_key_not_provisioned' => '',
     'unable_to_read_env_file'        => 'No se pudo leer {filePath} para aprovisionar throttle.key',
     'unknown'                        => 'desconocido',
 ];

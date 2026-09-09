@@ -6,6 +6,9 @@ return [
     'unable_to_lock_file'            => 'Unable to lock {filePath}: {reason}',
     'unable_to_open_lock_file'       => 'Unable to open {filePath}: {reason}',
     'unable_to_persist_throttle_key' => 'Unable to persist throttle.key to {filePath}',
+    'unable_to_persist_encryption_key' => 'Unable to persist the encryption key to {filePath}',
+    'encryption_key_not_provisioned' => 'No encryption key is provisioned. Run `php spark env:provision` before continuing.',
+    'throttle_key_not_provisioned'   => 'No throttle key is provisioned. Run `php spark env:provision` before continuing.',
     'unable_to_read_env_file'        => 'Unable to read {filePath} to provision throttle.key',
     'unknown'                        => 'Unexpected error',
 ];

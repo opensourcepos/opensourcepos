@@ -254,7 +254,9 @@ class Config extends Secure_Controller
         $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 
         // Integrations Related fields
-        $data['mailchimp']    = [];
+        $data['mailchimp']     = [];
+        $data['smtp_pass_set'] = !empty($this->config['smtp_pass']);
+        $data['msg_pwd_set']   = !empty($this->config['msg_pwd']);
 
         if (checkEncryption()) {    // TODO: Hungarian notation
             if (!isset($this->encrypter)) {
@@ -262,9 +264,8 @@ class Config extends Secure_Controller
                 $this->encrypter = Services::encrypter();
             }
 
-            $data['mailchimp']['api_key'] = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
-                ? $this->encrypter->decrypt($this->config['mailchimp_api_key'])
-                : '';
+            $data['mailchimp']['api_key']     = '';
+            $data['mailchimp']['api_key_set'] = !empty($this->config['mailchimp_api_key']);
 
             $data['mailchimp']['list_id'] = (isset($this->config['mailchimp_list_id']) && !empty($this->config['mailchimp_list_id']))
                 ? $this->encrypter->decrypt($this->config['mailchimp_list_id'])
@@ -273,8 +274,9 @@ class Config extends Secure_Controller
             // Remove any backup of .env created by check_encryption()
             removeBackup();
         } else {
-            $data['mailchimp']['api_key'] = '';
-            $data['mailchimp']['list_id'] = '';
+            $data['mailchimp']['api_key']     = '';
+            $data['mailchimp']['api_key_set'] = false;
+            $data['mailchimp']['list_id']     = '';
         }
 
         $data['mailchimp']['lists'] = $this->_mailchimp();
@@ -531,10 +533,12 @@ class Config extends Secure_Controller
      */
     public function postSaveEmail(): ResponseInterface
     {
-        $password = '';
+        $postedPass = (string) $this->request->getPost('smtp_pass');
 
-        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
-            $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+        if (checkEncryption() && $postedPass !== '') {
+            $password = $this->encrypter->encrypt($postedPass);
+        } else {
+            $password = (string) ($this->config['smtp_pass'] ?? '');
         }
 
         $protocol = $this->request->getPost('protocol');
@@ -582,10 +586,12 @@ class Config extends Secure_Controller
      */
     public function postSaveMessage(): ResponseInterface
     {
-        $password = '';
+        $postedPwd = (string) $this->request->getPost('msg_pwd');
 
-        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
-            $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
+        if (checkEncryption() && $postedPwd !== '') {
+            $password = $this->encrypter->encrypt($postedPwd);
+        } else {
+            $password = (string) ($this->config['msg_pwd'] ?? '');
         }
 
         $batch_save_data = [
@@ -648,19 +654,25 @@ class Config extends Secure_Controller
      */
     public function postSaveMailchimp(): ResponseInterface
     {
-        $api_key = '';
-        $list_id = '';
+        $postedKey  = (string) $this->request->getPost('mailchimp_api_key');
+        $postedList = (string) $this->request->getPost('mailchimp_list_id');
 
         if (checkEncryption()) {
-            $api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
-            if (!empty($api_key_unencrypted)) {
-                $api_key = $this->encrypter->encrypt($api_key_unencrypted);
-            }
+            $api_key = $postedKey !== ''
+                ? $this->encrypter->encrypt($postedKey)
+                : (string) ($this->config['mailchimp_api_key'] ?? '');
 
-            $list_id_unencrypted = $this->request->getPost('mailchimp_list_id');
-            if (!empty($list_id_unencrypted)) {
-                $list_id = $this->encrypter->encrypt($list_id_unencrypted);
-            }
+            $list_id = $postedList !== ''
+                ? $this->encrypter->encrypt($postedList)
+                : (string) ($this->config['mailchimp_list_id'] ?? '');
+        } else {
+            $api_key = $postedKey !== ''
+                ? (string) $postedKey
+                : (string) ($this->config['mailchimp_api_key'] ?? '');
+
+            $list_id = $postedList !== ''
+                ? (string) $postedList
+                : (string) ($this->config['mailchimp_list_id'] ?? '');
         }
 
         $batch_save_data = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];

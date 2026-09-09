@@ -6,6 +6,9 @@ return [
     'unable_to_lock_file'            => 'نەتوانرا {filePath} قوفڵ بکرێت: {reason}',
     'unable_to_open_lock_file'       => 'نەتوانرا {filePath} کرایەوە: {reason}',
     'unable_to_persist_throttle_key' => 'نەتوانرا throttle.key لە {filePath} پاشەکەوت بکرێت',
+    'unable_to_persist_encryption_key' => '',
+    'encryption_key_not_provisioned' => '',
+    'throttle_key_not_provisioned' => '',
     'unable_to_read_env_file'        => 'نەتوانرا {filePath} بخوێنرێتەوە بۆ دابینکردنی throttle.key',
     'unknown'                        => 'هەڵەیەکی چاوەڕواننەکراو',
 ];

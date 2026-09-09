@@ -6,6 +6,8 @@ volumes:
         driver: local
     mysql:
         driver: local
+    ospos_env:
+        driver: local
 
 networks:
     app_net:

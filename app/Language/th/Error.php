@@ -6,6 +6,9 @@ return [
     'unable_to_lock_file'            => 'ไม่สามารถล็อกไฟล์ {filePath} ได้: {reason}',
     'unable_to_open_lock_file'       => 'ไม่สามารถเปิดไฟล์ {filePath} ได้: {reason}',
     'unable_to_persist_throttle_key' => 'ไม่สามารถบันทึก throttle.key ลงใน {filePath} ได้',
+    'unable_to_persist_encryption_key' => '',
+    'encryption_key_not_provisioned' => '',
+    'throttle_key_not_provisioned' => '',
     'unable_to_read_env_file'        => 'ไม่สามารถอ่าน {filePath} เพื่อกำหนดค่า throttle.key ได้',
     'unknown'                        => 'ไม่ทราบ',
 ];

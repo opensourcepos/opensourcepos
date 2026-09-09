@@ -6,6 +6,9 @@ return [
     'unable_to_lock_file'            => 'Не вдалося заблокувати {filePath}: {reason}',
     'unable_to_open_lock_file'       => 'Не вдалося відкрити {filePath}: {reason}',
     'unable_to_persist_throttle_key' => 'Не вдалося зберегти throttle.key у {filePath}',
+    'unable_to_persist_encryption_key' => '',
+    'encryption_key_not_provisioned' => '',
+    'throttle_key_not_provisioned' => '',
     'unable_to_read_env_file'        => 'Не вдалося прочитати {filePath} для налаштування throttle.key',
     'unknown'                        => 'Невідомий',
 ];

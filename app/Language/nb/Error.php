@@ -6,6 +6,9 @@ return [
     'unable_to_lock_file'            => 'Kan ikke låse {filePath}: {reason}',
     'unable_to_open_lock_file'       => 'Kan ikke åpne {filePath}: {reason}',
     'unable_to_persist_throttle_key' => 'Kan ikke lagre throttle.key til {filePath}',
+    'unable_to_persist_encryption_key' => '',
+    'encryption_key_not_provisioned' => '',
+    'throttle_key_not_provisioned' => '',
     'unable_to_read_env_file'        => 'Kan ikke lese {filePath} for å klargjøre throttle.key',
     'unknown'                        => 'Uventet feil',
 ];

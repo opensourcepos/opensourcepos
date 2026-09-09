@@ -11,7 +11,9 @@ services:
             - "80:80"
         networks:
             - app_net
+        command: ["sh", "-c", "php spark env:provision && exec apache2-foreground"]
         volumes:
+            - ospos_env:/app/.env
             - uploads:/app/public/uploads
             - logs:/app/writable/logs
         environment:

@@ -6,6 +6,9 @@ return [
     'unable_to_lock_file'            => 'Nu s-a putut bloca {filePath}: {reason}',
     'unable_to_open_lock_file'       => 'Nu s-a putut deschide {filePath}: {reason}',
     'unable_to_persist_throttle_key' => 'Nu s-a putut persista throttle.key in {filePath}',
+    'unable_to_persist_encryption_key' => '',
+    'encryption_key_not_provisioned' => '',
+    'throttle_key_not_provisioned' => '',
     'unable_to_read_env_file'        => 'Nu s-a putut citi {filePath} pentru a aproviziona throttle.key',
     'unknown'                        => 'Eroare neasteptata',
 ];

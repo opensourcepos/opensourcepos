@@ -29,18 +29,18 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_pwd'), 'msg_pwd', ['class' => 'control-label col-xs-2 required']) ?>
+                <?= form_label(lang('Config.msg_pwd'), 'msg_pwd', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-lock"></span>
                         </span>
-                        <?= form_password([
-                            'name'  => 'msg_pwd',
-                            'id'    => 'msg_pwd',
-                            'class' => 'form-control input-sm required',
-                            'value' => $config['msg_pwd']
-                        ]) ?>
+                        <input type="password"
+                               name="msg_pwd"
+                               id="msg_pwd"
+                               class="form-control input-sm"
+                               placeholder="<?= lang('Config.msg_pwd_set') ?>"
+                               autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -95,13 +95,11 @@
 
             rules: {
                 msg_uid: "required",
-                msg_pwd: "required",
                 msg_src: "required"
             },
 
             messages: {
                 msg_uid: "<?= lang('Config.msg_uid_required') ?>",
-                msg_pwd: "<?= lang('Config.msg_pwd_required') ?>",
                 msg_src: "<?= lang('Config.msg_src_required') ?>"
             }
         }));

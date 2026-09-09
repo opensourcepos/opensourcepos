@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'ข้อความที่ถูกบักทึกไว้',
     'msg_msg_placeholder'                       => 'สร้างข้อความ SMS template ที่นี่',
     'msg_pwd'                                   => 'รหัสผ่านของ SMS-API',
-    'msg_pwd_required'                          => 'จำเป็นต้องป้อน รหัสผ่านของ SMS-API',
     'msg_src'                                   => 'ID ผู้ส่ง (SMS-API)',
     'msg_src_required'                          => 'จำเป็นต้องป้อน ID ผู้ส่ง',
     'msg_uid'                                   => 'ชื่อผู้ใช้งานระบบ SMS-API',

@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Snimljena tekst poruka',
     'msg_msg_placeholder'                       => 'Ako želite koristiti SMS šablon, snimite poruku ovdje. U suprotnom ostavite prazno polje.',
     'msg_pwd'                                   => 'SMS-API lozinke',
-    'msg_pwd_required'                          => 'SMS-API lozinke je obavezno polje',
     'msg_src'                                   => 'SMS-API ID pošiljaoca',
     'msg_src_required'                          => 'SMS-API Id pošiljaoca je obavezno polje',
     'msg_uid'                                   => 'SMS-API korisnika',
