@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Експорт на CSV",
     "export_csv_no"                  => "Не",
     "export_csv_yes"                 => "Да",
+    'export_all'                     => 'Експортиране на всичко',
+    'export_page'                    => 'Експортиране на страницата',
     "fields_required_message"        => "Полетата в червено са задължителни",
     "fields_required_message_unique" => "",
     "first_name"                     => "Име",

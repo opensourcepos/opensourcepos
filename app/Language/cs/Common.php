@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Export do CSVu",
     "export_csv_no"                  => "Ne",
     "export_csv_yes"                 => "Ano",
+    'export_all'                     => 'Exportovat vše',
+    'export_page'                    => 'Exportovat stránku',
     "fields_required_message"        => "Červená pole jsou vyžadována",
     "fields_required_message_unique" => "",
     "first_name"                     => "Jméno",

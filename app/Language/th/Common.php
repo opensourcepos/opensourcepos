@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Export",
     "export_csv_no"                  => "ไม่",
     "export_csv_yes"                 => "ใช่",
+    'export_all'                     => 'ส่งออกทั้งหมด',
+    'export_page'                    => 'ส่งออกหน้านี้',
     "fields_required_message"        => "ช่องสีแดง จำเป็นต้องป้อน",
     "fields_required_message_unique" => "",
     "first_name"                     => "ชื่อ",

@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "匯出至CSV",
     "export_csv_no"                  => "否",
     "export_csv_yes"                 => "是",
+    'export_all'                     => '匯出全部',
+    'export_page'                    => '匯出本頁',
     "fields_required_message"        => "紅色欄位為必填",
     "fields_required_message_unique" => "",
     "first_name"                     => "名字",

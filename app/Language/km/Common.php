@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "នាំចេញ CSV",
     "export_csv_no"                  => "ទេ",
     "export_csv_yes"                 => "បាទ",
+    'export_all'                     => 'នាំចេញទាំងអស់',
+    'export_page'                    => 'នាំចេញទំព័រ',
     "fields_required_message"        => "ចន្លោះពណ៌ក្រហមត្រូវការបំពេញ",
     "fields_required_message_unique" => "",
     "first_name"                     => "នាម​ខ្លួន",

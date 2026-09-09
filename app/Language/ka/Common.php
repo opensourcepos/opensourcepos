@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Export",
     "export_csv_no"                  => "No",
     "export_csv_yes"                 => "დიახ",
+    'export_all'                     => 'ყველას ექსპორტი',
+    'export_page'                    => 'გვერდის ექსპორტი',
     "fields_required_message"        => "Fields in red are required",
     "fields_required_message_unique" => "",
     "first_name"                     => "სახელი",

@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV izvoz",
     "export_csv_no"                  => "Ne",
     "export_csv_yes"                 => "Da",
+    'export_all'                     => 'Izvezi sve',
+    'export_page'                    => 'Izvezi stranicu',
     "fields_required_message"        => "Polja u crvenom su obavezna",
     "fields_required_message_unique" => "",
     "first_name"                     => "Ime",

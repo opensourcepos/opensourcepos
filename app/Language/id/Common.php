@@ -25,6 +25,8 @@ return [
     'export_csv' => "Ekspor ke CSV",
     'export_csv_no' => "Tidak",
     'export_csv_yes' => "Ya",
+    'export_all' => "Ekspor Semua",
+    'export_page' => "Ekspor Halaman",
     'fields_required_message' => "Bagian yang berwarna merah harus diisi",
     'fields_required_message_unique' => "",
     'first_name' => "Nama Depan",

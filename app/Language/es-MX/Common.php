@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Exportar a CSV",
     "export_csv_no"                  => "No",
     "export_csv_yes"                 => "Si",
+    'export_all'                     => 'Exportar todo',
+    'export_page'                    => 'Exportar página',
     "fields_required_message"        => "Los campos en rojo son requeridos",
     "fields_required_message_unique" => "",
     "first_name"                     => "Nombre",

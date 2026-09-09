@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Export",
     "export_csv_no"                  => "Xeyr",
     "export_csv_yes"                 => "Bəli",
+    'export_all'                     => 'Hamısını ixrac et',
+    'export_page'                    => 'Səhifəni ixrac et',
     "fields_required_message"        => "Qırmızı sahələr tələb olunur",
     "fields_required_message_unique" => "",
     "first_name"                     => "Ad",

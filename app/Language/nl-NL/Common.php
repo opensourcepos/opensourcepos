@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV exporteren",
     "export_csv_no"                  => "Nee",
     "export_csv_yes"                 => "Ja",
+    'export_all'                     => 'Alles exporteren',
+    'export_page'                    => 'Pagina exporteren',
     "fields_required_message"        => "Rode velden zijn vereist",
     "fields_required_message_unique" => "Rode velden zijn vereist en moeten uniek zijn",
     "first_name"                     => "Voornaam",

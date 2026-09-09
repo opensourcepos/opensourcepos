@@ -277,8 +277,8 @@
             'data-size': 'small',
             'data-onstyle': 'info',
             'data-offstyle': 'default',
-            'data-on': 'Export All',
-            'data-off': 'Export Page'
+            'data-on': lang.line('common_export_all'),
+            'data-off': lang.line('common_export_page')
         }).prependTo('#title_bar');
 
         $toggleInput.bootstrapToggle();

@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV முறையில் வெளியீடு",
     "export_csv_no"                  => "இல்லை",
     "export_csv_yes"                 => "ஆம்",
+    'export_all'                     => 'அனைத்தையும் ஏற்றுமதி செய்',
+    'export_page'                    => 'பக்கத்தை ஏற்றுமதி செய்',
     "fields_required_message"        => "சிவப்பு நிறத்திலுள்ள தரவுகள் அத்தியாவிசயம்",
     "fields_required_message_unique" => "",
     "first_name"                     => "முதற்பெயர்",

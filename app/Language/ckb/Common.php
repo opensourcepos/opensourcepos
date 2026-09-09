@@ -21,6 +21,8 @@ return [
     "export_csv"               => "هەناردەکردنی CSV",
     "export_csv_no"            => "نەخێر",
     "export_csv_yes"           => "بەڵێ",
+    'export_all'               => 'هەناردەکردنی هەموو',
+    'export_page'              => 'هەناردەکردنی پەڕە',
     "fields_required_message"  => "بوارە سورەکان پێویستن",
     "first_name"               => "ناوی یەکەم",
     "first_name_required"      => "ناوی یەکەم بوارێکی پێویستە.",

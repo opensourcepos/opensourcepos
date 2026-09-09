@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Export CSV",
     "export_csv_no"                  => "Nu",
     "export_csv_yes"                 => "Da",
+    'export_all'                     => 'Exportă tot',
+    'export_page'                    => 'Exportă pagina',
     "fields_required_message"        => "Sunt obligatorii câmpurile roșii",
     "fields_required_message_unique" => "",
     "first_name"                     => "Nume",

@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Εξαγωγή CSV",
     "export_csv_no"                  => "Όχι",
     "export_csv_yes"                 => "Ναί",
+    'export_all'                     => 'Εξαγωγή όλων',
+    'export_page'                    => 'Εξαγωγή σελίδας',
     "fields_required_message"        => "Τα κόκκινα πεδία απαιτούνται",
     "fields_required_message_unique" => "",
     "first_name"                     => "Κύριο όνομα",

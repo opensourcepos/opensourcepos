@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Eksportuj plik CSV",
     "export_csv_no"                  => "Nie",
     "export_csv_yes"                 => "Tak",
+    'export_all'                     => 'Eksportuj wszystko',
+    'export_page'                    => 'Eksportuj stronę',
     "fields_required_message"        => "Czerwone pola są wymagane",
     "fields_required_message_unique" => "",
     "first_name"                     => "Imię",

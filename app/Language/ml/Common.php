@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "",
     "export_csv_no"                  => "",
     "export_csv_yes"                 => "",
+    'export_all'                     => 'എല്ലാം എക്സ്പോർട്ട് ചെയ്യുക',
+    'export_page'                    => 'പേജ് എക്സ്പോർട്ട് ചെയ്യുക',
     "fields_required_message"        => "",
     "fields_required_message_unique" => "",
     "first_name"                     => "",

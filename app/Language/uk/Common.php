@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Експорт CSV",
     "export_csv_no"                  => "Ні",
     "export_csv_yes"                 => "Так",
+    'export_all'                     => 'Експортувати все',
+    'export_page'                    => 'Експортувати сторінку',
     "fields_required_message"        => "Поля червоного кольору обов'язкові для заповнення",
     "fields_required_message_unique" => "",
     "first_name"                     => "Ім'я",

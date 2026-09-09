@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "",
     "export_csv_no"                  => "",
     "export_csv_yes"                 => "",
+    'export_all'                     => 'Արտահանել բոլորը',
+    'export_page'                    => 'Արտահանել էջը',
     "fields_required_message"        => "",
     "fields_required_message_unique" => "",
     "first_name"                     => "",

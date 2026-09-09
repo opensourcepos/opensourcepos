@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Export",
     "export_csv_no"                  => "No",
     "export_csv_yes"                 => "Ja",
+    'export_all'                     => 'Alles exporteren',
+    'export_page'                    => 'Pagina exporteren',
     "fields_required_message"        => "Velden met een * moeten ingevuld worden",
     "fields_required_message_unique" => "",
     "first_name"                     => "Voornaam",

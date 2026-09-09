@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Export",
     "export_csv_no"                  => "Nem",
     "export_csv_yes"                 => "Igen",
+    'export_all'                     => 'Összes exportálása',
+    'export_page'                    => 'Oldal exportálása',
     "fields_required_message"        => "A piros mezők kötelezők",
     "fields_required_message_unique" => "",
     "first_name"                     => "Vezetéknév",

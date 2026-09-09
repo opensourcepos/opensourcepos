@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "ייצוא לאקסל",
     "export_csv_no"                  => "לא",
     "export_csv_yes"                 => "כן",
+    'export_all'                     => 'ייצוא הכל',
+    'export_page'                    => 'ייצוא עמוד',
     "fields_required_message"        => "שדות באדום הינם חובה",
     "fields_required_message_unique" => "",
     "first_name"                     => "שם פרטי",

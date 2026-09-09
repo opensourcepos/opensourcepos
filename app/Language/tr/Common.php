@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Dışa Aktarımı",
     "export_csv_no"                  => "Hayır",
     "export_csv_yes"                 => "Evet",
+    'export_all'                     => 'Tümünü dışa aktar',
+    'export_page'                    => 'Sayfayı dışa aktar',
     "fields_required_message"        => "Kırmızı alanlar zorunludur",
     "fields_required_message_unique" => "",
     "first_name"                     => "Ad",

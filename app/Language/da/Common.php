@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Eksport",
     "export_csv_no"                  => "Nej",
     "export_csv_yes"                 => "Ja",
+    'export_all'                     => 'Eksporter alt',
+    'export_page'                    => 'Eksporter side',
     "fields_required_message"        => "Røde felter er obligatoriske",
     "fields_required_message_unique" => "",
     "first_name"                     => "Fornavn",

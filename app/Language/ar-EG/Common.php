@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "تصدير إلى اكسل",
     "export_csv_no"                  => "لا",
     "export_csv_yes"                 => "نعم",
+    'export_all'                     => 'تصدير الكل',
+    'export_page'                    => 'تصدير الصفحة',
     "fields_required_message"        => "الحقول التي بالأحمر مطلوبة",
     "fields_required_message_unique" => "",
     "first_name"                     => "الاسم الأول",

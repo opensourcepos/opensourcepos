@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "CSV Export",
     "export_csv_no"                  => "Nej",
     "export_csv_yes"                 => "Ja",
+    'export_all'                     => 'Exportera allt',
+    'export_page'                    => 'Exportera sida',
     "fields_required_message"        => "Fält markerade i rött är obligatoriska",
     "fields_required_message_unique" => "",
     "first_name"                     => "Förnamn",

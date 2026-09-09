@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "Hamisha CSV",
     "export_csv_no"                  => "Hapana",
     "export_csv_yes"                 => "Ndiyo",
+    'export_all'                     => 'Hamisha vyote',
+    'export_page'                    => 'Hamisha ukurasa',
     "fields_required_message"        => "Sehemu zilizo na rangi nyekundu ni za lazima",
     "fields_required_message_unique" => "",
     "first_name"                     => "Jina la Kwanza",

@@ -25,6 +25,8 @@ return [
     "export_csv"                     => "",
     "export_csv_no"                  => "",
     "export_csv_yes"                 => "",
+    'export_all'                     => 'Eksporter alt',
+    'export_page'                    => 'Eksporter side',
     "fields_required_message"        => "",
     "fields_required_message_unique" => "",
     "first_name"                     => "",
