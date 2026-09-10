@@ -39,10 +39,14 @@ gulp.task('compress', function() {
 
 
 gulp.task('update-licenses', function() {
+    function run_completion(execStream) {
+        return finished(execStream.resume());
+    }
+
     return Promise.all([
-        finished(run('composer licenses --format=json --no-dev > public/license/composer.LICENSES').exec()),
-        finished(run('npx license-report --only=prod --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-prod.LICENSES').exec()),
-        finished(run('npx license-report --only=dev --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-dev.LICENSES').exec()),
+        run_completion(run('composer licenses --format=json --no-dev > public/license/composer.LICENSES').exec()),
+        run_completion(run('npx license-report --only=prod --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-prod.LICENSES').exec()),
+        run_completion(run('npx license-report --only=dev --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-dev.LICENSES').exec()),
         pipeline(gulp.src('LICENSE'),gulp.dest('public/license'))
     ]);
 });
