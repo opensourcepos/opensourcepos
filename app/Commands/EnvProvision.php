@@ -6,6 +6,7 @@ use App\Libraries\CI3SecretConverter;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use Exception;
+use RuntimeException;
 
 /**
  * Idempotent startup provisioning of the encryption + throttle keys.
@@ -75,16 +76,25 @@ class EnvProvision extends BaseCommand
 
         if ($key !== '' && strlen($key) < 64) {
             // Legacy CI3 key is present in .env: decrypt stored secrets with it,
-            // rotate to a strong CI4 key, then re-encrypt under the new key.
+            // rotate to a strong CI4 key, re-encrypt under the new key, verify
+            // the round trip, and only then persist the CI4 *ciphertext* (never
+            // the decrypted plaintext), mirroring ConvertToCI4::convertCI3EncryptedData().
             $plain = $converter->decryptAll($key);
             $hasData = $this->anyNonEmpty($plain);
 
             rotateEncryptionKey($key);
             CLI::write('encryption.key     : rotated CI3 -> CI4 key', 'green');
 
+            $encrypted = $converter->encryptAll($plain);
+
+            if ($hasData && array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
+                abortEncryptionConversion();
+                throw new RuntimeException('Failed to verify converted encryption data.');
+            }
+
             if ($hasData) {
-                $converter->saveAll($plain);
-                CLI::write('legacy secrets     : converted to CI4 cipher', 'green');
+                $converter->saveAll($encrypted);
+                CLI::write('legacy secrets     : converted and verified to CI4 cipher', 'green');
             }
         } else {
             // No key at all. Generate one. We cannot recover existing CI3

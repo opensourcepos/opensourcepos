@@ -144,6 +144,25 @@ final class CI3SecretConverterTest extends CIUnitTestCase
         $this->assertNotSame('', $enc['clcdesq_api_key']);
     }
 
+    public function testCI3BranchSavesCiphertextNotPlaintext(): void
+    {
+        // Regression guard for the env:provision CI3 branch (mirrored by the
+        // ConvertToCI4 migration): after decryptAll() with the legacy CI3 key,
+        // the command must persist encryptAll()'s CI4 *ciphertext* -- never the
+        // decrypted plaintext. A payload equal to $plain would mean secrets were
+        // written to ospos_app_config in the clear.
+        $conv    = new CI3SecretConverter($this->fake($this->ci3Ciphertexts()));
+        $plain   = $conv->decryptAll($this->oldKey);
+        $payload = $conv->encryptAll($plain); // <- exactly what run() passes to saveAll()
+
+        // saveAll() must receive the ciphertext form, i.e. a value that differs
+        // from every plaintext secret yet round-trips to it under the CI4 cipher.
+        foreach ($this->plain as $col => $secret) {
+            $this->assertNotSame($secret, $payload[$col], "saveAll() payload for {$col} must be ciphertext, not the plain secret");
+        }
+        $this->assertSame($plain, $conv->verifyAll($payload), 'persisted ciphertext must verify back to the original plaintext');
+    }
+
     public function testHasLegacyDataTrueWhenAnyPresent(): void
     {
         $conv = new CI3SecretConverter($this->fake($this->ci3Ciphertexts()));
