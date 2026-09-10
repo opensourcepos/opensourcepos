@@ -826,9 +826,11 @@ class Attribute extends Model
      * Gets all attribute values for multiple items in bulk. Used by plugins, do not remove.
      *
      * @param array $itemIds Array of item IDs
+     * @param array $definitionIds Optional list of definition IDs to restrict the result to. When
+     * empty, values for all definitions are returned.
      * @return array A nested array keyed by [item_id][definition_id] with attribute value arrays
      */
-    public function getAttributeValuesBulk(array $itemIds): array
+    public function getAttributeValuesBulk(array $itemIds, array $definitionIds = []): array
     {
         if (empty($itemIds)) {
             return [];
@@ -838,6 +840,11 @@ class Attribute extends Model
         $builder->select('attribute_links.item_id, attribute_links.attribute_id, attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
         $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
         $builder->whereIn('item_id', $itemIds);
+
+        if (! empty($definitionIds)) {
+            $builder->whereIn('attribute_links.definition_id', $definitionIds);
+        }
+
         $builder->where('attribute_links.sale_id', null);
         $builder->where('attribute_links.receiving_id', null);
 
