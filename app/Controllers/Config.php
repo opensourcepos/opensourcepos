@@ -157,14 +157,20 @@ class Config extends Secure_Controller
             $file = file_get_contents('license/npm-prod.LICENSES');
             $array = json_decode($file, true);
 
-            foreach ($array as $dependency) {
-                $license[$i]['text'] .= "library: {$dependency['name']}\n";
-                $license[$i]['text'] .= "authors: {$dependency['author']}\n";
-                $license[$i]['text'] .= "website: {$dependency['homepage']}\n";
-                $license[$i]['text'] .= "version: {$dependency['installedVersion']}\n";
-                $license[$i]['text'] .= "license: {$dependency['licenseType']}\n";
+            if (is_array($array)) {
+                foreach ($array as $dependency) {
+                    if (!is_array($dependency) || count(array_intersect(['name', 'author', 'homepage', 'installedVersion', 'licenseType'], array_keys($dependency))) !== 5) {
+                        continue;
+                    }
 
-                $license[$i]['text'] .= "\n";
+                    $license[$i]['text'] .= "library: {$dependency['name']}\n";
+                    $license[$i]['text'] .= "authors: {$dependency['author']}\n";
+                    $license[$i]['text'] .= "website: {$dependency['homepage']}\n";
+                    $license[$i]['text'] .= "version: {$dependency['installedVersion']}\n";
+                    $license[$i]['text'] .= "license: {$dependency['licenseType']}\n";
+
+                    $license[$i]['text'] .= "\n";
+                }
             }
             $license[$i]['text'] = rtrim($license[$i]['text'], "\n");
         }
@@ -177,14 +183,20 @@ class Config extends Secure_Controller
             $file = file_get_contents('license/npm-dev.LICENSES');
             $array = json_decode($file, true);
 
-            foreach ($array as $dependency) {
-                $license[$i]['text'] .= "library: {$dependency['name']}\n";
-                $license[$i]['text'] .= "authors: {$dependency['author']}\n";
-                $license[$i]['text'] .= "website: {$dependency['homepage']}\n";
-                $license[$i]['text'] .= "version: {$dependency['installedVersion']}\n";
-                $license[$i]['text'] .= "license: {$dependency['licenseType']}\n";
+            if (is_array($array)) {
+                foreach ($array as $dependency) {
+                    if (!is_array($dependency) || count(array_intersect(['name', 'author', 'homepage', 'installedVersion', 'licenseType'], array_keys($dependency))) !== 5) {
+                        continue;
+                    }
 
-                $license[$i]['text'] .= "\n";
+                    $license[$i]['text'] .= "library: {$dependency['name']}\n";
+                    $license[$i]['text'] .= "authors: {$dependency['author']}\n";
+                    $license[$i]['text'] .= "website: {$dependency['homepage']}\n";
+                    $license[$i]['text'] .= "version: {$dependency['installedVersion']}\n";
+                    $license[$i]['text'] .= "license: {$dependency['licenseType']}\n";
+
+                    $license[$i]['text'] .= "\n";
+                }
             }
             $license[$i]['text'] = rtrim($license[$i]['text'], "\n");
         }

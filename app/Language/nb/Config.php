@@ -276,7 +276,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Ugyldig sendmail-sti. Kun bokstaver, tall, bindestreker, understreker, skråstreker, omvendte skråstreker, kolon, mellomrom og punktum er tillatt.',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => '',

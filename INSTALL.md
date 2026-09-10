@@ -10,7 +10,7 @@
 
 ### Allowed Hostnames (REQUIRED for Production)
 
-⚠️ **CRITICAL**: OpenSourcePOS validates the Host header to prevent Host Header Injection attacks (GHSA-jchf-7hr6-h4f3). **You MUST configure `app.allowedHostnames` for production deployments. If not configured, the application will fail to start.**
+⚠️ **CRITICAL**: OpenSourcePOS validates the Host header to prevent Host Header Injection attacks. **You MUST configure `app.allowedHostnames` for production deployments. If not configured, the application will fail to start.**
 
 **Add to your `.env` file:**
 
@@ -34,9 +34,8 @@ RuntimeException: Security: allowedHostnames is not configured.
 **Solution**: Add `app.allowedHostnames` to your `.env` file with your domain(s).
 
 **Why this matters:**
-- Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
+- Prevents Host Header Injection attacks
 - Ensures URLs are generated with the correct domain
-- Security advisory: https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-jchf-7hr6-h4f3
 - Fixes issue #4480: .env configuration now works via comma-separated values
 
 ### HTTPS Behind Proxy

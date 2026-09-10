@@ -317,6 +317,17 @@ class Item extends Model
         );
     }
 
+    public function getPicFilenamesBulk(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $rows = $this->select('item_id, pic_filename')->whereIn('item_id', $itemIds)->findAll();
+
+        return array_column($rows, 'pic_filename', 'item_id');
+    }
+
     public function getDistinctCategories(): array
     {
         $results = $this->db->table('items')

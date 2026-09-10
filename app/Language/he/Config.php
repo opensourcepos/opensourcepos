@@ -276,7 +276,7 @@ return [
     'right'                                     => 'ימין',
     'sales_invoice_format'                      => 'תבנית חשבונית מכירות',
     'sales_quote_format'                        => 'תבנית חשבונית הצעת מחיר',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'נתיב sendmail לא תקין. מותרים רק אותיות, ספרות, מקפים, קווים תחתונים, לוכסנים, לוכסנים הפוכים, נקודתיים, רווחים ונקודות.',
     'saved_successfully'                        => 'ההגדרות נשמרו בהצלחה.',
     'saved_unsuccessfully'                      => 'שמירת ההגדרות נכשלה.',
     'security_issue'                            => 'Security Vulnerability Warning',

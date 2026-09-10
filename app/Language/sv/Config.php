@@ -276,7 +276,7 @@ return [
     'right'                                     => 'Höger',
     'sales_invoice_format'                      => 'Försäljningsfakturaformat',
     'sales_quote_format'                        => 'Försäljningsquotaformat',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Ogiltig sendmail-sökväg. Endast bokstäver, siffror, bindestreck, understreck, snedstreck, omvända snedstreck, kolon, mellanslag och punkter tillåts.',
     'saved_successfully'                        => 'Konfigurationen sparades.',
     'saved_unsuccessfully'                      => 'Konfigurationsbesparingen misslyckades.',
     'security_issue'                            => 'Varning för säkerhetsrisker',

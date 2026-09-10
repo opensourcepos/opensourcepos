@@ -276,7 +276,7 @@ return [
     'right'                                     => 'Derecha',
     'sales_invoice_format'                      => 'Formato de Facturas de Venta',
     'sales_quote_format'                        => 'Formato de presupuesto de las ventas',
-    'mailpath_invalid'                          => 'Ruta de sendmail inválida. Solo se permiten letras, números, guiones, guiones bajos, barras y puntos.',
+    'mailpath_invalid'                          => 'Ruta de sendmail no válida. Solo se permiten letras, números, guiones, guiones bajos, barras, barras invertidas, dos puntos, espacios y puntos.',
     'saved_successfully'                        => 'Configuración guardada satisfactoriamente.',
     'saved_unsuccessfully'                      => 'Configuración no guardada.',
     'security_issue'                            => 'Advertencia de vulnerabilidad de seguridad',

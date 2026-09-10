@@ -276,7 +276,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => '銷售發票格式',
     'sales_quote_format'                        => '銷售報價格式',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => '無效的 sendmail 路徑。僅允許字母、數字、連字號、底線、正斜線、反斜線、冒號、空格和句點。',
     'saved_successfully'                        => '組態設置儲存成功.',
     'saved_unsuccessfully'                      => '組態設置儲存失敗.',
     'security_issue'                            => '安全漏洞警告',

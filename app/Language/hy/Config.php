@@ -276,7 +276,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Sendmail-ի ուղին անվավեր է։ Թույլատրվում են միայն տառեր, թվեր, գծիկներ, ընդգծումներ, թեք գծեր, հակառակ թեք գծեր, երկկետեր, բացատներ և կետեր։',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => '',

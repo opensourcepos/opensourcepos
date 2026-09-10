@@ -276,7 +276,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'sendmail کا راستہ غلط ہے۔ صرف حروف، ہندسے، ڈیش، انڈر اسکور، سلیش، بیک سلیش، کالن، اسپیس اور نقطے کی اجازت ہے۔',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => 'Security Vulnerability Warning',

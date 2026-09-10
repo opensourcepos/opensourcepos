@@ -276,7 +276,7 @@ return [
     'right'                                     => 'Kulia',
     'sales_invoice_format'                      => 'Muundo wa Ankara ya Mauzo',
     'sales_quote_format'                        => 'Muundo wa Nukuu ya Mauzo',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Njia ya sendmail si sahihi. Herufi, nambari, mistari mifupi, mistari chini, mikwaju, mikwaju ya kinyume, koloni, nafasi na vitone pekee ndivyo vinaruhusiwa.',
     'saved_successfully'                        => 'Mpangilio umehifadhiwa kwa mafanikio.',
     'saved_unsuccessfully'                      => 'Mpangilio umeshindwa kuhifadhiwa.',
     'security_issue'                            => 'Onyo la Udhaifu wa Usalama',
