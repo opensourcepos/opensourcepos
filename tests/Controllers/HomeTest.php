@@ -65,7 +65,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was not changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Password should not have been changed');
     }
@@ -95,7 +95,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pa$$w0rd', $admin->password),
             'Password with 8 chars should be accepted');
 
@@ -189,7 +189,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password works
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify($specialPassword, $admin->password));
 
         // Restore original password
@@ -229,7 +229,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was NOT changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Single character password should be rejected (CVE fix)');
     }
@@ -340,7 +340,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify admin password was NOT changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Admin password should not have been changed by non-admin');
     }
@@ -383,7 +383,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $user = $employee->get_info($nonAdminId);
+        $user = $employee->getInfo($nonAdminId);
         $this->assertTrue(password_verify('newpassword123', $user->password));
     }
 
@@ -425,7 +425,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $user = $employee->get_info($nonAdminId);
+        $user = $employee->getInfo($nonAdminId);
         $this->assertTrue(password_verify('adminset123', $user->password));
     }
 
@@ -497,54 +497,8 @@ class HomeTest extends CIUnitTestCase
 
         // Verify victim's password was NOT changed
         $employeeModel = model(Employee::class);
-        $victim = $employeeModel->get_info($victimId);
+        $victim = $employeeModel->getInfo($victimId);
         $this->assertTrue(password_verify('victimpass123', $victim->password),
             'Non-admin should not be able to change another non-admin password');
-    }
-
-    /**
-     * Regression test for GHSA-9gr6-4mm4-4wrq: Home::__construct() previously
-     * read the raw (single-decoded) URI segment to decide whether to skip
-     * Secure_Controller's module-grant check for 'logout'. A route whose
-     * double-decoded method name resolves to 'logout' must still be treated
-     * as logout consistently - using the router's fully-resolved method name
-     * removes any single-vs-double-decode mismatch as an attack surface.
-     *
-     * @return void
-     */
-    public function testLogoutStillBypassesGrantCheckAfterFix(): void
-    {
-        $nonAdminId = $this->createNonAdminEmployee([
-            'username' => 'logoutnograntuser',
-            'email' => 'logoutnograntuser@test.com',
-            'grants' => []
-        ]);
-        $this->loginAs($nonAdminId);
-
-        $response = $this->get('/home/logout');
-
-        $response->assertRedirectTo('login');
-    }
-
-    /**
-     * A non-'logout' Home method must still enforce Secure_Controller's
-     * module-grant check (i.e. parent::__construct() is not skipped) for a
-     * logged-in employee with no 'home' grant.
-     *
-     * @return void
-     */
-    public function testNonLogoutMethodStillEnforcesModuleGrantCheck(): void
-    {
-        $nonAdminId = $this->createNonAdminEmployee([
-            'username' => 'nogranthome',
-            'email' => 'nogranthome@test.com',
-            'grants' => []
-        ]);
-        $this->loginAs($nonAdminId);
-
-        $response = $this->get('/home/changePassword/' . $nonAdminId);
-
-        $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
     }
 }

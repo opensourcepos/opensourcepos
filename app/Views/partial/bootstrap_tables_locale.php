@@ -1,6 +1,7 @@
 <?php
 /**
  * @var string $controller_name
+ * @var string|null $editable
  */
 ?>
 
@@ -21,9 +22,9 @@
             return "<?= lang('Common.search') ?>";
         },
         formatNoMatches: function() {
-            return "<?= lang(preg_match('(customers|suppliers|employees)', $controller_name)
-                        ? 'Common.no_persons_to_display'
-                        : ucfirst($controller_name) . '.no_' . $controller_name . '_to_display') ?>";
+            return "<?= preg_match('(customers|suppliers|employees)', $controller_name)
+                        ? lang('Common.no_persons_to_display')
+                        : lang(ucfirst($editable ?? $controller_name) . '.no_' . $controller_name . '_to_display') ?>";
         },
         formatPaginationSwitch: function() {
             return "<?= lang('Bootstrap_tables.hide_show_pagination') ?>";

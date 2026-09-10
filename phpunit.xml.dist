@@ -26,6 +26,9 @@
         <testsuite name="App">
             <directory>./tests</directory>
         </testsuite>
+        <testsuite name="Plugins">
+            <directory suffix="Test.php">./app/Plugins</directory>
+        </testsuite>
     </testsuites>
     <logging>
         <testdoxHtml outputFile="build/logs/testdox.html"/>

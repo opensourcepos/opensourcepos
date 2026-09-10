@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "",
     "office"                     => "",
     "office_desc"                => "",
+    'plugins'                    => 'Dodaci',
     "receivings"                 => "Primka",
     "receivings_desc"            => "Dodaj, ažuriraj, obriši ili traži primke",
     "reports"                    => "Izvještaji",

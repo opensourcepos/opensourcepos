@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "Cập nhật cơ sở dữ liệu OSPOS.",
     "office"                     => "Văn phòng",
     "office_desc"                => "Liệt kê các mô đun văn phòng.",
+    'plugins'                    => 'Plugin',
     "receivings"                 => "Nhập hàng",
     "receivings_desc"            => "Xử lý đặt hàng.",
     "reports"                    => "Báo cáo",

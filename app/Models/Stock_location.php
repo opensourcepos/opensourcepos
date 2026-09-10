@@ -58,11 +58,20 @@ class Stock_location extends Model
         return $builder->get();
     }
 
+    public function getUndeleted(): array
+    {
+        return $this->db->table('stock_locations')
+            ->select('location_id, location_name')
+            ->where('deleted', 0)
+            ->get()
+            ->getResultArray();
+    }
+
     /**
      * @param string $module_id
      * @return ResultInterface
      */
-    public function get_undeleted_all(string $module_id = 'items'): ResultInterface
+    public function get_undeleted_all(string $module_id = 'items'): ResultInterface //TODO: Refactor this to getUndeletedWithPermissions()
     {
         $builder = $this->db->table('stock_locations');
         $builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');

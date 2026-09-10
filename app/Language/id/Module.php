@@ -32,6 +32,7 @@ return [
     'migrate_desc' => "Perbaharui basis data OSPOS.",
     'office' => "Kantor",
     'office_desc' => "Daftar modul menu Kantor.",
+    'plugins' => 'Plugin',
     'receivings' => "Penerimaan",
     'receivings_desc' => "Proses Pesanan Pembelian.",
     'reports' => "Laporan",

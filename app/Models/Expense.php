@@ -62,7 +62,7 @@ class Expense extends Model
 
         $employee = model(Employee::class);
 
-        return $employee->get_info($builder->get()->getRow()->employee_id);    // TODO: refactor out the nested function call.
+        return $employee->getInfo($builder->get()->getRow()->employee_id);    // TODO: refactor out the nested function call.
     }
 
     /**

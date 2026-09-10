@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "Database güncelleme.",
     "office"                     => "Yönetim",
     "office_desc"                => "Yönetim modülleri.",
+    'plugins'                    => 'Eklentiler',
     "receivings"                 => "Alımlar",
     "receivings_desc"            => "Alım işlemleri.",
     "reports"                    => "Raporlar",
