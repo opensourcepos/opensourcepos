@@ -50,7 +50,7 @@ class Login extends BaseController
             $data = [
                 'hasErrors'       => false,
                 'isNewInstall'   => $currentVersion === 0,
-                'isLatest'        => $latestVersion === $currentVersion,
+                'isLatest'        => $latestVersion === $currentVersion && !service('pluginManager')->hasPendingMigrations(),
                 'latestVersion'   => $latestVersion,
                 'gcaptchaEnabled' => $gcaptchaEnabled,
                 'config'           => $config,
@@ -125,6 +125,8 @@ class Login extends BaseController
 
             set_time_limit(3600);
             $migration->setNamespace('App')->latest();
+
+            service('pluginManager')->runPendingMigrations();
 
             return $this->response->setJSON([
                 'success' => true,

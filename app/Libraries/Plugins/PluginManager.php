@@ -7,6 +7,7 @@ use App\Models\PluginMigrationModel;
 use CodeIgniter\Events\Events;
 use Config\Database;
 use Config\Services;
+use RuntimeException;
 use Throwable;
 
 class PluginManager
@@ -83,8 +84,6 @@ class PluginManager
             return;
         }
 
-        $this->runPendingMigrations();
-
         foreach ($this->plugins as $pluginId => $plugin) {
             if ($this->isPluginEnabled($pluginId)) {
                 $this->enabledPlugins[$pluginId] = $plugin;
@@ -96,7 +95,35 @@ class PluginManager
         $this->eventsRegistered = true;
     }
 
-    private function runPendingMigrations(): void
+    public function hasPendingMigrations(): bool
+    {
+        $db = Database::connect();
+
+        if (!$db->tableExists('plugin_migrations')) {
+            return false;
+        }
+
+        $migrationModel = new PluginMigrationModel();
+
+        foreach ($this->plugins as $pluginId => $plugin) {
+            $currentVersion = $migrationModel->getVersion($pluginId);
+
+            foreach ($this->getPendingMigrationFiles($pluginId, $plugin, $currentVersion) as $file) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function runPendingMigrations(): void
+    {
+        foreach ($this->plugins as $pluginId => $plugin) {
+            $this->runPendingMigrationsForPlugin($pluginId);
+        }
+    }
+
+    private function runPendingMigrationsForPlugin(string $pluginId): void
     {
         $db = Database::connect();
 
@@ -104,60 +131,74 @@ class PluginManager
             return;
         }
 
+        $plugin = $this->getPlugin($pluginId);
+        if ($plugin === null) {
+            return;
+        }
+
+        $parts = explode('\\', get_class($plugin));
+        if (count($parts) < 4) {
+            return;
+        }
+
+        $pluginDirName = $parts[2];
         $migrationModel = new PluginMigrationModel();
         $forge = Database::forge();
+        $currentVersion = $migrationModel->getVersion($pluginId);
 
-        foreach ($this->plugins as $pluginId => $plugin) {
-            if (!$this->isPluginEnabled($pluginId)) {
-                continue;
+        foreach ($this->getPendingMigrationFiles($pluginId, $plugin, $currentVersion) as $file) {
+            $basename = basename($file, '.php');
+            $timestamp = (int) substr($basename, 0, 14);
+            $className = substr($basename, 15); // strip "20260627120000_"
+            $fqcn = "App\\Plugins\\{$pluginDirName}\\Migrations\\{$className}";
+
+            require_once $file;
+
+            if (!class_exists($fqcn)) {
+                log_message('error', "Plugin migration class not found: {$fqcn}");
+                throw new RuntimeException("Plugin migration class not found: {$fqcn}");
             }
 
-            $parts = explode('\\', get_class($plugin));
-            if (count($parts) < 4) {
-                continue;
-            }
-
-            $pluginDirName = $parts[2];
-            $migrationsPath = APPPATH . "Plugins/{$pluginDirName}/Migrations/";
-
-            if (!is_dir($migrationsPath)) {
-                continue;
-            }
-
-            $files = glob($migrationsPath . '*.php') ?: [];
-            $migrationFiles = array_filter($files, static fn($f) => preg_match('/\/\d{14}_/', $f));
-            sort($migrationFiles);
-
-            $currentVersion = $migrationModel->getVersion($pluginId);
-
-            foreach ($migrationFiles as $file) {
-                $basename = basename($file, '.php');
-                $timestamp = (int) substr($basename, 0, 14);
-
-                if ($timestamp <= $currentVersion) {
-                    continue;
-                }
-
-                $className = substr($basename, 15); // strip "20260627120000_"
-                $fqcn = "App\\Plugins\\{$pluginDirName}\\Migrations\\{$className}";
-
-                require_once $file;
-
-                if (!class_exists($fqcn)) {
-                    log_message('error', "Plugin migration class not found: {$fqcn}");
-                    break;
-                }
-
-                try {
-                    (new $fqcn($db, $forge))->up();
-                    $migrationModel->setVersion($pluginId, $timestamp);
-                    log_message('info', "Plugin migration ran: {$pluginId} v{$timestamp}");
-                } catch (Throwable $e) {
-                    log_message('error', "Plugin migration failed: {$pluginId} v{$timestamp}: " . $e->getMessage());
-                    break;
-                }
+            try {
+                (new $fqcn($db, $forge))->up();
+                $migrationModel->setVersion($pluginId, $timestamp);
+                log_message('info', "Plugin migration ran: {$pluginId} v{$timestamp}");
+            } catch (Throwable $e) {
+                log_message('error', "Plugin migration failed: {$pluginId} v{$timestamp}: " . $e->getMessage());
+                throw $e;
             }
         }
+    }
+
+    /**
+     * @return string[] Sorted list of migration file paths not yet applied for the given plugin.
+     */
+    private function getPendingMigrationFiles(string $pluginId, PluginInterface $plugin, int $currentVersion): array
+    {
+        if (!$this->isPluginEnabled($pluginId)) {
+            return [];
+        }
+
+        $parts = explode('\\', get_class($plugin));
+        if (count($parts) < 4) {
+            return [];
+        }
+
+        $pluginDirName = $parts[2];
+        $migrationsPath = APPPATH . "Plugins/{$pluginDirName}/Migrations/";
+
+        if (!is_dir($migrationsPath)) {
+            return [];
+        }
+
+        $files = glob($migrationsPath . '*.php') ?: [];
+        $migrationFiles = array_filter($files, static fn($f) => preg_match('/\/\d{14}_/', $f));
+        sort($migrationFiles);
+
+        return array_filter(
+            $migrationFiles,
+            static fn($file) => (int) substr(basename($file, '.php'), 0, 14) > $currentVersion
+        );
     }
 
     public function getAllPlugins(): array
@@ -204,6 +245,8 @@ class PluginManager
         }
 
         $this->configModel->setValue($pluginId, 'enabled', '1', true);
+
+        $this->runPendingMigrationsForPlugin($pluginId);
 
         $this->registerNamespace($pluginId);
 
