@@ -160,6 +160,10 @@ class Config extends Secure_Controller
 
             if (is_array($array)) {
                 foreach ($array as $dependency) {
+                    if (!is_array($dependency) || count(array_intersect(['name', 'author', 'homepage', 'installedVersion', 'licenseType'], array_keys($dependency))) !== 5) {
+                        continue;
+                    }
+
                     $license[$i]['text'] .= "library: {$dependency['name']}\n";
                     $license[$i]['text'] .= "authors: {$dependency['author']}\n";
                     $license[$i]['text'] .= "website: {$dependency['homepage']}\n";
@@ -182,6 +186,10 @@ class Config extends Secure_Controller
 
             if (is_array($array)) {
                 foreach ($array as $dependency) {
+                    if (!is_array($dependency) || count(array_intersect(['name', 'author', 'homepage', 'installedVersion', 'licenseType'], array_keys($dependency))) !== 5) {
+                        continue;
+                    }
+
                     $license[$i]['text'] .= "library: {$dependency['name']}\n";
                     $license[$i]['text'] .= "authors: {$dependency['author']}\n";
                     $license[$i]['text'] .= "website: {$dependency['homepage']}\n";
