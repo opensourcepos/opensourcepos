@@ -97,9 +97,11 @@ gulp.task('copy-bootswatch5', function() {
 
 // Copy the bootstrap style into its own folder so OSPOS can select it from the collection
 gulp.task('copy-bootstrap', function() {
-    pipeline(gulp.src('./node_modules/bootstrap/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch/bootstrap'));
-    pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap'));
-    return pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.rtl.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap'));
+    return Promise.all([
+        pipeline(gulp.src('./node_modules/bootstrap/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch/bootstrap')),
+        pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap')),
+        pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.rtl.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap'))
+    ]);
 });
 
 // /public/resources/ospos - contains the minimized files to be packed into opensourcepos.min.[css/js]
