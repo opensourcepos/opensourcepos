@@ -285,7 +285,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Neplatná cesta k sendmailu. Povolena jsou pouze písmena, číslice, pomlčky, podtržítka, lomítka, zpětná lomítka, dvojtečky, mezery a tečky.',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => 'Security Vulnerability Warning',

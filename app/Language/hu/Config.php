@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Jobb',
     'sales_invoice_format'                      => 'Eladási számla formátum',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Érvénytelen sendmail elérési út. Csak betűk, számok, kötőjelek, aláhúzások, perjelek, fordított perjelek, kettőspontok, szóközök és pontok engedélyezettek.',
     'saved_successfully'                        => 'Beállítások sikeresen elmentve',
     'saved_unsuccessfully'                      => 'Beállítások mentése sikertelen',
     'security_issue'                            => 'Security Vulnerability Warning',

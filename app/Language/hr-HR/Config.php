@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => 'Oblik fakture',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Nevažeća sendmail putanja. Dopuštena su samo slova, brojevi, crtice, podvlake, kose crte, obrnute kose crte, dvotočke, razmaci i točke.',
     'saved_successfully'                        => 'Konfiguracija je uspješno snimljena',
     'saved_unsuccessfully'                      => 'Konfiguracija nije uspješno snimljena',
     'security_issue'                            => 'Security Vulnerability Warning',

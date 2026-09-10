@@ -59,3 +59,4 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Never commit secrets, credentials, or `.env` files
 - Use parameterized queries to prevent SQL injection
 - Validate and sanitize all user input
+- Never reference security advisory IDs (CVE, GHSA, etc.) in code, comments, commit messages, docblocks, documentation, or URLs — treat them the same as secrets. They act as a roadmap for attackers researching the exact exploit a fix addresses.

@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => 'Sales Invoice Format',
     'sales_quote_format'                        => 'Sales Quote Format',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'ເສັ້ນທາງ sendmail ບໍ່ຖືກຕ້ອງ. ອະນຸຍາດສະເພາະຕົວອັກສອນ, ຕົວເລກ, ຂີດກາງ, ຂີດກ້ອງ, ຂີດຂ້າງໜ້າ, ຂີດຂ້າງຫຼັງ, ຈໍ້າສອງເມັດ, ວັກ ແລະ ຈຸດເທົ່ານັ້ນ.',
     'saved_successfully'                        => 'Configuration save successful.',
     'saved_unsuccessfully'                      => 'Configuration save failed.',
     'security_issue'                            => 'Security Vulnerability Warning',

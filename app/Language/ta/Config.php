@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => 'Sales Invoice Format',
     'sales_quote_format'                        => 'Sales Quote Format',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'தவறான sendmail பாதை. எழுத்துகள், எண்கள், கோடுகள், அடிக்கோடுகள், சாய்வுக்கோடுகள், பின்சாய்வுக்கோடுகள், முக்காற்புள்ளிகள், இடைவெளிகள் மற்றும் புள்ளிகள் மட்டுமே அனுமதிக்கப்படும்.',
     'saved_successfully'                        => 'Configuration save successful.',
     'saved_unsuccessfully'                      => 'Configuration save failed.',
     'security_issue'                            => 'Security Vulnerability Warning',

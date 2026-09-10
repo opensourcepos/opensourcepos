@@ -285,7 +285,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'sendmail-ის ბილიკი არასწორია. დაშვებულია მხოლოდ ასოები, ციფრები, დეფისები, ხაზგასმები, დახრილი ხაზები, უკუხაზები, ორწერტილები, ჰარეები და წერტილები.',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => '',

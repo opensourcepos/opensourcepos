@@ -285,6 +285,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
+    'mailpath_invalid'                          => 'Nieprawidłowa ścieżka sendmail. Dozwolone są tylko litery, cyfry, myślniki, podkreślenia, ukośniki, ukośniki odwrotne, dwukropki, spacje i kropki.',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => 'Security Vulnerability Warning',
