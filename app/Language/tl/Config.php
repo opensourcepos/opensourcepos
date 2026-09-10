@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => 'Sales Invoice Format',
     'sales_quote_format'                        => 'Sales Quote Format',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Hindi wastong landas ng sendmail. Mga titik, numero, gitling, underscore, slash, backslash, kolon, espasyo, at tuldok lamang ang pinapayagan.',
     'saved_successfully'                        => 'Configuration save successful.',
     'saved_unsuccessfully'                      => 'Configuration save failed.',
     'security_issue'                            => 'Security Vulnerability Warning',

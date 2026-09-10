@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => 'Sales Invoice Format',
     'sales_quote_format'                        => 'Sales Quote Format',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Невалиден път до sendmail. Разрешени са само букви, цифри, тирета, долни черти, наклонени черти, обратни наклонени черти, двоеточия, интервали и точки.',
     'saved_successfully'                        => 'Configuration save successful.',
     'saved_unsuccessfully'                      => 'Configuration save failed.',
     'security_issue'                            => 'Security Vulnerability Warning',

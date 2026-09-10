@@ -285,7 +285,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Μη έγκυρη διαδρομή sendmail. Επιτρέπονται μόνο γράμματα, αριθμοί, παύλες, κάτω παύλες, κάθετοι, ανάστροφες κάθετοι, άνω-κάτω τελείες, κενά και τελείες.',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => 'Security Vulnerability Warning',

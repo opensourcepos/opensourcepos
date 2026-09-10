@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Sağ',
     'sales_invoice_format'                      => 'Satış Fatura Formatı',
     'sales_quote_format'                        => 'Satış Sitat Formati',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Yanlış sendmail yolu. Yalnız hərflərə, rəqəmlərə, tirelərə, alt xətlərə, əyri xətlərə, tərs əyri xətlərə, iki nöqtəyə, boşluqlara və nöqtələrə icazə verilir.',
     'saved_successfully'                        => 'Konfiqurasiya uğurla saxlanıldı.',
     'saved_unsuccessfully'                      => 'Konfiqurasiyanı saxlamq mümkün olmadı.',
     'security_issue'                            => 'Təhlükəsizlik açığı xəbərdarlığı',

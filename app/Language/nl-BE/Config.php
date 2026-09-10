@@ -285,7 +285,7 @@ return [
     'right'                                     => 'Rechts',
     'sales_invoice_format'                      => 'Formattering Aankoop #',
     'sales_quote_format'                        => 'Offerte formaat',
-    'mailpath_invalid'                          => 'Ongeldig sendmail pad. Alleen letters, cijfers, strepen, underscores, slashes en punten zijn toegestaan.',
+    'mailpath_invalid'                          => 'Ongeldig sendmail-pad. Enkel letters, cijfers, streepjes, underscores, schuine strepen, backslashes, dubbele punten, spaties en punten zijn toegelaten.',
     'saved_successfully'                        => 'Configuratie werd bewaard.',
     'saved_unsuccessfully'                      => 'Configuratie kon niet worden bewaard.',
     'security_issue'                            => 'Waarschuwing voor Veiligheidslek',
