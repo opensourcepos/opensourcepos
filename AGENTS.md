@@ -12,7 +12,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 - PHP 8.2+ features acceptable (named arguments, enums, readonly properties)
 - Write PHP 8.2+ compatible code with proper type declarations
 - Always import classes, functions, and constants with a `use` statement at the top of the file instead of referencing them inline via fully-qualified name (e.g. `use Config\Database;` then `Database::connect()`, not `\Config\Database::connect()`)
-- Do not add comments or docblocks that merely restate what the code already makes clear — only comment on non-obvious rationale, constraints, or behavior
+- No useless comments or docblocks: if the code speaks for itself, explanatory comments are unnecessary. Do not add comments or docblocks that merely restate what the code already makes clear (e.g. `@param array $items` next to `array $items`, or a comment repeating a method's name) — only comment on non-obvious rationale, constraints, or behavior
 - Views in `app/Views/errors/html/` are excluded from the fixer
 - Run fixer before committing: `vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.no-header.php`
 - **JavaScript**: use `const` for variables that are never reassigned, `let` for variables that are. Never use `var`.
