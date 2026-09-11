@@ -29,6 +29,7 @@ return [
     "date"                                    => "תאריך",
     "date_range"                              => "טווח תאריכים",
     "description"                             => "תיאור",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "דוח מפורט של תקבולים",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "דוחות מפורטים",

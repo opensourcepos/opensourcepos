@@ -77,6 +77,11 @@ if (isset($error)) {
                         $link = get_report_link($report_name, $prefix);
                 ?>
                         <a class="list-group-item" href="<?= $link['path'] ?>"><?= esc($link['label']) ?></a>
+                        <?php if ($report_name === 'reports_sales') {
+                            $item_sales_link = get_report_link('reports_item_sales', 'detailed', 'Reports.detailed_item_sales_report');
+                        ?>
+                            <a class="list-group-item" href="<?= $item_sales_link['path'] ?>"><?= esc($item_sales_link['label']) ?></a>
+                        <?php } ?>
                 <?php
                     }
                 }

@@ -29,6 +29,7 @@ return [
     "date"                                    => "Tanggal",
     "date_range"                              => "Rentang Tanggal",
     "description"                             => "Deskripsi",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Laporan Detail Barang Masuk",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Perincian Laporan",
