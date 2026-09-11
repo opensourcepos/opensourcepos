@@ -27,41 +27,19 @@ class EnvProvision extends BaseCommand
      */
     protected $group = 'Environment';
 
-    /**
-     * The command's name.
-     *
-     * @var string
-     */
     protected $name = 'env:provision';
 
-    /**
-     * The command's usage.
-     *
-     * @var string
-     */
     protected $usage = 'env:provision';
 
-    /**
-     * The command's short description.
-     *
-     * @var string
-     */
     protected $description = 'Ensures the encryption and throttle keys are provisioned and converts any legacy CI3-encrypted secrets.';
 
-    /**
-     * Execute the command.
-     *
-     * @param array<int|string, string|null> $params
-     */
     public function run(array $params): void
     {
         helper('security');
 
-        // 1. Throttle key — always idempotent, independent of the encryption key.
         $throttleKey = provisionThrottleKey();
         CLI::write('throttle.key       : ' . ($throttleKey !== '' ? 'present' : 'MISSING'), 'green');
 
-        // 2. Encryption key + optional CI3 -> CI4 conversion.
         $encryptionConfig = config('Encryption');
         $key = (string) ($encryptionConfig->key ?? '');
 
@@ -75,10 +53,6 @@ class EnvProvision extends BaseCommand
         $converter = new CI3SecretConverter();
 
         if ($key !== '' && strlen($key) < 64) {
-            // Legacy CI3 key is present in .env: decrypt stored secrets with it,
-            // rotate to a strong CI4 key, re-encrypt under the new key, verify
-            // the round trip, and only then persist the CI4 *ciphertext* (never
-            // the decrypted plaintext), mirroring ConvertToCI4::convertCI3EncryptedData().
             $plain = $converter->decryptAll($key);
             $hasData = $this->anyNonEmpty($plain);
 
@@ -97,8 +71,6 @@ class EnvProvision extends BaseCommand
                 CLI::write('legacy secrets     : converted and verified to CI4 cipher', 'green');
             }
         } else {
-            // No key at all. Generate one. We cannot recover existing CI3
-            // ciphertext (no CI3 key), so warn if any secret rows are present.
             rotateEncryptionKey(null);
             CLI::write('encryption.key     : new CI4 key generated', 'green');
 
@@ -112,9 +84,6 @@ class EnvProvision extends BaseCommand
         CLI::newLine();
     }
 
-    /**
-     * @param array<string, string> $plain
-     */
     private function anyNonEmpty(array $plain): bool
     {
         foreach ($plain as $value) {
@@ -126,10 +95,6 @@ class EnvProvision extends BaseCommand
         return false;
     }
 
-    /**
-     * True when any legacy secret row holds a non-empty value (encrypted or not).
-     * Used only to warn about unrecoverable CI3 data when no CI3 key is present.
-     */
     private function legacySecretsPresent(): bool
     {
         try {
