@@ -284,7 +284,7 @@ return [
     'right'                                     => 'Direita',
     'sales_invoice_format'                      => 'Formato da Fatura de Vendas',
     'sales_quote_format'                        => 'Formato de cotação de vendas',
-    'mailpath_invalid'                          => 'Caminho do sendmail inválido. Apenas letras, números, traços, sublinhados, barras e pontos são permitidos.',
+    'mailpath_invalid'                          => 'Caminho do sendmail inválido. Apenas letras, números, traços, sublinhados, barras, barras invertidas, dois-pontos, espaços e pontos são permitidos.',
     'saved_successfully'                        => 'Configuração salva com sucesso.',
     'saved_unsuccessfully'                      => 'Configuração não salva.',
     'security_issue'                            => 'Security Vulnerability Warning',

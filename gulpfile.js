@@ -39,57 +39,69 @@ gulp.task('compress', function() {
 
 
 gulp.task('update-licenses', function() {
-    run('composer licenses --format=json --no-dev > public/license/composer.LICENSES').exec();
-    run('npx license-report --only=prod --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-prod.LICENSES').exec();
-    run('npx license-report --only=dev --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-dev.LICENSES').exec();
-    return pipeline(gulp.src('LICENSE'),gulp.dest('public/license'));
+    function run_completion(execStream) {
+        return finished(execStream.resume());
+    }
+
+    return Promise.all([
+        run_completion(run('composer licenses --format=json --no-dev > public/license/composer.LICENSES').exec()),
+        run_completion(run('npx license-report --only=prod --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-prod.LICENSES').exec()),
+        run_completion(run('npx license-report --only=dev --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-dev.LICENSES').exec()),
+        pipeline(gulp.src('LICENSE'),gulp.dest('public/license'))
+    ]);
 });
 
 
 // Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
 gulp.task('copy-bootswatch', function() {
-    pipeline(gulp.src('./node_modules/bootswatch/cerulean/*.min.css'),gulp.dest('public/resources/bootswatch/cerulean'));
-    pipeline(gulp.src('./node_modules/bootswatch/cosmo/*.min.css'),gulp.dest('public/resources/bootswatch/cosmo'));
-    pipeline(gulp.src('./node_modules/bootswatch/cyborg/*.min.css'),gulp.dest('public/resources/bootswatch/cyborg'));
-    pipeline(gulp.src('./node_modules/bootswatch/darkly/*.min.css'),gulp.dest('public/resources/bootswatch/darkly'));
-    pipeline(gulp.src('./node_modules/bootswatch/flatly/*.min.css'),gulp.dest('public/resources/bootswatch/flatly'));
-    pipeline(gulp.src('./node_modules/bootswatch/journal/*.min.css'),gulp.dest('public/resources/bootswatch/journal'));
-    pipeline(gulp.src('./node_modules/bootswatch/lumen/*.min.css'),gulp.dest('public/resources/bootswatch/lumen'));
-    pipeline(gulp.src('./node_modules/bootswatch/paper/*.min.css'),gulp.dest('public/resources/bootswatch/paper'));
-    pipeline(gulp.src('./node_modules/bootswatch/readable/*.min.css'),gulp.dest('public/resources/bootswatch/readable'));
-    pipeline(gulp.src('./node_modules/bootswatch/sandstone/*.min.css'),gulp.dest('public/resources/bootswatch/sandstone'));
-    pipeline(gulp.src('./node_modules/bootswatch/simplex/*.min.css'),gulp.dest('public/resources/bootswatch/simplex'));
-    pipeline(gulp.src('./node_modules/bootswatch/slate/*.min.css'),gulp.dest('public/resources/bootswatch/slate'));
-    pipeline(gulp.src('./node_modules/bootswatch/spacelab/*.min.css'),gulp.dest('public/resources/bootswatch/spacelab'));
-    pipeline(gulp.src('./node_modules/bootswatch/superhero/*.min.css'),gulp.dest('public/resources/bootswatch/superhero'));
-    pipeline(gulp.src('./node_modules/bootswatch/united/*.min.css'),gulp.dest('public/resources/bootswatch/united'));
-    pipeline(gulp.src('./node_modules/bootswatch/yeti/*.min.css'),gulp.dest('public/resources/bootswatch/yeti'));
-    return pipeline(gulp.src('./node_modules/bootswatch/fonts/*.*', {encoding:false}),gulp.dest('public/resources/bootswatch/fonts'));
+    return Promise.all([
+        pipeline(gulp.src('./node_modules/bootswatch/cerulean/*.min.css'),gulp.dest('public/resources/bootswatch/cerulean')),
+        pipeline(gulp.src('./node_modules/bootswatch/cosmo/*.min.css'),gulp.dest('public/resources/bootswatch/cosmo')),
+        pipeline(gulp.src('./node_modules/bootswatch/cyborg/*.min.css'),gulp.dest('public/resources/bootswatch/cyborg')),
+        pipeline(gulp.src('./node_modules/bootswatch/darkly/*.min.css'),gulp.dest('public/resources/bootswatch/darkly')),
+        pipeline(gulp.src('./node_modules/bootswatch/flatly/*.min.css'),gulp.dest('public/resources/bootswatch/flatly')),
+        pipeline(gulp.src('./node_modules/bootswatch/journal/*.min.css'),gulp.dest('public/resources/bootswatch/journal')),
+        pipeline(gulp.src('./node_modules/bootswatch/lumen/*.min.css'),gulp.dest('public/resources/bootswatch/lumen')),
+        pipeline(gulp.src('./node_modules/bootswatch/paper/*.min.css'),gulp.dest('public/resources/bootswatch/paper')),
+        pipeline(gulp.src('./node_modules/bootswatch/readable/*.min.css'),gulp.dest('public/resources/bootswatch/readable')),
+        pipeline(gulp.src('./node_modules/bootswatch/sandstone/*.min.css'),gulp.dest('public/resources/bootswatch/sandstone')),
+        pipeline(gulp.src('./node_modules/bootswatch/simplex/*.min.css'),gulp.dest('public/resources/bootswatch/simplex')),
+        pipeline(gulp.src('./node_modules/bootswatch/slate/*.min.css'),gulp.dest('public/resources/bootswatch/slate')),
+        pipeline(gulp.src('./node_modules/bootswatch/spacelab/*.min.css'),gulp.dest('public/resources/bootswatch/spacelab')),
+        pipeline(gulp.src('./node_modules/bootswatch/superhero/*.min.css'),gulp.dest('public/resources/bootswatch/superhero')),
+        pipeline(gulp.src('./node_modules/bootswatch/united/*.min.css'),gulp.dest('public/resources/bootswatch/united')),
+        pipeline(gulp.src('./node_modules/bootswatch/yeti/*.min.css'),gulp.dest('public/resources/bootswatch/yeti')),
+        pipeline(gulp.src('./node_modules/bootswatch/fonts/*.*', {encoding:false}),gulp.dest('public/resources/bootswatch/fonts'))
+    ]);
 });
 
 // Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
 gulp.task('copy-bootswatch5', function() {
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/cerulean/*.min.css'),gulp.dest('public/resources/bootswatch5/cerulean'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/cosmo/*.min.css'),gulp.dest('public/resources/bootswatch5/cosmo'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/cyborg/*.min.css'),gulp.dest('public/resources/bootswatch5/cyborg'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/darkly/*.min.css'),gulp.dest('public/resources/bootswatch5/darkly'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/flatly/*.min.css'),gulp.dest('public/resources/bootswatch5/flatly'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/journal/*.min.css'),gulp.dest('public/resources/bootswatch5/journal'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/lumen/*.min.css'),gulp.dest('public/resources/bootswatch5/lumen'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/sandstone/*.min.css'),gulp.dest('public/resources/bootswatch5/sandstone'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/simplex/*.min.css'),gulp.dest('public/resources/bootswatch5/simplex'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/slate/*.min.css'),gulp.dest('public/resources/bootswatch5/slate'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/spacelab/*.min.css'),gulp.dest('public/resources/bootswatch5/spacelab'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/superhero/*.min.css'),gulp.dest('public/resources/bootswatch5/superhero'));
-    pipeline(gulp.src('./node_modules/bootswatch5/dist/united/*.min.css'),gulp.dest('public/resources/bootswatch5/united'));
-    return pipeline(gulp.src('./node_modules/bootswatch5/dist/yeti/*.min.css'),gulp.dest('public/resources/bootswatch5/yeti'));
+    return Promise.all([
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/cerulean/*.min.css'),gulp.dest('public/resources/bootswatch5/cerulean')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/cosmo/*.min.css'),gulp.dest('public/resources/bootswatch5/cosmo')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/cyborg/*.min.css'),gulp.dest('public/resources/bootswatch5/cyborg')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/darkly/*.min.css'),gulp.dest('public/resources/bootswatch5/darkly')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/flatly/*.min.css'),gulp.dest('public/resources/bootswatch5/flatly')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/journal/*.min.css'),gulp.dest('public/resources/bootswatch5/journal')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/lumen/*.min.css'),gulp.dest('public/resources/bootswatch5/lumen')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/sandstone/*.min.css'),gulp.dest('public/resources/bootswatch5/sandstone')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/simplex/*.min.css'),gulp.dest('public/resources/bootswatch5/simplex')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/slate/*.min.css'),gulp.dest('public/resources/bootswatch5/slate')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/spacelab/*.min.css'),gulp.dest('public/resources/bootswatch5/spacelab')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/superhero/*.min.css'),gulp.dest('public/resources/bootswatch5/superhero')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/united/*.min.css'),gulp.dest('public/resources/bootswatch5/united')),
+        pipeline(gulp.src('./node_modules/bootswatch5/dist/yeti/*.min.css'),gulp.dest('public/resources/bootswatch5/yeti'))
+    ]);
 });
 
 // Copy the bootstrap style into its own folder so OSPOS can select it from the collection
 gulp.task('copy-bootstrap', function() {
-    pipeline(gulp.src('./node_modules/bootstrap/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch/bootstrap'));
-    pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap'));
-    return pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.rtl.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap'));
+    return Promise.all([
+        pipeline(gulp.src('./node_modules/bootstrap/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch/bootstrap')),
+        pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap')),
+        pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.rtl.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap'))
+    ]);
 });
 
 // /public/resources/ospos - contains the minimized files to be packed into opensourcepos.min.[css/js]
@@ -277,25 +289,27 @@ gulp.task('copy-fonts', function() {
 
 
 gulp.task('copy-menubar', function() {
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/star.svg"),rename("attributes.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/bookshelf.svg"),rename("cashups.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/gear.svg"),rename("config.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/contacts.svg"),rename("customers.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/profle.svg"),rename("employees.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/compose.svg"),rename("expenses.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/clipboard.svg"),rename("expenses_categories.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/heart.svg"),rename("giftcards.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/door.svg"),rename("home.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/stack.svg"),rename("item_kits.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/shop.svg"),rename("items.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/smartphone.svg"),rename("messages.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/tools.svg"),rename("migrate.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/door.svg"),rename("office.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/dolly.svg"),rename("receivings.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/bar-chart.svg"),rename("reports.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/cart.svg"),rename("sales.svg"),gulp.dest("public/images/menubar"));
-    pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/briefcase.svg"),rename("suppliers.svg"),gulp.dest("public/images/menubar"));
-    return pipeline(gulp.src('./node_modules/elegant-circles/svg/full-color/money.svg'),rename("taxes.svg"),gulp.dest("public/images/menubar"));
+    return Promise.all([
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/star.svg"),rename("attributes.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/bookshelf.svg"),rename("cashups.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/gear.svg"),rename("config.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/contacts.svg"),rename("customers.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/profle.svg"),rename("employees.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/compose.svg"),rename("expenses.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/clipboard.svg"),rename("expenses_categories.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/heart.svg"),rename("giftcards.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/door.svg"),rename("home.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/stack.svg"),rename("item_kits.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/shop.svg"),rename("items.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/smartphone.svg"),rename("messages.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/tools.svg"),rename("migrate.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/door.svg"),rename("office.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/dolly.svg"),rename("receivings.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/bar-chart.svg"),rename("reports.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/cart.svg"),rename("sales.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/briefcase.svg"),rename("suppliers.svg"),gulp.dest("public/images/menubar")),
+        pipeline(gulp.src('./node_modules/elegant-circles/svg/full-color/money.svg'),rename("taxes.svg"),gulp.dest("public/images/menubar"))
+    ]);
 });
 
 

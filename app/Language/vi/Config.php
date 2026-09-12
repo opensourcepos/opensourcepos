@@ -284,7 +284,7 @@ return [
     'right'                                     => 'Phải',
     'sales_invoice_format'                      => 'Định dạng Hóa đơn bán hàng',
     'sales_quote_format'                        => 'Định dạng Báo giá bán hàng',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Đường dẫn sendmail không hợp lệ. Chỉ cho phép chữ cái, số, dấu gạch ngang, dấu gạch dưới, dấu gạch chéo, dấu gạch chéo ngược, dấu hai chấm, dấu cách và dấu chấm.',
     'saved_successfully'                        => 'Cấu hình được lưu thành công.',
     'saved_unsuccessfully'                      => 'Gặp lỗi khi lưu cấu hình.',
     'security_issue'                            => 'Cảnh báo về  lỗ hổng bảo mật',

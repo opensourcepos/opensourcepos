@@ -284,7 +284,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'ផ្លូវ sendmail មិនត្រឹមត្រូវ។ អនុញ្ញាតតែអក្សរ លេខ សញ្ញាដាច់បន្ទាត់ សញ្ញាគូសក្រោម សញ្ញាចែកមុខ សញ្ញាចែកក្រោយ សញ្ញាចំណុចពីរ ចន្លោះ និងចំណុចប៉ុណ្ណោះ។',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => 'Security Vulnerability Warning',

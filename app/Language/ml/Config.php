@@ -284,7 +284,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'അസാധുവായ sendmail പാത്ത്. അക്ഷരങ്ങൾ, അക്കങ്ങൾ, ഡാഷുകൾ, അടിവരകൾ, സ്ലാഷുകൾ, ബാക്ക്സ്ലാഷുകൾ, കോളനുകൾ, സ്പേസുകൾ, ഡോട്ടുകൾ എന്നിവ മാത്രമേ അനുവദനീയമായുള്ളൂ.',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => 'Security Vulnerability Warning',

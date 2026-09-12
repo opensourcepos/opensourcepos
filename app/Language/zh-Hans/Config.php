@@ -284,7 +284,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => 'Sales Invoice Format',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => '无效的 sendmail 路径。仅允许字母、数字、连字符、下划线、正斜杠、反斜杠、冒号、空格和点号。',
     'saved_successfully'                        => '組態設置儲存成功',
     'saved_unsuccessfully'                      => '組態設置儲存失敗',
     'security_issue'                            => 'Security Vulnerability Warning',

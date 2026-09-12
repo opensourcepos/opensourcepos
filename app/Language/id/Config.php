@@ -284,6 +284,7 @@ return [
     'right'                                     => 'Kanan',
     'sales_invoice_format'                      => 'Format Faktur Penjualan',
     'sales_quote_format'                        => 'Format Penawaran Penjualan',
+    'mailpath_invalid'                          => 'Jalur sendmail tidak valid. Hanya huruf, angka, tanda hubung, garis bawah, garis miring, garis miring terbalik, titik dua, spasi, dan titik yang diizinkan.',
     'saved_successfully'                        => 'Konfigurasi berhasil disimpan.',
     'saved_unsuccessfully'                      => 'Konfigurasi tidak berhasil disimpan.',
     'security_issue'                            => 'Peringatan Kerentanan Keamanan',

@@ -284,7 +284,7 @@ return [
     'right'                                     => 'Right',
     'sales_invoice_format'                      => 'Sales Invoice Format',
     'sales_quote_format'                        => 'Sales Quote Format',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Ugyldig sendmail-sti. Kun bogstaver, tal, bindestreger, understregninger, skråstreger, omvendte skråstreger, kolon, mellemrum og punktummer er tilladt.',
     'saved_successfully'                        => 'Configuration save successful.',
     'saved_unsuccessfully'                      => 'Configuration save failed.',
     'security_issue'                            => 'Security Vulnerability Warning',

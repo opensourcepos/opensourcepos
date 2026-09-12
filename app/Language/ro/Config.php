@@ -284,7 +284,7 @@ return [
     'right'                                     => '',
     'sales_invoice_format'                      => '',
     'sales_quote_format'                        => '',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Cale sendmail invalidă. Sunt permise doar litere, cifre, liniuțe, liniuțe de subliniere, bare oblice, bare oblice inverse, două puncte, spații și puncte.',
     'saved_successfully'                        => '',
     'saved_unsuccessfully'                      => '',
     'security_issue'                            => 'Security Vulnerability Warning',

@@ -284,7 +284,7 @@ return [
     'right'                                     => 'Sağ',
     'sales_invoice_format'                      => 'Satış Fatura Biçimi',
     'sales_quote_format'                        => 'Satış Teklif Biçimi',
-    'mailpath_invalid'                          => '',
+    'mailpath_invalid'                          => 'Geçersiz sendmail yolu. Yalnızca harflere, rakamlara, tirelere, alt çizgilere, eğik çizgilere, ters eğik çizgilere, iki noktalara, boşluklara ve noktalara izin verilir.',
     'saved_successfully'                        => 'Yapılandırma kaydedildi.',
     'saved_unsuccessfully'                      => 'Yapılandırma kaydedilemedi.',
     'security_issue'                            => 'Güvenlik Arıklığı Uyarısı',
