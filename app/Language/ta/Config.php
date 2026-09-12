@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Saved Text Message',
     'msg_msg_placeholder'                       => 'If you wish to use a SMS template save your message here, otherwise leave the box blank.',
     'msg_pwd'                                   => 'SMS-API Password',
-    'msg_pwd_required'                          => 'SMS-API Password is a required field',
     'msg_src'                                   => 'SMS-API Sender ID',
     'msg_src_required'                          => 'SMS-API Sender ID is a required field',
     'msg_uid'                                   => 'SMS-API Username',

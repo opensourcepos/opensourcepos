@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $config
+ * @var bool $smtp_pass_set
  */
 ?>
 
@@ -117,12 +118,12 @@
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-asterisk"></span>
                         </span>
-                        <?= form_password([
-                            'name'  => 'smtp_pass',
-                            'id'    => 'smtp_pass',
-                            'class' => 'form-control input-sm',
-                            'value' => $config['smtp_pass']
-                        ]) ?>
+                        <input type="password"
+                               name="smtp_pass"
+                               id="smtp_pass"
+                               class="form-control input-sm"
+                               placeholder="<?= lang('Config.email_smtp_pass_set') ?>"
+                               autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -146,8 +147,9 @@
                 $('#mailpath').prop('disabled', false);
                 $('#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', true);
             } else if ($('#protocol').val() == 'smtp') {
-                $('#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', false);
+                $('#smtp_host, #smtp_user, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', false);
                 $('#mailpath').prop('disabled', true);
+                $('#smtp_pass').prop('disabled', false);
             } else {
                 $('#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', true);
             }

@@ -11,7 +11,13 @@ services:
             - "80:80"
         networks:
             - app_net
+        command: ["sh", "-c", "php spark env:provision && exec apache2-foreground"]
         volumes:
+            # .env holds the two runtime-generated secrets (encryption.key +
+            # throttle.key), persisted as a single host file so the same keys
+            # survive container recreation (a named volume is a directory and
+            # forces .env to be a directory, breaking atomicWriteFile's rename).
+            - ./.env:/app/.env
             - uploads:/app/public/uploads
             - logs:/app/writable/logs
         environment:

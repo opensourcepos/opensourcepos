@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Salvar mensagem de texto',
     'msg_msg_placeholder'                       => 'Se você deseja usar um modelo de SMS salvar a sua mensagem aqui. Caso contrário, deixe a caixa em branco.',
     'msg_pwd'                                   => 'SMS-API senha',
-    'msg_pwd_required'                          => 'SMS-API Senha é um campo obrigatório',
     'msg_src'                                   => 'SMS-API Remetente ID',
     'msg_src_required'                          => 'SMS-API Remetente ID é um campo obrigatório',
     'msg_uid'                                   => 'SMS-API usuário',

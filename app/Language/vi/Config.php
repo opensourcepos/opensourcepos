@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Tin nhắn văn bản đã lưu',
     'msg_msg_placeholder'                       => 'Nếu bạn muốn dùng một mẫu thì lưu lại các tin nhắn SMS ở đây, nếu không thì để trống.',
     'msg_pwd'                                   => 'Mật khẩu SMS-API',
-    'msg_pwd_required'                          => 'Mật khẩu SMS-API là trường bắt buộc',
     'msg_src'                                   => 'Mã số bộ gửi SMS-API',
     'msg_src_required'                          => 'Mã số bộ gửi SMS-API là trường bắt buộc',
     'msg_uid'                                   => 'Tài khoản SMS-API',

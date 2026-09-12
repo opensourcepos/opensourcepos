@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Pesan teks tersimpan',
     'msg_msg_placeholder'                       => 'Apakah Anda ingin menggunakan template SMS menyimpan pesan Anda disini? Jika tidak, biarkan kosong.',
     'msg_pwd'                                   => 'SMS-API Password',
-    'msg_pwd_required'                          => 'SMS-API Password harus diisi',
     'msg_src'                                   => 'ID pengirim SMS-API',
     'msg_src_required'                          => 'SMS-API Sender ID harus diisi',
     'msg_uid'                                   => 'SMS-API User Name',
