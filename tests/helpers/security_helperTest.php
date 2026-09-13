@@ -1,6 +1,10 @@
 <?php
 
+use App\Libraries\CI3SecretConverter;
+use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
+use Config\Encryption as EncryptionConfig;
+use Config\Services;
 
 /**
  * ROOTPATH/WRITEPATH are hard-defined constants that can't be redirected in
@@ -76,6 +80,60 @@ class security_helperTest extends CIUnitTestCase
         } elseif ($this->hadThrottleServer) {
             $_SERVER['throttle.key']  = $this->throttleServerBefore;
         }
+    }
+
+    /**
+     * Fakes the ospos_app_config rows so CI3SecretConverter can decrypt/verify
+     * without a real database, and captures the payload passed to saveAll().
+     *
+     * @param array<string,string> $values column => CI3 ciphertext
+     * @return Appconfig with a public $saved prop recording saveAll()
+     */
+    private function fakeAppconfig(array $values): Appconfig
+    {
+        $fake = new class($values) extends Appconfig {
+            /** @var array<string,string>|null last payload passed to saveAll() */
+            public ?array $saved = null;
+
+            public function __construct(
+                private array $vals
+            ) {
+                parent::__construct();
+            }
+
+            public function get_value(string $key, string $default = ''): string
+            {
+                return $this->vals[$key] ?? $default;
+            }
+
+            public function batch_save(array $data): bool
+            {
+                $this->saved = $data;
+
+                return true;
+            }
+        };
+
+        return $fake;
+    }
+
+    /**
+     * Encodes $plaintext with the CI3-era cipher under $ci3Key, producing
+     * the same ciphertext the real converter decrypts.
+     */
+    private function ci3Encrypt(string $plaintext, string $ci3Key): string
+    {
+        $cfg                 = new EncryptionConfig();
+        $cfg->driver         = 'OpenSSL';
+        $cfg->digest         = 'SHA512';
+        $cfg->key            = $ci3Key;
+        $cfg->cipher         = 'AES-128-CBC';
+        $cfg->rawData        = false;
+        $cfg->encryptKeyInfo = 'encryption';
+        $cfg->authKeyInfo    = 'authentication';
+        $cfg->previousKeys   = [];
+
+        return Services::encrypter($cfg)->encrypt($plaintext);
     }
 
     // -- applyEnvKeyReplacement() — pure function, no I/O --
@@ -225,6 +283,43 @@ class security_helperTest extends CIUnitTestCase
         } finally {
             chmod($this->envPath, 0644);
         }
+    }
+
+    public function testCheckEncryptionConvertsCi3ShortKeyWhenEnvWritable(): void
+    {
+        // Seed CI3-era ciphertexts under a short CI3 key so the short-key
+        // branch runs. A fake Appconfig model (injected via CI3SecretConverter)
+        // stands in for the DB so no real database is required.
+        $oldKey     = bin2hex(random_bytes(16)); // < 64 chars -> CI3 era
+        $plaintext  = ['smtp_pass' => 's3cr3t-smtp', 'mailchimp_api_key' => 'mc-abc-123'];
+        $ciphertext = array_map(fn ($v) => $this->ci3Encrypt($v, $oldKey), $plaintext);
+
+        $fake = $this->fakeAppconfig($ciphertext);
+        $conv = new CI3SecretConverter($fake);
+
+        config('Encryption')->key = $oldKey;
+        file_put_contents($this->envPath, "encryption.key='$oldKey'\n");
+
+        $result = checkEncryption($conv);
+
+        $this->assertTrue($result);
+
+        // A fresh CI4 key was generated and is now the *active* encryption.key
+        // (the old short key remains only as a commented backup line).
+        $newKey = (string) config('Encryption')->key;
+        $this->assertNotSame($oldKey, $newKey);
+        $this->assertGreaterThanOrEqual(64, strlen($newKey));
+
+        $contents = file_get_contents($this->envPath);
+        preg_match("/^encryption\.key\s*=\s*'(.*?)'/m", $contents, $m);
+        $this->assertSame($newKey, $m[1] ?? '', 'the active .env encryption.key must be the new CI4 key');
+
+        // The saved payloads are CI4 ciphertext (not plain) and verify back.
+        $this->assertNotEmpty($fake->saved);
+        $this->assertSame($plaintext['smtp_pass'],         $conv->verifyAll($fake->saved)['smtp_pass'],         'smtp_pass round-trip');
+        $this->assertSame($plaintext['mailchimp_api_key'], $conv->verifyAll($fake->saved)['mailchimp_api_key'], 'mailchimp_api_key round-trip');
+        $this->assertNotSame($plaintext['smtp_pass'],         $fake->saved['smtp_pass'],         'saveAll() must receive ciphertext, not plain');
+        $this->assertNotSame($plaintext['mailchimp_api_key'], $fake->saved['mailchimp_api_key'], 'saveAll() must receive ciphertext, not plain');
     }
 
     // -- checkThrottleEncryption() --

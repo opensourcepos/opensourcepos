@@ -253,11 +253,17 @@ function envFileIsWritable(): bool
  *   (e.g. `php spark env:provision` at container startup); the in-memory
  *   config simply hasn't been reloaded yet.
  *
+ * @param CI3SecretConverter|null $converter injectable converter used to
+ *                                           decrypt/re-encrypt legacy CI3
+ *                                           secrets in the short-key branch;
+ *                                           defaults to the real converter
+ *                                           (tests may pass a fake to avoid
+ *                                           hitting the database)
  * @return bool true when a valid key is available
  * @throws RuntimeException if the key cannot be provisioned
  * @throws RandomException
  */
-function checkEncryption(): bool
+function checkEncryption(?CI3SecretConverter $converter = null): bool
 {
     $key = (string) config('Encryption')->key;
 
@@ -272,7 +278,7 @@ function checkEncryption(): bool
     }
 
     if ($key !== '') {
-        $converter = new CI3SecretConverter();
+        $converter = $converter ?? new CI3SecretConverter();
         $plain     = $converter->decryptAll($key);
         rotateEncryptionKey($key);
         $encrypted = $converter->encryptAll($plain);
