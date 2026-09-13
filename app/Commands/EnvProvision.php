@@ -11,12 +11,13 @@ use RuntimeException;
 /**
  * Idempotent startup provisioning of the encryption + throttle keys.
  *
- * The web runtime is strictly read-only with respect to these secrets (see
- * checkEncryption()/checkThrottleEncryption() guards). Keys are therefore
- * minted here at container start via `php spark env:provision`, and for
- * legacy CI3 deployments this command re-encrypts stored CI3 secrets to the
- * CI4 cipher (shared implementation with the interactive ConvertToCI4
- * migration).
+ * In bare-metal deployments the web runtime can auto-provision keys inline
+ * (see checkEncryption()/checkThrottleEncryption(), gated by .env
+ * writability). In Docker/Compose deployments .env is typically mounted
+ * read-only, so keys are minted here at container start via
+ * `php spark env:provision`. For legacy CI3 deployments this command
+ * also re-encrypts stored CI3 secrets to the CI4 cipher (shared
+ * implementation with the interactive ConvertToCI4 migration).
  */
 class EnvProvision extends BaseCommand
 {

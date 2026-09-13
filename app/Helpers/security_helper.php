@@ -1,5 +1,6 @@
 <?php
 
+use App\Libraries\CI3SecretConverter;
 use CodeIgniter\Encryption\Encryption;
 use Config\Services;
 use Random\RandomException;
@@ -223,15 +224,38 @@ function writeNewEncryptionKey(string $configFile, string $key, string $oldKey):
 }
 
 /**
- * Read-only guard: verifies a usable encryption key is present.
+ * Returns true when the current process can write to (or create) .env.
  *
- * The web runtime must never write `.env` at request time. Keys are minted
- * at container startup (`php spark env:provision`) or during the interactive
- * CI3->CI4 migration. If no valid key exists, this throws so the operator is
- * told to run the provisioning command.
+ * A missing .env file is considered writable when the directory is writable.
+ *
+ * @return bool
+ */
+function envFileIsWritable(): bool
+{
+    $configPath = ROOTPATH . '.env';
+
+    return file_exists($configPath)
+        ? is_writable($configPath)
+        : is_writable(dirname($configPath));
+}
+
+/**
+ * Ensures a usable CI4 encryption key is available.
+ *
+ * Behaviour:
+ * - Key present and >= 64 characters: returns true immediately (no I/O).
+ * - Key missing or CI3-era (< 64 chars) and .env IS writable:
+ *   - Short key: decrypts legacy CI3 secrets, rotates to a fresh CI4 key,
+ *     re-encrypts under the new key, verifies the round-trip, persists result.
+ *   - Missing key: generates a fresh key and persists it.
+ * - Key missing or CI3-era (< 64 chars) and .env NOT writable:
+ *   throws — the key was presumably already provisioned externally
+ *   (e.g. `php spark env:provision` at container startup); the in-memory
+ *   config simply hasn't been reloaded yet.
  *
  * @return bool true when a valid key is available
- * @throws RuntimeException when no valid key has been provisioned
+ * @throws RuntimeException if the key cannot be provisioned
+ * @throws RandomException
  */
 function checkEncryption(): bool
 {
@@ -241,21 +265,48 @@ function checkEncryption(): bool
         return true;
     }
 
-    log_message('critical', 'Encryption key not provisioned. Run `php spark env:provision` to generate one.');
+    if (!envFileIsWritable()) {
+        log_message('critical', 'Encryption key not provisioned and .env is not writable. Run `php spark env:provision` to generate one.');
 
-    throw new RuntimeException(lang('Error.encryption_key_not_provisioned'));
+        throw new RuntimeException(lang('Error.encryption_key_not_provisioned'));
+    }
+
+    if ($key !== '') {
+        $converter = new CI3SecretConverter();
+        $plain     = $converter->decryptAll($key);
+        rotateEncryptionKey($key);
+        $encrypted = $converter->encryptAll($plain);
+
+        if (array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
+            abortEncryptionConversion();
+
+            throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => ROOTPATH . '.env']));
+        }
+
+        if (!empty(array_filter($plain))) {
+            $converter->saveAll($encrypted);
+        }
+        removeBackup();
+    } else {
+        rotateEncryptionKey(null);
+        removeBackup();
+    }
+
+    return true;
 }
 
 /**
- * Read-only guard: returns the persistent secret used to HMAC-hash
- * login-throttle cache keys.
+ * Returns the persistent HMAC secret used to hash login-throttle cache keys.
  *
- * Like checkEncryption(), the web runtime must never write `.env` at request
- * time. The key is minted at container startup (`php spark env:provision`).
- * If it is missing, this throws so the operator knows to provision it.
+ * Behaviour:
+ * - Key already present: returned immediately (no I/O).
+ * - Key missing and .env IS writable: generates a fresh key and persists it.
+ * - Key missing and .env NOT writable:
+ *   throws — the key was presumably already provisioned externally
+ *   (e.g. `php spark env:provision` at container startup).
  *
  * @return string the throttle key
- * @throws RuntimeException when no key has been provisioned
+ * @throws RuntimeException if the key cannot be provisioned
  */
 function checkThrottleEncryption(): string
 {
@@ -265,9 +316,13 @@ function checkThrottleEncryption(): string
         return $key;
     }
 
-    log_message('critical', 'Throttle key not provisioned. Run `php spark env:provision` to generate one.');
+    if (!envFileIsWritable()) {
+        log_message('critical', 'Throttle key not provisioned and .env is not writable. Run `php spark env:provision` to generate one.');
 
-    throw new RuntimeException(lang('Error.throttle_key_not_provisioned'));
+        throw new RuntimeException(lang('Error.throttle_key_not_provisioned'));
+    }
+
+    return provisionThrottleKey();
 }
 
 /**
@@ -276,8 +331,8 @@ function checkThrottleEncryption(): string
  * applies it to the running config instance.
  *
  * This is the only helper allowed to write the encryption key. It is used by
- * the provisioning command (`env:provision`) and the CI3->CI4 migration,
- * never by the request-time web runtime.
+ * the provisioning command (`env:provision`), the CI3->CI4 migration, and
+ * the inline request-time auto-provisioning path in `checkEncryption()`.
  *
  * @param string|null $oldKey current key to rotate from; when non-empty it is
  *                            preserved as a commented backup line for the

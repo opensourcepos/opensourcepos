@@ -165,7 +165,27 @@ class security_helperTest extends CIUnitTestCase
         $this->assertSame([], glob(ROOTPATH . '.env.tmp.*'));
     }
 
-    // -- checkEncryption() — READ-ONLY guard --
+    // -- envFileIsWritable() --
+
+    public function testEnvFileIsWritableReturnsTrueWhenFileIsWritable(): void
+    {
+        file_put_contents($this->envPath, "encryption.key='abc'\n");
+        chmod($this->envPath, 0644);
+
+        $this->assertTrue(envFileIsWritable());
+    }
+
+    public function testEnvFileIsWritableReturnsFalseWhenFileIsReadonly(): void
+    {
+        file_put_contents($this->envPath, "# tmp\n");
+        chmod($this->envPath, 0444);
+
+        $this->assertFalse(envFileIsWritable());
+
+        chmod($this->envPath, 0644);
+    }
+
+    // -- checkEncryption() --
 
     public function testCheckEncryptionPassesWhenKeyValid(): void
     {
@@ -179,29 +199,35 @@ class security_helperTest extends CIUnitTestCase
         $this->assertSame($validKey, config('Encryption')->key);
     }
 
-    public function testCheckEncryptionThrowsWhenKeyEmpty(): void
+    public function testCheckEncryptionProvisionsWhenKeyEmptyAndEnvWritable(): void
     {
         config('Encryption')->key = '';
+        file_put_contents($this->envPath, "encryption.key=''\n");
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('provisioned');
+        $result = checkEncryption();
 
-        // Guard must NOT write, only throw.
-        $this->assertNull(@checkEncryption());
+        $this->assertTrue($result);
+        $newKey = (string) config('Encryption')->key;
+        $this->assertGreaterThanOrEqual(64, strlen($newKey), 'checkEncryption should provision a valid key');
+        $this->assertStringContainsString("encryption.key='$newKey'", file_get_contents($this->envPath));
     }
 
-    public function testCheckEncryptionThrowsWhenKeyTooShort(): void
+    public function testCheckEncryptionThrowsWhenKeyEmptyAndEnvNotWritable(): void
     {
-        config('Encryption')->key = 'tooshort';
-        file_put_contents($this->envPath, "encryption.key='tooshort'\n");
+        config('Encryption')->key = '';
+        file_put_contents($this->envPath, "encryption.key=''\n");
+        chmod($this->envPath, 0444);
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('provisioned');
-
-        @checkEncryption();
+        try {
+            $this->expectException(RuntimeException::class);
+            $this->expectExceptionMessage('provisioned');
+            checkEncryption();
+        } finally {
+            chmod($this->envPath, 0644);
+        }
     }
 
-    // -- checkThrottleEncryption() — READ-ONLY guard --
+    // -- checkThrottleEncryption() --
 
     public function testCheckThrottleEncryptionReturnsWhenKeyPresent(): void
     {
@@ -215,16 +241,33 @@ class security_helperTest extends CIUnitTestCase
         $this->assertSame($key, $result);
     }
 
-    public function testCheckThrottleEncryptionThrowsWhenKeyMissing(): void
+    public function testCheckThrottleEncryptionProvisionsWhenKeyMissingAndEnvWritable(): void
     {
         putenv('throttle.key');
         unset($_ENV['throttle.key'], $_SERVER['throttle.key']);
         file_put_contents($this->envPath, "encryption.key='abc'\n");
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('provisioned');
+        $result = checkThrottleEncryption();
 
-        @checkThrottleEncryption();
+        $this->assertNotSame('', $result);
+        $this->assertStringContainsString("throttle.key='$result'", file_get_contents($this->envPath));
+        $this->assertSame($result, $_ENV['throttle.key']);
+    }
+
+    public function testCheckThrottleEncryptionThrowsWhenKeyMissingAndEnvNotWritable(): void
+    {
+        putenv('throttle.key');
+        unset($_ENV['throttle.key'], $_SERVER['throttle.key']);
+        file_put_contents($this->envPath, "encryption.key='abc'\n");
+        chmod($this->envPath, 0444);
+
+        try {
+            $this->expectException(RuntimeException::class);
+            $this->expectExceptionMessage('provisioned');
+            checkThrottleEncryption();
+        } finally {
+            chmod($this->envPath, 0644);
+        }
     }
 
     // -- rotateEncryptionKey() — provisioning path, does write --
