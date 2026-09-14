@@ -122,7 +122,7 @@
                                name="smtp_pass"
                                id="smtp_pass"
                                class="form-control input-sm"
-                               placeholder="<?= lang('Config.email_smtp_pass_set') ?>"
+                               placeholder="<?= !empty($smtp_pass_set) ? lang('Config.email_smtp_pass_set') : esc(lang('Config.email_smtp_pass')) ?>"
                                autocomplete="off">
                     </div>
                 </div>

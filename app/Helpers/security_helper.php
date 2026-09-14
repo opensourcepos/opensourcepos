@@ -188,8 +188,8 @@ function backupEnvFile(string $configPath, string $backupPath): bool
 {
     $backupFolder = dirname($backupPath);
 
-    if (!file_exists($backupFolder)) {
-        @mkdir($backupFolder, 0750, true);
+    if (!file_exists($backupFolder) && !@mkdir($backupFolder, 0750, true)) {
+        return false;
     }
 
     if (!@copy($configPath, $backupPath)) {
@@ -200,8 +200,9 @@ function backupEnvFile(string $configPath, string $backupPath): bool
         return false;
     }
 
-    @chmod($backupPath, 0640);
-    @chmod($configPath, 0640);
+    if (@chmod($backupPath, 0640) !== true || @chmod($configPath, 0640) !== true) {
+        return false;
+    }
 
     return true;
 }

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $config
+ * @var bool $msg_pwd_set
  */
 ?>
 
@@ -39,7 +40,7 @@
                                name="msg_pwd"
                                id="msg_pwd"
                                class="form-control input-sm"
-                               placeholder="<?= lang('Config.msg_pwd_set') ?>"
+                               placeholder="<?= !empty($msg_pwd_set) ? lang('Config.msg_pwd_set') : esc(lang('Config.msg_pwd')) ?>"
                                autocomplete="off">
                     </div>
                 </div>
