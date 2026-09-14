@@ -328,6 +328,28 @@ class Item extends Model
         return array_column($rows, 'pic_filename', 'item_id');
     }
 
+    /**
+     * Used by plugins, do not remove.
+     */
+    public function getExportDataBulk(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $rows = $this->select('item_id, item_number, name, description, unit_price, pic_filename')
+            ->whereIn('item_id', $itemIds)
+            ->findAll();
+
+        $data = [];
+
+        foreach ($rows as $row) {
+            $data[$row['item_id']] = $row;
+        }
+
+        return $data;
+    }
+
     public function getDistinctCategories(): array
     {
         $results = $this->db->table('items')
