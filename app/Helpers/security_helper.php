@@ -182,9 +182,9 @@ function atomicWriteFile(string $path, string $contents): bool
  *
  * @param string $configPath
  * @param string $backupPath
- * @return void
+ * @return bool true when the backup exists and is readable, false otherwise
  */
-function backupEnvFile(string $configPath, string $backupPath): void
+function backupEnvFile(string $configPath, string $backupPath): bool
 {
     $backupFolder = dirname($backupPath);
 
@@ -192,9 +192,18 @@ function backupEnvFile(string $configPath, string $backupPath): void
         @mkdir($backupFolder, 0750, true);
     }
 
-    @copy($configPath, $backupPath);
+    if (!@copy($configPath, $backupPath)) {
+        return false;
+    }
+
+    if (!is_readable($backupPath)) {
+        return false;
+    }
+
     @chmod($backupPath, 0640);
     @chmod($configPath, 0640);
+
+    return true;
 }
 
 /**
@@ -290,7 +299,13 @@ function checkEncryption(?CI3SecretConverter $converter = null): bool
         }
 
         if (!empty(array_filter($plain))) {
-            $converter->saveAll($encrypted);
+            try {
+                $converter->saveAll($encrypted);
+            } catch (RuntimeException $e) {
+                abortEncryptionConversion();
+
+                throw $e;
+            }
         }
         removeBackup();
     } else {
@@ -360,7 +375,11 @@ function rotateEncryptionKey(?string $oldKey = null): string
     }
 
     if (file_exists($configPath)) {
-        backupEnvFile($configPath, $backupPath);
+        if (!backupEnvFile($configPath, $backupPath)) {
+            log_message('critical', "Unable to back up $configPath to $backupPath before rotation; aborting.");
+
+            throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => $configPath]));
+        }
     }
 
     $lock = lockEnvFile();
@@ -368,7 +387,9 @@ function rotateEncryptionKey(?string $oldKey = null): string
     try {
         $configFile = @file_get_contents($configPath);
         if ($configFile === false) {
-            $configFile = '';
+            log_message('critical', "Unable to read $configPath before rotation; aborting.");
+
+            throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $configPath]));
         }
 
         $updated = writeNewEncryptionKey($configFile, $key, (string) $oldKey);
@@ -410,7 +431,9 @@ function provisionThrottleKey(): string
     try {
         $configFile = @file_get_contents($configPath);
         if ($configFile === false) {
-            $configFile = '';
+            log_message('critical', "Unable to read $configPath while provisioning throttle key; aborting.");
+
+            throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $configPath]));
         }
 
         $key = '';

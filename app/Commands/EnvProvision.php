@@ -68,7 +68,14 @@ class EnvProvision extends BaseCommand
             }
 
             if ($hasData) {
-                $converter->saveAll($encrypted);
+                try {
+                    $converter->saveAll($encrypted);
+                } catch (RuntimeException $e) {
+                    abortEncryptionConversion();
+
+                    throw $e;
+                }
+
                 CLI::write('legacy secrets     : converted and verified to CI4 cipher', 'green');
             }
         } else {

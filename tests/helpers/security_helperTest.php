@@ -118,6 +118,38 @@ class security_helperTest extends CIUnitTestCase
     }
 
     /**
+     * Same as fakeAppconfig(), but batch_save() fails (returns false) so
+     * that CI3SecretConverter::saveAll() throws. Used to exercise the
+     * abortEncryptionConversion() rollback path when the DB write fails
+     * after the key has already been rotated.
+     *
+     * @param array<string,string> $values column => CI3 ciphertext
+     * @return Appconfig
+     */
+    private function failingFakeAppconfig(array $values): Appconfig
+    {
+        $fake = new class($values) extends Appconfig {
+            public function __construct(
+                private array $vals
+            ) {
+                parent::__construct();
+            }
+
+            public function get_value(string $key, string $default = ''): string
+            {
+                return $this->vals[$key] ?? $default;
+            }
+
+            public function batch_save(array $data): bool
+            {
+                return false;
+            }
+        };
+
+        return $fake;
+    }
+
+    /**
      * Encodes $plaintext with the CI3-era cipher under $ci3Key, producing
      * the same ciphertext the real converter decrypts.
      */
@@ -320,6 +352,40 @@ class security_helperTest extends CIUnitTestCase
         $this->assertSame($plaintext['mailchimp_api_key'], $conv->verifyAll($fake->saved)['mailchimp_api_key'], 'mailchimp_api_key round-trip');
         $this->assertNotSame($plaintext['smtp_pass'],         $fake->saved['smtp_pass'],         'saveAll() must receive ciphertext, not plain');
         $this->assertNotSame($plaintext['mailchimp_api_key'], $fake->saved['mailchimp_api_key'], 'saveAll() must receive ciphertext, not plain');
+    }
+
+    public function testCheckEncryptionRollsBackWhenSaveAllFails(): void
+    {
+        // Regression guard (thread #2): if the post-rotation saveAll() fails,
+        // the freshly rotated .env key must be restored from the backup so the
+        // original CI3 ciphertext stays decryptable. A failing fake Appconfig
+        // (injected via CI3SecretConverter) forces saveAll() to throw without
+        // a real database.
+        $oldKey     = bin2hex(random_bytes(16)); // < 64 chars -> CI3 era
+        $plaintext  = ['smtp_pass' => 'keep-me-safe'];
+        $ciphertext = array_map(fn ($v) => $this->ci3Encrypt($v, $oldKey), $plaintext);
+
+        $failingFake = $this->failingFakeAppconfig($ciphertext);
+        $conv        = new CI3SecretConverter($failingFake);
+
+        config('Encryption')->key = $oldKey;
+        $originalContents = "encryption.key='$oldKey'\n";
+        file_put_contents($this->envPath, $originalContents);
+
+        $threw = false;
+
+        try {
+            checkEncryption($conv);
+        } catch (RuntimeException $e) {
+            $threw = true;
+        }
+
+        $this->assertTrue($threw, 'checkEncryption() must throw when saveAll() fails');
+        $this->assertSame(
+            $originalContents,
+            (string) file_get_contents($this->envPath),
+            'on saveAll() failure the freshly rotated .env key must be rolled back from the backup'
+        );
     }
 
     // -- checkThrottleEncryption() --
