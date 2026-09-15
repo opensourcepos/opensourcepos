@@ -87,6 +87,13 @@ Plugins live in `app/Plugins/<PluginName>/` and are auto-discovered by `PluginMa
 - Configuration stored in `ospos_plugin_config` table
 - Plugin-specific routes go in `Config/Routes.php` within the plugin directory
 
+#### Core/Plugin Boundary
+
+Core must never reference a specific plugin by name or path:
+- No plugin name may appear in `composer.json`, `package.json`, `app/Config/*`, or any other core file
+- Plugins resolve entirely through PSR-4 autoloading (`App\Plugins\{Name}\...` → `app/Plugins/{Name}/...`) and runtime auto-discovery via `PluginManager`
+- Installing or removing a plugin must never require editing a core file
+
 #### View Hook Points
 
 Core views inject plugin UI using `pluginContent('hook_name', $data)`. All currently defined hook points are listed in `app/Plugins/README.md`. When adding a new hook point to a core view:

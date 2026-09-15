@@ -26,6 +26,13 @@ The PluginManager recursively scans `app/Plugins/` directory:
 
 Both formats are supported, but directory plugins allow for self-contained packages with their own components.
 
+### Core/Plugin Boundary
+
+Core never references a specific plugin:
+- Installing or removing a plugin must never require editing any file outside `app/Plugins/<PluginName>/`
+- No plugin name or path may appear in `composer.json`, `package.json`, `app/Config/*`, or any other core file
+- Everything resolves via PSR-4 autoloading and runtime auto-discovery
+
 ## Uninstall
 
 > **Warning:** Uninstall is destructive and cannot be reversed. All plugin data will be permanently deleted.
