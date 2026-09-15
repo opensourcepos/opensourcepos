@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "កែប្រែ OSPOS ទិន្នយ័យ។",
     "office"                     => "ការិយាល័យ",
     "office_desc"                => "បញ្ជីការិយាល័យ។",
+    'plugins'                    => 'កម្មវិធីជំនួយ',
     "receivings"                 => "ការទទួល",
     "receivings_desc"            => "ដាក់បញ្ជារ ការទិញុ។",
     "reports"                    => "របាយការណ៍",

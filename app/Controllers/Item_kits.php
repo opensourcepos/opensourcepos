@@ -30,14 +30,14 @@ class Item_kits extends Secure_Controller
      */
     private function _add_totals_to_item_kit(object $item_kit): object    // TODO: Hungarian notation
     {
-        $kit_item_info = $this->item->get_info($item_kit->kit_item_id ?? $item_kit->item_id);
+        $kit_item_info = $this->item->getInfo($item_kit->kit_item_id ?? $item_kit->item_id);
 
         $item_kit->total_cost_price = 0;
         $item_kit->total_unit_price = $kit_item_info->unit_price;
         $total_quantity = 0;
 
         foreach ($this->item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item) {
-            $item_info = $this->item->get_info($item_kit_item['item_id']);
+            $item_info = $this->item->getInfo($item_kit_item['item_id']);
             foreach (get_object_vars($item_info) as $property => $value) {
                 $item_info->$property = $value;
             }
@@ -142,7 +142,7 @@ class Item_kits extends Secure_Controller
 
         foreach ($this->item_kit_items->get_info($item_kit_id) as $item_kit_item) {
             $item['kit_sequence'] = $item_kit_item['kit_sequence'];
-            $item['name'] = $this->item->get_info($item_kit_item['item_id'])->name;
+            $item['name'] = $this->item->getInfo($item_kit_item['item_id'])->name;
             $item['item_id'] = $item_kit_item['item_id'];
             $item['quantity'] = $item_kit_item['quantity'];
 

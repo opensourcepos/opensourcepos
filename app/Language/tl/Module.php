@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "Update the OSPOS Database.",
     "office"                     => "Office",
     "office_desc"                => "List home menu modules.",
+    'plugins'                    => 'Mga Plugin',
     "receivings"                 => "Receivings",
     "receivings_desc"            => "Process Purchase Orders.",
     "reports"                    => "Reports",

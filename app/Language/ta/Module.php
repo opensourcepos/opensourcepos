@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "Update the OSPOS Database.",
     "office"                     => "Office",
     "office_desc"                => "List office menu modules.",
+    'plugins'                    => 'செருகுநிரல்கள்',
     "receivings"                 => "Receivings",
     "receivings_desc"            => "Process Purchase Orders.",
     "reports"                    => "Reports",

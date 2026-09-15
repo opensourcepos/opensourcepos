@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "",
     "office"                     => "",
     "office_desc"                => "",
+    'plugins'                    => '插件',
     "receivings"                 => "進貨",
     "receivings_desc"            => "採購訂單流程",
     "reports"                    => "報表",

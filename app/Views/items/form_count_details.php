@@ -102,7 +102,7 @@ use App\Models\Inventory;
         $employee_name = [];
 
         foreach ($inventory_array as $row) {
-            $employee_data = $employee->get_info($row['trans_user']);
+            $employee_data = $employee->getInfo($row['trans_user']);
             $employee_name[] = $employee_data->first_name . ' ' . $employee_data->last_name;
         }
         ?>

@@ -39,7 +39,6 @@ return [
     'customer_discount'                 => 'Намаление',
     'customer_email'                    => 'Електронна поща',
     'customer_location'                 => 'Местоположение',
-    'customer_mailchimp_status'         => 'Състояние на Mailchimp',
     'customer_optional'                 => '(Незадължително)',
     'customer_required'                 => '(Задължително)',
     'customer_total'                    => 'Обща сума',

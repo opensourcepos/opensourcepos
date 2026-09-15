@@ -39,7 +39,6 @@ return [
     'customer_discount'                 => 'İskonto',
     'customer_email'                    => 'E-Posta',
     'customer_location'                 => 'Konum',
-    'customer_mailchimp_status'         => 'MailChimp durumu',
     'customer_optional'                 => '(Geciken Ödemeler İçin Gerekli)',
     'customer_required'                 => '(Gerekli)',
     'customer_total'                    => 'Total',

@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "ALSAN Məlumat Bazasıni Yenilə.",
     "office"                     => "Ofis",
     "office_desc"                => "Ofis menyusu siyahısı modulları.",
+    'plugins'                    => 'Plaginlər',
     "receivings"                 => "Qəbul Edilənlər",
     "receivings_desc"            => "Satınalma sifarişləri işləyin.",
     "reports"                    => "Hesabatlar",

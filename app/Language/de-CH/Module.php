@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "",
     "office"                     => "",
     "office_desc"                => "",
+    'plugins'                    => 'Plugins',
     "receivings"                 => "Eingänge",
     "receivings_desc"            => "Hinzufügen, Ändern, Löschen und Suchen",
     "reports"                    => "Berichte",

@@ -32,6 +32,7 @@ return [
     "migrate_desc"               => "",
     "office"                     => "",
     "office_desc"                => "",
+    'plugins'                    => 'Πρόσθετα',
     "receivings"                 => "",
     "receivings_desc"            => "",
     "reports"                    => "",
