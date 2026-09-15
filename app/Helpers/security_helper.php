@@ -15,7 +15,7 @@ use Random\RandomException;
  */
 function lockEnvFile()
 {
-    $lockPath = ROOTPATH . '.env.lock';
+    $lockPath = config('SecurityEnv')->lockPath;
 
     $handle = @fopen($lockPath, 'c+');
     if ($handle === false) {
@@ -77,7 +77,7 @@ function initializeEnvFile(string $configPath): bool
  */
 function writeEnvKey(string $envKey, string $value): bool
 {
-    $configPath = ROOTPATH . '.env';
+    $configPath = config('SecurityEnv')->envPath;
 
     if (!initializeEnvFile($configPath)) {
         return false;
@@ -242,7 +242,7 @@ function writeNewEncryptionKey(string $configFile, string $key, string $oldKey):
  */
 function envFileIsWritable(): bool
 {
-    $configPath = ROOTPATH . '.env';
+    $configPath = config('SecurityEnv')->envPath;
 
     return file_exists($configPath)
         ? is_writable($configPath)
@@ -296,7 +296,7 @@ function checkEncryption(?CI3SecretConverter $converter = null): bool
         if (array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
             abortEncryptionConversion();
 
-            throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => ROOTPATH . '.env']));
+            throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => config('SecurityEnv')->envPath]));
         }
 
         if (!empty(array_filter($plain))) {
@@ -368,8 +368,8 @@ function rotateEncryptionKey(?string $oldKey = null): string
     $encryption = new Encryption();
     $key = bin2hex($encryption->createKey());
 
-    $configPath = ROOTPATH . '.env';
-    $backupPath = WRITEPATH . '/backup/.env.bak';
+    $configPath = config('SecurityEnv')->envPath;
+    $backupPath = config('SecurityEnv')->backupPath;
 
     if (!initializeEnvFile($configPath)) {
         throw new RuntimeException(lang('Error.unable_to_create_env_file', ['filePath' => $configPath]));
@@ -421,7 +421,7 @@ function rotateEncryptionKey(?string $oldKey = null): string
  */
 function provisionThrottleKey(): string
 {
-    $configPath = ROOTPATH . '.env';
+    $configPath = config('SecurityEnv')->envPath;
 
     if (!initializeEnvFile($configPath)) {
         throw new RuntimeException(lang('Error.unable_to_create_env_file', ['filePath' => $configPath]));
@@ -461,7 +461,7 @@ function provisionThrottleKey(): string
     $_ENV['throttle.key'] = $key;
     $_SERVER['throttle.key'] = $key;
 
-    log_message('info', 'Provisioned throttle key in ' . ROOTPATH . '.env');
+    log_message('info', 'Provisioned throttle key in ' . config('SecurityEnv')->envPath);
 
     return $key;
 }
@@ -471,8 +471,8 @@ function provisionThrottleKey(): string
  */
 function abortEncryptionConversion(): void
 {
-    $configPath = ROOTPATH . '.env';
-    $backupPath = WRITEPATH . '/backup/.env.bak';
+    $configPath = config('SecurityEnv')->envPath;
+    $backupPath = config('SecurityEnv')->backupPath;
 
     if (!file_exists($backupPath)) {
         return;
@@ -489,7 +489,7 @@ function abortEncryptionConversion(): void
  */
 function removeBackup(): void
 {
-    $backupPath = WRITEPATH . '/backup/.env.bak';
+    $backupPath = config('SecurityEnv')->backupPath;
     if (!file_exists($backupPath)) {
         return;
     }

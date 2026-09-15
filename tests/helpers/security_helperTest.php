@@ -7,19 +7,20 @@ use Config\Encryption as EncryptionConfig;
 use Config\Services;
 
 /**
- * ROOTPATH/WRITEPATH are hard-defined constants that can't be redirected in
- * tests, so the filesystem-touching tests below operate on the project's
- * real .env and writable/backup/.env.bak. setUp()/tearDown() capture and
- * restore both files (and config('Encryption')->key and throttle.key) around
- * every test — do not remove those safeguards.
+ * The filesystem-touching helpers read their target paths from the shared
+ * Config\SecurityEnv instance. setUp()/tearDown() redirect all three
+ * (envPath / backupPath / lockPath) to a unique per-run sandbox under
+ * sys_get_temp_dir() and tear that sandbox down afterwards, so the tests never
+ * read or write the repository's real .env / writable backup. The
+ * config('Encryption')->key and throttle.key mutations are captured and
+ * restored here too — do not remove those safeguards.
  */
 class security_helperTest extends CIUnitTestCase
 {
+    private string $sandbox;
     private string $envPath;
     private string $backupPath;
     private string $lockPath;
-    private ?string $envContentsBefore;
-    private ?string $backupContentsBefore;
     private string $encryptionKeyBefore;
     private ?string $throttleKeyBefore;
     private bool $hadThrottleServer = false;
@@ -30,12 +31,29 @@ class security_helperTest extends CIUnitTestCase
         parent::setUp();
         require_once __DIR__ . '/../../app/Helpers/security_helper.php';
 
-        $this->envPath    = ROOTPATH . '.env';
-        $this->backupPath = WRITEPATH . '/backup/.env.bak';
-        $this->lockPath   = ROOTPATH . '.env.lock';
+        // Redirect all filesystem-touching helpers to a unique per-run sandbox.
+        $this->sandbox    = sys_get_temp_dir() . '/ospos_sech_' . getmypid() . '_' . bin2hex(random_bytes(4));
+        $this->envPath    = $this->sandbox . '/.env';
+        $this->backupPath = $this->sandbox . '/backup/.env.bak';
+        $this->lockPath   = $this->sandbox . '/.env.lock';
 
-        $this->envContentsBefore    = file_exists($this->envPath) ? file_get_contents($this->envPath) : null;
-        $this->backupContentsBefore = file_exists($this->backupPath) ? file_get_contents($this->backupPath) : null;
+        if (!is_dir($this->sandbox)) {
+            mkdir($this->sandbox, 0700, true);
+        }
+        if (!is_dir(dirname($this->backupPath))) {
+            mkdir(dirname($this->backupPath), 0700, true);
+        }
+        // Seed .env so initializeEnvFile() treats it as already present (no-op).
+        file_put_contents($this->envPath, "# OSPOS Configuration\n\n");
+
+        $se                  = config('SecurityEnv');
+        $se->envPath         = $this->envPath;
+        $se->backupPath      = $this->backupPath;
+        $se->lockPath        = $this->lockPath;
+
+        // Read-back so the helper and the assertions observe the same instance.
+        $this->assertSame($this->envPath, config('SecurityEnv')->envPath);
+
         $this->encryptionKeyBefore  = (string) config('Encryption')->key;
         $this->throttleKeyBefore   = (string) env('throttle.key', '');
         $this->hadThrottleServer   = array_key_exists('throttle.key', $_SERVER);
@@ -44,28 +62,46 @@ class security_helperTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        if ($this->envContentsBefore === null) {
-            @unlink($this->envPath);
-        } else {
-            file_put_contents($this->envPath, $this->envContentsBefore);
-        }
+        // Restore the shared config defaults so no other test sees the sandbox.
+        $se                  = config('SecurityEnv');
+        $se->envPath         = ROOTPATH . '.env';
+        $se->backupPath      = WRITEPATH . '/backup/.env.bak';
+        $se->lockPath        = ROOTPATH . '.env.lock';
 
-        if ($this->backupContentsBefore === null) {
-            @unlink($this->backupPath);
-        } else {
-            file_put_contents($this->backupPath, $this->backupContentsBefore);
-        }
-
-        @unlink($this->lockPath);
-        foreach (glob(ROOTPATH . '.env.tmp.*') as $stray) {
-            @unlink($stray);
-        }
+        $this->removeTree($this->sandbox);
 
         config('Encryption')->key = $this->encryptionKeyBefore;
 
         $this->restoreThrottleKey();
 
         parent::tearDown();
+    }
+
+    /**
+     * Recursively removes a sandbox directory and everything beneath it.
+     * No-op when $dir does not exist.
+     */
+    private function removeTree(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        $items = scandir($dir) ?: [];
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            $path   = $dir . '/' . $item;
+            $isTree = is_dir($path) && !is_link($path);
+            if ($isTree) {
+                $this->removeTree($path);
+            } else {
+                @unlink($path);
+            }
+        }
+
+        @rmdir($dir);
     }
 
     private function restoreThrottleKey(): void
@@ -252,7 +288,7 @@ class security_helperTest extends CIUnitTestCase
 
         $this->assertTrue($result);
         $this->assertSame('hello world', file_get_contents($this->envPath));
-        $this->assertSame([], glob(ROOTPATH . '.env.tmp.*'));
+        $this->assertSame([], glob($this->envPath . '.tmp.*'));
     }
 
     // -- envFileIsWritable() --
