@@ -7,7 +7,6 @@ use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
-use RuntimeException;
 
 class ConvertToCI4 extends Migration
 {
@@ -33,18 +32,18 @@ class ConvertToCI4 extends Migration
 
         $existingKey = (string) config('Encryption')->key;
 
-        try {
-            if ($existingKey !== '' && strlen($existingKey) < 64) {
-                $this->convertCI3EncryptedData($existingKey);
-            } else {
-                if ($existingKey === '') {
-                    rotateEncryptionKey(null);
-                } else {
-                    checkEncryption();
-                }
-            }
-        } finally {
+        if ($existingKey !== '' && strlen($existingKey) < 64) {
+            // Old CI3-era key: decrypt, rotate, re-encrypt, persist — all under
+            // a single .env lock (see convertCI3EncryptedData).
+            $this->convertCI3EncryptedData($existingKey);
+        } elseif ($existingKey === '') {
+            // No key at all: provision a fresh one (single atomic write), then
+            // drop the incidental pre-write backup left behind by the rotation.
+            rotateEncryptionKey(null);
             removeBackup();
+        } else {
+            // Key already present and a valid CI4 key: confirm it is usable.
+            checkEncryption();
         }
     }
 
@@ -68,25 +67,21 @@ class ConvertToCI4 extends Migration
     {
         $converter = new CI3SecretConverter();
 
+        // DB read, safe outside the .env lock.
         $plain = $converter->decryptAll($oldKey);
 
-        rotateEncryptionKey($oldKey);
+        // Backup -> rotate -> re-encrypt -> verify -> persist under one .env
+        // lock. On any failure the transaction restores the pre-rotation .env
+        // (still holding the lock); on success it drops the backup.
+        rotateEncryptionKeyTransaction($oldKey, static function () use ($plain, $converter): void {
+            $encrypted = $converter->encryptAll($plain);
 
-        $encrypted = $converter->encryptAll($plain);
+            // Verify the round trip before committing so we never lose data.
+            if (array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
+                throw new RedirectException('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
+            }
 
-        // Verify the round trip before committing so we never lose data.
-        $success = empty(array_diff_assoc($plain, $converter->verifyAll($encrypted)));
-        if (!$success) {
-            abortEncryptionConversion();
-            throw new RedirectException('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
-        }
-
-        try {
             $converter->saveAll($encrypted);
-        } catch (RuntimeException $e) {
-            abortEncryptionConversion();
-
-            throw $e;
-        }
+        });
     }
 }

@@ -270,8 +270,7 @@ function envFileIsWritable(): bool
  *                                           (tests may pass a fake to avoid
  *                                           hitting the database)
  * @return bool true when a valid key is available
- * @throws RuntimeException if the key cannot be provisioned
- * @throws RandomException
+ * @throws Throwable when .env is not writable or the CI3 -> CI4 conversion fails
  */
 function checkEncryption(?CI3SecretConverter $converter = null): bool
 {
@@ -289,29 +288,36 @@ function checkEncryption(?CI3SecretConverter $converter = null): bool
 
     if ($key !== '') {
         $converter = $converter ?? new CI3SecretConverter();
-        $plain     = $converter->decryptAll($key);
-        rotateEncryptionKey($key);
-        $encrypted = $converter->encryptAll($plain);
 
-        if (array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
-            abortEncryptionConversion();
+        // Legacy plaintext is a DB read; safe outside the .env lock (the lock
+        // only guards the .env file write, which the rotation performs).
+        $plain = $converter->decryptAll($key);
 
-            throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => config('SecurityEnv')->envPath]));
-        }
-
-        if (!empty(array_filter($plain))) {
-            try {
-                $converter->saveAll($encrypted);
-            } catch (RuntimeException $e) {
-                abortEncryptionConversion();
-
-                throw $e;
+        $nonEmpty = false;
+        foreach ($plain as $value) {
+            if ((string) $value !== '') {
+                $nonEmpty = true;
+                break;
             }
         }
-        removeBackup();
+
+        // Run the whole backup -> rotate -> re-encrypt -> verify -> persist unit
+        // under a single .env lock. On any failure, the pre-rotation backup is
+        // restored (also in-lock); on success the backup is removed (in-lock).
+        rotateEncryptionKeyTransaction($key, static function () use ($plain, $converter, $nonEmpty): void {
+            $encrypted = $converter->encryptAll($plain);
+
+            if (array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
+                throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => config('SecurityEnv')->envPath]));
+            }
+
+            if ($nonEmpty) {
+                $converter->saveAll($encrypted);
+            }
+        });
     } else {
+        // Fresh key (no old key to decrypt): a single atomic write suffices.
         rotateEncryptionKey(null);
-        removeBackup();
     }
 
     return true;
@@ -352,9 +358,13 @@ function checkThrottleEncryption(): string
  * so callers can re-encrypt CI3 data that was sealed with the old key), and
  * applies it to the running config instance.
  *
- * This is the only helper allowed to write the encryption key. It is used by
- * the provisioning command (`env:provision`), the CI3->CI4 migration, and
- * the inline request-time auto-provisioning path in `checkEncryption()`.
+ * Standalone key-write path: acquires and holds the `.env` mutex for the
+ * duration of the write, so concurrent callers see atomic key writes. Callers
+ * that also run a longer multi-step conversion (re-encrypt, verify, persist)
+ * must use rotateEncryptionKeyTransaction() instead, so a single lock is held
+ * for the whole backup -> rotate -> re-encrypt -> persist unit and the
+ * key-write does not take a nested lock on the same mutex (which would
+ * deadlock).
  *
  * @param string|null $oldKey current key to rotate from; when non-empty it is
  *                            preserved as a commented backup line for the
@@ -365,8 +375,34 @@ function checkThrottleEncryption(): string
  */
 function rotateEncryptionKey(?string $oldKey = null): string
 {
+    $lock = lockEnvFile();
+
+    try {
+        return rotateEncryptionKeyUnlock($oldKey);
+    } finally {
+        unlockEnvFile($lock);
+    }
+}
+
+/**
+ * Lock-free core of rotateEncryptionKey(): generates a key, backs up .env,
+ * writes the new key (atomic), and applies it to the running config.
+ *
+ * Do not call directly from context that does not already hold the lock —
+ * that leaves a window in which another worker can read or write .env before
+ * the atomic write lands. The two callers, rotateEncryptionKey() and
+ * rotateEncryptionKeyTransaction(), each acquire the lock first and pass the
+ * lock-free core through.
+ *
+ * @param string|null $oldKey current key to rotate from
+ * @return string the newly generated key
+ * @throws RuntimeException if the key could not be generated or persisted
+ * @throws RandomException
+ */
+function rotateEncryptionKeyUnlock(?string $oldKey): string
+{
     $encryption = new Encryption();
-    $key = bin2hex($encryption->createKey());
+    $key        = bin2hex($encryption->createKey());
 
     $configPath = config('SecurityEnv')->envPath;
     $backupPath = config('SecurityEnv')->backupPath;
@@ -383,26 +419,20 @@ function rotateEncryptionKey(?string $oldKey = null): string
         }
     }
 
-    $lock = lockEnvFile();
+    $configFile = @file_get_contents($configPath);
+    if ($configFile === false) {
+        log_message('critical', "Unable to read $configPath before rotation; aborting.");
 
-    try {
-        $configFile = @file_get_contents($configPath);
-        if ($configFile === false) {
-            log_message('critical', "Unable to read $configPath before rotation; aborting.");
+        throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $configPath]));
+    }
 
-            throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $configPath]));
-        }
+    $updated = writeNewEncryptionKey($configFile, $key, (string) $oldKey);
+    if ($updated === null) {
+        throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => $configPath]));
+    }
 
-        $updated = writeNewEncryptionKey($configFile, $key, (string) $oldKey);
-        if ($updated === null) {
-            throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => $configPath]));
-        }
-
-        if (!atomicWriteFile($configPath, $updated)) {
-            throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => $configPath]));
-        }
-    } finally {
-        unlockEnvFile($lock);
+    if (!atomicWriteFile($configPath, $updated)) {
+        throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => $configPath]));
     }
 
     config('Encryption')->key = $key;
@@ -410,6 +440,70 @@ function rotateEncryptionKey(?string $oldKey = null): string
     log_message('info', "Rotated encryption key in $configPath");
 
     return $key;
+}
+
+/**
+ * Runs the CI3 -> CI4 key conversion as a single transaction on the `.env`
+ * mutex.
+ *
+ * The lock is acquired BEFORE the .env backup and released only AFTER
+ * $conversion has run, so the entire unit (backup -> rotate -> re-encrypt ->
+ * verify -> persist) is atomic with respect to any other worker that also
+ * takes the lock. The $conversion callback must throw on failure; the caller
+ * is expected to catch the exception and roll back via
+ * abortEncryptionConversion().
+ *
+ * Calls the lock-free rotateEncryptionKeyUnlock() internally so the
+ * transaction lock is not re-acquired on the same mutex (which would deadlock)
+ * — the mutex is held across the backup, the key write, the re-encryption,
+ * verification, and persistence.
+ *
+ * @param string|null $oldKey current key to rotate from
+ * @param callable    $conversion callback(): void, called after the new key
+ *                                has been persisted and applied to the running
+ *                                config; expected to perform re-encryption,
+ *                                verification, and persistence. Must throw on
+ *                                failure; the pre-rotation backup is restored
+ *                                before the exception propagates.
+ * @return string the newly generated key
+ * @throws Throwable from $conversion (the lock is released in `finally`)
+ * @throws RuntimeException
+ * @throws RandomException
+ */
+function rotateEncryptionKeyTransaction(?string $oldKey, callable $conversion): string
+{
+    // Hold one lock for the entire transaction (backup -> rotate -> re-encrypt
+    // -> verify -> persist -> cleanup). If we cannot acquire it, we fail
+    // rather than silently run without synchronisation — the invariant (no
+    // interleaved key + ciphertext writes) requires it.
+    $lock = lockEnvFile();
+
+    try {
+        // Lock-free inner write: the outer lock IS the transaction lock, so no
+        // nested re-acquire on the same mutex (which would deadlock).
+        $newKey = rotateEncryptionKeyUnlock($oldKey);
+
+        // Multi-step conversion (re-encrypt -> verify -> persist) runs while
+        // still holding the lock, so a concurrent worker cannot interleave its
+        // key write between the rotation and this ciphertext save.
+        $conversion();
+
+        // Success: drop the pre-rotation backup, in-lock.
+        removeBackup();
+
+        return $newKey;
+    } catch (Throwable $e) {
+        // Failure (CI4 EncryptionException / ReflectionException from saveAll,
+        // or a failed round-trip verify, or the rotation itself failed):
+        // restore the pre-rotation .env while still holding the lock, then
+        // rethrow. catch runs before finally, so the restore is atomic with
+        // the held lock.
+        abortEncryptionConversion();
+
+        throw $e;
+    } finally {
+        unlockEnvFile($lock);
+    }
 }
 
 /**

@@ -54,32 +54,32 @@ class EnvProvision extends BaseCommand
         $converter = new CI3SecretConverter();
 
         if ($key !== '' && strlen($key) < 64) {
-            $plain = $converter->decryptAll($key);
+            // DB read, safe outside the .env lock.
+            $plain   = $converter->decryptAll($key);
             $hasData = $this->anyNonEmpty($plain);
 
-            rotateEncryptionKey($key);
-            CLI::write('encryption.key     : rotated CI3 -> CI4 key', 'green');
+            // Backup -> rotate -> re-encrypt -> verify -> persist under a single .env lock.
+            rotateEncryptionKeyTransaction($key, static function () use ($plain, $hasData, $converter): void {
+                $encrypted = $converter->encryptAll($plain);
 
-            $encrypted = $converter->encryptAll($plain);
-
-            if ($hasData && array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
-                abortEncryptionConversion();
-                throw new RuntimeException('Failed to verify converted encryption data.');
-            }
-
-            if ($hasData) {
-                try {
-                    $converter->saveAll($encrypted);
-                } catch (RuntimeException $e) {
-                    abortEncryptionConversion();
-
-                    throw $e;
+                if (array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
+                    throw new RuntimeException('Failed to verify converted encryption data.');
                 }
 
+                if ($hasData) {
+                    $converter->saveAll($encrypted);
+                }
+            });
+
+            CLI::write('encryption.key     : rotated CI3 -> CI4 key', 'green');
+            if ($hasData) {
                 CLI::write('legacy secrets     : converted and verified to CI4 cipher', 'green');
             }
         } else {
-            rotateEncryptionKey(null);
+            // Fresh key (no old key to decrypt): a single atomic write suffices;
+            // the transaction wrapper still serialises it against other workers.
+            rotateEncryptionKeyTransaction(null, static function (): void {});
+
             CLI::write('encryption.key     : new CI4 key generated', 'green');
 
             if ($this->legacySecretsPresent()) {
