@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Saxlanılan Mətn Mesajı',
     'msg_msg_placeholder'                       => 'SMS şablonunu istifadə etmək istəyirsinizsə, mesajınızı buraya qeyd edin, əks halda qutunu boş buraxın.',
     'msg_pwd'                                   => 'SMS-API Şifrəsi',
-    'msg_pwd_required'                          => 'SMS-API şifrəsi tələb olunan bir sahədir',
     'msg_src'                                   => 'SMS-API Göndərici ID',
     'msg_src_required'                          => 'SMS-API Göndərici ID tələb olunan sahədir',
     'msg_uid'                                   => 'SMS-API İstifadəçi adı',

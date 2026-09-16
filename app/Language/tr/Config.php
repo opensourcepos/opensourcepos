@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Kaydedilen Metin İletisi',
     'msg_msg_placeholder'                       => 'Eğer bir SMS şablonu kullanmak isterseniz iletinizi buraya kaydediniz. Ya da kutuyu boş bırakınız.',
     'msg_pwd'                                   => 'SMS-API Parolası',
-    'msg_pwd_required'                          => 'SMS-API Parola zorunlu bir alandır',
     'msg_src'                                   => 'SMS-API Gönderici Kimliği',
     'msg_src_required'                          => 'SMS-API Gönderici Kimliği zorunlu bir alandır',
     'msg_uid'                                   => 'SMS-API Kullanıcı Adı',

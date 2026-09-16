@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Opgeslagen SMS-bericht',
     'msg_msg_placeholder'                       => 'Wilt u gebruik maken van een SMS-sjabloon? sla hier uw bericht op. Laat ander het vak leeg.',
     'msg_pwd'                                   => 'SMS-API Password',
-    'msg_pwd_required'                          => 'SMS-API Wachtwoord is een verplicht veld',
     'msg_src'                                   => 'SMS-API Verzender ID',
     'msg_src_required'                          => 'SMS-API Verzender ID is een verplicht veld',
     'msg_uid'                                   => 'SMS-API Gebruikersnaam',

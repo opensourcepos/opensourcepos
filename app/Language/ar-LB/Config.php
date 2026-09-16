@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'الرسائل النصية المحفوظة',
     'msg_msg_placeholder'                       => 'إذا أردت إستخدام قالب للرسائل القصيرة احفظه هنا. عدا ذلك أترك هذا الحقل فارغ.',
     'msg_pwd'                                   => 'SMS-API كلمة السر لـ',
-    'msg_pwd_required'                          => 'مطلوب SMS-API كلمة السر لـ',
     'msg_src'                                   => 'SMS-API كود المرسل لـ',
     'msg_src_required'                          => 'مطلوب SMS-API كود المرسل لـ',
     'msg_uid'                                   => 'SMS-API اسم المستخدم لـ',

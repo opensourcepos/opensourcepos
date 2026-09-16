@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Testo Messaggio Salvato',
     'msg_msg_placeholder'                       => 'Se vuoi utilizzare un template SMS, salva il tuo messaggio qui o lascia il campo in bianco.',
     'msg_pwd'                                   => 'SMS-API Password',
-    'msg_pwd_required'                          => 'SMS-API Password è un campo obbligatorio',
     'msg_src'                                   => 'SMS-API Sender ID',
     'msg_src_required'                          => 'SMS-API Sender ID è un campo obbligatorio',
     'msg_uid'                                   => 'SMS-API Username',
