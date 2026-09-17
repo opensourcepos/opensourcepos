@@ -98,14 +98,15 @@ class Jobs extends Secure_Controller
             }
         }
 
-        $success = true;
+        foreach ($arraySave as $throttleData) {
+            if (!ctype_digit((string)$throttleData['max_count']) || !in_array($throttleData['period'], $allowedPeriods, true)) {
+                $this->db->transRollback();
+
+                return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.saved_unsuccessfully')]);
+            }
+        }
 
         foreach ($arraySave as $throttleId => $throttleData) {
-            if (!ctype_digit((string)$throttleData['max_count']) || !in_array($throttleData['period'], $allowedPeriods, true)) {
-                $success = false;
-                continue;
-            }
-
             $savedThrottleId = $this->jobThrottle->saveValue($throttleData, $throttleId);
             $notToDelete[] = (string)$savedThrottleId;
         }
@@ -121,7 +122,7 @@ class Jobs extends Secure_Controller
 
         $this->db->transComplete();
 
-        $success = $success && $this->db->transStatus();
+        $success = $this->db->transStatus();
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Jobs.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }

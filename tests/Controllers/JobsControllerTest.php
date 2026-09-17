@@ -135,6 +135,26 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
     }
 
+    public function testPostSaveThrottlesLeavesExistingThrottlesUnchangedWhenPayloadInvalid(): void
+    {
+        $this->loginAsAdmin();
+        $this->jobThrottle->saveValue(['max_count' => 5, 'period' => 'minute'], 1);
+        $this->jobThrottle->saveValue(['max_count' => 20, 'period' => 'day'], 2);
+
+        // Throttle 2 is invalid and throttle 1 is omitted; neither should be touched.
+        $response = $this->post('/jobs/saveThrottles', [
+            'throttle_count_2'  => 15,
+            'throttle_period_2' => 'fortnight',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+
+        $this->seeInDatabase('job_throttles', ['throttle_id' => 1, 'max_count' => 5, 'period' => 'minute', 'deleted' => 0]);
+        $this->seeInDatabase('job_throttles', ['throttle_id' => 2, 'max_count' => 20, 'period' => 'day', 'deleted' => 0]);
+    }
+
     public function testGetThrottlesRendersPartial(): void
     {
         $this->loginAsAdmin();
