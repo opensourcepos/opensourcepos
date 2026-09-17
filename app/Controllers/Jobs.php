@@ -88,12 +88,12 @@ class Jobs extends Secure_Controller
         $arraySave = [];
 
         foreach ($this->request->getPost() as $key => $value) {
-            if (str_starts_with($key, 'throttle_count_')) {
-                $throttleId = preg_replace('/.*?_(\d+)$/', '$1', $key);
+            if (str_starts_with($key, 'throttle_count_') && preg_match('/^throttle_count_(\d+)$/', $key, $matches)) {
+                $throttleId = $matches[1];
                 $notToDelete[] = $throttleId;
                 $arraySave[$throttleId]['max_count'] = $value;
-            } elseif (str_starts_with($key, 'throttle_period_')) {
-                $throttleId = preg_replace('/.*?_(\d+)$/', '$1', $key);
+            } elseif (str_starts_with($key, 'throttle_period_') && preg_match('/^throttle_period_(\d+)$/', $key, $matches)) {
+                $throttleId = $matches[1];
                 $arraySave[$throttleId]['period'] = $value;
             }
         }
