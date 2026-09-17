@@ -34,7 +34,7 @@ if (isset($error)) {
             <?php if ($mode == 'sale') { ?>
                 <?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
                 <div id="report_sale_type" class="col-xs-3">
-                    <?= form_dropdown('sale_type', $sale_type_options, 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
+                    <?= form_dropdown('sale_type', $sale_type_options, $selected_sale_type ?? 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
                 </div>
             <?php } elseif ($mode == 'receiving') { ?>
                 <?= form_label(lang('Reports.receiving_type'), 'reports_receiving_type_label', ['class' => 'required control-label col-xs-2']) ?>
@@ -59,7 +59,7 @@ if (isset($error)) {
         <div class="form-group form-group-sm">
             <?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
             <div id="report_discount_type" class="col-xs-3">
-                <?= form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
+                <?= form_dropdown('discount_type', $discount_type_options, $selected_discount_type ?? $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
             </div>
         </div>
     <?php } ?>
