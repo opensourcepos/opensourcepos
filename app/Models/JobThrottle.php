@@ -35,9 +35,9 @@ class JobThrottle extends Model
     /**
      * @param array $throttleData
      * @param int $throttleId
-     * @return bool
+     * @return int Returns the throttle_id of the saved row (new id if inserted)
      */
-    public function saveValue(array $throttleData, int $throttleId): bool
+    public function saveValue(array $throttleData, int $throttleId): int
     {
         $throttleDataToSave = [
             'max_count' => $throttleData['max_count'],
@@ -47,13 +47,16 @@ class JobThrottle extends Model
 
         if (!$this->exists($throttleId)) {
             $builder = $this->db->table('job_throttles');
-            return $builder->insert($throttleDataToSave);
+            $builder->insert($throttleDataToSave);
+
+            return (int)$this->db->insertID();
         }
 
         $builder = $this->db->table('job_throttles');
         $builder->where('throttle_id', $throttleId);
+        $builder->update($throttleDataToSave);
 
-        return $builder->update($throttleDataToSave);
+        return $throttleId;
     }
 
     /**

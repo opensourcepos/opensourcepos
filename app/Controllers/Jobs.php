@@ -106,7 +106,8 @@ class Jobs extends Secure_Controller
                 continue;
             }
 
-            $this->jobThrottle->saveValue($throttleData, $throttleId);
+            $savedThrottleId = $this->jobThrottle->saveValue($throttleData, $throttleId);
+            $notToDelete[] = (string)$savedThrottleId;
         }
 
         // All throttles not available in post will be deleted now
