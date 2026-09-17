@@ -51,9 +51,9 @@ foreach ($throttles as $throttle) {
                     );
                     ?>
                 </div>
-                <span class="add_throttle glyphicon glyphicon-plus" style="flex: 0 0 auto; padding-left: 0.5em;"></span>
+                <button type="button" class="add_throttle glyphicon glyphicon-plus" style="flex: 0 0 auto; padding-left: 0.5em; border: none; background: none;" aria-label="<?= lang('Jobs.add_throttle') ?>"></button>
                 <span style="flex: 0 0 auto;">&nbsp;&nbsp;</span>
-                <span class="remove_throttle glyphicon glyphicon-minus" style="flex: 0 0 auto;"></span>
+                <button type="button" class="remove_throttle glyphicon glyphicon-minus" style="flex: 0 0 auto; border: none; background: none;" aria-label="<?= lang('Jobs.remove_throttle') ?>"></button>
             </div>
         </div>
     </div>

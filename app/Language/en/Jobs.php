@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => 'Add throttle',
     'mode'                              => 'Mode',
     'mode_auto'                         => 'Auto (Cron / Task Scheduler)',
     'mode_invalid'                      => 'Mode must be one of Auto, Web, or Manual.',
@@ -9,6 +10,7 @@ return [
     'not_yet_implemented'               => 'Not yet implemented — available in a future release.',
     'process_all_jobs'                  => 'Process All Jobs',
     'process_selected_jobs'             => 'Process Selected Jobs',
+    'remove_throttle'                   => 'Remove throttle',
     'saved_successfully'                => 'Job Queue settings saved successfully.',
     'saved_unsuccessfully'              => 'Job Queue settings could not be saved.',
     'select_jobs'                       => 'Select Jobs',
