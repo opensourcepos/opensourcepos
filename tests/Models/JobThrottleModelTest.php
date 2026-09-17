@@ -42,7 +42,7 @@ class JobThrottleModelTest extends CIUnitTestCase
 
     public function testSaveValueInsertsWhenThrottleDoesNotExist(): void
     {
-        $this->assertTrue($this->jobThrottle->saveValue(['max_count' => 10, 'period' => 'hour'], 1));
+        $this->assertSame(1, $this->jobThrottle->saveValue(['max_count' => 10, 'period' => 'hour'], 1));
 
         $this->seeInDatabase('job_throttles', [
             'throttle_id' => 1,
@@ -57,7 +57,7 @@ class JobThrottleModelTest extends CIUnitTestCase
         $this->jobThrottle->saveValue(['max_count' => 10, 'period' => 'hour'], 1);
         $this->assertTrue($this->jobThrottle->exists(1));
 
-        $this->assertTrue($this->jobThrottle->saveValue(['max_count' => 25, 'period' => 'day'], 1));
+        $this->assertSame(1, $this->jobThrottle->saveValue(['max_count' => 25, 'period' => 'day'], 1));
 
         $this->seeInDatabase('job_throttles', [
             'throttle_id' => 1,
