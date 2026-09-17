@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Artikelsets toevoegen, bijwerken, verwijderen en zoeken.",
     "items"                      => "Artikelen",
     "items_desc"                 => "Artikelen toevoegen, bijwerken, verwijderen en zoeken.",
+    'jobs'                       => 'Taakwachtrij',
+    'jobs_desc'                  => 'Configureer en beheer de achtergrondtaakwachtrij.',
     "messages"                   => "Berichten",
     "messages_desc"              => "Berichten verzenden naar klanten, leveranciers en werknemers.",
     "migrate"                    => "Migreren",

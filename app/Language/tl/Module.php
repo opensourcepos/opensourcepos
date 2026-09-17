@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Add, Update, Delete, and Search Items.",
     "items"                      => "Items",
     "items_desc"                 => "Add, Update, Delete and Search Item Kits.",
+    'jobs'                       => 'Pila ng Trabaho',
+    'jobs_desc'                  => 'I-configure at pamahalaan ang pila ng trabaho sa background.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers and Employees.",
     "migrate"                    => "Migrate",

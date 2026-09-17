@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "",
     "items"                      => "",
     "items_desc"                 => "",
+    'jobs'                       => 'ജോലി ക്യൂ',
+    'jobs_desc'                  => 'പശ്ചാത്തല ജോലി ക്യൂ ക്രമീകരിക്കുകയും കൈകാര്യം ചെയ്യുകയും ചെയ്യുക.',
     "messages"                   => "",
     "messages_desc"              => "",
     "migrate"                    => "",

@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Zoek, bewerk, verwijder en voeg productsets toe.",
     "items"                      => "Producten",
     "items_desc"                 => "Zoek, bewerk, verwijder en voeg producten toe.",
+    'jobs'                       => 'Takenwachtrij',
+    'jobs_desc'                  => 'Configureer en beheer de achtergrondtakenwachtrij.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers, Employees et al.",
     "migrate"                    => "Migreer",

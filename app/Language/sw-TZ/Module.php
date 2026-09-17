@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Ongeza, Sasisha, Futa na Tafuta Vifurushi vya Bidhaa.",
     "items"                      => "Bidhaa",
     "items_desc"                 => "Ongeza, Sasisha, Futa, na Tafuta Bidhaa.",
+    'jobs'                       => 'Foleni ya Kazi',
+    'jobs_desc'                  => 'Sanidi na dhibiti foleni ya kazi za nyuma ya pazia.',
     "messages"                   => "Ujumbe",
     "messages_desc"              => "Tuma Ujumbe kwa Wateja, Wasambazaji na Wafanyakazi.",
     "migrate"                    => "Hamisha",

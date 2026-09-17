@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "添加，更新，刪除，搜索產品套件.",
     "items"                      => "產品",
     "items_desc"                 => "添加，更新，刪除，搜索產品.",
+    "jobs"                       => "工作佇列",
+    "jobs_desc"                  => "設定並管理背景工作佇列。",
     "messages"                   => "留言",
     "messages_desc"              => "向客戶、供應商、員工等發送消息。",
     "migrate"                    => "遷移",

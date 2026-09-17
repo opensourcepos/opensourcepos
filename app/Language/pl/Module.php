@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "",
     "items"                      => "",
     "items_desc"                 => "",
+    'jobs'                       => 'Kolejka zadań',
+    'jobs_desc'                  => 'Konfiguruj i zarządzaj kolejką zadań w tle.',
     "messages"                   => "",
     "messages_desc"              => "",
     "migrate"                    => "",

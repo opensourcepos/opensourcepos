@@ -26,6 +26,8 @@ return [
     'item_kits_desc' => "Tambah, ubah, hapus, dan cari Item Paket.",
     'items' => "Item Barang",
     'items_desc' => "Tambah, ubah, hapus, dan cari Item.",
+    'jobs' => "Antrean Tugas",
+    'jobs_desc' => "Konfigurasi dan kelola antrean tugas latar belakang.",
     'messages' => "Pesan",
     'messages_desc' => "Kirim pesan pada Pelanggan, Pemasok, dan Karyawan.",
     'migrate' => "Migrasi",
