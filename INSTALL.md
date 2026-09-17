@@ -79,11 +79,13 @@ Start the containers using the following command
 
 ## Background Job Scheduling
 
-OSPOS includes a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports. It supports three trigger modes, configured on the Job Queue → Settings tab:
+OSPOS is scaffolding a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports. This is Phase 1: the scheduler infrastructure and trigger modes exist, but no real job types are wired up yet. Currently the scheduler only runs a `jobs_heartbeat` placeholder task that writes a debug log entry; the "Process All Jobs" / "Process Selected Jobs" endpoints on the Job Queue → Utilities tab are stubs that return `not_yet_implemented`. Actual job processing (e.g. CSV imports) will land in a later phase.
 
-- **Web** (default) — no setup required. Jobs are processed via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
-- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers processing on a fixed interval. Recommended for VPS/dedicated servers with cron access.
-- **Manual** — an admin clicks a "Process All Jobs" button on the Job Queue → Utilities tab. Always available regardless of mode, useful for debugging.
+The three trigger modes below control how/when the scheduler runs, not what it processes yet:
+
+- **Web** (default) — no setup required. The scheduler runs via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
+- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers the scheduler on a fixed interval. Recommended for VPS/dedicated servers with cron access.
+- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" button on the Job Queue → Utilities tab is present but not yet functional (Phase 1 stub).
 
 ### `auto` mode: Linux/Mac cron
 
