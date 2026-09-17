@@ -5,7 +5,6 @@ namespace App\Filters;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Tasks\TaskRunner;
 use Config\OSPOS;
 use Config\Tasks;
 use Throwable;
@@ -55,9 +54,8 @@ class JobRunner implements FilterInterface
             try {
                 config(Tasks::class)->init(service('scheduler'));
 
-                $runner = new TaskRunner();
-
                 if (microtime(true) - $start < $maxSeconds) {
+                    $runner = new BoundedTaskRunner($start + $maxSeconds);
                     $runner->run();
                 }
             } catch (Throwable $e) {
