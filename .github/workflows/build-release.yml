@@ -22,6 +22,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
       version-tag: ${{ steps.version.outputs.version-tag }}
       short-sha: ${{ steps.version.outputs.short-sha }}
+      branch: ${{ steps.version.outputs.branch }}
 
     steps:
       - name: Checkout
@@ -75,16 +76,13 @@ jobs:
       - name: Get version info
         id: version
         run: |
-          VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
-          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/feature\///' | tr '/' '_')
-          TAG=$(echo "${GITHUB_TAG:-$BRANCH}" | tr '/' '_')
-          SHORT_SHA=$(git rev-parse --short=6 HEAD)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "version-tag=$VERSION-$BRANCH-$SHORT_SHA" >> $GITHUB_OUTPUT
-          echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          chmod +x .github/scripts/get-version.sh
+          .github/scripts/get-version.sh all 7
         env:
-          GITHUB_TAG: ${{ github.ref_name }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
 
       - name: Create .env file
         run: |
@@ -130,7 +128,7 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-22.04
     needs: build
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
 
     steps:
       - name: Download build context
@@ -154,14 +152,14 @@ jobs:
       - name: Determine Docker tags
         id: tags
         run: |
-          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '_')
-          if [ "$BRANCH" = "master" ]; then
-            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }},${{ secrets.DOCKER_USERNAME }}/opensourcepos:master" >> $GITHUB_OUTPUT
+          TAG="${{ needs.build.outputs.version-tag }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${TAG}" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.build.outputs.branch }}" = "master" ]; then
+            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${TAG},${{ secrets.DOCKER_USERNAME }}/opensourcepos:latest" >> $GITHUB_OUTPUT
           else
-            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }}" >> $GITHUB_OUTPUT
+            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${TAG}" >> $GITHUB_OUTPUT
           fi
-        env:
-          GITHUB_REF: ${{ github.ref }}
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5
@@ -194,7 +192,7 @@ jobs:
         id: version
         run: |
           VERSION="${{ needs.build.outputs.version }}"
-          SHORT_SHA=$(git rev-parse --short=6 HEAD)
+          SHORT_SHA="${{ needs.build.outputs.short-sha }}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
 
