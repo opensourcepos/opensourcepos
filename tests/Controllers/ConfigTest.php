@@ -151,6 +151,8 @@ class ConfigTest extends CIUnitTestCase
             'payment_options_order' => '',
             'cash_rounding_code'    => '',
             'financial_year'        => '1',
+            'payment_reference_code_min' => '3',
+            'payment_reference_code_max' => '20',
         ], $overrides);
     }
 
