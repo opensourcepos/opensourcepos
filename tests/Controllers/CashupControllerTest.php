@@ -94,6 +94,7 @@ class CashupControllerTest extends CIUnitTestCase
             'closed_amount_total'  => '1000.00',
             'open_employee_id'     => '999999',
             'close_employee_id'    => '999999',
+            'description'          => 'Test cashup - tampered total',
         ]);
 
         $response->assertStatus(200);
@@ -124,6 +125,7 @@ class CashupControllerTest extends CIUnitTestCase
             'closed_amount_total'  => '155',
             'open_employee_id'     => '777',
             'close_employee_id'    => '888',
+            'description'          => 'Test cashup - consistent total',
         ]);
 
         $response->assertStatus(200);
