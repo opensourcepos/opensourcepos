@@ -62,7 +62,7 @@ class Load_config
 
     private function languageExists(string $languageCode): bool
     {
-        if (strpbrk($languageCode, '/\\') !== false || str_contains($languageCode, '..')) {
+        if (strpbrk($languageCode, '/\\') !== false || str_contains($languageCode, '..') || str_contains($languageCode, "\0")) {
             return false;
         }
 
