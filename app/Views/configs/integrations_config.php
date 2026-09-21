@@ -20,12 +20,13 @@
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-cloud"></span>
                         </span>
-                        <?= form_input([
-                            'name'  => 'mailchimp_api_key',
-                            'id'    => 'mailchimp_api_key',
-                            'class' => 'form-control input-sm',
-                            'value' => $mailchimp['api_key']
-                        ]) ?>
+                        <?php $apiKeySet = !empty($mailchimp['api_key_set']) ?>
+                        <input type="password"
+                               name="mailchimp_api_key"
+                               id="mailchimp_api_key"
+                               class="form-control input-sm"
+                               placeholder="<?= $apiKeySet ? lang('Config.mailchimp_api_key_set') : esc(lang('Config.mailchimp_api_key')) ?>"
+                               autocomplete="off">
                     </div>
                 </div>
                 <div class="col-xs-1">

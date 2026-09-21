@@ -118,6 +118,22 @@ jobs:
           KEY=$(openssl rand -hex 32)
           printf 'ENCRYPTION_KEY=%s\n' "$KEY" >> "$GITHUB_ENV"
 
+      - name: Provision per-run throttle key
+        # checkThrottleEncryption() is a read-only guard that throws unless a
+        # throttle.key is present (app/Helpers/security_helper.php). It is
+        # normally minted at container startup via `php spark env:provision`,
+        # so the test environment must provide one.
+        #
+        # We write it into the .env file (replacing the empty placeholder
+        # copied from .env.example) rather than exporting an OS env var:
+        # CodeIgniter's env() resolves $_ENV first, and DotEnv populates
+        # $_ENV['throttle.key']='' from .env, which would shadow any OS var
+        # before getenv() is ever consulted.
+        run: |
+          KEY=$(openssl rand -hex 32)
+          sed -i "s/^throttle\.key=''/throttle.key='$KEY'/" .env
+          grep -Eq "^throttle\.key=.+" .env
+
       - name: Run PHPUnit tests
         env:
           CI_ENVIRONMENT: testing

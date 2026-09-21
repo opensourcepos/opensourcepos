@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Texto del mensaje guardado',
     'msg_msg_placeholder'                       => 'Si desea usar un formato de SMS guarde su mensaje aquí, en caso contrario deje en blanco.',
     'msg_pwd'                                   => 'SMS-API Password',
-    'msg_pwd_required'                          => 'SMS-API Password es un campo requerido',
     'msg_src'                                   => 'SMS-API ID remitente',
     'msg_src_required'                          => 'SMS-API ID remitente es un campo requerido',
     'msg_uid'                                   => 'SMS-API Usuario',
