@@ -506,7 +506,12 @@ class Config extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
         }
 
-        $exploded = explode(":", $this->request->getPost('language'));
+        $language = $this->request->getPost('language');
+        if (!in_array($language, array_keys(get_languages()), true)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid language']);
+        }
+
+        $exploded = explode(":", $language);
         $currency_symbol = $this->request->getPost('currency_symbol');
         $batch_save_data = [
             'currency_symbol'            => htmlspecialchars($currency_symbol ?? ''),
