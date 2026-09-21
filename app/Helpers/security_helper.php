@@ -572,9 +572,15 @@ function abortEncryptionConversion(): void
         return;
     }
 
-    @chmod($configPath, 0640);
     $configFile = file_get_contents($backupPath);
-    @file_put_contents($configPath, $configFile);
+    if ($configFile === false) {
+        throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $backupPath]));
+    }
+
+    if (!atomicWriteFile($configPath, $configFile)) {
+        throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => $configPath]));
+    }
+
     log_message('info', "Restored $configPath from backup");
 }
 

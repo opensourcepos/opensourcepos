@@ -564,6 +564,34 @@ class security_helperTest extends CIUnitTestCase
         $this->assertSame("encryption.key='old'\n", file_get_contents($this->envPath));
     }
 
+    public function testAbortEncryptionConversionThrowsWhenBackupUnreadable(): void
+    {
+        // Force a failed backup read: file_exists() is true (it is a directory)
+        // but file_get_contents() returns false. The restore must then throw
+        // instead of silently writing an empty .env and destroying the active key.
+        if (!is_dir(dirname($this->backupPath))) {
+            mkdir(dirname($this->backupPath), 0750, true);
+        }
+        @unlink($this->backupPath);
+        mkdir($this->backupPath);
+
+        file_put_contents($this->envPath, "encryption.key='new'\n");
+        $before = (string) file_get_contents($this->envPath);
+
+        $threw = false;
+
+        try {
+            abortEncryptionConversion();
+        } catch (RuntimeException $e) {
+            $threw = true;
+        } finally {
+            @rmdir($this->backupPath);
+        }
+
+        $this->assertTrue($threw, 'a failed backup read must throw instead of failing silently');
+        $this->assertSame($before, (string) file_get_contents($this->envPath), '.env must be left untouched when the backup is unreadable');
+    }
+
     public function testRemoveBackupDeletesBackupFile(): void
     {
         if (!is_dir(dirname($this->backupPath))) {
