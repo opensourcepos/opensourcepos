@@ -572,6 +572,13 @@ function abortEncryptionConversion(): void
         return;
     }
 
+    // A backup exists, so the restore must succeed or fail loudly; a silent
+    // failure would leave .env holding the new key while the DB still holds the
+    // old ciphertext, making the data undecryptable after the next restart.
+    if (!is_file($backupPath) || !is_readable($backupPath)) {
+        throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $backupPath]));
+    }
+
     $configFile = file_get_contents($backupPath);
     if ($configFile === false) {
         throw new RuntimeException(lang('Error.unable_to_read_env_file', ['filePath' => $backupPath]));
