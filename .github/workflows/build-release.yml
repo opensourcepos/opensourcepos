@@ -5,7 +5,7 @@ on:
     branches:
       - '**'
     tags:
-      - '[0-9]+.*'
+      - '[0-9]+.[0-9]+.[0-9]+'
   pull_request:
     branches:
       - master
@@ -167,7 +167,9 @@ jobs:
             echo "tags=${REGISTRY}:master,${REGISTRY}:${SHA}" >> "$GITHUB_OUTPUT"
           else
             BRANCH="${GITHUB_REF#refs/heads/}"
-            BRANCH="${BRANCH//\//_}"
+            BRANCH="$(printf '%s' "$BRANCH" | LC_ALL=C tr -c 'A-Za-z0-9_.-' '_')"
+            BRANCH="${BRANCH:0:$((128 - ${#SHA} - 1))}"
+            [[ "$BRANCH" == [-.]* ]] && BRANCH="_${BRANCH:1}"
             echo "tags=${REGISTRY}:${BRANCH}-${SHA}" >> "$GITHUB_OUTPUT"
           fi
         env:
