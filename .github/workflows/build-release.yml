@@ -2,6 +2,10 @@ name: Build and Release
 
 on:
   push:
+    branches:
+      - '**'
+    tags:
+      - '[0-9]+.*'
   pull_request:
     branches:
       - master
@@ -154,11 +158,17 @@ jobs:
       - name: Determine Docker tags
         id: tags
         run: |
-          BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '_')
-          if [ "$BRANCH" = "master" ]; then
-            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }},${{ secrets.DOCKER_USERNAME }}/opensourcepos:master" >> $GITHUB_OUTPUT
+          REGISTRY="${{ secrets.DOCKER_USERNAME }}/opensourcepos"
+          SHA="${{ needs.build.outputs.short-sha }}"
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+            echo "tags=${REGISTRY}:${VERSION},${REGISTRY}:latest" >> "$GITHUB_OUTPUT"
+          elif [[ "$GITHUB_REF" == refs/heads/master ]]; then
+            echo "tags=${REGISTRY}:master,${REGISTRY}:${SHA}" >> "$GITHUB_OUTPUT"
           else
-            echo "tags=${{ secrets.DOCKER_USERNAME }}/opensourcepos:${{ needs.build.outputs.version-tag }}" >> $GITHUB_OUTPUT
+            BRANCH="${GITHUB_REF#refs/heads/}"
+            BRANCH="${BRANCH//\//_}"
+            echo "tags=${REGISTRY}:${BRANCH}-${SHA}" >> "$GITHUB_OUTPUT"
           fi
         env:
           GITHUB_REF: ${{ github.ref }}
