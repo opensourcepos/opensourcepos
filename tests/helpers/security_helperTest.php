@@ -467,6 +467,59 @@ class security_helperTest extends CIUnitTestCase
         }
     }
 
+    public function testCheckThrottleEncryptionFallsBackToThrottleKeyEnvVar(): void
+    {
+        $throttleKey = bin2hex(random_bytes(32));
+
+        // Clear the dot-notation throttle.key so the THROTTLE_KEY fallback is
+        // exercised, and leave a .env with no throttle.key so any accidental
+        // provisioning would be visible in the file assertion below.
+        putenv('throttle.key');
+        unset($_ENV['throttle.key'], $_SERVER['throttle.key']);
+        file_put_contents($this->envPath, "# tmp\n");
+
+        $previous = getenv('THROTTLE_KEY');
+        putenv("THROTTLE_KEY=$throttleKey");
+
+        try {
+            $result = checkThrottleEncryption();
+
+            $this->assertSame($throttleKey, $result);
+            $this->assertStringNotContainsString('throttle.key=', file_get_contents($this->envPath), 'the THROTTLE_KEY fallback must not trigger provisioning/write');
+        } finally {
+            if ($previous === false) {
+                putenv('THROTTLE_KEY');
+            } else {
+                putenv("THROTTLE_KEY=$previous");
+            }
+        }
+    }
+
+    public function testCheckThrottleEncryptionPrefersThrottleKeyOverEnvVar(): void
+    {
+        $explicit = bin2hex(random_bytes(32));
+        $fallback = bin2hex(random_bytes(32));
+
+        putenv("throttle.key=$explicit");
+        $_ENV['throttle.key']    = $explicit;
+        $_SERVER['throttle.key'] = $explicit;
+
+        $previous = getenv('THROTTLE_KEY');
+        putenv("THROTTLE_KEY=$fallback");
+
+        try {
+            $result = checkThrottleEncryption();
+
+            $this->assertSame($explicit, $result, 'an explicit throttle.key must take precedence over the THROTTLE_KEY fallback');
+        } finally {
+            if ($previous === false) {
+                putenv('THROTTLE_KEY');
+            } else {
+                putenv("THROTTLE_KEY=$previous");
+            }
+        }
+    }
+
     // -- rotateEncryptionKey() — provisioning path, does write --
 
     public function testRotateEncryptionKeyPersistsNewKey(): void
