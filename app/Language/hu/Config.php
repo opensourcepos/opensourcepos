@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Mentett text üzenet',
     'msg_msg_placeholder'                       => 'Ha SMS alapot kíván használni ide írja. Egyébként hagyja üresen a mezőt.',
     'msg_pwd'                                   => 'SMS-API Jelszó',
-    'msg_pwd_required'                          => 'SMS-API jelszó kötelező mező',
     'msg_src'                                   => 'SMS-API Küldö ID',
     'msg_src_required'                          => 'SMS-API Sender ID is a required field',
     'msg_uid'                                   => 'SMS-API Felhasználó',

@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Sparade SMS',
     'msg_msg_placeholder'                       => 'Om du vill använda en SMS-mall, spara ditt meddelande här, annars lämna rutan tomt.',
     'msg_pwd'                                   => 'SMS-API-lösenord',
-    'msg_pwd_required'                          => 'SMS-API lösenord är ett obligatoriskt fält',
     'msg_src'                                   => 'SMS-API Sender-ID',
     'msg_src_required'                          => 'SMS-API Sender-ID är ett obligatoriskt fält',
     'msg_uid'                                   => 'SMS-API Användarnamn',
