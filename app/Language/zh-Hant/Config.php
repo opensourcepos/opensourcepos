@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => '保存的短信',
     'msg_msg_placeholder'                       => 'If you wish to use a SMS template save your message here. Otherwise leave the box blank.',
     'msg_pwd'                                   => 'SMS-API Password',
-    'msg_pwd_required'                          => 'SMS-API 密碼是必填字段',
     'msg_src'                                   => 'SMS-API 發件人 ID',
     'msg_src_required'                          => 'SMS-API 發件人 ID 是必填字段',
     'msg_uid'                                   => 'SMS-API 用戶名',

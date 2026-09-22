@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Message texte enregistré',
     'msg_msg_placeholder'                       => 'Si vous souhaitez utiliser un modèle de SMS, enregistrez votre message ici. Sinon, laisser la boîte en blanc.',
     'msg_pwd'                                   => 'SMS-API Password',
-    'msg_pwd_required'                          => 'SMS-API Password est un champ obligatoire',
     'msg_src'                                   => "ID de l'expéditeur de SMS-API",
     'msg_src_required'                          => "L'ID de l'expéditeur de SMS-API est un champ obligatoire",
     'msg_uid'                                   => "Nom d'utilisateur de l'API SMS",

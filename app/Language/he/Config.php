@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'הודעת טקסט שמורה',
     'msg_msg_placeholder'                       => 'אם ברצונך להשתמש בתבנית הודעה שמור את ההודעה שלך כאן, אחרת השאר את התיבה ריקה.',
     'msg_pwd'                                   => 'סיסמה של SMS-API',
-    'msg_pwd_required'                          => 'סיסמה של SMS-API הינו שדה חובה',
     'msg_src'                                   => 'מזהה שולח SMS-API',
     'msg_src_required'                          => 'מזהה שולח SMS-API הינו שדה חובה',
     'msg_uid'                                   => 'שם משתמש של SMS-API',

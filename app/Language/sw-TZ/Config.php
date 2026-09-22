@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Ujumbe wa SMS uliohifadhiwa',
     'msg_msg_placeholder'                       => 'Ikiwa unataka kutumia kiolezo cha SMS hifadhi ujumbe wako hapa, vinginevyo acha kisanduku wazi.',
     'msg_pwd'                                   => 'Nenosiri la SMS-API',
-    'msg_pwd_required'                          => 'Nenosiri la SMS-API ni kiashiria kinachohitajika',
     'msg_src'                                   => 'ID ya Mtumaji wa SMS-API',
     'msg_src_required'                          => 'ID ya Mtumaji wa SMS-API ni kiashiria kinachohitajika',
     'msg_uid'                                   => 'Jina la Mtumiaji la SMS-API',
