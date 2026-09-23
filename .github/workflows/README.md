@@ -13,8 +13,10 @@ This document describes the CI/CD workflows for OSPOS.
 
 ### Docker Images
 - Build and push `opensourcepos` Docker image for multiple architectures (linux/amd64, linux/arm64)
-- On master: tagged with version and `latest`
-- On other branches: tagged with version only
+- On `master`: tagged `master` and `<sha>`
+- On other branches: tagged `<branch>-<sha>`
+- On a semver tag (e.g. `3.4.2`): tagged `<version>` and `latest`
+- The version number is never stamped onto `master`/branch builds — it only appears on tag releases
 - Pushed to Docker Hub
 
 ### Releases
@@ -39,10 +41,10 @@ The `GITHUB_TOKEN` is automatically provided by GitHub Actions.
 
 ## Workflow Triggers
 
-- **Push to master** - Runs build, Docker push (with `latest` tag), and release
-- **Push to other branches** - Runs build and Docker push (version tag only)
-- **Push tags** - Runs build and Docker push (version tag only)
-- **Pull requests** - Runs build only (PHPUnit tests run in parallel via phpunit.yml)
+- **Push to master** - Runs build, Docker push (`master` + `<sha>` tags), and creates/updates the `unstable` release
+- **Push to other branches** - Runs build and Docker push (`<branch>-<sha>` tag)
+- **Push a semver tag** (e.g. `3.4.2`) - Runs build and Docker push (`<version>` + `latest` tags)
+- **Pull requests** - Runs build only (PHPUnit tests run in parallel via phpunit.yml); no Docker push
 
 ## Existing Workflows
 
