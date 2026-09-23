@@ -327,11 +327,15 @@ function checkEncryption(?CI3SecretConverter $converter = null): bool
  * Returns the persistent HMAC secret used to hash login-throttle cache keys.
  *
  * Behaviour:
- * - Key already present: returned immediately (no I/O).
+ * - Key already present (throttle.key or THROTTLE_KEY): returned immediately (no I/O).
  * - Key missing and .env IS writable: generates a fresh key and persists it.
  * - Key missing and .env NOT writable:
  *   throws — the key was presumably already provisioned externally
  *   (e.g. `php spark env:provision` at container startup).
+ *
+ * THROTTLE_KEY is a real environment-variable fallback (mirroring ENCRYPTION_KEY):
+ * it is consulted only when throttle.key is empty, so it can be supplied via
+ * Docker/Compose without writing a shared secret into .env.
  *
  * @return string the throttle key
  * @throws RuntimeException if the key cannot be provisioned
@@ -339,6 +343,11 @@ function checkEncryption(?CI3SecretConverter $converter = null): bool
 function checkThrottleEncryption(): string
 {
     $key = (string) env('throttle.key', '');
+
+    if ($key === '') {
+        $envKey = getenv('THROTTLE_KEY');
+        $key    = $envKey === false ? '' : $envKey;
+    }
 
     if ($key !== '') {
         return $key;
