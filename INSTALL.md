@@ -105,18 +105,18 @@ Add the following entry to your crontab (`crontab -e`), adjusting the path to yo
 
 ### `auto` mode: Windows Task Scheduler
 
-1. Open Task Scheduler and create a new task.
-2. Trigger: `Daily`, check `Repeat task every: 5 minutes` (the fastest interval the GUI allows), `for a duration of: Indefinitely`, no expiration.
-   - Don't use a `One time` trigger with a fixed repeat duration (e.g. `1 day`) — it stops repeating once that duration elapses instead of running forever.
-3. Action: start a program.
-   - Program/script: `php.exe` (full path, e.g. `C:\php\php.exe`)
-   - Arguments: `spark tasks:run`
-   - Start in: **must be the OSPOS project root — the directory containing the `spark` file** (e.g. `C:\laragon\www\opensourcepos`, or `C:\wamp64\www\opensourcepos\public\..`). This is NOT your PHP installation directory. If `Start in` is wrong or blank, `spark` fails immediately with `Could not open input file: spark` and the window closes before you can read it.
-   - Alternatively, avoid relying on `Start in` altogether by giving the full path to `spark` directly in Arguments: `Arguments: C:\laragon\www\opensourcepos\spark tasks:run`.
-4. On the **General** tab, select **"Run whether user is logged on or not"**. Without this, the task runs in your interactive session and briefly flashes a console window every time it fires.
-   - You'll be prompted for your account password to save the task. If it's rejected (common with Microsoft accounts using Windows Hello — fingerprint/PIN/face login won't work here), check **"Do not store password"** instead. This limits the task to local computer resources only, which is sufficient for `spark tasks:run`.
-5. Save the task. It will invoke the scheduler every 5 minutes — less frequent than the once-per-minute cron example above, so jobs are processed in 5-minute batches instead.
-6. Before trusting the scheduled task, verify it manually: open `cmd.exe`, `cd` to the same `Start in` directory, and run the same `Program/script` + `Arguments`. You should see `Running Tasks...` then `Completed Running Tasks`, and a new heartbeat line in `writable/logs/`.
+The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once-per-minute cadence of the cron example above, use the `tools/Windows/create-windows-task-scheduler-task.ps1` script instead, which registers the task via `New-ScheduledTaskTrigger -RepetitionInterval`. It also sets up "Run whether user is logged on or not" + "Do not store password" and "Run task as soon as possible after a scheduled start is missed" automatically.
+
+1. Open PowerShell **as Administrator** (`Register-ScheduledTask` requires elevation) and `cd` to your OSPOS project root.
+2. Run the script, replacing `-PhpPath` and `-ProjectPath` with your actual PHP and install paths:
+   ```powershell
+   .\tools\Windows\create-windows-task-scheduler-task.ps1 -PhpPath 'C:\php\php.exe' -ProjectPath 'C:\laragon\www\opensourcepos'
+   ```
+   - `-PhpPath`: full path to `php.exe`.
+   - `-ProjectPath`: the OSPOS project root — the directory containing the `spark` file.
+   - Optionally pass `-TaskName` to override the default task name of `OSPOS Task Runner`.
+3. Verify the task in Task Scheduler: it should show a 1-minute repeat interval, and the **General** tab should show "Run whether user is logged on or not" with "Do not store password" checked.
+4. Before trusting the scheduled task, verify it manually: open `cmd.exe`, `cd` to the OSPOS project root, and run the same `php.exe spark tasks:run` command. You should see `Running Tasks...` then `Completed Running Tasks`, and a new heartbeat line in `writable/logs/`.
 
 ### `manual` mode
 
