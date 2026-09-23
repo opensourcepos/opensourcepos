@@ -61,8 +61,9 @@ class JobsControllerTest extends CIUnitTestCase
         $this->loginAsAdmin();
 
         $response = $this->post('/jobs/saveSettings', [
-            'mode'            => 'bogus',
-            'web_max_seconds' => 5,
+            'mode'             => 'bogus',
+            'web_max_seconds'  => 5,
+            'task_max_seconds' => 30,
         ]);
 
         $response->assertStatus(200);
@@ -75,8 +76,9 @@ class JobsControllerTest extends CIUnitTestCase
         $this->loginAsAdmin();
 
         $response = $this->post('/jobs/saveSettings', [
-            'mode'            => 'web',
-            'web_max_seconds' => -5,
+            'mode'             => 'web',
+            'web_max_seconds'  => -5,
+            'task_max_seconds' => 30,
         ]);
 
         $response->assertStatus(200);
@@ -89,8 +91,9 @@ class JobsControllerTest extends CIUnitTestCase
         $this->loginAsAdmin();
 
         $response = $this->post('/jobs/saveSettings', [
-            'mode'            => 'manual',
-            'web_max_seconds' => 10,
+            'mode'             => 'manual',
+            'web_max_seconds'  => 10,
+            'task_max_seconds' => 20,
         ]);
 
         $response->assertStatus(200);
@@ -99,6 +102,7 @@ class JobsControllerTest extends CIUnitTestCase
 
         $this->seeInDatabase('app_config', ['key' => 'jobs_mode', 'value' => 'manual']);
         $this->seeInDatabase('app_config', ['key' => 'jobs_web_max_seconds', 'value' => '10']);
+        $this->seeInDatabase('app_config', ['key' => 'jobs_task_max_seconds', 'value' => '20']);
     }
 
     public function testPostSaveThrottlesSavesAndDeletesMissingThrottles(): void

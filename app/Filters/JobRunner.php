@@ -43,8 +43,9 @@ class JobRunner implements FilterInterface
         }
 
         $maxSeconds = (int)($config['jobs_web_max_seconds'] ?? config('Jobs')->webMaxSeconds);
+        $taskMaxSeconds = (int)($config['jobs_task_max_seconds'] ?? config('Jobs')->taskMaxSeconds);
 
-        register_shutdown_function(static function () use ($maxSeconds, $lockHandle): void {
+        register_shutdown_function(static function () use ($maxSeconds, $taskMaxSeconds, $lockHandle): void {
             if (function_exists('fastcgi_finish_request')) {
                 fastcgi_finish_request();
             }
@@ -55,7 +56,7 @@ class JobRunner implements FilterInterface
                 config(Tasks::class)->init(service('scheduler'));
 
                 if (microtime(true) - $start < $maxSeconds) {
-                    $runner = new BoundedTaskRunner($start + $maxSeconds);
+                    $runner = new BoundedTaskRunner($start + $maxSeconds, $taskMaxSeconds);
                     $runner->run();
                 }
             } catch (Throwable $e) {

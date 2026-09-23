@@ -48,13 +48,15 @@ class Jobs extends Secure_Controller
     public function postSaveSettings(): ResponseInterface
     {
         $rules = [
-            'mode'            => 'required|in_list[auto,web,manual]',
-            'web_max_seconds' => 'required|is_natural'
+            'mode'             => 'required|in_list[auto,web,manual]',
+            'web_max_seconds'  => 'required|is_natural',
+            'task_max_seconds' => 'required|is_natural'
         ];
 
         $messages = [
-            'mode'            => ['in_list' => lang('Jobs.mode_invalid')],
-            'web_max_seconds' => ['is_natural' => lang('Jobs.web_max_seconds_invalid')]
+            'mode'             => ['in_list' => lang('Jobs.mode_invalid')],
+            'web_max_seconds'  => ['is_natural' => lang('Jobs.web_max_seconds_invalid')],
+            'task_max_seconds' => ['is_natural' => lang('Jobs.task_max_seconds_invalid')]
         ];
 
         if ($response = $this->validateFields($rules, $messages)) {
@@ -62,8 +64,9 @@ class Jobs extends Secure_Controller
         }
 
         $batchSaveData = [
-            'jobs_mode'            => $this->request->getPost('mode'),
-            'jobs_web_max_seconds' => $this->request->getPost('web_max_seconds', FILTER_SANITIZE_NUMBER_INT)
+            'jobs_mode'             => $this->request->getPost('mode'),
+            'jobs_web_max_seconds'  => $this->request->getPost('web_max_seconds', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_task_max_seconds' => $this->request->getPost('task_max_seconds', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         $success = $this->appconfig->batch_save($batchSaveData);

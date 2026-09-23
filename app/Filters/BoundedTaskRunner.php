@@ -15,16 +15,22 @@ use Throwable;
  * mid-execution (PHP has no portable, FPM-safe preemption mechanism), so
  * this only bounds how many *additional* tasks are started after the
  * deadline, not the runtime of a task that was already running.
+ *
+ * $taskMaxSeconds is a soft, log-only budget: if a single task's run()
+ * takes longer than this, a warning is logged after the fact. It cannot
+ * stop or interrupt the task for the same preemption reason above.
  */
 class BoundedTaskRunner extends TaskRunner
 {
     private float $deadline;
+    private float $taskMaxSeconds;
 
-    public function __construct(float $deadline)
+    public function __construct(float $deadline, float $taskMaxSeconds)
     {
         parent::__construct();
 
         $this->deadline = $deadline;
+        $this->taskMaxSeconds = $taskMaxSeconds;
     }
 
     public function run()
@@ -51,12 +57,24 @@ class BoundedTaskRunner extends TaskRunner
 
             $error = null;
             $start = Time::now();
+            $startMicrotime = microtime(true);
             $output = null;
 
             $this->cliWrite('Processing: ' . ($task->name ?: 'Task'), 'green');
 
             try {
                 $output = $task->run();
+
+                $elapsed = microtime(true) - $startMicrotime;
+
+                if ($elapsed > $this->taskMaxSeconds) {
+                    log_message('warning', sprintf(
+                        'JobRunner: task "%s" took %.2fs, exceeding jobs_task_max_seconds (%.2fs).',
+                        $task->name ?: 'Task',
+                        $elapsed,
+                        $this->taskMaxSeconds
+                    ));
+                }
 
                 $this->cliWrite('Executed: ' . ($task->name ?: 'Task'), 'cyan');
             } catch (Throwable $e) {

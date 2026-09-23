@@ -8,4 +8,5 @@ class Jobs extends BaseConfig
 {
     public string $mode = 'web';   // auto | web | manual
     public int $webMaxSeconds = 5;
+    public int $taskMaxSeconds = 30;
 }

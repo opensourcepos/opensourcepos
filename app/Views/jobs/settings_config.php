@@ -55,6 +55,33 @@
                 </div>
             </div>
 
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Jobs.task_max_seconds'), 'task_max_seconds', ['class' => 'required control-label col-xs-4 col-sm-3 col-md-2']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    <div class="input-group">
+                        <?= form_input(array_merge([
+                            'type'           => 'number',
+                            'min'            => 0,
+                            'name'           => 'task_max_seconds',
+                            'id'             => 'task_max_seconds',
+                            'class'          => 'form-control input-sm required digits',
+                            'value'          => $config['jobs_task_max_seconds'] ?? 30
+                        ], ($config['jobs_mode'] ?? 'web') !== 'web' ? ['disabled' => true] : [])) ?>
+                        <span class="input-group-addon input-sm">
+                            <span
+                                id="task_max_seconds_tooltip"
+                                class="glyphicon glyphicon-info-sign"
+                                data-toggle="tooltip"
+                                data-placement="right"
+                                data-tooltip-enabled="<?= esc(lang('Jobs.task_max_seconds_tooltip')) ?>"
+                                data-tooltip-disabled="<?= esc(lang('Jobs.task_max_seconds_tooltip_disabled')) ?>"
+                                title="<?= lang('Jobs.task_max_seconds_tooltip') ?>"
+                            ></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <?= form_submit([
                 'name'  => 'submit_jobs_settings',
                 'id'    => 'submit_jobs_settings',
@@ -96,10 +123,15 @@
         const toggleWebMaxSeconds = function() {
             const isWeb = $('#mode').val() === 'web';
             $('#web_max_seconds').prop('disabled', !isWeb);
+            $('#task_max_seconds').prop('disabled', !isWeb);
 
             const $tooltip = $('#web_max_seconds_tooltip');
             const text = isWeb ? $tooltip.attr('data-tooltip-enabled') : $tooltip.attr('data-tooltip-disabled');
             $tooltip.attr('data-original-title', text);
+
+            const $taskTooltip = $('#task_max_seconds_tooltip');
+            const taskText = isWeb ? $taskTooltip.attr('data-tooltip-enabled') : $taskTooltip.attr('data-tooltip-disabled');
+            $taskTooltip.attr('data-original-title', taskText);
         };
         $('#mode').change(toggleWebMaxSeconds);
         toggleWebMaxSeconds();
@@ -107,6 +139,7 @@
         $('#jobs_settings_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
                 $('#web_max_seconds').prop('disabled', false);
+                $('#task_max_seconds').prop('disabled', false);
                 $(form).ajaxSubmit({
                     success: function(response) {
                         $.notify({
