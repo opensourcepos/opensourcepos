@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => 'Gespeicherte Nachricht',
     'msg_msg_placeholder'                       => 'Wenn Sie eine SMS Vorlage benutzen wollen, geben Sie diese hier ein, ansonsten lassen Sie dieses Feld frei.',
     'msg_pwd'                                   => 'SMS-API Passwort',
-    'msg_pwd_required'                          => 'SMS-API Passwort ist ein Pflichtfeld',
     'msg_src'                                   => 'SMS-API Sender ID',
     'msg_src_required'                          => 'SMS-API Sender ID ist ein Pflichtfeld',
     'msg_uid'                                   => 'SMS-API Benutzername',

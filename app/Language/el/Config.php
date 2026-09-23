@@ -210,7 +210,6 @@ return [
     'msg_msg'                                   => '',
     'msg_msg_placeholder'                       => '',
     'msg_pwd'                                   => '',
-    'msg_pwd_required'                          => '',
     'msg_src'                                   => '',
     'msg_src_required'                          => '',
     'msg_uid'                                   => '',
