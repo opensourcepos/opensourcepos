@@ -135,7 +135,7 @@ Add a second service to your `docker-compose.yml` pointing at the same database:
 ```yaml
 worker:
   image: opensourcepos
-  command: php spark tasks:run
+  command: sh -c "while true; do php spark tasks:run; sleep 60; done"
   depends_on:
     - db
   restart: unless-stopped
