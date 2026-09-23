@@ -14,6 +14,7 @@ The build process uses the build tools "npm" and "gulp" to piece everything toge
 
 ## Prerequisites
 
+- Install Node.js 20 or later (the build fails on Node 18 and earlier - one of the license reporting dependencies requires newer JavaScript regex features)
 - Install the latest version of NPM (tested using version 9.4.2)
 - Install the latest version of Composer (tested using composer 2.5.1)
 

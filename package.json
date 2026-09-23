@@ -24,6 +24,9 @@
     ],
     "type": "module",
     "main": "index.php",
+    "engines": {
+        "node": ">=20"
+    },
     "scripts": {
         "build": "gulp default",
         "gulp": "gulp"

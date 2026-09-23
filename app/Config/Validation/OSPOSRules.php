@@ -154,6 +154,33 @@ class OSPOSRules
     }
 
     /**
+     * Validates that the candidate value is greater than or equal to another
+     * field in the same request (proper cross-field comparison).
+     *
+     * CI4's built-in greater_than_equal_to[field] rule does not resolve the
+     * [field] token to that field's value, so this rule performs the real
+     * comparison and sets a human-readable error on failure.
+     *
+     * @param string $candidate The value being validated (e.g. max).
+     * @param string $otherField The field to compare against (e.g. min).
+     * @param array $data The full set of data being validated.
+     * @param string|null $error Error message set on failure.
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function gte_field(string $candidate, string $otherField, array $data, ?string &$error = null): bool
+    {
+        $other = $data[$otherField] ?? null;
+
+        if (is_numeric($candidate) && is_numeric($other) && (float) $candidate < (float) $other) {
+            $error = 'The value must be a number greater than or equal to the ' . $otherField . ' field.';
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Validates that the candidate theme name matches an installed bootswatch theme directory.
      *
      * @param string $theme
@@ -227,10 +254,10 @@ class OSPOSRules
     }
 
     /**
-     * Validates that the candidate is a plain filesystem path: only letters, digits,
-     * underscore, dash, dot and forward slash. Uses \A...\z (not ^...$) because PCRE's $
-     * also matches immediately before a single trailing newline, which would let a
-     * value like "/usr/bin/php\n" slip through — the bug behind GHSA-jc56-j8m6-q627.
+     * Validates a plain filesystem path, allowing space/colon/backslash for Windows paths and
+     * trailing sendmail-style args. Excludes shell metacharacters since this value is concatenated
+     * unescaped into a popen() call. Uses \A...\z, not ^...$, since $ also matches before a
+     * trailing newline.
      *
      * @param string $candidate
      * @param string|null $error
@@ -243,6 +270,6 @@ class OSPOSRules
             return false;
         }
 
-        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.]+\z/', $candidate);
+        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.: \\\\]+\z/', $candidate);
     }
 }

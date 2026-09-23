@@ -130,7 +130,7 @@ class Employee extends Person
      */
     public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, int $employee_id = NEW_ENTRY): bool
     {
-        $success = false;
+        $success = true;
         $isNewEmployee = ($employee_id == NEW_ENTRY || !$this->exists($employee_id));
         $grantChangeDisallowed = filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN);
 
@@ -143,41 +143,44 @@ class Employee extends Person
             return false;
         }
 
-        if (parent::save_value($person_data, $employee_id)) {
-            $builder = $this->db->table('employees');
+        $personSaved = parent::save_value($person_data, $employee_id);
+
+        if ($isNewEmployee && !$personSaved) {
+            // A new employee must have a person record; abort if the insert failed
+            $this->db->transComplete();
+
+            return false;
+        }
+
+        if ($personSaved) {
             if ($isNewEmployee) {
                 $employee_data['person_id'] = $employee_id = $person_data['person_id'];
-                $success = $builder->insert($employee_data);
+                $success = $this->db->table('employees')->insert($employee_data);
             } else {
-                $builder->where('person_id', $employee_id);
-                $success = $builder->update($employee_data);
+                $success = $success && $this->db->table('employees')->where('person_id', $employee_id)->update($employee_data);
             }
+        }
 
-            // We have either inserted or updated a new employee, now lets set permissions.
-            if ($success && !$grantChangeDisallowed) {
-                // First lets clear out any grants the employee currently has.
-                $builder = $this->db->table('grants');
-                $success = $builder->delete(['person_id' => $employee_id]);
+        // Grants update is gated only by the DISALLOW_GRANT_CHANGE flag, not by
+        // whether person/employee data was actually written (a 0-row affected
+        // update on existing data is a no-op, not a failure).
+        if (!$grantChangeDisallowed && !empty($grants_data)) {
+            $success = $success && $this->db->table('grants')->delete(['person_id' => $employee_id]);
 
-                // Now insert the new grants
-                if ($success) {
-                    foreach ($grants_data as $grant) {
-                        $data = [
-                            'permission_id' => $grant['permission_id'],
-                            'person_id'     => $employee_id,
-                            'menu_group'    => $grant['menu_group']
-                        ];
+            foreach ($grants_data as $grant) {
+                $data = [
+                    'permission_id' => $grant['permission_id'],
+                    'person_id'     => $employee_id,
+                    'menu_group'    => $grant['menu_group']
+                ];
 
-                        $builder = $this->db->table('grants');
-                        $success = $builder->insert($data);
-                    }
-                }
+                $success = $success && $this->db->table('grants')->insert($data);
             }
         }
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
+        $success = $success && $this->db->transStatus();
 
         return $success;
     }
