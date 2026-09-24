@@ -146,4 +146,5 @@ return [
     "used"                                    => "امتیاز مورد استفاده",
     "work_orders"                             => "دستورات کاری",
     "zero_and_less"                           => "صفر و کمتر",
+    "toggle_cost_and_profit"                  => "",
 ];

@@ -146,4 +146,5 @@ return [
     "used"                                    => "Poin yang telah digunakan",
     "work_orders"                             => "Perintah Kerja",
     "zero_and_less"                           => "Stok habis dan minus",
+    "toggle_cost_and_profit"                  => "",
 ];

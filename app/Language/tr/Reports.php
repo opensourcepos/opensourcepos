@@ -146,4 +146,5 @@ return [
     "used"                                    => "Kullanılan Puanlar",
     "work_orders"                             => "İş emirleri",
     "zero_and_less"                           => "Sıfır ve sıfırdan az",
+    "toggle_cost_and_profit"                  => "",
 ];

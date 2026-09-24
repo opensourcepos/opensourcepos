@@ -146,4 +146,5 @@ return [
     "used"                                    => "",
     "work_orders"                             => "",
     "zero_and_less"                           => "Null und weniger",
+    "toggle_cost_and_profit"                  => "Kosten & Gewinn umschalten",
 ];

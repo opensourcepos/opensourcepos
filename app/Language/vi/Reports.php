@@ -146,4 +146,5 @@ return [
     "used"                                    => "Các điểm bán hàng đã dùng",
     "work_orders"                             => "Giấy giao việc",
     "zero_and_less"                           => "Không hay nhỏ hơn",
+    "toggle_cost_and_profit"                  => "",
 ];

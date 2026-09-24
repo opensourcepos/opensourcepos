@@ -146,4 +146,5 @@ return [
     "used"                                    => "נקודות שהשתמשו",
     "work_orders"                             => "הזמנות עבודה",
     "zero_and_less"                           => "אפס ומתחת",
+    "toggle_cost_and_profit"                  => "",
 ];
