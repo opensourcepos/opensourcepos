@@ -1,4 +1,5 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.1...HEAD
+[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.2...HEAD
+[3.4.2]: https://github.com/opensourcepos/opensourcepos/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/opensourcepos/opensourcepos/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...3.4.0
 [3.3.9]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
@@ -32,6 +33,235 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [3.4.2] - 2026-09-24
+- Fix writable folder permission check (#4270) (#4273) by @jekkos
+- Extended payment delete fix (#4274) by @jekkos
+- Upgrade github workflow (#3708) (#4280) by @jekkos
+- Fix typo in writeable (#4270) by @jekkos
+- Fix migration 20250522000000 (#4284) by @jekkos
+- Upgrade to ci 4.6.2 (#4296) (#4298) by @jekkos
+- Fix barcode generation in items (#4270) by @jekkos
+- Allow empty tax category id (#4285) (#4288) by @jekkos
+- Fix security incident email address (#4298) by @jekkos
+- Fix item kits update (#4294) by @jekkos
+- Revert toast message sanitization (#4302) by @jekkos
+- Fix for suspended sales (#4283) (#4303) by @jekkos
+- Fix reference to uploads folder (#4270) (#4286) by @jekkos
+- Add generic try/catch in import (#4302) by @jekkos
+- Bump jspdf from 3.0.1 to 3.0.2 (#4309) by @dependabot[bot]
+- Fix mount path for uploads (#4308) by @jekkos
+- Add transactions to missing config keys migration. (#4318) by @Joe Williams
+- [Feature] Add logging to migrations (#4327) by @Joe Williams
+- Clean up docker compose setup (#4308) by @jekkos
+- Fix tax configuration pages (#4331) by @jekkos
+- Update SECURITY.md contact (#4335) by @jekkos
+- Add server side validation for password (#4335) by @jekkos
+- Add env variable to disallow pwd change (#4325) by @jekkos
+- Add recent releases to issue template (#4317) by @jekkos
+- Add DOMpurify + fix XSS (#4341) by @jekkos
+- Fix attachment cid (#4314) by @jekkos
+- Add DOMPurify to JS includes (#4341) by @jekkos
+- Allow anonymous giftcard creation (#4278) by @jekkos
+- Fix toast notifications in config (#4341) (#4343) by @jekkos
+- Fix creation of date attribute value (#4310) (#4344) by @jekkos
+- Fix wrong migration script location (#4285) by @jekkos
+- Escape return_policy in receipt + invoice (#4349) by @jekkos
+- Fix for detailed suppliers report (#4351) by @jekkos
+- Add show/hide cost price & profit feature - in reports #4130 (#4350) by @BhojKamal
+- Fix travis build after merge (#4130) by @jekkos
+- Add equals as permitted URI character (#4329) by @Chathura Dilushanka
+- Fix multiple XSS vulnerabilities (#3965) (#4356) by @jekkos
+- Bump lodash from 4.17.21 to 4.17.23 (#4369) by @dependabot[bot]
+- Bump jspdf and jspdf-autotable (#4373) by @dependabot[bot]
+- Fix XSS vulnerabilities in invoices + receipts (#3965) (#4363) by @jekkos
+- Fix XSS vulnerability in attributes (#3965) by @jekkos
+- Fix XSS vulnerability in register (#3965) by @jekkos
+- Fix XSS vulnerability in register (#3965) by @jekkos
+- Fix XSS vulnerabilities in invoice_email.php view by @jekkos
+- Fix permission bypass in Reports submodule access control (#4389) by @jekkos
+- Use Content-Type application/json for AJAX responses (#4357) by @jekkos
+- Language Array Key Typo Fix (#4371) by @Lucas Lyimo
+- Fix: Refresh session language for employee after update. (#4245) by @jekkos
+- Fix Docker image upload by replacing slashes in TAG by @jekkos
+- Fix broken object-level authorization in Employees controller (CVE-worthy) (#4391) by @jekkos
+- Bump dompurify from 3.3.1 to 3.3.2 (#4402) by @dependabot[bot]
+- Fix incorrect argument types in migration round_number() methods (#4403) by @jekkos
+- dd validation for invalid stock locations in CSV import (#4399) by @jekkos
+- fix(security): whitelist and validate invoice template types (#4393) by @jekkos
+- Fix second-order SQL injection in currency_symbol config (#4390) by @jekkos
+- Add row-level authorization to password change endpoints (#4401) by @jekkos
+- Fix: Handle image filenames with spaces in thumbnails by @jekkos
+- Fix: Sanitize image filenames to prevent thumbnail display issues (#4372) by @jekkos
+- Add migration to fix existing image filenames with spaces (#4372) by @jekkos
+- Refactor: Move ADMIN_MODULES to constants, rename methods to camelCase by @jekkos
+- Fix SQL injection in custom attribute search by @Ollama
+- Fix stored XSS vulnerability in item descriptions by @Ollama
+- Fix stored XSS vulnerabilities in employee permissions and customer data by @Ollama
+- Fix: Preserve CHECKBOX attribute state when adding attributes (#4385) by @jekkos
+- Fix payment type becoming null when editing sales by @Ollama
+- Fix broken SQL injection fix - use havingLike() instead of having() with named params by @Ollama
+- Fix mass assignment vulnerability in bulk edit (GHSA-49mq-h2g4-grr9) by @Ollama
+- Sync language files (#3468) by @Ollama
+- Add workflow to auto-update issue templates with releases by @Ollama
+- Update SECURITY.md with published security advisories by @Ollama
+- Bump jspdf from 4.1.0 to 4.2.0 (#4383) by @dependabot[bot]
+- Add filter persistence for table views via URL query string (#4400) by @jekkos
+- Fix filter persistence javascript issues (#4400) by @jekkos
+- Fix PHPUnit test configuration for database connectivity (#4430) by @jekkos
+- Fix IDOR vulnerability in password change (GHSA-mcc2-8rp2-q6ch) (#4427) by @jekkos
+- Fix XSS vulnerability in tax invoice view (#4432) by @jekkos
+- Fix permission bypass in Sales.getManage() access control (#4428) by @jekkos
+- Update SECURITY.md with published security advisories (#4431) by @jekkos
+- Fix SQL injection in suggestions column configuration (#4421) by @jekkos
+- Fix PHPUnit environment variables not being set (#4434) by @jekkos
+- Fix DECIMAL attribute not respecting locale format (#4422) by @jekkos
+- Fix stored XSS vulnerability in Attribute Definitions (GHSA-rvfg-ww4r-rwqf) (#4429) by @jekkos
+- Fix: Host Header Injection vulnerability (GHSA-jchf-7hr6-h4f3) by @Ollama
+- Fix stored XSS in gcaptcha_site_key on login page by @Ollama
+- Fix stored XSS via stock location name by @Ollama
+- Fix Token_lib::render() for PHP 8.4 compatibility by @Ollama
+- Use CIUnitTestCase for consistency with other tests by @Ollama
+- Fix: Pass  parameter to generate() and add composite format tests by @Ollama
+- Fix strftime directives handling and tighten test assertions by @Ollama
+- Add AGENTS.md with coding guidelines for AI agents by @Ollama
+- Fix: Add Debit Card filter to Daily Sales and Takings by @Ollama
+- Fix Taxes Summary Report totals not matching row values by @Ollama
+- Add unit tests for Taxes Summary Report calculations by @Ollama
+- Fix rounding consistency and update tests per review feedback by @Ollama
+- Rewrite tests to use database integration testing by @Ollama
+- Add seed data to tests for proper integration testing by @Ollama
+- Fix: Restrict employee selection in expenses and receivings forms by @Ollama
+- Fix review comments: remove redundant loop and add XSS escaping by @Ollama
+- Bump jspdf from 4.2.0 to 4.2.1 by @dependabot[bot]
+- Bump picomatch from 2.3.1 to 2.3.2 (#4451) by @dependabot[bot]
+- fix: Clear sale session after completing sale by @Ollama
+- fix: Remove redundant clear_mode() calls by @Ollama
+- Translate missing strings in multiple languages by @Ollama
+- Fix translation issues from code review by @Ollama
+- Remove English fallbacks from non-English translations by @Ollama
+- Add Calendar.php translations for missing languages by @Ollama
+- feat: migrate CI from Travis to GitHub Actions with enhancements by @Ollama
+- refactor: remove tables.sql and constraints.sql (#4447) by @Ollama
+- refactor: remove build-database gulp task (#4447) by @Ollama
+- refactor: optimize Docker image size by @Ollama
+- fix: remove duplicate phpunit.xml that prevented tests from running by @Ollama
+- fix: Use file-based session until database is migrated by @Ollama
+- feat: Improve migration UX on login page by @Ollama
+- Disable opencode workflow + run docker build by @jekkos
+- Fix negative price/quantity/discount validation (GHSA-wv3j-pp8r-7q43) (#4450) by @Nozomu Sasaki (Paul)
+- fix(ci): replace / with _ in branch names for Docker tags by @Ollama
+- fix(security): prevent command injection in sendmail path configuration by @Ollama
+- fix(security): prevent SQL injection in tax controller sort columns by @Ollama
+- feat: add release workflow with automated version bumping by @Ollama
+- refactor: simplify release workflow to version bump only by @Ollama
+- fix: address review comments by @Ollama
+- fix: address all review comments and restore issue template version update by @Ollama
+- fix: Tax Rate form not loading due to router service failure (#4479) by @jekkos
+- fix: Handle empty database on fresh install (#4467) by @jekkos
+- Fix: Improve allowedHostnames .env configuration and fail-fast in production (#4482) by @jekkos
+- [Feature]:  Case-sensitive attribute updates and CSV Import attribute deletion capability (#4384) by @objecttothis
+- fix: change docker image tag to master by @jekkos
+- Update to CodeIgniter 4.7.2 (#4485) by @objecttothis
+- Bump lodash from 4.17.23 to 4.18.1 (#4462) by @dependabot[bot]
+- [Fix]: Add missing return statements to Sales Controller functions by @Ollama
+- Encourage users to star the project by @objecttothis
+- Bump dompurify from 3.3.2 to 3.4.0 (#4512) by @dependabot[bot]
+- fix: propagate attribute definition failures in postSaveGeneral() (#4509) by @jekkos
+- fix: Escape dynamic output and fix CSS property in barcode_sheet.php (#4501) by @jekkos
+- Fix CRC currency reverting to EUR/LAK in locale config (#4511) by @jekkos
+- fix: Add missing $img_tag variable in Sales::getSendPdf() (#4515) by @jekkos
+- fix: Language dropdown not displaying saved language correctly (#4518) by @jekkos
+- fix: Scope orWhere clauses in Item::exists() and Item::get_item_id() (#4520) by @jekkos
+- fix: Update calendar translations (#4498) by @jekkos
+- fix: Catch mysqli_sql_exception in DB fallback handlers for fresh Docker installs (#4525) by @jekkos
+- fix(home): improve internal data type handling for user identification in auth process by @enricodelarosa
+- Assignable Keyboard Shortcuts Updates (#4532) by @WShells
+- chore: miscellaneous updates and improvements (#4530) by @BudsieBuds
+- chore(deps): bump minimatch from 3.1.2 to 3.1.5 (#4536) by @dependabot[bot]
+- chore: sync project files to match upstream templates (#4537) by @BudsieBuds
+- fix(ci): include hidden files in Docker build context (#4543) by @jekkos
+- feat: add ALLOWED_HOSTNAMES environment variable support for Docker/Compose (#4544) by @jekkos
+- fix(docker): correct permissions and fix migration barcode_type error (#4546) by @jekkos
+- docs: Update SECURITY.md with disclosure process (#4549) by @jekkos
+- feat: Bank transfer and wallet payment option added #4540 (#4547) by @BhojKamal
+- fix(security): Path traversal vulnerability in getPicThumb (#4545) by @jekkos
+- fix(security): SQL injection and path traversal vulnerabilities (#4539) by @jekkos
+- fix: Capture CSV import failures in save_tax_data and save_inventory_quantities (#4507) by @jekkos
+- fix: validate attributeId > 0 in saveAttributeLink() (#4508) by @jekkos
+- feat: Add deployment workflow with approval gates (#4522) by @jekkos
+- Bugfixes to get Migration working on MySQL and MariaDB (#4551) by @objecttothis
+- Bugfix: Sale search in register not handling trailing space properly (#4557) by @objecttothis
+- fix: cast string returns to int in MY_Migration (#4560) by @jekkos
+- Add fallback for allowedHostnames environment variable (#4565) by @objecttothis
+- fix: Allow searching by Sale ID in Takings/Daily Sales view (#4569) by @jekkos
+- Add Guards to Database Migration (#4571) by @objecttothis
+- fix: tax rate inputs blank with comma-decimal locales (#4555) by @jekkos
+- fix(security): Fix DOMPDF RCE and customer email sanitization (#4568) by @jekkos
+- Fix overly lenient date validation (#4574) by @objecttothis
+- fix(security): Escape attribute value in register by @jekkos
+- chore(deps): bump dompurify from 3.4.0 to 3.4.11 (#4578) by @dependabot[bot]
+- Bugfix: Fix problems with migration UI in login (#4589) by @objecttothis
+- Forgotten commit from login migration branch (#4592) by @objecttothis
+- Feature: Payment reference code (#4587) by @objecttothis
+- fix(giftcard): correct return type and rename getGiftcardId method (#4600) by @objecttothis
+- chore(deps): bump dompurify from 3.4.11 to 3.4.12 (#4602) by @dependabot[bot]
+- bugfix(reports): crash on detailed sales report when sale has multiple payments with reference codes (#4599) by @objecttothis
+- style(models): normalize quote style in SQL GROUP_CONCAT expression (#4608) by @objecttothis
+- chore(deps): upgrade dompdf from v2.0.8 to v3.1.6 (#4610) by @objecttothis
+- chore(deps): bump brace-expansion (#4614) by @dependabot[bot]
+- chore(deps): add xlsx via SheetJS CDN and upgrade tableexport plugin (#4615) by @objecttothis
+- chore(deps): bump lodash.template from 4.5.0 to 4.18.1 (#4616) by @objecttothis
+- fix(login): skip auth validation on new install to allow migration (#4609) by @objecttothis
+- fix: Wrap postSave() in single transaction for atomicity (#4506) by @jekkos
+- refactor: Replace var with let/const in JavaScript files (#4503) by @jekkos
+- fix: get_definition_by_name() returns single row instead of multi-dimensional array (#4452) (#4464) by @Jonathan Chang
+- fix(config): validate theme param to prevent XSS via invalid theme (#4620) by @objecttothis
+- fix(sales): enforce server-side authorization for price changes (#4631) by @objecttothis
+- fix(sales): escape quote number in email template to prevent XSS (#4625) by @objecttothis
+- refactor(migrations): rename execute_script to executeScript across all migrations (#4611) by @objecttothis
+- fix(auth): validate gcaptcha before password to prevent bypass (#4618) by @objecttothis
+- refactor: apply PSR-12 naming to Attribute definition methods (#4624) by @Rayan Abdul Cader
+- fix(security): sanitize filenames and escape logo path in config (#4630) by @objecttothis
+- fix: use db_connect() for item save transactions (#4636) by @richardmilles
+- fix(xss): remove redundant escaping that double-encoded item attribute values (#4628) by @objecttothis
+- chore(deps): bump codeigniter4/framework from 4.7.2 to 4.7.4 (#4638) by @dependabot[bot]
+- chore(deps): bump dompurify from 3.4.12 to 3.4.13 (#4639) by @dependabot[bot]
+- Reject item CSV imports whose header row is missing required columns (#4597) by @Sai Asish Y
+- fix(items): validate item_number and skip receiving quantity default for temp items (#4621) by @objecttothis
+- Feature: CodeIgniter Throttler (#4619) by @objecttothis
+- Bugfix: Resolve Race Condition in Rewards and Gift Card Spending (#4640) by @objecttothis
+- hotfix(auth): hash throttler keys to improve security (#4646) by @objecttothis
+- fix(items): add explicit sentinel value for clearing supplier in bulk edit (#4617) by @objecttothis
+- Codeigniter changes between 4.7.2 and 4.7.4 (#4650) by @objecttothis
+- Hotfix: Fix CI3 database migration caused by regression (#4649) by @objecttothis
+- fix(sales): gate per-record endpoints behind reports_sales grant (#4627) by @objecttothis
+- fix(email): update method call to camelCase for PSR-12 compliance (#4659) by @objecttothis
+- Feature admin account safeguards (#4657) by @objecttothis
+- Ensure payload data is escaped to prevent XSS (#4664) by @objecttothis
+- fix(sales): enforce reports_sales grant on search endpoint (#4673) by @objecttothis
+- fix(reports, home): resolve double-URL-decoding bypass for method grants (#4660) (#4666) by @objecttothis
+- Bugfix tax names (#4677) by @objecttothis
+- feat(validation, tests): add `valid_path_strict` rule and integrate into mailpath validation (#4684) by @objecttothis
+- fix(sales): harden payment validation and gift card handling by @objecttothis
+- fix: prevent duplicate items when editing imported rows (#4634) by @richardmilles
+- fix(barcode): resolve string interpolation issue in barcode display html (#4692) by @Vighnesh Nilajakar
+- fix(sales): gate getSearch behind reports_sales grant by @jekkos
+- bugfix(sales): reject non-negative gift-card amount_tendered (#4674) by @jekkos
+- fix(sales): harden unsuspend with auth, status gating, and null safety by @objecttothis
+- fix(tests): resolve all phpunit failures — clean-DB suite green (#4626) (#4691) by @jekkos
+- fix(licenses): guard malformed data, parallelize gulp tasks, require Node 20 by @objecttothis
+- fix(validation): broaden sendmail path regex, expand i18n, strip advisory IDs by @objecttothis
+- fix(security): handle special characters in `.env` key values and improve insertion logic (#4656) by @objecttothis
+- fix(locale): validate language_code against known locales to block path traversal (#4704) by @jekkos
+- Fix GHSA-frx7-c5vv-m3mr: recompute cashup total server-side and force owner identity (#4706) by @jekkos
+- feat(security): add THROTTLE_KEY env-var fallback for throttle.key (#4707) by @jekkos
+- fix(i18n): translate remaining English labels in Swiss German Items.php (#4701) by @Rayan Abdul Cader
+- fix(ci): stop stamping app version onto master and branch Docker tags (#4709) by @jekkos
+- chore(deps): bump fflate from 0.8.2 to 0.8.3 (#4690) by @dependabot[bot]
+- fix(i18n): swap print_delay_autoreturn number/required messages in 5 locales (#4699) by @Rayan Abdul Cader
+- chore(release): unified git-cliff release workflow (changelog + tag + optional bump) (#4711) by @jekkos
+- fix(release): push changelog/bump to master via admin PAT (GITHUB_TOKEN blocked by branch protection) by @jekkos
 
 ## [3.4.1] - 2025-06-05
 - Feature: PSR-12 Compliant Indentation by @objecttothis in ([#4196](https://github.com/opensourcepos/opensourcepos/pull/4196))
