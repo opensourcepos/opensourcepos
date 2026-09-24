@@ -146,4 +146,5 @@ return [
     "used"                                    => "Poäng som använts",
     "work_orders"                             => "Arbetsorders",
     "zero_and_less"                           => "Noll eller mindre",
+    "toggle_cost_and_profit"                  => "",
 ];

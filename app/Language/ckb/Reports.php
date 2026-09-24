@@ -146,4 +146,5 @@ return [
     'used' => "خاڵە بەکارهێنراوەکان",
     'work_orders' => "فەرمانی کار",
     'zero_and_less' => "سفر و کەمتر",
+    'toggle_cost_and_profit' => "",
 ];

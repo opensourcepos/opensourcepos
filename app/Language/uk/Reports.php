@@ -146,4 +146,5 @@ return [
     "used"                                    => "Вкористані бали",
     "work_orders"                             => "Робочі замовлення (наряди на роботу)",
     "zero_and_less"                           => "Нуль і менше",
+    "toggle_cost_and_profit"                  => "",
 ];

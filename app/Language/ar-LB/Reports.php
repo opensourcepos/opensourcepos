@@ -146,4 +146,5 @@ return [
     "used"                                    => "النقاط المستخدمة",
     "work_orders"                             => "طلبات عمل",
     "zero_and_less"                           => "صفر و أقل",
+    "toggle_cost_and_profit"                  => "",
 ];

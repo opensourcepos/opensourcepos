@@ -146,4 +146,5 @@ return [
     "used"                                    => "",
     "work_orders"                             => "",
     "zero_and_less"                           => "Nula i manje",
+    "toggle_cost_and_profit"                  => "",
 ];

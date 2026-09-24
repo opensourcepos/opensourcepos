@@ -146,4 +146,5 @@ return [
     "used"                                    => "使用點數",
     "work_orders"                             => "工作訂單",
     "zero_and_less"                           => "零和更少",
+    "toggle_cost_and_profit"                  => "",
 ];
