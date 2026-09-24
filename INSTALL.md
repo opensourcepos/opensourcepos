@@ -87,20 +87,21 @@ Then start the containers:
 
 ## Background Job Scheduling
 
-OSPOS is scaffolding a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports. This is Phase 1: the scheduler infrastructure and trigger modes exist, but no real job types are wired up yet. Currently the scheduler only runs a `jobs_heartbeat` placeholder task that writes a debug log entry; the "Process All Jobs" / "Process Selected Jobs" endpoints on the Job Queue → Utilities tab are stubs that return `not_yet_implemented`. Actual job processing (e.g. CSV imports) will land in a later phase.
+OSPOS has a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports, built on `codeigniter4/tasks` (scheduling) and `codeigniter4/queue` (job execution). Core queues are `default`, `imports`, and `api`. The "Process All Jobs" / "Process Selected Jobs" buttons on the Job Queue → Utilities tab drain these queues on demand.
 
-The three trigger modes below control how/when the scheduler runs, not what it processes yet:
+The three trigger modes below control how/when queued jobs are processed:
 
-- **Web** (default) — no setup required. The scheduler runs via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
-- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers the scheduler on a fixed interval. Recommended for VPS/dedicated servers with cron access.
-- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" button on the Job Queue → Utilities tab is present but not yet functional (Phase 1 stub).
+- **Web** (default) — no setup required. Due tasks and any pending core-queue jobs are processed via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
+- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers the scheduler and a queue worker on a fixed interval. Recommended for VPS/dedicated servers with cron access.
+- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" / "Process Selected Jobs" buttons on the Job Queue → Utilities tab drain the core queues synchronously.
 
 ### `auto` mode: Linux/Mac cron
 
-Add the following entry to your crontab (`crontab -e`), adjusting the path to your OSPOS install:
+Add the following entries to your crontab (`crontab -e`), adjusting the path to your OSPOS install:
 
 ```
 * * * * * cd /path/to/ospos && php spark tasks:run >> /dev/null 2>&1
+* * * * * cd /path/to/ospos && php spark queue:work default,imports,api --stop-when-empty >> /dev/null 2>&1
 ```
 
 ### `auto` mode: Windows Task Scheduler
@@ -117,10 +118,11 @@ The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once
    - Optionally pass `-TaskName` to override the default task name of `OSPOS Task Runner`.
 3. Verify the task in Task Scheduler: it should show a 1-minute repeat interval, and the **General** tab should show "Run whether user is logged on or not" with "Do not store password" checked.
 4. Before trusting the scheduled task, verify it manually: open `cmd.exe`, `cd` to the OSPOS project root, and run the same `php.exe spark tasks:run` command. You should see `Running Tasks...` then `Completed Running Tasks`, and a new heartbeat line in `writable/logs/`.
+5. Repeat steps 1–3 for a second scheduled task that runs `php.exe spark queue:work default,imports,api --stop-when-empty` on the same 1-minute interval, so queued jobs are drained alongside the scheduler.
 
 ### `manual` mode
 
-No setup is required. Set Mode to Manual on the Job Queue → Settings tab, then use the "Process All Jobs" button on the Utilities tab whenever you need jobs processed.
+No setup is required. Set Mode to Manual on the Job Queue → Settings tab, then use the "Process All Jobs" / "Process Selected Jobs" buttons on the Utilities tab whenever you need jobs processed.
 
 ### Docker considerations
 
@@ -135,7 +137,7 @@ Add a second service to your `docker-compose.yml` pointing at the same database:
 ```yaml
 worker:
   image: opensourcepos
-  command: sh -c "while true; do php spark tasks:run; sleep 60; done"
+  command: sh -c "while true; do php spark tasks:run; php spark queue:work default,imports,api --stop-when-empty; sleep 60; done"
   depends_on:
     - db
   restart: unless-stopped
@@ -147,7 +149,7 @@ Add supervisor to the image and configure it to run both the web server and the 
 
 **Option 3: cron sidecar container**
 
-Run a minimal sidecar container that fires `php spark tasks:run` every minute via cron, sharing the same network and database as the main container.
+Run a minimal sidecar container that fires `php spark tasks:run` and `php spark queue:work default,imports,api --stop-when-empty` every minute via cron, sharing the same network and database as the main container.
 
 ## Nginx install using Docker
 
