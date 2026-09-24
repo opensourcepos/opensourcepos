@@ -87,8 +87,20 @@ jobs:
           echo "version-tag=$VERSION-$BRANCH-$SHORT_SHA" >> $GITHUB_OUTPUT
           echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TAG: ${{ github.ref_name }}
+          env:
+            GITHUB_TAG: ${{ github.ref_name }}
+
+      - name: Validate release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          # The ZIP below is named from App.php, while the draft-release job
+          # globs by the tag name. A manually-pushed tag that does not match
+          # App.php would silently produce a draft release with no archive, so
+          # fail fast instead.
+          if [ "${GITHUB_REF_NAME}" != "${{ steps.version.outputs.version }}" ]; then
+            echo "::error::tag ${GITHUB_REF_NAME} does not match App.php version ${{ steps.version.outputs.version }}"
+            exit 1
+          fi
 
       - name: Create .env file
         run: |
