@@ -29,6 +29,7 @@ return [
     "date"                                    => "Ngày tháng",
     "date_range"                              => "Phạm vi Ngày",
     "description"                             => "Mô tả",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Báo cáo Nhập hàng chi tiết",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Báo cáo chi tiết",
