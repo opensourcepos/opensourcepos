@@ -1,24 +1,40 @@
-name: Release Version Bump
+name: Release
+
+# Cuts the current release (changelog + tag + draft release) and, optionally,
+# bumps App.php to the next dev version. One workflow, full release cycle.
+#
+# Flow:
+#   1. Release current version:
+#        - generate git-cliff changelog section (base..HEAD)
+#        - insert it into CHANGELOG.md + GFM compare refs
+#        - commit + push the changelog
+#        - tag the current version and push the tag with the repo PAT
+#          (a PAT push triggers build-release.yml, whose official-release job
+#           creates the DRAFT GitHub Release with the changelog + assets)
+#   2. (optional) bump to the next dev version:
+#        - update App.php / package.json / docker-compose / issue templates
+#        - commit + push
 
 on:
   workflow_dispatch:
     inputs:
-      version_type:
-        description: 'Version bump type'
+      next_bump:
+        description: 'After cutting this release, bump App.php to the next dev version'
         required: true
         type: choice
         options:
+          - patch
           - minor
           - major
-          - patch
-        default: 'minor'
+          - skip
+        default: 'patch'
 
 permissions:
   contents: write
 
 jobs:
-  prepare-release:
-    name: Prepare Release
+  release:
+    name: Cut release and bump next version
     runs-on: ubuntu-22.04
 
     steps:
@@ -28,145 +44,115 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get current version
-        id: current_version
+      - name: Install git-cliff
         run: |
-          CURRENT_VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
-          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          echo "Current version: $CURRENT_VERSION"
+          V=2.14.2
+          curl -sLSfL "https://github.com/orhun/git-cliff/releases/download/v${V}/git-cliff-${V}-x86_64-unknown-linux-musl.tar.gz" -o /tmp/cliff.tar.gz
+          tar xzf /tmp/cliff.tar.gz -C /tmp
+          mv "/tmp/git-cliff-${V}/git-cliff" /usr/local/bin/git-cliff
+          chmod +x /usr/local/bin/git-cliff
+          git cliff --version
 
-      - name: Calculate new version
+      - name: Determine version
         id: version
         run: |
-          CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
-          VERSION_TYPE="${{ github.event.inputs.version_type }}"
-          
-          # Parse current version
-          MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
-          MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
-          PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
-          
-          # Bump version based on type
-          case $VERSION_TYPE in
-            major)
-              MAJOR=$((MAJOR + 1))
-              MINOR=0
-              PATCH=0
-              ;;
-            minor)
-              MINOR=$((MINOR + 1))
-              PATCH=0
-              ;;
-            patch)
-              PATCH=$((PATCH + 1))
-              ;;
-          esac
-          
-          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "previous_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          echo "New version: $NEW_VERSION (was: $CURRENT_VERSION, type: $VERSION_TYPE)"
-
-      - name: Update version in App.php
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          sed -i "s/public string \\\$application_version = '[^']*';/public string \\\$application_version = '$NEW_VERSION';/" app/Config/App.php
-          echo "Updated app/Config/App.php"
-
-      - name: Update version in package.json
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          sed -i "s/\"version\": \"[^\"]*\",/\"version\": \"$NEW_VERSION\",/" package.json
-          echo "Updated package.json"
-
-      - name: Update version in docker-compose.nginx.yml
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          sed -i "s/jekkos\/opensourcepos:[^ ]*/jekkos\/opensourcepos:$NEW_VERSION/" docker-compose.nginx.yml
-          echo "Updated docker-compose.nginx.yml"
-
-      - name: Update version in README.md
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          # Extract major.minor for the "latest X.Y version" text
-          MAJOR_MINOR=$(echo "$NEW_VERSION" | cut -d. -f1,2)
-          sed -i "s/The latest \`[0-9]*\.[0-9]*\` version/The latest \`${MAJOR_MINOR}\` version/" README.md
-          echo "Updated README.md with version ${MAJOR_MINOR}"
-
-      - name: Generate changelog
-        id: changelog
-        run: |
-          PREVIOUS_VERSION="${{ steps.version.outputs.previous_version }}"
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          
-          # Get commits since last version
-          if git rev-parse "$PREVIOUS_VERSION" >/dev/null 2>&1; then
-            COMMITS=$(git log "$PREVIOUS_VERSION"..HEAD --pretty=format:"- %s" --no-merges)
-          else
-            COMMITS=$(git log --pretty=format:"- %s" --no-merges -50)
+          APP_VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
+          TARGET="$APP_VERSION"
+          if ! [[ "$TARGET" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "ERROR: target '$TARGET' is not in X.Y.Z form"; exit 1
           fi
-          
-          # Create changelog entry
-          CHANGELOG_FILE="CHANGELOG.md"
-          
-          # Create the new version comparison link
-          NEW_LINK="[${NEW_VERSION}]: https://github.com/opensourcepos/opensourcepos/compare/${PREVIOUS_VERSION}...${NEW_VERSION}"
-          
-          # Insert new link after [unreleased] line
-          sed -i "/^\[unreleased\]/a $NEW_LINK" "$CHANGELOG_FILE"
-          
-          # Update [unreleased] link to start from new version
-          sed -i "s|^\[unreleased\]: .*|\[unreleased\]: https://github.com/opensourcepos/opensourcepos/compare/${NEW_VERSION}...HEAD|" "$CHANGELOG_FILE"
-          
-          # Create version header and content using temp file to avoid sed issues with special characters
-          VERSION_DATE=$(date +%Y-%m-%d)
-          VERSION_HEADER="## [$NEW_VERSION] - $VERSION_DATE"
-          
-          # Create temp file with changelog entry
-          TMP_FILE=$(mktemp)
-          {
-            echo ""
-            echo "$VERSION_HEADER"
-            echo ""
-            echo "$COMMITS"
-          } > "$TMP_FILE"
-          
-          # Insert after Unreleased header
-          sed -i "/^## \[Unreleased\]/r $TMP_FILE" "$CHANGELOG_FILE"
-          rm "$TMP_FILE"
-          
-          echo "Updated CHANGELOG.md"
-          echo "Changelog entries:"
-          echo "$COMMITS"
+          BASE=$(git tag --list | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+          if [ -z "$BASE" ]; then
+            echo "ERROR: no previous release tag found"; exit 1
+          fi
+          if [ "$BASE" = "$TARGET" ]; then
+            echo "ERROR: target $TARGET equals base $BASE; nothing to release"; exit 1
+          fi
+          if ! printf '%s\n%s\n' "$BASE" "$TARGET" | sort -VC 2>/dev/null; then
+            echo "ERROR: target $TARGET is not greater than base $BASE"; exit 1
+          fi
+          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "Releasing $TARGET (previous release: $BASE)"
 
-      - name: Update version in issue templates
+      - name: Generate changelog section
         run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          
-          # Calculate version to remove (keep 5 versions)
-          PREVIOUS_VERSION="${{ steps.version.outputs.previous_version }}"
-          
-          # Bug report template - insert new version after development (unreleased)
-          BUG_TEMPLATE=".github/ISSUE_TEMPLATE/bug report.yml"
-          sed -i "/- development (unreleased)/a\\        - OpenSourcePOS ${NEW_VERSION}" "$BUG_TEMPLATE"
-          # Remove the oldest version (5th version from the end)
-          sed -i "/OpenSourcePOS 3\\.3\\.7/d" "$BUG_TEMPLATE"
-          echo "Updated $BUG_TEMPLATE"
-          
-          # Feature request template - insert new version after development (unreleased)
-          FEATURE_TEMPLATE=".github/ISSUE_TEMPLATE/feature_request.yml"
-          sed -i "/- development (unreleased)/a\\        - OpenSourcePOS ${NEW_VERSION}" "$FEATURE_TEMPLATE"
-          # Remove the oldest version (5th version from the end)
-          sed -i "/OpenSourcePOS 3\\.3\\.7/d" "$FEATURE_TEMPLATE"
-          echo "Updated $FEATURE_TEMPLATE"
+          git cliff --config cliff.toml \
+            --tag "${{ steps.version.outputs.target }}" \
+            --output /tmp/section.md \
+            "${{ steps.version.outputs.base }}..HEAD"
+          sed -i '/./,$!d' /tmp/section.md
+          echo "Generated $(grep -c '^- ' /tmp/section.md) entries"
+          echo "=== first 5 ==="
+          head -5 /tmp/section.md
 
-      - name: Commit version bump
+      - name: Insert into CHANGELOG.md
+        run: |
+          TARGET="${{ steps.version.outputs.target }}"
+          BASE="${{ steps.version.outputs.base }}"
+          sed -i "/^\[unreleased\]:/a [${TARGET}]: https://github.com/opensourcepos/opensourcepos/compare/${BASE}...${TARGET}" CHANGELOG.md
+          sed -i "s|^\[unreleased\]:.*|\[unreleased\]: https://github.com/opensourcepos/opensourcepos/compare/${TARGET}...HEAD|" CHANGELOG.md
+          LINE=$(grep -nE '^## \[[0-9]+\.' CHANGELOG.md | head -1 | cut -d: -f1)
+          printf '%s\n\n' "$(cat /tmp/section.md)" > /tmp/section_final.md
+          sed -i "$((LINE-1))r /tmp/section_final.md" CHANGELOG.md
+          echo "Inserted $TARGET section before line $LINE"
+
+      - name: Commit changelog
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          
-          git add app/Config/App.php package.json docker-compose.nginx.yml CHANGELOG.md README.md .github/ISSUE_TEMPLATE/
-          git commit -m "chore: release version $NEW_VERSION"
+          git add CHANGELOG.md
+          git commit -m "docs: add ${{ steps.version.outputs.target }} changelog"
           git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and push (PAT triggers build-release.yml)
+        run: |
+          TAG="${{ steps.version.outputs.target }}"
+          git tag "$TAG"
+          # Push with the repo PAT (not GITHUB_TOKEN) so the tag-push event
+          # triggers build-release.yml, whose official-release job creates the
+          # draft release with the changelog and assets.
+          git push "https://x-access-token:${RELEASE_PAT}@github.com/opensourcepos/opensourcepos.git" "refs/tags/$TAG"
+          echo "Released $TAG — draft release will be created by build-release.yml"
+        env:
+          RELEASE_PAT: ${{ secrets.TOKEN }}
+
+      - name: Bump to next dev version (optional)
+        if: ${{ inputs.next_bump != 'skip' }}
+        run: |
+          CURRENT="${{ steps.version.outputs.target }}"
+          MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+          MINOR=$(echo "$CURRENT" | cut -d. -f2)
+          PATCH=$(echo "$CURRENT" | cut -d. -f3)
+          case "${{ inputs.next_bump }}" in
+            major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+            minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+            patch) PATCH=$((PATCH + 1)) ;;
+            *) echo "ERROR: unknown bump type ${{ inputs.next_bump }}"; exit 1 ;;
+          esac
+          NEXT="${MAJOR}.${MINOR}.${PATCH}"
+          echo "Bumping to next dev version $NEXT"
+
+          sed -i "s/public string \\\$application_version = '[^']*';/public string \\\$application_version = '$NEXT';/" app/Config/App.php
+          sed -i "s/\"version\": \"[^\"]*\",/\"version\": \"$NEXT\",/" package.json
+          # Update the "latest X.Y version" README line only when major.minor changes
+          NEW_MM=$(echo "$NEXT" | cut -d. -f1,2)
+          OLD_MM=$(echo "$CURRENT" | cut -d. -f1,2)
+          if [ "$NEW_MM" != "$OLD_MM" ]; then
+            sed -i "s/The latest \`[0-9]*\.[0-9]*\` version/The latest \`${NEW_MM}\` version/" README.md
+          fi
+
+          echo "=== version refs after bump ==="
+          grep "application_version" app/Config/App.php
+          grep '"version"' package.json | head -1
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add app/Config/App.php package.json
+          [ "$NEW_MM" != "$OLD_MM" ] && git add README.md
+          git commit -m "chore: bump version to $NEXT"
+          git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

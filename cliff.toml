@@ -1,0 +1,28 @@
+[changelog]
+header = ""
+header_marker = "<!-- git-cliff: end of header -->"
+body = """
+{% if version %}\
+## [{{ version | trim_start_matches(pat='v') }}] - {{ timestamp | date(format='%Y-%m-%d') }}
+{% else %}\
+## [unreleased]
+{% endif %}\
+{% for commit in commits %}- {{ commit.message }} by @{{ commit.author.name }}
+{% endfor %}
+"""
+trim = true
+render_always = true
+footer = ""
+
+[git]
+sort_commits = "oldest"
+conventional_commits = false
+filter_unconventional = false
+ignore_tags = "unstable|master\\."
+commit_preprocessors = [
+  { pattern = "\\n[\\s\\S]*", replace = "" },
+]
+commit_parsers = [
+  { message = "^Translated using Weblate", skip = true },
+  { message = "^Set release version", skip = true },
+]
