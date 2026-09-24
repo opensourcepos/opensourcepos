@@ -2,11 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Jobs\BoundedQueueWorker;
 use App\Models\Appconfig;
 use App\Models\JobThrottle;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
+use Config\Jobs as JobsConfig;
 use ReflectionException;
 
 class Jobs extends Secure_Controller
@@ -34,6 +36,7 @@ class Jobs extends Secure_Controller
     {
         $data['config'] = $this->config;
         $data['throttles'] = $this->jobThrottle->getAll()->getResultArray();
+        $data['queues'] = config(JobsConfig::class)->coreQueues;
 
         return view('jobs/manage', $data);
     }
@@ -48,15 +51,22 @@ class Jobs extends Secure_Controller
     public function postSaveSettings(): ResponseInterface
     {
         $rules = [
-            'mode'             => 'required|in_list[auto,web,manual]',
-            'web_max_seconds'  => 'required|is_natural',
-            'task_max_seconds' => 'required|is_natural'
+            'mode'                  => 'required|in_list[auto,web,manual]',
+            'web_max_seconds'       => 'required|is_natural',
+            'task_max_seconds'      => 'required|is_natural',
+            'retry_limit'           => 'required|is_natural_no_zero',
+            'auto_purge'            => 'permit_empty|in_list[0,1]',
+            'retention_days'        => 'required|is_natural',
+            'failed_retention_days' => 'required|is_natural',
         ];
 
         $messages = [
-            'mode'             => ['in_list' => lang('Jobs.mode_invalid')],
-            'web_max_seconds'  => ['is_natural' => lang('Jobs.web_max_seconds_invalid')],
-            'task_max_seconds' => ['is_natural' => lang('Jobs.task_max_seconds_invalid')]
+            'mode'                  => ['in_list' => lang('Jobs.mode_invalid')],
+            'web_max_seconds'       => ['is_natural' => lang('Jobs.web_max_seconds_invalid')],
+            'task_max_seconds'      => ['is_natural' => lang('Jobs.task_max_seconds_invalid')],
+            'retry_limit'           => ['is_natural_no_zero' => lang('Jobs.retry_limit_invalid')],
+            'retention_days'        => ['is_natural' => lang('Jobs.retention_days_invalid')],
+            'failed_retention_days' => ['is_natural' => lang('Jobs.failed_retention_days_invalid')],
         ];
 
         if ($response = $this->validateFields($rules, $messages)) {
@@ -64,9 +74,13 @@ class Jobs extends Secure_Controller
         }
 
         $batchSaveData = [
-            'jobs_mode'             => $this->request->getPost('mode'),
-            'jobs_web_max_seconds'  => $this->request->getPost('web_max_seconds', FILTER_SANITIZE_NUMBER_INT),
-            'jobs_task_max_seconds' => $this->request->getPost('task_max_seconds', FILTER_SANITIZE_NUMBER_INT)
+            'jobs_mode'                  => $this->request->getPost('mode'),
+            'jobs_web_max_seconds'       => $this->request->getPost('web_max_seconds', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_task_max_seconds'      => $this->request->getPost('task_max_seconds', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_retry_limit'           => $this->request->getPost('retry_limit', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_auto_purge'            => $this->request->getPost('auto_purge') ? '1' : '0',
+            'jobs_retention_days'        => $this->request->getPost('retention_days', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_failed_retention_days' => $this->request->getPost('failed_retention_days', FILTER_SANITIZE_NUMBER_INT),
         ];
 
         $success = $this->appconfig->batch_save($batchSaveData);
@@ -83,7 +97,7 @@ class Jobs extends Secure_Controller
      */
     public function postSaveThrottles(): ResponseInterface
     {
-        $allowedPeriods = ['minute', 'hour', 'day', 'month'];
+        $allowedPeriods = ['second', 'minute', 'hour', 'day', 'month'];
 
         $this->db->transStart();
 
@@ -142,24 +156,44 @@ class Jobs extends Secure_Controller
     }
 
     /**
-     * Stub for Phase 1 scaffolding. Real processing is wired up in a later phase.
+     * Synchronously drains queues, bounded by jobs_manual_max_seconds so the
+     * request can't hang indefinitely. When the scope is 'selected', drains only
+     * the queue names posted from the Utilities tab's queue multiselect;
+     * otherwise drains all core queues.
      *
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postProcessAllJobs(): ResponseInterface
+    public function postProcessJobs(): ResponseInterface
     {
-        return $this->response->setJSON(['success' => false, 'stub' => true, 'message' => lang('Jobs.not_yet_implemented')]);
+        $coreQueues = config(JobsConfig::class)->coreQueues;
+
+        if ($this->request->getPost('scope') !== 'selected') {
+            return $this->runWorker($coreQueues);
+        }
+
+        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+
+        if ($selectedQueues === []) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
+        }
+
+        return $this->runWorker(array_values($selectedQueues));
     }
 
     /**
-     * Stub for Phase 1 scaffolding. Real processing is wired up in a later phase.
-     *
-     * @return ResponseInterface
-     * @noinspection PhpUnused
+     * @param string[] $queues
      */
-    public function postProcessSelectedJobs(): ResponseInterface
+    private function runWorker(array $queues): ResponseInterface
     {
-        return $this->response->setJSON(['success' => false, 'stub' => true, 'message' => lang('Jobs.not_yet_implemented')]);
+        $maxSeconds = (int)($this->config['jobs_manual_max_seconds'] ?? config(JobsConfig::class)->manualMaxSeconds);
+
+        $worker = new BoundedQueueWorker($queues, microtime(true) + $maxSeconds);
+        $worker->run();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Jobs.processed_jobs_result', [$worker->getProcessedCount(), $worker->getFailedCount()]),
+        ]);
     }
 }

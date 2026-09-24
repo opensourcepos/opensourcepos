@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $config
+ * @var array $queues
  */
 ?>
 
@@ -20,7 +21,7 @@
         <div class="row form-group form-group-sm">
             <label class="control-label col-xs-4 col-sm-3 col-md-2"><?= lang('Jobs.process_selected_jobs') ?></label>
             <div class="col-xs-2 text-left">
-                <?= form_multiselect('selected_jobs[]', [], [], [
+                <?= form_multiselect('selected_jobs[]', array_combine($queues, $queues), [], [
                     'id'                        => 'selected_jobs',
                     'class'                     => 'selectpicker show-menu-arrow',
                     'data-none-selected-text'   => lang('Common.none_selected_text'),
@@ -42,7 +43,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#process_all_jobs').click(function() {
-            $.post('<?= 'jobs/processAllJobs' ?>', {}, function(response) {
+            $.post('<?= 'jobs/processJobs' ?>', {scope: 'all'}, function(response) {
                 $.notify({
                     message: response.message
                 }, {
@@ -52,7 +53,7 @@
         });
 
         $('#process_selected_jobs').click(function() {
-            $.post('<?= 'jobs/processSelectedJobs' ?>', {selected_jobs: $('#selected_jobs').val()}, function(response) {
+            $.post('<?= 'jobs/processJobs' ?>', {scope: 'selected', selected_jobs: $('#selected_jobs').val()}, function(response) {
                 $.notify({
                     message: response.message
                 }, {

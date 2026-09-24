@@ -2,9 +2,11 @@
 
 namespace App\Filters;
 
+use App\Jobs\BoundedQueueWorker;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Jobs;
 use Config\OSPOS;
 use Config\Tasks;
 use Throwable;
@@ -55,9 +57,16 @@ class JobRunner implements FilterInterface
             try {
                 config(Tasks::class)->init(service('scheduler'));
 
+                $deadline = $start + $maxSeconds;
+
                 if (microtime(true) - $start < $maxSeconds) {
-                    $runner = new BoundedTaskRunner($start + $maxSeconds, $taskMaxSeconds);
+                    $runner = new BoundedTaskRunner($deadline, $taskMaxSeconds);
                     $runner->run();
+                }
+
+                if (microtime(true) < $deadline) {
+                    $worker = new BoundedQueueWorker(config(Jobs::class)->coreQueues, $deadline);
+                    $worker->run();
                 }
             } catch (Throwable $e) {
                 log_message('error', 'JobRunner filter failed: ' . $e->getMessage());

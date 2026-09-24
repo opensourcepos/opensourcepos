@@ -82,6 +82,75 @@
                 </div>
             </div>
 
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Jobs.retry_limit'), 'retry_limit', ['class' => 'required control-label col-xs-4 col-sm-3 col-md-2']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    <?= form_input([
+                        'type'  => 'number',
+                        'min'   => 1,
+                        'name'  => 'retry_limit',
+                        'id'    => 'retry_limit',
+                        'class' => 'form-control input-sm required digits',
+                        'value' => $config['jobs_retry_limit'] ?? 3
+                    ]) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Jobs.auto_purge'), 'auto_purge', ['class' => 'control-label col-xs-4 col-sm-3 col-md-2']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    <?= form_checkbox('auto_purge', '1', (bool)($config['jobs_auto_purge'] ?? true), ['id' => 'auto_purge']) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Jobs.retention_days'), 'retention_days', ['class' => 'required control-label col-xs-4 col-sm-3 col-md-2']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    <div class="input-group">
+                        <?= form_input([
+                            'type'  => 'number',
+                            'min'   => 0,
+                            'name'  => 'retention_days',
+                            'id'    => 'retention_days',
+                            'class' => 'form-control input-sm required digits',
+                            'value' => $config['jobs_retention_days'] ?? 7
+                        ]) ?>
+                        <span class="input-group-addon input-sm">
+                            <span
+                                class="glyphicon glyphicon-info-sign"
+                                data-toggle="tooltip"
+                                data-placement="right"
+                                title="<?= lang('Jobs.retention_days_tooltip') ?>"
+                            ></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <?= form_label(lang('Jobs.failed_retention_days'), 'failed_retention_days', ['class' => 'required control-label col-xs-4 col-sm-3 col-md-2']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    <div class="input-group">
+                        <?= form_input([
+                            'type'  => 'number',
+                            'min'   => 0,
+                            'name'  => 'failed_retention_days',
+                            'id'    => 'failed_retention_days',
+                            'class' => 'form-control input-sm required digits',
+                            'value' => $config['jobs_failed_retention_days'] ?? 30
+                        ]) ?>
+                        <span class="input-group-addon input-sm">
+                            <span
+                                class="glyphicon glyphicon-info-sign"
+                                data-toggle="tooltip"
+                                data-placement="right"
+                                title="<?= lang('Jobs.failed_retention_days_tooltip') ?>"
+                            ></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <?= form_submit([
                 'name'  => 'submit_jobs_settings',
                 'id'    => 'submit_jobs_settings',

@@ -91,9 +91,13 @@ class JobsControllerTest extends CIUnitTestCase
         $this->loginAsAdmin();
 
         $response = $this->post('/jobs/saveSettings', [
-            'mode'             => 'manual',
-            'web_max_seconds'  => 10,
-            'task_max_seconds' => 20,
+            'mode'                   => 'manual',
+            'web_max_seconds'        => 10,
+            'task_max_seconds'       => 20,
+            'retry_limit'            => 5,
+            'auto_purge'             => '1',
+            'retention_days'         => 14,
+            'failed_retention_days'  => 60,
         ]);
 
         $response->assertStatus(200);
@@ -103,6 +107,10 @@ class JobsControllerTest extends CIUnitTestCase
         $this->seeInDatabase('app_config', ['key' => 'jobs_mode', 'value' => 'manual']);
         $this->seeInDatabase('app_config', ['key' => 'jobs_web_max_seconds', 'value' => '10']);
         $this->seeInDatabase('app_config', ['key' => 'jobs_task_max_seconds', 'value' => '20']);
+        $this->seeInDatabase('app_config', ['key' => 'jobs_retry_limit', 'value' => '5']);
+        $this->seeInDatabase('app_config', ['key' => 'jobs_auto_purge', 'value' => '1']);
+        $this->seeInDatabase('app_config', ['key' => 'jobs_retention_days', 'value' => '14']);
+        $this->seeInDatabase('app_config', ['key' => 'jobs_failed_retention_days', 'value' => '60']);
     }
 
     public function testPostSaveThrottlesSavesAndDeletesMissingThrottles(): void
@@ -123,6 +131,22 @@ class JobsControllerTest extends CIUnitTestCase
 
         $this->seeInDatabase('job_throttles', ['throttle_id' => 1, 'max_count' => 15, 'period' => 'hour', 'deleted' => 0]);
         $this->seeInDatabase('job_throttles', ['throttle_id' => 2, 'deleted' => 1]);
+    }
+
+    public function testPostSaveThrottlesAcceptsSecondPeriod(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/saveThrottles', [
+            'throttle_count_1'  => 10,
+            'throttle_period_1' => 'second',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->seeInDatabase('job_throttles', ['throttle_id' => 1, 'max_count' => 10, 'period' => 'second', 'deleted' => 0]);
     }
 
     public function testPostSaveThrottlesRejectsInvalidPeriod(): void
@@ -170,27 +194,39 @@ class JobsControllerTest extends CIUnitTestCase
         $response->assertSeeElement('#throttle_count_1');
     }
 
-    public function testPostProcessAllJobsReturnsStub(): void
+    public function testPostProcessJobsDrainsEmptyQueuesSuccessfully(): void
     {
         $this->loginAsAdmin();
 
-        $response = $this->post('/jobs/processAllJobs');
+        $response = $this->post('/jobs/processJobs', ['scope' => 'all']);
 
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success']);
-        $this->assertTrue($result['stub']);
+        $this->assertTrue($result['success']);
     }
 
-    public function testPostProcessSelectedJobsReturnsStub(): void
+    public function testPostProcessJobsRejectsEmptySelection(): void
     {
         $this->loginAsAdmin();
 
-        $response = $this->post('/jobs/processSelectedJobs');
+        $response = $this->post('/jobs/processJobs', ['scope' => 'selected']);
 
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
-        $this->assertTrue($result['stub']);
+    }
+
+    public function testPostProcessJobsIgnoresUnknownQueueNames(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/processJobs', [
+            'scope'         => 'selected',
+            'selected_jobs' => ['plugin.some_plugin', 'default'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
     }
 }
