@@ -17,7 +17,6 @@ use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
 use CodeIgniter\HTTP\DownloadResponse;
-use CodeIgniter\Validation\FormatRules;
 use Config\Database;
 use Config\OSPOS;
 use Config\Services;
@@ -1056,368 +1055,61 @@ class Items extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
+    /**
+     * Queues one ItemImportJob per CSV row rather than processing the file
+     * synchronously (issue #3833 Phase 3). Only structural checks that would
+     * make every row's job meaningless (upload failure, missing/mismatched
+     * headers) are done here; per-row data validation happens in the job
+     * itself so one bad row can't block the rest of the file from importing.
+     */
     public function postImportCsvFile(): ResponseInterface
     {
         helper('importfile');
+
         try {
-            if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK) {
+            if ($_FILES['file_path']['error'] !== UPLOAD_ERR_OK || !file_exists($_FILES['file_path']['tmp_name'])) {
                 return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_failed')]);
-            } else {
-                if (file_exists($_FILES['file_path']['tmp_name'])) {
-                    set_time_limit(240);
+            }
 
-                    $failCodes = [];
-                    $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
-                    $allowedStockLocations = $this->stock_location->get_allowed_locations();
-                    $attributeDefinitionNames    = $this->attribute->getDefinitionNames();
+            $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
+            $allowedStockLocations = $this->stock_location->get_allowed_locations();
+            $attributeDefinitionNames = $this->attribute->getDefinitionNames();
 
-                    if (!csvImportHasRequiredItemHeaders($csvRows, $allowedStockLocations, $attributeDefinitionNames)) {
-                        return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
-                    }
+            if (!csvImportHasRequiredItemHeaders($csvRows, $allowedStockLocations, $attributeDefinitionNames)) {
+                return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
+            }
 
-                    $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+            $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
 
-                    unset($attributeDefinitionNames[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
+            unset($attributeDefinitionNames[NEW_ENTRY]);    // Removes the common_none_selected_text from the array
 
-                    $attributeData = [];
+            $attributeData = [];
 
+            foreach ($attributeDefinitionNames as $definitionName) {
+                $attributeData[$definitionName] = $this->attribute->getDefinitionByName($definitionName);
 
-                    foreach ($attributeDefinitionNames as $definitionName) {
-                        $attributeData[$definitionName] = $this->attribute->getDefinitionByName($definitionName);
-
-                        if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
-                            $attributeData[$definitionName]['dropdown_values'] = $this->attribute->getDefinitionValues($attributeData[$definitionName]['definition_id']);
-                        }
-                    }
-                    $db = db_connect();
-                    $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
-
-                    foreach ($csvRows as $key => $row) {
-                        $isFailedRow = false;
-                        $itemId = (int)$row['Id'];
-                        $isUpdate = ($itemId > 0);
-                        $itemData = [
-                            'item_id'       => $itemId,
-                            'name'          => $row['Item Name'],
-                            'description'   => filter_var($row['Description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                            'category'      => $row['Category'],
-                            'cost_price'    => $row['Cost Price'],
-                            'unit_price'    => $row['Unit Price'],
-                            'reorder_level' => $row['Reorder Level'],
-                            'deleted'       => false,
-                            'hsn_code'      => $row['HSN'],
-                            'pic_filename'  => $row['Image']
-                        ];
-
-                        if (!empty($row['Supplier ID'])) {
-                            $itemData['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : null;
-                        }
-
-                        if ($isUpdate) {
-                            $itemData['allow_alt_description'] = $row['Allow Alt Description'] === '' ? null : $row['Allow Alt Description'];
-                            $itemData['is_serialized'] = $row['Item has Serial Number'] === '' ? null : $row['Item has Serial Number'];
-                        } else {
-                            $itemData['allow_alt_description'] = $row['Allow Alt Description'] === '' ? '0' : '1';
-                            $itemData['is_serialized'] = $row['Item has Serial Number'] === '' ? '0' : '1';
-                        }
-
-                        if (!empty($row['Barcode'])) {
-                            $itemData['item_number'] = $row['Barcode'];
-                            $isFailedRow = $this->item->item_number_exists($itemData['item_number'], $itemId);
-                        }
-
-                        if (!$isFailedRow) {
-                            $allowedStockLocations = $this->stock_location->get_allowed_locations();
-                            $isFailedRow = $this->validateCSVData($row, $itemData, $allowedStockLocations, $attributeDefinitionNames, $attributeData);
-                            if (!empty($invalidLocations)) {
-                                $isFailedRow = true;
-                                log_message('error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations));
-                            }
-                        }
-
-                        // Remove false, null, '' and empty strings but keep 0
-                        $itemData = array_filter($itemData, function ($value) {
-                            return $value !== null && strlen($value);
-                        });
-
-                        if (!$isFailedRow && $this->item->save_value($itemData, $itemId)) {
-                            if (!$this->save_tax_data($row, $itemData)) {
-                                $isFailedRow = true;
-                            }
-                            if (!$this->save_inventory_quantities($row, $itemData, $allowedStockLocations, $employeeId)) {
-                                $isFailedRow = true;
-                            }
-                            $csvAttributeValues = $this->extractAttributeData($row);
-                            if (!$this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData)) {
-                                $isFailedRow = true;
-                            }
-                            if ($isFailedRow) {
-                                $failedRow = $key + 2;
-                                $failCodes[] = $failedRow;
-                                log_message('error', "CSV Item import failed on line $failedRow while saving item.");
-                                continue;
-                            }
-
-                            if ($isUpdate) {
-                                $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
-                            }
-                        } else {
-                            $failedRow = $key + 2;
-                            $failCodes[] = $failedRow;
-                            log_message('error', "CSV Item import failed on line $failedRow. This item was not imported.");
-                        }
-
-                        unset($csvRows[$key]);
-                    }
-
-                    $csvRows = null;
-
-                    if (count($failCodes) > 0) {
-                        $message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
-                        $db->transRollback();
-                        return $this->response->setJSON(['success' => false, 'message' => $message]);
-                    } else {
-                        $db->transCommit();
-                        $this->attribute->deleteOrphanedValues();
-
-                        return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
-                    }
-                } else {
-                    return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
+                if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
+                    $attributeData[$definitionName]['dropdown_values'] = $this->attribute->getDefinitionValues($attributeData[$definitionName]['definition_id']);
                 }
             }
+
+            $batchId = service('importBatch')->create('items', count($csvRows));
+            $queue = service('queue');
+
+            foreach ($csvRows as $row) {
+                $queue->setPriority('low')->push('imports', 'item_import', [
+                    'batch_id'         => $batchId,
+                    'row'              => $row,
+                    'employee_id'      => $employeeId,
+                    'definition_names' => $attributeDefinitionNames,
+                    'attribute_data'   => $attributeData,
+                ]);
+            }
+
+            return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_queued', [count($csvRows)])]);
         } catch (Exception $e) {
             return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
-
-    }
-
-    private function extractAttributeData(array $row): array
-    {
-        $attributeData = [];
-
-        foreach ($row as $key => $value) {
-            if (str_starts_with($key, 'attribute_')) {
-                $definitionName = substr($key, 10);
-                $attributeData[$definitionName] = $value;
-            }
-        }
-
-        return $attributeData;
-    }
-
-    /**
-     * Validates that stock location columns in CSV row are valid locations
-     *
-     * @param array $row
-     * @param array $allowedLocations
-     * @return array Returns array of invalid location names, empty if all valid
-     */
-    private function validateCSVStockLocations(array $row, array $allowedLocations): array
-    {
-        $invalidLocations = [];
-        $allowedLocationNames = array_values($allowedLocations);
-
-        foreach (array_keys($row) as $key) {
-            if (str_starts_with($key, 'location_')) {
-                $locationName = substr($key, 9);
-                if (!in_array($locationName, $allowedLocationNames)) {
-                    $invalidLocations[] = $locationName;
-                }
-            }
-        }
-
-        return $invalidLocations;
-    }
-
-    /**
-     * Checks the entire line of data in an import file for errors
-     *
-     * @param array $row
-     * @param array $itemData
-     * @param array $allowedStockLocations
-     * @param array $definitionNames
-     * @param array $attributeData
-     * @return    bool    Returns false if all data checks out and true when there is an error in the data
-     */
-    private function validateCSVData(array $row, array $itemData, array $allowedStockLocations, array $definitionNames, array $attributeData): bool    // TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed
-    {
-        $itemId = $row['Id'];
-        $isUpdate = (bool)$itemId;
-
-        // Check for empty required fields
-        $valuesToCheckForEmpty = [
-            'name'       => $itemData['name'],
-            'category'   => $itemData['category'],
-            'unit_price' => $itemData['unit_price']
-        ];
-
-        foreach ($valuesToCheckForEmpty as $key => $value) {
-            if (($value === null || $value === '') && !$isUpdate) {
-                log_message('error', "Empty required value in $key.");
-                return true;
-            }
-        }
-
-        if (!$isUpdate) {
-            $itemData['cost_price'] = empty($itemData['cost_price']) ? 0 : $itemData['cost_price'];    // Allow for zero wholesale price
-        } else {
-            if (!$this->item->exists($itemId)) {
-                log_message('error', "non-existent item_id: '$itemId' when either existing item_id or no item_id is required.");
-                return true;
-            }
-        }
-
-        // Build array of fields to check for numerics
-        $valuesToCheckForNumeric = [
-            'cost_price'    => $itemData['cost_price'],
-            'unit_price'    => $itemData['unit_price'],
-            'reorder_level' => $itemData['reorder_level'],
-            'supplier_id'   => $row['Supplier ID'],
-            'Tax 1 Percent' => $row['Tax 1 Percent'],
-            'Tax 2 Percent' => $row['Tax 2 Percent']
-        ];
-
-        foreach ($allowedStockLocations as $location_name) {
-            $valuesToCheckForNumeric[] = $row["location_$location_name"];
-        }
-
-        // Check for non-numeric values which require numeric
-        foreach ($valuesToCheckForNumeric as $key => $value) {
-            if (!is_numeric($value) && !empty($value)) {
-                log_message('error', "non-numeric: '$value' for '$key' when numeric is required");
-                return true;
-            }
-        }
-
-        // Check item_number for disallowed characters
-        if (!empty($itemData['item_number'])) {
-            $formatRules = new FormatRules();
-
-            if (!$formatRules->alpha_numeric_punct($itemData['item_number'])) {
-                log_message('error', "invalid item_number: '{$itemData['item_number']}' contains disallowed characters");
-                return true;
-            }
-        }
-
-        // Check stock locations
-        $invalidLocations = $this->validateCSVStockLocations($row, $allowedStockLocations);
-        if (!empty($invalidLocations)) {
-            log_message('error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations));
-            return true;
-        }
-
-        // Check Attribute Data
-        foreach ($definitionNames as $definitionName) {
-            $attributeColumn = "attribute_$definitionName";
-            if (array_key_exists($attributeColumn, $row) && $row[$attributeColumn] != '') {
-                $definitionType = $attributeData[$definitionName]['definition_type'];
-                $attributeValue = $row[$attributeColumn];
-
-                if (strcasecmp($attributeValue, '_DELETE_') === 0) {
-                    continue;
-                }
-
-                switch ($definitionType) {
-                    case DROPDOWN:
-                        $dropdownValues = $attributeData[$definitionName]['dropdown_values'];
-                        $dropdownValues[] = '';
-
-                        if (!empty($attributeValue) && !in_array($attributeValue, $dropdownValues)) {
-                            log_message('error', "Value: '$attributeValue' is not an acceptable DROPDOWN value");
-                            return true;
-                        }
-                        break;
-                    case DECIMAL:
-                        if (!is_numeric($attributeValue) && !empty($attributeValue)) {
-                            log_message('error', "'$attributeValue' is not an acceptable DECIMAL value");
-                            return true;
-                        }
-                        break;
-                    case DATE:
-                        if (!isValidDate($attributeValue) && !empty($attributeValue)) {
-                            log_message('error', "'$attributeValue' is not an acceptable DATE value. The value must match the set locale.");
-                            return true;
-                        }
-                        break;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Saves inventory quantities for the row in the appropriate stock locations.
-     *
-     * @param array $row
-     * @param array $item_data
-     * @param array $allowed_locations
-     * @param int $employee_id
-     * @return bool Returns true on success, false on failure
-     * @throws ReflectionException
-     */
-    private function save_inventory_quantities(array $row, array $item_data, array $allowed_locations, int $employee_id): bool
-    {
-        // Quantities & Inventory Section
-        $comment = lang('Items.inventory_CSV_import_quantity');
-        $is_update = (bool)$row['Id'];
-        $success = true;
-
-        foreach ($allowed_locations as $location_id => $location_name) {
-            $item_quantity_data = ['item_id' => $item_data['item_id'], 'location_id' => $location_id];
-
-            $csv_data = [
-                'trans_items'    => $item_data['item_id'],
-                'trans_user'     => $employee_id,
-                'trans_comment'  => $comment,
-                'trans_location' => $location_id
-            ];
-
-            if (!empty($row["location_$location_name"]) || $row["location_$location_name"] === '0') {
-                $item_quantity_data['quantity'] = $row["location_$location_name"];
-                $success &= $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
-
-                $csv_data['trans_inventory'] = $row["location_$location_name"];
-                $success &= (bool)$this->inventory->insert($csv_data, false);
-            } elseif ($is_update) {
-                continue;
-            } else {
-                $item_quantity_data['quantity'] = 0;
-                $success &= $this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
-
-                $csv_data['trans_inventory'] = 0;
-                $success &= (bool)$this->inventory->insert($csv_data, false);
-            }
-        }
-
-        return (bool)$success;
-    }
-
-    /**
-     * Saves the tax data found in the line of the CSV items import file
-     *
-     * @param array $row
-     * @param array $item_data
-     * @return bool Returns true on success, false on failure
-     */
-    private function save_tax_data(array $row, array $item_data): bool
-    {
-        $items_taxes_data = [];
-
-        if (is_numeric($row['Tax 1 Percent']) && $row['Tax 1 Name'] !== '') {
-            $items_taxes_data[] = ['name' => $row['Tax 1 Name'], 'percent' => $row['Tax 1 Percent']];
-        }
-
-        if (is_numeric($row['Tax 2 Percent']) && $row['Tax 2 Name'] !== '') {
-            $items_taxes_data[] = ['name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']];
-        }
-
-        if (!empty($items_taxes_data)) {
-            return $this->item_taxes->save_value($items_taxes_data, $item_data['item_id']);
-        }
-
-        return true;
     }
 
     /**

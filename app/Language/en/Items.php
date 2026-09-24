@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => 'Invalid stock location(s) found: {0}. Only valid stock locations are allowed.',
     'csv_import_nodata_wrongformat'      => 'The uploaded CSV file has no data or is formatted incorrectly.',
     'csv_import_partially_failed'        => 'There were {0} item import failure(s) on line(s): {1}. No rows were imported.',
+    'csv_import_queued'                  => '{0} item(s) queued for import. This may take a few minutes to complete.',
     'csv_import_success'                 => 'Item CSV import successful.',
     'current_quantity'                   => 'Current Quantity',
     'default_pack_name'                  => 'Each',

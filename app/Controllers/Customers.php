@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Jobs\Support\CustomerCsvRowProcessor;
 use App\Libraries\Mailchimp_lib;
 
 use App\Models\Customer;
@@ -398,7 +399,12 @@ class Customers extends Persons
     }
 
     /**
-     * Imports a CSV file containing customers. Used in app/Views/customers/form_csv_import.php
+     * Queues one CustomerImportJob per CSV row rather than processing the
+     * file synchronously (issue #3833 Phase 3). Only structural checks that
+     * would make every row's job meaningless (upload failure, missing/
+     * mismatched headers) are done here; per-row data validation happens in
+     * the job itself so one bad row can't block the rest of the file from
+     * importing. Used in app/Views/customers/form_csv_import.php
      *
      * @return ResponseInterface
      * @noinspection PhpUnused
@@ -407,87 +413,40 @@ class Customers extends Persons
     {
         if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_failed')]);
-        } else {
-            if (($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== false) {
-                // Skip the first row as it's the table description
-                fgetcsv($handle);
-                $i = 1;
-
-                $failCodes = [];
-
-                while (($data = fgetcsv($handle)) !== false) {
-                    $consent = $data[3] == '' ? 0 : 1;
-
-                    if (sizeof($data) >= 16 && $consent) {
-                        $email = filter_var(strtolower($data[4]), FILTER_SANITIZE_EMAIL);
-                        
-                        // Empty email is allowed, but if provided it must be valid
-                        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            $failCodes[] = 'Row ' . $i . ': Invalid email format';
-                            $i++;
-                            continue;
-                        }
-                        
-                        $person_data = [
-                            'first_name'   => $data[0],
-                            'last_name'    => $data[1],
-                            'gender'       => $data[2],
-                            'email'        => $email,
-                            'phone_number' => $data[5],
-                            'address_1'    => $data[6],
-                            'address_2'    => $data[7],
-                            'city'         => $data[8],
-                            'state'        => $data[9],
-                            'zip'          => $data[10],
-                            'country'      => $data[11],
-                            'comments'     => $data[12]
-                        ];
-
-                        $customer_data = [
-                            'consent'       => $consent,
-                            'company_name'  => $data[13],
-                            'discount'      => $data[15],
-                            'discount_type' => $data[16],
-                            'taxable'       => $data[17] == '' ? 0 : 1,
-                            'date'          => date('Y-m-d H:i:s'),
-                            'employee_id'   => $this->employee->get_logged_in_employee_info()->person_id
-                        ];
-                        $account_number = $data[14];
-
-                        // Don't duplicate people with same email
-                        $invalidated = $this->customer->check_email_exists($email);
-
-                        if ($account_number != '') {
-                            $customer_data['account_number'] = $account_number;
-                            $invalidated &= $this->customer->check_account_number_exists($account_number);
-                        }
-                    } else {
-                        $invalidated = true;
-                    }
-
-                    if ($invalidated) {
-                        $failCodes[] = $i;
-                        log_message('error', "Row $i was not imported: Either email or account number already exist or data was invalid.");
-                    } elseif ($this->customer->save_customer($person_data, $customer_data)) {
-                        // Save customer to Mailchimp selected list
-                        $this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
-                    } else {
-                        $failCodes[] = $i;
-                    }
-
-                    ++$i;
-                }
-
-                if (count($failCodes) > 0) {
-                    $message = lang('Customers.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
-
-                    return $this->response->setJSON(['success' => false, 'message' => $message]);
-                } else {
-                    return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_success')]);
-                }
-            } else {
-                return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_nodata_wrongformat')]);
-            }
         }
+
+        if (($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) === false) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_nodata_wrongformat')]);
+        }
+
+        $headers = fgetcsv($handle);
+
+        if ($headers !== CustomerCsvRowProcessor::REQUIRED_HEADERS) {
+            fclose($handle);
+
+            return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_nodata_wrongformat')]);
+        }
+
+        $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+        $rows = [];
+
+        while (($data = fgetcsv($handle)) !== false) {
+            $rows[] = $data;
+        }
+
+        fclose($handle);
+
+        $batchId = service('importBatch')->create('customers', count($rows));
+        $queue = service('queue');
+
+        foreach ($rows as $row) {
+            $queue->setPriority('low')->push('imports', 'customer_import', [
+                'batch_id'    => $batchId,
+                'row'         => $row,
+                'employee_id' => $employeeId,
+            ]);
+        }
+
+        return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_queued', [count($rows)])]);
     }
 }
