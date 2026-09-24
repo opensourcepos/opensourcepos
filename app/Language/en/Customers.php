@@ -17,6 +17,7 @@ return [
     "csv_import_failed"             => "CSV import failed",
     "csv_import_nodata_wrongformat" => "The uploaded file has no data or is incorrectly formatted.",
     "csv_import_partially_failed"   => "{0} customer(s) failed to import on line(s): {1}.",
+    "csv_import_queued"             => "{0} customer(s) queued for import. This may take a few minutes to complete.",
     "csv_import_success"            => "Customer import successful.",
     "customer"                      => "Customer",
     "date"                          => "Date",
