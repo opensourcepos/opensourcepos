@@ -87,8 +87,8 @@ jobs:
           echo "version-tag=$VERSION-$BRANCH-$SHORT_SHA" >> $GITHUB_OUTPUT
           echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          env:
-            GITHUB_TAG: ${{ github.ref_name }}
+        env:
+          GITHUB_TAG: ${{ github.ref_name }}
 
       - name: Validate release tag
         if: startsWith(github.ref, 'refs/tags/')
