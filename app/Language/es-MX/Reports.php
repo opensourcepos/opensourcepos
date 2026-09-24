@@ -146,4 +146,8 @@ return [
     "used"                                    => "Puntos Usados",
     "work_orders"                             => "Órdenes de Trabajo",
     "zero_and_less"                           => "Cero y menos",
+    "top_50_items"                            => "Top 50 Artículos más vendidos",
+    "top_50_items_summary_report"             => "Reporte de los 50 Artículos más vendidos",
+    "top_50_categories"                       => "Top 50 Categorías más vendidas",
+    "top_50_categories_summary_report"        => "Reporte de las 50 Categorías más vendidas",
 ];

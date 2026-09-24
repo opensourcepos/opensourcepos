@@ -184,6 +184,67 @@ class Receiving extends Model
             $attribute->copy_attribute_links($item_data['item_id'], 'receiving_id', $receiving_id);
         }
 
+        // --- ACCOUNTING MODULE INTEGRATION ---
+        $total_amount = 0;
+        foreach ($items as $item) {
+             $recv_qty = $item['receiving_quantity'] != 0 ? $item['receiving_quantity'] : 1;
+             if ($item['discount_type'] == PERCENT) {
+                 $item_total = ($item['price'] * $item['quantity'] * $recv_qty) - ($item['price'] * $item['quantity'] * $recv_qty * $item['discount'] / 100);
+             } else {
+                 $item_total = ($item['price'] * $item['quantity'] * $recv_qty) - $item['discount'];
+             }
+             $total_amount += $item_total;
+        }
+
+        if ($total_amount > 0) {
+            $accounting_entry = model('App\Models\Accounting_entry');
+            $journal = model('App\Models\Journal');
+            $account = model('App\Models\Account');
+            
+            $purchase_journal = $journal->get_by_code('PURCH');
+            $inventory_account = $account->get_by_code('115.01'); // SAT: Inventario
+            $payable_account = $account->get_by_code('201.01'); // SAT: Proveedores
+            $iva_account = $account->get_by_code('118.01'); // SAT: IVA Acreditable
+            
+            if ($purchase_journal && $inventory_account && $payable_account && $iva_account) {
+                $entry_data = [
+                    'date' => date('Y-m-d H:i:s'),
+                    'journal_id' => $purchase_journal->journal_id,
+                    'ref' => 'RECV ' . $receiving_id,
+                    'description' => 'Receiving Transaction',
+                    'employee_id' => $employee_id
+                ];
+                
+                // Assume 16% IVA included in total amount
+                $subtotal = $total_amount / 1.16;
+                $iva_amount = $total_amount - $subtotal;
+                
+                $items_data = [
+                    [
+                        'account_id' => $inventory_account->account_id,
+                        'debit' => $subtotal,
+                        'credit' => 0,
+                        'description' => 'Inventory Received (Subtotal)'
+                    ],
+                    [
+                        'account_id' => $iva_account->account_id,
+                        'debit' => $iva_amount,
+                        'credit' => 0,
+                        'description' => 'IVA Acreditable (16%)'
+                    ],
+                    [
+                        'account_id' => $payable_account->account_id,
+                        'debit' => 0,
+                        'credit' => $total_amount,
+                        'description' => 'Accounts Payable'
+                    ]
+                ];
+                
+                $accounting_entry->save_entry($entry_data, $items_data);
+            }
+        }
+        // --- END ACCOUNTING MODULE INTEGRATION ---
+
         $this->db->transComplete();
 
         return $this->db->transStatus() ? $receiving_id : -1;
