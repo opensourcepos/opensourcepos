@@ -1029,11 +1029,11 @@ class Sale_lib
      * @param string|null $serialnumber
      * @param int|null $sale_id
      * @param bool $include_deleted
-     * @param bool|null $print_option
+     * @param int|null $print_option
      * @param bool|null $line
      * @return bool
      */
-    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null): bool
+    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?int $print_option = null, ?bool $line = null): bool
     {
         $item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
@@ -1115,7 +1115,10 @@ class Sale_lib
         // Array/cart records are identified by $insertkey and item_id is just another field.
 
         if ($price_mode == PRICE_MODE_KIT) {    // TODO: === ?
-            if ($kit_print_option == PRINT_ALL) {    // TODO: === ?
+            // Explicit override (e.g. force kit header line printable when Print Option is Kit Only)
+            if ($print_option !== null) {
+                $print_option_selected = $print_option;
+            } elseif ($kit_print_option == PRINT_ALL) {    // TODO: === ?
                 $print_option_selected = PRINT_YES;
             } elseif ($kit_print_option == PRINT_KIT && $item_type == ITEM_KIT) {    // TODO: === ?
                 $print_option_selected = PRINT_YES;
@@ -1328,12 +1331,12 @@ class Sale_lib
      * @param int $item_location
      * @param float $discount
      * @param string $discount_type
-     * @param bool $kit_price_option
-     * @param bool $kit_print_option
+     * @param int $kit_price_option
+     * @param int $kit_print_option
      * @param string $stock_warning
      * @return bool
      */
-    public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, string $discount_type, bool $kit_price_option, bool $kit_print_option, ?string &$stock_warning): bool
+    public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, string $discount_type, int $kit_price_option, int $kit_print_option, ?string &$stock_warning): bool
     {
         // KIT #
         $pieces = explode(' ', $external_item_kit_id);
