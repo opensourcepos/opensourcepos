@@ -204,6 +204,10 @@ class Sale_lib
             }
         }
 
+        if (empty($filtered_cart)) {
+            return $filtered_cart;
+        }
+
         // TODO: This set of if/elseif/else needs to be converted to a switch statement
         // Entry sequence (this will render kits in the expected sequence)
         if ($this->config['line_sequence'] == '0') {
