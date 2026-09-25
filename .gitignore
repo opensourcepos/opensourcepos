@@ -89,4 +89,5 @@ auth.json
 /writable/debugbar/*.json
 /app/Database/database.sql
 /writable/cache/*
+/writable/jobs/*.lock
 /.env.bak
