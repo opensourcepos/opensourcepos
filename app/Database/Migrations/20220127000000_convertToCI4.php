@@ -7,6 +7,7 @@ use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
+use RuntimeException;
 
 class ConvertToCI4 extends Migration
 {
@@ -32,18 +33,31 @@ class ConvertToCI4 extends Migration
 
         $existingKey = (string) config('Encryption')->key;
 
+        // A valid CI4 key requires no write — just confirm it is usable.
+        if ($existingKey !== '' && strlen($existingKey) >= 64) {
+            checkEncryption();
+
+            return;
+        }
+
+        // Every branch below writes to .env. If the runtime user cannot write
+        // it (e.g. Docker/Compose with a read-only .env mount), fail with an
+        // actionable message instead of a raw fopen() error deep in the writer.
+        if (!envFileIsWritable()) {
+            log_message('critical', 'Encryption key not provisioned and .env is not writable. Run `php spark env:provision` to generate one.');
+
+            throw new RuntimeException(lang('Error.encryption_key_not_provisioned'));
+        }
+
         if ($existingKey !== '' && strlen($existingKey) < 64) {
             // Old CI3-era key: decrypt, rotate, re-encrypt, persist — all under
             // a single .env lock (see convertCI3EncryptedData).
             $this->convertCI3EncryptedData($existingKey);
-        } elseif ($existingKey === '') {
+        } else {
             // No key at all: provision a fresh one (single atomic write), then
             // drop the incidental pre-write backup left behind by the rotation.
             rotateEncryptionKey(null);
             removeBackup();
-        } else {
-            // Key already present and a valid CI4 key: confirm it is usable.
-            checkEncryption();
         }
     }
 
