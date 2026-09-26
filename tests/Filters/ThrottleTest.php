@@ -164,7 +164,8 @@ class ThrottleTest extends CIUnitTestCase
 
     public function testCustomCapacityIsHonored(): void
     {
-        $ip = '203.0.113.7';
+        $ip     = '203.0.113.7';
+        $prev   = $this->captureEnv('throttle.capacity');
 
         $this->putEnv('throttle.capacity', '2');
 
@@ -177,13 +178,14 @@ class ThrottleTest extends CIUnitTestCase
             $this->assertNotNull($result);
             $this->assertSame(429, $result->getStatusCode());
         } finally {
-            $this->removeEnv('throttle.capacity');
+            $this->restoreEnv('throttle.capacity', $prev);
         }
     }
 
     public function testZeroCapacityDisablesThrottling(): void
     {
-        $ip = '203.0.113.8';
+        $ip   = '203.0.113.8';
+        $prev = $this->captureEnv('throttle.capacity');
 
         $this->putEnv('throttle.capacity', '0');
 
@@ -193,8 +195,41 @@ class ThrottleTest extends CIUnitTestCase
                 $this->assertNull($result, "Attempt {$i} should not be throttled when disabled");
             }
         } finally {
-            $this->removeEnv('throttle.capacity');
+            $this->restoreEnv('throttle.capacity', $prev);
         }
+    }
+
+    public function testInvalidCapacityFallsBackToDefault(): void
+    {
+        // A non-numeric value must fall back to the default (5), not disable.
+        $ip   = '203.0.113.9';
+        $prev = $this->captureEnv('throttle.capacity');
+
+        $this->putEnv('throttle.capacity', 'five');
+
+        try {
+            for ($i = 0; $i < 5; $i++) {
+                $this->assertNull($this->filter->before($this->makeRequest('POST', $ip, "v{$i}")));
+            }
+
+            // 6th attempt exceeds the default capacity of 5.
+            $result = $this->filter->before($this->makeRequest('POST', $ip, 'v6'));
+            $this->assertNotNull($result);
+            $this->assertSame(429, $result->getStatusCode());
+        } finally {
+            $this->restoreEnv('throttle.capacity', $prev);
+        }
+    }
+
+    private function captureEnv(string $key): array
+    {
+        return [
+            'putenv'  => getenv($key),
+            'hasENV'  => array_key_exists($key, $_ENV),
+            'ENV'     => $_ENV[$key] ?? null,
+            'hasSRV'  => array_key_exists($key, $_SERVER),
+            'SERVER'  => $_SERVER[$key] ?? null,
+        ];
     }
 
     private function putEnv(string $key, string $value): void
@@ -204,9 +239,24 @@ class ThrottleTest extends CIUnitTestCase
         $_SERVER[$key] = $value;
     }
 
-    private function removeEnv(string $key): void
+    private function restoreEnv(string $key, array $prev): void
     {
-        putenv($key);
-        unset($_ENV[$key], $_SERVER[$key]);
+        if ($prev['putenv'] === false) {
+            putenv($key);
+        } else {
+            putenv("{$key}={$prev['putenv']}");
+        }
+
+        if ($prev['hasENV']) {
+            $_ENV[$key] = $prev['ENV'];
+        } else {
+            unset($_ENV[$key]);
+        }
+
+        if ($prev['hasSRV']) {
+            $_SERVER[$key] = $prev['SERVER'];
+        } else {
+            unset($_SERVER[$key]);
+        }
     }
 }

@@ -256,6 +256,17 @@ function envFileIsWritable(): bool
         return false;
     }
 
+    // On Windows, rename() cannot replace a read-only destination, and the
+    // unlink() fallback can also fail, so an existing read-only .env must be
+    // writable. POSIX rename() replaces a read-only dest when the directory is
+    // writable, so this check is intentionally Windows-only.
+    if (PHP_OS_FAMILY === 'Windows'
+        && file_exists($configPath)
+        && !is_writable($configPath)
+    ) {
+        return false;
+    }
+
     // If the mutex file already exists (e.g. created by a prior root run of
     // env:provision in Docker), it must be openable for write.
     if (file_exists($lockPath) && !is_writable($lockPath)) {

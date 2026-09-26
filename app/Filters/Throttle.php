@@ -26,12 +26,22 @@ class Throttle implements FilterInterface
             return null;
         }
 
-        $capacity = (int) env('throttle.capacity', 5);
+        // A valid non-positive integer is an explicit "disable" choice. A
+        // missing or non-numeric value falls back to the default so a typo
+        // (e.g. "five") cannot silently bypass the lockout.
+        $capacity = filter_var(env('throttle.capacity'), FILTER_VALIDATE_INT);
+        if ($capacity === false) {
+            $capacity = 5;
+        }
         if ($capacity <= 0) {
             return null;
         }
 
-        $seconds = max(1, (int) env('throttle.seconds', 60));
+        $seconds = filter_var(env('throttle.seconds'), FILTER_VALIDATE_INT);
+        if ($seconds === false) {
+            $seconds = 60;
+        }
+        $seconds = max(1, $seconds);
 
         helper('security');
 
