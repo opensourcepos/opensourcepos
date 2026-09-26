@@ -112,8 +112,17 @@ class Encryption extends BaseConfig
         parent::__construct();
 
         if ($this->key === '') {
-            $envKey = getenv('ENCRYPTION_KEY');
-            $this->key = $envKey === false ? '' : $envKey;
+            // `env:provision` persists the key as `encryption.key` in .env; read
+            // that first, then fall back to the ENCRYPTION_KEY env var (Docker).
+            $key = $_SERVER['encryption.key'] ?? $_ENV['encryption.key'] ?? getenv('encryption.key');
+            $key = $key === false || $key === null ? '' : (string) $key;
+
+            if ($key === '') {
+                $envKey = getenv('ENCRYPTION_KEY');
+                $key    = $envKey === false ? '' : $envKey;
+            }
+
+            $this->key = $key;
         }
     }
 }
