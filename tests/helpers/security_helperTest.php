@@ -301,14 +301,29 @@ class security_helperTest extends CIUnitTestCase
         $this->assertTrue(envFileIsWritable());
     }
 
-    public function testEnvFileIsWritableReturnsFalseWhenFileIsReadonly(): void
+    public function testEnvFileIsWritableReturnsFalseWhenLockFileIsReadOnly(): void
     {
         file_put_contents($this->envPath, "# tmp\n");
-        chmod($this->envPath, 0444);
+        file_put_contents($this->lockPath, "");
+        chmod($this->lockPath, 0444);
 
-        $this->assertFalse(envFileIsWritable());
+        try {
+            $this->assertFalse(envFileIsWritable());
+        } finally {
+            @unlink($this->lockPath);
+        }
+    }
 
-        chmod($this->envPath, 0644);
+    public function testEnvFileIsWritableReturnsFalseWhenDirectoryIsNotWritable(): void
+    {
+        file_put_contents($this->envPath, "# tmp\n");
+        chmod($this->sandbox, 0500);
+
+        try {
+            $this->assertFalse(envFileIsWritable());
+        } finally {
+            chmod($this->sandbox, 0700);
+        }
     }
 
     // -- checkEncryption() --
@@ -342,14 +357,15 @@ class security_helperTest extends CIUnitTestCase
     {
         config('Encryption')->key = '';
         file_put_contents($this->envPath, "encryption.key=''\n");
-        chmod($this->envPath, 0444);
+        file_put_contents($this->lockPath, "");
+        chmod($this->lockPath, 0444);
 
         try {
             $this->expectException(RuntimeException::class);
             $this->expectExceptionMessage('provisioned');
             checkEncryption();
         } finally {
-            chmod($this->envPath, 0644);
+            @unlink($this->lockPath);
         }
     }
 
@@ -456,14 +472,15 @@ class security_helperTest extends CIUnitTestCase
         putenv('throttle.key');
         unset($_ENV['throttle.key'], $_SERVER['throttle.key']);
         file_put_contents($this->envPath, "encryption.key='abc'\n");
-        chmod($this->envPath, 0444);
+        file_put_contents($this->lockPath, "");
+        chmod($this->lockPath, 0444);
 
         try {
             $this->expectException(RuntimeException::class);
             $this->expectExceptionMessage('provisioned');
             checkThrottleEncryption();
         } finally {
-            chmod($this->envPath, 0644);
+            @unlink($this->lockPath);
         }
     }
 

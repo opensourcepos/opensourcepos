@@ -236,17 +236,33 @@ function writeNewEncryptionKey(string $configFile, string $key, string $oldKey):
 /**
  * Returns true when the current process can write to (or create) .env.
  *
- * A missing .env file is considered writable when the directory is writable.
+ * The write path creates .env.tmp.X (atomicWriteFile) and .env.lock
+ * (lockEnvFile) in the .env directory, then rename()s the temp file into
+ * place — all of which require write permission on the DIRECTORY, not on
+ * .env itself. A bind-mounted .env is writable even when the directory (or
+ * an existing root-owned .env.lock) is not, so checking .env's own mode
+ * would falsely report success. A missing .env is considered writable when
+ * the directory is writable.
  *
  * @return bool
  */
 function envFileIsWritable(): bool
 {
     $configPath = config('SecurityEnv')->envPath;
+    $lockPath   = config('SecurityEnv')->lockPath;
+    $dir        = dirname($configPath);
 
-    return file_exists($configPath)
-        ? is_writable($configPath)
-        : is_writable(dirname($configPath));
+    if (!is_writable($dir)) {
+        return false;
+    }
+
+    // If the mutex file already exists (e.g. created by a prior root run of
+    // env:provision in Docker), it must be openable for write.
+    if (file_exists($lockPath) && !is_writable($lockPath)) {
+        return false;
+    }
+
+    return true;
 }
 
 /**

@@ -161,4 +161,52 @@ class ThrottleTest extends CIUnitTestCase
         $this->assertNotNull($result);
         $this->assertSame(429, $result->getStatusCode());
     }
+
+    public function testCustomCapacityIsHonored(): void
+    {
+        $ip = '203.0.113.7';
+
+        $this->putEnv('throttle.capacity', '2');
+
+        try {
+            $this->assertNull($this->filter->before($this->makeRequest('POST', $ip, 'c1')));
+            $this->assertNull($this->filter->before($this->makeRequest('POST', $ip, 'c2')));
+
+            $result = $this->filter->before($this->makeRequest('POST', $ip, 'c3'));
+
+            $this->assertNotNull($result);
+            $this->assertSame(429, $result->getStatusCode());
+        } finally {
+            $this->removeEnv('throttle.capacity');
+        }
+    }
+
+    public function testZeroCapacityDisablesThrottling(): void
+    {
+        $ip = '203.0.113.8';
+
+        $this->putEnv('throttle.capacity', '0');
+
+        try {
+            for ($i = 0; $i < 10; $i++) {
+                $result = $this->filter->before($this->makeRequest('POST', $ip, "z{$i}"));
+                $this->assertNull($result, "Attempt {$i} should not be throttled when disabled");
+            }
+        } finally {
+            $this->removeEnv('throttle.capacity');
+        }
+    }
+
+    private function putEnv(string $key, string $value): void
+    {
+        putenv("{$key}={$value}");
+        $_ENV[$key]    = $value;
+        $_SERVER[$key] = $value;
+    }
+
+    private function removeEnv(string $key): void
+    {
+        putenv($key);
+        unset($_ENV[$key], $_SERVER[$key]);
+    }
 }
