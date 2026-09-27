@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "Executando migrações do banco de dados...",
     "password"                            => "Senha",
     "required_username"                   => "O campo nome de usuário é obrigatório.",
+    'too_many_attempts'                   => 'Muitas tentativas. Aguarde um momento e tente novamente.',
     "username"                            => "Usuário",
     "welcome"                             => "Bem-vindo ao {0}!"
 ];

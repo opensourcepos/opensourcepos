@@ -26,7 +26,7 @@
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="employee_basic_info">
+        <div class="tab-pane active" id="employee_basic_info">
             <fieldset>
                 <?= view('people/form_basic_info') ?>
             </fieldset>
@@ -113,9 +113,10 @@
                 <p><?= lang('Employees.permission_desc') ?></p>
 
                 <ul id="permission_list">
+                    <?= form_hidden('module_validation', '1', 'class="module"') ?>
                     <?php foreach ($all_modules as $module) { ?>
                         <li>
-                            <?= form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, 'class="module"') ?>
+                            <?= form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, 'class="module-toggle"') ?>
                             <?= form_dropdown(
                                 "menu_group_$module->module_id",
                                 [
@@ -123,8 +124,7 @@
                                     'office' => lang('Module.office'),
                                     'both'   => lang('Module.both')
                                 ],
-                                $module->menu_group,
-                                'class="module"'
+                                $module->menu_group
                             ) ?>
 
                             <span class="medium"><?= lang("Module.$module->module_id") ?>:</span>
@@ -166,9 +166,9 @@
             ignore: []
         });
 
-        $.validator.addMethod('module', function(value, element) {
+        $.validator.addMethod('module', function() {
             let result = $('#permission_list input').is(':checked');
-            $('.module').each(function(index, element) {
+            $('.module-toggle').each(function(index, element) {
                 const parent = $(element);
                 const checked = $(element).is(':checked');
                 if ($('ul', parent).length > 0 && result) {
@@ -178,7 +178,7 @@
             return result;
         }, "<?= lang('Employees.subpermission_required') ?>");
 
-        $('ul#permission_list > li > input.module').each(function() {
+        $('ul#permission_list > li > input.module-toggle').each(function() {
             const $this = $(this);
             $('ul > li > input,select', $this.parent()).each(function() {
                 const $that = $(this);

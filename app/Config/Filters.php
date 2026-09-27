@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\Throttle;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -12,6 +13,7 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
+use App\Filters\IsLoggedIn;
 
 class Filters extends BaseFilters
 {
@@ -34,6 +36,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'isLoggedIn'    => IsLoggedIn::class,
+        'throttle'      => Throttle::class,
     ];
 
     /**
@@ -75,6 +79,7 @@ class Filters extends BaseFilters
             'honeypot',
             'csrf' => ['except' => 'login|migrate'],
             'invalidchars',
+            'isLoggedIn' => ['except' => 'login|migrate'],
         ],
         'after' => [
             'toolbar',
@@ -107,7 +112,9 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'throttle' => ['before' => ['login', 'migrate']],
+    ];
 
     /**
      * Constructor to conditionally disable CSRF filter in testing environment
