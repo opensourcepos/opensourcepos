@@ -23,41 +23,32 @@ $shortcutLabels = [
 ];
 ?>
 
-<?= form_open('config/saveShortcuts', ['id' => 'shortcuts_config_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <div class="row">
-            <fieldset id="config_info">
-                <div class="col-md-8">
-                    <div id="required_fields_message"><?= esc(lang('Common.fields_required_message')) ?></div>
-                    <ul id="shortcuts_error_message_box" class="error_message_box"></ul>
+<?= form_open('config/saveShortcuts', ['id' => 'shortcuts_config_form']) ?>
 
-                    <?php foreach ($shortcutLabels as $name => $label): ?>
-                        <div class="form-group form-group-sm">
-                            <?= form_label($label, 'key_' . $name, ['class' => 'control-label col-xs-3']) ?>
-                            <div class="col-xs-4">
-                                <?php $keyboardShortcutSelectedValue = $keyboardShortcuts[$name]['value'] ?? ''; ?>
-                                <?= form_dropdown(
-                                    'key_' . $name,
-                                    $keyboardShortcutOptions,
-                                    $keyboardShortcutSelectedValue,
-                                    'class="form-control input-sm"'
-                                ) ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+    <?php
+    $title_info['config_title'] = lang('Config.shortcuts_configuration');
+    echo view('configs/config_header', $title_info);
+    ?>
 
-                    <div class="col-xs-12 clearfix">
-                        <?= form_submit([
-                            'name'  => 'submit_shortcuts',
-                            'id'    => 'submit_shortcuts',
-                            'value' => lang('Common.submit'),
-                            'class' => 'btn btn-primary btn-sm pull-right'
-                        ]) ?>
-                    </div>
+    <ul id="error_message_box" class="shortcuts_error_message_box alert alert-warning d-none"></ul>
+
+    <div class="row">
+        <?php foreach ($shortcutLabels as $name => $label): ?>
+            <div class="col-12 col-lg-6">
+                <?= form_label($label, 'key_' . $name, ['class' => 'form-label']) ?>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-keyboard"></i></span>
+                    <?php $keyboardShortcutSelectedValue = $keyboardShortcuts[$name]['value'] ?? ''; ?>
+                    <?= form_dropdown('key_' . $name, $keyboardShortcutOptions, $keyboardShortcutSelectedValue, 'class="form-select"') ?>
                 </div>
-            </fieldset>
-        </div>
+            </div>
+        <?php endforeach; ?>
     </div>
+
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary" name="submit_shortcuts"><?= lang('Common.submit'); ?></button>
+    </div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
@@ -83,6 +74,6 @@ $shortcutLabels = [
             });
         },
 
-        errorLabelContainer: '#shortcuts_error_message_box'
+        errorLabelContainer: '.shortcuts_error_message_box'
     }));
 </script>

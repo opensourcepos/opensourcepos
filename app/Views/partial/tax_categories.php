@@ -37,9 +37,9 @@ foreach ($tax_categories as $key => $category) {
             echo form_input($form_data);
             ?>
         </div>
-        <span class="add_tax_category glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
+        <span class="add_tax_category bi bi-plus-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
         <span>&nbsp;&nbsp;</span>
-        <span class="remove_tax_category glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
+        <span class="remove_tax_category bi bi-dash-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
         <?= form_hidden('tax_category_id[]', (string)$tax_category_id) ?>
     </div>
 

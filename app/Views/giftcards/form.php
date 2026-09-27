@@ -10,65 +10,42 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open("giftcards/save/$giftcard_id", ['id' => 'giftcard_form']) ?>
 
-<?= form_open("giftcards/save/$giftcard_id", ['id' => 'giftcard_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="giftcard_basic_info">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.person_id'), 'person_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'person_name',
-                    'id'    => 'person_name',
-                    'class' => 'form-control input-sm',
-                    'value' => $selected_person_name
-                ]) ?>
-                <?= form_hidden('person_id', (string)$selected_person_id) ?>
-            </div>
-        </div>
+    <label for="person_name" class="form-label"><?= lang('Giftcards.person_id'); ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="person_name-icon"><i class="bi bi-person"></i></span>
+        <input type="hidden" name="person_id" value="<?= (string)$selected_person_id ?>">
+        <input type="text" class="form-control" name="person_name" id="person_name" aria-describedby="person_name-icon" value="<?= $selected_person_name ?>">
+    </div>
 
-        <?php
-        $class = '';
-        if ($config['giftcard_number'] == 'series') {
-            $class = ' required';
-        }
-        ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class' => "control-label col-xs-3$class"]) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'  => 'giftcard_number',
-                    'id'    => 'giftcard_number',
-                    'class' => 'form-control input-sm',
-                    'value' => $giftcard_number
-                ]) ?>
-            </div>
-        </div>
+    <?php
+    $class = '';
+    $label = '';
+    if ($config['giftcard_number'] == 'series') {
+        $class = 'required';
+        $label = '<sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup>';
+    }
+    ?>
+    <label for="giftcard_number" class="form-label"><?= lang('Giftcards.giftcard_number'); ?><?= $label ?></label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="giftcard_number-icon"><i class="bi bi-gift"></i></span>
+        <input type="text" class="form-control" name="giftcard_number" id="giftcard_number" aria-describedby="giftcard_number-icon" value="<?= $giftcard_number ?>" <?= $class ?>>
+    </div>
 
+    <label for="giftcard_amount" class="form-label"><?= lang('Giftcards.card_value') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+    <div class="input-group mb-3">
+        <?php if (!is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="giftcard_amount-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+        <input type="number" class="form-control" name="giftcard_amount" id="giftcard_amount" aria-describedby="giftcard_amount-icon" value="<?= number_format((float)$giftcard_value, 2, '.', '') ?>" required>
+        <?php if (is_right_side_currency_symbol()): ?>
+            <span class="input-group-text" id="giftcard_amount-icon"><?= esc($config['currency_symbol']) ?></span>
+        <?php endif; ?>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><?= esc($config['currency_symbol']) ?></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'giftcard_amount',
-                        'id'    => 'giftcard_amount',
-                        'class' => 'form-control input-sm',
-                        'value' => to_currency_no_money($giftcard_value)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">
