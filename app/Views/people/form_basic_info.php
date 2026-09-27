@@ -58,7 +58,9 @@
     <?= form_label(lang('Common.email'), 'email', ['class' => 'control-label col-xs-3']) ?>
     <div class="col-xs-8">
         <div class="input-group">
-            <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-envelope"></span></span>
+            <span class="input-group-addon input-sm">
+                <i class="bi bi-envelope"></i>
+            </span>
             <?= form_input([
                 'name'  => 'email',
                 'id'    => 'email',
@@ -73,7 +75,9 @@
     <?= form_label(lang('Common.phone_number'), 'phone_number', ['class' => 'control-label col-xs-3']) ?>
     <div class="col-xs-8">
         <div class="input-group">
-            <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
+            <span class="input-group-addon input-sm">
+                <i class="bi bi-telephone"></i>
+            </span>
             <?= form_input([
                 'name'  => 'phone_number',
                 'id'    => 'phone_number',

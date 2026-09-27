@@ -30,7 +30,7 @@
             <?= form_label(lang('Messages.phone'), 'phone_label', ['for' => 'phone', 'class' => 'control-label col-xs-2 required']) ?>
             <div class="col-xs-10">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
+                    <span class="input-group-addon input-sm"><i class="bi bi-telephone"></i></span>
                     <?= form_input(['class' => 'form-control input-sm required', 'type' => 'text', 'name' => 'phone', 'value' => $person_info->phone_number]) ?>
                 </div>
             </div>

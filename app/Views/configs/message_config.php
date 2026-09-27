@@ -17,7 +17,7 @@
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-user"></span>
+                            <i class="bi bi-person"></i>
                         </span>
                         <?= form_input([
                             'name'  => 'msg_uid',
@@ -34,7 +34,7 @@
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-lock"></span>
+                            <i class="bi bi-lock"></i>
                         </span>
                         <input type="password"
                                name="msg_pwd"
@@ -51,7 +51,7 @@
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-bullhorn"></span>
+                            <i class="bi bi-megaphone"></i>
                         </span>
                         <?= form_input([
                             'name'  => 'msg_src',

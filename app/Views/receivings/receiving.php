@@ -93,7 +93,7 @@ if (isset($success)) {
 
             <li class="pull-right">
                 <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-btn-new="<?= lang('Common.new') ?>" data-href="<?= "items/view" ?>" title="<?= lang('Sales.new_item') ?>">
-                    <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang('Sales.new_item') ?>
+                    <i class="bi bi-tag icon-spacing"></i><?= lang('Sales.new_item') ?>
                 </button>
             </li>
         </ul>
@@ -133,7 +133,7 @@ if (isset($success)) {
                     <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 
                     <tr>
-                        <td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+                        <td><?= anchor("$controller_name/deleteItem/$line", '<i class="bi bi-trash"></i>') ?></td>
                         <td><?= esc($item['item_number']) ?></td>
                         <td style="text-align: center;">
                             <?= esc($item['name'] . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br>
@@ -198,7 +198,7 @@ if (isset($success)) {
                         </td>
                         <td>
                             <a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title=<?= lang(ucfirst($controller_name) . '.update') ?>>
-                                <span class="glyphicon glyphicon-refresh"></span>
+                                <i class="bi bi-arrow-repeat"></i>
                             </a>
                         </td>
                     </tr>
@@ -272,7 +272,7 @@ if (isset($success)) {
 
             <?= anchor(
                 "$controller_name/removeSupplier",
-                '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
+                '<i class="bi bi-x-circle icon-spacing"></i>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
                 [
                     'class' => 'btn btn-danger btn-sm',
                     'id'    => 'remove_supplier_button',
@@ -296,7 +296,7 @@ if (isset($success)) {
                 ]) ?>
 
                 <button id="new_supplier_button" class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "suppliers/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new_supplier') ?>">
-                    <span class="glyphicon glyphicon-user">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
+                    <i class="bi bi-building-add icon-spacing"></i><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
                 </button>
 
             </div>
@@ -334,10 +334,10 @@ if (isset($success)) {
                         ]) ?>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <span class="glyphicon glyphicon-ok">&nbsp;</span><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 
@@ -415,10 +415,10 @@ if (isset($success)) {
                         </div>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <span class="glyphicon glyphicon-ok">&nbsp;</span><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 
