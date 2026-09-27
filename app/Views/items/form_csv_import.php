@@ -1,27 +1,22 @@
-<ul id="error_message_box" class="error_message_box"></ul>
+<?= form_open_multipart('items/importCsvFile/', ['id' => 'csv_form']) ?>
 
-<?= form_open_multipart('items/importCsvFile/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="item_basic_info">
+    <ul id="error_message_box" class="alert alert-warning d-none"></ul>
 
-        <div class="form-group form-group-sm">
-            <div class="col-xs-12">
-                <a href="<?= esc('items/generateCsvFile', 'attr') ?>"><?= lang('Common.download_import_template') ?></a>
-            </div>
+    <a type="button" class="btn btn-secondary mb-3" href="<?= esc('items/generateCsvFile', 'attr') ?>"><?= lang('Common.download_import_template') ?></a>
+
+    <div class="fileinput fileinput-new input-group mb-3" data-provides="fileinput">
+        <span class="input-group-text"><i class="bi bi-filetype-csv"></i></span>
+        <div class="form-control" data-trigger="fileinput">
+            <span class="fileinput-filename"></span>
         </div>
+        <span class="input-group-text fileinput-exists" data-dismiss="fileinput" style="cursor: pointer;"><?= lang('Common.import_remove_file') ?></span>
+        <span class="input-group-text btn-file">
+            <span class="fileinput-new"><?= lang('Common.import_select_file') ?></span>
+            <span class="fileinput-exists"><?= lang('Common.import_change_file') ?></span>
+            <input type="file" id="file_path" name="file_path" accept=".csv">
+        </span>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <div class="col-xs-12">
-                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                    <div class="form-control" data-trigger="fileinput"><i class="bi bi-filetype-csv icon-spacing fileinput-exists"></i><span class="fileinput-filename"></span></div>
-                    <span class="input-group-addon input-sm btn btn-default btn-file">
-                        <span class="fileinput-new"><?= lang('Common.import_select_file') ?></span><span class="fileinput-exists"><?= lang('Common.import_change_file') ?></span><input type="file" id="file_path" name="file_path" accept=".csv">
-                    </span>
-                    <a href="#" class="input-group-addon input-sm btn btn-default fileinput-exists" data-dismiss="fileinput"><?= lang('Common.import_remove_file') ?></a>
-                </div>
-            </div>
-        </div>
-
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">

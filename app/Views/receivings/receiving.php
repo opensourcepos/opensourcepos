@@ -46,7 +46,7 @@ if (isset($success)) {
                 <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
             </li>
             <li class="pull-left">
-                <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
             </li>
 
             <?php if ($show_stock_locations) { ?>
@@ -54,7 +54,7 @@ if (isset($success)) {
                     <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_source') ?></label>
                 </li>
                 <li class="pull-left">
-                    <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                    <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
                 </li>
 
                 <?php if ($mode == 'requisition') { ?>
@@ -62,7 +62,7 @@ if (isset($success)) {
                         <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></label>
                     </li>
                     <li class="pull-left">
-                        <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                        <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
                     </li>
             <?php
                 }
@@ -92,8 +92,8 @@ if (isset($success)) {
             </li>
 
             <li class="pull-right">
-                <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-btn-new="<?= lang('Common.new') ?>" data-href="<?= "items/view" ?>" title="<?= lang('Sales.new_item') ?>">
-                    <i class="bi bi-tag icon-spacing"></i><?= lang('Sales.new_item') ?>
+                <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-launch" data-btn-submit="<?= lang('Common.submit') ?>" data-btn-new="<?= lang('Common.new') ?>" data-href="<?= "items/view" ?>" title="<?= lang('Sales.new_item') ?>">
+                    <i class="bi bi-tag me-2"></i><?= lang('Sales.new_item') ?>
                 </button>
             </li>
         </ul>
@@ -178,7 +178,7 @@ if (isset($success)) {
                                             'id'           => 'discount_toggle',
                                             'name'         => 'discount_toggle',
                                             'value'        => 1,
-                                            'data-toggle'  => "toggle",
+                                            'data-toggle'  => 'toggle',
                                             'data-size'    => 'small',
                                             'data-onstyle' => 'success',
                                             'data-on'      => '<b>' . $config['currency_symbol'] . '</b>',
@@ -272,7 +272,7 @@ if (isset($success)) {
 
             <?= anchor(
                 "$controller_name/removeSupplier",
-                '<i class="bi bi-x-circle icon-spacing"></i>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
+                '<i class="bi bi-x-circle me-2"></i>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
                 [
                     'class' => 'btn btn-danger btn-sm',
                     'id'    => 'remove_supplier_button',
@@ -295,8 +295,8 @@ if (isset($success)) {
                     'value' => lang(ucfirst($controller_name) . '.start_typing_supplier_name')
                 ]) ?>
 
-                <button id="new_supplier_button" class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "suppliers/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new_supplier') ?>">
-                    <i class="bi bi-building-add icon-spacing"></i><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
+                <button id="new_supplier_button" class="btn btn-info btn-sm modal-launch" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "suppliers/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new_supplier') ?>">
+                    <i class="bi bi-building-add me-2"></i><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
                 </button>
 
             </div>
@@ -334,10 +334,10 @@ if (isset($success)) {
                         ]) ?>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <i class="bi bi-x-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle me-2"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <i class="bi bi-check-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle me-2"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 
@@ -393,7 +393,7 @@ if (isset($success)) {
                                             [],
                                             [
                                                 'id'         => 'payment_types',
-                                                'class'      => 'selectpicker show-menu-arrow',
+                                                'class'      => 'selectpicker',
                                                 'data-style' => 'btn-default btn-sm',
                                                 'data-width' => 'auto'
                                             ]
@@ -415,10 +415,10 @@ if (isset($success)) {
                         </div>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <i class="bi bi-x-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            <i class="bi bi-x-circle me-2"></i><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
                         </div>
                         <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <i class="bi bi-check-circle icon-spacing"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            <i class="bi bi-check-circle me-2"></i><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
                         </div>
                     </div>
 
@@ -489,7 +489,7 @@ if (isset($success)) {
             }
         });
 
-        dialog_support.init("a.modal-dlg, button.modal-dlg");
+        dialog_support.init("a.modal-launch, button.modal-launch");
 
         $('#supplier').blur(function() {
             $(this).attr('value', "<?= lang(ucfirst($controller_name) . '.start_typing_supplier_name') ?>");

@@ -9,11 +9,10 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
-
-<div id="page_title"><?= lang('Reports.report_input') ?></div>
+<?php
+$title_info['config_title'] = lang('Reports.report_input');
+echo view('configs/config_header', $title_info);
+?>
 
 <?php
 if (isset($error)) {
@@ -21,49 +20,68 @@ if (isset($error)) {
 }
 ?>
 
-<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data']) ?>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
-        <div class="col-xs-3">
-            <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <label for="daterangepicker" class="form-label"><?= lang('Reports.date_range') ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="daterangepicker-icon"><i class="bi bi-calendar2-range"></i></span>
+                <input type="text" class="form-select" name="daterangepicker" id="daterangepicker" aria-describedby="daterangepicker-icon">
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <label for="specific_input_data" class="form-label"><?= $specific_input_name ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <select class="form-select" name="specific_input_data" id="specific_input_data" required>
+                    <?php foreach ($specific_input_data as $key => $value): ?>
+                        <option value="<?= $key ?>"><?= $value ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <label for="input_type" class="form-label"><?= lang('Reports.sale_type') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3 report_sale_type">
+                <span class="input-group-text"><i class="bi bi-receipt"></i></span>
+                <select class="form-select" name="sale_type" id="input_type" required>
+                    <?php foreach ($sale_type_options as $key => $value): ?>
+                        <option value="<?= $key ?>" <?= $key === 'complete' ? 'selected' : '' ?>><?= $value ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <label for="input_payment_type" class="form-label"><?= lang('Reports.payment_type') ?><sup><span class="badge text-primary"><i class="bi bi-asterisk"></i></span></sup></label>
+            <div class="input-group mb-3 report_sale_type">
+                <span class="input-group-text"><i class="bi bi-receipt"></i></span>
+                <select class="form-select" name="payment_type" id="input_payment_type" required>
+                    <?php foreach ($payment_type as $key => $value): ?>
+                        <option value="<?= $key ?>"><?= $value ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
         </div>
     </div>
 
-    <div class="form-group form-group-sm" id="report_specific_input_data">
-        <?= form_label($specific_input_name, 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
-        <div class="col-xs-3">
-            <?= form_dropdown('specific_input_data', $specific_input_data, '', 'id="specific_input_data" class="form-control selectpicker" data-live-search="true"') ?>
-        </div>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" name="generate_report" id="generate_report"><?= lang('Common.submit'); ?></button>
     </div>
-
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
-        <div id="report_sale_type" class="col-xs-3">
-            <?= form_dropdown('sale_type', $sale_type_options, 'complete', 'id="input_type" class="form-control"') ?>
-        </div>
-    </div>
-
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.payment_type'), 'reports_payment_type_label', ['class' => 'required control-label col-xs-2']) ?>
-        <div class="col-xs-3">
-            <?= form_dropdown('payment_type', $payment_type, '', 'id="input_payment_type" class="form-control"') ?>
-        </div>
-    </div>
-
-    <?php
-    echo form_button([
-        'name'    => 'generate_report',
-        'id'      => 'generate_report',
-        'content' => lang('Common.submit'),
-        'class'   => 'btn btn-primary btn-sm'
-    ]);    ?>
 
 <?= form_close() ?>
 
 <?= view('partial/footer') ?>
 
 <script type="text/javascript">
+    new TomSelect('#specific_input_data',{
+        plugins: ['dropdown_input'],
+        placeholder: 'Type to search...',
+    });
+
     $(document).ready(function() {
         <?= view('partial/daterangepicker') ?>
 

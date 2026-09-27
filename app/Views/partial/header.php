@@ -9,20 +9,56 @@
 use Config\Services;
 
 $request = Services::request();
+
+// Services::language()->setLocale('de-DE');
+
+$theme = (empty($config['theme']) ? 'bootstrap' : $config['theme']);
+
+$themeColors = [
+    'bootstrap'  => '#0d6efd',
+    'flatly'     => '#2c3e50',
+    'darkly'     => '#375a7f',
+    'cosmo'      => '#2780e3',
+    'cerulean'   => '#2fa4e7',
+    'journal'    => '#eb6864',
+    'litera'     => '#4582ec',
+    'lumen'      => '#158cba',
+    'lux'        => '#1a1a1a',
+    'materia'    => '#2196f3',
+    'minty'      => '#78c2ad',
+    'morph'      => '#378dfc',
+    'pulse'      => '#593196',
+    'quartz'     => '#6d45bb',
+    'sandstone'  => '#93c54b',
+    'simplex'    => '#d9230f',
+    'sketchy'    => '#333333',
+    'slate'      => '#3a3f44',
+    'solar'      => '#b58900',
+    'spacelab'   => '#446e9b',
+    'superhero'  => '#df6919',
+    'united'     => '#e95420',
+    'vapor'      => '#6f42c1',
+    'yeti'       => '#008cba',
+    'zephyr'     => '#3459e6',
+];
+
+$themeColor = $themeColors[$theme] ?? '#0d6efd';
+
 ?>
 
 <!doctype html>
-<html lang="<?= current_language_code() ?>">
+<html lang="<?= current_language_code() ?>" data-bs-theme="<?= $config['color_mode'] ?>" <?= $config['rtl_language'] == 1 ? 'dir="rtl"' : '' ?>>
 
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
     <title><?= esc($config['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
+    <?= $config['responsive_design'] == 1 ? '<meta name="viewport" content="width=device-width, initial-scale=1">' : '' ?>
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <?php $theme = (empty($config['theme']) ? 'flatly' : esc($config['theme'])); ?>
-    <link rel="stylesheet" href="resources/bootswatch/<?= "$theme" ?>/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/bootswatch/<?= $theme ?>/bootstrap<?= esc($config['rtl_language']) == 1 ? '.rtl' : '' ?>.min.css">
     <link rel="stylesheet" href="resources/bootstrap-icons/bootstrap-icons.min.css">
+    <meta name="theme-color" content="<?= $themeColor ?>">
 
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:debug:css -->
@@ -30,13 +66,8 @@ $request = Services::request();
         <!-- inject:debug:js -->
         <!-- endinject -->
     <?php else : ?>
-        <!--inject:prod:css -->
+        <!-- inject:prod:css -->
         <!-- endinject -->
-
-        <!-- Tweaks to the UI for a particular theme should drop here  -->
-        <?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
-            <link rel="stylesheet" href="<?= 'css/' . esc($config['theme']) . '.css' ?>">
-        <?php } ?>
         <!-- inject:prod:js -->
         <!-- endinject -->
     <?php endif; ?>
@@ -44,60 +75,51 @@ $request = Services::request();
     <?= view('partial/header_js') ?>
     <?= view('partial/lang_lines') ?>
 
-    <style>
-        html {
-            overflow: auto;
-        }
-    </style>
 </head>
 
-<body>
-    <div class="wrapper">
-        <div class="topbar">
-            <div class="container">
-                <div class="navbar-left">
-                    <div id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
-                </div>
-
-                <div class="navbar-right" style="margin: 0;">
-                    <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-                    <span>&nbsp;|&nbsp;</span>
-                    <?= anchor('home/logout', lang('Login.logout')) ?>
-                </div>
-
-                <div class="navbar-center" style="text-align: center;">
-                    <strong><?= esc($config['company']) ?></strong>
-                </div>
+<body class="d-flex flex-column">
+    <header class="flex-shrink-0 small bg-secondary-subtle py-1 d-print-none">
+        <div class="container-lg container-navbar d-flex flex-wrap-reverse justify-content-between align-items-center">
+            <div class="flex-grow-1 d-none d-md-block ps-md-3 ps-lg-0">
+                <span id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></span>
+            </div>
+            <div class="fw-bold ps-3 ps-md-0">
+                <?= esc($config['company']) ?>
+            </div>
+            <div class="flex-grow-1 text-end pe-3 pe-lg-0">
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="removeAnimationBg()" data-bs-toggle="modal" data-bs-target="#profile-modal" title="<?= lang('Employees.change_password'); ?>">
+                    <?= $user_info->first_name . '&nbsp;' . $user_info->last_name; ?>
+                </button>
+                <?= view('home/profile'); ?>
             </div>
         </div>
+    </header>
 
-        <div class="navbar navbar-default" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+    <nav class="navbar navbar-dark navbar-expand-lg bg-primary py-0 d-print-none">
+        <div class="container-lg container-navbar">
+            <a class="navbar-brand py-2 pe-1 ps-3 ps-lg-0 fs-4" href="<?= site_url() ?>"><i class="bi bi-house-fill"></i></a>
+            <button type="button" class="navbar-toggler my-2 mx-3" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                    <a class="navbar-brand hidden-sm" href="<?= site_url() ?>">OSPOS</a>
-                </div>
-
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <?php foreach ($allowed_modules as $module): ?>
-                            <li class="<?= $module->module_id == $request->getUri()->getSegment(1) ? 'active' : '' ?>">
-                                <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
-                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" style="border: none;" alt="Module Icon"><br>
-                                    <?= lang('Module.' . $module->module_id) ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav ms-0 ms-lg-auto">
+                    <?php foreach($allowed_modules as $module): ?>
+                    <li class="d-none d-lg-block nav-item ms-1 <?= $module->module_id == $request->getUri()->getSegment(1) ? 'active bg-light bg-opacity-25' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?= lang("Module.$module->module_id") ?>">
+                        <a class="nav-link p-2" href="<?= base_url($module->module_id) ?>">
+                            <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" alt="<?= lang('Common.icon') . '&nbsp;' . lang("Module.$module->module_id") ?>">
+                        </a>
+                    </li>
+                    <li class="d-lg-none nav-item py-1 <?= $module->module_id == $request->getUri()->getSegment(1) ? 'active bg-light bg-opacity-25' : '' ?>">
+                        <a class="nav-link p-0" href="<?= base_url($module->module_id) ?>">
+                            <img class="ps-3 pe-1 my-1" src="<?= base_url("images/menubar/$module->module_id.svg") ?>" alt="<?= lang('Common.icon') . '&nbsp;' . lang("Module.$module->module_id") ?>">
+                            <span class="align-middle text-light"><?= lang("Module.$module->module_id") ?></span>
+                        </a>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
         </div>
+    </nav>
 
-        <div class="container">
-            <div class="row">
+    <main class="container-lg flex-grow-1 py-3">
