@@ -6,104 +6,41 @@ use CodeIgniter\Test\CIUnitTestCase;
 use Config\Encryption;
 
 /**
- * Tests for the app Encryption config's key resolution.
+ * Tests for the app Encryption config's key-resolution logic
+ * (Config\Encryption::resolveKey()).
  *
- * The constructor resolves the key from the provisioned `encryption.key`
- * source (read in precedence order: $_SERVER, $_ENV, then getenv()) before
- * falling back to the Docker `ENCRYPTION_KEY` env var.
+ * These are pure-function tests: they exercise the resolution rules directly
+ * without mutating global environment state, so they cannot leak across the
+ * rest of the suite.
  */
 class EncryptionTest extends CIUnitTestCase
 {
-    /**
-     * Regression test for CodeRabbit finding on PR #4714 (app/Config/Encryption.php):
-     * when the higher-precedence sources ($_SERVER / $_ENV) hold an EMPTY string
-     * but the real provisioned key lives in the process env (getenv()), the key
-     * must still be picked up. A `??`-based lookup would stop at the empty string.
-     */
-    public function testKeyFallsBackToGetenvWhenHigherSourcesAreEmptyStrings(): void
+    public function testHighestPrecedenceNonEmptySourceWins(): void
     {
-        $prevServer = $_SERVER['encryption.key'] ?? null;
-        $prevEnv    = $_ENV['encryption.key'] ?? null;
-
-        putenv('ENCRYPTION_KEY'); // ensure the Docker fallback cannot mask this path
-        putenv('encryption.key=provisioned-real-key');
-        $_SERVER['encryption.key'] = '';
-        $_ENV['encryption.key']    = '';
-
-        try {
-            $config = new Encryption();
-            $this->assertSame('provisioned-real-key', $config->key);
-        } finally {
-            if ($prevServer === null) {
-                unset($_SERVER['encryption.key']);
-            } else {
-                $_SERVER['encryption.key'] = $prevServer;
-            }
-            if ($prevEnv === null) {
-                unset($_ENV['encryption.key']);
-            } else {
-                $_ENV['encryption.key'] = $prevEnv;
-            }
-            putenv('encryption.key');
-            putenv('ENCRYPTION_KEY');
-        }
+        $this->assertSame(
+            'server-key',
+            Encryption::resolveKey('server-key', 'env-key', 'getenv-key', 'docker-key')
+        );
     }
 
-    public function testNonEmptyServerEntryTakesPrecedence(): void
+    public function testEmptyStringDoesNotShadowLaterSource(): void
     {
-        $prevServer = $_SERVER['encryption.key'] ?? null;
-        $prevEnv    = $_ENV['encryption.key'] ?? null;
+        // Regression for the PR #4714 CodeRabbit finding: a `??`-based lookup
+        // would stop at an empty string from a higher-precedence source and
+        // return ''. The cascade must skip empties and reach the real key.
+        $this->assertSame(
+            'getenv-key',
+            Encryption::resolveKey('', '', 'getenv-key', 'docker-key')
+        );
 
-        putenv('ENCRYPTION_KEY');
-        putenv('encryption.key=getenv-key');
-        $_SERVER['encryption.key'] = 'server-key';
-        $_ENV['encryption.key']    = 'env-key';
-
-        try {
-            $config = new Encryption();
-            $this->assertSame('server-key', $config->key);
-        } finally {
-            if ($prevServer === null) {
-                unset($_SERVER['encryption.key']);
-            } else {
-                $_SERVER['encryption.key'] = $prevServer;
-            }
-            if ($prevEnv === null) {
-                unset($_ENV['encryption.key']);
-            } else {
-                $_ENV['encryption.key'] = $prevEnv;
-            }
-            putenv('encryption.key');
-            putenv('ENCRYPTION_KEY');
-        }
+        $this->assertSame(
+            'docker-key',
+            Encryption::resolveKey('', '', '', 'docker-key')
+        );
     }
 
-    public function testFallsBackToEncryptionKeyEnvVarWhenNoProvisionedKey(): void
+    public function testAllEmptySourcesReturnEmptyString(): void
     {
-        $prevServer = $_SERVER['encryption.key'] ?? null;
-        $prevEnv    = $_ENV['encryption.key'] ?? null;
-
-        putenv('encryption.key'); // no provisioned key in the process env
-        $_SERVER['encryption.key'] = '';
-        $_ENV['encryption.key']    = '';
-        putenv('ENCRYPTION_KEY=docker-key');
-
-        try {
-            $config = new Encryption();
-            $this->assertSame('docker-key', $config->key);
-        } finally {
-            if ($prevServer === null) {
-                unset($_SERVER['encryption.key']);
-            } else {
-                $_SERVER['encryption.key'] = $prevServer;
-            }
-            if ($prevEnv === null) {
-                unset($_ENV['encryption.key']);
-            } else {
-                $_ENV['encryption.key'] = $prevEnv;
-            }
-            putenv('encryption.key');
-            putenv('ENCRYPTION_KEY');
-        }
+        $this->assertSame('', Encryption::resolveKey('', '', '', ''));
     }
 }

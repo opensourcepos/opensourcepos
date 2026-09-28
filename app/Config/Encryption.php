@@ -114,22 +114,31 @@ class Encryption extends BaseConfig
         if ($this->key === '') {
             // `env:provision` persists the key as `encryption.key` in .env; read
             // that first, then fall back to the ENCRYPTION_KEY env var (Docker).
-            // Cascade on NON-EMPTY values — `??` would stop at an empty string
-            // and skip a later source that actually holds the key.
-            $key = (string) ($_SERVER['encryption.key'] ?? '');
-            if ($key === '') {
-                $key = (string) ($_ENV['encryption.key'] ?? '');
-            }
-            if ($key === '') {
-                $key = (string) getenv('encryption.key');
-            }
-
-            if ($key === '') {
-                $envKey = getenv('ENCRYPTION_KEY');
-                $key    = $envKey === false ? '' : $envKey;
-            }
-
-            $this->key = $key;
+            $this->key = self::resolveKey(
+                (string) ($_SERVER['encryption.key'] ?? ''),
+                (string) ($_ENV['encryption.key'] ?? ''),
+                (string) getenv('encryption.key'),
+                (string) getenv('ENCRYPTION_KEY'),
+            );
         }
+    }
+
+    /**
+     * Resolve the encryption key from the given sources, highest precedence
+     * first, returning the first NON-EMPTY value.
+     *
+     * Cascading on non-empty values (rather than the `??` operator) means an
+     * empty string from a higher-precedence source does not shadow a later
+     * source that actually holds the key.
+     */
+    public static function resolveKey(string ...$sources): string
+    {
+        foreach ($sources as $source) {
+            if ($source !== '') {
+                return $source;
+            }
+        }
+
+        return '';
     }
 }
