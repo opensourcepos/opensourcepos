@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -102,9 +102,12 @@ jobs:
         run: |
           echo "Verifying database..."
           
-          # Extract the generated password from install output if using default
+          # Extract the generated password from install output if using default.
+          # The installer prints "  Password: <value>" (the first such line is the DB
+          # password; a later one is the app login password), so anchor on it and take
+          # the first match.
           if [ -z "${{ matrix.db_pass }}" ]; then
-            GENERATED_PASS=$(grep -oP 'Database Password: \K[^\s]+' install-output.log || true)
+            GENERATED_PASS=$(grep -oP '^\s*Password: \K[^\s]+' install-output.log | head -n 1 || true)
             if [ -n "$GENERATED_PASS" ]; then
               DB_PASS="$GENERATED_PASS"
             fi
@@ -117,8 +120,9 @@ jobs:
             exit 1
           }
           
-          # Check tables exist
-          TABLE_COUNT=$(sudo mysql -u root ospos -e "SHOW TABLES;" | wc -l)
+          # Check tables exist (use the app account so the scenario actually proves
+          # `ospos` can authenticate with the configured DB_PASS, not just root)
+          TABLE_COUNT=$(sudo mysql -u ospos -p"$DB_PASS" ospos -e "SHOW TABLES;" | wc -l)
           echo "Found $TABLE_COUNT tables in database"
           if [ "$TABLE_COUNT" -gt 5 ]; then
             echo "Database tables verified"

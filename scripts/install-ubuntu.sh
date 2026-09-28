@@ -130,33 +130,53 @@ echo -e "${COLOR_GREEN}[3/9] Starting MariaDB...${COLOR_RESET}"
 systemctl start mariadb
 systemctl enable mariadb
 
+# When a MariaDB root password is supplied, pass it through a private defaults file
+# (mode 0600) for authenticated connections, so the credential never appears on the
+# command line / in `ps` (CWE-214). The file is removed when the script exits.
+ROOT_CNF=""
+if [ -n "$MYSQL_ROOT_PASS" ]; then
+    ROOT_CNF=$(mktemp "${TMPDIR:-/tmp}/ospos-root-cnf.XXXXXX")
+    chmod 600 "$ROOT_CNF"
+    printf '[client]\nuser=root\npassword=%s\n' "$MYSQL_ROOT_PASS" > "$ROOT_CNF"
+fi
+cleanup_root_cnf() { [ -n "$ROOT_CNF" ] && rm -f "$ROOT_CNF"; }
+trap cleanup_root_cnf EXIT
+
+# mysql_root: connect as root, using the private defaults file when a root password
+# was supplied (otherwise rely on the default unix_socket auth for the OS root user).
+mysql_root() {
+    if [ -n "$ROOT_CNF" ]; then
+        mysql --defaults-extra-file="$ROOT_CNF" "$@"
+    else
+        mysql -u root "$@"
+    fi
+}
+
 if [ -n "$MYSQL_ROOT_PASS" ]; then
     echo -e "${COLOR_BLUE}Setting MariaDB root password...${COLOR_RESET}"
-    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASS}';"
-    mysql -e "FLUSH PRIVILEGES;"
+    # Set the password via unix_socket auth (no password is set yet) and flush in the
+    # same session: once a password is set, unix_socket auth for root is dropped, so a
+    # separate passwordless `mysql` call would fail. The password lives only in this
+    # 0600 temp file, never on the process command line.
+    ROOT_SQL=$(mktemp "${TMPDIR:-/tmp}/ospos-root-sql.XXXXXX")
+    chmod 600 "$ROOT_SQL"
+    printf "ALTER USER 'root'@'localhost' IDENTIFIED BY '%s';\nFLUSH PRIVILEGES;\n" "$MYSQL_ROOT_PASS" > "$ROOT_SQL"
+    mysql -u root < "$ROOT_SQL"
+    rm -f "$ROOT_SQL"
 else
-    # No root password supplied: keep the default unix_socket authentication for root
-    # (we run as the OS root user) rather than switching it to an empty password, which
-    # would break subsequent passwordless root access.
+    # No root password supplied: keep the default unix_socket authentication for root.
     echo -e "${COLOR_BLUE}Keeping MariaDB root on unix_socket authentication...${COLOR_RESET}"
 fi
 
 echo -e "${COLOR_GREEN}[4/9] Creating database and user...${COLOR_RESET}"
-if [ -n "$MYSQL_ROOT_PASS" ]; then
-    mysql -u root -p"${MYSQL_ROOT_PASS}" <<EOF
+# This installer provisions a local MariaDB and OSPOS runs on the same host, so the
+# account's client host is 'localhost' (the client host, not a remote server name).
+mysql_root <<EOF
 CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS '${DB_USER}'@'${DB_HOST}' IDENTIFIED BY '${DB_PASS}';
-GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'${DB_HOST}';
+CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';
+GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';
 FLUSH PRIVILEGES;
 EOF
-else
-    mysql -u root <<EOF
-CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS '${DB_USER}'@'${DB_HOST}' IDENTIFIED BY '${DB_PASS}';
-GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'${DB_HOST}';
-FLUSH PRIVILEGES;
-EOF
-fi
 
 echo -e "${COLOR_GREEN}[5/9] Downloading OSPOS...${COLOR_RESET}"
 mkdir -p "$(dirname "$OSPOS_DIR")"
@@ -228,11 +248,7 @@ if [ -f ".env" ]; then
 fi
 
 echo -e "${COLOR_GREEN}[8/9] Importing database schema...${COLOR_RESET}"
-if [ -n "$MYSQL_ROOT_PASS" ]; then
-    mysql -u root -p"${MYSQL_ROOT_PASS}" ${DB_NAME} < app/Database/database.sql
-else
-    mysql -u root ${DB_NAME} < app/Database/database.sql
-fi
+mysql_root ${DB_NAME} < app/Database/database.sql
 
 # Interactive SSL configuration
 if $INTERACTIVE && [ -z "$SSL_EMAIL" ] && [ -z "$APACHE_SERVER_NAME" ]; then
