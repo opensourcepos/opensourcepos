@@ -137,8 +137,15 @@ When run without environment variables, the installer will prompt you:
 2. Your domain name (e.g., `pos.example.com`)
 3. Your email for Let's Encrypt (for production SSL)
 
+The prompts require a real terminal (standard input attached to a tty), so download
+the script first and run it directly — do **not** pipe it, or the installer detects a
+non-interactive session and skips the prompts:
+
 ```bash
-curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | sudo bash
+# 1. Download the installer
+curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh -o install-ospos.sh
+# 2. Run it interactively (standard input stays attached to your terminal)
+sudo bash install-ospos.sh
 # Script will ask:
 # - Configure SSL? (y/n)
 # - Domain name: pos.example.com
@@ -168,8 +175,8 @@ curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/s
 - `OSPOS_VERSION` - OSPOS version to install (default: latest stable release)
 - `PHP_VERSION` - PHP version (default: 8.2)
 - `APACHE_SERVER_NAME` - Server hostname (default: localhost, or set interactively)
-- `SSL_EMAIL` - Email for Let's Encrypt. When set, enables production SSL with auto-renewal
-- `SSL_DOMAIN` - Alternative to `APACHE_SERVER_NAME` for SSL certificate domain
+- `SSL_EMAIL` - Email for Let's Encrypt. Enables production SSL with auto-renewal **only when a public hostname is also provided** (via `SSL_DOMAIN` or a non-local `APACHE_SERVER_NAME`); `SSL_EMAIL` alone has no effect and the installer falls back to plain HTTP.
+- `SSL_DOMAIN` - Domain for the SSL certificate. With `SSL_EMAIL` it uses Let's Encrypt; on its own it generates a self-signed certificate. Also serves as the installer's hostname when `APACHE_SERVER_NAME` is not set.
 
 > **Testing:** This installer is tested with each commit via our CI workflow. A fresh Ubuntu container is spawned, the script runs to completion, and basic sanity checks verify the installation. For production deployments, we recommend testing on a staging server first. If you encounter issues, please [open an issue](https://github.com/opensourcepos/opensourcepos/issues/new?template=bug_report.yml) with your server version and error output.
 
