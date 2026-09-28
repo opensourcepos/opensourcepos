@@ -114,8 +114,15 @@ class Encryption extends BaseConfig
         if ($this->key === '') {
             // `env:provision` persists the key as `encryption.key` in .env; read
             // that first, then fall back to the ENCRYPTION_KEY env var (Docker).
-            $key = $_SERVER['encryption.key'] ?? $_ENV['encryption.key'] ?? getenv('encryption.key');
-            $key = $key === false || $key === null ? '' : (string) $key;
+            // Cascade on NON-EMPTY values — `??` would stop at an empty string
+            // and skip a later source that actually holds the key.
+            $key = (string) ($_SERVER['encryption.key'] ?? '');
+            if ($key === '') {
+                $key = (string) ($_ENV['encryption.key'] ?? '');
+            }
+            if ($key === '') {
+                $key = (string) getenv('encryption.key');
+            }
 
             if ($key === '') {
                 $envKey = getenv('ENCRYPTION_KEY');
