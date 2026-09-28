@@ -139,7 +139,7 @@ if [ -n "$MYSQL_ROOT_PASS" ]; then
     chmod 600 "$ROOT_CNF"
     printf '[client]\nuser=root\npassword=%s\n' "$MYSQL_ROOT_PASS" > "$ROOT_CNF"
 fi
-cleanup_root_cnf() { [ -n "$ROOT_CNF" ] && rm -f "$ROOT_CNF"; }
+cleanup_root_cnf() { if [ -n "$ROOT_CNF" ]; then rm -f "$ROOT_CNF"; fi; }
 trap cleanup_root_cnf EXIT
 
 # mysql_root: connect as root, using the private defaults file when a root password
