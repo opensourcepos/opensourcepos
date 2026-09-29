@@ -138,6 +138,13 @@ jobs:
 
           sed -i "s/public string \\\$application_version = '[^']*';/public string \\\$application_version = '$NEXT';/" app/Config/App.php
           sed -i "s/\"version\": \"[^\"]*\",/\"version\": \"$NEXT\",/" package.json
+          # Keep package-lock.json in sync: bump only the @opensourcepos/opensourcepos
+          # package version (top-level + packages.""), leave dependency versions alone.
+          awk -v v="$NEXT" '
+            /"name": "@opensourcepos\/opensourcepos"/ { expect=1 }
+            expect && /"version": / { sub(/"version": "[^"]*"/, "\"version\": \"" v "\""); expect=0 }
+            { print }
+          ' package-lock.json > .package-lock.tmp && mv .package-lock.tmp package-lock.json
           # Update the "latest X.Y version" README line only when major.minor changes
           NEW_MM=$(echo "$NEXT" | cut -d. -f1,2)
           OLD_MM=$(echo "$CURRENT" | cut -d. -f1,2)
@@ -148,10 +155,11 @@ jobs:
           echo "=== version refs after bump ==="
           grep "application_version" app/Config/App.php
           grep '"version"' package.json | head -1
+          grep -A1 '"name": "@opensourcepos/opensourcepos"' package-lock.json
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/Config/App.php package.json
+          git add app/Config/App.php package.json package-lock.json
           [ "$NEW_MM" != "$OLD_MM" ] && git add README.md
           git commit -m "chore: bump version to $NEXT"
           git push origin HEAD
