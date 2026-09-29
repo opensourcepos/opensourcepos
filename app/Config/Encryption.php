@@ -112,15 +112,44 @@ class Encryption extends BaseConfig
         parent::__construct();
 
         if ($this->key === '') {
-            // `env:provision` persists the key as `encryption.key` in .env; read
-            // that first, then fall back to the ENCRYPTION_KEY env var (Docker).
-            $this->key = self::resolveKey(
+            // `env:provision` persists the key as `encryption.key` in .env; the
+            // parent constructor resolves that (plus the `encryption_key` /
+            // `Config\Encryption.key` variants) and decode-parses it via
+            // `parseEncryptionKey()`. The only fallback source the parent does
+            // NOT inspect is the `ENCRYPTION_KEY` Docker env var (and the
+            // `$SERVER`/`$_ENV`/`getenv` forms, which would only be non-empty
+            // here if the parent left them blank). Whatever we select here has
+            // not been through `parseEncryptionKey()`, so decode it the same
+            // way — otherwise a `hex2bin:`/`base64:`-prefixed value would be
+            // assigned verbatim and existing ciphertext could fail to decrypt.
+            $this->key = self::parseKey(self::resolveKey(
                 (string) ($_SERVER['encryption.key'] ?? ''),
                 (string) ($_ENV['encryption.key'] ?? ''),
                 (string) getenv('encryption.key'),
                 (string) getenv('ENCRYPTION_KEY'),
-            );
+            ));
         }
+    }
+
+    /**
+     * Decode a key that may carry a `hex2bin:` or `base64:` prefix, mirroring
+     * CodeIgniter's `BaseConfig::parseEncryptionKey()`. Kept as a public
+     * static method (rather than calling the parent's protected instance
+     * method) so the decode is directly unit-testable without instantiating
+     * the config or mutating process env, matching this suite's pure-function
+     * style.
+     */
+    public static function parseKey(string $key): string
+    {
+        if (str_starts_with($key, 'hex2bin:')) {
+            return (string) hex2bin(substr($key, 8));
+        }
+
+        if (str_starts_with($key, 'base64:')) {
+            return (string) base64_decode(substr($key, 7), true);
+        }
+
+        return $key;
     }
 
     /**
