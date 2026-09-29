@@ -48,10 +48,11 @@ class ImportBatch extends Model
     {
         $this->db->transStart();
 
-        $batch = $this->db->query(
-            'SELECT * FROM ' . $this->db->protectIdentifiers($this->table) . ' WHERE id = ? FOR UPDATE',
-            [$batchId]
-        )->getRowArray();
+        $sql = $this->db->table($this->table)
+            ->where('id', $batchId)
+            ->getCompiledSelect();
+
+        $batch = $this->db->query($sql . ' FOR UPDATE')->getRowArray();
 
         $column = $rowFailed ? 'failed' : 'completed';
 

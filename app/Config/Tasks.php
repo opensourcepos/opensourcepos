@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Config;
 
+use App\Jobs\BoundedQueueWorker;
 use CodeIgniter\Tasks\Config\Tasks as BaseTasks;
 use CodeIgniter\Tasks\Scheduler;
 
@@ -47,9 +48,27 @@ class Tasks extends BaseTasks
     {
         // Heartbeat task: mode-agnostic, just logs whenever `tasks:run` executes it -
         // whether triggered by cron/Task Scheduler (auto), a manual `spark tasks:run` (manual),
-        // or the JobRunner filter (web). Replace once real job-processing commands exist.
+        // or the JobRunner filter (web).
         $schedule->call(static function () {
             log_message('debug', 'Job Queue heartbeat: tasks:run executed at ' . date('c'));
         })->everyMinute()->named('jobs_heartbeat');
+
+        // Drains the core queues when Jobs mode is 'auto', so a single
+        // `spark tasks:run` cron/Task Scheduler entry is enough - no separate
+        // `queue:work` process needed alongside it.
+        $schedule->call(static function () {
+            $config = config(OSPOS::class)->settings;
+
+            if (($config['jobs_mode'] ?? 'web') !== 'auto') {
+                return;
+            }
+
+            $jobsConfig = config(Jobs::class);
+            $maxSeconds = (int)($config['jobs_task_max_seconds'] ?? $jobsConfig->taskMaxSeconds);
+            $deadline = microtime(true) + $maxSeconds;
+
+            $worker = new BoundedQueueWorker($jobsConfig->coreQueues, $deadline);
+            $worker->run();
+        })->everyMinute()->named('jobs_queue_worker');
     }
 }

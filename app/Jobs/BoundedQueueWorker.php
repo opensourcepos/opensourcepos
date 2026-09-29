@@ -11,18 +11,17 @@ use Config\Services;
 use Throwable;
 
 /**
- * In-process, deadline-bounded queue worker for the 'web' and 'manual' Job
- * Queue trigger modes, where a long-running CLI-style `queue:work` daemon
- * (CodeIgniter\Queue\Commands\QueueWork) cannot run — that command relies on
- * CLI::write() and signal handling that don't apply inside a web request or
- * a synchronous admin action.
+ * In-process, deadline-bounded queue worker for the 'web', 'auto', and
+ * 'manual' Job Queue trigger modes. Avoids depending on a long-running
+ * CLI-style `queue:work` daemon (CodeIgniter\Queue\Commands\QueueWork),
+ * which relies on CLI::write() and signal handling that don't apply inside
+ * a web request or a synchronous admin action, and which would require a
+ * second cron/Task Scheduler entry alongside `tasks:run` in 'auto' mode.
  *
  * Mirrors the shape of App\Filters\BoundedTaskRunner: drains jobs from the
  * given queues until they're empty, a deadline/job-count limit is hit, or
  * a configured job_throttles rate is exhausted (see JobThrottleGate), then
- * returns instead of sleeping and waiting for more (unlike the real
- * queue:work daemon, which is only appropriate for 'auto' mode under
- * cron/supervisor).
+ * returns instead of sleeping and waiting for more.
  */
 class BoundedQueueWorker
 {
@@ -125,7 +124,7 @@ class BoundedQueueWorker
                 }
             }
 
-            log_message('error', 'BoundedQueueWorker: job failed: ' . $e->getMessage());
+            job_log($work->queue, 'error', $work->payload['job'] . ' job failed: ' . $e->getMessage());
         }
     }
 }

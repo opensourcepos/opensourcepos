@@ -58,7 +58,7 @@ class CustomerCsvRowProcessor
         $email = filter_var(strtolower($data[4]), FILTER_SANITIZE_EMAIL);
 
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            log_message('error', 'CSV Customer import failed: invalid email format');
+            job_log('imports', 'error', 'CSV Customer import failed: invalid email format');
 
             return false;
         }
@@ -98,7 +98,7 @@ class CustomerCsvRowProcessor
         }
 
         if ($invalidated) {
-            log_message('error', 'CSV Customer import failed: email or account number already exists, or data was invalid.');
+            job_log('imports', 'error', 'CSV Customer import failed: email or account number already exists, or data was invalid.');
 
             return false;
         }
