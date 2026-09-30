@@ -393,7 +393,13 @@ systemctl restart apache2
 # Host-header validation accepts the domain the site is actually served at.
 if [ -f "${OSPOS_DIR}/.env" ]; then
     ALLOWED_HOST="${SSL_DOMAIN:-$APACHE_SERVER_NAME}"
-    sed -i "s|app\.allowedHostnames = ''|app.allowedHostnames = '${ALLOWED_HOST}'|" "${OSPOS_DIR}/.env"
+    # The shipped .env has no app.allowedHostnames line, so a plain sed is a silent
+    # no-op and production then 500s on first load; append it if it's missing.
+    if grep -Eq "^[[:space:]]*app\.allowedHostnames[[:space:]]*=" "${OSPOS_DIR}/.env"; then
+        sed -i "s|app\.allowedHostnames = .*|app.allowedHostnames = '${ALLOWED_HOST}'|" "${OSPOS_DIR}/.env"
+    else
+        printf "\napp.allowedHostnames = '%s'\n" "$ALLOWED_HOST" >> "${OSPOS_DIR}/.env"
+    fi
 fi
 
 echo ""
