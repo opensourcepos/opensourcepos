@@ -6,12 +6,8 @@ use CodeIgniter\Test\CIUnitTestCase;
 use Config\Encryption;
 
 /**
- * Tests for the app Encryption config's key-resolution logic
- * (Config\Encryption::resolveKey()).
- *
- * These are pure-function tests: they exercise the resolution rules directly
- * without mutating global environment state, so they cannot leak across the
- * rest of the suite.
+ * Pure-function tests for the app Encryption config's key helpers
+ * (resolveKey() / parseKey()) — no global env mutation, so no cross-test leaks.
  */
 class EncryptionTest extends CIUnitTestCase
 {
@@ -25,9 +21,8 @@ class EncryptionTest extends CIUnitTestCase
 
     public function testEmptyStringDoesNotShadowLaterSource(): void
     {
-        // Regression for the PR #4714 CodeRabbit finding: a `??`-based lookup
-        // would stop at an empty string from a higher-precedence source and
-        // return ''. The cascade must skip empties and reach the real key.
+        // A `??`-based lookup would stop at a higher-precedence empty string;
+        // the cascade must skip empties and reach the real key.
         $this->assertSame(
             'getenv-key',
             Encryption::resolveKey('', '', 'getenv-key', 'docker-key')
@@ -46,12 +41,9 @@ class EncryptionTest extends CIUnitTestCase
 
     public function testPrefixedFallbackKeyIsDecoded(): void
     {
-        // Regression: a key selected in the constructor fallback (notably
-        // `ENCRYPTION_KEY`, which BaseConfig never inspects) must be
-        // decode-parsed exactly like BaseConfig::parseEncryptionKey() does for
-        // `encryption.key`, so a `hex2bin:`/`base64:`-prefixed value is not
-        // assigned verbatim (which would break decryption of existing
-        // ciphertext).
+        // Fallback-selected keys (notably ENCRYPTION_KEY, which BaseConfig
+        // never reads) must be decoded like BaseConfig does, so a
+        // hex2bin:/base64:-prefixed value is not stored verbatim.
         $this->assertSame("\xab\xcd", Encryption::parseKey('hex2bin:abcd'));
         $this->assertSame("\x68\x65\x6c\x6c\x6f", Encryption::parseKey('base64:aGVsbG8='));
 

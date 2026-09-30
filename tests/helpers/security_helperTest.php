@@ -411,11 +411,9 @@ class security_helperTest extends CIUnitTestCase
 
     public function testCheckEncryptionRollsBackWhenSaveAllFails(): void
     {
-        // Regression guard (thread #2): if the post-rotation saveAll() fails,
-        // the freshly rotated .env key must be restored from the backup so the
-        // original CI3 ciphertext stays decryptable. A failing fake Appconfig
-        // (injected via CI3SecretConverter) forces saveAll() to throw without
-        // a real database.
+        // If the post-rotation saveAll() fails, the rotated key must be rolled
+        // back so the original CI3 ciphertext stays decryptable. A failing fake
+        // Appconfig (injected via CI3SecretConverter) makes saveAll() throw.
         $oldKey     = bin2hex(random_bytes(16)); // < 64 chars -> CI3 era
         $plaintext  = ['smtp_pass' => 'keep-me-safe'];
         $ciphertext = array_map(fn ($v) => $this->ci3Encrypt($v, $oldKey), $plaintext);

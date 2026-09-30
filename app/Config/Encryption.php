@@ -112,16 +112,9 @@ class Encryption extends BaseConfig
         parent::__construct();
 
         if ($this->key === '') {
-            // `env:provision` persists the key as `encryption.key` in .env; the
-            // parent constructor resolves that (plus the `encryption_key` /
-            // `Config\Encryption.key` variants) and decode-parses it via
-            // `parseEncryptionKey()`. The only fallback source the parent does
-            // NOT inspect is the `ENCRYPTION_KEY` Docker env var (and the
-            // `$SERVER`/`$_ENV`/`getenv` forms, which would only be non-empty
-            // here if the parent left them blank). Whatever we select here has
-            // not been through `parseEncryptionKey()`, so decode it the same
-            // way — otherwise a `hex2bin:`/`base64:`-prefixed value would be
-            // assigned verbatim and existing ciphertext could fail to decrypt.
+            // Fallback sources (notably the ENCRYPTION_KEY Docker var, which the
+            // parent never reads) were not decode-parsed, so run them through
+            // the same parser to keep hex2bin:/base64: keys consistent.
             $this->key = self::parseKey(self::resolveKey(
                 (string) ($_SERVER['encryption.key'] ?? ''),
                 (string) ($_ENV['encryption.key'] ?? ''),
@@ -132,12 +125,8 @@ class Encryption extends BaseConfig
     }
 
     /**
-     * Decode a key that may carry a `hex2bin:` or `base64:` prefix, mirroring
-     * CodeIgniter's `BaseConfig::parseEncryptionKey()`. Kept as a public
-     * static method (rather than calling the parent's protected instance
-     * method) so the decode is directly unit-testable without instantiating
-     * the config or mutating process env, matching this suite's pure-function
-     * style.
+     * Decode a key's `hex2bin:`/`base64:` prefix, mirroring
+     * BaseConfig::parseEncryptionKey(); kept static so it is unit-testable.
      */
     public static function parseKey(string $key): string
     {
@@ -153,12 +142,8 @@ class Encryption extends BaseConfig
     }
 
     /**
-     * Resolve the encryption key from the given sources, highest precedence
-     * first, returning the first NON-EMPTY value.
-     *
-     * Cascading on non-empty values (rather than the `??` operator) means an
-     * empty string from a higher-precedence source does not shadow a later
-     * source that actually holds the key.
+     * Return the first non-empty source (highest precedence first). Cascading
+     * past empty strings (vs `??`) avoids a blank value shadowing the real key.
      */
     public static function resolveKey(string ...$sources): string
     {

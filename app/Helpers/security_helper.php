@@ -236,13 +236,10 @@ function writeNewEncryptionKey(string $configFile, string $key, string $oldKey):
 /**
  * Returns true when the current process can write to (or create) .env.
  *
- * The write path creates .env.tmp.X (atomicWriteFile) and .env.lock
- * (lockEnvFile) in the .env directory, then rename()s the temp file into
- * place — all of which require write permission on the DIRECTORY, not on
- * .env itself. A bind-mounted .env is writable even when the directory (or
- * an existing root-owned .env.lock) is not, so checking .env's own mode
- * would falsely report success. A missing .env is considered writable when
- * the directory is writable.
+ * The write path (temp file + lock, then rename) needs write permission on
+ * the DIRECTORY, not on .env itself — a bind-mounted .env can be writable
+ * while the dir (or a root-owned .env.lock) is not, so .env's own mode is not
+ * a reliable signal.
  *
  * @return bool
  */
@@ -256,10 +253,8 @@ function envFileIsWritable(): bool
         return false;
     }
 
-    // On Windows, rename() cannot replace a read-only destination, and the
-    // unlink() fallback can also fail, so an existing read-only .env must be
-    // writable. POSIX rename() replaces a read-only dest when the directory is
-    // writable, so this check is intentionally Windows-only.
+    // Windows-only: rename() can't replace a read-only destination, so an
+    // existing .env must itself be writable (POSIX rename() can, if the dir is).
     if (PHP_OS_FAMILY === 'Windows'
         && file_exists($configPath)
         && !is_writable($configPath)
@@ -267,8 +262,7 @@ function envFileIsWritable(): bool
         return false;
     }
 
-    // If the mutex file already exists (e.g. created by a prior root run of
-    // env:provision in Docker), it must be openable for write.
+    // An existing mutex file (e.g. left by a prior root env:provision) must be writable.
     if (file_exists($lockPath) && !is_writable($lockPath)) {
         return false;
     }

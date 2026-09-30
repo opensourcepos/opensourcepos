@@ -8,15 +8,12 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 /**
- * Rate limits login/migrate POST attempts, keyed by IP and by submitted
- * username, to mitigate brute-force and credential-stuffing attacks
- * (GHSA-hm9c-xchj-xgcp). Backed by CodeIgniter's cache-based Throttler,
- * so limits are per-server (not shared across nodes on file cache).
+ * Rate limits login/migrate POST attempts by IP and submitted username to
+ * mitigate brute-force/credential-stuffing. Backed by CodeIgniter's
+ * cache-based Throttler, so limits are per-server (not shared on file cache).
  *
- * The limit is operator-tunable via the .env keys `throttle.capacity`
- * (attempts allowed, default 5) and `throttle.seconds` (window, default 60),
- * so a shared-IP / high-throughput deployment can raise or disable it without
- * a code change. A capacity of 0 or less disables throttling entirely.
+ * Tunable via `throttle.capacity` (default 5; 0 disables) and
+ * `throttle.seconds` (window, default 60) in .env.
  */
 class Throttle implements FilterInterface
 {
@@ -26,9 +23,8 @@ class Throttle implements FilterInterface
             return null;
         }
 
-        // A valid non-positive integer is an explicit "disable" choice. A
-        // missing or non-numeric value falls back to the default so a typo
-        // (e.g. "five") cannot silently bypass the lockout.
+        // Non-positive integer = explicit disable; missing/non-numeric falls
+        // back to the default so a typo (e.g. "five") cannot bypass lockout.
         $capacity = filter_var(env('throttle.capacity'), FILTER_VALIDATE_INT);
         if ($capacity === false) {
             $capacity = 5;
