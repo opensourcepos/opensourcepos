@@ -101,7 +101,7 @@ All notable changes to this project will be documented in this file.
 - Fix: Preserve CHECKBOX attribute state when adding attributes (#4385) by @jekkos
 - Fix payment type becoming null when editing sales by @Ollama
 - Fix broken SQL injection fix - use havingLike() instead of having() with named params by @Ollama
-- Fix mass assignment vulnerability in bulk edit (GHSA-49mq-h2g4-grr9) by @Ollama
+- Fix mass assignment vulnerability in bulk edit by @Ollama
 - Sync language files (#3468) by @Ollama
 - Add workflow to auto-update issue templates with releases by @Ollama
 - Update SECURITY.md with published security advisories by @Ollama
@@ -109,15 +109,15 @@ All notable changes to this project will be documented in this file.
 - Add filter persistence for table views via URL query string (#4400) by @jekkos
 - Fix filter persistence javascript issues (#4400) by @jekkos
 - Fix PHPUnit test configuration for database connectivity (#4430) by @jekkos
-- Fix IDOR vulnerability in password change (GHSA-mcc2-8rp2-q6ch) (#4427) by @jekkos
+- Fix IDOR vulnerability in password change (#4427) by @jekkos
 - Fix XSS vulnerability in tax invoice view (#4432) by @jekkos
 - Fix permission bypass in Sales.getManage() access control (#4428) by @jekkos
 - Update SECURITY.md with published security advisories (#4431) by @jekkos
 - Fix SQL injection in suggestions column configuration (#4421) by @jekkos
 - Fix PHPUnit environment variables not being set (#4434) by @jekkos
 - Fix DECIMAL attribute not respecting locale format (#4422) by @jekkos
-- Fix stored XSS vulnerability in Attribute Definitions (GHSA-rvfg-ww4r-rwqf) (#4429) by @jekkos
-- Fix: Host Header Injection vulnerability (GHSA-jchf-7hr6-h4f3) by @Ollama
+- Fix stored XSS vulnerability in Attribute Definitions (#4429) by @jekkos
+- Fix: Host Header Injection vulnerability by @Ollama
 - Fix stored XSS in gcaptcha_site_key on login page by @Ollama
 - Fix stored XSS via stock location name by @Ollama
 - Fix Token_lib::render() for PHP 8.4 compatibility by @Ollama
@@ -149,7 +149,7 @@ All notable changes to this project will be documented in this file.
 - fix: Use file-based session until database is migrated by @Ollama
 - feat: Improve migration UX on login page by @Ollama
 - Disable opencode workflow + run docker build by @jekkos
-- Fix negative price/quantity/discount validation (GHSA-wv3j-pp8r-7q43) (#4450) by @Nozomu Sasaki (Paul)
+- Fix negative price/quantity/discount validation (#4450) by @Nozomu Sasaki (Paul)
 - fix(ci): replace / with _ in branch names for Docker tags by @Ollama
 - fix(security): prevent command injection in sendmail path configuration by @Ollama
 - fix(security): prevent SQL injection in tax controller sort columns by @Ollama
@@ -254,7 +254,7 @@ All notable changes to this project will be documented in this file.
 - fix(validation): broaden sendmail path regex, expand i18n, strip advisory IDs by @objecttothis
 - fix(security): handle special characters in `.env` key values and improve insertion logic (#4656) by @objecttothis
 - fix(locale): validate language_code against known locales to block path traversal (#4704) by @jekkos
-- Fix GHSA-frx7-c5vv-m3mr: recompute cashup total server-side and force owner identity (#4706) by @jekkos
+- Fix: recompute cashup total server-side and force owner identity (#4706) by @jekkos
 - feat(security): add THROTTLE_KEY env-var fallback for throttle.key (#4707) by @jekkos
 - fix(i18n): translate remaining English labels in Swiss German Items.php (#4701) by @Rayan Abdul Cader
 - fix(ci): stop stamping app version onto master and branch Docker tags (#4709) by @jekkos

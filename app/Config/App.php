@@ -307,7 +307,7 @@ class App extends BaseConfig
     /**
      * Validates and returns a trusted hostname.
      *
-     * Security: Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
+     * Security: Prevents Host Header Injection attacks
      * by validating the HTTP_HOST against a whitelist of allowed hostnames.
      *
      * In production: Fails fast if allowedHostnames is not configured.

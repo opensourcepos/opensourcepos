@@ -103,7 +103,7 @@ class ItemsControllerTest extends CIUnitTestCase
     }
 
     /**
-     * Regression test for GHSA-92cx-fc8x-7wmm: `tax_names[]` containing `<`/`>`
+     * Regression test: `tax_names[]` containing `<`/`>`
      * (the stored-XSS vector) must be rejected by postSave.
      */
     public function testPostSaveRejectsMaliciousTaxName(): void
@@ -190,7 +190,7 @@ class ItemsControllerTest extends CIUnitTestCase
     }
 
     /**
-     * Regression test for GHSA-cm7j-957q-8pgg: an attribute definition whose
+     * Regression test: an attribute definition whose
      * `definition_name` contains HTML must be entity-escaped when rendered in the
      * items attributes dropdown, not emitted as a live (executable) tag.
      */
