@@ -1043,6 +1043,10 @@ function get_job_data_row(object $job): array
         $processAttrs['class'] .= ' disabled';
     }
 
+    $pauseLink = $job->source === 'pending'
+        ? '<a href="#" class="pause_job print_hide" data-uid="' . esc($job->uid) . '" title="' . esc(lang('Jobs.pause_job')) . '"><span class="glyphicon glyphicon-pause"></span></a>'
+        : '';
+
     return [
         'uid'       => $job->uid,
         'status'    => lang('Jobs.status_' . $job->source),
@@ -1054,7 +1058,7 @@ function get_job_data_row(object $job): array
         'attempts'  => $job->attempts,
         'error'     => $job->exception ?? '-',
         'date'      => to_datetime($job->date),
-        'process'   => '<a href="#" class="' . $processAttrs['class'] . '" data-uid="' . esc($job->uid) . '" title="' . esc($processAttrs['title']) . '"><span class="glyphicon ' . $statusIcons[$job->source] . '"></span></a>',
+        'process'   => '<a href="#" class="' . $processAttrs['class'] . '" data-uid="' . esc($job->uid) . '" title="' . esc($processAttrs['title']) . '"><span class="glyphicon ' . $statusIcons[$job->source] . '"></span></a>' . $pauseLink,
         'edit'      => $job->source === 'failed'
             ? ''
             : anchor(

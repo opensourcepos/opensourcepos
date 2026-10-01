@@ -503,17 +503,50 @@ class Jobs extends Secure_Controller
     }
 
     /**
+     * Moves a single pending job out of queue_jobs into queue_paused_jobs.
+     * Used by the Manage tab's per-row pause icon. Reserved ('in progress')
+     * jobs are left alone, same guard as the bulk pause path.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postPauseJob(): ResponseInterface
+    {
+        $uid = $this->request->getPost('id');
+        [$source, $id] = $this->splitUid($uid);
+
+        if ($source !== 'pending') {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+        }
+
+        return $this->pauseJobs($id);
+    }
+
+    /**
      * @param string[] $queues
      */
     private function pauseQueues(array $queues): ResponseInterface
     {
+        return $this->pauseJobs(null, $queues);
+    }
+
+    /**
+     * Moves pending jobs from queue_jobs into queue_paused_jobs, guarded by
+     * status = PENDING so in-flight ('reserved') jobs are never paused out
+     * from under a worker (issue #3833's pause/resume design). Pass $id to
+     * pause a single job (ignores $queues), or $queues to pause every
+     * pending job in those queues.
+     *
+     * @param string[]|null $queues
+     */
+    private function pauseJobs(?int $id, ?array $queues = null): ResponseInterface
+    {
         $this->db->transStart();
 
-        $rows = $this->db->table('queue_jobs')
-            ->whereIn('queue', $queues)
-            ->where('status', Status::PENDING->value)
-            ->get()
-            ->getResultArray();
+        $query = $this->db->table('queue_jobs')->where('status', Status::PENDING->value);
+        $query = $id !== null ? $query->where('id', $id) : $query->whereIn('queue', $queues);
+
+        $rows = $query->get()->getResultArray();
 
         if ($rows !== []) {
             $now = Time::now()->timestamp;

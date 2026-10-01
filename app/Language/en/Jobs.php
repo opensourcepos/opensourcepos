@@ -32,6 +32,7 @@ return [
     'no_queues_selected'                => 'No queues were selected.',
     'not_yet_implemented'               => 'Not yet implemented — available in a future release.',
     'pause_all_jobs'                    => 'Pause All Jobs',
+    'pause_job'                         => 'Pause Job',
     'pause_selected_jobs'               => 'Pause Selected Jobs',
     'paused_jobs_result'                => 'Paused {0} job(s).',
     'payload'                           => 'Payload',
