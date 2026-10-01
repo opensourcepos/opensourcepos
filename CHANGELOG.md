@@ -34,7 +34,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [3.4.2] - 2026-09-24
+## [3.4.2] - 2026-09-30
 - Fix writable folder permission check (#4270) (#4273) by @jekkos
 - Extended payment delete fix (#4274) by @jekkos
 - Upgrade github workflow (#3708) (#4280) by @jekkos
@@ -262,6 +262,14 @@ All notable changes to this project will be documented in this file.
 - fix(i18n): swap print_delay_autoreturn number/required messages in 5 locales (#4699) by @Rayan Abdul Cader
 - chore(release): unified git-cliff release workflow (changelog + tag + optional bump) (#4711) by @jekkos
 - fix(release): push changelog/bump to master via admin PAT (GITHUB_TOKEN blocked by branch protection) by @jekkos
+- docs: add 3.4.2 changelog by @github-actions[bot]
+- chore: bump version to 3.4.3 by @github-actions[bot]
+- fix(security): HTML-escape attribute dropdown option labels in items attributes view (#4715) by @jekkos
+- fix(release): keep package-lock.json version in sync on bump (#4718) by @jekkos
+- fix(security): strip all HTML tags from $.notify alert messages (#4716) by @jekkos
+- chore: strip advisory IDs from code comments and changelog (#4720) by @jekkos
+- fix(security): report unwritable .env.lock, make throttle limits configurable (#4714) by @jekkos
+- chore: reset 3.4.2 (undo premature 3.4.3 bump + stale changelog) for re-cut by @jekkos
 
 ## [3.4.1] - 2025-06-05
 - Feature: PSR-12 Compliant Indentation by @objecttothis in ([#4196](https://github.com/opensourcepos/opensourcepos/pull/4196))
