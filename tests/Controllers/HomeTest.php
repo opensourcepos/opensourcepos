@@ -303,7 +303,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot view admin password change form
-     * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
+     * BOLA vulnerability fix.
      *
      * @return void
      */
@@ -319,7 +319,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot change admin password
-     * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
+     * BOLA vulnerability fix.
      *
      * @return void
      */
@@ -448,7 +448,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot view another non-admin's password form
-     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * IDOR vulnerability fix.
      *
      * @return void
      */
@@ -470,7 +470,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot change another non-admin's password
-     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * IDOR vulnerability fix.
      *
      * @return void
      */
@@ -503,7 +503,7 @@ class HomeTest extends CIUnitTestCase
     }
 
     /**
-     * Regression test for GHSA-9gr6-4mm4-4wrq: Home::__construct() previously
+     * Regression test: Home::__construct() previously
      * read the raw (single-decoded) URI segment to decide whether to skip
      * Secure_Controller's module-grant check for 'logout'. A route whose
      * double-decoded method name resolves to 'logout' must still be treated
