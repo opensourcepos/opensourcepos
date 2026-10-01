@@ -144,6 +144,7 @@ class Attributes extends Secure_Controller
         }
 
         $definition_name = $definition_data['definition_name'];
+        $force_type_conversion = $this->request->getPost('force_type_conversion') == '1';
 
         if ($definition_id == NO_DEFINITION_ID) {
             try {
@@ -161,7 +162,7 @@ class Attributes extends Secure_Controller
             }
         }
 
-        if ($this->attribute->saveDefinition($definition_data, $definition_id)) {
+        if ($this->attribute->saveDefinition($definition_data, $definition_id, $force_type_conversion)) {
             // New definition
             if ($definition_id == NO_DEFINITION_ID) {
                 foreach ($definition_values as $definition_value) {
@@ -181,6 +182,18 @@ class Attributes extends Secure_Controller
                 ]);
             }
         } else { // Failure
+            $conversion_conflicts = $this->attribute->getConversionConflicts();
+
+            if ($conversion_conflicts !== []) {
+                return $this->response->setJSON([
+                    'success'  => false,
+                    'conflict' => true,
+                    'message'  => lang('Attributes.definition_conversion_conflict', [$definition_name]),
+                    'values'   => array_column($conversion_conflicts, 'attribute_value'),
+                    'id'       => $definition_id
+                ]);
+            }
+
             return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),

@@ -41,6 +41,25 @@ class Attribute extends Model
     public const SHOW_IN_ITEMS = 1;    // TODO: These need to be moved to constants.php
     public const SHOW_IN_SALES = 2;
     public const SHOW_IN_RECEIVINGS = 4;
+
+    /**
+     * Attribute values that could not be converted to the new type during the most recent
+     * saveDefinition() call. Populated by convert_definition_data() when a type change is
+     * rejected because of non-convertible existing values.
+     *
+     * @var array
+     */
+    private array $conversion_conflicts = [];
+
+    /**
+     * Returns the attribute values (and affected items) that blocked the most recent type
+     * conversion attempted via saveDefinition().
+     */
+    public function getConversionConflicts(): array
+    {
+        return $this->conversion_conflicts;
+    }
+
     public function deleteDropdownAttributeValue(string $attribute_value, int $definition_id): bool
     {
         $attribute_id = $this->getAttributeIdByValue($attribute_value);
@@ -368,43 +387,52 @@ class Attribute extends Model
     }
 
     /**
+     * Checks existing attribute_values for a definition against a target type and returns the
+     * ones that cannot be converted.
+     *
      * @param int $definition_id
      * @param string $from
      * @param string $to
-     * @return bool
+     * @return array List of ['attribute_value' => string, 'item_ids' => int[]] entries for values
+     *                that cannot be converted to $to. Empty when every value is convertible.
      */
-    private function check_data_validity(int $definition_id, string $from, string $to): bool
+    private function check_data_validity(int $definition_id, string $from, string $to): array
     {
-        $success = false;
+        $invalid_values = [];
 
         if ($from === TEXT) {
-            $success = true;
-
             $builder = $this->db->table('attribute_values');
             $builder->distinct()->select('attribute_value');
             $builder->join('attribute_links', 'attribute_values.attribute_id = attribute_links.attribute_id');
             $builder->where('definition_id', $definition_id);
 
             foreach ($builder->get()->getResult() as $attribute) {
+                $valid = true;
+
                 switch ($to) {
                     case DATE:
-                        $success = isValidDate($attribute->attribute_value);
+                        $valid = isValidDate($attribute->attribute_value);
                         break;
                     case DECIMAL:
-                        $success = valid_decimal($attribute->attribute_value);
+                        $valid = valid_decimal($attribute->attribute_value);
                         break;
                 }
 
-                if (!$success) {
+                if (!$valid) {
                     $affected_items = $this->get_items_by_value($attribute->attribute_value, $definition_id);
                     $affected_item_ids = array_column($affected_items, 'item_id');
 
                     log_message('error', "Attribute_value: '$attribute->attribute_value' cannot be converted to $to. Affected Items: " . implode(',', $affected_item_ids));
-                    unset($affected_items, $affected_item_ids);
+
+                    $invalid_values[] = [
+                        'attribute_value' => $attribute->attribute_value,
+                        'item_ids'        => $affected_item_ids
+                    ];
                 }
             }
         }
-        return $success;
+
+        return $invalid_values;
     }
 
     /**
@@ -431,18 +459,41 @@ class Attribute extends Model
      * @param int $definition_id
      * @param string $from_type
      * @param string $to_type
+     * @param bool $force When true, attribute_values that cannot be converted to $to_type are
+     *                    dropped from the affected items instead of blocking the conversion.
      * @return boolean
      */
-    private function convert_definition_data(int $definition_id, string $from_type, string $to_type): bool
+    private function convert_definition_data(int $definition_id, string $from_type, string $to_type, bool $force = false): bool
     {
         $success = false;
 
         if ($from_type === TEXT) {
             if (in_array($to_type, [DATE, DECIMAL], true)) {
-                if ($this->check_data_validity($definition_id, $from_type, $to_type)) {
-                    $attributes_to_convert = $this->get_attributes_by_definition($definition_id);
-                    $success = $this->attribute_cleanup($attributes_to_convert, $definition_id, $to_type);
+                $invalid_values = $this->check_data_validity($definition_id, $from_type, $to_type);
+
+                if ($invalid_values !== [] && !$force) {
+                    $this->conversion_conflicts = $invalid_values;
+                    return false;
                 }
+
+                $attributes_to_convert = $this->get_attributes_by_definition($definition_id);
+
+                if ($invalid_values !== []) {
+                    $invalid_attribute_values = array_column($invalid_values, 'attribute_value');
+
+                    foreach ($attributes_to_convert as $attribute) {
+                        if (in_array($attribute['attribute_value'], $invalid_attribute_values, true)) {
+                            $this->deleteAttributeLinksByDefinitionIdAndAttributeId($definition_id, $attribute['attribute_id']);
+                        }
+                    }
+
+                    $attributes_to_convert = array_values(array_filter(
+                        $attributes_to_convert,
+                        static fn ($attribute) => !in_array($attribute['attribute_value'], $invalid_attribute_values, true)
+                    ));
+                }
+
+                $success = $this->attribute_cleanup($attributes_to_convert, $definition_id, $to_type);
             } elseif ($to_type === DROPDOWN) {
                 $success = true;
             } elseif ($to_type === CHECKBOX) {    // TODO: duplicated code.
@@ -523,9 +574,15 @@ class Attribute extends Model
 
     /**
      * Inserts or updates a definition
+     *
+     * @param bool $force When true, a type change proceeds even if some existing attribute_values
+     *                    cannot be converted to the new type; those values are dropped instead.
+     *                    Non-convertible values can be retrieved beforehand via getConversionConflicts().
      */
-    public function saveDefinition(array &$definitionData, int $definitionId = NO_DEFINITION_ID): bool
+    public function saveDefinition(array &$definitionData, int $definitionId = NO_DEFINITION_ID, bool $force = false): bool
     {
+        $this->conversion_conflicts = [];
+
         $this->db->transStart();
 
         // Insert definition
@@ -558,7 +615,7 @@ class Attribute extends Model
             $definitionData['definition_id'] = $definitionId;
 
             if ($from_definition_type !== $to_definition_type
-                && !$this->convert_definition_data($definitionId, $from_definition_type, $to_definition_type)) {
+                && !$this->convert_definition_data($definitionId, $from_definition_type, $to_definition_type, $force)) {
                 $this->db->transRollback();
                 return false;
             }
