@@ -57,7 +57,7 @@ class Jobs extends Secure_Controller
      * @return string|ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getView(string $uid)
+    public function getEditJob(string $uid)
     {
         [$source, $id] = $this->splitUid($uid);
 
@@ -88,7 +88,7 @@ class Jobs extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSave(string $uid): ResponseInterface
+    public function postSaveJob(string $uid): ResponseInterface
     {
         [$source, $id] = $this->splitUid($uid);
 
