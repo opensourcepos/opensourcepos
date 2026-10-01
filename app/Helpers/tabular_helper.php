@@ -1050,7 +1050,7 @@ function get_job_data_row(object $job): array
         'edit'      => $job->source === 'failed'
             ? ''
             : anchor(
-                "jobs/view/$job->uid",
+                "jobs/editJob/$job->uid",
                 '<span class="glyphicon glyphicon-edit"></span>',
                 [
                     'class'           => 'modal-dlg',
