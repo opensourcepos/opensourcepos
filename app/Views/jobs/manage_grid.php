@@ -43,6 +43,19 @@ use App\Models\Employee;
 
                     return false;
                 });
+
+                $('.pause_job').off('click').on('click', function(event) {
+                    event.preventDefault();
+
+                    const $link = $(this);
+
+                    $.post('jobs/pauseJob', {id: $link.data('uid')}, function(response) {
+                        $.notify(response.message, {type: response.success ? 'success' : 'danger'});
+                        table_support.refresh();
+                    }, 'json');
+
+                    return false;
+                });
             }
         });
     });
