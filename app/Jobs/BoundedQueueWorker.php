@@ -2,9 +2,11 @@
 
 namespace App\Jobs;
 
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Queue\Config\Queue as QueueConfig;
 use CodeIgniter\Queue\Entities\QueueJob;
 use CodeIgniter\Queue\Interfaces\QueueInterface;
+use Config\Database;
 use Config\Jobs as JobsConfig;
 use Config\OSPOS;
 use Config\Services;
@@ -88,6 +90,48 @@ class BoundedQueueWorker
         return $this->failed;
     }
 
+    /**
+     * Processes a single, already-fetched job (used by the Manage tab's
+     * per-row play/requeue action, bypassing the normal pop-from-queue
+     * loop in run()).
+     */
+    public function runOne(QueueJob $work): void
+    {
+        /** @var QueueInterface $queue */
+        $queue = service('queue');
+        /** @var QueueConfig $config */
+        $config = config('Queue');
+
+        $this->handle($queue, $config, $work);
+    }
+
+    /**
+     * Moves an exhausted job into queue_jobs_failed and deletes it from
+     * queue_jobs, same as CodeIgniter\Queue\Handlers\DatabaseHandler::failed()
+     * / logFailed(), but also records $work->attempts, which the vendor
+     * handler has no field for (QueueJobFailedModel's allowedFields doesn't
+     * include it) and would otherwise drop.
+     */
+    private function moveToFailed(QueueJob $work, Throwable $err, bool $keepJob): void
+    {
+        if ($keepJob) {
+            $exception = "Exception: {$err->getCode()} - {$err->getMessage()}" . PHP_EOL
+                . "file: {$err->getFile()}:{$err->getLine()}";
+
+            Database::connect()->table('queue_jobs_failed')->insert([
+                'connection' => 'database',
+                'queue'      => $work->queue,
+                'payload'    => json_encode($work->payload),
+                'priority'   => $work->priority,
+                'attempts'   => $work->attempts,
+                'exception'  => $exception,
+                'failed_at'  => Time::now()->timestamp,
+            ]);
+        }
+
+        Database::connect()->table('queue_jobs')->where('id', $work->id)->delete();
+    }
+
     private function popNext(QueueInterface $queue): ?QueueJob
     {
         foreach ($this->queues as $queueName) {
@@ -116,7 +160,7 @@ class BoundedQueueWorker
             if (isset($job) && $work->attempts < $job->getTries()) {
                 $queue->later($work, $job->getRetryAfter());
             } else {
-                $queue->failed($work, $e, $config->keepFailedJobs);
+                $this->moveToFailed($work, $e, $config->keepFailedJobs);
                 $this->failed++;
 
                 if (isset($work->payload['data']['batch_id'])) {
