@@ -436,15 +436,15 @@ class Customers extends Persons
 
         fclose($handle);
 
-        $batchId = service('importBatch')->create('customers', count($rows));
-        $queue = service('queue');
+        $importBatch = service('importBatch');
+        $batchId = $importBatch->create('customers', count($rows));
 
         foreach ($rows as $row) {
-            $queue->setPriority('low')->push('imports', 'customer_import', [
+            $importBatch->pushRow('imports', 'customer_import', [
                 'batch_id'    => $batchId,
                 'row'         => $row,
                 'employee_id' => $employeeId,
-            ]);
+            ], $batchId, 'low');
         }
 
         return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_queued', [count($rows)])]);

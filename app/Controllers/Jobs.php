@@ -57,9 +57,9 @@ class Jobs extends Secure_Controller
      * @return string|ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getEditJob(string $uid)
+    public function getEditJob(string $source, string $id)
     {
-        [$source, $id] = $this->splitUid($uid);
+        [$source, $id] = $this->splitUid("$source:$id");
 
         if ($source === null || $source === 'failed') {
             return $this->response->setStatusCode(404);
@@ -71,7 +71,7 @@ class Jobs extends Secure_Controller
             return $this->response->setStatusCode(404);
         }
 
-        $data['uid'] = $uid;
+        $data['uid'] = "$source:$id";
         $data['queue'] = $job->queue;
         $data['priority'] = $job->priority;
         $data['payload'] = json_encode($job->payload, JSON_PRETTY_PRINT);
@@ -88,8 +88,9 @@ class Jobs extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postSaveJob(string $uid): ResponseInterface
+    public function postSaveJob(string $source, string $id): ResponseInterface
     {
+        $uid = "$source:$id";
         [$source, $id] = $this->splitUid($uid);
 
         if ($source === null || $source === 'failed') {
@@ -471,6 +472,68 @@ class Jobs extends Secure_Controller
         return $this->response->setJSON([
             'success' => true,
             'message' => lang('Jobs.processed_jobs_result', [$worker->getProcessedCount(), $worker->getFailedCount()]),
+        ]);
+    }
+
+    /**
+     * Moves pending jobs out of queue_jobs into queue_paused_jobs for the
+     * given queues (or all core queues), leaving in-flight ('reserved') jobs
+     * alone to finish (issue #3833's pause/resume design). When the scope is
+     * 'selected', pauses only the queue names posted from the Utilities tab's
+     * queue multiselect.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postPauseJobs(): ResponseInterface
+    {
+        $coreQueues = config(JobsConfig::class)->coreQueues;
+
+        if ($this->request->getPost('scope') !== 'selected') {
+            return $this->pauseQueues($coreQueues);
+        }
+
+        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+
+        if ($selectedQueues === []) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
+        }
+
+        return $this->pauseQueues(array_values($selectedQueues));
+    }
+
+    /**
+     * @param string[] $queues
+     */
+    private function pauseQueues(array $queues): ResponseInterface
+    {
+        $this->db->transStart();
+
+        $rows = $this->db->table('queue_jobs')
+            ->whereIn('queue', $queues)
+            ->where('status', Status::PENDING->value)
+            ->get()
+            ->getResultArray();
+
+        if ($rows !== []) {
+            $now = Time::now()->timestamp;
+
+            foreach ($rows as &$row) {
+                $row['paused_at'] = $now;
+                $row['paused_by'] = 'manual';
+                unset($row['status']);
+            }
+            unset($row);
+
+            $this->db->table('queue_paused_jobs')->insertBatch($rows);
+            $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
+        }
+
+        $this->db->transComplete();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Jobs.paused_jobs_result', [count($rows)]),
         ]);
     }
 }

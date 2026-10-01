@@ -37,7 +37,7 @@ class SalesControllerTest extends CIUnitTestCase
     protected $migrateOnce = true;
     protected $seedOnce    = true;
     protected $refresh     = false;
-    protected $namespace   = null;
+    protected $namespace   = 'App';
 
     private static bool $doneBootstrap = false;
 

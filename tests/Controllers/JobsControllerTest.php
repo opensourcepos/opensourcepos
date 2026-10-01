@@ -17,7 +17,7 @@ class JobsControllerTest extends CIUnitTestCase
     protected $migrateOnce = true;
     protected $seedOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     private static bool $doneBootstrap = false;
 
@@ -36,6 +36,8 @@ class JobsControllerTest extends CIUnitTestCase
 
         $this->jobThrottle = model(JobThrottle::class);
         $this->db->table('job_throttles')->truncate();
+        $this->db->table('queue_paused_jobs')->truncate();
+        $this->db->table('queue_jobs')->truncate();
     }
 
     protected function loginAsAdmin(): void
@@ -228,5 +230,64 @@ class JobsControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
+    }
+
+    public function testPostPauseJobsMovesPendingJobToPausedTable(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'low',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => time(),
+            'created_at'   => time(),
+        ]);
+
+        $response = $this->post('/jobs/pauseJobs', ['scope' => 'all']);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('queue_jobs', ['queue' => 'default']);
+        $this->seeInDatabase('queue_paused_jobs', ['queue' => 'default', 'paused_by' => 'manual']);
+    }
+
+    public function testPostPauseJobsLeavesReservedJobInQueue(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'low',
+            'status'       => 1,
+            'attempts'     => 0,
+            'available_at' => time(),
+            'created_at'   => time(),
+        ]);
+
+        $response = $this->post('/jobs/pauseJobs', ['scope' => 'all']);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->seeInDatabase('queue_jobs', ['queue' => 'default', 'status' => 1]);
+        $this->dontSeeInDatabase('queue_paused_jobs', ['queue' => 'default']);
+    }
+
+    public function testPostPauseJobsRejectsEmptySelection(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/pauseJobs', ['scope' => 'selected']);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
     }
 }

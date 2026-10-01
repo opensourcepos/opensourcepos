@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Database\BaseConnection;
-use CodeIgniter\Database\BaseResult;
 use Config\Database;
 use Config\Jobs as JobsConfig;
 use stdClass;
@@ -28,7 +27,10 @@ class JobQueueManage
     /**
      * @param string[] $queues Queue names to include; empty means all core queues.
      */
-    public function search(string $search, array $queues, int $limit = 0, int $limitFrom = 0, string $sort = 'date', string $order = 'desc', bool $countOnly = false): BaseResult|int
+    /**
+     * @return array|int Array of stdClass rows, or the row count when $countOnly is true.
+     */
+    public function search(string $search, array $queues, int $limit = 0, int $limitFrom = 0, string $sort = 'date', string $order = 'desc', bool $countOnly = false): array|int
     {
         $unionSql = $this->buildUnionSql($search, $queues);
 

@@ -21,7 +21,7 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
     protected $migrate = true;
     protected $migrateOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     private static bool $doneBootstrap = false;
 
