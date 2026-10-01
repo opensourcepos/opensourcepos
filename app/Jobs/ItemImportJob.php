@@ -17,8 +17,10 @@ class ItemImportJob extends BaseOsposJob
         $batchId = $this->data['batch_id'];
         $row = $this->data['row'];
         $employeeId = $this->data['employee_id'];
-        $definitionNames = $this->data['definition_names'];
-        $attributeData = $this->data['attribute_data'];
+
+        $context = service('importBatch')->getContext($batchId);
+        $definitionNames = $context['definition_names'];
+        $attributeData = $context['attribute_data'];
 
         $processor = new ItemCsvRowProcessor();
         $success = $processor->process($row, $employeeId, $definitionNames, $attributeData);

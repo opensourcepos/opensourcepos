@@ -35,13 +35,21 @@ class AddJobsModule extends Migration
         $this->forge->addPrimaryKey('throttle_id');
         $this->forge->createTable('job_throttles');
 
-        // CodeIgniter Queue's own tables (mirrors codeigniter4/queue's bundled
-        // migrations, collapsed to their final shape since this app runs
-        // migrations through MY_Migration rather than `php spark migrate`,
-        // and vendor package migrations are never picked up that way).
+        $this->forge->addField([
+            'id'         => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
+            'batch_id'   => ['type' => 'VARCHAR', 'constraint' => 36],
+            'context'    => ['type' => 'TEXT'],
+            'created_at' => ['type' => 'DATETIME', 'null' => true],
+        ]);
+        $this->forge->addPrimaryKey('id');
+        $this->forge->addUniqueKey('batch_id');
+        $this->forge->createTable('import_batch_contexts');
+
         $this->forge->addField([
             'id'           => ['type' => 'bigint', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'queue'        => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
+            'batch_id'     => ['type' => 'varchar', 'constraint' => 36, 'null' => true],
+            'context_id'   => ['type' => 'int', 'unsigned' => true, 'null' => true],
             'payload'      => ['type' => 'text', 'null' => false],
             'priority'     => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default'],
             'status'       => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
@@ -51,29 +59,47 @@ class AddJobsModule extends Migration
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addKey(['queue', 'priority', 'status', 'available_at'], false, false, 'queue_priority_status_available_at');
+        $this->forge->addKey('batch_id', false, false, 'queue_jobs_batch_id');
+        $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_context_id_fk');
         $this->forge->createTable('queue_jobs', true);
 
         $this->forge->addField([
             'id'         => ['type' => 'bigint', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'connection' => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
             'queue'      => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
+            'batch_id'   => ['type' => 'varchar', 'constraint' => 36, 'null' => true],
+            'context_id' => ['type' => 'int', 'unsigned' => true, 'null' => true],
             'payload'    => ['type' => 'text', 'null' => false],
             'priority'   => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default'],
-            // Not part of codeigniter4/queue's own schema: DatabaseHandler::failed()
-            // doesn't carry attempts over from queue_jobs, so BoundedQueueWorker
-            // records it directly when it moves a job here (see handle()) so the
-            // Jobs Manage grid can show a real error count for failed rows.
             'attempts'   => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
             'exception'  => ['type' => 'text', 'null' => false],
             'failed_at'  => ['type' => 'int', 'unsigned' => true, 'null' => false],
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addKey('queue');
+        $this->forge->addKey('batch_id', false, false, 'queue_jobs_failed_batch_id');
+        $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_failed_context_id_fk');
         $this->forge->createTable('queue_jobs_failed', true);
 
-        // Batch tracking for queued CSV imports (issue #3833 Phase 3): one row
-        // per import, incremented atomically by each row's job as it completes
-        // so the last row can fire 'import_completed' exactly once.
+        $this->forge->addField([
+            'id'           => ['type' => 'BIGINT', 'constraint' => 11, 'unsigned' => true],
+            'queue'        => ['type' => 'VARCHAR', 'constraint' => 64, 'null' => false],
+            'batch_id'     => ['type' => 'VARCHAR', 'constraint' => 36, 'null' => true],
+            'context_id'   => ['type' => 'INT', 'unsigned' => true, 'null' => true],
+            'payload'      => ['type' => 'TEXT', 'null' => false],
+            'priority'     => ['type' => 'VARCHAR', 'constraint' => 64, 'null' => false, 'default' => 'default'],
+            'attempts'     => ['type' => 'TINYINT', 'unsigned' => true, 'null' => false, 'default' => 0],
+            'available_at' => ['type' => 'INT', 'unsigned' => true, 'null' => false],
+            'created_at'   => ['type' => 'INT', 'unsigned' => true, 'null' => false],
+            'paused_at'    => ['type' => 'INT', 'unsigned' => true, 'null' => false],
+            'paused_by'    => ['type' => 'VARCHAR', 'constraint' => 32, 'null' => false],
+        ]);
+        $this->forge->addPrimaryKey('id');
+        $this->forge->addKey('queue');
+        $this->forge->addKey('batch_id', false, false, 'queue_paused_jobs_batch_id');
+        $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_paused_jobs_context_id_fk');
+        $this->forge->createTable('queue_paused_jobs', true);
+
         $this->forge->addField([
             'id'         => ['type' => 'VARCHAR', 'constraint' => 36],
             'type'       => ['type' => 'VARCHAR', 'constraint' => 64],
@@ -118,8 +144,10 @@ class AddJobsModule extends Migration
         $this->db->table('app_config')->whereIn('key', $jobsConfigKeys)->delete();
 
         $this->forge->dropTable('import_batches', true);
+        $this->forge->dropTable('queue_paused_jobs', true);
         $this->forge->dropTable('queue_jobs_failed', true);
         $this->forge->dropTable('queue_jobs', true);
+        $this->forge->dropTable('import_batch_contexts', true);
         $this->forge->dropTable('job_throttles', true);
 
         $this->db->table('grants')->where('permission_id', 'jobs')->delete();

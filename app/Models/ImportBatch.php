@@ -78,8 +78,10 @@ class ImportBatch extends Model
     }
 
     /**
-     * Deletes batches finished more than $retentionDays ago. 0 means keep
-     * until manual purge.
+     * Deletes batches finished more than $retentionDays ago, but only once no
+     * row referencing their batch_id remains in queue_jobs or
+     * queue_jobs_failed (e.g. a failed row kept alive by a longer failed-job
+     * retention window). 0 means keep until manual purge.
      */
     public function purgeFinished(int $retentionDays): void
     {
@@ -87,9 +89,25 @@ class ImportBatch extends Model
             return;
         }
 
-        $this->db->table($this->table)
+        $cutoff = date('Y-m-d H:i:s', strtotime("-{$retentionDays} days"));
+
+        $candidates = $this->db->table($this->table)
+            ->select('id')
             ->whereIn('status', ['completed', 'partial'])
-            ->where('updated_at <=', date('Y-m-d H:i:s', strtotime("-{$retentionDays} days")))
-            ->delete();
+            ->where('updated_at <=', $cutoff)
+            ->get()
+            ->getResultArray();
+
+        foreach ($candidates as $batch) {
+            $batchId = $batch['id'];
+
+            $stillReferenced = $this->db->table('queue_jobs')->where('batch_id', $batchId)->countAllResults() > 0
+                || $this->db->table('queue_jobs_failed')->where('batch_id', $batchId)->countAllResults() > 0;
+
+            if (!$stillReferenced) {
+                $this->db->table($this->table)->where('id', $batchId)->delete();
+                model(ImportBatchContext::class)->deleteForBatch($batchId);
+            }
+        }
     }
 }

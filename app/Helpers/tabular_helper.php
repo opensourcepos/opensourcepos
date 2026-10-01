@@ -45,16 +45,28 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
 
     foreach ($headers as $element) {    // TODO: This might be clearer to refactor this to `foreach($headers as $header)`
         reset($element);
-        $result[] = [
+        $class = isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '';
+
+        if (isset($element['class'])) {
+            $class = trim($class . ' ' . $element['class']);
+        }
+
+        $row = [
             'field'      => key($element),
             'title'      => current($element),
             'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
             'escape'     => !preg_match("/(edit|email|messages|item_pic)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
             'sortable'   => $element['sortable'] ?? current($element) != '',
             'checkbox'   => $element['checkbox'] ?? false,
-            'class'      => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
+            'class'      => $class,
             'sorter'     => $element['sorter'] ?? ''
         ];
+
+        if (isset($element['align'])) {
+            $row['align'] = $element['align'];
+        }
+
+        $result[] = $row;
     }
 
     return json_encode($result);
@@ -936,15 +948,15 @@ function get_controller(): string
 function job_headers(): array
 {
     return [
-        ['status'    => lang('Jobs.status')],
-        ['queue'     => lang('Jobs.queue')],
-        ['record_id' => lang('Common.id')],
+        ['status'    => lang('Jobs.status'), 'align' => 'center'],
+        ['queue'     => lang('Jobs.queue'), 'align' => 'center'],
+        ['record_id' => lang('Common.id'), 'align' => 'center'],
         ['name'      => lang('Jobs.name')],
         ['code'      => lang('Jobs.code')],
-        ['priority'  => lang('Jobs.priority')],
-        ['attempts'  => lang('Jobs.error_count')],
+        ['priority'  => lang('Jobs.priority'), 'align' => 'center'],
+        ['attempts'  => lang('Jobs.error_count'), 'align' => 'center'],
         ['error'     => lang('Jobs.last_error')],
-        ['date'      => lang('Common.date')]
+        ['date'      => lang('Common.date'), 'class' => 'text-nowrap']
     ];
 }
 
@@ -1046,7 +1058,7 @@ function get_job_data_row(object $job): array
         'edit'      => $job->source === 'failed'
             ? ''
             : anchor(
-                "jobs/editJob/$job->uid",
+                "jobs/editJob/$job->source/" . substr($job->uid, strlen($job->source) + 1),
                 '<span class="glyphicon glyphicon-edit"></span>',
                 [
                     'class'           => 'modal-dlg',

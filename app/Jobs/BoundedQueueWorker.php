@@ -118,9 +118,17 @@ class BoundedQueueWorker
             $exception = "Exception: {$err->getCode()} - {$err->getMessage()}" . PHP_EOL
                 . "file: {$err->getFile()}:{$err->getLine()}";
 
+            $sourceRow = Database::connect()->table('queue_jobs')
+                ->select('batch_id, context_id')
+                ->where('id', $work->id)
+                ->get()
+                ->getRowArray();
+
             Database::connect()->table('queue_jobs_failed')->insert([
                 'connection' => 'database',
                 'queue'      => $work->queue,
+                'batch_id'   => $sourceRow['batch_id'] ?? null,
+                'context_id' => $sourceRow['context_id'] ?? null,
                 'payload'    => json_encode($work->payload),
                 'priority'   => $work->priority,
                 'attempts'   => $work->attempts,
