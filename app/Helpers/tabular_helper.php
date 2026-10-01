@@ -933,6 +933,130 @@ function get_controller(): string
     return end($controller_name_parts);
 }
 
+function job_headers(): array
+{
+    return [
+        ['status'    => lang('Jobs.status')],
+        ['queue'     => lang('Jobs.queue')],
+        ['record_id' => lang('Common.id')],
+        ['name'      => lang('Jobs.name')],
+        ['code'      => lang('Jobs.code')],
+        ['priority'  => lang('Jobs.priority')],
+        ['attempts'  => lang('Jobs.error_count')],
+        ['error'     => lang('Jobs.last_error')],
+        ['date'      => lang('Common.date')]
+    ];
+}
+
+/**
+ * Get the header for the jobs manage tabular view
+ */
+function get_jobs_manage_table_headers(): string
+{
+    $headers = job_headers();
+
+    $headers[] = ['process' => '', 'sortable' => false, 'escape' => false];
+
+    return transform_headers($headers);
+}
+
+/**
+ * Resolves the affected item/person id, display name, and code (barcode or
+ * account number) from a queue job payload. Only item_import and
+ * customer_import (the only job types that exist today) carry this
+ * information; anything else falls back to dashes.
+ *
+ * @param array $payload Decoded job payload (['job' => ..., 'data' => [...]])
+ * @return array{id: string, name: string, code: string}
+ */
+function resolveJobSubject(array $payload): array
+{
+    $job = $payload['job'] ?? '';
+    $row = $payload['data']['row'] ?? null;
+
+    if ($job === 'item_import' && is_array($row)) {
+        $itemId = (int)($row['Id'] ?? 0);
+
+        return [
+            'id'   => $itemId > 0 ? (string)$itemId : '-',
+            'name' => $row['Item Name'] ?? '-',
+            'code' => empty($row['Barcode']) ? '-' : $row['Barcode']
+        ];
+    }
+
+    if ($job === 'customer_import' && is_array($row)) {
+        $firstName = $row[0] ?? '';
+        $lastName = $row[1] ?? '';
+        $accountNumber = $row[14] ?? '';
+        $name = trim("$firstName $lastName");
+
+        return [
+            'id'   => '-',
+            'name' => $name === '' ? '-' : $name,
+            'code' => $accountNumber === '' ? '-' : $accountNumber
+        ];
+    }
+
+    return ['id' => '-', 'name' => '-', 'code' => '-'];
+}
+
+/**
+ * Get the html data row for a job (either pending/reserved from queue_jobs
+ * or failed from queue_jobs_failed, tagged with a synthetic uid/source by
+ * the model's union query).
+ */
+function get_job_data_row(object $job): array
+{
+    $subject = resolveJobSubject($job->payload);
+
+    $statusIcons = [
+        'pending'  => 'glyphicon-play',
+        'reserved' => 'glyphicon-pause',
+        'failed'   => 'glyphicon-repeat'
+    ];
+
+    $processTitles = [
+        'pending'  => lang('Jobs.process_job'),
+        'reserved' => lang('Jobs.job_in_progress'),
+        'failed'   => lang('Jobs.requeue_job')
+    ];
+
+    $processAttrs = [
+        'class' => 'process_job print_hide',
+        'title' => $processTitles[$job->source],
+        'data-uid' => $job->uid
+    ];
+
+    if ($job->source === 'reserved') {
+        $processAttrs['class'] .= ' disabled';
+    }
+
+    return [
+        'uid'       => $job->uid,
+        'status'    => lang('Jobs.status_' . $job->source),
+        'queue'     => $job->queue,
+        'record_id' => $subject['id'],
+        'name'      => $subject['name'],
+        'code'      => $subject['code'],
+        'priority'  => $job->priority,
+        'attempts'  => $job->attempts,
+        'error'     => $job->exception ?? '-',
+        'date'      => to_datetime($job->date),
+        'process'   => '<a href="#" class="' . $processAttrs['class'] . '" data-uid="' . esc($job->uid) . '" title="' . esc($processAttrs['title']) . '"><span class="glyphicon ' . $statusIcons[$job->source] . '"></span></a>',
+        'edit'      => $job->source === 'failed'
+            ? ''
+            : anchor(
+                "jobs/view/$job->uid",
+                '<span class="glyphicon glyphicon-edit"></span>',
+                [
+                    'class'           => 'modal-dlg',
+                    'data-btn-submit' => lang('Common.submit'),
+                    'title'           => lang('Jobs.update_job')
+                ]
+            )
+    ];
+}
+
 /**
  * Restores filter values from the URL query string.
  *

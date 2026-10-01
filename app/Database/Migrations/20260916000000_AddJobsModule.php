@@ -59,6 +59,11 @@ class AddJobsModule extends Migration
             'queue'      => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
             'payload'    => ['type' => 'text', 'null' => false],
             'priority'   => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default'],
+            // Not part of codeigniter4/queue's own schema: DatabaseHandler::failed()
+            // doesn't carry attempts over from queue_jobs, so BoundedQueueWorker
+            // records it directly when it moves a job here (see handle()) so the
+            // Jobs Manage grid can show a real error count for failed rows.
+            'attempts'   => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
             'exception'  => ['type' => 'text', 'null' => false],
             'failed_at'  => ['type' => 'int', 'unsigned' => true, 'null' => false],
         ]);
