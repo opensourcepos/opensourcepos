@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Proszę odwiedzić",
     "position"                       => "",
-    "powered_by"                     => "Wspierane przez",
+    "powered_by"                     => "Wspierane przez {0} {1}",
     "price"                          => "Cena",
     "print"                          => "Wydrukuj",
     "remove"                         => "Usuń",

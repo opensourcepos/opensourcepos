@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "Номер телефону - обов'язкове поле.",
     "please_visit_my"                => "Будь ласка, перейдіть",
     "position"                       => "",
-    "powered_by"                     => "Працює на",
+    "powered_by"                     => "Працює на {0} {1}",
     "price"                          => "Ціна",
     "print"                          => "Друк",
     "remove"                         => "Видалити",

@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Παρακαλώ επισκεφτείτε το",
     "position"                       => "",
-    "powered_by"                     => "Τροφοδοτείται από",
+    "powered_by"                     => "Τροφοδοτείται από {0} {1}",
     "price"                          => "Τιμή",
     "print"                          => "Εκτύπωση",
     "remove"                         => "Αφαίρεση",
