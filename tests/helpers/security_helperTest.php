@@ -301,14 +301,31 @@ class security_helperTest extends CIUnitTestCase
         $this->assertTrue(envFileIsWritable());
     }
 
-    public function testEnvFileIsWritableReturnsFalseWhenFileIsReadonly(): void
+    public function testEnvFileIsWritableReturnsFalseWhenLockFileIsReadOnly(): void
     {
+        $this->skipIfRoot();
         file_put_contents($this->envPath, "# tmp\n");
-        chmod($this->envPath, 0444);
+        file_put_contents($this->lockPath, "");
+        chmod($this->lockPath, 0444);
 
-        $this->assertFalse(envFileIsWritable());
+        try {
+            $this->assertFalse(envFileIsWritable());
+        } finally {
+            @unlink($this->lockPath);
+        }
+    }
 
-        chmod($this->envPath, 0644);
+    public function testEnvFileIsWritableReturnsFalseWhenDirectoryIsNotWritable(): void
+    {
+        $this->skipIfRoot();
+        file_put_contents($this->envPath, "# tmp\n");
+        chmod($this->sandbox, 0500);
+
+        try {
+            $this->assertFalse(envFileIsWritable());
+        } finally {
+            chmod($this->sandbox, 0700);
+        }
     }
 
     // -- checkEncryption() --
@@ -340,16 +357,18 @@ class security_helperTest extends CIUnitTestCase
 
     public function testCheckEncryptionThrowsWhenKeyEmptyAndEnvNotWritable(): void
     {
+        $this->skipIfRoot();
         config('Encryption')->key = '';
         file_put_contents($this->envPath, "encryption.key=''\n");
-        chmod($this->envPath, 0444);
+        file_put_contents($this->lockPath, "");
+        chmod($this->lockPath, 0444);
 
         try {
             $this->expectException(RuntimeException::class);
             $this->expectExceptionMessage('provisioned');
             checkEncryption();
         } finally {
-            chmod($this->envPath, 0644);
+            @unlink($this->lockPath);
         }
     }
 
@@ -392,11 +411,9 @@ class security_helperTest extends CIUnitTestCase
 
     public function testCheckEncryptionRollsBackWhenSaveAllFails(): void
     {
-        // Regression guard (thread #2): if the post-rotation saveAll() fails,
-        // the freshly rotated .env key must be restored from the backup so the
-        // original CI3 ciphertext stays decryptable. A failing fake Appconfig
-        // (injected via CI3SecretConverter) forces saveAll() to throw without
-        // a real database.
+        // If the post-rotation saveAll() fails, the rotated key must be rolled
+        // back so the original CI3 ciphertext stays decryptable. A failing fake
+        // Appconfig (injected via CI3SecretConverter) makes saveAll() throw.
         $oldKey     = bin2hex(random_bytes(16)); // < 64 chars -> CI3 era
         $plaintext  = ['smtp_pass' => 'keep-me-safe'];
         $ciphertext = array_map(fn ($v) => $this->ci3Encrypt($v, $oldKey), $plaintext);
@@ -453,17 +470,19 @@ class security_helperTest extends CIUnitTestCase
 
     public function testCheckThrottleEncryptionThrowsWhenKeyMissingAndEnvNotWritable(): void
     {
+        $this->skipIfRoot();
         putenv('throttle.key');
         unset($_ENV['throttle.key'], $_SERVER['throttle.key']);
         file_put_contents($this->envPath, "encryption.key='abc'\n");
-        chmod($this->envPath, 0444);
+        file_put_contents($this->lockPath, "");
+        chmod($this->lockPath, 0444);
 
         try {
             $this->expectException(RuntimeException::class);
             $this->expectExceptionMessage('provisioned');
             checkThrottleEncryption();
         } finally {
-            chmod($this->envPath, 0644);
+            @unlink($this->lockPath);
         }
     }
 
@@ -656,5 +675,23 @@ class security_helperTest extends CIUnitTestCase
         removeBackup();
 
         $this->assertFileDoesNotExist($this->backupPath);
+    }
+
+    /**
+     * When PHPUnit runs as root, is_writable() reports 0444 files as writable
+     * (and root bypasses directory permission bits), so the "not writable"
+     * fixtures cannot be faked reliably. Skip those tests under root.
+     */
+    private function skipIfRoot(): void
+    {
+        $isRoot = false;
+        if (function_exists('posix_geteuid')) {
+            $isRoot = posix_geteuid() === 0;
+        } elseif (function_exists('get_current_user')) {
+            $isRoot = in_array(get_current_user(), ['root', '0'], true);
+        }
+        if ($isRoot) {
+            $this->markTestSkipped('is_writable() is bypassed when running as root; cannot fake a non-writable fixture');
+        }
     }
 }

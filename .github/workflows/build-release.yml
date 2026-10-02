@@ -90,6 +90,18 @@ jobs:
         env:
           GITHUB_TAG: ${{ github.ref_name }}
 
+      - name: Validate release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          # The ZIP below is named from App.php, while the draft-release job
+          # globs by the tag name. A manually-pushed tag that does not match
+          # App.php would silently produce a draft release with no archive, so
+          # fail fast instead.
+          if [ "${GITHUB_REF_NAME}" != "${{ steps.version.outputs.version }}" ]; then
+            echo "::error::tag ${GITHUB_REF_NAME} does not match App.php version ${{ steps.version.outputs.version }}"
+            exit 1
+          fi
+
       - name: Create .env file
         run: |
           cp .env.example .env
@@ -184,8 +196,8 @@ jobs:
           push: true
           tags: ${{ steps.tags.outputs.tags }}
 
-  release:
-    name: Create Release
+  unstable-release:
+    name: Create Unstable Release
     needs: build
     runs-on: ubuntu-22.04
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -225,3 +237,77 @@ jobs:
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  official-release:
+    name: Create Official Release (Draft)
+    needs: [build, docker]
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ needs.build.outputs.short-sha }}
+          path: dist/
+
+      - name: Build release notes
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          # Extract this version's changelog section (header + entries) from CHANGELOG.md.
+          SECTION=$(awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\] - " {insec=1; print; next}
+            insec && $0 ~ "^## \\[" {insec=0; next}
+            insec {print}
+          ' CHANGELOG.md)
+          if [ -z "$SECTION" ]; then
+            echo "WARNING: no changelog section found for $VERSION"
+            SECTION="Changelog section for ${VERSION} is not present in CHANGELOG.md."
+          fi
+          {
+            echo "## Upgrade instructions"
+            echo ""
+            echo "**Docker:**"
+            echo ""
+            echo '```bash'
+            echo "docker pull ${{ secrets.DOCKER_USERNAME }}/opensourcepos:${VERSION}"
+            echo "docker compose -f docker-compose.nginx.yml up -d"
+            echo '```'
+            echo ""
+            echo "**Existing installation:** download one of the archives below, extract it over your current install, and run any new database migrations."
+            echo ""
+            echo "---"
+            echo ""
+            echo "$SECTION"
+          } > /tmp/release_notes.md
+          echo "=== release notes (first 12 lines) ==="
+          head -12 /tmp/release_notes.md
+        env:
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+
+      - name: Create draft release
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          ZIP=$(ls dist/opensourcepos."${VERSION}".*.zip 2>/dev/null | head -1)
+          if [ -n "$ZIP" ]; then
+            gh release create "$VERSION" \
+              --draft \
+              --title "OpenSourcePOS ${VERSION}" \
+              --notes-file /tmp/release_notes.md \
+              "$ZIP"
+          else
+            gh release create "$VERSION" \
+              --draft \
+              --title "OpenSourcePOS ${VERSION}" \
+              --notes-file /tmp/release_notes.md
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}

@@ -111,7 +111,7 @@ class ItemKitsControllerTest extends CIUnitTestCase
         $itemKitId = $this->createItemKit();
         $this->loginAsAdmin();
 
-        // <svg onload=alert(document.domain)> URL-encoded three times (GHSA-3vpv-jqr3-7256 PoC).
+        // <svg onload=alert(document.domain)> URL-encoded three times.
         // The framework's router decodes this twice before routing; the controller used to apply
         // a third urldecode(), turning the remaining %3C.../%3E into a live <svg onload=...> tag.
         // With that urldecode() removed, the value must stay percent-encoded text and never

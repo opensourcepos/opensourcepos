@@ -103,7 +103,7 @@ class ItemsControllerTest extends CIUnitTestCase
     }
 
     /**
-     * Regression test for GHSA-92cx-fc8x-7wmm: `tax_names[]` containing `<`/`>`
+     * Regression test: `tax_names[]` containing `<`/`>`
      * (the stored-XSS vector) must be rejected by postSave.
      */
     public function testPostSaveRejectsMaliciousTaxName(): void
@@ -187,6 +187,36 @@ class ItemsControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
+    }
+
+    /**
+     * Regression test: an attribute definition whose
+     * `definition_name` contains HTML must be entity-escaped when rendered in the
+     * items attributes dropdown, not emitted as a live (executable) tag.
+     */
+    public function testGetAttributesEscapesMaliciousDefinitionName(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $payload = '<img src=x onerror=alert(1)>';
+
+        $definitionData = [
+            'definition_name' => $payload,
+            'definition_type' => TEXT,
+            'definition_flags' => 0,
+            'deleted'         => 0,
+        ];
+        $this->assertTrue($this->attribute->saveDefinition($definitionData));
+        $this->assertNotEmpty($definitionData['definition_id']);
+
+        $response = $this->get('/items/attributes/1');
+        $output = (string) $response->getBody();
+
+        // A live, unescaped tag in the dropdown label is the stored-XSS sink.
+        $this->assertStringNotContainsString($payload, $output);
+        // The payload must be present only in entity-escaped form.
+        $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $output);
     }
 
     public function testGenerateCsvHeaderBasic(): void

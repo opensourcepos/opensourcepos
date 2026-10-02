@@ -7,7 +7,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 
 /**
- * Regression coverage for GHSA-49mq-h2g4-grr9 (mass assignment in bulk edit).
+ * Regression coverage for mass assignment in bulk edit.
  *
  * Item::update_multiple() writes through the Query Builder, which bypasses the
  * model's $allowedFields, so these assertions go straight to the items table.

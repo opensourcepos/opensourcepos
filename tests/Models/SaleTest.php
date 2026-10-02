@@ -10,7 +10,7 @@ use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\ItemFixtureTrait;
 
 /**
- * Regression tests for GHSA-995p-52qw-5hh2: Sale::save_value() must reject
+ * Regression tests: Sale::save_value() must reject
  * (and roll back) a payment that would overdraw a gift card or a customer's
  * reward points, instead of silently applying a stale/negative balance.
  */

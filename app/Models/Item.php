@@ -805,7 +805,7 @@ class Item extends Model
      */
     public function updateMultiple(array $itemData, string $itemIds): bool
     {
-        // Query Builder bypasses $allowedFields, so the whitelist is enforced here (GHSA-49mq-h2g4-grr9)
+        // Query Builder bypasses $allowedFields, so the whitelist is enforced here
         $itemData = array_intersect_key($itemData, array_flip(self::ALLOWED_BULK_EDIT_FIELDS));
 
         if (empty($itemData)) {
