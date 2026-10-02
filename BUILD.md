@@ -42,7 +42,7 @@ Using an `.env` file is a convenient approach to store OSPOS configuration.
 
 I've added the following Powershell scripts to make my life a bit easier, which I share with you.
 
-* `build.ps1` - Which runs the build but also restores the .env from a backup I make of it in a specifically placed folder. I place a copy of the configured .env file in a folder that has the following path from the working folder: `../env/<working-folder-name>/.env`
+* `tools/Build/build.ps1` - Which runs the build but also restores the .env from a backup I make of it in a specifically placed folder. I place a copy of the configured .env file in a folder that has the following path from the working folder: `../env/<working-folder-name>/.env`
 
 ### Containerized setup
 Development using docker has the advantage that all the application's dependencies are contained within the docker environment. During development we want to have a live version of the code in the container when we edit it. This is accomplished by mounting the application folder within the /app of the docker container. 
@@ -52,7 +52,7 @@ The file permissions for the repository in the container should be the same as o
 ```
 export USERID=$(id -u)
 export GROUPID=$(id -g)
-docker-compose -f docker-compose.dev.yml up
+docker-compose -f tools/Docker/docker-compose.dev.yml up
 ```
 
 ## The Result

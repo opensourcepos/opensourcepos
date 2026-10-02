@@ -28,7 +28,8 @@ services:
             - MYSQL_PASSWORD=pointofsale
     ospos:
         build:
-            context: .
+            context: ../..
+            dockerfile: tools/Docker/Dockerfile
             args:
                 - USERID=${USERID}
                 - GROUPID=${GROUPID}
@@ -43,7 +44,7 @@ services:
         networks:
             - app_net
         volumes:
-            - .:/app
+            - ../..:/app
         environment:
             - CI_ENVIRONMENT=development
             - ALLOWED_HOSTNAMES=localhost
