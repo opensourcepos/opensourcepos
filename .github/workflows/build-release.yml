@@ -187,14 +187,15 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          target: ospos
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.tags.outputs.tags }}
+       - name: Build and push Docker images
+         uses: docker/build-push-action@v5
+         with:
+           context: .
+           file: tools/Docker/Dockerfile
+           target: ospos
+           platforms: linux/amd64,linux/arm64
+           push: true
+           tags: ${{ steps.tags.outputs.tags }}
 
   unstable-release:
     name: Create Unstable Release
