@@ -26,7 +26,7 @@ class ItemQuantityTest extends CIUnitTestCase
     protected $migrate     = true;
     protected $migrateOnce = true;
     protected $refresh     = false;
-    protected $namespace   = null;
+    protected $namespace   = 'App';
 
     private const LOCATION_ID = 1;
 
