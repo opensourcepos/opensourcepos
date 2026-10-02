@@ -83,8 +83,8 @@
         "gulp-tar": "^5.0.0",
         "gulp-uglify": "^3.0.2",
         "gulp-zip": "^6.1.0",
-        "license-report": "^6.8.2",
-        "npm-check-updates": "^22.1.1",
+        "license-report": "^6.8.5",
+        "npm-check-updates": "^22.2.9",
         "readable-stream": "^4.4.2",
         "stream-series": "^0.1.1"
     },
