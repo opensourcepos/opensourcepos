@@ -63,7 +63,7 @@ return [
     'phone_number_required' => "Nomer Telepon Wajib Diisi",
     'please_visit_my' => "Silahkan kunjungi",
     'position' => "",
-    'powered_by' => "Diberdayakan oleh",
+    'powered_by' => "Diberdayakan oleh {0} {1}",
     'price' => "Harga",
     'print' => "Cetak",
     'remove' => "Hapus",

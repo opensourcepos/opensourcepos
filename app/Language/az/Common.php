@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "çıxarış ",
     "please_visit_my"                => "Xahiş edirik ziyarət edin",
     "position"                       => "",
-    "powered_by"                     => "Yaradıcı",
+    "powered_by"                     => "Yaradıcı {0} {1}",
     "price"                          => "Qiymət",
     "print"                          => "Çap",
     "remove"                         => "Silmək",

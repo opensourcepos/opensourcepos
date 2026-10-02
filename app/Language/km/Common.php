@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "សូមកាន់",
     "position"                       => "",
-    "powered_by"                     => "ដំណើរការដោយ",
+    "powered_by"                     => "ដំណើរការដោយ {0} {1}",
     "price"                          => "តម្លៃ",
     "print"                          => "បោះពុម្ព",
     "remove"                         => "យកចេញ",

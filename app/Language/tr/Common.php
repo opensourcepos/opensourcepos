@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Şurayı ziyaret edin:",
     "position"                       => "",
-    "powered_by"                     => "Destekleyen",
+    "powered_by"                     => "Destekleyen {0} {1}",
     "price"                          => "Fiyat",
     "print"                          => "Yazdır",
     "remove"                         => "Kaldır",

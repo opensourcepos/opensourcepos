@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "Telefon ist erforderlich",
     "please_visit_my"                => "Bitte beuschen Sie ",
     "position"                       => "",
-    "powered_by"                     => "Powered by",
+    "powered_by"                     => "Powered by {0} {1}",
     "price"                          => "Preis",
     "print"                          => "Drucken",
     "remove"                         => "Annulieren",

@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "ต้องกรอกเบอร์โทร",
     "please_visit_my"                => "เยี่ยมชมที่",
     "position"                       => "",
-    "powered_by"                     => "จัดทำโดย",
+    "powered_by"                     => "จัดทำโดย {0} {1}",
     "price"                          => "ราคา",
     "print"                          => "พิมพ์",
     "remove"                         => "ลบ",

@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Besøg venligst",
     "position"                       => "",
-    "powered_by"                     => "Drevet af",
+    "powered_by"                     => "Drevet af {0} {1}",
     "price"                          => "Pris",
     "print"                          => "Print ud",
     "remove"                         => "Fjern",

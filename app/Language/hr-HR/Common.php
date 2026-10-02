@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "Broj telefona je obavezan",
     "please_visit_my"                => "Molim posjetite",
     "position"                       => "",
-    "powered_by"                     => "Pokreće",
+    "powered_by"                     => "Pokreće {0} {1}",
     "price"                          => "Ár",
     "print"                          => "Štampati",
     "remove"                         => "Ukloni",

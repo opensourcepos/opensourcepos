@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "Phone Number is a required field",
     "please_visit_my"                => "Please visit the",
     "position"                       => "",
-    "powered_by"                     => "Powered by",
+    "powered_by"                     => "Powered by {0} {1}",
     "price"                          => "Price",
     "print"                          => "Print",
     "remove"                         => "Remove",

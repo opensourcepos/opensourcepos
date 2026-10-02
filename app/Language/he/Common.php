@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "בקר בכתובת",
     "position"                       => "",
-    "powered_by"                     => "מונע ע'י",
+    "powered_by"                     => "מונע ע'י {0} {1}",
     "price"                          => "מחיר",
     "print"                          => "הדפס",
     "remove"                         => "הסר",
