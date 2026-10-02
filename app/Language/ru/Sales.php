@@ -133,7 +133,7 @@ return [
     'must_enter_numeric'                => 'Внесенная сумма должна быть числом.',
     'must_enter_numeric_giftcard'       => 'Номер подарочной карты должен быть числом.',
     'must_enter_reference_code'         => 'Необходимо ввести справочный/поисковый номер.',
-    'negative_amount_invalid'           => 'Предложенная сумма не может быть отрицательной.',  
+    'negative_amount_tendered'           => 'Предложенная сумма не может быть отрицательной.',
     'negative_discount_invalid'         => 'Скидка не может быть отрицательной.',
     'negative_price_invalid'            => 'Цена не может быть отрицательной.',
     'negative_quantity_invalid'         => 'Количество не может быть отрицательным.',

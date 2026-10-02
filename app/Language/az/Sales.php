@@ -133,7 +133,7 @@ return [
     'must_enter_numeric'                => 'Ödənilən Məbləğ rəqəm olmalıdır.',
     'must_enter_numeric_giftcard'       => 'Hədiyyə Kartının Nömrəsi rəqəm olmalıdır.',
     'must_enter_reference_code'         => 'İstinad/Axtarış Nömrəsi daxil edilməlidir.',
-    'negative_amount_invalid'           => 'Ödənilən məbləğ mənfi ola bilməz.',
+    'negative_amount_tendered'          => 'Ödənilən məbləğ mənfi ola bilməz.',
     'negative_discount_invalid'         => 'Endirim mənfi ola bilməz.',
     'negative_price_invalid'            => 'Qiymət mənfi ola bilməz.',
     'negative_quantity_invalid'         => 'Miqdar mənfi ola bilməz.',

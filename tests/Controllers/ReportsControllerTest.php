@@ -10,7 +10,7 @@ use App\Models\Employee;
 use Config\OSPOS;
 
 /**
- * Regression tests for GHSA-9gr6-4mm4-4wrq
+ * Regression tests for the reports permission bypass
  *
  * Reports::__construct() previously derived the report method name from
  * $request->getUri()->getSegment(2), which CodeIgniter decodes once, while

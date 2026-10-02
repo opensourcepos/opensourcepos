@@ -9,7 +9,7 @@ use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
 
 /**
- * Regression tests for GHSA-995p-52qw-5hh2: adjustRewardPoints() must apply
+ * Regression tests: adjustRewardPoints() must apply
  * its balance check and its write in a single atomic UPDATE, so that two
  * concurrent reward-point spends against the same customer can never both
  * read the same stale balance and double-spend it.

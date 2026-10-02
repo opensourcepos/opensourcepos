@@ -1,6 +1,14 @@
 <?php
 
 return [
-    'no_permission_module' => 'Adı çəkilən modula giriş icazəniz yoxdur',
-    'unknown'              => 'Gözlənilməyən xəta',
+    'no_permission_module'             => 'Adı çəkilən modula giriş icazəniz yoxdur',
+    'unable_to_create_env_file'        => 'throttle.key təmin etmək üçün {filePath} yaradıla bilmədi',
+    'unable_to_lock_file'              => '{filePath} kilidlənə bilmədi: {reason}',
+    'unable_to_open_lock_file'         => '{filePath} açıla bilmədi: {reason}',
+    'unable_to_persist_throttle_key'   => 'throttle.key {filePath} faylına yazıla bilmədi',
+    'unable_to_persist_encryption_key' => '',
+    'encryption_key_not_provisioned'   => '',
+    'throttle_key_not_provisioned'     => '',
+    'unable_to_read_env_file'          => 'throttle.key təmin etmək üçün {filePath} oxuna bilmədi',
+    'unknown'                          => 'Gözlənilməyən xəta',
 ];

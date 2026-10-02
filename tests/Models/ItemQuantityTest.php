@@ -10,7 +10,7 @@ use Tests\Support\ConcurrentDbRaceTrait;
 use Tests\Support\ItemFixtureTrait;
 
 /**
- * Regression tests for GHSA-995p-52qw-5hh2: changeQuantity() must apply
+ * Regression tests: changeQuantity() must apply
  * its write in a single atomic upsert, so that two concurrent sales of the
  * same item/location can never both read the same stale quantity and
  * oversell stock. Unlike the gift card and reward point spends, there is
