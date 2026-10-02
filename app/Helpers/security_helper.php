@@ -236,17 +236,38 @@ function writeNewEncryptionKey(string $configFile, string $key, string $oldKey):
 /**
  * Returns true when the current process can write to (or create) .env.
  *
- * A missing .env file is considered writable when the directory is writable.
+ * The write path (temp file + lock, then rename) needs write permission on
+ * the DIRECTORY, not on .env itself — a bind-mounted .env can be writable
+ * while the dir (or a root-owned .env.lock) is not, so .env's own mode is not
+ * a reliable signal.
  *
  * @return bool
  */
 function envFileIsWritable(): bool
 {
     $configPath = config('SecurityEnv')->envPath;
+    $lockPath   = config('SecurityEnv')->lockPath;
+    $dir        = dirname($configPath);
 
-    return file_exists($configPath)
-        ? is_writable($configPath)
-        : is_writable(dirname($configPath));
+    if (!is_writable($dir)) {
+        return false;
+    }
+
+    // Windows-only: rename() can't replace a read-only destination, so an
+    // existing .env must itself be writable (POSIX rename() can, if the dir is).
+    if (PHP_OS_FAMILY === 'Windows'
+        && file_exists($configPath)
+        && !is_writable($configPath)
+    ) {
+        return false;
+    }
+
+    // An existing mutex file (e.g. left by a prior root env:provision) must be writable.
+    if (file_exists($lockPath) && !is_writable($lockPath)) {
+        return false;
+    }
+
+    return true;
 }
 
 /**
