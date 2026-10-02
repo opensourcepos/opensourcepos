@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "نرخ مالیات",
     "taxes"                                   => "مالیات",
     "taxes_summary_report"                    => "گزارش خلاصه مالیات",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "جمع",
     "total_inventory_value"                   => "ارزش کل موجودی",
     "total_low_sell_quantity"                 => "تعداد کم فروش کم",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "امتیاز مورد استفاده",
     "work_orders"                             => "دستورات کاری",
     "zero_and_less"                           => "صفر و کمتر",
-    "toggle_cost_and_profit"                  => "",
 ];

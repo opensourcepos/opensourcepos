@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Tax Rate",
     "taxes"                                   => "Taxes",
     "taxes_summary_report"                    => "Taxes Summary Report",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Total",
     "total_inventory_value"                   => "Total Inventory Value",
     "total_low_sell_quantity"                 => "Total Low Sell Quantity",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "Points Used",
     "work_orders"                             => "Work Orders",
     "zero_and_less"                           => "Zero and less",
-    "toggle_cost_and_profit"                  => "",
 ];

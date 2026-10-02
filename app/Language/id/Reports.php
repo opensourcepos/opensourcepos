@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Tarif Pajak",
     "taxes"                                   => "Pajak",
     "taxes_summary_report"                    => "Laporan Ringkasan Pajak",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Total",
     "total_inventory_value"                   => "Total Nilai Persediaan",
     "total_low_sell_quantity"                 => "Total Jumlah Penjualan yang Rendah",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "Poin yang telah digunakan",
     "work_orders"                             => "Perintah Kerja",
     "zero_and_less"                           => "Stok habis dan minus",
-    "toggle_cost_and_profit"                  => "",
 ];

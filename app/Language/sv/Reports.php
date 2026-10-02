@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Skattesats",
     "taxes"                                   => "Skatter",
     "taxes_summary_report"                    => "Sammanfattningsrapport för skatter",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Totalt",
     "total_inventory_value"                   => "Totalt lagervärde",
     "total_low_sell_quantity"                 => "Totalt lågt säljare antal",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "Poäng som använts",
     "work_orders"                             => "Arbetsorders",
     "zero_and_less"                           => "Noll eller mindre",
-    "toggle_cost_and_profit"                  => "",
 ];

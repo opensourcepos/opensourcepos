@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Tỷ suất thuế",
     "taxes"                                   => "Thuế",
     "taxes_summary_report"                    => "Báo cáo tổng thể Thuế",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Tổng cộng",
     "total_inventory_value"                   => "Giá trị tồn kho tổng cộng",
     "total_low_sell_quantity"                 => "Tổng số lượng hàng bán ít",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "Các điểm bán hàng đã dùng",
     "work_orders"                             => "Giấy giao việc",
     "zero_and_less"                           => "Không hay nhỏ hơn",
-    "toggle_cost_and_profit"                  => "",
 ];

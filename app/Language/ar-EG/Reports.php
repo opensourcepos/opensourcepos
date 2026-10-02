@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "معدل الضريبة",
     "taxes"                                   => "الضرائب",
     "taxes_summary_report"                    => "تقرير ملخص الضرائب",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "الإجمالى",
     "total_inventory_value"                   => "إجمالى قيمة المخزن",
     "total_low_sell_quantity"                 => "مجموع الكميات حسب الصنف الاولي",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "النقاط المستخدمة",
     "work_orders"                             => "طلبات عمل",
     "zero_and_less"                           => "صفر و أقل",
-    "toggle_cost_and_profit"                  => "",
 ];

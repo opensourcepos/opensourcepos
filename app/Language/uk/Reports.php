@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Ставка податку",
     "taxes"                                   => "Податки",
     "taxes_summary_report"                    => "Підсумковий звіт про податки",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Сума",
     "total_inventory_value"                   => "Загальна вартість товарів",
     "total_low_sell_quantity"                 => "Загальна кількість низького рівня продажу",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "Вкористані бали",
     "work_orders"                             => "Робочі замовлення (наряди на роботу)",
     "zero_and_less"                           => "Нуль і менше",
-    "toggle_cost_and_profit"                  => "",
 ];

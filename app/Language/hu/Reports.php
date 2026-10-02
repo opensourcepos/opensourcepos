@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "",
     "taxes"                                   => "Adók",
     "taxes_summary_report"                    => "Adók összegző riport",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Összesen",
     "total_inventory_value"                   => "Total Inventory Value",
     "total_low_sell_quantity"                 => "",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "",
     "work_orders"                             => "",
     "zero_and_less"                           => "Nulla és kevesebb",
-    "toggle_cost_and_profit"                  => "",
 ];

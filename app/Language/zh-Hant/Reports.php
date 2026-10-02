@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "稅率",
     "taxes"                                   => "稅額",
     "taxes_summary_report"                    => "稅金摘要報告",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "總計",
     "total_inventory_value"                   => "總庫存價值",
     "total_low_sell_quantity"                 => "總低銷售量",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "使用點數",
     "work_orders"                             => "工作訂單",
     "zero_and_less"                           => "零和更少",
-    "toggle_cost_and_profit"                  => "",
 ];

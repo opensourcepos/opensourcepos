@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "VAT %",
     "taxes"                                   => "Belastingen",
     "taxes_summary_report"                    => "Rapport Overzicht Belastingen",
+    "toggle_cost_and_profit"                  => "Kosten en winst wisselen",
     "total"                                   => "Totaal",
     "total_inventory_value"                   => "Totale waarde stock",
     "total_low_sell_quantity"                 => "Totale Lage Verkoophoeveelheid",
@@ -146,5 +147,4 @@ return [
     "used"                                    => "Gebruikte Punten",
     "work_orders"                             => "Werk Orders",
     "zero_and_less"                           => "Nul en minder",
-    "toggle_cost_and_profit"                  => "Kosten en winst wisselen",
 ];
