@@ -147,4 +147,8 @@ return [
     "work_orders"                             => "Work Orders",
     "zero_and_less"                           => "Zero and less",
     "toggle_cost_and_profit"                  => "Toggle Cost & Profit",
+    "top_50_items"                            => "Top 50 Items",
+    "top_50_items_summary_report"             => "Top 50 Items Summary Report",
+    "top_50_categories"                       => "Top 50 Categories",
+    "top_50_categories_summary_report"        => "Top 50 Categories Summary Report",
 ];
