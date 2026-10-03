@@ -700,16 +700,21 @@ class Items extends Secure_Controller
         }
 
         $taxNamesInput = $this->request->getPost('tax_names');
+        $taxPercentsInput = $this->request->getPost('tax_percents');
 
-        if (!empty($taxNamesInput)) {
+        if (!empty($taxNamesInput) || !empty($taxPercentsInput)) {
             $rules = [
-                'tax_names.*' => 'required|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_names.*'    => 'required|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_percents.*' => 'nonNegativeDecimal',
             ];
             $messages = [
-                'tax_names.*' => [
+                'tax_names.*'    => [
                     'required'                    => lang('Items.tax_name_invalid'),
                     'max_length'                  => lang('Items.tax_name_invalid'),
                     'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+                'tax_percents.*' => [
+                    'nonNegativeDecimal' => lang('Items.tax_percent_non_negative'),
                 ],
             ];
 
@@ -725,15 +730,20 @@ class Items extends Secure_Controller
     private function validateBulkUpdateFields(): ?ResponseInterface
     {
         $taxNamesInput = $this->request->getPost('tax_names');
+        $taxPercentsInput = $this->request->getPost('tax_percents');
 
-        if (!empty($taxNamesInput)) {
+        if (!empty($taxNamesInput) || !empty($taxPercentsInput)) {
             $rules = [
-                'tax_names.*' => 'max_length[255]|unicode_alpha_numeric_punct',
+                'tax_names.*'    => 'max_length[255]|unicode_alpha_numeric_punct',
+                'tax_percents.*' => 'nonNegativeDecimal',
             ];
             $messages = [
-                'tax_names.*' => [
+                'tax_names.*'    => [
                     'max_length'                  => lang('Items.tax_name_invalid'),
                     'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+                'tax_percents.*' => [
+                    'nonNegativeDecimal' => lang('Items.tax_percent_non_negative'),
                 ],
             ];
 
@@ -1465,11 +1475,11 @@ class Items extends Secure_Controller
     {
         $items_taxes_data = [];
 
-        if (is_numeric($row['Tax 1 Percent']) && $row['Tax 1 Name'] !== '') {
+        if (is_numeric($row['Tax 1 Percent']) && (float)$row['Tax 1 Percent'] >= 0 && $row['Tax 1 Name'] !== '') {
             $items_taxes_data[] = ['name' => $row['Tax 1 Name'], 'percent' => $row['Tax 1 Percent']];
         }
 
-        if (is_numeric($row['Tax 2 Percent']) && $row['Tax 2 Name'] !== '') {
+        if (is_numeric($row['Tax 2 Percent']) && (float)$row['Tax 2 Percent'] >= 0 && $row['Tax 2 Name'] !== '') {
             $items_taxes_data[] = ['name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']];
         }
 
