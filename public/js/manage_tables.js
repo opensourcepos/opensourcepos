@@ -265,7 +265,44 @@
         init_delete();
         init_restore();
         toggle_column_visibility();
+        init_export_all_toggle();
         dialog_support.init("button.modal-dlg");
+    };
+
+    const init_export_all_toggle = function () {
+        const $toggleInput = $('<input>', {
+            type: 'checkbox',
+            id: 'export_all_rows',
+            'data-toggle': 'toggle',
+            'data-size': 'small',
+            'data-onstyle': 'info',
+            'data-offstyle': 'default',
+            'data-on': lang.line('common_export_all'),
+            'data-off': lang.line('common_export_page')
+        }).prependTo('#title_bar');
+
+        $toggleInput.bootstrapToggle();
+
+        const $toggleWrapper = $toggleInput.closest('.toggle');
+        $toggleWrapper.addClass('pull-right print_hide').find('.btn').css('float', 'none');
+        $toggleWrapper.attr({
+            role: 'switch',
+            tabindex: '0',
+            'aria-label': 'Export all rows',
+            'aria-checked': $toggleInput.prop('checked')
+        });
+
+        $toggleWrapper.on('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                $toggleWrapper.trigger('click');
+            }
+        });
+
+        $toggleInput.on('change', function() {
+            $toggleWrapper.attr('aria-checked', this.checked);
+            $('#table').bootstrapTable('refreshOptions', { exportDataType: this.checked ? 'all' : 'basic' });
+        });
     };
 
     const init_delete = function (confirmMessage) {
