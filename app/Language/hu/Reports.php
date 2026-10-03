@@ -29,6 +29,7 @@ return [
     "date"                                    => "Dátum",
     "date_range"                              => "Dátum periódus",
     "description"                             => "Leirás",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Részletes átvételi riportok",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Részletes riportok",

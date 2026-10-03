@@ -29,6 +29,7 @@ return [
     "date"                                    => "日期",
     "date_range"                              => "日期範圍",
     "description"                             => "描述",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "詳細的進貨報告",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "詳細報表",
