@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Əlavə et,Yenilə,Sil və ya Mal Dəstini Axtar.",
     "items"                      => "Mallar",
     "items_desc"                 => "Əlavə et,Yenilə,Sil və ya Malları Axtar.",
+    'jobs'                       => 'Tapşırıq Növbəsi',
+    'jobs_desc'                  => 'Arxa fon tapşırıq növbəsini konfiqurasiya edin və idarə edin.',
     "messages"                   => "Mesajlar",
     "messages_desc"              => "Müştərilərə, Təchizatçılara və İşçilərə Mesaj göndərin.",
     "migrate"                    => "Köçür",
