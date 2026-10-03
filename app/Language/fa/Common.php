@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "لطفا سر بزنید",
     "position"                       => "",
-    "powered_by"                     => "طراحی شده توسط",
+    "powered_by"                     => "طراحی شده توسط {0} {1}",
     "price"                          => "قیمت",
     "print"                          => "چاپ",
     "remove"                         => "برداشتن",

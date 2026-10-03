@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "Telefonszám kötelező mező",
     "please_visit_my"                => "Kérem látogassa meg a ",
     "position"                       => "",
-    "powered_by"                     => "Powered by",
+    "powered_by"                     => "Powered by {0} {1}",
     "price"                          => "Ár",
     "print"                          => "Nyomtat",
     "remove"                         => "Eltávolít",

@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Vänligen besök",
     "position"                       => "",
-    "powered_by"                     => "Drivs av",
+    "powered_by"                     => "Drivs av {0} {1}",
     "price"                          => "Pris",
     "print"                          => "Skriv ut",
     "remove"                         => "Radera",
