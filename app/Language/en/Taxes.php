@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Default Tax Category",
     "default_tax_rate"                       => "Default Tax Rate",
     "error_adding_updating"                  => "Tax Code add or update failed",
+    "tax_rate_non_negative"                  => "Tax Rate must be a non-negative value.",
     "group_seq"                              => "Group Seq",
     "jurisdiction_name"                      => "Jurisdiction Name",
     "name"                                   => "Name",

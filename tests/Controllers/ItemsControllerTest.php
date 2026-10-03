@@ -190,6 +190,65 @@ class ItemsControllerTest extends CIUnitTestCase
     }
 
     /**
+     * Regression test: a negative tax percent must be
+     * rejected by postSave so it can never be persisted to items_taxes.
+     */
+    public function testPostSaveRejectsNegativeTaxPercent(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ['VAT'];
+        $postData['tax_percents'] = ['-200'];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    /**
+     * Boundary: a zero tax percent is valid (>= 0) and must not be rejected.
+     */
+    public function testPostSaveAcceptsZeroTaxPercent(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ['VAT'];
+        $postData['tax_percents'] = ['0'];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * Regression test: a negative tax percent must be
+     * rejected by postBulkUpdate so it can never be persisted.
+     */
+    public function testPostBulkUpdateRejectsNegativeTaxPercent(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => '1',
+            'tax_names'    => ['VAT'],
+            'tax_percents' => ['-50'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    /**
      * Regression test: an attribute definition whose
      * `definition_name` contains HTML must be entity-escaped when rendered in the
      * items attributes dropdown, not emitted as a live (executable) tag.
