@@ -11,10 +11,10 @@ npm-debug.log*
 .vscode
 
 # Docker
-!docker/.env
-docker/data/database/db/*
-docker/data/certbot/conf/*
-docker/data/ospos/app/*
+!tools/docker/docker/.env
+tools/docker/docker/data/database/db/*
+tools/docker/docker/data/certbot/conf/*
+tools/docker/docker/data/ospos/app/*
 
 # Editors
 ## SublimeText
@@ -57,6 +57,7 @@ $RECYCLE.BIN/
 
 # Other
 build/
+!tools/build/
 generate_languages.php
 dist
 docs

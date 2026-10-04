@@ -2,12 +2,12 @@
 # Run this Powershell script to "build" OSPOS (one step at a time).
 # The script moves to the repository root itself, so it can be
 # invoked from any working directory.
-# Use ".\tools\Build\build-steps.ps1" from the repository root (if you are in
+# Use ".\tools\build\build-steps.ps1" from the repository root (if you are in
 # another directory, provide a valid path to this script)
 # The leading ".\" tells Powershell that you trust it.
 # ----------------------------------------------------------------
 
-# Run from the repository root (two levels up from tools/Build/)
+# Run from the repository root (two levels up from tools/build/)
 Set-Location -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
 Write-Output "============================================================================="

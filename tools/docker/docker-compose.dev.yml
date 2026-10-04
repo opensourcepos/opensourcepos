@@ -29,7 +29,7 @@ services:
     ospos:
         build:
             context: ../..
-            dockerfile: tools/Docker/Dockerfile
+            dockerfile: tools/docker/Dockerfile
             args:
                 - USERID=${USERID}
                 - GROUPID=${GROUPID}

@@ -2,7 +2,7 @@
 # Run this Powershell script to "build" OSPOS.
 # The script moves to the repository root itself, so it can
 # be invoked from any working directory.
-# Use ".\tools\Build\build-package.ps1" from the repository root (if you are in
+# Use ".\tools\build\build-package.ps1" from the repository root (if you are in
 # another directory, provide a valid path to this script)
 # The leading ".\" tells Powershell that you trust it.
 # ------------------------------------------------------
@@ -12,7 +12,7 @@
 # npm version 9.4.2
 # ------------------------------------------------------
 
-# Run from the repository root (two levels up from tools/Build/)
+# Run from the repository root (two levels up from tools/build/)
 Set-Location -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
 Write-Output "============================================================================="
