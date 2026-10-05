@@ -13,26 +13,28 @@ class Migration_Mysql84Utf8mb4Conversion extends Migration
 
         $this->assertNoCollationCollisions();
 
-        // Drop all foreign keys to avoid collation mismatches during conversion
         $foreignKeys = dropAllForeignKeyConstraints();
 
-        // Drop composite index on ospos_people before conversion; its full-length prefix
-        // would exceed the 3072-byte key limit once columns become utf8mb4 (4 bytes/char)
-        if (indexExists('people', 'first_name')) {
-            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people') . ' DROP INDEX first_name');
+        try {
+            if (indexExists('people', 'first_name')) {
+                $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people') . ' DROP INDEX first_name');
+            }
+
+            $script = APPPATH . 'Database/Migrations/sqlscripts/3.4.3_mysql84_utf8mb4_conversion.sql';
+            if (!executeScript($script)) {
+                throw new RuntimeException('Failed to execute utf8mb4 conversion migration: ' . $script);
+            }
+
+            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people')
+                . ' ADD INDEX(`first_name`(191), `last_name`(191), `email`(191), `phone_number`(191))');
+        } catch (\Throwable $exception) {
+            log_message('error', 'utf8mb4 conversion failed; recovering dropped foreign keys: '
+                . json_encode($foreignKeys));
+            recreateForeignKeyConstraints($foreignKeys);
+
+            throw $exception;
         }
 
-        // Convert all tables to utf8mb4
-        $script = APPPATH . 'Database/Migrations/sqlscripts/3.4.3_mysql84_utf8mb4_conversion.sql';
-        if (!executeScript($script)) {
-            throw new RuntimeException('Failed to execute utf8mb4 conversion migration: ' . $script);
-        }
-
-        // Rebuild composite index on ospos_people with utf8mb4-safe prefix lengths
-        $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people')
-            . ' ADD INDEX(`first_name`(191), `last_name`(191), `email`(191), `phone_number`(191))');
-
-        // Recreate all foreign keys
         recreateForeignKeyConstraints($foreignKeys);
     }
 
