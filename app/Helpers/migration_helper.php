@@ -116,15 +116,24 @@ function createPrimaryKey(string $table, string $index): void {
 }
 
 /**
- * Drops all foreign key constraints that reference the provided table and column.
+ * Drops foreign key constraints that reference the provided table and column.
+ * When $table and $column are omitted, drops all foreign key constraints in the schema.
  *
- * @param string $table
- * @param string $column
+ * @param string|null $table
+ * @param string|null $column
  * @return array containing the deleted constraints in case they need to be recreated after.
  */
 
-function dropAllForeignKeyConstraints(string $table, string $column): array {
+function dropAllForeignKeyConstraints(?string $table = null, ?string $column = null): array {
     $db = Database::connect();
+
+    $scopeClause = '';
+    if ($table !== null && $column !== null) {
+        $scopeClause = "
+                AND ((kcu.REFERENCED_TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.REFERENCED_COLUMN_NAME = '$column')
+                OR (kcu.TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.COLUMN_NAME = '$column'))";
+    }
+
     $result = $db->query("
             SELECT DISTINCT
                 kcu.CONSTRAINT_NAME,
@@ -132,6 +141,7 @@ function dropAllForeignKeyConstraints(string $table, string $column): array {
                 kcu.COLUMN_NAME,
                 kcu.REFERENCED_TABLE_NAME,
                 kcu.REFERENCED_COLUMN_NAME,
+                kcu.ORDINAL_POSITION,
                 rc.DELETE_RULE,
                 rc.UPDATE_RULE
             FROM information_schema.KEY_COLUMN_USAGE kcu
@@ -139,24 +149,49 @@ function dropAllForeignKeyConstraints(string $table, string $column): array {
                 ON kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
                 AND kcu.TABLE_NAME = rc.TABLE_NAME
             WHERE kcu.TABLE_SCHEMA = DATABASE()
-                AND ((kcu.REFERENCED_TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.REFERENCED_COLUMN_NAME = '$column')
-                OR (kcu.TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.COLUMN_NAME = '$column'))
                 AND rc.CONSTRAINT_NAME IS NOT NULL
+                $scopeClause
+            ORDER BY kcu.CONSTRAINT_NAME, kcu.ORDINAL_POSITION
         ");
 
+    // Group rows by constraint name since composite foreign keys span multiple
+    // KEY_COLUMN_USAGE rows (one per column); ORDINAL_POSITION keeps column order
+    // aligned with referenced column order.
     $deletedConstraints = [];
 
     foreach ($result->getResultArray() as $constraint) {
-        $deletedConstraints[] = [
-            'constraintName' => $constraint['CONSTRAINT_NAME'],
-            'tableName' => str_replace($db->DBPrefix, '', $constraint['TABLE_NAME']),
-            'columnName' => $constraint['COLUMN_NAME'],
-            'referencedTable' => str_replace($db->DBPrefix, '', $constraint['REFERENCED_TABLE_NAME']),
-            'referencedColumn' => $constraint['REFERENCED_COLUMN_NAME'],
-            'onDelete' => $constraint['DELETE_RULE'],
-            'onUpdate' => $constraint['UPDATE_RULE'],
-        ];
+        $key = $constraint['TABLE_NAME'] . '.' . $constraint['CONSTRAINT_NAME'];
+
+        if (!isset($deletedConstraints[$key])) {
+            $deletedConstraints[$key] = [
+                'constraintName' => $constraint['CONSTRAINT_NAME'],
+                'tableName' => str_replace($db->DBPrefix, '', $constraint['TABLE_NAME']),
+                'columnName' => [],
+                'referencedTable' => str_replace($db->DBPrefix, '', $constraint['REFERENCED_TABLE_NAME']),
+                'referencedColumn' => [],
+                'onDelete' => $constraint['DELETE_RULE'],
+                'onUpdate' => $constraint['UPDATE_RULE'],
+                'seenPositions' => [],
+            ];
+        }
+
+        // Guard against duplicate rows for the same column position (observed on
+        // MySQL 8.4 information_schema joins) so composite FK column order stays
+        // correct without re-adding the same column twice.
+        $position = $constraint['ORDINAL_POSITION'];
+        if (!isset($deletedConstraints[$key]['seenPositions'][$position])) {
+            $deletedConstraints[$key]['seenPositions'][$position] = true;
+            $deletedConstraints[$key]['columnName'][] = $constraint['COLUMN_NAME'];
+            $deletedConstraints[$key]['referencedColumn'][] = $constraint['REFERENCED_COLUMN_NAME'];
+        }
     }
+
+    foreach ($deletedConstraints as &$constraint) {
+        unset($constraint['seenPositions']);
+    }
+    unset($constraint);
+
+    $deletedConstraints = array_values($deletedConstraints);
 
     if ($deletedConstraints) {
         $forge = Database::forge();

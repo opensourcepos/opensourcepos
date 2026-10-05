@@ -11,41 +11,29 @@ class Migration_Mysql84Utf8mb4Conversion extends Migration
     {
         helper('migration');
 
+        $this->assertNoCollationCollisions();
+
         // Drop all foreign keys to avoid collation mismatches during conversion
-        $foreignKeys = $this->getAllForeignKeys();
-        foreach ($foreignKeys as $fk) {
-            try {
-                $this->db->query('ALTER TABLE `' . $fk['TABLE_NAME'] . '` DROP FOREIGN KEY `' . $fk['CONSTRAINT_NAME'] . '`');
-            } catch (\Exception $e) {
-                log_message('error', 'Failed to drop FK ' . $fk['CONSTRAINT_NAME'] . ': ' . $e->getMessage());
-            }
+        $foreignKeys = dropAllForeignKeyConstraints();
+
+        // Drop composite index on ospos_people before conversion; its full-length prefix
+        // would exceed the 3072-byte key limit once columns become utf8mb4 (4 bytes/char)
+        if (indexExists('people', 'first_name')) {
+            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people') . ' DROP INDEX first_name');
         }
 
         // Convert all tables to utf8mb4
-        $script = APPPATH . 'Database/Migrations/sqlscripts/3.5.0_mysql84_utf8mb4_conversion.sql';
-        if (!execute_script($script)) {
+        $script = APPPATH . 'Database/Migrations/sqlscripts/3.4.3_mysql84_utf8mb4_conversion.sql';
+        if (!executeScript($script)) {
             throw new RuntimeException('Failed to execute utf8mb4 conversion migration: ' . $script);
         }
 
         // Rebuild composite index on ospos_people with utf8mb4-safe prefix lengths
-        if (indexExists('people', 'first_name')) {
-            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people') . ' DROP INDEX first_name');
-        }
         $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people')
             . ' ADD INDEX(`first_name`(191), `last_name`(191), `email`(191), `phone_number`(191))');
 
         // Recreate all foreign keys
-        foreach ($foreignKeys as $fk) {
-            try {
-                $onDelete = $fk['DELETE_RULE'] !== 'NO ACTION' ? ' ON DELETE ' . $fk['DELETE_RULE'] : '';
-                $onUpdate = $fk['UPDATE_RULE'] !== 'NO ACTION' ? ' ON UPDATE ' . $fk['UPDATE_RULE'] : '';
-                $this->db->query('ALTER TABLE `' . $fk['TABLE_NAME'] . '` ADD CONSTRAINT `' . $fk['CONSTRAINT_NAME']
-                    . '` FOREIGN KEY (`' . $fk['COLUMN_NAME'] . '`) REFERENCES `' . $fk['REFERENCED_TABLE_NAME']
-                    . '` (`' . $fk['REFERENCED_COLUMN_NAME'] . '`)' . $onDelete . $onUpdate);
-            } catch (\Exception $e) {
-                log_message('error', 'Failed to recreate FK ' . $fk['CONSTRAINT_NAME'] . ': ' . $e->getMessage());
-            }
-        }
+        recreateForeignKeyConstraints($foreignKeys);
     }
 
     // Intentionally irreversible: converting back to utf8 could cause data loss for utf8mb4 characters.
@@ -53,20 +41,60 @@ class Migration_Mysql84Utf8mb4Conversion extends Migration
     {
     }
 
-    private function getAllForeignKeys(): array
+    /**
+     * utf8mb4_unicode_520_ci treats invisible/ignorable Unicode characters (e.g. the LTR
+     * mark U+200E) as equal weight to nothing, unlike utf8_general_ci. Values that were
+     * previously distinct under a UNIQUE constraint can collide once converted, which aborts
+     * the ALTER TABLE mid-script. Detect those collisions up front and fail with an actionable
+     * message rather than the raw "Duplicate entry" error partway through the conversion.
+     */
+    private function assertNoCollationCollisions(): void
     {
-        $result = $this->db->query("
-            SELECT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME,
-                   REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME,
-                   rc.DELETE_RULE, rc.UPDATE_RULE
-            FROM information_schema.KEY_COLUMN_USAGE kcu
-            JOIN information_schema.REFERENTIAL_CONSTRAINTS rc
-                ON kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
-                AND kcu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA
-            WHERE kcu.CONSTRAINT_SCHEMA = DATABASE()
-                AND kcu.REFERENCED_TABLE_NAME IS NOT NULL
-            ORDER BY kcu.TABLE_NAME, kcu.CONSTRAINT_NAME
-        ");
-        return $result->getResultArray();
+        $uniqueColumns = $this->db->query("
+            SELECT DISTINCT s.TABLE_NAME, s.COLUMN_NAME
+            FROM information_schema.STATISTICS s
+            JOIN information_schema.COLUMNS c
+                ON c.TABLE_SCHEMA = s.TABLE_SCHEMA
+                AND c.TABLE_NAME = s.TABLE_NAME
+                AND c.COLUMN_NAME = s.COLUMN_NAME
+            WHERE s.TABLE_SCHEMA = DATABASE()
+                AND s.NON_UNIQUE = 0
+                AND s.TABLE_NAME LIKE '" . $this->db->getPrefix() . "%'
+                AND c.DATA_TYPE IN ('char', 'varchar', 'text', 'tinytext', 'mediumtext', 'longtext')
+                AND (
+                    SELECT COUNT(*) FROM information_schema.STATISTICS s2
+                    WHERE s2.TABLE_SCHEMA = s.TABLE_SCHEMA
+                        AND s2.TABLE_NAME = s.TABLE_NAME
+                        AND s2.INDEX_NAME = s.INDEX_NAME
+                ) = 1
+        ")->getResultArray();
+
+        $problems = [];
+        foreach ($uniqueColumns as $uniqueColumn) {
+            $table = $uniqueColumn['TABLE_NAME'];
+            $column = $uniqueColumn['COLUMN_NAME'];
+
+            $collisions = $this->db->query("
+                SELECT CONVERT(`$column` USING utf8mb4) COLLATE utf8mb4_unicode_520_ci AS value,
+                       COUNT(*) AS count
+                FROM `$table`
+                WHERE `$column` IS NOT NULL
+                GROUP BY CONVERT(`$column` USING utf8mb4) COLLATE utf8mb4_unicode_520_ci
+                HAVING count > 1
+            ")->getResultArray();
+
+            if ($collisions) {
+                $problems[] = "$table.$column (" . count($collisions) . ' colliding value(s))';
+            }
+        }
+
+        if ($problems) {
+            throw new RuntimeException(
+                'Cannot convert to utf8mb4: the following unique column(s) contain values that '
+                . 'collide under utf8mb4_unicode_520_ci (often due to invisible Unicode characters '
+                . "that this collation treats as equivalent):\n  - " . implode("\n  - ", $problems)
+                . "\nClean up or merge the colliding rows before retrying this migration."
+            );
+        }
     }
 }
