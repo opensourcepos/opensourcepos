@@ -1,5 +1,7 @@
 <?php
 
+use CodeIgniter\Database\BaseConnection;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use Config\Database;
 
 /**
@@ -118,13 +120,20 @@ function createPrimaryKey(string $table, string $index): void {
 /**
  * Drops all foreign key constraints that reference the provided table and column.
  *
+ * A failed metadata query is treated as an error (thrown) rather than mistaken
+ * for "no constraints found", so callers never proceed with schema changes on a
+ * wrong assumption.
+ *
  * @param string $table
  * @param string $column
+ * @param BaseConnection|null $db Connection to use (defaults to the default connection).
+ *
  * @return array containing the deleted constraints in case they need to be recreated after.
+ *
+ * @throws DatabaseException If the metadata query fails.
  */
-
-function dropAllForeignKeyConstraints(string $table, string $column): array {
-    $db = Database::connect();
+function dropAllForeignKeyConstraints(string $table, string $column, ?BaseConnection $db = null): array {
+    $db ??= Database::connect();
     $result = $db->query("
             SELECT DISTINCT
                 kcu.CONSTRAINT_NAME,
@@ -144,9 +153,26 @@ function dropAllForeignKeyConstraints(string $table, string $column): array {
                 AND rc.CONSTRAINT_NAME IS NOT NULL
         ");
 
+    if ($result === false) {
+        $detail = 'unknown error';
+        try {
+            $error = $db->error();
+            if (is_array($error) && !empty($error['message'])) {
+                $detail = (string) $error['message'];
+            }
+        } catch (\Throwable $e) {
+            // A disconnected or mocked connection may not support error(); keep the default.
+        }
+
+        throw new DatabaseException(sprintf(
+            'Failed to look up foreign key constraints referencing table "%s" column "%s": %s',
+            $table, $column, $detail
+        ));
+    }
+
     $deletedConstraints = [];
 
-    foreach ($result ? $result->getResultArray() : [] as $constraint) {
+    foreach ($result->getResultArray() as $constraint) {
         $deletedConstraints[] = [
             'constraintName' => $constraint['CONSTRAINT_NAME'],
             'tableName' => str_replace($db->DBPrefix, '', $constraint['TABLE_NAME']),
@@ -187,20 +213,70 @@ function deleteIndex(string $table, string $index): void {
  *
  * @param string $table
  * @param string $index
+ * @param BaseConnection|null $db Connection to use (defaults to the default connection).
+ *
  * @return bool
+ *
+ * @throws DatabaseException If the metadata query fails.
  */
-function indexExists(string $table, string $index): bool {
-    $db = Database::connect();
+function indexExists(string $table, string $index, ?BaseConnection $db = null): bool {
+    $db ??= Database::connect();
     $result = $db->query('SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = \'' . $db->getPrefix() . "$table' AND index_name = '$index'");
-    $row_array = $result ? $result->getRowArray() : null;
+
+    if ($result === false) {
+        $detail = 'unknown error';
+        try {
+            $error = $db->error();
+            if (is_array($error) && !empty($error['message'])) {
+                $detail = (string) $error['message'];
+            }
+        } catch (\Throwable $e) {
+            // A disconnected or mocked connection may not support error(); keep the default.
+        }
+
+        throw new DatabaseException(sprintf(
+            'Failed to check whether index "%s" exists on table "%s": %s',
+            $index, $table, $detail
+        ));
+    }
+
+    $row_array = $result->getRowArray();
 
     return $row_array !== null && $row_array['COUNT(*)'] > 0;
 }
 
-function primaryKeyExists(string $table): bool {
-    $db = Database::connect();
+/**
+ * Checks if the specified table has a primary key.
+ *
+ * @param string $table
+ * @param BaseConnection|null $db Connection to use (defaults to the default connection).
+ *
+ * @return bool
+ *
+ * @throws DatabaseException If the metadata query fails.
+ */
+function primaryKeyExists(string $table, ?BaseConnection $db = null): bool {
+    $db ??= Database::connect();
     $result = $db->query('SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_schema = DATABASE() AND table_name = \'' . $db->getPrefix() . "$table' AND constraint_type = 'PRIMARY KEY'");
-    $row_array = $result ? $result->getRowArray() : null;
+
+    if ($result === false) {
+        $detail = 'unknown error';
+        try {
+            $error = $db->error();
+            if (is_array($error) && !empty($error['message'])) {
+                $detail = (string) $error['message'];
+            }
+        } catch (\Throwable $e) {
+            // A disconnected or mocked connection may not support error(); keep the default.
+        }
+
+        throw new DatabaseException(sprintf(
+            'Failed to check whether table "%s" has a primary key: %s',
+            $table, $detail
+        ));
+    }
+
+    $row_array = $result->getRowArray();
 
     return $row_array !== null && $row_array['COUNT(*)'] > 0;
 }
