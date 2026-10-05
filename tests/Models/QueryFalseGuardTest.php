@@ -78,7 +78,7 @@ class QueryFalseGuardTest extends CIUnitTestCase
     /**
      * Tax::get_taxes() must return an empty array, not throw, when the query fails.
      */
-    public function testGetTaxesReturnsEmptyArrayWhenQueryFails(): void
+    public function testGetTaxes_ReturnsEmptyArrayWhenQueryFails(): void
     {
         $model = $this->modelWithFailingQuery(Tax::class);
 
@@ -88,7 +88,7 @@ class QueryFalseGuardTest extends CIUnitTestCase
     /**
      * Sale::get_all_suspended() must return an empty array, not throw, when the query fails.
      */
-    public function testGetAllSuspendedReturnsEmptyArrayWhenQueryFails(): void
+    public function testGetAllSuspended_ReturnsEmptyArrayWhenQueryFails(): void
     {
         $model = $this->modelWithFailingQuery(Sale::class);
 
@@ -101,7 +101,7 @@ class QueryFalseGuardTest extends CIUnitTestCase
     /**
      * Inventory_low::getData() must return an empty array, not throw, when the query fails.
      */
-    public function testInventoryLowGetDataReturnsEmptyArrayWhenQueryFails(): void
+    public function testInventoryLowGetData_ReturnsEmptyArrayWhenQueryFails(): void
     {
         $report = new Inventory_low();
 
@@ -115,7 +115,7 @@ class QueryFalseGuardTest extends CIUnitTestCase
     /**
      * indexExists() must throw, not silently report "not found", when the metadata query fails.
      */
-    public function testIndexExistsThrowsWhenQueryFails(): void
+    public function testIndexExists_ThrowsWhenQueryFails(): void
     {
         $this->requireMigrationHelper();
         $this->expectException(DatabaseException::class);
@@ -126,7 +126,7 @@ class QueryFalseGuardTest extends CIUnitTestCase
     /**
      * primaryKeyExists() must throw, not silently report "no primary key", when the query fails.
      */
-    public function testPrimaryKeyExistsThrowsWhenQueryFails(): void
+    public function testPrimaryKeyExists_ThrowsWhenQueryFails(): void
     {
         $this->requireMigrationHelper();
         $this->expectException(DatabaseException::class);
@@ -137,7 +137,7 @@ class QueryFalseGuardTest extends CIUnitTestCase
     /**
      * dropAllForeignKeyConstraints() must throw, not silently report "none found", when the query fails.
      */
-    public function testDropAllForeignKeyConstraintsThrowsWhenQueryFails(): void
+    public function testDropAllForeignKeyConstraints_ThrowsWhenQueryFails(): void
     {
         $this->requireMigrationHelper();
         $this->expectException(DatabaseException::class);
