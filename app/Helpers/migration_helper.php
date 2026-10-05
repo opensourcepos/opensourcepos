@@ -146,7 +146,8 @@ function dropAllForeignKeyConstraints(?string $table = null, ?string $column = n
                 rc.UPDATE_RULE
             FROM information_schema.KEY_COLUMN_USAGE kcu
             LEFT JOIN information_schema.REFERENTIAL_CONSTRAINTS rc
-                ON kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+                ON kcu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA
+                AND kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
                 AND kcu.TABLE_NAME = rc.TABLE_NAME
             WHERE kcu.TABLE_SCHEMA = DATABASE()
                 AND rc.CONSTRAINT_NAME IS NOT NULL
