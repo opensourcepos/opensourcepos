@@ -45,9 +45,10 @@ class QueryFalseGuardTest extends CIUnitTestCase
 
         $db = $this->getMockBuilder($driverClass)
             ->disableOriginalConstructor()
-            ->onlyMethods(['query'])
+            ->onlyMethods(['query', 'error'])
             ->getMock();
         $db->method('query')->willReturn(false);
+        $db->method('error')->willReturn(['code' => 1, 'message' => 'simulated query failure']);
 
         return $db;
     }
