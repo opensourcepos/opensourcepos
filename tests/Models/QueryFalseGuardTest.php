@@ -3,6 +3,7 @@
 namespace Tests\Models;
 
 use App\Models\Sale;
+use App\Models\Reports\Inventory_low;
 use App\Models\Tax;
 use CodeIgniter\BaseModel;
 use CodeIgniter\Database\BaseConnection;
@@ -95,6 +96,20 @@ class QueryFalseGuardTest extends CIUnitTestCase
         $this->assertSame([], $model->get_all_suspended());
         $this->assertSame([], $model->get_all_suspended(NEW_ENTRY));
         $this->assertSame([], $model->get_all_suspended(123));
+    }
+
+    /**
+     * Inventory_low::getData() must return an empty array, not throw, when the query fails.
+     */
+    public function testInventoryLowGetDataReturnsEmptyArrayWhenQueryFails(): void
+    {
+        $report = new Inventory_low();
+
+        $prop = new \ReflectionProperty(BaseModel::class, 'db');
+        $prop->setAccessible(true);
+        $prop->setValue($report, $this->failingConnection());
+
+        $this->assertSame([], $report->getData([]));
     }
 
     /**
