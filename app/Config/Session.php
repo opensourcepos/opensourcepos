@@ -6,7 +6,6 @@ use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\BaseHandler;
 use CodeIgniter\Session\Handlers\DatabaseHandler;
 use CodeIgniter\Session\Handlers\FileHandler;
-use Config\Database;
 
 class Session extends BaseConfig
 {
@@ -16,6 +15,7 @@ class Session extends BaseConfig
      * --------------------------------------------------------------------------
      *
      * The session storage driver to use:
+     * - `CodeIgniter\Session\Handlers\ArrayHandler` (for testing)
      * - `CodeIgniter\Session\Handlers\FileHandler`
      * - `CodeIgniter\Session\Handlers\DatabaseHandler`
      * - `CodeIgniter\Session\Handlers\MemcachedHandler`
@@ -139,7 +139,11 @@ class Session extends BaseConfig
                     $this->driver = FileHandler::class;
                     $this->savePath = WRITEPATH . 'session';
                 }
-            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            } catch (\Exception $e) {
+                // Database not available yet (e.g. fresh install before migrations).
+                // Fall back to file-based sessions so the login/migration page
+                // can still be served. Catches mysqli_sql_exception which is
+                // not a subclass of DatabaseException but is a RuntimeException.
                 $this->driver = FileHandler::class;
                 $this->savePath = WRITEPATH . 'session';
             }

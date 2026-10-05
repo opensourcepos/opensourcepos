@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Vergi oranı",
     "taxes"                                   => "Vergiler",
     "taxes_summary_report"                    => "Vergi Özet Raporu",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Toplam",
     "total_inventory_value"                   => "Toplam Stok Değeri",
     "total_low_sell_quantity"                 => "Toplam Düşük Satış Miktarı",

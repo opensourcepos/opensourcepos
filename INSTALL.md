@@ -1,6 +1,6 @@
 ## Server Requirements
 
-- PHP version `8.1` to `8.4` are supported, PHP version `≤7.4` is NOT supported. Please note that PHP needs to have the extensions `php-json`, `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring`, `php-curl` and `php-xml` installed and enabled. An unstable master build can be downloaded in the releases section.
+- PHP version `8.2` to `8.4` are supported, PHP version `≤ 8.1` is NOT supported. Please note that PHP needs to have the extensions `php-json`, `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring`, `php-curl` and `php-xml` installed and enabled. An unstable master build can be downloaded in the releases section.
 - MySQL `5.7` is supported, also MariaDB replacement `10.x` is supported and might offer better performance.
 - Apache `2.4` is supported. Nginx should work fine too, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Local-Deployment-using-LEMP).
 - Raspberry PI based installations proved to work, see [wiki page here](<https://github.com/opensourcepos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS)>).
@@ -10,7 +10,7 @@
 
 ### Allowed Hostnames (REQUIRED for Production)
 
-⚠️ **CRITICAL**: OpenSourcePOS validates the Host header to prevent Host Header Injection attacks (GHSA-jchf-7hr6-h4f3). **You MUST configure `app.allowedHostnames` for production deployments. If not configured, the application will fail to start.**
+⚠️ **CRITICAL**: OpenSourcePOS validates the Host header to prevent Host Header Injection attacks. **You MUST configure `app.allowedHostnames` for production deployments. If not configured, the application will fail to start.**
 
 **Add to your `.env` file:**
 
@@ -34,9 +34,8 @@ RuntimeException: Security: allowedHostnames is not configured.
 **Solution**: Add `app.allowedHostnames` to your `.env` file with your domain(s).
 
 **Why this matters:**
-- Prevents Host Header Injection attacks (GHSA-jchf-7hr6-h4f3)
+- Prevents Host Header Injection attacks
 - Ensures URLs are generated with the correct domain
-- Security advisory: https://github.com/opensourcepos/opensourcepos/security/advisories/GHSA-jchf-7hr6-h4f3
 - Fixes issue #4480: .env configuration now works via comma-separated values
 
 ### HTTPS Behind Proxy
@@ -72,7 +71,15 @@ Docker runs natively on Mac and Linux. Windows requires WSL2 to be installed. Pl
 
 **Be aware that this setup is not suited for production usage! Change the default passwords in the compose file before exposing the containers publicly.**
 
-Start the containers using the following command
+First create a **regular `.env` file** in the project root (a missing one is not
+auto-created as a file — see the compose `create_host_path: false` setting). Copy
+the shipped example:
+
+```
+    cp .env.example .env
+```
+
+Then start the containers:
 
 ```
     docker-compose up

@@ -36,7 +36,7 @@
                     <div class="fileinput <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
                         <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
                         <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
-                            <img data-src="holder.js/100%x100%" alt="<?= esc(lang('Config.company_logo')) ?>" src="<?= $logo_src ?>" style="max-height: 100%; max-width: 100%;">
+                            <img data-src="holder.js/100%x100%" alt="<?= esc(lang('Config.company_logo')) ?>" src="<?= esc($logo_src, 'attr') ?>" style="max-height: 100%; max-width: 100%;">
                         </div>
                         <div>
                             <span class="btn btn-default btn-sm btn-file">
@@ -105,6 +105,7 @@
                             <span class="glyphicon glyphicon-phone-alt"></span>
                         </span>
                         <?= form_input([
+                            'type'  => 'tel',
                             'name'  => 'phone',
                             'id'    => 'phone',
                             'class' => 'form-control input-sm required',
@@ -122,6 +123,7 @@
                             <span class="glyphicon glyphicon-phone-alt"></span>
                         </span>
                         <?= form_input([
+                            'type'  => 'tel',
                             'name'  => 'fax',
                             'id'    => 'fax',
                             'class' => 'form-control input-sm',

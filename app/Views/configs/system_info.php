@@ -25,11 +25,9 @@ use Config\OSPOS;
     <div class="container">
         <div class="row">
             <div class="col-sm-2" style="text-align: left;"><br>
-                <strong>
-                    <p style="min-height: 14.7em;">General Info</p>
-                    <p style="min-height: 10.5em;">User Setup</p><br>
-                    <p>Permissions</p>
-                </strong>
+                <p style="min-height: 17.7em; font-weight: bold;">General Info</p>
+                <p style="min-height: 12.2em; font-weight: bold;">User Setup</p><br>
+                <p style="font-weight: bold;">Permissions</p>
             </div>
             <div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
                 <?= lang('Config.ospos_info') . ':' ?>
@@ -38,14 +36,14 @@ use Config\OSPOS;
                 <div id="TimeError"></div>
                 Extensions & Modules:<br>
                 <?php
-                echo "&#187; GD: ", extension_loaded('gd') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
-                echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-                echo "&#187; INTL: ", extension_loaded('intl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-                echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-                echo "&#187; MBString: ", extension_loaded('mbstring') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-                echo "&#187; Curl: ", extension_loaded('curl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-                echo "&#187; Json: ", extension_loaded('json') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br><br>';
-                echo "&#187; Xml: ", extension_loaded('xml') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br><br>';
+                    echo "&#187; GD: ", extension_loaded('gd') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
+                    echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
+                    echo "&#187; INTL: ", extension_loaded('intl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
+                    echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
+                    echo "&#187; MBString: ", extension_loaded('mbstring') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
+                    echo "&#187; Curl: ", extension_loaded('curl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
+                    echo "&#187; Json: ", extension_loaded('json') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
+                    echo "&#187; Xml: ", extension_loaded('xml') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br><br>';
                 ?>
                 User Configuration:<br>
                 .Browser:
@@ -200,7 +198,7 @@ use Config\OSPOS;
 <div style="text-align: center;">
     <a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= lang('Config.report_an_issue') ?></a>
     <script type="text/javascript">
-        var clipboard = new ClipboardJS('.copy');
+        const clipboard = new ClipboardJS('.copy');
 
         clipboard.on('success', function(e) {
             document.getSelection().removeAllRanges();

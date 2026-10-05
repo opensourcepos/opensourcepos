@@ -2,9 +2,8 @@
 
 use App\Models\Attribute;
 use App\Models\Employee;
-use App\Models\Item_taxes;
-use App\Models\Tax_category;
 use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
 use Config\Services;
@@ -60,7 +59,7 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
 }
 
 
-function sales_headers(): array
+function salesHeaders(): array
 {
     return [
         ['sale_id'         => lang('Common.id')],
@@ -78,7 +77,7 @@ function sales_headers(): array
  */
 function get_sales_manage_table_headers(): string
 {
-    $headers = sales_headers();
+    $headers = salesHeaders();
     $config = config(OSPOS::class)->settings;
 
     if ($config['invoice_enable']) {
@@ -94,7 +93,7 @@ function get_sales_manage_table_headers(): string
 /**
  * Get the html data row for the sales
  */
-function get_sale_data_row(object $sale): array
+function getSaleDataRow(object $sale): array
 {
     $uri = current_url(true);
     $controller = $uri->getSegment(1);
@@ -144,7 +143,7 @@ function get_sale_data_row(object $sale): array
 /**
  * Get the html data last row for the sales
  */
-function get_sale_data_last_row(ResultInterface $sales): array
+function getSaleDataLastRow(ResultInterface $sales): array
 {
     $sum_amount_due = 0;
     $sum_amount_tendered = 0;
@@ -168,7 +167,7 @@ function get_sale_data_last_row(ResultInterface $sales): array
 /**
  * Get the sales payments summary
  */
-function get_sales_manage_payments_summary(array $payments): string
+function getSalesManagePaymentsSummary(array $payments): string
 {
     $table = '<div id="report_summary">';
     $total = 0;
@@ -225,7 +224,7 @@ function get_person_data_row(object $person): array
         'people.person_id' => $person->person_id,
         'last_name'        => $person->last_name,
         'first_name'       => $person->first_name,
-        'email'            => empty($person->email) ? '' : mailto($person->email, $person->email),
+        'email'            => empty($person->email) ? '' : mailto(esc($person->email), esc($person->email)),
         'phone_number'     => $person->phone_number,
         'messages'         => empty($person->phone_number)
             ? ''
@@ -291,7 +290,7 @@ function get_customer_data_row(object $person, object $stats): array
         'people.person_id' => $person->person_id,
         'last_name'        => $person->last_name,
         'first_name'       => $person->first_name,
-        'email'            => empty($person->email) ? '' : mailto($person->email, $person->email),
+        'email'            => empty($person->email) ? '' : mailto(esc($person->email), esc($person->email)),
         'phone_number'     => $person->phone_number,
         'total'            => to_currency($stats->total),
         'messages'         => empty($person->phone_number)
@@ -362,7 +361,7 @@ function get_supplier_data_row(object $supplier): array
         'category'         => $supplier->category,
         'last_name'        => $supplier->last_name,
         'first_name'       => $supplier->first_name,
-        'email'            => empty($supplier->email) ? '' : mailto($supplier->email, $supplier->email),
+        'email'            => empty($supplier->email) ? '' : mailto(esc($supplier->email), esc($supplier->email)),
         'phone_number'     => $supplier->phone_number,
         'messages'         => empty($supplier->phone_number)
             ? ''
@@ -402,13 +401,36 @@ function item_headers(): array
 }
 
 /**
+ * Get all sortable column keys for items table, including dynamic attribute columns.
+ *
+ * @param array|null $definitionIds Attribute definition IDs to append as sortable columns.
+ *                                  If null, resolved via a query against SHOW_IN_ITEMS.
+ * @return array Array of column headers in the format sanitizeSortColumn() expects
+ */
+function itemSortColumns(?array $definitionIds = null): array
+{
+    if ($definitionIds === null) {
+        $attribute = model(Attribute::class);
+        $definitionIds = array_keys($attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS));
+    }
+
+    $headers = item_headers();
+
+    foreach ($definitionIds as $definitionId) {
+        $headers[] = [(string) $definitionId => ''];
+    }
+
+    return $headers;
+}
+
+/**
  * Get the header for the items tabular view
  */
-function get_items_manage_table_headers(): string
+function getItemsManageTableHeaders(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
-    $definitionsWithTypes = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
+    $definitionsWithTypes = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
     $headers = item_headers();
 
@@ -420,8 +442,8 @@ function get_items_manage_table_headers(): string
 
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
-    foreach ($definitionsWithTypes as $definition_id => $definitionInfo) {
-        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => false];
+    foreach ($definitionsWithTypes as $definitionId => $definitionInfo) {
+        $headers[] = [$definitionId => $definitionInfo['name'], 'sortable' => true];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];
@@ -432,32 +454,17 @@ function get_items_manage_table_headers(): string
 
 /**
  * Get the html data row for the item
+ *
+ * @param object $item
+ * @param array $definitionNames Attribute definitions with types, keyed by definition_id (see Attribute::getDefinitionsByFlags(..., true))
+ * @param array $taxPercentsByItemId Pre-computed tax percent strings, keyed by item_id (see Items::buildTaxPercentsByItem())
+ * @return array
  */
-function get_item_data_row(object $item): array
+function getItemDataRow(object $item, array $definitionNames, array $taxPercentsByItemId): array
 {
-    $attribute = model(Attribute::class);
-    $item_taxes = model(Item_taxes::class);
-    $tax_category = model(Tax_category::class);
     $config = config(OSPOS::class)->settings;
 
-    if ($config['use_destination_based_tax']) {
-        if ($item->tax_category_id == null) {    // TODO: === ?
-            $tax_percents = '-';
-        } else {
-            $tax_category_info = $tax_category->get_info($item->tax_category_id);
-            $tax_percents = $tax_category_info->tax_category;
-        }
-    } else {
-        $item_tax_info = $item_taxes->get_info($item->item_id);
-        $tax_percents = '';
-        foreach ($item_tax_info as $tax_info) {
-            $tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
-        }
-
-        // Remove ', ' from last item
-        $tax_percents = substr($tax_percents, 0, -2);
-        $tax_percents = !$tax_percents ? '-' : $tax_percents;
-    }
+    $taxPercents = $taxPercentsByItemId[$item->item_id] ?? '-';
 
     $controller = get_controller();
 
@@ -470,16 +477,14 @@ function get_item_data_row(object $item): array
             : glob("./uploads/item_pics/$item->pic_filename");
 
         if (sizeof($images) > 0) {
-            $image_path = ltrim($images[0], './');
-            $image .= '<a class="rollover" href="' . base_url(implode('/', array_map('rawurlencode', explode('/', $image_path)))) . '"><img alt="Image thumbnail" src="' . site_url('items/PicThumb/' . rawurlencode(pathinfo($images[0], PATHINFO_BASENAME))) . '"></a>';
+            $imagePath = ltrim($images[0], './');
+            $image .= '<a class="rollover" href="' . base_url(implode('/', array_map('rawurlencode', explode('/', $imagePath)))) . '"><img alt="Image thumbnail" src="' . site_url('items/PicThumb/' . rawurlencode(pathinfo($images[0], PATHINFO_BASENAME))) . '"></a>';
         }
     }
 
     if ($config['multi_pack_enabled']) {
         $item->name .= NAME_SEPARATOR . $item->pack_name;
     }
-
-    $definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS, true);
 
     $columns = [
         'items.item_id' => $item->item_id,
@@ -490,7 +495,7 @@ function get_item_data_row(object $item): array
         'cost_price'    => to_currency($item->cost_price),
         'unit_price'    => to_currency($item->unit_price),
         'quantity'      => to_quantity_decimals($item->quantity),
-        'tax_percents'  => !$tax_percents ? '-' : $tax_percents,
+        'tax_percents'  => !$taxPercents ? '-' : $taxPercents,
         'item_pic'      => $image
     ];
 
@@ -523,7 +528,7 @@ function get_item_data_row(object $item): array
         )
     ];
 
-    return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
+    return $columns + expand_attribute_values($definitionNames, (array) $item) + $icons;
 }
 
 function giftcard_headers(): array
@@ -577,8 +582,8 @@ function item_kit_headers(): array
         ['item_kit_number'  => lang('Item_kits.item_kit_number')],
         ['name'             => lang('Item_kits.name')],
         ['description'      => lang('Item_kits.description')],
-        ['total_cost_price' => lang('Items.cost_price'), 'sortable' => FALSE],
-        ['total_unit_price' => lang('Items.unit_price'), 'sortable' => FALSE]
+        ['total_cost_price' => lang('Items.cost_price'), 'sortable' => false],
+        ['total_unit_price' => lang('Items.unit_price'), 'sortable' => false]
     ];
 }
 
@@ -654,7 +659,7 @@ function expand_attribute_values(array $definition_names, array $row): array
     foreach ($definition_names as $definition_id => $definitionInfo) {
         if (isset($indexed_values[$definition_id])) {
             $raw_value = $indexed_values[$definition_id];
-            
+
             // Format DECIMAL attributes according to locale
             if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
                 $attribute_values["$definition_id"] = to_decimals($raw_value);
@@ -698,7 +703,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
     $attribute = model(Attribute::class);
     $controller = get_controller();
 
-    if (count($attribute->get_definition_flags()) == 0) {
+    if (count($attribute->getDefinitionFlags()) == 0) {
         $definition_flags = lang('Common.none_selected_text');
     } elseif ($attribute->definition_type == GROUP) {
         $definition_flags = "-";
@@ -742,7 +747,7 @@ function get_expense_category_manage_table_headers(): string
 }
 
 /**
- * Gets the html data row for the expenses category
+ * Gets the html data row for the expense category
  */
 function get_expense_category_data_row(object $expense_category): array
 {
@@ -841,7 +846,7 @@ function get_expenses_data_last_row(object $expense): array
 }
 
 /**
- * Get the expenses payments summary
+ * Get the expense payments summary
  */
 function get_expenses_manage_payments_summary(array $payments, ResultInterface $expenses): string    // TODO: $expenses is passed but never used.
 {
@@ -933,22 +938,22 @@ function get_controller(): string
 }
 
 /**
- * Restores filter values from URL query string.
- * 
- * @param CodeIgniter\HTTP\IncomingRequest $request The request object
+ * Restores filter values from the URL query string.
+ *
+ * @param IncomingRequest $request The request object
  * @return array Array with 'start_date', 'end_date', and 'selected_filters' keys
  */
-function restoreTableFilters($request): array
+function restoreTableFilters(IncomingRequest $request): array
 {
     $startDate = $request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $endDate = $request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $urlFilters = $request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    
+
     return array_filter([
         'start_date' => $startDate ?: null,
         'end_date' => $endDate ?: null,
         'selected_filters' => $urlFilters ?? []
-    ], function($value) {
+    ], function ($value) {
         return $value !== null && $value !== [];
     });
 }

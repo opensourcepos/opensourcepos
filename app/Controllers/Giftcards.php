@@ -163,7 +163,7 @@ class Giftcards extends Secure_Controller
     {
         $existing_id = $this->request->getPost('giftcard_id', FILTER_SANITIZE_NUMBER_INT);
         $giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_NUMBER_INT);
-        $giftcard_id = $this->giftcard->get_giftcard_id($giftcard_number);
+        $giftcard_id = $this->giftcard->getGiftcardId($giftcard_number);
         $success = ($giftcard_id == (int) $existing_id || !$giftcard_id );
 
         return $this->response->setJSON($success ? 'true' : 'false');
