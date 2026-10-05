@@ -30,7 +30,7 @@ class AppconfigTest extends CIUnitTestCase
         return model(Appconfig::class);
     }
 
-    public function testBatchSavePersistsAllKeysAndRefreshesCachedSettings(): void
+    public function testBatchSave_PersistsAllKeysAndRefreshesCachedSettings(): void
     {
         $appconfig = $this->appconfig();
         $prefix    = uniqid('ospos_batch_');
@@ -59,7 +59,7 @@ class AppconfigTest extends CIUnitTestCase
         $this->assertSame('value-c', $settings[$keyC]);
     }
 
-    public function testSingleSaveRefreshesCachedSettings(): void
+    public function testSave_RefreshesCachedSettings(): void
     {
         $appconfig = $this->appconfig();
         $key       = uniqid('ospos_single_');
