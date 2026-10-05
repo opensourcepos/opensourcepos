@@ -5,7 +5,6 @@ namespace Tests\Models;
 use App\Models\Sale;
 use App\Models\Tax;
 use CodeIgniter\BaseModel;
-use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 
@@ -33,6 +32,9 @@ class QueryFalseGuardTest extends CIUnitTestCase
      * Build a model instance whose db connection always returns false from
      * query(), simulating a failed query.
      *
+     * Mocks the concrete driver class (not the abstract BaseConnection, which
+     * has many abstract methods that onlyMethods() does not stub).
+     *
      * @template T of object
      *
      * @param class-string<T> $class
@@ -41,7 +43,9 @@ class QueryFalseGuardTest extends CIUnitTestCase
      */
     private function modelWithFailingQuery(string $class)
     {
-        $db = $this->getMockBuilder(BaseConnection::class)
+        $driverClass = get_class(\Config\Database::connect($this->DBGroup));
+
+        $db = $this->getMockBuilder($driverClass)
             ->disableOriginalConstructor()
             ->onlyMethods(['query'])
             ->getMock();
