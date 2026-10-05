@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "שיעור מס",
     "taxes"                                   => "מסים",
     "taxes_summary_report"                    => "דוח סיכום מסים",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "סהכ",
     "total_inventory_value"                   => "סהכ ערך מלאי",
     "total_low_sell_quantity"                 => "סהכ מינימום כמות למכירה",
