@@ -60,7 +60,7 @@ class TaxesControllerTest extends CIUnitTestCase
      * Regression test: `tax_code_name[]` containing `<`/`>` (the stored-XSS
      * vector) must be rejected by postSave_tax_codes before anything is saved.
      */
-    public function testPostSaveTaxCodesRejectsMaliciousName(): void
+    public function testPostSaveTaxCodes_RejectsMaliciousName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
@@ -81,7 +81,7 @@ class TaxesControllerTest extends CIUnitTestCase
     /**
      * Legitimate unicode tax code names must not be rejected by the XSS guard.
      */
-    public function testPostSaveTaxCodesAcceptsUnicodeName(): void
+    public function testPostSaveTaxCodes_AcceptsUnicodeName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
@@ -103,7 +103,7 @@ class TaxesControllerTest extends CIUnitTestCase
      * Slash-separated tax names (e.g. "GST/HST") are legitimate and must not be
      * rejected by the validation guard.
      */
-    public function testPostSaveTaxCodesAcceptsSlashName(): void
+    public function testPostSaveTaxCodes_AcceptsSlashName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
@@ -124,7 +124,7 @@ class TaxesControllerTest extends CIUnitTestCase
     /**
      * Regression test: `tax_category[]` containing `<`/`>` must be rejected.
      */
-    public function testPostSaveTaxCategoriesRejectsMaliciousName(): void
+    public function testPostSaveTaxCategories_RejectsMaliciousName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
@@ -143,7 +143,7 @@ class TaxesControllerTest extends CIUnitTestCase
     /**
      * Legitimate unicode tax category names must not be rejected.
      */
-    public function testPostSaveTaxCategoriesAcceptsUnicodeName(): void
+    public function testPostSaveTaxCategories_AcceptsUnicodeName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
@@ -163,7 +163,7 @@ class TaxesControllerTest extends CIUnitTestCase
      * CJK tax names (e.g. "消費税", the Japanese consumption tax) are legitimate
      * and must not be rejected by the validation guard.
      */
-    public function testPostSaveTaxCategoriesAcceptsCjkName(): void
+    public function testPostSaveTaxCategories_AcceptsCjkName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
@@ -182,7 +182,7 @@ class TaxesControllerTest extends CIUnitTestCase
     /**
      * Regression test: `jurisdiction_name[]` containing `<`/`>` must be rejected.
      */
-    public function testPostSaveTaxJurisdictionsRejectsMaliciousName(): void
+    public function testPostSaveTaxJurisdictions_RejectsMaliciousName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
@@ -205,7 +205,7 @@ class TaxesControllerTest extends CIUnitTestCase
     /**
      * Legitimate unicode jurisdiction names must not be rejected.
      */
-    public function testPostSaveTaxJurisdictionsAcceptsUnicodeName(): void
+    public function testPostSaveTaxJurisdictions_AcceptsUnicodeName(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
