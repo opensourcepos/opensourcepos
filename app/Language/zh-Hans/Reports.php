@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "",
     "taxes"                                   => "稅額",
     "taxes_summary_report"                    => "稅金摘要報告",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "總計",
     "total_inventory_value"                   => "Total Inventory Value",
     "total_low_sell_quantity"                 => "",
