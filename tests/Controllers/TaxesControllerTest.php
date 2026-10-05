@@ -100,6 +100,28 @@ class TaxesControllerTest extends CIUnitTestCase
     }
 
     /**
+     * Slash-separated tax names (e.g. "GST/HST") are legitimate and must not be
+     * rejected by the validation guard.
+     */
+    public function testPostSaveTaxCodesAcceptsSlashName(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $response = $this->post('/taxes/save_tax_codes', [
+            'tax_code_id'   => ['-1'],
+            'tax_code'      => ['TC' . uniqid()],
+            'tax_code_name' => ['GST/HST'],
+            'city'          => [''],
+            'state'         => [''],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
      * Regression test: `tax_category[]` containing `<`/`>` must be rejected.
      */
     public function testPostSaveTaxCategoriesRejectsMaliciousName(): void
@@ -129,6 +151,26 @@ class TaxesControllerTest extends CIUnitTestCase
         $response = $this->post('/taxes/save_tax_categories', [
             'tax_category_id'    => ['-1'],
             'tax_category'       => ["Impôt, incl."],
+            'tax_group_sequence' => ['1'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * CJK tax names (e.g. "消費税", the Japanese consumption tax) are legitimate
+     * and must not be rejected by the validation guard.
+     */
+    public function testPostSaveTaxCategoriesAcceptsCjkName(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $response = $this->post('/taxes/save_tax_categories', [
+            'tax_category_id'    => ['-1'],
+            'tax_category'       => ['消費税'],
             'tax_group_sequence' => ['1'],
         ]);
 
