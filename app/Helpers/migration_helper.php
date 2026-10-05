@@ -2,7 +2,6 @@
 
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\Exceptions\DatabaseException;
-use CodeIgniter\Database\Forge;
 use Config\Database;
 
 /**
@@ -186,7 +185,7 @@ function dropAllForeignKeyConstraints(string $table, string $column, ?BaseConnec
     }
 
     if ($deletedConstraints) {
-        $forge = new Forge($db);
+        $forge = Database::forge();
         foreach ($deletedConstraints as $foreignKey) {
             $forge->dropForeignKey($foreignKey['tableName'], $foreignKey['constraintName']);
         }
