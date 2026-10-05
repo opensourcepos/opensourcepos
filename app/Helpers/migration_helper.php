@@ -146,7 +146,7 @@ function dropAllForeignKeyConstraints(string $table, string $column): array {
 
     $deletedConstraints = [];
 
-    foreach ($result->getResultArray() as $constraint) {
+    foreach ($result ? $result->getResultArray() : [] as $constraint) {
         $deletedConstraints[] = [
             'constraintName' => $constraint['CONSTRAINT_NAME'],
             'tableName' => str_replace($db->DBPrefix, '', $constraint['TABLE_NAME']),
@@ -192,17 +192,17 @@ function deleteIndex(string $table, string $index): void {
 function indexExists(string $table, string $index): bool {
     $db = Database::connect();
     $result = $db->query('SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = \'' . $db->getPrefix() . "$table' AND index_name = '$index'");
-    $row_array = $result->getRowArray();
+    $row_array = $result ? $result->getRowArray() : null;
 
-    return $row_array && $row_array['COUNT(*)'] > 0;
+    return $row_array !== null && $row_array['COUNT(*)'] > 0;
 }
 
 function primaryKeyExists(string $table): bool {
     $db = Database::connect();
     $result = $db->query('SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_schema = DATABASE() AND table_name = \'' . $db->getPrefix() . "$table' AND constraint_type = 'PRIMARY KEY'");
-    $row_array = $result->getRowArray();
+    $row_array = $result ? $result->getRowArray() : null;
 
-    return $row_array && $row_array['COUNT(*)'] > 0;
+    return $row_array !== null && $row_array['COUNT(*)'] > 0;
 }
 
 function recreateForeignKeyConstraints(array $constraints): void {
