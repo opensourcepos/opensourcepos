@@ -193,7 +193,7 @@ class ItemsControllerTest extends CIUnitTestCase
      * Regression test: a negative tax percent must be
      * rejected by postSave so it can never be persisted to items_taxes.
      */
-    public function testPostSaveRejectsNegativeTaxPercent(): void
+    public function testPostSave_RejectsNegativeTaxPercent(): void
     {
         $employeeId = $this->createItemsEmployee();
         $this->loginAsItemsEmployee($employeeId);
@@ -212,7 +212,7 @@ class ItemsControllerTest extends CIUnitTestCase
     /**
      * Boundary: a zero tax percent is valid (>= 0) and must not be rejected.
      */
-    public function testPostSaveAcceptsZeroTaxPercent(): void
+    public function testPostSave_AcceptsZeroTaxPercent(): void
     {
         $employeeId = $this->createItemsEmployee();
         $this->loginAsItemsEmployee($employeeId);
@@ -232,7 +232,7 @@ class ItemsControllerTest extends CIUnitTestCase
      * Regression test: a negative tax percent must be
      * rejected by postBulkUpdate so it can never be persisted.
      */
-    public function testPostBulkUpdateRejectsNegativeTaxPercent(): void
+    public function testPostBulkUpdate_RejectsNegativeTaxPercent(): void
     {
         $employeeId = $this->createItemsEmployee();
         $this->loginAsItemsEmployee($employeeId);
@@ -253,7 +253,7 @@ class ItemsControllerTest extends CIUnitTestCase
      * rejected by save_tax_data (not silently dropped), so postImportCsvFile
      * fails the row instead of importing the item without its tax.
      */
-    public function testSaveTaxDataRejectsNegativePercent(): void
+    public function testSaveTaxData_RejectsNegativePercent(): void
     {
         $controller = (new \ReflectionClass(\App\Controllers\Items::class))->newInstanceWithoutConstructor();
         $method = new \ReflectionMethod($controller, 'save_tax_data');

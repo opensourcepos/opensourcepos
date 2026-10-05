@@ -273,7 +273,7 @@ class TaxesControllerTest extends CIUnitTestCase
      * Regression test: a negative tax rate must be
      * rejected by Taxes::postSave so it can never be persisted to tax_code_rate.
      */
-    public function testPostSaveRejectsNegativeTaxRate(): void
+    public function testPostSave_RejectsNegativeTaxRate(): void
     {
         $employeeId = $this->createTaxesEmployee();
         $this->loginAsTaxesEmployee($employeeId);
