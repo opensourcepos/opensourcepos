@@ -45,13 +45,6 @@
         <?php } ?>
         <?= view('partial/visibility_js') ?>
 
-        const init_dialog = function () {
-            <?php if (isset($editable)) { ?>
-                table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row')) ?>');
-                dialog_support.init("a.modal-dlg");
-            <?php } ?>
-        };
-
         $('#table')
             .addClass("table-striped")
             .addClass("table-bordered")

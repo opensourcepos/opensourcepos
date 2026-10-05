@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Şifrə",
     "required_username"                   => "",
+    'too_many_attempts'                   => 'Həddindən artıq cəhd. Zəhmət olmasa bir az gözləyib yenidən cəhd edin.',
     "username"                            => "İstifadəçi",
     "welcome"                             => "{0} -ə xoş gəlmisiniz!"
 ];
