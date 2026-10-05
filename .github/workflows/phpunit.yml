@@ -39,6 +39,7 @@ jobs:
           - '8.4'
         db-image:
           - 'mariadb:10.5'
+          - 'mysql:5.7'
           - 'mysql:8.0'
           - 'mysql:8.4'
 
