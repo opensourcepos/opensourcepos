@@ -8,21 +8,36 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 /**
- * Rate limits login/migrate POST attempts, keyed by IP and by submitted
- * username, to mitigate brute-force and credential-stuffing attacks
- * (GHSA-hm9c-xchj-xgcp). Backed by CodeIgniter's cache-based Throttler,
- * so limits are per-server (not shared across nodes on file cache).
+ * Rate limits login/migrate POST attempts by IP and submitted username to
+ * mitigate brute-force/credential-stuffing. Backed by CodeIgniter's
+ * cache-based Throttler, so limits are per-server (not shared on file cache).
+ *
+ * Tunable via `throttle.capacity` (default 5; 0 disables) and
+ * `throttle.seconds` (window, default 60) in .env.
  */
 class Throttle implements FilterInterface
 {
-    private const CAPACITY = 5;
-    private const SECONDS  = 60;
-
     public function before(RequestInterface $request, $arguments = null)
     {
         if ($request->getMethod() !== 'POST') {
             return null;
         }
+
+        // Non-positive integer = explicit disable; missing/non-numeric falls
+        // back to the default so a typo (e.g. "five") cannot bypass lockout.
+        $capacity = filter_var(env('throttle.capacity'), FILTER_VALIDATE_INT);
+        if ($capacity === false) {
+            $capacity = 5;
+        }
+        if ($capacity <= 0) {
+            return null;
+        }
+
+        $seconds = filter_var(env('throttle.seconds'), FILTER_VALIDATE_INT);
+        if ($seconds === false) {
+            $seconds = 60;
+        }
+        $seconds = max(1, $seconds);
 
         helper('security');
 
@@ -34,8 +49,8 @@ class Throttle implements FilterInterface
         $username    = is_scalar($rawUsername) ? strtolower((string) $rawUsername) : '';
         $usernameKey = $username !== '' ? 'login-user-' . hash_hmac('sha256', $username, $secret) : null;
 
-        $ipOk       = $throttler->check($ipKey, self::CAPACITY, self::SECONDS);
-        $usernameOk = $usernameKey === null || $throttler->check($usernameKey, self::CAPACITY, self::SECONDS);
+        $ipOk       = $throttler->check($ipKey, $capacity, $seconds);
+        $usernameOk = $usernameKey === null || $throttler->check($usernameKey, $capacity, $seconds);
 
         if (!$ipOk || !$usernameOk) {
             log_message('warning', 'Login throttled for IP {ip} (username: {username})', [

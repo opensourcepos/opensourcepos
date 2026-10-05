@@ -21,7 +21,7 @@
 
     $.notify = function(content, options) {
         const message = typeof content === "object" ? content.message : content;
-        const sanitizedMessage = DOMPurify.sanitize(message);
+        const sanitizedMessage = DOMPurify.sanitize(message, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
         return notify(sanitizedMessage, options);
     };
 

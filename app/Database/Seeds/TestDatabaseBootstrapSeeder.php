@@ -33,6 +33,18 @@ class TestDatabaseBootstrapSeeder extends Seeder
 
         $serverConn->query("DROP DATABASE IF EXISTS `{$dbName}`");
         $serverConn->query("CREATE DATABASE IF NOT EXISTS `{$dbName}`");
+        $serverConn->close();
+
+        // The application's shared 'tests' connection caches listTables()
+        // results in dataCache['table_names'']. Because we dropped and
+        // recreated the schema on a SEPARATE server connection above, that
+        // cache is now stale. Reset it so subsequent listTables()/tableExists()
+        // calls re-query the server instead of trusting a dropped schema's table
+        // list (which previously caused "ospos_migrations doesn't exist" and
+        // "column ... doesn't exist" errors for every class that followed a
+        // bootstrap-reset class in the suite).
+        $shared = Database::connect('tests');
+        $shared->resetDataCache();
     }
 
     public function run(): void

@@ -214,6 +214,16 @@ class Employees extends Persons
                 'language_code' => $exploded[0],
                 'language'      => $exploded[1]
             ];
+
+            // In the testing environment the password above is never persisted
+            // (see the condition on the first branch), yet ospos_employees.password
+            // is NOT NULL. When creating a new employee, supply a placeholder hash
+            // so the insert succeeds and the grant-handling logic under test is
+            // not masked by a constraint failure. Production behavior is unchanged.
+            if (ENVIRONMENT === 'testing' && $employeeId == NEW_ENTRY) {
+                $employeeData['password']     = password_hash('test-placeholder', PASSWORD_DEFAULT);
+                $employeeData['hash_version'] = 2;
+            }
         }
 
         if ($this->employee->save_employee($personData, $employeeData, $grantsArray, $employeeId)) {

@@ -2,14 +2,12 @@
 
 namespace App\Database\Migrations;
 
-use App\Models\Appconfig;
+use App\Libraries\CI3SecretConverter;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
-use Config\Encryption;
-use Config\Services;
-use ReflectionException;
+use RuntimeException;
 
 class ConvertToCI4 extends Migration
 {
@@ -33,18 +31,34 @@ class ConvertToCI4 extends Migration
             throw new DatabaseException('Migration script 3.4.0_CI4Conversion.sql failed. Check logs for details.');
         }
 
-        $existingKey = config('Encryption')->key;
+        $existingKey = (string) config('Encryption')->key;
 
-        if (!empty($existingKey) && strlen($existingKey) < 64) {
-            $this->convertCI3EncryptedData();
-        } else {
-            if (!checkEncryption()) {
-                abortEncryptionConversion();
-                throw new DatabaseException('Failed to persist encryption key. Check logs for details.');
-            }
+        // A valid CI4 key requires no write — just confirm it is usable.
+        if ($existingKey !== '' && strlen($existingKey) >= 64) {
+            checkEncryption();
+
+            return;
         }
 
-        removeBackup();
+        // Every branch below writes to .env. If the runtime user cannot write
+        // it (e.g. Docker/Compose with a read-only .env mount), fail with an
+        // actionable message instead of a raw fopen() error deep in the writer.
+        if (!envFileIsWritable()) {
+            log_message('critical', 'Encryption key not provisioned and .env is not writable. Run `php spark env:provision` to generate one.');
+
+            throw new RuntimeException(lang('Error.encryption_key_not_provisioned'));
+        }
+
+        if ($existingKey !== '' && strlen($existingKey) < 64) {
+            // Old CI3-era key: decrypt, rotate, re-encrypt, persist — all under
+            // a single .env lock (see convertCI3EncryptedData).
+            $this->convertCI3EncryptedData($existingKey);
+        } else {
+            // No key at all: provision a fresh one (single atomic write), then
+            // drop the incidental pre-write backup left behind by the rotation.
+            rotateEncryptionKey(null);
+            removeBackup();
+        }
     }
 
     /**
@@ -53,95 +67,35 @@ class ConvertToCI4 extends Migration
     public function down(): void {}
 
     /**
-     * @throws ReflectionException
-     */
-    private function convertCI3EncryptedData(): void
-    {
-        $appConfig = model(Appconfig::class);
-
-        $ci3EncryptedData = [
-            'clcdesq_api_key'   => '',
-            'clcdesq_api_url'   => '',
-            'mailchimp_api_key' => '',
-            'mailchimp_list_id' => '',
-            'smtp_pass'         => ''
-        ];
-
-        foreach ($ci3EncryptedData as $key => $value) {
-            $ci3EncryptedData[$key] = $appConfig->get_value($key);
-        }
-
-        $decryptedData = $this->decryptCI3Data($ci3EncryptedData);
-
-        if (!checkEncryption()) {
-            abortEncryptionConversion();
-            throw new DatabaseException('Failed to persist encryption key. Check logs for details.');
-        }
-
-        $ci4EncryptedData = $this->encryptData($decryptedData);
-
-        $success = empty(array_diff_assoc($decryptedData, $this->decryptData($ci4EncryptedData)));
-        if (!$success) {
-            abortEncryptionConversion();
-            throw new RedirectException('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
-        }
-
-        if (!$appConfig->batch_save($ci4EncryptedData)) {
-            abortEncryptionConversion();
-            throw new DatabaseException('Failed to save converted encryption data. Check logs for details.');
-        }
-    }
-
-    /**
-     * Decrypts CI3 encrypted data and returns the plaintext values.
+     * Decrypts legacy CI3-encrypted secrets with the old key, rotates to a
+     * fresh CI4 key, re-encrypts under the new key, verifies the round trip,
+     * and persists the result.
      *
-     * @param array $encryptedData Data encrypted using CI3 methodology.
-     * @return array Plaintext, unencrypted data.
-     */
-    private function decryptCI3Data(array $encryptedData): array
-    {
-        $config = new Encryption();
-        $config->driver = 'OpenSSL';
-        $config->key = config('Encryption')->key;
-        $config->cipher = 'AES-128-CBC';
-        $config->rawData = false;
-        $config->encryptKeyInfo = 'encryption';
-        $config->authKeyInfo = 'authentication';
-
-        $encrypter = Services::encrypter($config);
-
-        return array_map(function ($value) use ($encrypter) {
-            return !empty($value) ? $encrypter->decrypt($value) : '';
-        }, $encryptedData);
-    }
-
-    /**
-     * Encrypts data using CI4 algorithms.
+     * The actual decryption/encryption is delegated to CI3SecretConverter so
+     * the docker startup command (env:provision) shares the same code path.
      *
-     * @param array $plainData Data to be encrypted.
-     * @return array Encrypted data.
+     * @param string $oldKey the CI3-era key currently in .env
+     * @throws RedirectException
      */
-    private function encryptData(array $plainData): array
+    private function convertCI3EncryptedData(string $oldKey): void
     {
-        $encrypter = Services::encrypter();
+        $converter = new CI3SecretConverter();
 
-        return array_map(function ($value) use ($encrypter) {
-            return $value !== '' ? $encrypter->encrypt($value) : '';
-        }, $plainData);
-    }
+        // DB read, safe outside the .env lock.
+        $plain = $converter->decryptAll($oldKey);
 
-    /**
-     * Decrypts data using CI4 algorithms.
-     *
-     * @param array $encryptedData Data to be decrypted.
-     * @return array Decrypted data.
-     */
-    private function decryptData(array $encryptedData): array
-    {
-        $encrypter = Services::encrypter();
+        // Backup -> rotate -> re-encrypt -> verify -> persist under one .env
+        // lock. On any failure the transaction restores the pre-rotation .env
+        // (still holding the lock); on success it drops the backup.
+        rotateEncryptionKeyTransaction($oldKey, static function () use ($plain, $converter): void {
+            $encrypted = $converter->encryptAll($plain);
 
-        return array_map(function ($value) use ($encrypter) {
-            return !empty($value) ? $encrypter->decrypt($value) : '';
-        }, $encryptedData);
+            // Verify the round trip before committing so we never lose data.
+            if (array_diff_assoc($plain, $converter->verifyAll($encrypted)) !== []) {
+                throw new RedirectException('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
+            }
+
+            $converter->saveAll($encrypted);
+        });
     }
 }

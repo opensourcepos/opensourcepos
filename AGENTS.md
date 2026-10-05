@@ -12,7 +12,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 - PHP 8.2+ features acceptable (named arguments, enums, readonly properties)
 - Write PHP 8.2+ compatible code with proper type declarations
 - Always import classes, functions, and constants with a `use` statement at the top of the file instead of referencing them inline via fully-qualified name (e.g. `use Config\Database;` then `Database::connect()`, not `\Config\Database::connect()`)
-- Do not add comments or docblocks that merely restate what the code already makes clear — only comment on non-obvious rationale, constraints, or behavior
+- No useless comments or docblocks: if the code speaks for itself, explanatory comments are unnecessary. Do not add comments or docblocks that merely restate what the code already makes clear (e.g. `@param array $items` next to `array $items`, or a comment repeating a method's name) — only comment on non-obvious rationale, constraints, or behavior
 - Views in `app/Views/errors/html/` are excluded from the fixer
 - Run fixer before committing: `vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.no-header.php`
 - **JavaScript**: use `const` for variables that are never reassigned, `let` for variables that are. Never use `var`.
@@ -50,6 +50,7 @@ This document provides guidance for AI agents working on the Open Source Point o
 - **When explicitly asked to translate a phrase for a non-English language file, always provide the actual translation** — never leave the value as an empty string, and never leave source English text in a non-English language file
 - Never copy English text from a neighboring key as a value for a non-English language file, even if that neighboring key is already untranslated — evaluate each key independently
 - Only `app/Language/en/` and `app/Language/en-GB/` should contain English strings
+- When translating a string containing placeholders (e.g. `{filePath}`, `{reason}`) or literal filenames/keys (e.g. `throttle.key`, `.env`), keep that placeholder or filename text unchanged and untranslated — move it to whatever position is grammatically correct in the translated sentence
 - Plugin language files (`app/Plugins/*/Language/`) follow the same localization rules as `app/Language/`
 - Use `'` to encapsulate key and string values. If the value contains `'` then it should be escaped as `\'`
 - Align the `=>` of a newly inserted key with the `=>` column already used by the rest of the file, if that file pads keys to a fixed column (not all do — some files have no padding at all). If the new key is longer than the widest existing key and would push the alignment column further right, reformat the whole file to the new wider column rather than leaving only the new line at a different width
@@ -59,3 +60,4 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Never commit secrets, credentials, or `.env` files
 - Use parameterized queries to prevent SQL injection
 - Validate and sanitize all user input
+- Never reference security advisory IDs (CVE, GHSA, etc.) in code, comments, commit messages, docblocks, documentation, or URLs — treat them the same as secrets. They act as a roadmap for attackers researching the exact exploit a fix addresses.
