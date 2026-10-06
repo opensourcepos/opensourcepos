@@ -212,8 +212,8 @@ class OSPOSRules
      * legitimate non-English text (e.g. accented or CJK characters). Allows unicode letters,
      * combining marks (so base+diacritic sequences pass), and digits in place of `A-Z0-9`, and
      * reuses the exact same punctuation set as the original rule (`~!#$%&*-_+=|:.` plus space),
-     * extended with `'`, `,` and `/` to accommodate real-world tax names (e.g. "O'Brien's Tax",
-     * "Impôt, incl.", "GST/HST"). `<` and `>` are deliberately absent from the punctuation set, same as in
+     * extended with `'`, `,`, `/`, `(` and `)` to accommodate real-world tax names (e.g. "O'Brien's Tax",
+     * "Impôt, incl.", "GST/HST", "VAT (20%)"). `<` and `>` are deliberately absent from the punctuation set, same as in
      * the original rule, so this also serves as a defense-in-depth backstop against HTML
      * injection (the primary fix is escaping at render time).
      *
@@ -224,7 +224,7 @@ class OSPOSRules
      */
     public function unicode_alpha_numeric_punct(string $candidate, ?string &$error = null): bool
     {
-        $allowedPunctuation = ['~', '!', '#', '$', '%', '&', '*', '-', '_', '+', '=', '|', ':', '.', ' ', "'", ',', '/'];
+        $allowedPunctuation = ['~', '!', '#', '$', '%', '&', '*', '-', '_', '+', '=', '|', ':', '.', ' ', "'", ',', '/', '(', ')'];
 
         $allowedCategories = [
             IntlChar::CHAR_CATEGORY_UPPERCASE_LETTER,

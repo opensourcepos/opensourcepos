@@ -122,6 +122,50 @@ class TaxesControllerTest extends CIUnitTestCase
     }
 
     /**
+     * Parenthesised tax names (e.g. "VAT (20%)") are legitimate and must not be
+     * rejected by the validation guard.
+     */
+    public function testPostSaveTaxCodes_AcceptsParenthesesName(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $response = $this->post('/taxes/save_tax_codes', [
+            'tax_code_id'   => ['-1'],
+            'tax_code'      => ['TC' . uniqid()],
+            'tax_code_name' => ['VAT (20%)'],
+            'city'          => [''],
+            'state'         => [''],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * A tax code whose name is left blank is legitimate (the form does not
+     * require a name) and must not be rejected by the validation guard.
+     */
+    public function testPostSaveTaxCodes_AcceptsBlankName(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $response = $this->post('/taxes/save_tax_codes', [
+            'tax_code_id'   => ['-1'],
+            'tax_code'      => ['TC' . uniqid()],
+            'tax_code_name' => [''],
+            'city'          => [''],
+            'state'         => [''],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
      * Regression test: `tax_category[]` containing `<`/`>` must be rejected.
      */
     public function testPostSaveTaxCategories_RejectsMaliciousName(): void

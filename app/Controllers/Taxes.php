@@ -442,11 +442,10 @@ class Taxes extends Secure_Controller
 
         if (!empty($tax_code_name)) {
             $rules = [
-                'tax_code_name.*' => 'required|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_code_name.*' => 'max_length[255]|unicode_alpha_numeric_punct',
             ];
             $messages = [
                 'tax_code_name.*' => [
-                    'required'                    => lang('Taxes.tax_code_invalid_chars'),
                     'max_length'                  => lang('Taxes.tax_code_invalid_chars'),
                     'unicode_alpha_numeric_punct' => lang('Taxes.tax_code_invalid_chars'),
                 ],
@@ -495,11 +494,10 @@ class Taxes extends Secure_Controller
 
         if (!empty($jurisdiction_name)) {
             $rules = [
-                'jurisdiction_name.*' => 'required|max_length[255]|unicode_alpha_numeric_punct',
+                'jurisdiction_name.*' => 'max_length[255]|unicode_alpha_numeric_punct',
             ];
             $messages = [
                 'jurisdiction_name.*' => [
-                    'required'                    => lang('Taxes.tax_jurisdiction_invalid_chars'),
                     'max_length'                  => lang('Taxes.tax_jurisdiction_invalid_chars'),
                     'unicode_alpha_numeric_punct' => lang('Taxes.tax_jurisdiction_invalid_chars'),
                 ],
@@ -557,11 +555,10 @@ class Taxes extends Secure_Controller
 
         if (!empty($tax_category)) {
             $rules = [
-                'tax_category.*' => 'required|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_category.*' => 'max_length[255]|unicode_alpha_numeric_punct',
             ];
             $messages = [
                 'tax_category.*' => [
-                    'required'                    => lang('Taxes.tax_category_invalid_chars'),
                     'max_length'                  => lang('Taxes.tax_category_invalid_chars'),
                     'unicode_alpha_numeric_punct' => lang('Taxes.tax_category_invalid_chars'),
                 ],
