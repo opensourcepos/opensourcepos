@@ -82,7 +82,7 @@ the shipped example:
 Then start the containers:
 
 ```
-    docker-compose -f tools/docker/docker-compose.yml up
+    docker-compose up
 ```
 
 ## Nginx install using Docker
@@ -91,20 +91,20 @@ Since OSPOS version `3.3.0` the Docker installation offers a reverse proxy based
 Let's Encrypt is a free certificate issuer, requiring a special installation that this Docker installation would take care of for you.
 Any Let's Encrypt TLS certificate renewal will be managed automatically, therefore there is no need to worry about those details.
 
-Before starting your installation, you should edit the `tools/docker/docker/.env` file and configure it to contain the correct MySQL/MariaDB and phpMyAdmin passwords (don't use the defaults!).
-You will also need to register to Let's Encrypt. Configure your host domain name and Let's Encrypt email address in the `tools/docker/docker/.env` file.
+Before starting your installation, you should edit the `docker/.env` file and configure it to contain the correct MySQL/MariaDB and phpMyAdmin passwords (don't use the defaults!).
+You will also need to register to Let's Encrypt. Configure your host domain name and Let's Encrypt email address in the `docker/.env` file.
 The variable `STAGING` needs to be set to `0` when you are confident your configuration is correct so that Let's Encrypt will issue a final proper TLS certificate.
 
 Follow local install steps, but instead use
 
 ```
-    tools/docker/docker/install-nginx.sh
+    docker/install-nginx.sh
 ```
 
 Do **not** use below command on live deployments unless you want to tear everything down. All your disk content will be wiped!
 
 ```
-    tools/docker/docker/uninstall.sh
+    docker/uninstall.sh
 ```
 
 ## Cloud install

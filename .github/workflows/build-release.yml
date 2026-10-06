@@ -191,7 +191,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: tools/docker/Dockerfile
           target: ospos
           platforms: linux/amd64,linux/arm64
           push: true
@@ -279,7 +278,7 @@ jobs:
             echo ""
             echo '```bash'
             echo "docker pull ${{ secrets.DOCKER_USERNAME }}/opensourcepos:${VERSION}"
-            echo "docker compose -f tools/docker/docker-compose.nginx.yml up -d"
+            echo "docker compose -f docker-compose.nginx.yml up -d"
             echo '```'
             echo ""
             echo "**Existing installation:** download one of the archives below, extract it over your current install, and run any new database migrations."

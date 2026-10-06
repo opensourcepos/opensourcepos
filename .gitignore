@@ -11,10 +11,10 @@ npm-debug.log*
 .vscode
 
 # Docker
-!tools/docker/docker/.env
-tools/docker/docker/data/database/db/*
-tools/docker/docker/data/certbot/conf/*
-tools/docker/docker/data/ospos/app/*
+!docker/.env
+docker/data/database/db/*
+docker/data/certbot/conf/*
+docker/data/ospos/app/*
 
 # Editors
 ## SublimeText

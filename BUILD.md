@@ -52,7 +52,7 @@ The file permissions for the repository in the container should be the same as o
 ```
 export USERID=$(id -u)
 export GROUPID=$(id -g)
-docker-compose -f tools/docker/docker-compose.dev.yml up
+docker-compose -f docker-compose.dev.yml up
 ```
 
 ## The Result

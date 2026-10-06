@@ -20,7 +20,7 @@ services:
             # create_host_path is explicitly false so a missing host file fails
             # startup instead of being auto-created as a directory (see INSTALL.md).
             - type: bind
-              source: ../../.env
+              source: ./.env
               target: /app/.env
               bind:
                   create_host_path: false
