@@ -110,6 +110,13 @@
     start_date = start.format('YYYY-MM-DD');
     end_date = end.format('YYYY-MM-DD');
     });
+    // Sync the globals from the picker on Apply, including when the applied range is
+    // unchanged (the change callback above does not fire in that case). This runs before
+    // any page-level Apply handler, so refreshes and URL updates use the visible range.
+    $('#daterangepicker').on('apply.daterangepicker', function(ev, picker) {
+    start_date = picker.startDate.format('YYYY-MM-DD');
+    end_date = picker.endDate.format('YYYY-MM-DD');
+    });
 <?php } else { ?>
     $('#daterangepicker').css("width", "305");
     let start_date = "<?= date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) ?>";
@@ -216,5 +223,12 @@
     }, function(start, end, label) {
     start_date = start.format('YYYY-MM-DD HH:mm:ss');
     end_date = end.format('YYYY-MM-DD HH:mm:ss');
+    });
+    // Sync the globals from the picker on Apply, including when the applied range is
+    // unchanged (the change callback above does not fire in that case). This runs before
+    // any page-level Apply handler, so refreshes and URL updates use the visible range.
+    $('#daterangepicker').on('apply.daterangepicker', function(ev, picker) {
+    start_date = picker.startDate.format('YYYY-MM-DD HH:mm:ss');
+    end_date = picker.endDate.format('YYYY-MM-DD HH:mm:ss');
     });
 <?php } ?>
