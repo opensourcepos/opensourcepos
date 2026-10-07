@@ -7,6 +7,7 @@ use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\FailedQueryConnectionTrait;
 use Tests\Support\ItemFixtureTrait;
 
 /**
@@ -18,6 +19,7 @@ class SaleTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use EmployeeFixtureTrait;
+    use FailedQueryConnectionTrait;
     use ItemFixtureTrait;
 
     protected $migrate     = true;
@@ -433,5 +435,19 @@ class SaleTest extends CIUnitTestCase
 
         $this->assertTrue($deleteResult);
         $this->assertEqualsWithDelta(10.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
+    }
+
+    /**
+     * Sale::get_all_suspended() must return an empty array, not throw, when the
+     * query fails (Issue #3634).
+     */
+    public function testGetAllSuspended_ReturnsEmptyArrayWhenQueryFails(): void
+    {
+        $model = $this->modelWithFailingQuery(Sale::class);
+
+        // Exercises both the NEW_ENTRY branch and the customer-id branch.
+        $this->assertSame([], $model->get_all_suspended());
+        $this->assertSame([], $model->get_all_suspended(NEW_ENTRY));
+        $this->assertSame([], $model->get_all_suspended(123));
     }
 }
