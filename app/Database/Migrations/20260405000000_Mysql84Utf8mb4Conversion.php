@@ -25,12 +25,19 @@ class Migration_Mysql84Utf8mb4Conversion extends Migration
                 throw new RuntimeException('Failed to execute utf8mb4 conversion migration: ' . $script);
             }
 
-            $this->db->query('ALTER TABLE ' . $this->db->prefixTable('people')
-                . ' ADD INDEX(`first_name`(191), `last_name`(191), `email`(191), `phone_number`(191))');
+            if (!$this->db->query('ALTER TABLE ' . $this->db->prefixTable('people')
+                . ' ADD INDEX(`first_name`(191), `last_name`(191), `email`(191), `phone_number`(191))')) {
+                throw new RuntimeException('Failed to add composite index on people table');
+            }
         } catch (\Throwable $exception) {
             log_message('error', 'utf8mb4 conversion failed; recovering dropped foreign keys: '
                 . json_encode($foreignKeys));
-            recreateForeignKeyConstraints($foreignKeys);
+
+            try {
+                recreateForeignKeyConstraints($foreignKeys);
+            } catch (\Throwable $restoreError) {
+                log_message('error', 'Foreign key recovery failed: ' . $restoreError->getMessage());
+            }
 
             throw $exception;
         }
