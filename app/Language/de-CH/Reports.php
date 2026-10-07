@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "",
     "taxes"                                   => "Steuern",
     "taxes_summary_report"                    => "Bericht: Steuern (summarisch)",
+    "toggle_cost_and_profit"                  => "Kosten & Gewinn umschalten",
     "total"                                   => "Total",
     "total_inventory_value"                   => "Total Inventarwert",
     "total_low_sell_quantity"                 => "",

@@ -9,7 +9,7 @@ use CodeIgniter\Test\FeatureTestTrait;
 
 /**
  * Test suite for the Login controller, including the CI Throttler
- * mitigation for brute-force/credential-stuffing (GHSA-hm9c-xchj-xgcp).
+ * mitigation for brute-force/credential-stuffing.
  */
 class LoginTest extends CIUnitTestCase
 {
