@@ -14,8 +14,8 @@
             <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-8 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-cloud"></span>
@@ -29,18 +29,18 @@
                                autocomplete="off">
                     </div>
                 </div>
-                <div class="col-xs-1">
-                    <label class="control-label">
+                <div class="col-xs-1 col-sm-4 col-md-5 col-lg-6">
+                    <p class="form-control-static">
                         <a href="https://eepurl.com/b9a05b" target="_blank">
                             <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') ?>"></span>
                         </a>
-                    </label>
+                    </p>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-user"></span>

@@ -13,8 +13,8 @@
             <ul id="message_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_uid'), 'msg_uid', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.msg_uid'), 'msg_uid', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-user"></span>
@@ -30,8 +30,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_pwd'), 'msg_pwd', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.msg_pwd'), 'msg_pwd', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-lock"></span>
@@ -47,8 +47,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_src'), 'msg_src', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.msg_src'), 'msg_src', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
                             <span class="glyphicon glyphicon-bullhorn"></span>
@@ -64,13 +64,14 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.msg_msg'), 'msg_msg', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.msg_msg'), 'msg_msg', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <?= form_textarea([
                         'name'        => 'msg_msg',
                         'id'          => 'msg_msg',
                         'class'       => 'form-control input-sm',
                         'value'       => $config['msg_msg'],
+                        'style'       => 'resize: vertical',
                         'placeholder' => lang('Config.msg_msg_placeholder')
                     ]) ?>
                 </div>

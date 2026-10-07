@@ -14,8 +14,8 @@
             <ul id="barcode_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_type'), 'barcode_type', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.barcode_type'), 'barcode_type', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'barcode_type',
                         $support_barcode,
@@ -26,8 +26,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_width'), 'barcode_width', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.barcode_width'), 'barcode_width', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_input([
                         'step'  => '5',
                         'max'   => '350',
@@ -42,8 +42,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_height'), 'barcode_height', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.barcode_height'), 'barcode_height', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_input([
                         'type'  => 'number',
                         'min'   => 10,
@@ -57,8 +57,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_font'), 'barcode_font', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-sm-2">
+                <?= form_label(lang('Config.barcode_font'), 'barcode_font', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'barcode_font',
                         $barcode_fonts,
@@ -66,7 +66,7 @@
                         'class="form-control input-sm" required'
                     ) ?>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-4 col-sm-3 col-md-2">
                     <?= form_input([
                         'type'  => 'number',
                         'min'   => '1',
@@ -80,8 +80,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.allow_duplicate_barcodes'), 'allow_duplicate_barcodes', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
+                <?= form_label(lang('Config.allow_duplicate_barcodes'), 'allow_duplicate_barcodes', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9">
                     <?= form_checkbox([
                         'name'    => 'allow_duplicate_barcodes',
                         'id'      => 'allow_duplicate_barcodes',
@@ -96,8 +96,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_content'), 'barcode_content', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-8">
+                <?= form_label(lang('Config.barcode_content'), 'barcode_content', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-10">
                     <label class="radio-inline">
                         <?= form_radio([
                             'name'    => 'barcode_content',
@@ -128,8 +128,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_formats'), 'barcode_formats', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.barcode_formats'), 'barcode_formats', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?php
                     $barcode_formats = json_decode(config('OSPOS')->settings['barcode_formats']);
                     echo form_dropdown([
@@ -143,66 +143,68 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_layout'), 'barcode_layout', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-sm-10">
-                    <div class="form-group form-group-sm row">
-                        <label class="control-label col-sm-1"><?= lang('Config.barcode_first_row') . ' ' ?></label>
-                        <div class="col-sm-2">
-                            <?= form_dropdown(
-                                'barcode_first_row',
-                                [
-                                    'not_show'     => lang('Config.none'),
-                                    'name'         => lang('Items.name'),
-                                    'category'     => lang('Items.category'),
-                                    'cost_price'   => lang('Items.cost_price'),
-                                    'unit_price'   => lang('Items.unit_price'),
-                                    'company_name' => lang('Suppliers.company_name')
-                                ],
-                                $config['barcode_first_row'],
-                                ['class' => 'form-control input-sm']
-                            ); ?>
-                        </div>
-                        <label class="control-label col-sm-1"><?= lang('Config.barcode_second_row') . ' ' ?></label>
-                        <div class="col-sm-2">
-                            <?= form_dropdown(
-                                'barcode_second_row',
-                                [
-                                    'not_show'     => lang('Config.none'),
-                                    'name'         => lang('Items.name'),
-                                    'category'     => lang('Items.category'),
-                                    'cost_price'   => lang('Items.cost_price'),
-                                    'unit_price'   => lang('Items.unit_price'),
-                                    'item_code'    => lang('Items.item_number'),
-                                    'company_name' => lang('Suppliers.company_name')
-                                ],
-                                $config['barcode_second_row'],
-                                ['class' => 'form-control input-sm']
-                            ) ?>
-                        </div>
-                        <label class="control-label col-sm-1"><?= lang('Config.barcode_third_row') . ' ' ?></label>
-                        <div class="col-sm-2">
-                            <?= form_dropdown(
-                                'barcode_third_row',
-                                [
-                                    'not_show'     => lang('Config.none'),
-                                    'name'         => lang('Items.name'),
-                                    'category'     => lang('Items.category'),
-                                    'cost_price'   => lang('Items.cost_price'),
-                                    'unit_price'   => lang('Items.unit_price'),
-                                    'item_code'    => lang('Items.item_number'),
-                                    'company_name' => lang('Suppliers.company_name')
-                                ],
-                                $config['barcode_third_row'],
-                                ['class' => 'form-control input-sm']
-                            ) ?>
-                        </div>
+                <?= form_label(lang('Config.barcode_layout'), 'barcode_layout', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon input-sm"><?= lang('Config.barcode_first_row') ?></span>
+                        <?= form_dropdown(
+                            'barcode_first_row',
+                            [
+                                'not_show'     => lang('Config.none'),
+                                'name'         => lang('Items.name'),
+                                'category'     => lang('Items.category'),
+                                'cost_price'   => lang('Items.cost_price'),
+                                'unit_price'   => lang('Items.unit_price'),
+                                'company_name' => lang('Suppliers.company_name')
+                            ],
+                            $config['barcode_first_row'],
+                            ['class' => 'form-control input-sm']
+                        ); ?>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon input-sm"><?= lang('Config.barcode_second_row') ?></span>
+                        <?= form_dropdown(
+                            'barcode_second_row',
+                            [
+                                'not_show'     => lang('Config.none'),
+                                'name'         => lang('Items.name'),
+                                'category'     => lang('Items.category'),
+                                'cost_price'   => lang('Items.cost_price'),
+                                'unit_price'   => lang('Items.unit_price'),
+                                'item_code'    => lang('Items.item_number'),
+                                'company_name' => lang('Suppliers.company_name')
+                            ],
+                            $config['barcode_second_row'],
+                            ['class' => 'form-control input-sm']
+                        ) ?>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon input-sm"><?= lang('Config.barcode_third_row') ?></span>
+                        <?= form_dropdown(
+                            'barcode_third_row',
+                            [
+                                'not_show'     => lang('Config.none'),
+                                'name'         => lang('Items.name'),
+                                'category'     => lang('Items.category'),
+                                'cost_price'   => lang('Items.cost_price'),
+                                'unit_price'   => lang('Items.unit_price'),
+                                'item_code'    => lang('Items.item_number'),
+                                'company_name' => lang('Suppliers.company_name')
+                            ],
+                            $config['barcode_third_row'],
+                            ['class' => 'form-control input-sm']
+                        ) ?>
                     </div>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_number_in_row'), 'barcode_num_in_row', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.barcode_number_in_row'), 'barcode_num_in_row', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_input([
                         'type'  => 'number',
                         'name'  => 'barcode_num_in_row',
@@ -214,8 +216,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_page_width'), 'barcode_page_width', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-sm-2">
+                <?= form_label(lang('Config.barcode_page_width'), 'barcode_page_width', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <div class="input-group">
                         <?= form_input([
                             'type'  => 'number',
@@ -232,8 +234,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.barcode_page_cellspacing'), 'barcode_page_cellspacing', ['class' => 'control-label col-xs-2 required']) ?>
-                <div class="col-sm-2">
+                <?= form_label(lang('Config.barcode_page_cellspacing'), 'barcode_page_cellspacing', ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <div class="input-group">
                         <?= form_input([
                             'type'  => 'number',

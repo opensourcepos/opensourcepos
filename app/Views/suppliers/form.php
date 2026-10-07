@@ -13,7 +13,7 @@
     <fieldset id="supplier_basic_info">
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.company_name'), 'company_name', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Suppliers.company_name'), 'company_name', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'company_name',
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Suppliers.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Suppliers.category'), 'category', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-6">
                 <?= form_dropdown('category', $categories, $person_info->category, ['class' => 'form-control', 'id' => 'category']) ?>
             </div>
