@@ -13,7 +13,7 @@
             <fieldset>
 
                 <div class="form-group form-group-sm">
-                    <?= form_label(lang('Employees.username'), 'username', ['class' => 'required control-label col-xs-3']) ?>
+                    <?= form_label(lang('Employees.username'), 'username', ['class' => 'control-label col-xs-3 text-danger required']) ?>
                     <div class="col-xs-8">
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
