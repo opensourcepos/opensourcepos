@@ -15,8 +15,8 @@ foreach ($customer_rewards as $reward_key => $reward_category) {
 ?>
 
     <div class="form-group form-group-sm" style="<?= $reward_category['deleted'] ? 'display: none;' : 'display: block;' ?>">
-        <?= form_label(lang('Config.customer_reward') . " $i", "customer_reward_$i", ['class' => 'required control-label col-xs-2']) ?>
-        <div class="col-xs-2">
+        <?= form_label(lang('Config.customer_reward') . " $i", "customer_reward_$i", ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+        <div class="col-xs-4 col-md-3">
             <?php $form_data = [
                 'name'  => 'customer_reward_' . $customer_reward_id,
                 'id'    => 'customer_reward_' . $customer_reward_id,
@@ -27,7 +27,7 @@ foreach ($customer_rewards as $reward_key => $reward_category) {
             echo form_input($form_data);
             ?>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-3 col-md-2">
             <?php $form_data = [
                 'name'  => 'reward_points_' . $customer_reward_id,
                 'id'    => 'reward_points_' . $customer_reward_id,

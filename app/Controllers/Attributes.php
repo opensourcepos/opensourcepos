@@ -257,26 +257,26 @@ class Attributes extends Secure_Controller
     }
 
     /**
-     * @param int $definition_id
+     * @param int $definitionId
      * @return string
      */
-    public function getView(int $definition_id = NO_DEFINITION_ID): string
+    public function getView(int $definitionId = NO_DEFINITION_ID): string
     {
-        $info = $this->attribute->getAttributeInfo($definition_id);
+        $info = $this->attribute->getAttributeInfo($definitionId);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
 
-        $data['definition_id'] = $definition_id;
-        $data['definition_values'] = $this->attribute->getDefinitionValues($definition_id);
-        $data['definition_group'] = $this->attribute->getDefinitionsByType(GROUP, $definition_id);
+        $data['definition_id'] = $definitionId;
+        $data['definition_values'] = $this->attribute->getDefinitionValues($definitionId);
+        $data['definition_group'] = $this->attribute->getDefinitionsByType(GROUP, $definitionId);
         $data['definition_group'][''] = lang('Common.none_selected_text');
         $data['definition_info'] = $info;
 
-        $show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES;
-        $data['definition_flags'] = $this->get_attributes($show_all);
-        $selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
-        $data['selected_definition_flags'] = $this->get_attributes($selected_flags);
+        $showAll = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES | Attribute::SHOW_IN_SEARCH;
+        $data['definition_flags'] = $this->get_attributes($showAll);
+        $selectedFlags = $info->definition_flags === '' ? $showAll : $info->definition_flags;
+        $data['selected_definition_flags'] = $this->get_attributes($selectedFlags);
 
         return view('attributes/form', $data);
     }

@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Tarifa de Impuesto",
     "taxes"                                   => "Impuestos",
     "taxes_summary_report"                    => "Reporte Resumido de Impuestos",
+    "toggle_cost_and_profit"                  => "Alternar Costo y Ganancia",
     "total"                                   => "Total",
     "total_inventory_value"                   => "Valor Total del Inventario",
     "total_low_sell_quantity"                 => "Cantidad Total de Venta Baja",
