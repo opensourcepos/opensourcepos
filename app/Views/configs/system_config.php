@@ -1,7 +1,6 @@
-<br>
-<div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTabs" data-toggle="tab">
-        <li class="active"><a href="#system_tabs" data-toggle="tab" title="<?= lang('Config.system_conf') ?>"><?= lang('Config.system_conf') ?></a></li>
+<div class="container-fluid" style="padding-inline: 0;">
+    <ul class="nav nav-tabs" id="myTabs">
+        <li class="active"><a href="#system_tabs" data-toggle="tab" title="<?= lang('Config.system_info') ?>"><?= lang('Config.system_info') ?></a></li>
         <li><a href="#email_tabs" data-toggle="tab" title="<?= lang('Config.email_configuration') ?>"><?= lang('Config.email') ?></a></li>
         <li><a href="#message_tabs" data-toggle="tab" title="<?= lang('Config.message_configuration') ?>"><?= lang('Config.message') ?></a></li>
         <li><a href="#integrations_tabs" data-toggle="tab" title="<?= lang('Config.integrations_configuration') ?>"><?= lang('Config.integrations') ?></a></li>
