@@ -126,38 +126,48 @@ function createPrimaryKey(string $table, string $index): void {
 
 function dropAllForeignKeyConstraints(?string $table = null, ?string $column = null): array {
     $db = Database::connect();
+    $prefixedTable = $table !== null ? $db->getPrefix() . $table : null;
+    $prefix = overridePrefix();
 
-    $scopeClause = '';
+    $builder = $db->table('information_schema.KEY_COLUMN_USAGE kcu');
+    $builder->distinct();
+    $builder->select('kcu.CONSTRAINT_NAME, kcu.TABLE_NAME, kcu.COLUMN_NAME, kcu.REFERENCED_TABLE_NAME, kcu.REFERENCED_COLUMN_NAME, kcu.ORDINAL_POSITION, rc.DELETE_RULE, rc.UPDATE_RULE');
+    $builder->join(
+        'information_schema.REFERENTIAL_CONSTRAINTS rc',
+        'kcu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA AND kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME AND kcu.TABLE_NAME = rc.TABLE_NAME',
+        'left'
+    );
+
     if ($table !== null && $column !== null) {
-        $scopeClause = "
-                AND ((kcu.REFERENCED_TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.REFERENCED_COLUMN_NAME = '$column')
-                OR (kcu.TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.COLUMN_NAME = '$column'))";
+        $scopedBuilder = $db->table('information_schema.KEY_COLUMN_USAGE scoped');
+        $scopedBuilder->distinct();
+        $scopedBuilder->select('scoped.CONSTRAINT_NAME, scoped.TABLE_NAME');
+        $scopedBuilder->where('scoped.TABLE_SCHEMA', $db->database);
+        $scopedBuilder->groupStart();
+        $scopedBuilder->where('scoped.REFERENCED_TABLE_NAME', $prefixedTable);
+        $scopedBuilder->where('scoped.REFERENCED_COLUMN_NAME', $column);
+        $scopedBuilder->groupEnd();
+        $scopedBuilder->orGroupStart();
+        $scopedBuilder->where('scoped.TABLE_NAME', $prefixedTable);
+        $scopedBuilder->where('scoped.COLUMN_NAME', $column);
+        $scopedBuilder->groupEnd();
+
+        $builder->join(
+            '(' . $scopedBuilder->getCompiledSelect() . ') matched',
+            'matched.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME AND matched.TABLE_NAME = kcu.TABLE_NAME',
+            'inner',
+            false
+        );
     }
 
-    $result = $db->query("
-            SELECT DISTINCT
-                kcu.CONSTRAINT_NAME,
-                kcu.TABLE_NAME,
-                kcu.COLUMN_NAME,
-                kcu.REFERENCED_TABLE_NAME,
-                kcu.REFERENCED_COLUMN_NAME,
-                kcu.ORDINAL_POSITION,
-                rc.DELETE_RULE,
-                rc.UPDATE_RULE
-            FROM information_schema.KEY_COLUMN_USAGE kcu
-            LEFT JOIN information_schema.REFERENTIAL_CONSTRAINTS rc
-                ON kcu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA
-                AND kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
-                AND kcu.TABLE_NAME = rc.TABLE_NAME
-            WHERE kcu.TABLE_SCHEMA = DATABASE()
-                AND rc.CONSTRAINT_NAME IS NOT NULL
-                $scopeClause
-            ORDER BY kcu.CONSTRAINT_NAME, kcu.ORDINAL_POSITION
-        ");
+    $builder->where('kcu.TABLE_SCHEMA', $db->database);
+    $builder->where('rc.CONSTRAINT_NAME IS NOT NULL', null, false);
+    $builder->orderBy('kcu.CONSTRAINT_NAME');
+    $builder->orderBy('kcu.ORDINAL_POSITION');
 
-    // Group rows by constraint name since composite foreign keys span multiple
-    // KEY_COLUMN_USAGE rows (one per column); ORDINAL_POSITION keeps column order
-    // aligned with referenced column order.
+    $result = $builder->get();
+    overridePrefix($prefix);
+
     $deletedConstraints = [];
 
     foreach ($result->getResultArray() as $constraint) {
@@ -176,9 +186,6 @@ function dropAllForeignKeyConstraints(?string $table = null, ?string $column = n
             ];
         }
 
-        // Guard against duplicate rows for the same column position (observed on
-        // MySQL 8.4 information_schema joins) so composite FK column order stays
-        // correct without re-adding the same column twice.
         $position = $constraint['ORDINAL_POSITION'];
         if (!isset($deletedConstraints[$key]['seenPositions'][$position])) {
             $deletedConstraints[$key]['seenPositions'][$position] = true;
