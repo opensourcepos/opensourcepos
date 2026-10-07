@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use Config\OSPOS;
 use Config\Services;
 use DirectoryIterator;
+use IntlChar;
 
 /**
  * @property Employee employee
@@ -153,6 +154,33 @@ class OSPOSRules
     }
 
     /**
+     * Validates that the candidate value is greater than or equal to another
+     * field in the same request (proper cross-field comparison).
+     *
+     * CI4's built-in greater_than_equal_to[field] rule does not resolve the
+     * [field] token to that field's value, so this rule performs the real
+     * comparison and sets a human-readable error on failure.
+     *
+     * @param string $candidate The value being validated (e.g. max).
+     * @param string $otherField The field to compare against (e.g. min).
+     * @param array $data The full set of data being validated.
+     * @param string|null $error Error message set on failure.
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function gte_field(string $candidate, string $otherField, array $data, ?string &$error = null): bool
+    {
+        $other = $data[$otherField] ?? null;
+
+        if (is_numeric($candidate) && is_numeric($other) && (float) $candidate < (float) $other) {
+            $error = 'The value must be a number greater than or equal to the ' . $otherField . ' field.';
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Validates that the candidate theme name matches an installed bootswatch theme directory.
      *
      * @param string $theme
@@ -176,5 +204,72 @@ class OSPOSRules
         }
 
         return false;
+    }
+
+    /**
+     * Unicode-aware version of CodeIgniter's built-in `alpha_numeric_punct` rule, which only
+     * matches ASCII (`preg_match('\A[A-Z0-9 ~!#$%\&\*\-_+=|:.]+\z/i', ...)`) and so rejects
+     * legitimate non-English text (e.g. accented or CJK characters). Allows unicode letters,
+     * combining marks (so base+diacritic sequences pass), and digits in place of `A-Z0-9`, and
+     * reuses the exact same punctuation set as the original rule (`~!#$%&*-_+=|:.` plus space),
+     * extended with `'` and `,` to accommodate real-world tax names (e.g. "O'Brien's Tax",
+     * "Impôt, incl."). `<` and `>` are deliberately absent from the punctuation set, same as in
+     * the original rule, so this also serves as a defense-in-depth backstop against HTML
+     * injection (the primary fix is escaping at render time).
+     *
+     * @param string $candidate
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function unicode_alpha_numeric_punct(string $candidate, ?string &$error = null): bool
+    {
+        $allowedPunctuation = ['~', '!', '#', '$', '%', '&', '*', '-', '_', '+', '=', '|', ':', '.', ' ', "'", ','];
+
+        $allowedCategories = [
+            IntlChar::CHAR_CATEGORY_UPPERCASE_LETTER,
+            IntlChar::CHAR_CATEGORY_LOWERCASE_LETTER,
+            IntlChar::CHAR_CATEGORY_TITLECASE_LETTER,
+            IntlChar::CHAR_CATEGORY_MODIFIER_LETTER,
+            IntlChar::CHAR_CATEGORY_OTHER_LETTER,
+            IntlChar::CHAR_CATEGORY_NON_SPACING_MARK,
+            IntlChar::CHAR_CATEGORY_COMBINING_SPACING_MARK,
+            IntlChar::CHAR_CATEGORY_ENCLOSING_MARK,
+            IntlChar::CHAR_CATEGORY_DECIMAL_DIGIT_NUMBER,
+            IntlChar::CHAR_CATEGORY_LETTER_NUMBER,
+            IntlChar::CHAR_CATEGORY_OTHER_NUMBER,
+        ];
+
+        foreach (mb_str_split($candidate) as $character) {
+            if (in_array($character, $allowedPunctuation, true)) {
+                continue;
+            }
+
+            if (!in_array(IntlChar::charType($character), $allowedCategories, true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Validates a plain filesystem path, allowing space/colon/backslash for Windows paths and
+     * trailing sendmail-style args. Excludes shell metacharacters since this value is concatenated
+     * unescaped into a popen() call. Uses \A...\z, not ^...$, since $ also matches before a
+     * trailing newline.
+     *
+     * @param string $candidate
+     * @param string|null $error
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function valid_path_strict(string $candidate, ?string &$error = null): bool
+    {
+        if ($candidate === '') {
+            return false;
+        }
+
+        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.: \\\\]+\z/', $candidate);
     }
 }

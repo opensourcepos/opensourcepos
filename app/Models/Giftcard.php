@@ -311,6 +311,21 @@ class Giftcard extends Model
         $builder->update(['value' => $value]);
     }
 
+    public function decrementGiftcardValue(string $giftcardNumber, float $amount): bool
+    {
+        if ($amount <= 0.0) {
+            return false;
+        }
+
+        $builder = $this->db->table('giftcards');
+        $builder->where('giftcard_number', $giftcardNumber);
+        $builder->where('deleted', 0);
+        $builder->where('value >=', $amount);
+        $builder->set('value', 'value - ' . $this->db->escape($amount), false);
+
+        return $builder->update() && $this->db->affectedRows() > 0;
+    }
+
     /**
      * Determines if a given giftcard_name exists
      */

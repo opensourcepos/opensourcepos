@@ -130,46 +130,57 @@ class Employee extends Person
      */
     public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, int $employee_id = NEW_ENTRY): bool
     {
-        $success = false;
+        $success = true;
+        $isNewEmployee = ($employee_id == NEW_ENTRY || !$this->exists($employee_id));
+        $grantChangeDisallowed = filter_var(getenv('DISALLOW_GRANT_CHANGE'), FILTER_VALIDATE_BOOLEAN);
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if (ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id)) {
-            $builder = $this->db->table('employees');
-            if ($employee_id == NEW_ENTRY || !$this->exists($employee_id)) {
+        if ($grantChangeDisallowed && $isNewEmployee && !empty($grants_data)) {
+            $this->db->transComplete();
+
+            return false;
+        }
+
+        $personSaved = parent::save_value($person_data, $employee_id);
+
+        if ($isNewEmployee && !$personSaved) {
+            // A new employee must have a person record; abort if the insert failed
+            $this->db->transComplete();
+
+            return false;
+        }
+
+        if ($personSaved) {
+            if ($isNewEmployee) {
                 $employee_data['person_id'] = $employee_id = $person_data['person_id'];
-                $success = $builder->insert($employee_data);
+                $success = $this->db->table('employees')->insert($employee_data);
             } else {
-                $builder->where('person_id', $employee_id);
-                $success = $builder->update($employee_data);
+                $success = $success && $this->db->table('employees')->where('person_id', $employee_id)->update($employee_data);
             }
+        }
 
-            // We have either inserted or updated a new employee, now lets set permissions.
-            if ($success) {
-                // First lets clear out any grants the employee currently has.
-                $builder = $this->db->table('grants');
-                $success = $builder->delete(['person_id' => $employee_id]);
+        // Grants update is gated only by the DISALLOW_GRANT_CHANGE flag, not by
+        // whether person/employee data was actually written (a 0-row affected
+        // update on existing data is a no-op, not a failure).
+        if (!$grantChangeDisallowed && !empty($grants_data)) {
+            $success = $success && $this->db->table('grants')->delete(['person_id' => $employee_id]);
 
-                // Now insert the new grants
-                if ($success) {
-                    foreach ($grants_data as $grant) {
-                        $data = [
-                            'permission_id' => $grant['permission_id'],
-                            'person_id'     => $employee_id,
-                            'menu_group'    => $grant['menu_group']
-                        ];
+            foreach ($grants_data as $grant) {
+                $data = [
+                    'permission_id' => $grant['permission_id'],
+                    'person_id'     => $employee_id,
+                    'menu_group'    => $grant['menu_group']
+                ];
 
-                        $builder = $this->db->table('grants');
-                        $success = $builder->insert($data);
-                    }
-                }
+                $success = $success && $this->db->table('grants')->insert($data);
             }
         }
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
+        $success = $success && $this->db->transStatus();
 
         return $success;
     }
@@ -375,11 +386,21 @@ class Employee extends Person
             // Compare passwords depending on the hash version
             if ($row->hash_version === '1' && $row->password === md5($password)) {
                 $builder->where('person_id', $row->person_id);
-                $this->session->set('person_id', $row->person_id);
-                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                $updated = $builder->update(['hash_version' => 2, 'password' => $passwordHash]);
 
-                return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
+                if ($updated) {
+                    if (session_status() === PHP_SESSION_ACTIVE) {
+                        $this->session->regenerate(true);
+                    }
+                    $this->session->set('person_id', $row->person_id);
+                }
+
+                return $updated;
             } elseif ($row->hash_version === '2' && password_verify($password, $row->password)) {
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    $this->session->regenerate(true);
+                }
                 $this->session->set('person_id', $row->person_id);
 
                 return true;
@@ -521,7 +542,7 @@ class Employee extends Person
     {
         $success = false;
 
-        if (!getenv('DISALLOW_PASSWORD_CHANGE')) {
+        if (!filter_var(getenv('DISALLOW_PASSWORD_CHANGE'), FILTER_VALIDATE_BOOLEAN)) {
             $this->db->transStart();
 
             $builder = $this->db->table('employees');

@@ -2,9 +2,7 @@
 
 use CodeIgniter\Router\RouteCollection;
 
-/**
- * @var RouteCollection $routes
- */
+/** @var RouteCollection $routes */
 $routes->setDefaultController('Login');
 
 $routes->get('/', 'Login::index');
