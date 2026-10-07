@@ -1,63 +1,136 @@
 name: ✨ Feature Request
-description: Suggest an idea for this project
+description: Suggest an idea or enhancement for this project
 title: "[Feature]: "
 labels: ["enhancement"]
-assignees: ["none"]
+assignees: []
 body:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # INTRODUCTION
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this feature request! 🤗
-        Please make sure this feature request hasn't been already submitted by someone by looking through other open/closed issues. 😃
+        ## Thanks for suggesting a new feature! 💡
+        
+        We appreciate you taking the time to help improve OpenSourcePOS.
+        
+        > 📋 **Before submitting:** Please search [existing feature requests](https://github.com/opensourcepos/opensourcepos/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) to ensure your idea hasn't already been suggested.
 
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FEATURE DETAILS
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: dropdown
+    id: feature-type
     attributes:
-      multiple: false
-      label: Type of Feature
-      description: Select the type of feature request.
+      label: 🏷️ Feature Type
+      description: What type of feature are you requesting?
       options:
         - "✨ New Feature"
-        - "📝 Documentation"
-        - "🎨 Style and UI"
-        - "🔨 Code Refactor"
-        - "⚡ Performance Improvements"
-        - "✅ New Test"
+        - "📝 Documentation Improvement"
+        - "🎨 UI/UX Enhancement"
+        - "🔨 Code Refactoring"
+        - "⚡ Performance Improvement"
+        - "✅ New Test Coverage"
+        - "🔌 Plugin/Integration"
+      default: 0
     validations:
       required: true
-      
+
   - type: dropdown
     id: ospos-version
     attributes:
-      label: OpensourcePOS Version
-      description: What version of our software are you running?
+      label: 📦 OpenSourcePOS Version
+      description: What version are you currently running?
       options:
-        - opensourcepos 3.3.9
-        - opensourcepos 3.3.8
-        - opensourcepos 3.3.7
+        - development (unreleased)
+        - OpenSourcePOS 3.4.2
+        - OpenSourcePOS 3.4.1
+        - OpenSourcePOS 3.4.0
+        - OpenSourcePOS 3.3.9
+        - OpenSourcePOS 3.3.8
       default: 0
-    validations:
-      required: true  
-
-  - type: textarea
-    id: description
-    attributes:
-      label: Description
-      description: Give us a brief description of the feature or enhancement you would like
     validations:
       required: true
 
   - type: textarea
-    id: additional-information
+    id: problem-statement
     attributes:
-      label: Additional Information
-      description: Give us some additional information on the feature request like proposed solutions, links, screenshots, etc.
-      
+      label: 🎯 Problem Statement
+      description: |
+        Is your feature request related to a problem? Please describe.
+        
+        A clear description of what the problem is. Ex: I'm always frustrated when [...]
+      placeholder: |
+        Example: I always have to manually calculate taxes for different regions, 
+        which is time-consuming and error-prone.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: 💡 Proposed Solution
+      description: A clear and concise description of what you want to happen.
+      placeholder: |
+        Example: Add an automatic tax calculation feature that:
+        - Detects the customer's region
+        - Applies the correct tax rate
+        - Generates a tax report automatically
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternatives Considered
+      description: A clear description of any alternative solutions or features you've considered.
+      placeholder: |
+        Example: I considered using an external tax service, but it would be 
+        better to have this integrated directly into OpenSourcePOS.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ADDITIONAL INFORMATION
+  # ─────────────────────────────────────────────────────────────────────────────
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📎 Additional Context
+      description: |
+        Add any other context, screenshots, mockups, or references about the feature request here.
+        
+        **Helpful additions:**
+        - Links to similar features in other software
+        - Mockups or diagrams
+        - Code examples
+        - Documentation references
+      placeholder: |
+        Any other relevant information, links, or screenshots...
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: ✅ Acceptance Criteria
+      description: |
+        (Optional) Define what "done" looks like for this feature.
+        
+        Format: **Given** [context], **When** [action], **Then** [outcome]
+      placeholder: |
+        Given a customer is selected from region X
+        When the sale is completed
+        Then the tax rate for region X is automatically applied
+        And the tax amount is correctly calculated
+        And a tax entry is logged in the report
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CONFIRMATION
+  # ─────────────────────────────────────────────────────────────────────────────
   - type: checkboxes
     id: terms
     attributes:
-      label: Verify you searched open requests in OpensourcePOS
-      description: By submitting this request you agree that you have searched Open Requests in the Tracker
+      label: ✓ Confirmation
+      description: Please confirm before submitting
       options:
-        - label: I agree I have searched Open Requests
-          required: true 
- 
+        - label: I have searched existing feature requests to ensure this is not a duplicate
+          required: true
+        - label: I have provided a clear problem statement and proposed solution
+          required: true

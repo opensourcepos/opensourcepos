@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Libraries\MY_Language;
 use Locale;
 use HTMLPurifier;
 use HTMLPurifier_Config;
@@ -38,9 +39,11 @@ class Services extends BaseService
     /**
      * Responsible for loading the language string translations.
      *
+     * @param string|null $locale
+     * @param bool $getShared
      * @return MY_Language
      */
-    public static function language(?string $locale = null, bool $getShared = true)
+    public static function language(?string $locale = null, bool $getShared = true): MY_Language
     {
         if ($getShared) {
             return static::getSharedInstance('language', $locale)->setLocale($locale);
@@ -55,12 +58,12 @@ class Services extends BaseService
         // Use '?:' for empty string check
         $locale = $locale ?: $requestLocale;
 
-        return new \App\Libraries\MY_Language($locale);
+        return new MY_Language($locale);
     }
 
-    private static $htmlPurifier;
+    private static HTMLPurifier $htmlPurifier;
 
-    public static function htmlPurifier($getShared = true)
+    public static function htmlPurifier($getShared = true): object
     {
         if ($getShared) {
             return static::getSharedInstance('htmlPurifier');

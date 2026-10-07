@@ -137,7 +137,7 @@ if (isset($success)) {
                         <td><?= esc($item['item_number']) ?></td>
                         <td style="text-align: center;">
                             <?= esc($item['name'] . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br>
-                            <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
+                            <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']' ?>
                             <?= form_hidden('location', (string)$item['item_location']) ?>
                         </td>
 
@@ -533,7 +533,7 @@ if (isset($success)) {
         });
 
         $('[name="discount_toggle"]').change(function() {
-            var input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked')) ? 1 : 0);
+            const input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked')) ? 1 : 0);
             $('#cart_' + $(this).attr('data-line')).append($(input));
             $('#cart_' + $(this).attr('data-line')).submit();
         });

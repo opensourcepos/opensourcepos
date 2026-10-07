@@ -28,8 +28,8 @@ class Email_lib
 
         $encrypter = Services::encrypter();
 
-        $smtp_pass = $this->config['smtp_pass'];
-        if (!empty($smtp_pass) && check_encryption()) {
+        $smtp_pass = $this->config['smtp_pass'] ?? '';
+        if (!empty($smtp_pass) && checkEncryption()) {
             try {
                 $smtp_pass = $encrypter->decrypt($smtp_pass);
             } catch (\EncryptionException $e) {
@@ -44,14 +44,14 @@ class Email_lib
             'mailType'    => 'html',
             'userAgent'   => 'OSPOS',
             'validate'    => true,
-            'protocol'    => $this->config['protocol'],
-            'mailPath'    => $this->config['mailpath'],
-            'SMTPHost'    => $this->config['smtp_host'],
-            'SMTPUser'    => $this->config['smtp_user'],
+            'protocol'    => $this->config['protocol'] ?? 'mail',
+            'mailPath'    => $this->config['mailpath'] ?? '/usr/sbin/sendmail',
+            'SMTPHost'    => $this->config['smtp_host'] ?? '',
+            'SMTPUser'    => $this->config['smtp_user'] ?? '',
             'SMTPPass'    => $smtp_pass,
-            'SMTPPort'    => (int)$this->config['smtp_port'],
-            'SMTPTimeout' => (int)$this->config['smtp_timeout'],
-            'SMTPCrypto'  => $this->config['smtp_crypto']
+            'SMTPPort'    => (int)(!empty($this->config['smtp_port']) ? $this->config['smtp_port'] : 465),
+            'SMTPTimeout' => (int)(!empty($this->config['smtp_timeout']) ? $this->config['smtp_timeout'] : 5),
+            'SMTPCrypto'  => $this->config['smtp_crypto'] ?? 'ssl'
         ];
         $this->email->initialize($email_config);
     }
@@ -81,5 +81,41 @@ class Email_lib
         }
 
         return $result;
+    }
+
+    /**
+     * Gets the mime type of the company logo file.
+     *
+     * @return string Mime type or empty string if logo doesn't exist
+     */
+    public function getLogoMimeType(): string
+    {
+        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+
+        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
+            $mimeType = mime_content_type($logo_path);
+            return $mimeType !== false ? $mimeType : '';
+        }
+
+        return '';
+    }
+
+    /**
+     * Builds an img tag for the company logo to use in email templates.
+     *
+     * @return string HTML img tag with base64-encoded logo, or empty string if no logo
+     */
+    public function buildLogoImgTag(): string
+    {
+        $mimeType = $this->getLogoMimeType();
+
+        if ($mimeType === '') {
+            return '';
+        }
+
+        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+        $logo_data = base64_encode(file_get_contents($logo_path));
+
+        return '<img id="image" src="data:' . $mimeType . ';base64,' . $logo_data . '" alt="company_logo">';
     }
 }

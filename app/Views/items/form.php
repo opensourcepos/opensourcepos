@@ -467,7 +467,7 @@
             !$(this).val() && $(this).val('');
         });
 
-        var fill_tax_category_value = function(event, ui) {
+        const fill_tax_category_value = function(event, ui) {
             event.preventDefault();
             $("input[name='tax_category_id']").val(ui.item.value);
             $("input[name='tax_category']").val(ui.item.label);
@@ -483,7 +483,7 @@
             focus: fill_tax_category_value
         });
 
-        var fill_low_sell_value = function(event, ui) {
+        const fill_low_sell_value = function(event, ui) {
             event.preventDefault();
             $("input[name='low_sell_item_id']").val(ui.item.value);
             $("input[name='low_sell_item_name']").val(ui.item.label);
@@ -517,7 +517,7 @@
             return value.match(/(\||_)/g) == null;
         }, "<?= lang('Attributes.attribute_value_invalid_chars') ?>");
 
-        var init_validation = function() {
+        const init_validation = function() {
             $('#item_form').validate($.extend({
                 submitHandler: function(form, event) { // Event is not used as a parameter here
                     $(form).ajaxSubmit({

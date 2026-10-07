@@ -5,6 +5,7 @@ namespace Config;
 use App\Models\Appconfig;
 use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\Config\BaseConfig;
+use Config\Database;
 
 /**
  * This class holds the configuration options stored from the database so that on launch those settings can be cached
@@ -13,7 +14,7 @@ use CodeIgniter\Config\BaseConfig;
  */
 class OSPOS extends BaseConfig
 {
-    public array $settings;
+    public array $settings = [];
     public string $commit_sha1 = 'dev';    // TODO: Travis scripts need to be updated to replace this with the commit hash on build
     private CacheInterface $cache;
 
@@ -33,13 +34,36 @@ class OSPOS extends BaseConfig
 
         if ($cache) {
             $this->settings = decode_array($cache);
-        } else {
+            return;
+        }
+
+        try {
+            $db = Database::connect();
+            $db->resetDataCache();
+
+            if (!$db->tableExists('app_config')) {
+                $this->settings = $this->getDefaultSettings();
+                return;
+            }
+
             $appconfig = model(Appconfig::class);
             foreach ($appconfig->get_all()->getResult() as $app_config) {
                 $this->settings[$app_config->key] = $app_config->value;
             }
             $this->cache->save('settings', encode_array($this->settings));
+        } catch (\Exception $e) {
+            $this->settings = $this->getDefaultSettings();
         }
+    }
+
+    private function getDefaultSettings(): array
+    {
+        return [
+            'language'      => 'english',
+            'language_code' => 'en',
+            'company'       => 'Home',
+            'barcode_type'  => 'Code39'
+        ];
     }
 
     /**
