@@ -41,6 +41,7 @@ foreach ($throttles as $throttle) {
                     echo form_dropdown(
                         'throttle_period_' . $throttleId,
                         [
+                            'second' => lang('Jobs.throttle_period_second'),
                             'minute' => lang('Jobs.throttle_period_minute'),
                             'hour'   => lang('Jobs.throttle_period_hour'),
                             'day'    => lang('Jobs.throttle_period_day'),

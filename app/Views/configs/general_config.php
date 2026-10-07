@@ -157,6 +157,21 @@
             </div>
 
             <div class="form-group form-group-sm">
+                <?= form_label(lang('Config.table_polling_frequency'), 'table_polling_frequency', ['class' => 'control-label col-xs-2 required']) ?>
+                <div class="col-xs-2">
+                    <?= form_input([
+                        'name'  => 'table_polling_frequency',
+                        'id'    => 'table_polling_frequency',
+                        'class' => 'form-control input-sm required',
+                        'type'  => 'number',
+                        'min'   => 0,
+                        'max'   => 60,
+                        'value' => esc($config['table_polling_frequency'])
+                    ]) ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.notify_alignment'), 'notify_horizontal_position', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-sm-10">
                     <div class="form-group form-group-sm row">
@@ -491,6 +506,12 @@
                     required: true,
                     remote: "<?= "$controller_name/checkNumeric" ?>"
                 },
+                table_polling_frequency: {
+                    required: true,
+                    digits: true,
+                    min: 0,
+                    max: 60
+                },
                 default_sales_discount: {
                     required: true,
                     remote: "<?= "$controller_name/checkNumeric" ?>"
@@ -511,6 +532,12 @@
                 lines_per_page: {
                     required: "<?= lang('Config.lines_per_page_required') ?>",
                     number: "<?= lang('Config.lines_per_page_number') ?>"
+                },
+                table_polling_frequency: {
+                    required: "<?= lang('Config.table_polling_frequency_required') ?>",
+                    digits: "<?= lang('Config.table_polling_frequency_number') ?>",
+                    min: "<?= lang('Config.table_polling_frequency_range') ?>",
+                    max: "<?= lang('Config.table_polling_frequency_range') ?>"
                 },
                 gcaptcha_site_key: {
                     required: "<?= lang('Config.gcaptcha_site_key_required') ?>"

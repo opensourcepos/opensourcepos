@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $config
+ * @var array $queues
  */
 ?>
 
@@ -14,13 +15,16 @@
                 <button type="button" id="process_all_jobs" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-play">&nbsp;</span><?= lang('Jobs.process_all_jobs') ?>
                 </button>
+                <button type="button" id="pause_all_jobs" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-pause">&nbsp;</span><?= lang('Jobs.pause_all_jobs') ?>
+                </button>
             </div>
         </div>
 
         <div class="row form-group form-group-sm">
             <label class="control-label col-xs-4 col-sm-3 col-md-2"><?= lang('Jobs.process_selected_jobs') ?></label>
             <div class="col-xs-2 text-left">
-                <?= form_multiselect('selected_jobs[]', [], [], [
+                <?= form_multiselect('selected_jobs[]', array_combine($queues, $queues), [], [
                     'id'                        => 'selected_jobs',
                     'class'                     => 'selectpicker show-menu-arrow',
                     'data-none-selected-text'   => lang('Common.none_selected_text'),
@@ -33,6 +37,9 @@
                 <button type="button" id="process_selected_jobs" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-play">&nbsp;</span><?= lang('Jobs.process_selected_jobs') ?>
                 </button>
+                <button type="button" id="pause_selected_jobs" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-pause">&nbsp;</span><?= lang('Jobs.pause_selected_jobs') ?>
+                </button>
             </div>
         </div>
 
@@ -42,7 +49,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#process_all_jobs').click(function() {
-            $.post('<?= 'jobs/processAllJobs' ?>', {}, function(response) {
+            $.post('<?= 'jobs/processJobs' ?>', {scope: 'all'}, function(response) {
                 $.notify({
                     message: response.message
                 }, {
@@ -52,7 +59,27 @@
         });
 
         $('#process_selected_jobs').click(function() {
-            $.post('<?= 'jobs/processSelectedJobs' ?>', {selected_jobs: $('#selected_jobs').val()}, function(response) {
+            $.post('<?= 'jobs/processJobs' ?>', {scope: 'selected', selected_jobs: $('#selected_jobs').val()}, function(response) {
+                $.notify({
+                    message: response.message
+                }, {
+                    type: response.success ? 'success' : 'warning'
+                });
+            }, 'json');
+        });
+
+        $('#pause_all_jobs').click(function() {
+            $.post('<?= 'jobs/pauseJobs' ?>', {scope: 'all'}, function(response) {
+                $.notify({
+                    message: response.message
+                }, {
+                    type: response.success ? 'success' : 'warning'
+                });
+            }, 'json');
+        });
+
+        $('#pause_selected_jobs').click(function() {
+            $.post('<?= 'jobs/pauseJobs' ?>', {scope: 'selected', selected_jobs: $('#selected_jobs').val()}, function(response) {
                 $.notify({
                     message: response.message
                 }, {

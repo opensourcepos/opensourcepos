@@ -23,7 +23,7 @@ class ItemBulkUpdateTest extends CIUnitTestCase
      */
     protected $migrate   = false;
     protected $refresh   = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     protected Item $item;
 

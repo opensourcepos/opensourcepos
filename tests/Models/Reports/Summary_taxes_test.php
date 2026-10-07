@@ -15,7 +15,7 @@ class Summary_taxes_test extends CIUnitTestCase
     protected $migrate = true;
     protected $migrateOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     private array $seededSaleIds = [];
     private array $seededItemIds = [];

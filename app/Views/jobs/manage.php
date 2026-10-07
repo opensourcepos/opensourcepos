@@ -2,6 +2,9 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs">
     <li class="active" role="presentation">
+        <a data-toggle="tab" href="#manage_tab" title="<?= lang('Jobs.manage_configuration') ?>"><?= lang('Jobs.manage') ?></a>
+    </li>
+    <li role="presentation">
         <a data-toggle="tab" href="#settings_tab" title="<?= lang('Jobs.settings_configuration') ?>"><?= lang('Jobs.settings') ?></a>
     </li>
     <li role="presentation">
@@ -10,7 +13,10 @@
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade in active" id="settings_tab">
+    <div class="tab-pane fade in active" id="manage_tab">
+        <?= view('jobs/manage_grid') ?>
+    </div>
+    <div class="tab-pane" id="settings_tab">
         <?= view('jobs/settings_config') ?>
     </div>
     <div class="tab-pane" id="utilities_tab">
