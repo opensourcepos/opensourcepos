@@ -24,6 +24,7 @@ return [
     "migration_required"                  => "",
     "migration_running"                   => "",
     "password"                            => "密码",
+    'too_many_attempts'                   => '太多次尝试。请稍等片刻后重试。',
     "username"                            => "用户名",
     "welcome"                             => "欢迎来到 {0}!"
 ];

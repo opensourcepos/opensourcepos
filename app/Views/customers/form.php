@@ -36,7 +36,7 @@
         <div class="tab-pane fade in active" id="customer_basic_info">
             <fieldset>
                 <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>
+                    <?= form_label(lang('Customers.consent'), 'consent', ['class' => 'control-label col-xs-3 text-danger required']) ?>
                     <div class="col-xs-1">
                         <?= form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (bool)$person_info->consent) ?>
                     </div>
@@ -453,7 +453,7 @@
             }
         });
 
-        var fill_value = function(event, ui) {
+        const fill_value = function(event, ui) {
             event.preventDefault();
             $("input[name='sales_tax_code_id']").val(ui.item.value);
             $("input[name='sales_tax_code_name']").val(ui.item.label);

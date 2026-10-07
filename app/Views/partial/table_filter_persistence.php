@@ -18,11 +18,11 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var additional_params = <?= json_encode($additional_params) ?>;
-        var filter_select_id = '<?= esc($filter_select_id) ?>';
+        const additional_params = <?= json_encode($additional_params) ?>;
+        const filter_select_id = '<?= esc($filter_select_id) ?>';
 
         function update_url() {
-            var params = new URLSearchParams();
+            const params = new URLSearchParams();
 
             // Add dates
             if (typeof start_date !== 'undefined') {
@@ -33,7 +33,7 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
             }
 
             // Add filters
-            var filters = $('#' + filter_select_id).val();
+            const filters = $('#' + filter_select_id).val();
             if (filters) {
                 filters.forEach(function(filter) {
                     params.append('filters[]', filter);
@@ -42,9 +42,9 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
 
             // Add additional params
             additional_params.forEach(function(param) {
-                var element = $('#' + param);
+                const element = $('#' + param);
                 if (element.length) {
-                    var value = element.val();
+                    const value = element.val();
                     if (Array.isArray(value) && value.length > 0) {
                         value.forEach(function(v) {
                             params.append(param + '[]', v);
@@ -56,8 +56,8 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
             });
 
             // Update URL without page reload
-            var new_url = window.location.pathname;
-            var params_str = params.toString();
+            const new_url = window.location.pathname;
+            const params_str = params.toString();
             if (params_str) {
                 new_url += '?' + params_str;
             }

@@ -15,8 +15,8 @@
             <ul id="locale_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
+                <?= form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
                     <?= form_input([
                         'name'  => 'number_locale',
                         'id'    => 'number_locale',
@@ -25,21 +25,21 @@
                     ]) ?>
                     <?= form_hidden(['name' => 'save_number_locale', 'value' => $config['number_locale']]) ?>
                 </div>
-                <div class="col-xs-2">
-                    <label class="control-label">
-                        <a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank">
+                <div class="col-xs-5 col-sm-7 col-md-8">
+                    <p class="form-control-static">
+                        <a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank" style="text-decoration: none;">
                             <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.number_locale_tooltip') ?>"></span>
                         </a>
-                        <span id="number_locale_example">
-                            &nbsp;&nbsp;<?= to_currency(1234567890.12300) ?>
+                        <span id="number_locale_example" style="padding-left: 1em;">
+                            <?= to_currency(1234567890.12300) ?>
                         </span>
-                    </label>
+                    </p>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.thousands_separator'), 'thousands_separator', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.thousands_separator'), 'thousands_separator', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9">
                     <?= form_checkbox([
                         'name'    => 'thousands_separator',
                         'id'      => 'thousands_separator',
@@ -50,8 +50,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.currency_symbol'), 'currency_symbol', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
+                <?= form_label(lang('Config.currency_symbol'), 'currency_symbol', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_input([
                         'name'  => 'currency_symbol',
                         'id'    => 'currency_symbol',
@@ -62,8 +62,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.currency_code'), 'currency_code', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
+                <?= form_label(lang('Config.currency_code'), 'currency_code', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_input([
                         'name'  => 'currency_code',
                         'id'    => 'currency_code',
@@ -74,8 +74,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.currency_decimals'), 'currency_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.currency_decimals'), 'currency_decimals', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'currency_decimals',
                         [
@@ -90,8 +90,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.tax_decimals'), 'tax_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.tax_decimals'), 'tax_decimals', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'tax_decimals',
                         [
@@ -108,8 +108,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.quantity_decimals'), 'quantity_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.quantity_decimals'), 'quantity_decimals', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'quantity_decimals',
                         [
@@ -125,8 +125,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.cash_decimals'), 'cash_decimals', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.cash_decimals'), 'cash_decimals', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-8 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'cash_decimals',
                         [
@@ -139,16 +139,16 @@
                         ['class' => 'form-control input-sm']
                     ) ?>
                 </div>
-                <div class="col-xs-1">
-                    <label class="control-label">
+                <div class="col-xs-1 col-sm-7 col-md-8">
+                    <p class="form-control-static">
                         <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.cash_decimals_tooltip') ?>"></span>
-                    </label>
+                    </p>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'cash_rounding_code',
                         $rounding_options,
@@ -159,8 +159,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.payment_options_order'), 'payment_options_order', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.payment_options_order'), 'payment_options_order', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <?= form_dropdown(
                         'payment_options_order',
                         [
@@ -177,8 +177,8 @@
             </div>
 
             <div class="form-group form-group-sm" style="display:flex; align-items:center">
-                <?= form_label(lang('Config.payment_reference_code_length_limits'), 'payment_reference_code_length', ['class' => 'control-label col-xs-2', 'style' => 'padding-top:0; line-height:1.4; margin-top:-8px']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.payment_reference_code_length_limits'), 'payment_reference_code_length', ['class' => 'control-label col-xs-3 col-sm-2', 'style' => 'padding-top:0; line-height:1.4; margin-top:-8px']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div id="payment_reference_code_slider"></div>
                     <div class="row" style="margin-top:6px">
                         <div class="col-xs-6">
@@ -196,26 +196,26 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
+                <?= form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-8 col-sm-3 col-md-2">
                     <?= form_input([
                         'name'  => 'country_codes',
                         'class' => 'form-control input-sm',
                         'value' => $config['country_codes']
                     ]) ?>
                 </div>
-                <div class="col-xs-1">
-                    <label class="control-label">
+                <div class="col-xs-1 col-sm-7 col-md-8">
+                    <p class="form-control-static">
                         <a href="https://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank">
                             <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.country_codes_tooltip'); ?>"></span>
                         </a>
-                    </label>
+                    </p>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.language'), 'language', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.language'), 'language', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <?= form_dropdown(
                         'language',
                         get_languages(),
@@ -226,8 +226,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.timezone'), 'timezone', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-4">
+                <?= form_label(lang('Config.timezone'), 'timezone', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <?= form_dropdown(
                         'timezone',
                         get_timezones(),
@@ -238,8 +238,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.datetimeformat'), 'datetimeformat', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-sm-2">
+                <?= form_label(lang('Config.datetimeformat'), 'datetimeformat', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-4 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'dateformat',
                         get_dateformats(),
@@ -247,7 +247,7 @@
                         ['class' => 'form-control input-sm']
                     ) ?>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-4 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'timeformat',
                         get_timeformats(),
@@ -258,8 +258,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.date_or_time_format'), 'date_or_time_format', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.date_or_time_format'), 'date_or_time_format', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9">
                     <?= form_checkbox([
                         'name'    => 'date_or_time_format',
                         'id'      => 'date_or_time_format',
@@ -270,8 +270,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.financial_year'), 'financial_year', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.financial_year'), 'financial_year', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-3 col-md-2">
                     <?= form_dropdown(
                         'financial_year',
                         [
@@ -334,7 +334,7 @@
         });
 
         $('#currency_symbol, #thousands_separator, #currency_code').change(function() {
-            var data = {
+            const data = {
                 number_locale: $('#number_locale').val()
             };
             data['save_number_locale'] = $("input[name='save_number_locale']").val();
@@ -378,7 +378,7 @@
                             }
                         },
                         dataFilter: function(data) {
-                            var response = JSON.parse(data);
+                            const response = JSON.parse(data);
                             $("input[name='save_number_locale']").val(response.save_number_locale);
                             $('#number_locale_example').text(response.number_locale_example);
                             $('#currency_symbol').val(response.currency_symbol);

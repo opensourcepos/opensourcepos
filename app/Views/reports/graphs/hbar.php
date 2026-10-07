@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
     // Labels and data series
-    var data = {
+    const data = {
         labels: <?= json_encode(esc($labels_1, 'js')) ?>,
         series: [{
             name: '<?= esc($yaxis_title, 'js') ?>',
@@ -20,7 +20,7 @@
     };
 
     // We are setting a few options for our chart and override the defaults
-    var options = {
+    const options = {
 
         // Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
         width: '100%',
@@ -101,7 +101,7 @@
         ]
     };
 
-    var responsiveOptions = [
+    const responsiveOptions = [
         ['screen and (min-width: 640px)', {
             height: '80%',
             chartPadding: {

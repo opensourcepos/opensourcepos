@@ -79,7 +79,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.add_minus'), 'quantity', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.add_minus'), 'quantity', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-4">
                 <?= form_input([
                     'name'  => 'newquantity',
@@ -136,7 +136,7 @@
     });
 
     function fill_quantity(val) {
-        var item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
+        const item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
         document.getElementById('quantity').value = parseFloat(item_quantities[val]).toFixed(<?= quantity_decimals() ?>);
     }
 </script>

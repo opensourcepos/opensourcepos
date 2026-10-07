@@ -14,12 +14,18 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        // Load the preset datarange picker
+        $('#filters').on('hidden.bs.select', function(e) {
+            table_support.refresh();
+        });
+
         <?= view('partial/daterangepicker') ?>
+
+        $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
+            table_support.refresh();
+        });
 
         <?= view('partial/bootstrap_tables_locale') ?>
 
-        // Override dates from server if provided
         <?php if (isset($start_date) && $start_date): ?>
         start_date = "<?= esc($start_date) ?>";
         <?php endif; ?>

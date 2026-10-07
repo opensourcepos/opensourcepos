@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "کلمه عبور",
     "required_username"                   => "",
+    'too_many_attempts'                   => 'تعداد تلاش‌ها بیش از حد مجاز است. لطفاً کمی صبر کنید و دوباره امتحان کنید.',
     "username"                            => "نام کاربری",
     "welcome"                             => ""
 ];

@@ -25,6 +25,7 @@ return [
     "migration_running"                   => "",
     "password"                            => "Mật khẩu",
     "required_username"                   => "",
+    'too_many_attempts'                   => 'Quá nhiều lần thử. Vui lòng đợi một chút và thử lại.',
     "username"                            => "Tài khoản",
     "welcome"                             => "Chào mừng đến với {0}!"
 ];

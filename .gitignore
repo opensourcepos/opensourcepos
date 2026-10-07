@@ -76,6 +76,8 @@ system/
 *~
 *.~
 .env
+.env.lock
+.env.tmp.*
 auth.json
 
 *.png
@@ -86,5 +88,5 @@ auth.json
 /writable/logs/*.log
 /writable/debugbar/*.json
 /app/Database/database.sql
-/writable/cache/settings
+/writable/cache/*
 /.env.bak

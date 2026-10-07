@@ -98,3 +98,32 @@ function bom_exists(&$file_handle): bool
 
     return $result;
 }
+
+/**
+ * Checks that the parsed item import rows expose the columns the current
+ * template requires. A file whose header row does not match the template
+ * (for example when the "Id" column is missing, an attribute column was
+ * renamed, or a stock location was added since the file was last downloaded)
+ * would otherwise trigger "Undefined array key" errors while building each
+ * item. The required columns are derived from generate_import_items_csv(),
+ * the same function that builds the downloadable template, so location and
+ * attribute columns stay in sync automatically.
+ *
+ * @param array $csv_rows Rows returned by get_csv_file().
+ * @param array $stock_locations Stock locations, as returned by Stock_location::get_allowed_locations().
+ * @param array $attribute_names Attribute definition names, as returned by Attribute::get_definition_names().
+ * @return bool True when the required columns are present.
+ */
+function csvImportHasRequiredItemHeaders(array $csv_rows, array $stock_locations, array $attribute_names): bool
+{
+    if (empty($csv_rows)) {
+        return false;
+    }
+
+    $template_header_line = substr(generate_import_items_csv($stock_locations, $attribute_names), 3);
+    $required_headers = str_getcsv($template_header_line);
+
+    $present_headers = array_keys(reset($csv_rows));
+
+    return empty(array_diff($required_headers, $present_headers));
+}
