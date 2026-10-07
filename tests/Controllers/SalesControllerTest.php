@@ -14,7 +14,7 @@ use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\SaleFixtureTrait;
 
 /**
- * Regression tests for GHSA-3xf6-8fmq-44wg.
+ * Regression tests for the Sales per-endpoint access-control bypass.
  *
  * A cashier holding only the base "sales" grant (no "reports_sales") must
  * not be able to reach the per-sale endpoints that getManage() gates

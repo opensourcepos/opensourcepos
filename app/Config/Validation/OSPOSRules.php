@@ -254,10 +254,10 @@ class OSPOSRules
     }
 
     /**
-     * Validates that the candidate is a plain filesystem path: only letters, digits,
-     * underscore, dash, dot and forward slash. Uses \A...\z (not ^...$) because PCRE's $
-     * also matches immediately before a single trailing newline, which would let a
-     * value like "/usr/bin/php\n" slip through — the bug behind GHSA-jc56-j8m6-q627.
+     * Validates a plain filesystem path, allowing space/colon/backslash for Windows paths and
+     * trailing sendmail-style args. Excludes shell metacharacters since this value is concatenated
+     * unescaped into a popen() call. Uses \A...\z, not ^...$, since $ also matches before a
+     * trailing newline.
      *
      * @param string $candidate
      * @param string|null $error
@@ -270,6 +270,6 @@ class OSPOSRules
             return false;
         }
 
-        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.]+\z/', $candidate);
+        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.: \\\\]+\z/', $candidate);
     }
 }
