@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "添加，更新，刪除，搜索產品套件",
     "items"                      => "產品",
     "items_desc"                 => "添加，更新，刪除，搜索產品",
+    "jobs"                       => "任务队列",
+    "jobs_desc"                  => "配置和管理后台任务队列。",
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers, Employees et al.",
     "migrate"                    => "",

@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Ekleme, değiştirme, silme ve arama.",
     "items"                      => "Ürünler",
     "items_desc"                 => "Ekleme, değiştirme, silme ve arama.",
+    "jobs"                       => "İş Kuyruğu",
+    "jobs_desc"                  => "Arka plan iş kuyruğunu yapılandırın ve yönetin.",
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers, Employees et al.",
     "migrate"                    => "Göç",

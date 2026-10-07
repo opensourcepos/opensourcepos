@@ -180,3 +180,12 @@ label.required {
 .font-monospace {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.tooltip-inner {
+    max-width: 350px;
+    text-align: left;
+}
+
+.ui-tooltip {
+    max-width: 350px;
+}
