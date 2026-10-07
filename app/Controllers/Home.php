@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Libraries\MY_Migration;
+use App\Models\Employee;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -9,6 +11,13 @@ class Home extends Secure_Controller
 {
     public function __construct()
     {
+        $methodName = urldecode(service('request')->getUri()->getSegment(2));
+
+        if ($methodName === 'logout') {
+            $this->employee = model(Employee::class);
+            return;
+        }
+
         parent::__construct('home', null, 'home');
     }
 
@@ -34,14 +43,23 @@ class Home extends Secure_Controller
     }
 
     /**
-     * Load "change employee password" form
+     * Load the "change employee password" form
      *
-     * @return string
-     * @noinspection PhpUnused
+     * @param int $employeeId
+     * @return ResponseInterface|string
      */
-    public function getChangePassword(int $employee_id = -1): string    // TODO: Replace -1 with a constant
+    public function getChangePassword(int $employeeId = NEW_ENTRY): ResponseInterface|string
     {
-        $person_info = $this->employee->get_info($employee_id);
+        $loggedInEmployee = $this->employee->get_logged_in_employee_info();
+        $currentPersonId = (int) $loggedInEmployee->person_id;
+
+        $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
+
+        if (!$this->employee->isAdmin($currentPersonId) && $employeeId !== $currentPersonId) {
+            return $this->response->setStatusCode(403)->setBody(lang('Employees.unauthorized_modify'));
+        }
+
+        $person_info = $this->employee->get_info($employeeId);
         foreach (get_object_vars($person_info) as $property => $value) {
             $person_info->$property = $value;
         }
@@ -55,52 +73,64 @@ class Home extends Secure_Controller
      *
      * @return ResponseInterface
      */
-    public function postSave(int $employee_id = -1): ResponseInterface    // TODO: Replace -1 with a constant
+    public function postSave(int $employeeId = NEW_ENTRY): ResponseInterface
     {
-        if (!empty($this->request->getPost('current_password')) && $employee_id != -1) {
+        $currentUser = $this->employee->get_logged_in_employee_info();
+        $currentPersonId = (int) $currentUser->person_id;
+
+        $employeeId = $employeeId === NEW_ENTRY ? $currentPersonId : $employeeId;
+
+        if (!$this->employee->isAdmin($currentPersonId) && $employeeId !== $currentPersonId) {
+            return $this->response->setStatusCode(403)->setJSON([
+                'success' => false,
+                'message' => lang('Employees.unauthorized_modify')
+            ]);
+        }
+
+        if (!empty($this->request->getPost('current_password')) && $employeeId != NEW_ENTRY) {
             if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
                 // Validate password length BEFORE hashing
                 $new_password = $this->request->getPost('password');
-                
+
                 if (strlen($new_password) < 8) {
                     return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.password_minlength'),
-                        'id'      => -1
+                        'id'      => NEW_ENTRY
                     ]);
                 }
-                
+
                 $employee_data = [
                     'username'     => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                     'password'     => password_hash($new_password, PASSWORD_DEFAULT),
                     'hash_version' => 2
                 ];
 
-                if ($this->employee->change_password($employee_data, $employee_id)) {
+                if ($this->employee->change_password($employee_data, $employeeId)) {
                     return $this->response->setJSON([
                         'success' => true,
                         'message' => lang('Employees.successful_change_password'),
-                        'id'      => $employee_id
+                        'id'      => $employeeId
                     ]);
-                } else { // Failure    // TODO: Replace -1 with constant
+                } else {
                     return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.unsuccessful_change_password'),
-                        'id'      => -1
+                        'id'      => NEW_ENTRY
                     ]);
                 }
-            } else {    // TODO: Replace -1 with constant
+            } else {
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => lang('Employees.current_password_invalid'),
-                    'id'      => -1
+                    'id'      => NEW_ENTRY
                 ]);
             }
-        } else {    // TODO: Replace -1 with constant
+        } else {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => lang('Employees.current_password_invalid'),
-                'id'      => -1
+                'id'      => NEW_ENTRY
             ]);
         }
     }

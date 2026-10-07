@@ -126,7 +126,12 @@
         <div class="form-group form-group-sm">
             <?= form_label(lang('Expenses.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-6">
-                <?= form_dropdown('employee_id', $employees, $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
+                <?php if ($can_assign_employee): ?>
+                    <?= form_dropdown('employee_id', $employees, $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
+                <?php else: ?>
+                    <?= form_hidden('employee_id', $expenses_info->employee_id) ?>
+                    <?= form_input(['name' => 'employee_name', 'value' => $employees[$expenses_info->employee_id] ?? '', 'class' => 'form-control', 'readonly' => 'readonly']) ?>
+                <?php endif; ?>
             </div>
         </div>
 

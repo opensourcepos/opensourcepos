@@ -19,8 +19,6 @@ services:
           - "3306"
         networks:
           - app_net
-        volumes_from:
-          - sqlscript
         volumes:
           - mysql:/var/lib/mysql:rw
         environment:

@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy (e.g., v3.4.0, latest)'
+        required: true
+        default: 'latest'
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    name: Deploy to staging
+    uses: ./.github/workflows/deploy-core.yml
+    with:
+      image_tag: ${{ inputs.image_tag }}
+      sha: ${{ github.sha }}
+      description: Deploy image ${{ inputs.image_tag }}
+    secrets: inherit

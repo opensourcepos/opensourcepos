@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Attribute;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
+use JsonException;
 
 require_once('Secure_Controller.php');
 
@@ -64,8 +65,14 @@ class Attributes extends Secure_Controller
      */
     public function postSaveAttributeValue(): ResponseInterface
     {
+        $attributeValue = $this->request->getPost('attribute_value');
+
+        if (!is_string($attributeValue) || $attributeValue === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->saveAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $attributeValue,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
             $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT) ?? false,
             $this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
@@ -81,8 +88,14 @@ class Attributes extends Secure_Controller
      */
     public function postDeleteDropdownAttributeValue(): ResponseInterface
     {
+        $attributeValue = $this->request->getPost('attribute_value');
+
+        if (!is_string($attributeValue) || $attributeValue === '') {
+            return $this->response->setJSON(['success' => false]);
+        }
+
         $success = $this->attribute->deleteDropdownAttributeValue(
-            html_entity_decode($this->request->getPost('attribute_value')),
+            $attributeValue,
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
 
@@ -106,12 +119,24 @@ class Attributes extends Secure_Controller
             $definition_flags |= $flag;
         }
 
+        // Validate definition_group (definition_fk) foreign key
+        $definition_group_input = $this->request->getPost('definition_group');
+        $definition_fk = $this->validateDefinitionGroup($definition_group_input);
+
+        if ($definition_fk === false) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Attributes.definition_invalid_group'),
+                'id'      => NEW_ENTRY
+            ]);
+        }
+
         // Save definition data
         $definition_data = [
             'definition_name'  => $this->request->getPost('definition_name'),
             'definition_unit'  => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : null,
             'definition_flags' => $definition_flags,
-            'definition_fk'    => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : null
+            'definition_fk'    => $definition_fk
         ];
 
         if ($this->request->getPost('definition_type') != null) {
@@ -120,11 +145,25 @@ class Attributes extends Secure_Controller
 
         $definition_name = $definition_data['definition_name'];
 
-        if ($this->attribute->save_definition($definition_data, $definition_id)) {
+        if ($definition_id == NO_DEFINITION_ID) {
+            try {
+                $definition_values = json_decode($this->request->getPost('definition_values') ?? '', false, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                $definition_values = null;
+            }
+
+            if (!is_array($definition_values) || array_filter($definition_values, static fn ($value) => !is_string($value)) !== []) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
+                    'id'      => NEW_ENTRY
+                ]);
+            }
+        }
+
+        if ($this->attribute->saveDefinition($definition_data, $definition_id)) {
             // New definition
             if ($definition_id == NO_DEFINITION_ID) {
-                $definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
-
                 foreach ($definition_values as $definition_value) {
                     $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
                 }
@@ -148,6 +187,32 @@ class Attributes extends Secure_Controller
                 'id'      => NEW_ENTRY
             ]);
         }
+    }
+
+    /**
+     * Validates a definition_group foreign key.
+     * Returns the validated integer ID, null if empty, or false if invalid.
+     *
+     * @param mixed $definition_group_input
+     * @return int|null|false
+     */
+    private function validateDefinitionGroup(mixed $definition_group_input): int|null|false
+    {
+        if ($definition_group_input === '' || $definition_group_input === null) {
+            return null;
+        }
+
+        $definition_group_id = (int) $definition_group_input;
+
+        // Must be a positive integer, exist in attribute_definitions, and be of type GROUP
+        if ($definition_group_id <= 0
+            || !$this->attribute->exists($definition_group_id)
+            || $this->attribute->getAttributeInfo($definition_group_id)->definition_type !== GROUP
+        ) {
+            return false;
+        }
+
+        return $definition_group_id;
     }
 
     /**
@@ -183,7 +248,7 @@ class Attributes extends Secure_Controller
     private function get_attributes(int $definition_flags = 0): array
     {
         $definition_flag_names = [];
-        foreach (Attribute::get_definition_flags() as $id => $term) {
+        foreach (Attribute::getDefinitionFlags() as $id => $term) {
             if ($id & $definition_flags) {
                 $definition_flag_names[$id] = lang('Attributes.' . strtolower($term) . '_visibility');
             }
@@ -192,26 +257,26 @@ class Attributes extends Secure_Controller
     }
 
     /**
-     * @param int $definition_id
+     * @param int $definitionId
      * @return string
      */
-    public function getView(int $definition_id = NO_DEFINITION_ID): string
+    public function getView(int $definitionId = NO_DEFINITION_ID): string
     {
-        $info = $this->attribute->getAttributeInfo($definition_id);
+        $info = $this->attribute->getAttributeInfo($definitionId);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
 
-        $data['definition_id'] = $definition_id;
-        $data['definition_values'] = $this->attribute->get_definition_values($definition_id);
-        $data['definition_group'] = $this->attribute->get_definitions_by_type(GROUP, $definition_id);
+        $data['definition_id'] = $definitionId;
+        $data['definition_values'] = $this->attribute->getDefinitionValues($definitionId);
+        $data['definition_group'] = $this->attribute->getDefinitionsByType(GROUP, $definitionId);
         $data['definition_group'][''] = lang('Common.none_selected_text');
         $data['definition_info'] = $info;
 
-        $show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES;
-        $data['definition_flags'] = $this->get_attributes($show_all);
-        $selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
-        $data['selected_definition_flags'] = $this->get_attributes($selected_flags);
+        $showAll = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES | Attribute::SHOW_IN_SEARCH;
+        $data['definition_flags'] = $this->get_attributes($showAll);
+        $selectedFlags = $info->definition_flags === '' ? $showAll : $info->definition_flags;
+        $data['selected_definition_flags'] = $this->get_attributes($selectedFlags);
 
         return view('attributes/form', $data);
     }

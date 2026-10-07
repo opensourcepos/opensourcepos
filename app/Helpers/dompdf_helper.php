@@ -5,8 +5,13 @@
  */
 function create_pdf(string $html, string $filename = ''): string
 {
-    // Need to enable magic quotes for the
-    $dompdf = new Dompdf\Dompdf(['isRemoteEnabled' => true, 'isPhpEnabled' => true]);
+    // Security: Disable PHP execution in PDFs to prevent RCE attacks
+    // Security: Disable remote file access to prevent SSRF attacks
+    // Only local files referenced in HTML are allowed
+    $dompdf = new Dompdf\Dompdf([
+        'isRemoteEnabled' => false,
+        'isPhpEnabled' => false
+    ]);
     $dompdf->loadHtml(str_replace(['\n', '\r'], '', $html));
     $dompdf->render();
 

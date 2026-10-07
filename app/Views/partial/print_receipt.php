@@ -29,11 +29,11 @@
                 jsPrintSetup.setOption('footerStrRight', '');
             <?php } ?>
 
-            var printers = jsPrintSetup.getPrintersList().split(',');
+            const printers = jsPrintSetup.getPrintersList().split(',');
             // Get right printer here..
-            for (var index in printers) {
-                var default_ticket_printer = window.localStorage && localStorage['<?= esc($selected_printer, 'js') ?>'];
-                var selected_printer = printers[index];
+            for (const index in printers) {
+                const default_ticket_printer = window.localStorage && localStorage['<?= esc($selected_printer, 'js') ?>'];
+                const selected_printer = printers[index];
                 if (selected_printer == default_ticket_printer) {
                     // Select Epson label printer
                     jsPrintSetup.setPrinter(selected_printer);

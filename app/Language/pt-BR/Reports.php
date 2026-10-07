@@ -146,4 +146,5 @@ return [
     "used"                                    => "Pontos usados",
     "work_orders"                             => "Ordens de trabalho",
     "zero_and_less"                           => "Zero e menor",
+    "toggle_cost_and_profit"                  => "Alternar Custo & Lucro",
 ];

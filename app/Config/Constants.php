@@ -84,9 +84,12 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest a
 /**
  * Global Constants.
  */
-const NEW_ENTRY = -1;
-const ACTIVE = 0;
-const DELETED = 1;
+const NEW_ENTRY                     = -1;
+const ACTIVE                        = 0;
+const DELETED                       = 1;
+const INSUFFICIENT_GIFTCARD_BALANCE = -2;
+const INSUFFICIENT_REWARD_POINTS    = -3;
+const INSUFFICIENT_STOCK            = -4;
 
 /**
  * Attribute Related Constants.
@@ -169,3 +172,8 @@ const MAX_PRECISION = 1e14;
 const DEFAULT_PRECISION = 2;
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en';
+
+/**
+ * Admin modules - list of modules required for admin privileges
+ */
+const ADMIN_MODULES = ['customers', 'employees', 'giftcards', 'items', 'item_kits', 'messages', 'receivings', 'reports', 'sales', 'config', 'suppliers'];

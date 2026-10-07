@@ -12,7 +12,7 @@
     <div class="col-xs-8">
         <?= form_dropdown([
             'name'     => 'definition_name',
-            'options'  => $definition_names,
+            'options'  => esc($definition_names),
             'selected' => -1,
             'class'    => 'form-control',
             'id'       => 'definition_name'
@@ -23,7 +23,7 @@
 <?php foreach ($definition_values as $definition_id => $definition_value) { ?>
 
     <div class="form-group form-group-sm">
-        <?= form_label($definition_value['definition_name'], $definition_value['definition_name'], ['class' => 'control-label col-xs-3']) ?>
+        <?= form_label(esc($definition_value['definition_name']), esc($definition_value['definition_name']), ['class' => 'control-label col-xs-3']) ?>
         <div class="col-xs-8">
             <div class="input-group">
                 <?php
@@ -45,7 +45,7 @@
                         $selected_value = $definition_value['selected_value'];
                         echo form_dropdown([
                             'name'               => "attribute_links[$definition_id]",
-                            'options'            => $definition_value['values'],
+                            'options'            => esc($definition_value['values']),
                             'selected'           => $selected_value,
                             'class'              => 'form-control',
                             'data-definition-id' => $definition_id
@@ -104,7 +104,7 @@
     (function() {
         <?= view('partial/datepicker_locale', ['format' => dateformat_bootstrap($config['dateformat'])]) ?>
 
-        var enable_delete = function() {
+        const enable_delete = function() {
             $('.remove_attribute_btn').click(function() {
                 $(this).parents('.form-group').remove();
             });
@@ -113,7 +113,7 @@
         enable_delete();
 
         $("input[name*='attribute_links']").change(function() {
-            var definition_id = $(this).data('definition-id');
+            const definition_id = $(this).data('definition-id');
             $("input[name='attribute_ids[" + definition_id + "]']").val('');
         }).autocomplete({
             source: function(request, response) {
@@ -129,18 +129,31 @@
             delay: 10
         });
 
-        var definition_values = function() {
-            var result = {};
+        const definition_values = function() {
+            const result = {};
             $("[name*='attribute_links'").each(function() {
-                var definition_id = $(this).data('definition-id');
-                result[definition_id] = $(this).val();
+                const definition_id = $(this).data('definition-id');
+                const element = $(this);
+                
+                // For checkboxes, use the visible checkbox, not the hidden input
+                if (element.attr('type') === 'hidden' && element.siblings('input[type="checkbox"]').length > 0) {
+                    // Skip hidden inputs that have a corresponding checkbox
+                    return;
+                }
+                
+                // For checkboxes, get the checked state
+                if (element.attr('type') === 'checkbox') {
+                    result[definition_id] = element.prop('checked') ? '1' : '0';
+                } else {
+                    result[definition_id] = element.val();
+                }
             });
             return result;
         };
 
-        var refresh = function() {
-            var definition_id = $("#definition_name option:selected").val();
-            var attribute_values = definition_values();
+        const refresh = function() {
+            const definition_id = $("#definition_name option:selected").val();
+            let attribute_values = definition_values();
             attribute_values[definition_id] = '';
             $('#attributes').load('<?= "items/attributes/$item_id" ?>', {
                 'definition_ids': JSON.stringify(attribute_values)

@@ -7,7 +7,7 @@ if (!function_exists('base64url_encode')) {
      * @param string $data
      * @return string
      */
-    function base64url_encode($data)
+    function base64url_encode(string $data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
@@ -20,7 +20,7 @@ if (!function_exists('base64url_decode')) {
      * @param string $data
      * @return string|false
      */
-    function base64url_decode($data)
+    function base64url_decode(string $data): false|string
     {
         $remainder = strlen($data) % 4;
         if ($remainder) {

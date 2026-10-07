@@ -3,7 +3,7 @@ use Config\OSPOS;
 
 $config = config(OSPOS::class)->settings; ?>
 
-var pickerconfig = function(config) {
+const pickerconfig = function(config) {
     return $.extend({
         format: "<?= $this->data["format"] ?? dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat'])?>",
         <?php

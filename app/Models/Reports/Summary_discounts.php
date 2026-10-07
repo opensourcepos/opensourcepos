@@ -28,9 +28,10 @@ class Summary_discounts extends Summary_report
         $builder = $this->db->table('sales_items AS sales_items');
 
         if ($inputs['discount_type'] == FIXED) {
-            $builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("' . $config['currency_symbol'] . '",sales_items.discount)) AS discount, count(*) AS count');
+            $currency_symbol = $this->db->escape($config['currency_symbol']);
+            $builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT(' . $currency_symbol . ', sales_items.discount)) AS discount, count(*) AS count');
             $builder->where('discount_type', FIXED);
-        } elseif ($inputs['discount_type'] == PERCENT) {    // TODO: === ?
+        } elseif ($inputs['discount_type'] == PERCENT) {
             $builder->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
             $builder->where('discount_type', PERCENT);
         }

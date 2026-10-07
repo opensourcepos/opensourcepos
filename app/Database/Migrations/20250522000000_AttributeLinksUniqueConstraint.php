@@ -21,7 +21,7 @@ class AttributeLinksUniqueConstraint extends Migration
         dropForeignKeyConstraints($foreignKeys, 'attribute_links');
         dropColumnIfExists('ospos_attribute_links', 'generated_unique_column');
 
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_attribute_links_unique_constraint.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_attribute_links_unique_constraint.sql');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\Throttle;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -13,6 +14,7 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\ApiAuth;
+use App\Filters\IsLoggedIn;
 
 class Filters extends BaseFilters
 {
@@ -27,6 +29,8 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'apiauth'       => ApiAuth::class,
+        'isLoggedIn'    => IsLoggedIn::class,
+        'throttle'      => Throttle::class,
     ];
 
     /**
@@ -58,12 +62,16 @@ class Filters extends BaseFilters
      * List of filter aliases that are always
      * applied before and after every request.
      *
-     * @var array<string, array<string, array<string, string>>>|array<string, list<string>>
+     * @var array{
+     *     before: array<string, array{except: list<string>|string}>|list<string>,
+     *     after: array<string, array{except: list<string>|string}>|list<string>
+     * }
      */
     public array $globals = [
         'before' => [
             'honeypot',
-            'csrf' => ['except' => ['login', 'api/*']],
+            'isLoggedIn' => ['except' => 'login|migrate'],
+            'csrf' => ['except' => 'login|migrate|api'],
             'invalidchars',
         ],
         'after' => [
@@ -93,11 +101,13 @@ class Filters extends BaseFilters
      * before or after URI patterns.
      *
      * Example:
-     * isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
+     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'throttle' => ['before' => ['login', 'migrate']],
+    ];
 
     /**
      * Constructor to conditionally disable CSRF filter in testing environment

@@ -178,10 +178,10 @@
             delay: 10
         });
 
-        var confirm_message = false;
+        let confirm_message = false;
         $('#tax_percent_name_2, #tax_name_2').prop('disabled', true),
             $('#tax_percent_name_1, #tax_name_1').blur(function() {
-                var disabled = !($('#tax_percent_name_1').val() + $('#tax_name_1').val());
+                const disabled = !($('#tax_percent_name_1').val() + $('#tax_name_1').val());
                 $('#tax_percent_name_2, #tax_name_2').prop('disabled', disabled);
                 confirm_message = disabled ? '' : "<?= lang('Items.confirm_bulk_edit_wipe_taxes') ?>";
             });

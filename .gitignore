@@ -56,6 +56,7 @@ $RECYCLE.BIN/
 .com.apple.timemachine.donotpresent
 
 # Other
+build/
 generate_languages.php
 dist
 docs
@@ -75,6 +76,8 @@ system/
 *~
 *.~
 .env
+.env.lock
+.env.tmp.*
 auth.json
 
 *.png
@@ -85,5 +88,5 @@ auth.json
 /writable/logs/*.log
 /writable/debugbar/*.json
 /app/Database/database.sql
-/writable/cache/settings
+/writable/cache/*
 /.env.bak
