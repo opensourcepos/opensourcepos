@@ -52,7 +52,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Get npm cache directory
         run: echo "NPM_CACHE_DIR=$(npm config get cache)" >> $GITHUB_ENV
