@@ -116,47 +116,90 @@ function createPrimaryKey(string $table, string $index): void {
 }
 
 /**
- * Drops all foreign key constraints that reference the provided table and column.
+ * Drops foreign key constraints that reference the provided table and column.
+ * When $table and $column are omitted, drops all foreign key constraints in the schema.
  *
- * @param string $table
- * @param string $column
+ * @param string|null $table
+ * @param string|null $column
  * @return array containing the deleted constraints in case they need to be recreated after.
  */
 
-function dropAllForeignKeyConstraints(string $table, string $column): array {
+function dropAllForeignKeyConstraints(?string $table = null, ?string $column = null): array {
     $db = Database::connect();
-    $result = $db->query("
-            SELECT DISTINCT
-                kcu.CONSTRAINT_NAME,
-                kcu.TABLE_NAME,
-                kcu.COLUMN_NAME,
-                kcu.REFERENCED_TABLE_NAME,
-                kcu.REFERENCED_COLUMN_NAME,
-                rc.DELETE_RULE,
-                rc.UPDATE_RULE
-            FROM information_schema.KEY_COLUMN_USAGE kcu
-            LEFT JOIN information_schema.REFERENTIAL_CONSTRAINTS rc
-                ON kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
-                AND kcu.TABLE_NAME = rc.TABLE_NAME
-            WHERE kcu.TABLE_SCHEMA = DATABASE()
-                AND ((kcu.REFERENCED_TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.REFERENCED_COLUMN_NAME = '$column')
-                OR (kcu.TABLE_NAME = '" . $db->getPrefix() . "$table' AND kcu.COLUMN_NAME = '$column'))
-                AND rc.CONSTRAINT_NAME IS NOT NULL
-        ");
+    $prefixedTable = $table !== null ? $db->getPrefix() . $table : null;
+    $prefix = overridePrefix();
+
+    $builder = $db->table('information_schema.KEY_COLUMN_USAGE kcu');
+    $builder->distinct();
+    $builder->select('kcu.CONSTRAINT_NAME, kcu.TABLE_NAME, kcu.COLUMN_NAME, kcu.REFERENCED_TABLE_NAME, kcu.REFERENCED_COLUMN_NAME, kcu.ORDINAL_POSITION, rc.DELETE_RULE, rc.UPDATE_RULE');
+    $builder->join(
+        'information_schema.REFERENTIAL_CONSTRAINTS rc',
+        'kcu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA AND kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME AND kcu.TABLE_NAME = rc.TABLE_NAME',
+        'left'
+    );
+
+    if ($table !== null && $column !== null) {
+        $scopedBuilder = $db->table('information_schema.KEY_COLUMN_USAGE scoped');
+        $scopedBuilder->distinct();
+        $scopedBuilder->select('scoped.CONSTRAINT_NAME, scoped.TABLE_NAME');
+        $scopedBuilder->where('scoped.TABLE_SCHEMA', $db->database);
+        $scopedBuilder->groupStart();
+        $scopedBuilder->where('scoped.REFERENCED_TABLE_NAME', $prefixedTable);
+        $scopedBuilder->where('scoped.REFERENCED_COLUMN_NAME', $column);
+        $scopedBuilder->groupEnd();
+        $scopedBuilder->orGroupStart();
+        $scopedBuilder->where('scoped.TABLE_NAME', $prefixedTable);
+        $scopedBuilder->where('scoped.COLUMN_NAME', $column);
+        $scopedBuilder->groupEnd();
+
+        $builder->join(
+            '(' . $scopedBuilder->getCompiledSelect() . ') matched',
+            'matched.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME AND matched.TABLE_NAME = kcu.TABLE_NAME',
+            'inner',
+            false
+        );
+    }
+
+    $builder->where('kcu.TABLE_SCHEMA', $db->database);
+    $builder->where('rc.CONSTRAINT_NAME IS NOT NULL', null, false);
+    $builder->orderBy('kcu.CONSTRAINT_NAME');
+    $builder->orderBy('kcu.ORDINAL_POSITION');
+
+    $result = $builder->get();
+    overridePrefix($prefix);
 
     $deletedConstraints = [];
 
     foreach ($result->getResultArray() as $constraint) {
-        $deletedConstraints[] = [
-            'constraintName' => $constraint['CONSTRAINT_NAME'],
-            'tableName' => str_replace($db->DBPrefix, '', $constraint['TABLE_NAME']),
-            'columnName' => $constraint['COLUMN_NAME'],
-            'referencedTable' => str_replace($db->DBPrefix, '', $constraint['REFERENCED_TABLE_NAME']),
-            'referencedColumn' => $constraint['REFERENCED_COLUMN_NAME'],
-            'onDelete' => $constraint['DELETE_RULE'],
-            'onUpdate' => $constraint['UPDATE_RULE'],
-        ];
+        $key = $constraint['TABLE_NAME'] . '.' . $constraint['CONSTRAINT_NAME'];
+
+        if (!isset($deletedConstraints[$key])) {
+            $deletedConstraints[$key] = [
+                'constraintName' => $constraint['CONSTRAINT_NAME'],
+                'tableName' => str_replace($db->DBPrefix, '', $constraint['TABLE_NAME']),
+                'columnName' => [],
+                'referencedTable' => str_replace($db->DBPrefix, '', $constraint['REFERENCED_TABLE_NAME']),
+                'referencedColumn' => [],
+                'onDelete' => $constraint['DELETE_RULE'],
+                'onUpdate' => $constraint['UPDATE_RULE'],
+                'seenPositions' => [],
+            ];
+        }
+
+        $position = $constraint['ORDINAL_POSITION'];
+        if (!isset($deletedConstraints[$key]['seenPositions'][$position])) {
+            $deletedConstraints[$key]['seenPositions'][$position] = true;
+            $deletedConstraints[$key]['columnName'][] = $constraint['COLUMN_NAME'];
+            $deletedConstraints[$key]['referencedColumn'][] = $constraint['REFERENCED_COLUMN_NAME'];
+        }
     }
+
+    foreach ($deletedConstraints as &$constraint) {
+        unset($constraint['seenPositions']);
+    }
+    unset($constraint);
+
+    $deletedConstraints = array_values($deletedConstraints);
 
     if ($deletedConstraints) {
         $forge = Database::forge();
