@@ -1073,11 +1073,11 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        // Update the register mode with the latest change so that if the user
-        // switches immediately back to the register the mode reflects the change
         if ($success) {
-            if ($this->config['invoice_enable']) {
-                $this->sale_lib->set_mode($this->config['default_register_mode']);
+            $settings = config(OSPOS::class)->settings;
+
+            if ($settings['invoice_enable']) {
+                $this->sale_lib->set_mode($settings['default_register_mode']);
             } else {
                 $this->sale_lib->set_mode('sale');
             }
