@@ -29,6 +29,7 @@ return [
     "date"                                    => "Дата",
     "date_range"                              => "Проміжок часу",
     "description"                             => "Опис",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Детальний звіт про надходження",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Детальні звіти",

@@ -29,6 +29,7 @@ return [
     "date"                                    => "Tarehe",
     "date_range"                              => "Wigo wa Tarehe",
     "description"                             => "Maelezo",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Ripoti ya Mapokezi ya Kina",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Ripoti za Kina",
