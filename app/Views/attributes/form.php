@@ -17,7 +17,7 @@
     <fieldset id="attribute_basic_info">
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'definition_name',
@@ -29,7 +29,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-8">
                 <?= form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"') ?>
             </div>

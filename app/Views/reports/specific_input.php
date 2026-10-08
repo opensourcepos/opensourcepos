@@ -24,7 +24,7 @@ if (isset($error)) {
 <?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 
     <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
+        <?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 text-danger required']) ?>
         <div class="col-xs-3">
             <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
         </div>
@@ -32,7 +32,7 @@ if (isset($error)) {
 
     <?php if (isset($discount_type_options)) { ?>
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
+            <?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'control-label col-xs-2 text-danger required']) ?>
             <div id="report_discount_type" class="col-xs-3">
                 <?= form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
             </div>
@@ -40,7 +40,7 @@ if (isset($error)) {
     <?php } ?>
 
     <div class="form-group form-group-sm" id="report_specific_input_data">
-        <?= form_label($specific_input_name, 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
+        <?= form_label($specific_input_name, 'specific_input_name_label', ['class' => 'control-label col-xs-2 text-danger required']) ?>
         <div class="col-xs-3 discount_percent">
             <?= form_dropdown('specific_input_data', $specific_input_data, '', 'id="specific_input_data" class="form-control"') ?>
         </div>
@@ -60,7 +60,7 @@ if (isset($error)) {
     </div>
 
     <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
+        <?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'control-label col-xs-2 text-danger required']) ?>
         <div id="report_sale_type" class="col-xs-3">
             <?= form_dropdown('sale_type', $sale_type_options, 'complete', 'id="input_type" class="form-control"') ?>
         </div>
