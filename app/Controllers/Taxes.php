@@ -434,13 +434,13 @@ class Taxes extends Secure_Controller
      */
     public function postSave_tax_codes(): ResponseInterface
     {
-        $tax_code_id = $this->request->getPost('tax_code_id', FILTER_SANITIZE_NUMBER_INT);
-        $tax_code = $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $tax_code_name = $this->request->getPost('tax_code_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $taxCodeId = $this->request->getPost('tax_code_id', FILTER_SANITIZE_NUMBER_INT);
+        $taxCode = $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $taxCodeName = $this->request->getPost('tax_code_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $city = $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $state = $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if (!empty($tax_code_name)) {
+        if (!empty($taxCodeName)) {
             $rules = [
                 'tax_code_name.*' => 'max_length[255]|unicode_alpha_numeric_punct',
             ];
@@ -457,18 +457,18 @@ class Taxes extends Secure_Controller
             }
         }
 
-        $array_save = [];    // TODO: the naming of this variable is not good.
-        foreach ($tax_code_id as $key => $val) {
-            $array_save[] = [
+        $arraySave = [];
+        foreach ($taxCodeId as $key => $val) {
+            $arraySave[] = [
                 'tax_code_id'   => $val,
-                'tax_code'      => $tax_code[$key],
-                'tax_code_name' => $tax_code_name[$key],
+                'tax_code'      => $taxCode[$key],
+                'tax_code_name' => $taxCodeName[$key],
                 'city'          => $city[$key],
                 'state'         => $state[$key]
             ];
         }
 
-        $success = $this->tax_code->save_tax_codes($array_save);
+        $success = $this->tax_code->save_tax_codes($arraySave);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -484,15 +484,15 @@ class Taxes extends Secure_Controller
      */
     public function postSave_tax_jurisdictions(): ResponseInterface
     {
-        $jurisdiction_id = $this->request->getPost('jurisdiction_id', FILTER_SANITIZE_NUMBER_INT);
-        $jurisdiction_name = $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $tax_group = $this->request->getPost('tax_group', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $tax_type = $this->request->getPost('tax_type', FILTER_SANITIZE_NUMBER_INT);
-        $reporting_authority = $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
-        $cascade_sequence = $this->request->getPost('cascade_sequence', FILTER_SANITIZE_NUMBER_INT);
+        $jurisdictionId = $this->request->getPost('jurisdiction_id', FILTER_SANITIZE_NUMBER_INT);
+        $jurisdictionName = $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $taxGroup = $this->request->getPost('tax_group', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $taxType = $this->request->getPost('tax_type', FILTER_SANITIZE_NUMBER_INT);
+        $reportingAuthority = $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $taxGroupSequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
+        $cascadeSequence = $this->request->getPost('cascade_sequence', FILTER_SANITIZE_NUMBER_INT);
 
-        if (!empty($jurisdiction_name)) {
+        if (!empty($jurisdictionName)) {
             $rules = [
                 'jurisdiction_name.*' => 'max_length[255]|unicode_alpha_numeric_punct',
             ];
@@ -509,31 +509,31 @@ class Taxes extends Secure_Controller
             }
         }
 
-        $array_save = [];
-        $unique_tax_groups = [];
+        $arraySave = [];
+        $uniqueTaxGroups = [];
 
-        foreach ($jurisdiction_id as $key => $val) {
-            $array_save[] = [
+        foreach ($jurisdictionId as $key => $val) {
+            $arraySave[] = [
                 'jurisdiction_id'     => $val,
-                'jurisdiction_name'   => $jurisdiction_name[$key],
-                'tax_group'           => $tax_group[$key],
-                'tax_type'            => $tax_type[$key],
-                'reporting_authority' => $reporting_authority[$key],
-                'tax_group_sequence'  => $tax_group_sequence[$key],
-                'cascade_sequence'    => $cascade_sequence[$key]
+                'jurisdiction_name'   => $jurisdictionName[$key],
+                'tax_group'           => $taxGroup[$key],
+                'tax_type'            => $taxType[$key],
+                'reporting_authority' => $reportingAuthority[$key],
+                'tax_group_sequence'  => $taxGroupSequence[$key],
+                'cascade_sequence'    => $cascadeSequence[$key]
             ];
 
-            if (in_array($tax_group[$key], $unique_tax_groups)) {    // TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
+            if (in_array($taxGroup[$key], $uniqueTaxGroups)) {
                 return $this->response->setJSON([
                     'success' => false,
-                    'message' => lang('Taxes.tax_group_not_unique', [$tax_group[$key]])
+                    'message' => lang('Taxes.tax_group_not_unique', [$taxGroup[$key]])
                 ]);
             } else {
-                $unique_tax_groups[] = $tax_group[$key];
+                $uniqueTaxGroups[] = $taxGroup[$key];
             }
         }
 
-        $success = $this->tax_jurisdiction->save_jurisdictions($array_save);
+        $success = $this->tax_jurisdiction->save_jurisdictions($arraySave);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -549,11 +549,11 @@ class Taxes extends Secure_Controller
      */
     public function postSave_tax_categories(): ResponseInterface
     {
-        $tax_category_id = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
-        $tax_category = $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
+        $taxCategoryId = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
+        $taxCategory = $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $taxGroupSequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
 
-        if (!empty($tax_category)) {
+        if (!empty($taxCategory)) {
             $rules = [
                 'tax_category.*' => 'max_length[255]|unicode_alpha_numeric_punct',
             ];
@@ -570,17 +570,17 @@ class Taxes extends Secure_Controller
             }
         }
 
-        $array_save = [];
+        $arraySave = [];
 
-        foreach ($tax_category_id as $key => $val) {
-            $array_save[] = [
+        foreach ($taxCategoryId as $key => $val) {
+            $arraySave[] = [
                 'tax_category_id'    => $val,
-                'tax_category'       => $tax_category[$key],
-                'tax_group_sequence' => $tax_group_sequence[$key]
+                'tax_category'       => $taxCategory[$key],
+                'tax_group_sequence' => $taxGroupSequence[$key]
             ];
         }
 
-        $success = $this->tax_category->save_categories($array_save);
+        $success = $this->tax_category->save_categories($arraySave);
 
         return $this->response->setJSON([
             'success' => $success,
