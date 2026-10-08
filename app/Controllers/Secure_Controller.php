@@ -60,10 +60,26 @@ class Secure_Controller extends BaseController
             ? $this->module->get_allowed_home_modules($logged_in_employee_info->person_id)
             : $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
 
-        $this->global_view_data = [];
-        foreach ($allowed_modules->getResult() as $module) {
-            $this->global_view_data['allowed_modules'][] = $module;
+        $allowed_modules = $allowed_modules->getResult();
+
+        if ($menu_group == 'home' && empty($allowed_modules)) {
+            $office_modules = $this->module->get_allowed_office_modules($logged_in_employee_info->person_id)->getResult();
+
+            if (!empty($office_modules)) {
+                $office_module = array_filter(
+                    $this->module->get_all_modules()->getResult(),
+                    static fn ($module) => $module->module_id === 'office'
+                );
+
+                if (!empty($office_module)) {
+                    $allowed_modules[] = reset($office_module);
+                }
+            }
         }
+
+        $this->global_view_data = [
+            'allowed_modules' => $allowed_modules
+        ];
 
         $this->global_view_data += [
             'user_info'       => $logged_in_employee_info,
