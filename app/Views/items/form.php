@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'name',
@@ -59,7 +59,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-8">
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
@@ -86,7 +86,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'control-label col-xs-3 text-danger required'] : ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?= form_radio([
@@ -110,7 +110,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'control-label col-xs-3 text-danger required'] : ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?php
@@ -175,7 +175,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
@@ -196,7 +196,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
@@ -300,7 +300,7 @@
 
         <?php foreach ($stock_locations as $key => $location_detail) { ?>
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required control-label col-xs-3']) ?>
+                <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'control-label col-xs-3 text-danger required']) ?>
                 <div class="col-xs-4">
                     <?= form_input([
                         'name'    => "quantity_$key",
@@ -314,7 +314,7 @@
         <?php } ?>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-4">
                 <?= form_input([
                     'name'    => 'receiving_quantity',
@@ -327,7 +327,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-4">
                 <?= form_input([
                     'name'    => 'reorder_level',
