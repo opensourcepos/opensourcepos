@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "",
     "items"                      => "",
     "items_desc"                 => "",
+    'jobs'                       => 'Coadă de Sarcini',
+    'jobs_desc'                  => 'Configurați și gestionați coada de sarcini de fundal.',
     "messages"                   => "",
     "messages_desc"              => "",
     "migrate"                    => "",

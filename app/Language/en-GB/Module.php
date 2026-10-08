@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Add, Update, Delete and Search Item Kits.",
     "items"                      => "Items",
     "items_desc"                 => "Add, Update, Delete, and Search Items.",
+    'jobs'                       => 'Job Queue',
+    'jobs_desc'                  => 'Configure and manage the background job queue.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers and Employees.",
     "migrate"                    => "Migrate",

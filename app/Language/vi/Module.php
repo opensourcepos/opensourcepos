@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Thêm, Cập nhật, Xóa và Tìm kiếm Gói hàng hóa.",
     "items"                      => "Hàng hóa",
     "items_desc"                 => "Thêm, Cập nhật, Xóa và Tìm kiếm Hàng hóa.",
+    'jobs'                       => 'Hàng đợi công việc',
+    'jobs_desc'                  => 'Cấu hình và quản lý hàng đợi công việc chạy nền.',
     "messages"                   => "Nhắn tin",
     "messages_desc"              => "Gửi tin nhắn đến Khách hàng, Nhà cung cấp và Nhân viên.",
     "migrate"                    => "Nâng cấp",

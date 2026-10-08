@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "",
     "items"                      => "",
     "items_desc"                 => "",
+    'jobs'                       => 'Ουρά εργασιών',
+    'jobs_desc'                  => 'Διαμόρφωση και διαχείριση της ουράς εργασιών παρασκηνίου.',
     "messages"                   => "",
     "messages_desc"              => "",
     "migrate"                    => "",

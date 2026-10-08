@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Termék csomagok hozzáadása, módosítása, törlése és keresése",
     "items"                      => "Termékek",
     "items_desc"                 => "Termékek hozzáadása, módosítása, törlése és keresése",
+    'jobs'                       => 'Feladatsor',
+    'jobs_desc'                  => 'A háttérben futó feladatsor beállítása és kezelése.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers, Employees et al.",
     "migrate"                    => "",
