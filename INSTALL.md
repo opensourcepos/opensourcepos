@@ -117,7 +117,7 @@ Sign up through [our referral link](https://m.do.co/c/ac38c262507b) to get a [**
 2. SSH into your server: `ssh root@<your-droplet-ip>`
 3. Run the one-line installer:
    ```bash
-   curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | sudo bash
+   curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/tools/scripts/install-ubuntu.sh | sudo bash
    ```
 
    > A shorter URL (`curl -sSL https://opensourcepos.org/install | sudo bash`) is also provided once the `opensourcepos.org/install` redirect is configured.
@@ -143,7 +143,7 @@ non-interactive session and skips the prompts:
 
 ```bash
 # 1. Download the installer
-curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh -o install-ospos.sh
+curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/tools/scripts/install-ubuntu.sh -o install-ospos.sh
 # 2. Run it interactively (standard input stays attached to your terminal)
 sudo bash install-ospos.sh
 # Script will ask:
@@ -156,13 +156,13 @@ sudo bash install-ospos.sh
 
 ```bash
 # Development (no SSL)
-curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | APACHE_SERVER_NAME=localhost sudo -E bash
+curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/tools/scripts/install-ubuntu.sh | APACHE_SERVER_NAME=localhost sudo -E bash
 
 # Production with Let's Encrypt SSL
-curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | APACHE_SERVER_NAME=pos.example.com SSL_EMAIL=admin@example.com sudo -E bash
+curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/tools/scripts/install-ubuntu.sh | APACHE_SERVER_NAME=pos.example.com SSL_EMAIL=admin@example.com sudo -E bash
 
 # Custom database password
-curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/scripts/install-ubuntu.sh | DB_PASS=securepassword APACHE_SERVER_NAME=pos.example.com SSL_EMAIL=admin@example.com sudo -E bash
+curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/tools/scripts/install-ubuntu.sh | DB_PASS=securepassword APACHE_SERVER_NAME=pos.example.com SSL_EMAIL=admin@example.com sudo -E bash
 ```
 
 **Environment variables:**

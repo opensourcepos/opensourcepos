@@ -3,11 +3,11 @@ name: Install Script Test
 on:
   push:
     paths:
-      - 'scripts/install-ubuntu.sh'
+      - 'tools/scripts/install-ubuntu.sh'
       - '.github/workflows/install-script-test.yml'
   pull_request:
     paths:
-      - 'scripts/install-ubuntu.sh'
+      - 'tools/scripts/install-ubuntu.sh'
       - '.github/workflows/install-script-test.yml'
   workflow_dispatch:
 
@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Make install script executable
-        run: chmod +x scripts/install-ubuntu.sh
+        run: chmod +x tools/scripts/install-ubuntu.sh
 
       - name: Run install script
         env:
@@ -46,7 +46,7 @@ jobs:
         run: |
           set -o pipefail
           echo "Running install script with scenario: ${{ matrix.scenario }}"
-          sudo -E bash scripts/install-ubuntu.sh 2>&1 | tee install-output.log
+          sudo -E bash tools/scripts/install-ubuntu.sh 2>&1 | tee install-output.log
           echo "Install completed successfully"
 
       - name: Wait for services to stabilize
