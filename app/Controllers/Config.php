@@ -1073,9 +1073,6 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        // Update the register mode with the latest change so that if the user
-        // switches immediately back to the register the mode reflects the change.
-        // Read the fresh settings because $this->config was copied before this save.
         if ($success) {
             $settings = config(OSPOS::class)->settings;
 
