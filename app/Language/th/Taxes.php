@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "ค่าเริ่มต้นกลุ่มภาษี",
     "default_tax_rate"                       => "อัตราภาษีเริ่มต้น",
     "error_adding_updating"                  => "การเพิ่มหรืออัปเดตรหัสภาษีล้มเหลว",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "ลำดับกลุ่ม",
     "jurisdiction_name"                      => "ชื่อหน่วยเขตภาษี",
     "name"                                   => "ชื่อภาษี",

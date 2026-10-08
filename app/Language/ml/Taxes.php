@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "",
     "default_tax_rate"                       => "",
     "error_adding_updating"                  => "",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "",
     "jurisdiction_name"                      => "",
     "name"                                   => "",

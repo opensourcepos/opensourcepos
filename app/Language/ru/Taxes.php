@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Категория налога по умолчанию",
     "default_tax_rate"                       => "Налоговая ставка по умолчанию",
     "error_adding_updating"                  => "Не удалось добавить или обновить налоговый код",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Групповая последовательность",
     "jurisdiction_name"                      => "Название юрисдикции",
     "name"                                   => "Название",

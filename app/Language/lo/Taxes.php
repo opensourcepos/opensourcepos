@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "ຄ່າພຶ້ນຖານໝວດພາສີ",
     "default_tax_rate"                       => "ພຶ້ນຖານອັດຕາພາສີ",
     "error_adding_updating"                  => "ເພີ່ມຫຼືແກ້ໄຂລະຫັດພາສີບໍສຳເລັດ",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "ກຸ່ມ",
     "jurisdiction_name"                      => "ຊື່ເຂດອຳນາດສານ",
     "name"                                   => "ຊື່",

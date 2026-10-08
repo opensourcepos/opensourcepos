@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Podrazumjevana kategorija",
     "default_tax_rate"                       => "Podrazumjevana stopa poreza",
     "error_adding_updating"                  => "Dodavanje ili ažuriranje šifre poreza nije uspjelo",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Grupa Sekv",
     "jurisdiction_name"                      => "Naziv nadležnosti",
     "name"                                   => "Naziv",

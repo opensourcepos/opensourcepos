@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Kiwango cha Kodi 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Kiwango cha Kodi kwa Chaguo-msingi lazima kiwe nambari.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Kiwango cha Kodi kwa Chaguo-msingi ni kiashiria kinachohitajika.',
     'derive_sale_quantity'                      => 'Ruhusu Kiasi cha Mauzo Kilichotokana',
     'derive_sale_quantity_tooltip'              => 'Ikiwa imechaguliwa basi aina mpya ya bidhaa itatolewa kwa bidhaa zilizoagizwa kwa kiasi kilichoongezwa',

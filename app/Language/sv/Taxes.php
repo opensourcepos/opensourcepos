@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Standardskattskategori",
     "default_tax_rate"                       => "Standard skattesats",
     "error_adding_updating"                  => "Skattekodens tillägg eller uppdatering misslyckades",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Grupp Seq",
     "jurisdiction_name"                      => "Jurisdiktionsnamn",
     "name"                                   => "Namn",

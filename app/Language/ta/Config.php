@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Tax 2 Rate',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Default Tax Rate must be a number.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Default Tax Rate is a required field.',
     'derive_sale_quantity'                      => 'Allow Derived Sale Quantity',
     'derive_sale_quantity_tooltip'              => 'If checked then a new item type will provided for items ordered by extended amount',

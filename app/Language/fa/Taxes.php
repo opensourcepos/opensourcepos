@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "طبقه بندی پیش فرض مالیات",
     "default_tax_rate"                       => "نرخ پیش فرض مالیات",
     "error_adding_updating"                  => "کد مالیاتی اضافه یا به روز نشد",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "گروه Seq",
     "jurisdiction_name"                      => "نام صلاحیت",
     "name"                                   => "نام",

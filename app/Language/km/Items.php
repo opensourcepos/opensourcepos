@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'ឈ្មោះពន្ធមានតួអក្សរដែលមិនត្រូវបានអនុញ្ញាត។',
     'tax_percent'                        => '',
     'tax_percent_number'                 => 'ភាគរយពន្ធត្រូវតែជាលេខគត់',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'ភាគរយពន្ធត្រូវការជាចាំបាច់។',
     'tax_percents'                       => 'ភាគរយពន្ធ',
     'temp'                               => 'បណ្ដោះអាសន្ន',

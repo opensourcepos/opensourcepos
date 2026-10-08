@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Стандартна данъчна категория",
     "default_tax_rate"                       => "",
     "error_adding_updating"                  => "Добавянето или актуализацията на данъчния код беше неуспешна.",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "",
     "jurisdiction_name"                      => "",
     "name"                                   => "",

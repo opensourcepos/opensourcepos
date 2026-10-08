@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Öntanımlı Vergi Kategorisi",
     "default_tax_rate"                       => "Öntanımlı Vergi Oranı",
     "error_adding_updating"                  => "Vergi Kodu ekleme ya da güncelleme başarısız oldu",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Küme Sırası",
     "jurisdiction_name"                      => "Yetki Adı",
     "name"                                   => "Ad",

@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Categoria de imposto padrão",
     "default_tax_rate"                       => "Taxa de imposto padrão",
     "error_adding_updating"                  => "Código fiscal adicionar ou atualizar falhou",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Sequência do grupo",
     "jurisdiction_name"                      => "Nome da Jurisdição",
     "name"                                   => "Nome",

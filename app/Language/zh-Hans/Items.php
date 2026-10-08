@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => '税项名称包含不允许的字符。',
     'tax_percent'                        => '稅率',
     'tax_percent_number'                 => '',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => '稅率為必填欄位',
     'tax_percents'                       => '稅率 %',
     'temp'                               => '',

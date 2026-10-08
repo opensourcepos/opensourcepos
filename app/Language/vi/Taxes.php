@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Thể loại mã thuế mặc định",
     "default_tax_rate"                       => "Thuế suất mặc định",
     "error_adding_updating"                  => "Gặp lỗi khi thêm hay cập nhật Mã thuế",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "",
     "jurisdiction_name"                      => "Tên quyền",
     "name"                                   => "Tên",

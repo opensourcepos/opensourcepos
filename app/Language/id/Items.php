@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Nama pajak mengandung karakter yang tidak diizinkan.',
     'tax_percent'                        => 'Tarif Pajak',
     'tax_percent_number'                 => 'Nilai persen pajak harus berupa angka',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Tarif Pajak wajib diisi.',
     'tax_percents'                       => 'Tarif Pajak',
     'temp'                               => 'Sementara',

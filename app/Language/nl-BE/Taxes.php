@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Standaard BTW Categorie",
     "default_tax_rate"                       => "Standaard BTW-tarief",
     "error_adding_updating"                  => "BTW-code toevoegen of bijwerken mislukt",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Groep Seq",
     "jurisdiction_name"                      => "Rechtsgebied Naam",
     "name"                                   => "Naam",

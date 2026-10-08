@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "預設稅務類別",
     "default_tax_rate"                       => "預設稅率",
     "error_adding_updating"                  => "統編(Tax Code)新增或修改失敗",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "組序列",
     "jurisdiction_name"                      => "稅務裁決單位",
     "name"                                   => "姓名",

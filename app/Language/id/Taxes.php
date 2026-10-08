@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Kategori Pajak Default",
     "default_tax_rate"                       => "Taruf Pajak Default",
     "error_adding_updating"                  => "Penambahan atau pembaharuan Kode Pajak gagal",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Urutan grup",
     "jurisdiction_name"                      => "Nama Yuridiksi",
     "name"                                   => "Nama",

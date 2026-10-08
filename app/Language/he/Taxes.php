@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "קטגוריה מס ברירת מחדל",
     "default_tax_rate"                       => "שיעור מס ברירת מחדל",
     "error_adding_updating"                  => "הוספה או עדכון של קוד מס נכשלו",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "רצף קבוצות",
     "jurisdiction_name"                      => "שם תחום שיפוט",
     "name"                                   => "שם",

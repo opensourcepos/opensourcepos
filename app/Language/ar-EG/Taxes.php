@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "التصنيف الضريبي الأفتراضي",
     "default_tax_rate"                       => "معدل الضريبة الافتراضي",
     "error_adding_updating"                  => "فشل إضافة أو تحديث قانون الضرائب",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "تسلسل المجموعة",
     "jurisdiction_name"                      => "اسم الولاية القضائية",
     "name"                                   => "الاسم",

@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "இயல்புநிலை வரி வகை",
     "default_tax_rate"                       => "இயல்புநிலை வரி விகிதம்",
     "error_adding_updating"                  => "வரிக் குறியீடு சேர்க்க அல்லது புதுப்பித்தல் தோல்வியுற்றது",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "குழு வரிசை",
     "jurisdiction_name"                      => "அதிகார வரம்பு பெயர்",
     "name"                                   => "பெயர்",

@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Standaard belastingcategorie",
     "default_tax_rate"                       => "Standaard belastingtarief",
     "error_adding_updating"                  => "Belastingcode toevoegen of bijwerken mislukt",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Groep volg",
     "jurisdiction_name"                      => "Jurisdictie naam",
     "name"                                   => "Naam",

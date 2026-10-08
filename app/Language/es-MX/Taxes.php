@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Impuesto por Default",
     "default_tax_rate"                       => "Tarifa de impuesto por default",
     "error_adding_updating"                  => "Código de impuesto agregado o error en actualización",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Secuencia de Grupo",
     "jurisdiction_name"                      => "Nombre de la Jurisdicción",
     "name"                                   => "Nombre",

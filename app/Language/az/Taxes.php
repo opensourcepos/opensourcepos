@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Cari Vergi Kategoriyası",
     "default_tax_rate"                       => "Sabit Vergi dərəcəsi",
     "error_adding_updating"                  => "Vergi kodu Əlavə ya yeniləmə uğursuzdur",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Qrup seq",
     "jurisdiction_name"                      => "Yurisdiksiya Adı",
     "name"                                   => "Ad",

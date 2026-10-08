@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Catégorie Fiscal par Défaut",
     "default_tax_rate"                       => "Taux d'Imposition par Défaut",
     "error_adding_updating"                  => "L'ajout ou la mise à jour du Code Fiscal a échoué",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Groupe de Seq",
     "jurisdiction_name"                      => "Nom de la Juridiction",
     "name"                                   => "Nom",

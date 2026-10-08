@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "默认税种",
     "default_tax_rate"                       => "预设税率",
     "error_adding_updating"                  => "税码添加或更新失败",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "",
     "jurisdiction_name"                      => "税收管辖区名称",
     "name"                                   => "税费名称",

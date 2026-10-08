@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Категорія податку за замовченням",
     "default_tax_rate"                       => "Ставка податку за замовчуванням",
     "error_adding_updating"                  => "Не вдалось додати або оновити податковий код.",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Група послідовностей",
     "jurisdiction_name"                      => "Назва юрисдикції",
     "name"                                   => "Назва",

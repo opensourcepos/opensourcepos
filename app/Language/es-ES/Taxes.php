@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Categoría por defecto",
     "default_tax_rate"                       => "Tasa impositiva por defecto",
     "error_adding_updating"                  => "Error añadiendo o actualizando el impuesto",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Seq. de grupo",
     "jurisdiction_name"                      => "Nombre de jurisdicción",
     "name"                                   => "Nombre",

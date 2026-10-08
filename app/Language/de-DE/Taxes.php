@@ -11,6 +11,7 @@ return [
     "default_tax_category"                   => "Standard-Steuerkategorie",
     "default_tax_rate"                       => "Standard-Steuersatz",
     "error_adding_updating"                  => "Hinzufügen oder Ändern des Steuercodes fehlgeschlagen",
+    "tax_rate_non_negative"                  => "",
     "group_seq"                              => "Gruppe Folge",
     "jurisdiction_name"                      => "Name der Gerichtsbarkeit",
     "name"                                   => "Name",
