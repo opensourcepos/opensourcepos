@@ -437,10 +437,6 @@ class SaleTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(10.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
     }
 
-    /**
-     * Sale::get_all_suspended() must return an empty array, not throw, when the
-     * query fails (Issue #3634).
-     */
     public function testGetAllSuspended_ReturnsEmptyArrayWhenQueryFails(): void
     {
         $model = $this->modelWithFailingQuery(Sale::class);

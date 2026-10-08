@@ -7,11 +7,6 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Tests\Support\FailedQueryConnectionTrait;
 
-/**
- * Regression tests for Issue #3634: the migration metadata helpers must fail
- * loudly (throw DatabaseException) when their metadata query returns false,
- * rather than mistaking a failed query for "not found".
- */
 class migration_helperTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
@@ -22,9 +17,6 @@ class migration_helperTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    /**
-     * indexExists() must throw, not silently report "not found", when the metadata query fails.
-     */
     public function testIndexExists_ThrowsWhenQueryFails(): void
     {
         $this->requireMigrationHelper();
@@ -33,9 +25,6 @@ class migration_helperTest extends CIUnitTestCase
         indexExists('some_table', 'some_index', $this->failingConnection());
     }
 
-    /**
-     * primaryKeyExists() must throw, not silently report "no primary key", when the query fails.
-     */
     public function testPrimaryKeyExists_ThrowsWhenQueryFails(): void
     {
         $this->requireMigrationHelper();
@@ -44,9 +33,6 @@ class migration_helperTest extends CIUnitTestCase
         primaryKeyExists('some_table', $this->failingConnection());
     }
 
-    /**
-     * dropAllForeignKeyConstraints() must throw, not silently report "none found", when the query fails.
-     */
     public function testDropAllForeignKeyConstraints_ThrowsWhenQueryFails(): void
     {
         $this->requireMigrationHelper();
