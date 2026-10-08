@@ -187,66 +187,66 @@ class Sale_lib
      * @param array $cart
      * @return array
      */
-    public function sort_and_filter_cart(array $cart): array
+    public function sortAndFilterCart(array $cart): array
     {
         if (empty($cart)) {
             return $cart;
         }
 
-        $filtered_cart = [];
+        $filteredCart = [];
 
         foreach ($cart as $k => $v) {    // TODO: We should not be using single-letter variable names for readability.  Several of these foreach loops should be refactored.
             if ($v['print_option'] == PRINT_YES) {
                 if ($v['price'] == 0.0) {
                     $v['discount'] = 0.0;
                 }
-                $filtered_cart[] = $v;
+                $filteredCart[] = $v;
             }
         }
 
-        if (empty($filtered_cart)) {
-            return $filtered_cart;
+        if (empty($filteredCart)) {
+            return $filteredCart;
         }
 
         // TODO: This set of if/elseif/else needs to be converted to a switch statement
         // Entry sequence (this will render kits in the expected sequence)
         if ($this->config['line_sequence'] == '0') {
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['line'][$k] = $v['line'];
             }
-            array_multisort($sort['line'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['line'], SORT_ASC, $filteredCart);
         }
         // Group by Stock Type (nonstock first - type 1, stock next - type 0)
         elseif ($this->config['line_sequence'] == '1') {    // TODO: Need to change these to constants
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['stock_type'][$k] = $v['stock_type'];
                 $sort['description'][$k] = $v['description'];
                 $sort['name'][$k] = $v['name'];
             }
-            array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filteredCart);
         }
         // Group by Item Category
         elseif ($this->config['line_sequence'] == '2') {    // TODO: Need to change these to constants
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['category'][$k] = $v['stock_type'];
                 $sort['description'][$k] = $v['description'];
                 $sort['name'][$k] = $v['name'];
             }
-            array_multisort($sort['category'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['category'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filteredCart);
         }
         // Group by entry sequence in descending sequence (the Standard)
         else {
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['line'][$k] = $v['line'];
             }
-            array_multisort($sort['line'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['line'], SORT_ASC, $filteredCart);
         }
 
-        return $filtered_cart;
+        return $filteredCart;
     }
 
     /**
