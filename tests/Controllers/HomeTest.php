@@ -235,6 +235,33 @@ class HomeTest extends CIUnitTestCase
     }
 
     /**
+     * Regression test for issue #4681.
+     *
+     * An employee with no modules assigned to the home menu group but with
+     * office permissions should be able to access the home page without
+     * triggering an undefined $allowed_modules error.
+     *
+     * @return void
+     */
+    public function testHomeWithOnlyOfficeModulesDoesNotCrash(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'home', 'menu_group' => 'office'],
+                ['permission_id' => 'office', 'menu_group' => 'office'],
+                ['permission_id' => 'config', 'menu_group' => 'office']
+            ]
+        ]);
+
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/home');
+
+        $response->assertStatus(200);
+        $response->assertSee('Office');
+    }
+
+    /**
      * Helper method to reset session
      *
      * @return void
