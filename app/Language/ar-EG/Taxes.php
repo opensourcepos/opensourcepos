@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "معدل الضريبة الافتراضي %",
     "tax_rate_configuration"                 => "اعجدادات معدل الضريبة",
     "tax_rate_error_adding_updating"         => "فشل إضافة أو تحديث معدل الضريبة",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "معدل الضريبة الافتراضي يجب أن يكون رقم",
     "tax_rate_required"                      => "معدل الضريبة الافتراضي مطلوب",
     "tax_rate_successful_updated"            => "لقد تم بالتحديث بنجاح",

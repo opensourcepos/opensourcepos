@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Afgift 2 procent',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Standard afgiftsrate skal være et tal',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Standard afgiftsrate er et obligatorisk felt',
     'derive_sale_quantity'                      => 'Tillad afledt salgsmængde',
     'derive_sale_quantity_tooltip'              => 'Hvis markeret, vil en ny varetype blive stillet til rådighed for varer bestilt med et udvidet beløb',

@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Az adó neve nem megengedett karaktereket tartalmaz.',
     'tax_percent'                        => 'Adó %',
     'tax_percent_number'                 => '',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Adó % kötelező mező',
     'tax_percents'                       => 'Adó százalék(ok)',
     'temp'                               => '',

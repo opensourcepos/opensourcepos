@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'نرخ مالیات 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'نرخ مالیات پیش فرض باید یک عدد باشد.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'پیش فرض مالیات نرخ مورد نیاز است.',
     'derive_sale_quantity'                      => 'مجاز به مقدار فروش مشتق شده',
     'derive_sale_quantity_tooltip'              => 'اگر بررسی شود ، نوع جدیدی برای موارد سفارش داده شده با مقدار طولانی ارائه می شود',

@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Tỷ suất thuế",
     "tax_rate_configuration"                 => "",
     "tax_rate_error_adding_updating"         => "",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Tỷ suất thuế phải là dạng số.",
     "tax_rate_required"                      => "Trường Tỷ suất thuế là bắt buộc.",
     "tax_rate_successful_updated"            => "",

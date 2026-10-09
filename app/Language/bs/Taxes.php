@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Poreska stopa",
     "tax_rate_configuration"                 => "Konfiguracija poreske stope",
     "tax_rate_error_adding_updating"         => "Dodavanje ili ažuriranje poreske stope nije uspjelo",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Stopa poreza mora biti broj",
     "tax_rate_required"                      => "Stopa poreza je obavezna",
     "tax_rate_successful_updated"            => "Uspješno ste ažurirali",

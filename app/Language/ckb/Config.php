@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'ڕێژەی باجی ٢',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'ڕێژەی باجی بنەڕەتی دەبێت ژمارە بێت.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'ڕێژەی باجی بنەڕەتی خانەیەکی پێویستە.',
     'derive_sale_quantity'                      => 'ڕێگە بدە بە بڕی فرۆشتنی وەرگیراو',
     'derive_sale_quantity_tooltip'              => 'ئەگەر پشکنین بکرێت ئەوا جۆرێکی نوێی ئایتم دابین دەکرێت بۆ ئەو ئایتمانەی کە بە بڕی درێژکراوە داواکراون',

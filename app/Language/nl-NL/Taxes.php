@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Belastingtarief",
     "tax_rate_configuration"                 => "Belastingtarief configuratie",
     "tax_rate_error_adding_updating"         => "Belastingtarief toevoegen of bijwerken mislukt",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Belastingtarief moet een getal zijn",
     "tax_rate_required"                      => "Belastingtarief is een vereist veld",
     "tax_rate_successful_updated"            => "Bijgewerkt",

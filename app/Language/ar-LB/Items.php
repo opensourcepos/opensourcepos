@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'اسم الضريبة يحتوي على أحرف غير مسموح بها.',
     'tax_percent'                        => 'نسبة الضريبة',
     'tax_percent_number'                 => 'نسبة الضريبة يجب ان تكون رقم',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'نسبة الضريبة مطلوبة.',
     'tax_percents'                       => 'نسبة/نسب الضريبة',
     'temp'                               => 'مؤقت',

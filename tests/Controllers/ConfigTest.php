@@ -5,11 +5,13 @@ namespace Tests\Controllers;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use Tests\Support\TaxFixtureTrait;
 
 class ConfigTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;
+    use TaxFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -397,5 +399,47 @@ class ConfigTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
         $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
+
+    // ========== postSaveTax: negative default tax rate ==========
+
+    public function testSaveTax_RejectsNegativeDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => '-200.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_RejectsNegativeDefaultTaxRate2(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_2_rate' => '-50.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_AcceptsZeroDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => '0.00',
+            'default_tax_2_rate' => '0.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
     }
 }

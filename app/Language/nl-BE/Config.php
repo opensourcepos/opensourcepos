@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'VAT 2 %',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Het percentage VAT moet een nummer zijn.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Het percentage VAT is een verplicht veld.',
     'derive_sale_quantity'                      => 'Laat Verkoop Afgeleide Hoeveelheid toe',
     'derive_sale_quantity_tooltip'              => 'Indien aangevinkt zal er een nieuw item type voorzien worden om items te ordenen',

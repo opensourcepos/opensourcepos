@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "שיעור מס",
     "tax_rate_configuration"                 => "הגדרת שיעור מס",
     "tax_rate_error_adding_updating"         => "הוספה או עדכון של שיעור המס נכשל",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "שדה שיעור המס חייב להיות מספר",
     "tax_rate_required"                      => "שיעור המס הינו שדה חובה",
     "tax_rate_successful_updated"            => "עדכנת בהצלחה",

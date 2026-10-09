@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'שם המס מכיל תווים אסורים.',
     'tax_percent'                        => '',
     'tax_percent_number'                 => 'אחוז המס חייב להיות ערך מספרי',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'אחוז המס הינו שדה חובה.',
     'tax_percents'                       => 'אחוזי מס',
     'temp'                               => 'זמני',

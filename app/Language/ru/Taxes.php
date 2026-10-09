@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Ставка налога",
     "tax_rate_configuration"                 => "Параметры ставки налога",
     "tax_rate_error_adding_updating"         => "Не удалось добавить или обновить налоговую ставку",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Налоговая ставка должна быть числом",
     "tax_rate_required"                      => "Налоговая ставка - обязательное поле для заполнения",
     "tax_rate_successful_updated"            => "Успешно обновлено",
