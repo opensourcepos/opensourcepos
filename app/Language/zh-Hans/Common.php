@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "请造访",
     "position"                       => "",
-    "powered_by"                     => "供应 {0} {1}",
+    "powered_by"                     => "供应 {app} {version}",
     "price"                          => "价格",
     "print"                          => "打印",
     "remove"                         => "移除",
