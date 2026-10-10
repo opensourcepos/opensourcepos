@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Por favor visite",
     "position"                       => "",
-    "powered_by"                     => "Ejecutando sobre {0} {1}",
+    "powered_by"                     => "Ejecutando sobre {app} {version}",
     "price"                          => "Precio",
     "print"                          => "Imprimir",
     "remove"                         => "Elliminar",

@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "請造訪",
     "position"                       => "",
-    "powered_by"                     => "提供者 {0} {1}",
+    "powered_by"                     => "提供者 {app} {version}",
     "price"                          => "價值",
     "print"                          => "列印",
     "remove"                         => "移除",

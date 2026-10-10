@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "Il numero di telefono è richiesto",
     "please_visit_my"                => "Visitare il",
     "position"                       => "Posizione",
-    "powered_by"                     => "Sviluppato da {0} {1}",
+    "powered_by"                     => "Sviluppato da {app} {version}",
     "price"                          => "Prezzo",
     "print"                          => "Stampa",
     "remove"                         => "Rimuovi",
