@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Belastingnaam bevat niet-toegestane tekens.',
     'tax_percent'                        => 'VAT %',
     'tax_percent_number'                 => 'Tax Percentage moet een numerieke waarde zijn',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'BTW Percentage is een verplicht veld.',
     'tax_percents'                       => 'VAT',
     'temp'                               => 'Tijdelijk',

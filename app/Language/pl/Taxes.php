@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "",
     "tax_rate_configuration"                 => "",
     "tax_rate_error_adding_updating"         => "",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "",
     "tax_rate_required"                      => "",
     "tax_rate_successful_updated"            => "",

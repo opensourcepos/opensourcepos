@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => '稅率 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => '預設稅率必需為數字',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => '預設稅率為必填',
     'derive_sale_quantity'                      => '',
     'derive_sale_quantity_tooltip'              => '',

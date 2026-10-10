@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Der Steuername enthält nicht erlaubte Zeichen.',
     'tax_percent'                        => 'MWSt %',
     'tax_percent_number'                 => 'Steuer Prozent muss ein Zahlenwert sein',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Steuerprozentsatz ist ein Pflichtfeld.',
     'tax_percents'                       => 'Steuerprozent(e)',
     'temp'                               => 'Vorübergehend',

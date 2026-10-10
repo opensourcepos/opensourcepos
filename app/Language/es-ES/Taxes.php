@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Tasa de Impuesto",
     "tax_rate_configuration"                 => "Configuración de Tasa de Impuesto",
     "tax_rate_error_adding_updating"         => "Añadir o actualizar Tasa de Impuesto ha fallado",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "La Tasa de Impuesto debe ser un número",
     "tax_rate_required"                      => "La Tasa de Impuesto es un campo obligatorio",
     "tax_rate_successful_updated"            => "Has actualizado exitosamente",

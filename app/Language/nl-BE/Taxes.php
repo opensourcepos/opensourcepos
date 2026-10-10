@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "BTW-Tarief",
     "tax_rate_configuration"                 => "BTW-Tarief Configuratie",
     "tax_rate_error_adding_updating"         => "BTW-Tarief toevoegen of bijwerken mislukt",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "BTW-tarief moet een getal zijn",
     "tax_rate_required"                      => "BTW-Tarief is een verplicht veld",
     "tax_rate_successful_updated"            => "Je hebt met succes bijgewerkt",

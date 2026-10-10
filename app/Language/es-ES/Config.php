@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Impuesto 2',
     'default_tax_rate_3'                        => 'Tasa de Impuestos 3',
     'default_tax_rate_number'                   => 'El Impuesto Predeterminado debe ser un número.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'El Impuesto Predeterminado es requerido.',
     'derive_sale_quantity'                      => 'Permitir cantidad de venta derivada',
     'derive_sale_quantity_tooltip'              => 'Si se marca entonces se proporcionará un nuevo tipo para los artículos ordenados por cantidad extendida',

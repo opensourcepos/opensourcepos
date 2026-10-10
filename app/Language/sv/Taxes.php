@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Skattenivå",
     "tax_rate_configuration"                 => "Skattesats konfiguration",
     "tax_rate_error_adding_updating"         => "Tillägg eller uppdatering av skattesats misslyckades",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Skattesats måste vara ett nummer.",
     "tax_rate_required"                      => "Skattesats är ett obligatoriskt fält.",
     "tax_rate_successful_updated"            => "Du har uppdaterat",

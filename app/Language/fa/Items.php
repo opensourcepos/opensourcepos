@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'نام مالیات حاوی کاراکترهای غیرمجاز است.',
     'tax_percent'                        => '',
     'tax_percent_number'                 => 'درصد مالیات باید عددی باشد',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'درصد مالیات یک زمینه مورد نیاز است.',
     'tax_percents'                       => 'درصد (مالیات) مالیات',
     'temp'                               => 'موقت',

@@ -148,10 +148,6 @@ button.btn.dropdown-toggle.btn-sm {
     box-shadow: none;
 }
 
-label.required {
-    color: red;
-}
-
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         padding: 10px 10px 9px;

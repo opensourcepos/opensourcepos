@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "稅率",
     "tax_rate_configuration"                 => "稅率設定",
     "tax_rate_error_adding_updating"         => "稅率新增或修改失敗",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "稅率必須是數字",
     "tax_rate_required"                      => "稅率是必填欄位",
     "tax_rate_successful_updated"            => "修改完成",

@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Item_kits.name'), 'name', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'name',
@@ -97,7 +97,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? ['class' => 'control-label col-xs-3 text-danger required'] : ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?= form_radio([
@@ -127,7 +127,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
+            <?= form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? ['class' => 'control-label col-xs-3 text-danger required'] : ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?= form_radio([

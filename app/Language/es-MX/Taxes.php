@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "tarifa de impuesto",
     "tax_rate_configuration"                 => "configuracion de tarifa de impuesto",
     "tax_rate_error_adding_updating"         => "tarifa de impuesto agregado o actualizacion fallida",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "tarifa de impuesto debe ser numero",
     "tax_rate_required"                      => "tarifa de impuesto es requerida",
     "tax_rate_successful_updated"            => "has actualizado satisfactoriamente",

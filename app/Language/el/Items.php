@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Το όνομα φόρου περιέχει μη επιτρεπτούς χαρακτήρες.',
     'tax_percent'                        => '',
     'tax_percent_number'                 => '',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => '',
     'tax_percents'                       => '',
     'temp'                               => '',

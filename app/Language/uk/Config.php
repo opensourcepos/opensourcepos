@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Ставка податку 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Ставка податку за замовчуванням повинна бути числом',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => "Ставка податку за замовчуванням - це обов'язкове поле",
     'derive_sale_quantity'                      => 'Дозволити похідну кількість продажів',
     'derive_sale_quantity_tooltip'              => 'Якщо прапорець встановлений, то відносно товарів, замовлених на основі розширеної суми, буде передбачено новий тип товару',

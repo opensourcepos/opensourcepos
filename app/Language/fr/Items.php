@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Le nom de la taxe contient des caractères non autorisés.',
     'tax_percent'                        => 'Pourcentage d\'imposition',
     'tax_percent_number'                 => 'Le pourcentage d\'imposition doit être une valeur numérique',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Le pourcentage d\'imposition est requis.',
     'tax_percents'                       => 'Pourcentage de taxes',
     'temp'                               => 'Temporaire',

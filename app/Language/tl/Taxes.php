@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Tax Rate",
     "tax_rate_configuration"                 => "Tax Rates Configuration",
     "tax_rate_error_adding_updating"         => "Tax Code add or update failed",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "date must be a number",
     "tax_rate_required"                      => "Tax Code is a required field",
     "tax_rate_successful_updated"            => "You have successfully updated",
