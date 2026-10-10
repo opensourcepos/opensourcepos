@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Please visit the",
     "position"                       => "",
-    "powered_by"                     => "Powered by",
+    "powered_by"                     => "Powered by {app} {version}",
     "price"                          => "ფასი",
     "print"                          => "დაბეჭდვა",
     "remove"                         => "წაშლა",

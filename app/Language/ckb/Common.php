@@ -51,7 +51,7 @@ return [
     "import_full_path"         => "ڕێڕەوی تەواو بۆ پەڕگەی CSV پێویستە",
     "inv"                      => "ئای ئێن ڤی",
     "please_visit_my"          => "تکایە سەردانی",
-    "powered_by"               => "پاڵپشتی دەکرێت لەلایەن",
+    "powered_by"               => "پاڵپشتی دەکرێت لەلایەن {app} {version}",
     "price"                    => "نرخ",
     "print"                    => "چاپکردن",
     "remove"                   => "لابردن",

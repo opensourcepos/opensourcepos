@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "தயவுசெய்து பார்வையிடவும்",
     "position"                       => "",
-    "powered_by"                     => "மூலம் இயக்கப்படுகிறது",
+    "powered_by"                     => "மூலம் இயக்கப்படுகிறது {app} {version}",
     "price"                          => "விலை",
     "print"                          => "அச்சிடுக",
     "remove"                         => "அகற்று",
