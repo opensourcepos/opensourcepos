@@ -65,7 +65,13 @@ class Secure_Controller extends BaseController
         if ($menu_group == 'home' && empty($allowed_modules)) {
             $office_modules = $this->module->get_allowed_office_modules($logged_in_employee_info->person_id)->getResult();
 
-            if (!empty($office_modules)) {
+            if (
+                !empty($office_modules)
+                && $this->employee->has_module_grant(
+                    'office',
+                    $logged_in_employee_info->person_id
+                )
+            ) {
                 $office_module = array_filter(
                     $this->module->get_all_modules()->getResult(),
                     static fn ($module) => $module->module_id === 'office'
