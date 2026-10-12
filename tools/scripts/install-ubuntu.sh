@@ -239,6 +239,10 @@ if [ -f ".env" ]; then
     sed -i "s|database\.default\.username='admin'|database.default.username='${DB_USER}'|" .env
     sed -i "s|database\.default\.password='pointofsale'|database.default.password='${ESCAPED_DB_PASS}'|" .env
     sed -i "s|CI_ENVIRONMENT=development|CI_ENVIRONMENT=production|" .env
+    # Production requires an allowed-hostname whitelist (the app refuses to boot
+    # without one). Default to localhost (the installer's default server name);
+    # real installs with a domain should update this to their hostname(s).
+    sed -i "s|app.allowedHostnames=''|app.allowedHostnames='localhost'|" .env
     
     if grep -q "encryption\.key=''" .env; then
         ENCRYPTION_KEY=$(openssl rand -base64 32)
@@ -247,11 +251,12 @@ if [ -f ".env" ]; then
     fi
 fi
 
-echo -e "${COLOR_GREEN}[8/9] Running database migrations...${COLOR_RESET}"
-# The schema is defined by CodeIgniter migrations under app/Database/Migrations (not a
-# static SQL dump), so apply them with the framework runner now that .env and the DB
-# credentials are in place. Runs all pending migrations in the default group non-interactively.
-php spark migrate
+echo -e "${COLOR_GREEN}[8/9] Preparing database schema...${COLOR_RESET}"
+# The OSPOS release ships as a pre-built dist (no `spark` binary) and runs its
+# CodeIgniter migrations automatically on first access (see app/Controllers/Login.php).
+# Now that .env credentials point at the new database and the user can authenticate,
+# the schema is created the first time the app is reached, so nothing is run here.
+echo -e "${COLOR_BLUE}Schema is created automatically on first access.${COLOR_RESET}"
 
 # Interactive SSL configuration
 if $INTERACTIVE && [ -z "$SSL_EMAIL" ] && [ -z "$APACHE_SERVER_NAME" ]; then
