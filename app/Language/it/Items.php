@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Il nome dell\'imposta contiene caratteri non consentiti.',
     'tax_percent'                        => 'Percentuale Imposta',
     'tax_percent_number'                 => 'Percentuale Imposta deve essere un numero',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Percentuale Imposta è un campo richiesto.',
     'tax_percents'                       => 'Percentuale Imposta(e)',
     'temp'                               => 'Temporanea',

@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'מדרגת מס 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'שיעור מס ברירת מחדל חייב להיות מספר.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'שיעור מס ברירת מחדל הינו שדה חובה.',
     'derive_sale_quantity'                      => 'אפשר כמות נגזרת של מכירה',
     'derive_sale_quantity_tooltip'              => 'אם מסומן, סוג פריט חדש יספק פריטים שהוזמנו בכמות מורחבת',

@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Stopa poreza 2 %',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Stopa poreza mora biti broj.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Stopa poreza je obavezno polje.',
     'derive_sale_quantity'                      => 'Dozvoli izvedenu količinu prodaje',
     'derive_sale_quantity_tooltip'              => 'Ako se izabere, za artikle naručene po produženom iznosu biće obezbjeđen novi tip artikla',

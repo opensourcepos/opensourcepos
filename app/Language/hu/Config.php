@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Adó 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Az alapértelmezett adónak számnak kell lennie',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Az alapértelmezett adó kötelező mező',
     'derive_sale_quantity'                      => '',
     'derive_sale_quantity_tooltip'              => '',

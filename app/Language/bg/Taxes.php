@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Данъчна ставка",
     "tax_rate_configuration"                 => "",
     "tax_rate_error_adding_updating"         => "",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Данъчната ставка трябва да е число.",
     "tax_rate_required"                      => "Данъчната ставка е задължително поле.",
     "tax_rate_successful_updated"            => "",

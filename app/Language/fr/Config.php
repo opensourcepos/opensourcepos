@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => "Taux d'Imposition 2",
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Le taux de taxe par défaut doit être un nombre.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Le taux de taxe par défaut est un champ obligatoire.',
     'derive_sale_quantity'                      => 'Autoriser la quantité de vente dérivée',
     'derive_sale_quantity_tooltip'              => "Si coché, un nouveau type d'article sera fourni pour les articles commandés par montant étendu",

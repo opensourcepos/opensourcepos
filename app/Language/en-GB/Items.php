@@ -110,6 +110,7 @@ return [
     'tax_name_invalid'                   => 'Tax Name contains disallowed characters.',
     'tax_percent'                        => 'Tax Percent',
     'tax_percent_number'                 => 'Tax Percent must be a numeric value',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Tax Percent is a required field.',
     'tax_percents'                       => 'Tax Percent(s)',
     'temp'                               => 'Temporary',

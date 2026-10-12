@@ -111,6 +111,7 @@ return [
     'tax_name_invalid' => 'ناوی باج پیتی ڕێگە پێنەدراوی تێدایە.',
     'tax_percent' => '',
     'tax_percent_number' => 'ڕێژەی سەدی باج دەبێت بەهایەکی ژمارەیی بێت',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required' => 'ڕێژەی سەدی باج خانەیەکی پێویستە.',
     'tax_percents' => 'ڕێژەی سەدی(یەکان)ی باج',
     'temp' => 'کاتیی',

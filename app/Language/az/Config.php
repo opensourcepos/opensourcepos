@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Vergi Məzənnəsi 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Standart Vergi Məzənnəsi rəqəm ilə olmalıdır.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Standart Vergi Məzənnəsi olan sahə boş qala bilməz.',
     'derive_sale_quantity'                      => 'Tərtib edilmiş satış məbləğinə icazə verin',
     'derive_sale_quantity_tooltip'              => 'Əgər yoxlanılırsa, uzunmüddətli məbləğdə sifariş edilən əşyalar üçün yeni bir mal növü veriləcəkdir',

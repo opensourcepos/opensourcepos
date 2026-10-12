@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Tarif Pajak 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Tarif Pajak harus berupa angkat.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Tarif Pajak Biasa harus diisi.',
     'derive_sale_quantity'                      => 'Ijinkan Kuantitas Penjulan Diturunkan',
     'derive_sale_quantity_tooltip'              => 'Jika dicentang maka jenis barang baru akan disediakan untuk barang yang dipesan dengan jumlah yang diperpanjang',

@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "อัตราภาษี",
     "tax_rate_configuration"                 => "ตั้งค่าอัตราภาษี",
     "tax_rate_error_adding_updating"         => "การเพิ่มหรืออัปเดตอัตราภาษีล้มเหลว",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "อัตราภาษีต้องเป็นตัวเลข",
     "tax_rate_required"                      => "จำเป็นต้องระบุอัตราภาษี",
     "tax_rate_successful_updated"            => "คุณปรับปรุงข้อมูลเรียบร้อยแล้ว",

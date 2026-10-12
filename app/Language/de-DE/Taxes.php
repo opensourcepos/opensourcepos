@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Steuersatz",
     "tax_rate_configuration"                 => "Steuersatz Konfiguration",
     "tax_rate_error_adding_updating"         => "Hinzufügen oder Ändern des Steuersatzes fehlgeschlagen",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Der Steuersatz muss eine Zahl sein",
     "tax_rate_required"                      => "Der Steuersatz ist ein Pflichtfeld",
     "tax_rate_successful_updated"            => "Erfolgreich geändert",

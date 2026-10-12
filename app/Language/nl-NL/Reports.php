@@ -29,6 +29,7 @@ return [
     "date"                                    => "Datum",
     "date_range"                              => "Datumbereik",
     "description"                             => "Beschrijving",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Gedetailleerd leveringen rapport",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Gedetailleerde rapporten",

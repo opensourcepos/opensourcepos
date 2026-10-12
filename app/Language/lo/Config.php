@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'ອັດຕາອາກອນທີ 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'ອັດຕາອາກອນ ຕ້ອງເປັນຕົວເລກເທົ່ານັ້ນ.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'ກະລຸນາກຳນົດອັດຕາອາກອນ.',
     'derive_sale_quantity'                      => '',
     'derive_sale_quantity_tooltip'              => '',

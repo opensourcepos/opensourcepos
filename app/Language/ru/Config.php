@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Ставка налога 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Ставка налога должна быть введена цифрами.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Ставка налога - обязательное поле.',
     'derive_sale_quantity'                      => 'Разрешить кол-во основанное на продажах',
     'derive_sale_quantity_tooltip'              => 'Если этот флажок установлен, для товаров, заказанных на расширенную сумму, будет предоставлен новый тип товара',
