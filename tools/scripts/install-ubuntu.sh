@@ -234,21 +234,24 @@ if [ -f ".env" ]; then
     # Escape special characters in password for sed
     ESCAPED_DB_PASS=$(printf '%s\n' "$DB_PASS" | sed 's/[&/\]/\\&/g')
     
-    sed -i "s|database\.default\.hostname = 'localhost'|database.default.hostname = '${DB_HOST}'|" .env
-    sed -i "s|database\.default\.database = 'ospos'|database.default.database = '${DB_NAME}'|" .env
-    sed -i "s|database\.default\.username = 'admin'|database.default.username = '${DB_USER}'|" .env
-    sed -i "s|database\.default\.password = 'pointofsale'|database.default.password = '${ESCAPED_DB_PASS}'|" .env
-    sed -i "s|CI_ENVIRONMENT = development|CI_ENVIRONMENT = production|" .env
+    sed -i "s|database\.default\.hostname='localhost'|database.default.hostname='${DB_HOST}'|" .env
+    sed -i "s|database\.default\.database='ospos'|database.default.database='${DB_NAME}'|" .env
+    sed -i "s|database\.default\.username='admin'|database.default.username='${DB_USER}'|" .env
+    sed -i "s|database\.default\.password='pointofsale'|database.default.password='${ESCAPED_DB_PASS}'|" .env
+    sed -i "s|CI_ENVIRONMENT=development|CI_ENVIRONMENT=production|" .env
     
-    if grep -q "encryption\.key = ''" .env; then
+    if grep -q "encryption\.key=''" .env; then
         ENCRYPTION_KEY=$(openssl rand -base64 32)
         ESCAPED_KEY=$(printf '%s\n' "$ENCRYPTION_KEY" | sed 's/[&/\]/\\&/g')
-        sed -i "s|encryption\.key = ''|encryption.key = '${ESCAPED_KEY}'|" .env
+        sed -i "s|encryption\.key=''|encryption.key='${ESCAPED_KEY}'|" .env
     fi
 fi
 
-echo -e "${COLOR_GREEN}[8/9] Importing database schema...${COLOR_RESET}"
-mysql_root ${DB_NAME} < app/Database/database.sql
+echo -e "${COLOR_GREEN}[8/9] Running database migrations...${COLOR_RESET}"
+# The schema is defined by CodeIgniter migrations under app/Database/Migrations (not a
+# static SQL dump), so apply them with the framework runner now that .env and the DB
+# credentials are in place. Runs all pending migrations in the default group non-interactively.
+php spark migrate
 
 # Interactive SSL configuration
 if $INTERACTIVE && [ -z "$SSL_EMAIL" ] && [ -z "$APACHE_SERVER_NAME" ]; then
