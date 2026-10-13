@@ -6,11 +6,6 @@
     text-align: center;
 }
 
-#company_name {
-    font-size: 150%;
-    font-weight: bold;
-}
-
 #company_name img {
     max-width: 150px;
     max-height: 150px;
