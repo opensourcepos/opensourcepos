@@ -81,9 +81,11 @@ changes. A few things that can require action when upgrading:
 
 ## Rolling back
 
-To roll back, restore your backed-up code directory and, if needed, your
-database dump. Your data and `.env` are independent of the code, so rolling back
-the code does not lose anything.
+To roll back, restore your backed-up code directory. Because the upgrade applies
+database migrations on first login, check whether the older release works with
+the current schema — if it does not, restore your pre-upgrade database dump along
+with the old code. Your `.env` is independent of the code and does not need to
+change.
 
 ## Still having trouble?
 
@@ -91,5 +93,7 @@ the code does not lose anything.
   [GitHub issues](https://github.com/opensourcepos/opensourcepos/issues) — a
   similar issue may already be reported and answered.
 - Open a new issue with your OSPOS version, the version you upgraded from, and
-  the exact error you see (with PHP `display_errors` temporarily enabled if you
-  get a blank page).
+  the exact error you see. If the page is blank, check your web server and PHP
+  error logs (you can temporarily raise `logger.threshold` in your `.env` to
+  capture more detail) and include the relevant lines. Avoid enabling
+  `display_errors` on a public production site, as it can expose internal details.
