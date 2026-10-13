@@ -18,7 +18,7 @@
                 <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-home"></span>
+                            <i class="bi bi-shop-window"></i>
                         </span>
                         <?= form_input([
                             'name'  => 'company',
@@ -68,7 +68,7 @@
                 <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-globe"></span>
+                            <i class="bi bi-globe"></i>
                         </span>
                         <?= form_input([
                             'name'  => 'website',
@@ -85,7 +85,7 @@
                 <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-envelope"></span>
+                            <i class="bi bi-at"></i>
                         </span>
                         <?= form_input([
                             'name'  => 'email',
@@ -103,7 +103,7 @@
                 <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-phone-alt"></span>
+                            <i class="bi bi-telephone"></i>
                         </span>
                         <?= form_input([
                             'type'  => 'tel',
@@ -121,7 +121,7 @@
                 <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-phone-alt"></span>
+                            <i class="bi bi-printer"></i>
                         </span>
                         <?= form_input([
                             'type'  => 'tel',

@@ -22,6 +22,7 @@ $request = Services::request();
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <?php $theme = (empty($config['theme']) ? 'flatly' : esc($config['theme'])); ?>
     <link rel="stylesheet" href="resources/bootswatch/<?= "$theme" ?>/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/bootstrap-icons/bootstrap-icons.min.css">
 
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:debug:css -->
