@@ -453,6 +453,34 @@ function getItemsManageTableHeaders(): string
 }
 
 /**
+ * Column set for exporting items: same data columns the manage table shows,
+ * minus the icon/action columns (image thumbnail, inventory/stock/edit icons)
+ * that only make sense in the live UI.
+ *
+ * @return array Array of single-key [column_key => label] pairs, see item_headers()
+ */
+function itemExportHeaders(): array
+{
+    $attribute = model(Attribute::class);
+    $config = config(OSPOS::class)->settings;
+    $definitionsWithTypes = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
+
+    $headers = item_headers();
+
+    if ($config['use_destination_based_tax']) {
+        $headers[] = ['tax_percents' => lang('Items.tax_category')];
+    } else {
+        $headers[] = ['tax_percents' => lang('Items.tax_percents')];
+    }
+
+    foreach ($definitionsWithTypes as $definitionId => $definitionInfo) {
+        $headers[] = [$definitionId => $definitionInfo['name'], 'type' => $definitionInfo['type']];
+    }
+
+    return $headers;
+}
+
+/**
  * Get the html data row for the item
  *
  * @param object $item
@@ -528,7 +556,43 @@ function getItemDataRow(object $item, array $definitionNames, array $taxPercents
         )
     ];
 
-    return $columns + expand_attribute_values($definitionNames, (array) $item) + $icons;
+    return $columns + expandAttributeValues($definitionNames, (array) $item) + $icons;
+}
+
+/**
+ * Export row for an item: raw (unformatted) values, matching itemExportHeaders()'s
+ * column set - no locale display formatting, no icons/HTML, since consumers (CSV/XLSX/etc
+ * writers) each apply their own number formatting as appropriate for the target format.
+ *
+ * @param object $item
+ * @param array $definitionNames Attribute definitions with types, keyed by definition_id (see Attribute::getDefinitionsByFlags(..., true))
+ * @param array $taxPercentsByItemId Pre-computed tax percent strings, keyed by item_id (see Items::buildTaxPercentsByItem())
+ * @return array
+ */
+function getItemExportRow(object $item, array $definitionNames, array $taxPercentsByItemId): array
+{
+    $config = config(OSPOS::class)->settings;
+
+    $taxPercents = $taxPercentsByItemId[$item->item_id] ?? '';
+
+    $name = $item->name;
+    if ($config['multi_pack_enabled']) {
+        $name .= NAME_SEPARATOR . $item->pack_name;
+    }
+
+    $columns = [
+        'items.item_id' => $item->item_id,
+        'item_number'   => $item->item_number,
+        'name'          => $name,
+        'category'      => $item->category,
+        'company_name'  => $item->company_name,
+        'cost_price'    => $item->cost_price,
+        'unit_price'    => $item->unit_price,
+        'quantity'      => $item->quantity ?? '',
+        'tax_percents'  => $taxPercents
+    ];
+
+    return $columns + expandAttributeValues($definitionNames, (array) $item, raw: true);
 }
 
 function giftcard_headers(): array
@@ -639,39 +703,41 @@ function parse_attribute_values(array $columns, array $row): array
 }
 
 /**
- * @param array $definition_names Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
+ * @param array $definitionNames Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
  * @param array $row
+ * @param bool $raw When true, skip locale formatting of DECIMAL attributes and return the raw value instead
  * @return array
  */
-function expand_attribute_values(array $definition_names, array $row): array
+function expandAttributeValues(array $definitionNames, array $row, bool $raw = false): array
 {
     $values = parse_attribute_values(['attribute_values', 'attribute_dtvalues', 'attribute_dvalues'], $row);
 
-    $indexed_values = [];
-    foreach ($values as $attribute_value) {
-        $exploded_value = explode('_', $attribute_value);
-        if (sizeof($exploded_value) > 1) {
-            $indexed_values[$exploded_value[0]] = $exploded_value[1];
+    $indexedValues = [];
+    foreach ($values as $attributeValue) {
+        $explodedValue = explode('_', $attributeValue);
+        if (sizeof($explodedValue) > 1) {
+            $indexedValues[$explodedValue[0]] = $explodedValue[1];
         }
     }
 
-    $attribute_values = [];
-    foreach ($definition_names as $definition_id => $definitionInfo) {
-        if (isset($indexed_values[$definition_id])) {
-            $raw_value = $indexed_values[$definition_id];
+    $attributeValues = [];
+    foreach ($definitionNames as $definitionId => $definitionInfo) {
+        if (isset($indexedValues[$definitionId])) {
+            $rawValue = $indexedValues[$definitionId];
+            $isDecimal = is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL;
 
-            // Format DECIMAL attributes according to locale
-            if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
-                $attribute_values["$definition_id"] = to_decimals($raw_value);
+            // Format DECIMAL attributes according to locale, unless the raw value was requested
+            if ($isDecimal && !$raw) {
+                $attributeValues["$definitionId"] = to_decimals($rawValue);
             } else {
-                $attribute_values["$definition_id"] = $raw_value;
+                $attributeValues["$definitionId"] = $rawValue;
             }
         } else {
-            $attribute_values["$definition_id"] = "";
+            $attributeValues["$definitionId"] = "";
         }
     }
 
-    return $attribute_values;
+    return $attributeValues;
 }
 
 function attribute_definition_headers(): array

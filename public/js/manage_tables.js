@@ -226,9 +226,11 @@
             search: options.resource || false,
             showColumns: true,
             clickToSelect: true,
+            // showExport/exportTypes only render the button+dropdown; init_export_all_intercept()
+            // always wins the click and routes every format to the server, bypassing this plugin's own export.
             showExport: true,
             exportDataType: 'basic',
-            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf'],
             exportOptions: {
                 fileName: options.resource.replace(/.*\/(.*?)$/g, '$1') + "_" + export_suffix
             },
@@ -266,7 +268,28 @@
         init_restore();
         toggle_column_visibility();
         init_export_all_toggle();
+        init_export_all_intercept();
         dialog_support.init("button.modal-dlg");
+    };
+
+    let export_all_enabled = false;
+
+    const init_export_all_intercept = function () {
+        document.addEventListener('click', function(event) {
+            const $exportItem = $(event.target).closest('.export [data-type], .export[data-type]');
+            if (!$exportItem.length) {
+                return;
+            }
+
+            const format = $exportItem.attr('data-type') || $exportItem.closest('.export').data('type');
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            $exportItem.closest('.dropdown-menu').prev('[data-toggle="dropdown"]').dropdown('toggle');
+
+            const queryString = export_all_enabled ? export_all_query_string() : export_page_query_string();
+            window.location = options.resource + '/exportAll/' + format + '?' + queryString;
+        }, true);
     };
 
     const init_export_all_toggle = function () {
@@ -301,8 +324,28 @@
 
         $toggleInput.on('change', function() {
             $toggleWrapper.attr('aria-checked', this.checked);
-            $('#table').bootstrapTable('refreshOptions', { exportDataType: this.checked ? 'all' : 'basic' });
+            export_all_enabled = this.checked;
         });
+    };
+
+    const export_all_query_string = function() {
+        const queryParamsFn = $('#table').bootstrapTable('getOptions').queryParams;
+        const params = queryParamsFn ? queryParamsFn({}) : {};
+        delete params.limit;
+        delete params.offset;
+
+        return $.param(params);
+    };
+
+    const export_page_query_string = function() {
+        const tableOptions = $('#table').bootstrapTable('getOptions');
+        const queryParamsFn = tableOptions.queryParams;
+        const params = queryParamsFn ? queryParamsFn({
+            limit: tableOptions.pageSize,
+            offset: (tableOptions.pageNumber - 1) * tableOptions.pageSize
+        }) : {};
+
+        return $.param(params);
     };
 
     const init_delete = function (confirmMessage) {
