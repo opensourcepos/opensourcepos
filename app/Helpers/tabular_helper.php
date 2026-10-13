@@ -581,7 +581,7 @@ function getItemExportRow(object $item, array $definitionNames, array $taxPercen
     }
 
     $columns = [
-        'items.item_id' => $item->item_id,
+        'item_id'       => $item->item_id,
         'item_number'   => $item->item_number,
         'name'          => $name,
         'category'      => $item->category,

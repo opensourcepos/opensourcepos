@@ -239,26 +239,238 @@ function writeExportXlsx(array $headers, iterable $rows): string
 const EXPORT_PDF_PAGE_MARGIN = 10.0;
 const EXPORT_PDF_FONT_SIZE = 9;
 const EXPORT_PDF_ROW_HEIGHT = 6.0;
+const EXPORT_PDF_CELL_PADDING_MM = 2.0;
 
-const EXPORT_PDF_AVG_CHAR_WIDTH_MM = 0.42 * EXPORT_PDF_FONT_SIZE * 25.4 / 72;
+// Conservative (wider than any real glyph) per-character width, used only to cheaply rule out
+// truncation for short strings before paying for a real GetStringWidth() measurement.
+const EXPORT_PDF_MAX_CHAR_WIDTH_MM = 0.6 * EXPORT_PDF_FONT_SIZE * 25.4 / 72;
 
-function exportPdfColumnWidths(array $headers, float $usableWidth): array
+// Columns whose content is naturally short/uniform (price, quantity, dates, short codes,
+// checkbox attributes) - sized to fit their label plus a little headroom, rather than sharing
+// width proportionally with text columns.
+const EXPORT_PDF_LABEL_WIDTH_COLUMNS = ['cost_price', 'unit_price', 'quantity', 'tax_percents', 'category'];
+
+// Attribute types whose values are inherently short (Yes/No, a short code) - same label-width
+// treatment as EXPORT_PDF_LABEL_WIDTH_COLUMNS, keyed by type rather than column key since
+// attribute columns are keyed by definition_id, not a fixed name.
+const EXPORT_PDF_LABEL_WIDTH_ATTRIBUTE_TYPES = [CHECKBOX, DATE];
+
+// Columns that should absorb whatever width is left over after every other column gets its
+// minimum - the long free-text columns (item name, text/dropdown attribute values) that
+// actually need the room.
+const EXPORT_PDF_EXPAND_COLUMNS = ['name'];
+const EXPORT_PDF_EXPAND_ATTRIBUTE_TYPES = [TEXT, DROPDOWN];
+
+const EXPORT_PDF_BARCODE_DIGITS = 15;
+const EXPORT_PDF_ID_DIGITS = 5;
+
+function exportPdfColumnWidths(tFPDF $pdf, array $headers, float $usableWidth): array
 {
-    $labelLengths = array_map(static fn ($header) => max(mb_strlen((string) reset($header)), 6), $headers);
-    $totalLength = array_sum($labelLengths);
+    $widths = [];
+    $expandIndexes = [];
+    $reserved = 0.0;
 
-    return array_map(static fn ($length) => $usableWidth * $length / $totalLength, $labelLengths);
+    foreach (array_values($headers) as $index => $header) {
+        $key = array_key_first($header);
+        $label = (string) reset($header);
+        $type = $header['type'] ?? null;
+
+        $isExpand = in_array($key, EXPORT_PDF_EXPAND_COLUMNS, true)
+            || ($type !== null && in_array($type, EXPORT_PDF_EXPAND_ATTRIBUTE_TYPES, true));
+
+        if ($isExpand) {
+            $expandIndexes[] = $index;
+
+            continue;
+        }
+
+        $isLabelWidth = in_array($key, EXPORT_PDF_LABEL_WIDTH_COLUMNS, true)
+            || ($type !== null && in_array($type, EXPORT_PDF_LABEL_WIDTH_ATTRIBUTE_TYPES, true));
+
+        if ($key === 'items.item_id') {
+            $width = $pdf->GetStringWidth(str_repeat('0', EXPORT_PDF_ID_DIGITS)) + (2 * EXPORT_PDF_CELL_PADDING_MM);
+        } elseif ($key === 'item_number') {
+            $width = $pdf->GetStringWidth(str_repeat('0', EXPORT_PDF_BARCODE_DIGITS)) + (2 * EXPORT_PDF_CELL_PADDING_MM);
+        } elseif ($isLabelWidth) {
+            $width = $pdf->GetStringWidth($label) + (2 * EXPORT_PDF_CELL_PADDING_MM);
+        } else {
+            $width = $pdf->GetStringWidth($label) * 1.5 + (2 * EXPORT_PDF_CELL_PADDING_MM);
+        }
+
+        $widths[$index] = $width;
+        $reserved += $width;
+    }
+
+    if ($expandIndexes !== []) {
+        $expandWidth = max(EXPORT_PDF_CELL_PADDING_MM * 4, ($usableWidth - $reserved) / count($expandIndexes));
+
+        foreach ($expandIndexes as $index) {
+            $widths[$index] = $expandWidth;
+        }
+    }
+
+    ksort($widths);
+
+    return $widths;
 }
 
-function exportPdfTruncateCellText(string $text, float $columnWidth): string
+/**
+ * Truncates $text with an ellipsis so it fits $columnWidth, measured with the PDF's
+ * actual loaded font metrics (tFPDF::GetStringWidth()) rather than an average-character
+ * estimate - DejaVu Sans is proportional, not monospace, so a fixed-width guess
+ * under/over-truncates depending on which characters appear, causing visible overflow.
+ */
+function exportPdfTruncateCellText(tFPDF $pdf, string $text, float $columnWidth): string
 {
-    $maxChars = max(1, (int) floor($columnWidth / EXPORT_PDF_AVG_CHAR_WIDTH_MM));
+    $maxWidth = $columnWidth - EXPORT_PDF_CELL_PADDING_MM;
 
-    if (mb_strlen($text) <= $maxChars) {
+    // Fast path: even at the widest possible glyph width, this text can't overflow -
+    // skip the real (and comparatively expensive) GetStringWidth() measurement entirely.
+    if (mb_strlen($text) * EXPORT_PDF_MAX_CHAR_WIDTH_MM <= $maxWidth) {
         return $text;
     }
 
-    return mb_substr($text, 0, max(1, $maxChars - 1)) . '…';
+    if ($pdf->GetStringWidth($text) <= $maxWidth) {
+        return $text;
+    }
+
+    $low = 0;
+    $high = mb_strlen($text);
+
+    while ($low < $high) {
+        $mid = (int) ceil(($low + $high) / 2);
+        $candidate = mb_substr($text, 0, $mid) . '…';
+
+        if ($pdf->GetStringWidth($candidate) <= $maxWidth) {
+            $low = $mid;
+        } else {
+            $high = $mid - 1;
+        }
+    }
+
+    return $low > 0 ? mb_substr($text, 0, $low) . '…' : '…';
+}
+
+/**
+ * PDF cells are plain display text, unlike Excel's real numeric cells - so unlike the
+ * raw values exportRowValues() returns for every other format, quantity/price columns
+ * need the same locale-formatted display string the live table shows.
+ */
+function exportPdfFormatRowValues(array $values): array
+{
+    foreach (EXPORT_QUANTITY_COLUMNS as $key) {
+        if (isset($values[$key]) && $values[$key] !== '') {
+            $values[$key] = to_quantity_decimals((string) $values[$key]);
+        }
+    }
+
+    foreach (EXPORT_CURRENCY_COLUMNS as $key) {
+        if (isset($values[$key]) && $values[$key] !== '') {
+            $values[$key] = to_currency((string) $values[$key]);
+        }
+    }
+
+    return $values;
+}
+
+class ExportPdfWriter extends tFPDF
+{
+    /** @var float[] */
+    public array $exportColumnWidths = [];
+
+    /** @var string[] */
+    public array $exportColumnAlignments = [];
+
+    /** @var string[] */
+    public array $exportHeaderValues = [];
+
+    public function Header(): void
+    {
+        $this->SetFont('DejaVuSans', 'B', EXPORT_PDF_FONT_SIZE);
+
+        foreach ($this->exportHeaderValues as $index => $value) {
+            $width = $this->exportColumnWidths[$index];
+            $text = exportPdfTruncateCellText($this, $value, $width);
+            $this->Cell($width, EXPORT_PDF_ROW_HEIGHT, $text, 1, 0, 'C');
+        }
+        $this->Ln();
+
+        $this->SetFont('DejaVuSans', '', EXPORT_PDF_FONT_SIZE);
+    }
+}
+
+// Columns rendered centered rather than left-aligned.
+const EXPORT_PDF_CENTERED_COLUMNS = ['category', 'cost_price', 'unit_price', 'quantity', 'tax_percents'];
+
+function exportPdfColumnAlignments(array $headers): array
+{
+    return array_values(array_map(
+        static fn ($header) => in_array(array_key_first($header), EXPORT_PDF_CENTERED_COLUMNS, true) ? 'C' : 'L',
+        $headers
+    ));
+}
+
+const EXPORT_PDF_PRIMARY_COLUMNS = [
+    'items.item_id', 'item_number', 'name', 'category', 'company_name',
+    'cost_price', 'unit_price', 'quantity', 'tax_percents',
+];
+
+/**
+ * Splits $headers into a primary group (identifying/commerce columns, wide enough for
+ * barcode/item name to display without heavy truncation) and a secondary group (everything
+ * else, e.g. attribute columns) - each gets its own full-page-width set of pages, with the
+ * ID column repeated at the start of the secondary group so rows can be cross-referenced.
+ *
+ * @return array{0: array, 1: array} [primaryHeaders, secondaryHeaders]
+ */
+function exportPdfSplitHeaders(array $headers): array
+{
+    $primary = [];
+    $secondary = [];
+    $idHeader = null;
+
+    foreach ($headers as $header) {
+        $key = array_key_first($header);
+
+        if ($key === 'items.item_id') {
+            $idHeader = $header;
+        }
+
+        if (in_array($key, EXPORT_PDF_PRIMARY_COLUMNS, true)) {
+            $primary[] = $header;
+        } else {
+            $secondary[] = $header;
+        }
+    }
+
+    if ($secondary !== [] && $idHeader !== null) {
+        array_unshift($secondary, $idHeader);
+    }
+
+    return [$primary, $secondary];
+}
+
+function exportPdfRenderPageSet(ExportPdfWriter $pdf, array $headers, array $rows): void
+{
+    $pdf->SetFont('DejaVuSans', '', EXPORT_PDF_FONT_SIZE);
+
+    $usableWidth = $pdf->GetPageWidth() - (2 * EXPORT_PDF_PAGE_MARGIN);
+    $pdf->exportColumnWidths = array_values(exportPdfColumnWidths($pdf, $headers, $usableWidth));
+    $pdf->exportColumnAlignments = exportPdfColumnAlignments($headers);
+    $pdf->exportHeaderValues = array_values(array_map(static fn ($header) => (string) reset($header), $headers));
+
+    $pdf->AddPage();
+
+    foreach ($rows as $row) {
+        $values = array_values(exportPdfFormatRowValues(exportRowValues($headers, $row)));
+
+        foreach ($values as $index => $value) {
+            $width = $pdf->exportColumnWidths[$index];
+            $text = exportPdfTruncateCellText($pdf, (string) $value, $width);
+            $pdf->Cell($width, EXPORT_PDF_ROW_HEIGHT, $text, 1, 0, $pdf->exportColumnAlignments[$index]);
+        }
+        $pdf->Ln();
+    }
 }
 
 function writeExportPdf(array $headers, iterable $rows): string
@@ -266,74 +478,33 @@ function writeExportPdf(array $headers, iterable $rows): string
     $buildStart = microtime(true);
 
     set_time_limit(300);
-    define('K_PATH_FONTS', realpath(APPPATH . '../vendor/tecnickcom/tc-lib-pdf-font/target/fonts'));
+    define('FPDF_FONTPATH', FCPATH . 'fonts/');
+    require_once APPPATH . '../vendor/setasign/tfpdf/tfpdf.php';
 
-    $pdf = new Com\Tecnick\Pdf\Tcpdf(unit: 'mm', subsetfont: true);
-    $font = $pdf->font->insert($pdf->pon, 'dejavusans', '', EXPORT_PDF_FONT_SIZE);
+    $pdf = new ExportPdfWriter('L', 'mm', 'A4');
+    $pdf->AddFont('DejaVuSans', '', 'DejaVuSans.ttf', true);
+    $pdf->AddFont('DejaVuSans', 'B', 'DejaVuSansB.ttf', true);
+    $pdf->SetAutoPageBreak(true, EXPORT_PDF_PAGE_MARGIN);
+    $pdf->SetMargins(EXPORT_PDF_PAGE_MARGIN, EXPORT_PDF_PAGE_MARGIN, EXPORT_PDF_PAGE_MARGIN);
 
-    $headerValues = array_values(array_map(static fn ($header) => (string) reset($header), $headers));
+    [$primaryHeaders, $secondaryHeaders] = exportPdfSplitHeaders($headers);
 
-    $startNewPage = function () use ($pdf, $font): array {
-        $page = $pdf->addPage(['format' => 'A4', 'orientation' => 'L']);
-        $pdf->page->addContent($font['out']);
-
-        return $page;
-    };
-
-    $page = $startNewPage();
-    $pageHeight = $page['height'];
-    $usableWidth = $page['width'] - (2 * EXPORT_PDF_PAGE_MARGIN);
-    $columnWidths = array_values(exportPdfColumnWidths($headers, $usableWidth));
-
-    $drawRow = function (array $values, float $posY) use ($pdf, $columnWidths): void {
-        $posX = EXPORT_PDF_PAGE_MARGIN;
-        foreach ($values as $index => $value) {
-            $text = exportPdfTruncateCellText((string) $value, $columnWidths[$index]);
-
-            $out = $pdf->getTextCell(
-                txt: $text,
-                posx: $posX,
-                posy: $posY,
-                width: $columnWidths[$index],
-                height: EXPORT_PDF_ROW_HEIGHT,
-                halign: 'L',
-                valign: 'T',
-            );
-            $pdf->page->addContent($out);
-            $posX += $columnWidths[$index];
-        }
-    };
-
-    $drawHeaderRow = function (float $posY) use ($pdf, $font, $headerValues, $drawRow): void {
-        $boldFont = $pdf->font->cloneFont($pdf->pon, $font['idx'], 'B');
-        $pdf->page->addContent($boldFont['out']);
-        $drawRow($headerValues, $posY);
-
-        $regularFont = $pdf->font->cloneFont($pdf->pon, $boldFont['idx'], '');
-        $pdf->page->addContent($regularFont['out']);
-    };
-
-    $posY = EXPORT_PDF_PAGE_MARGIN;
-    $drawHeaderRow($posY);
-    $posY += EXPORT_PDF_ROW_HEIGHT;
-
+    // Buffer rows once so both page sets can iterate them without re-querying the DB.
     $rowCount = 0;
+    $bufferedRows = [];
     foreach ($rows as $row) {
-        if ($posY + EXPORT_PDF_ROW_HEIGHT > $pageHeight - EXPORT_PDF_PAGE_MARGIN) {
-            $startNewPage();
-            $posY = EXPORT_PDF_PAGE_MARGIN;
-            $drawHeaderRow($posY);
-            $posY += EXPORT_PDF_ROW_HEIGHT;
-        }
-
-        $drawRow(array_values(exportRowValues($headers, $row)), $posY);
-        $posY += EXPORT_PDF_ROW_HEIGHT;
+        $bufferedRows[] = $row;
         $rowCount++;
     }
 
-    $buildMs = (int) round((microtime(true) - $buildStart) * 1000);
+    exportPdfRenderPageSet($pdf, $primaryHeaders, $bufferedRows);
 
+    if ($secondaryHeaders !== []) {
+        exportPdfRenderPageSet($pdf, $secondaryHeaders, $bufferedRows);
+    }
+
+    $buildMs = (int) round((microtime(true) - $buildStart) * 1000);
     log_message('debug', "Export pdf write: build={$buildMs}ms rows=$rowCount");
 
-    return $pdf->getOutPDFString();
+    return $pdf->Output('S');
 }
