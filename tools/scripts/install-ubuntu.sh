@@ -251,12 +251,49 @@ if [ -f ".env" ]; then
     fi
 fi
 
-echo -e "${COLOR_GREEN}[8/9] Preparing database schema...${COLOR_RESET}"
-# The OSPOS release ships as a pre-built dist (no `spark` binary) and runs its
-# CodeIgniter migrations automatically on first access (see app/Controllers/Login.php).
-# Now that .env credentials point at the new database and the user can authenticate,
-# the schema is created the first time the app is reached, so nothing is run here.
-echo -e "${COLOR_BLUE}Schema is created automatically on first access.${COLOR_RESET}"
+echo -e "${COLOR_GREEN}[8/9] Running database migrations...${COLOR_RESET}"
+# The OSPOS release ships as a pre-built dist that omits the `spark` CLI entry point
+# (the framework system dir, app/Config/Paths.php and the App migrations are present),
+# so restore the standard CodeIgniter 4 `spark` bootstrap, then apply the schema with
+# the framework runner now that .env credentials point at the new database.
+if [ ! -f spark ]; then
+    cat > spark <<'SPARK_EOF'
+#!/usr/bin/env php
+<?php
+
+use CodeIgniter\Boot;
+use Config\Paths;
+
+if (str_starts_with(PHP_SAPI, 'cgi')) {
+    exit("The cli tool is not supported when running php-cgi. It needs php-cli to function!\n\n");
+}
+
+$minPhpVersion = '8.2';
+if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
+    exit(sprintf(
+        'Your PHP version must be %s or higher to run CodeIgniter. Current version: %s',
+        $minPhpVersion,
+        PHP_VERSION
+    ));
+}
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR);
+chdir(FCPATH);
+
+require FCPATH . '../app/Config/Paths.php';
+
+$paths = new Paths();
+
+require $paths->systemDirectory . '/Boot.php';
+
+exit(Boot::bootSpark($paths));
+SPARK_EOF
+    chmod +x spark
+fi
+php spark migrate
 
 # Interactive SSL configuration
 if $INTERACTIVE && [ -z "$SSL_EMAIL" ] && [ -z "$APACHE_SERVER_NAME" ]; then
