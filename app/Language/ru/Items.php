@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Название налога содержит недопустимые символы.',
     'tax_percent'                        => 'процент налога',
     'tax_percent_number'                 => 'Налоговый процент должен быть числом',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Налоговый процент - обязательно для заполнения.',
     'tax_percents'                       => 'Налоговый процент',
     'temp'                               => 'Временный',

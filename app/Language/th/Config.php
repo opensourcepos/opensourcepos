@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'อัตราภาษีลำดับที่ 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'อัตราภาษีเริ่มต้นต้องเป็นตัวเลข',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'อัตราภาษีเริ่มต้นต้องกรอก',
     'derive_sale_quantity'                      => 'จำนวนปริมาณการขายที่ได้รับ',
     'derive_sale_quantity_tooltip'              => 'หากทำเครื่องหมาย ระบบจะระบุประเภทรายการใหม่สำหรับรายการตามจำนวนที่เพิ่มขึ้น',

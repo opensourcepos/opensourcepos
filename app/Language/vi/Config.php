@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Tỷ lệ thuế 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Tỷ lệ thuế mặc định phải là dạng số.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Trường Tỷ lệ thuế mặc định là bắt buộc.',
     'derive_sale_quantity'                      => 'Cho phép suy luận số lượng bán hàng',
     'derive_sale_quantity_tooltip'              => 'Nếu chọn thì một kiểu hàng hóa mới sẽ được cung cấp cho đặt hàng hàng hóa theo tổng số mở rộng',

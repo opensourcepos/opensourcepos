@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "نرخ مالیات",
     "tax_rate_configuration"                 => "پیکربندی نرخ مالیات",
     "tax_rate_error_adding_updating"         => "افزودن یا به روزرسانی نرخ مالیات انجام نشد",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "نرخ مالیات باید یک عدد باشد",
     "tax_rate_required"                      => "نرخ مالیات یک زمینه ضروری است",
     "tax_rate_successful_updated"            => "شما با موفقیت به روزرسانی کردید",

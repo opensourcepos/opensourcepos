@@ -29,6 +29,7 @@ return [
     "date"                                    => "Tarih",
     "date_range"                              => "Tarih Aralığı",
     "description"                             => "Tanım",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Detaylı Alım Raporu",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Detaylı Raporlar",

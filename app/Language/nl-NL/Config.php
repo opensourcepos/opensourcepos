@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Belasting 2 tarief',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Standaard belastingtarief moet een getal zijn.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Standaard belastingtarief is een vereist veld.',
     'derive_sale_quantity'                      => 'Afgeleide verkoophoeveelheid toestaan',
     'derive_sale_quantity_tooltip'              => 'Wanneer aangevinkt zal er een nieuwe artikelsoort worden aangeleverd voor artikelen geordend op uitgebreid bedrag',

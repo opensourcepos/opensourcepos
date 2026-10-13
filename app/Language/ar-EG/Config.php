@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'معدل الضريبة 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'معدل الضريبة الافتراضي يجب أن يكون رقم.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'معدل الضريبة الافتراضي مطلوب.',
     'derive_sale_quantity'                      => 'السماح بأسعار البيع المشتقة',
     'derive_sale_quantity_tooltip'              => 'إذا تم تحديدها، فسيتم توفير نوع جديد من الاصناف للاصناف المطلوبة حسب المبلغ الموسع',

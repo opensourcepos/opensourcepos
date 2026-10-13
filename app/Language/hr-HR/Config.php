@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Porez 2 %',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Zadani porez mora biti broj',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Zadani porez je potreban',
     'derive_sale_quantity'                      => '',
     'derive_sale_quantity_tooltip'              => '',

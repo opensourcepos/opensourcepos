@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Tarif Pajak",
     "tax_rate_configuration"                 => "Konfigurasi Tarif Pajak",
     "tax_rate_error_adding_updating"         => "Gagal menambahkan atau memperbaharui Tarif Pajak",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Tarif Pajak harus berupa angka",
     "tax_rate_required"                      => "Tarif Pajak harus diisi",
     "tax_rate_successful_updated"            => "Anda berhasil melakukan perubahan",

@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Jina la kodi lina herufi zisizoruhusiwa.',
     'tax_percent'                        => 'Asilimia ya Kodi',
     'tax_percent_number'                 => 'Asilimia ya Kodi lazima iwe namba',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Asilimia ya Kodi ni kiashiria kinachohitajika.',
     'tax_percents'                       => 'Asilimia za Kodi',
     'temp'                               => 'isiyodumu',

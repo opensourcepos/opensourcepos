@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'MWSt 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'MWSt Rate',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'MWSt ist erforderlich',
     'derive_sale_quantity'                      => '',
     'derive_sale_quantity_tooltip'              => '',
