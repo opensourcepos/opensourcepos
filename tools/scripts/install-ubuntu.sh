@@ -55,13 +55,15 @@ validate_var "DB_HOST" "$DB_HOST" '^[a-zA-Z0-9_.\-]+$' "Use only letters, number
 
 # DB_PASS and MYSQL_ROOT_PASS are embedded inside single-quoted SQL, so a single quote
 # would break the statement. DB_PASS also passes through a sed replacement that uses '|'
-# as its delimiter, so reject that too.
+# as its delimiter, so reject that too. Backslashes are escape characters in MySQL
+# string literals, and double quotes conflict with the MariaDB config-file syntax, so
+# reject both in MYSQL_ROOT_PASS.
 if [[ "$DB_PASS" == *"'"* || "$DB_PASS" == *'|'* ]]; then
     echo -e "${COLOR_RED}Error: DB_PASS must not contain single quotes (') or pipe characters (|).${COLOR_RESET}"
     exit 1
 fi
-if [[ "$MYSQL_ROOT_PASS" == *"'"* ]]; then
-    echo -e "${COLOR_RED}Error: MYSQL_ROOT_PASS must not contain single quotes (').${COLOR_RESET}"
+if [[ "$MYSQL_ROOT_PASS" == *"'"* || "$MYSQL_ROOT_PASS" == *'"'* || "$MYSQL_ROOT_PASS" == *'\\'* ]]; then
+    echo -e "${COLOR_RED}Error: MYSQL_ROOT_PASS must not contain quotes (', \") or backslashes (\\).${COLOR_RESET}"
     exit 1
 fi
 
@@ -134,13 +136,17 @@ systemctl enable mariadb
 # (mode 0600) for authenticated connections, so the credential never appears on the
 # command line / in `ps` (CWE-214). The file is removed when the script exits.
 ROOT_CNF=""
+ROOT_SQL=""
 if [ -n "$MYSQL_ROOT_PASS" ]; then
     ROOT_CNF=$(mktemp "${TMPDIR:-/tmp}/ospos-root-cnf.XXXXXX")
     chmod 600 "$ROOT_CNF"
     printf '[client]\nuser=root\npassword=%s\n' "$MYSQL_ROOT_PASS" > "$ROOT_CNF"
 fi
-cleanup_root_cnf() { if [ -n "$ROOT_CNF" ]; then rm -f "$ROOT_CNF"; fi; }
-trap cleanup_root_cnf EXIT
+cleanup_temp_files() {
+    [ -n "$ROOT_CNF" ] && rm -f "$ROOT_CNF"
+    [ -n "$ROOT_SQL" ] && rm -f "$ROOT_SQL"
+}
+trap cleanup_temp_files EXIT
 
 # mysql_root: connect as root, using the private defaults file when a root password
 # was supplied (otherwise rely on the default unix_socket auth for the OS root user).
@@ -162,7 +168,6 @@ if [ -n "$MYSQL_ROOT_PASS" ]; then
     chmod 600 "$ROOT_SQL"
     printf "ALTER USER 'root'@'localhost' IDENTIFIED BY '%s';\nFLUSH PRIVILEGES;\n" "$MYSQL_ROOT_PASS" > "$ROOT_SQL"
     mysql -u root < "$ROOT_SQL"
-    rm -f "$ROOT_SQL"
 else
     # No root password supplied: keep the default unix_socket authentication for root.
     echo -e "${COLOR_BLUE}Keeping MariaDB root on unix_socket authentication...${COLOR_RESET}"
@@ -441,9 +446,9 @@ if [ -f "${OSPOS_DIR}/.env" ]; then
     # The shipped .env has no app.allowedHostnames line, so a plain sed is a silent
     # no-op and production then 500s on first load; append it if it's missing.
     if grep -Eq "^[[:space:]]*app\.allowedHostnames[[:space:]]*=" "${OSPOS_DIR}/.env"; then
-        sed -i "s|app\.allowedHostnames = .*|app.allowedHostnames = '${ALLOWED_HOST}'|" "${OSPOS_DIR}/.env"
+        sed -i -E "s|^[[:space:]]*app\.allowedHostnames[[:space:]]*=.*|app.allowedHostnames='${ALLOWED_HOST}'|" "${OSPOS_DIR}/.env"
     else
-        printf "\napp.allowedHostnames = '%s'\n" "$ALLOWED_HOST" >> "${OSPOS_DIR}/.env"
+        printf "app.allowedHostnames='%s'\n" "$ALLOWED_HOST" >> "${OSPOS_DIR}/.env"
     fi
 fi
 
