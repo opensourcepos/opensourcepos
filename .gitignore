@@ -57,6 +57,7 @@ $RECYCLE.BIN/
 
 # Other
 build/
+!tools/build/
 generate_languages.php
 dist
 docs
