@@ -20,7 +20,7 @@ class Customers extends Persons
     private Customer_rewards $customerRewards;
     private Customer $customer;
     private Tax_code $taxCode;
-    private array $appConfig;
+    protected array $appConfig;
 
     public function __construct()
     {

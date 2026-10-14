@@ -276,7 +276,7 @@ class Attribute extends Model
     public function get_definitions_by_flags(int $definition_flags, bool $include_types = false): array
     {
         $builder = $this->db->table('attribute_definitions');
-        $builder->where(new RawSql("definition_flags & $definition_flags"));
+        $builder->where('(definition_flags & ' . (int)$definition_flags . ') != 0', null, false);
         $builder->where('deleted', 0);
         $builder->where('definition_type <>', GROUP);
         $builder->orderBy('definition_id');
@@ -747,7 +747,7 @@ class Attribute extends Model
         }
 
         if (!empty($id)) {
-            $builder->where(new RawSql("definition_flags & $definition_flags"));
+            $builder->where('(definition_flags & ' . (int)$definition_flags . ') != 0', null, false);
         }
         return $builder->get();
     }
@@ -1410,7 +1410,7 @@ class Attribute extends Model
         }
 
         // New Attribute
-        if (empty($attributeId) || empty($personId) || $attributeId == -1) {
+        if (empty($attributeId) || $attributeId == -1) {
             $attributeId = $this->attributeValueExists($attributeValue, $definitionType);
 
             if (!$attributeId) {

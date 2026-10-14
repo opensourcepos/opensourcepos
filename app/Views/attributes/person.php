@@ -77,7 +77,6 @@ use App\Models\Attribute;
                         echo form_input([
                             'type'               => 'hidden',
                             'name'               => "attribute_links[$definitionId]",
-                            'id'                 => "attribute_links[$definitionId]",
                             'value'              => 0,
                             'data-definition-id' => $definitionId
                         ]);
