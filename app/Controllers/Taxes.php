@@ -375,6 +375,10 @@ class Taxes extends Secure_Controller
         $tax_category_id = $this->request->getPost('rate_tax_category_id', FILTER_SANITIZE_NUMBER_INT);
         $tax_rate = parse_tax($this->request->getPost('tax_rate'));
 
+        if (is_numeric($tax_rate) && $tax_rate < 0) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Taxes.tax_rate_non_negative')]);
+        }
+
         if ($tax_rate == 0) {    // TODO: Replace 0 with constant?
             $tax_category_info = $this->tax_category->get_info($tax_category_id);    // TODO: this variable is not used anywhere in the code
         }
@@ -440,6 +444,23 @@ class Taxes extends Secure_Controller
         $city = $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $state = $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+        if (!empty($tax_code_name)) {
+            $rules = [
+                'tax_code_name.*' => 'max_length[255]|unicode_alpha_numeric_punct',
+            ];
+            $messages = [
+                'tax_code_name.*' => [
+                    'max_length'                  => lang('Taxes.tax_code_invalid_chars'),
+                    'unicode_alpha_numeric_punct' => lang('Taxes.tax_code_invalid_chars'),
+                ],
+            ];
+
+            $error = $this->validateFields($rules, $messages);
+            if ($error !== null) {
+                return $error;
+            }
+        }
+
         $array_save = [];    // TODO: the naming of this variable is not good.
         foreach ($tax_code_id as $key => $val) {
             $array_save[] = [
@@ -474,6 +495,23 @@ class Taxes extends Secure_Controller
         $reporting_authority = $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
         $cascade_sequence = $this->request->getPost('cascade_sequence', FILTER_SANITIZE_NUMBER_INT);
+
+        if (!empty($jurisdiction_name)) {
+            $rules = [
+                'jurisdiction_name.*' => 'max_length[255]|unicode_alpha_numeric_punct',
+            ];
+            $messages = [
+                'jurisdiction_name.*' => [
+                    'max_length'                  => lang('Taxes.tax_jurisdiction_invalid_chars'),
+                    'unicode_alpha_numeric_punct' => lang('Taxes.tax_jurisdiction_invalid_chars'),
+                ],
+            ];
+
+            $error = $this->validateFields($rules, $messages);
+            if ($error !== null) {
+                return $error;
+            }
+        }
 
         $array_save = [];
         $unique_tax_groups = [];
@@ -518,6 +556,23 @@ class Taxes extends Secure_Controller
         $tax_category_id = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
         $tax_category = $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
+
+        if (!empty($tax_category)) {
+            $rules = [
+                'tax_category.*' => 'max_length[255]|unicode_alpha_numeric_punct',
+            ];
+            $messages = [
+                'tax_category.*' => [
+                    'max_length'                  => lang('Taxes.tax_category_invalid_chars'),
+                    'unicode_alpha_numeric_punct' => lang('Taxes.tax_category_invalid_chars'),
+                ],
+            ];
+
+            $error = $this->validateFields($rules, $messages);
+            if ($error !== null) {
+                return $error;
+            }
+        }
 
         $array_save = [];
 

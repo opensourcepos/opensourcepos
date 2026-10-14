@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Vergi Oranı 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Öntanımlı Vergi Oranı sayı olmalıdır.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Öntanımlı Vergi Oranı zorunlu alandır.',
     'derive_sale_quantity'                      => 'Otomatik Satış Sayısı oluşturmasına izin ver',
     'derive_sale_quantity_tooltip'              => 'Seçili ise sipariş edilen ürünler için arttırılan miktarda yeni ürün türü sağlanacak',

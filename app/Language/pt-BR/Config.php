@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Imposto 2 Tarifa',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'A taxa de Imposto padrão deve ser um número.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'A taxa de Imposto padrão é um campo obrigatório.',
     'derive_sale_quantity'                      => 'Permitir quantidade de venda derivada',
     'derive_sale_quantity_tooltip'              => 'Se marcado, um novo tipo de item será fornecido para itens solicitados por quantidade estendida',

@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'MWSt 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Standard Steuersatz muss eine Zahl sein.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Standard Steuersatz ist erforderlich.',
     'derive_sale_quantity'                      => 'Aus Gesamtbetrag abgeleitete Verkaufsmengen',
     'derive_sale_quantity_tooltip'              => 'Falls ausgewählt wird ein neuer Artikeltyp für nach Gesamtbetrag bestellte Artikel bereitgestellt',

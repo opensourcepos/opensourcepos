@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Kiwango cha Kodi",
     "tax_rate_configuration"                 => "Mpangilio wa Kiwango cha Kodi",
     "tax_rate_error_adding_updating"         => "Kuongeza au kusasisha Kiwango cha Kodi kimeshindikana",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Kiwango cha Kodi lazima kiwe nambari",
     "tax_rate_required"                      => "Kiwango cha Kodi ni kiashiria kinachohitajika",
     "tax_rate_successful_updated"            => "Umefanikiwa kusasisha",

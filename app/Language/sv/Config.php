@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Skattesats 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Standardskattesats måste vara ett nummer.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Standardskattesats är ett obligatoriskt fält.',
     'derive_sale_quantity'                      => 'Tillåt avledad försäljningskvantitet',
     'derive_sale_quantity_tooltip'              => 'Om den är markerad kommer en ny objekttyp att tillhandahållas för poster som beställts med förlängd mängd',

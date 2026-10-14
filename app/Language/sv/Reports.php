@@ -29,6 +29,7 @@ return [
     "date"                                    => "Datum",
     "date_range"                              => "Datumintervall",
     "description"                             => "Beskrivning",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "Detaljerad mottagningsrapport",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "Detaljerade rapporter",

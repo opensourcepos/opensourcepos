@@ -99,6 +99,7 @@ return [
     'default_tax_rate_2'                        => 'Perc. Imposta 2',
     'default_tax_rate_3'                        => '',
     'default_tax_rate_number'                   => 'Percent. Imposta Default deve essere un numero.',
+    'default_tax_rate_non_negative'             => '',
     'default_tax_rate_required'                 => 'Percent. Imposta Default è un campo obbligatorio.',
     'derive_sale_quantity'                      => 'Permetti Quantità Derivata dalle Vendite',
     'derive_sale_quantity_tooltip'              => 'Se abilitato, un nuovo tipo di elemento sarà dato per quegli elementi che supereranno la quantità',

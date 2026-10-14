@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Vergi adı izin verilmeyen karakterler içeriyor.',
     'tax_percent'                        => 'Vergi Yüzdesi',
     'tax_percent_number'                 => 'Vergi Yüzdesi ondalıklı sayı olmalı',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Vergi Oranı zorunlu alandır.',
     'tax_percents'                       => 'Vergi Yüzdesi',
     'temp'                               => 'Geçici',
