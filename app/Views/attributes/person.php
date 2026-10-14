@@ -23,7 +23,6 @@ use App\Models\Attribute;
 </div>
 
 <?php foreach ($definition_values as $definitionId => $definitionValue) { ?>
-
     <div class="form-group form-group-sm">
         <?= form_label(esc($definitionValue['definition_name']), esc($definitionValue['definition_name']), ['class' => 'control-label col-xs-3']) ?>
         <div class="col-xs-8">

@@ -51,7 +51,7 @@ abstract class Persons extends Secure_Controller
         $data['person_id'] = $personId;
         $data['config'] = $this->appConfig;
         $definitionIds = json_decode($this->request->getGet('definition_ids') ?? '', true);
-        $data['definition_values'] = $this->attribute->getAttributesByPerson($personId) + $this->attribute->get_values_by_definitions($definitionIds);
+        $data['definition_values'] = $this->attribute->getAttributesByPersonId($personId) + $this->attribute->get_values_by_definitions($definitionIds);
         $data['definition_names'] = $this->attribute->getDefinitionsByType(true, $definitionFlags);
 
         foreach ($data['definition_values'] as $definitionId => $definitionValue) {

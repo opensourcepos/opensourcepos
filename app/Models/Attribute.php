@@ -1254,13 +1254,7 @@ class Attribute extends Model
         }
     }
 
-    /**
-     * Gets all attributes connected to a person given the person_id
-     *
-     * @param int $personId Person to retrieve attributes for.
-     * @return array Attributes for the person.
-     */
-    public function getAttributesByPerson(int $personId): array
+    public function getAttributesByPersonId(int $personId): array
     {
         $builder = $this->db->table('attribute_definitions');
         $builder->join('attribute_links', 'attribute_links.definition_id = attribute_definitions.definition_id');
