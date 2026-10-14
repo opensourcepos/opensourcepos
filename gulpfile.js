@@ -143,9 +143,7 @@ gulp.task('debug-js', function() {
         './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js',
         './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.js',
         './node_modules/bootstrap-notify/bootstrap-notify.js',
-        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.js',
         './node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
-        './node_modules/clipboard/dist/clipboard.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
         './public/js/nominatim.autocomplete.js']).pipe(rev()).pipe(gulp.dest('public/resources/js'));
@@ -164,12 +162,10 @@ gulp.task('prod-js', function() {
         './node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
         './node_modules/bootstrap-select/dist/js/bootstrap-select.min.js',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js',
-        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.min.js',
         './node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js',
         './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js',
         './node_modules/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js',
         './node_modules/bootstrap-notify/bootstrap-notify.min.js',
-        './node_modules/clipboard/dist/clipboard.min.js',
         './node_modules/jquery-form/dist/jquery.form.min.js',
         './node_modules/jquery-validation/dist/jquery.validate.min.js',
         './node_modules/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js',
@@ -219,6 +215,21 @@ gulp.task('prod-login-js', function() {
     return gulp.src('./app/Views/login.php').pipe(inject(loginProdJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:prod:js -->'})).pipe(gulp.dest('./app/Views'));
 });
 
+gulp.task('debug-config-js', function() {
+    const configDebugJs = gulp.src([
+        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.js',
+        './node_modules/clipboard/dist/clipboard.js'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
+    return gulp.src('./app/Views/configs/manage.php').pipe(inject(configDebugJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:config:debug:js -->'})).pipe(gulp.dest('./app/Views/configs'));
+});
+
+gulp.task('prod-config-js', function() {
+    const configProdJs = gulp.src([
+        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.min.js',
+        './node_modules/clipboard/dist/clipboard.min.js'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources'));
+    return gulp.src('./app/Views/configs/manage.php').pipe(inject(configProdJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:config:prod:js -->'})).pipe(gulp.dest('./app/Views/configs'));
+});
 
 
 gulp.task('debug-css', function() {
@@ -324,6 +335,8 @@ gulp.task('default',
         'prod-js',
         'debug-login-js',
         'prod-login-js',
+        'debug-config-js',
+        'prod-config-js',
         'debug-css',
         'prod-css',
         'copy-fonts',
