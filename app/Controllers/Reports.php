@@ -1331,9 +1331,9 @@ class Reports extends Secure_Controller
                 'comment'       => $row['comment'],
                 'edit'          => anchor(
                     'sales/edit/' . $row['sale_id'],
-                    '<span class="glyphicon glyphicon-edit"></span>',
+                    '<i class="bi bi-pencil-square"></i>',
                     [
-                        'class'           => 'modal-dlg print_hide',
+                        'class'           => 'modal-launch print_hide',
                         $button_key       => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title'           => lang('Sales.update')
@@ -1458,9 +1458,9 @@ class Reports extends Secure_Controller
                 'comment'       => $row['comment'],
                 'edit'          => anchor(
                     'sales/edit/' . $row['sale_id'],
-                    '<span class="glyphicon glyphicon-edit"></span>',
+                    '<i class="bi bi-pencil-square"></i>',
                     [
-                        'class'           => 'modal-dlg print_hide',
+                        'class'           => 'modal-launch print_hide',
                         $button_key       => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title'           => lang('Sales.update')
@@ -1590,9 +1590,9 @@ class Reports extends Secure_Controller
                 'comment'       => $row['comment'],
                 'edit'          => anchor(
                     'sales/edit/' . $row['sale_id'],
-                    '<span class="glyphicon glyphicon-edit"></span>',
+                    '<i class="bi bi-pencil-square"></i>',
                     [
-                        'class'           => 'modal-dlg print_hide',
+                        'class'           => 'modal-launch print_hide',
                         $button_key       => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title'           => lang('Sales.update')
@@ -1678,9 +1678,9 @@ class Reports extends Secure_Controller
             'comment'       => $report_data['comment'],
             'edit'          => anchor(
                 'sales/edit/' . $report_data['sale_id'],
-                '<span class="glyphicon glyphicon-edit"></span>',
+                '<i class="bi bi-pencil-square"></i>',
                 [
-                    'class'           => 'modal-dlg print_hide',
+                    'class'           => 'modal-launch print_hide',
                     $button_key       => $button_label,
                     'data-btn-submit' => lang('Common.submit'),
                     'title'           => lang('Sales.update')
@@ -1854,9 +1854,9 @@ class Reports extends Secure_Controller
                 'comment'       => $row['comment'],
                 'edit'          => anchor(
                     'sales/edit/' . $row['sale_id'],
-                    '<span class="glyphicon glyphicon-edit"></span>',
+                    '<i class="bi bi-pencil-square"></i>',
                     [
-                        'class'           => 'modal-dlg print_hide',
+                        'class'           => 'modal-launch print_hide',
                         $button_key       => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title'           => lang('Sales.update')
@@ -1990,9 +1990,9 @@ class Reports extends Secure_Controller
             'comment'        => $report_data['comment'],
             'edit'           => anchor(
                 'receivings/edit/' . $report_data['receiving_id'],
-                '<span class="glyphicon glyphicon-edit"></span>',
+                '<i class="bi bi-pencil-square"></i>',
                 [
-                    'class'           => 'modal-dlg print_hide',
+                    'class'           => 'modal-launch print_hide',
                     'data-btn-submit' => lang('Common.submit'),
                     'data-btn-delete' => lang('Common.delete'),
                     'title'           => lang('Receivings.update')
@@ -2050,9 +2050,9 @@ class Reports extends Secure_Controller
                 'comment'        => $row['comment'],
                 'edit'           => anchor(
                     'receivings/edit/' . $row['receiving_id'],
-                    '<span class="glyphicon glyphicon-edit"></span>',
+                    '<i class="bi bi-pencil-square"></i>',
                     [
-                        'class'           => 'modal-dlg print_hide',
+                        'class'           => 'modal-launch print_hide',
                         'data-btn-delete' => lang('Common.delete'),
                         'data-btn-submit' => lang('Common.submit'),
                         'title'           => lang('Receivings.update')
