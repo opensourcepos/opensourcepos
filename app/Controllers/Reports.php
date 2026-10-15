@@ -1870,7 +1870,7 @@ class Reports extends Secure_Controller
                     $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
                 }
 
-                $attribute_values = expand_attribute_values($definition_names, $drow);
+                $attribute_values = expandAttributeValues($definition_names, $drow);
 
                 $details_data[$row['sale_id']][] = array_merge([
                     $drow['name'],
@@ -2066,7 +2066,7 @@ class Reports extends Secure_Controller
                     $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
                 }
 
-                $attribute_values = expand_attribute_values($definition_names, $drow);
+                $attribute_values = expandAttributeValues($definition_names, $drow);
 
                 $details_data[$row['receiving_id']][] = array_merge([
                     $drow['item_number'],

@@ -17,7 +17,7 @@ class ItemTaxesMultipleTest extends CIUnitTestCase
     protected $migrateOnce = true;
     protected $seed = '';
     protected $seedOnce = true;
-    protected $refresh = true;
+    protected $refresh = false;
     protected $namespace = null;
 
     protected $item_taxes;

@@ -31,8 +31,10 @@
         "dompdf/dompdf": "^3.1.6",
         "ezyang/htmlpurifier": "^4.17",
         "laminas/laminas-escaper": "2.18.0",
+        "openspout/openspout": "^5.3",
         "paragonie/random_compat": "^2.0.21",
         "picqer/php-barcode-generator": "^2.4.0",
+        "setasign/tfpdf": "^1.34",
         "tamtamchik/namecase": "^3.0.0"
     },
     "require-dev": {
