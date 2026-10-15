@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Add, Update, Delete and Search Item Kits.",
     "items"                      => "Items",
     "items_desc"                 => "Add, Update, Delete, and Search Items.",
+    'jobs'                       => 'ຄິວວຽກ',
+    'jobs_desc'                  => 'ຕັ້ງຄ່າ ແລະ ຈັດການຄິວວຽກພື້ນຫຼັງ.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers and Employees.",
     "migrate"                    => "Migrate",

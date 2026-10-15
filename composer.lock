@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "caa6ba9519694ccf54b8a487640e87fd",
+    "content-hash": "7f9d30d341a97be2979b62b5732ee285",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -82,6 +82,183 @@
                 "source": "https://github.com/codeigniter4/CodeIgniter4"
             },
             "time": "2026-07-07T09:23:35+00:00"
+        },
+        {
+            "name": "codeigniter4/queue",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeigniter4/queue.git",
+                "reference": "87f736a69a0d64bce0c40bcb1a3f966250f70f03"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeigniter4/queue/zipball/87f736a69a0d64bce0c40bcb1a3f966250f70f03",
+                "reference": "87f736a69a0d64bce0c40bcb1a3f966250f70f03",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "codeigniter4/devkit": "^1.3",
+                "codeigniter4/framework": "^4.3",
+                "php-amqplib/php-amqplib": "^3.7",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "predis/predis": "^2.0 || ^3.0"
+            },
+            "suggest": {
+                "ext-redis": "If you want to use RedisHandler",
+                "php-amqplib/php-amqplib": "If you want to use RabbitMQHandler",
+                "predis/predis": "If you want to use PredisHandler"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CodeIgniter\\Queue\\": "src"
+                },
+                "exclude-from-classmap": [
+                    "**/Database/Migrations/**"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "michalsn",
+                    "homepage": "https://github.com/michalsn",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Queues for CodeIgniter 4 framework",
+            "homepage": "https://github.com/codeigniter4/queue",
+            "keywords": [
+                "codeigniter",
+                "codeigniter4",
+                "database",
+                "predis",
+                "queue",
+                "redis"
+            ],
+            "support": {
+                "issues": "https://github.com/codeigniter4/queue/issues",
+                "source": "https://github.com/codeigniter4/queue/tree/v1.0.1"
+            },
+            "time": "2026-07-23T17:03:38+00:00"
+        },
+        {
+            "name": "codeigniter4/settings",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeigniter4/settings.git",
+                "reference": "7cbd2e2146e32211cc8194d9c35632631500adad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeigniter4/settings/zipball/7cbd2e2146e32211cc8194d9c35632631500adad",
+                "reference": "7cbd2e2146e32211cc8194d9c35632631500adad",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "codeigniter4/devkit": "^1.3",
+                "codeigniter4/framework": "^4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CodeIgniter\\Settings\\": "src"
+                },
+                "exclude-from-classmap": [
+                    "**/Database/Migrations/**"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lonnie Ezell",
+                    "email": "lonnieje@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Settings library for CodeIgniter 4",
+            "homepage": "https://github.com/codeigniter4/settings",
+            "keywords": [
+                "Settings",
+                "codeigniter",
+                "codeigniter4"
+            ],
+            "support": {
+                "issues": "https://github.com/codeigniter4/settings/issues",
+                "source": "https://github.com/codeigniter4/settings/tree/v2.4.0"
+            },
+            "time": "2026-07-30T16:03:46+00:00"
+        },
+        {
+            "name": "codeigniter4/tasks",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeigniter4/tasks.git",
+                "reference": "30a329a040f86e49d723b7c2eaa64836a703eb55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeigniter4/tasks/zipball/30a329a040f86e49d723b7c2eaa64836a703eb55",
+                "reference": "30a329a040f86e49d723b7c2eaa64836a703eb55",
+                "shasum": ""
+            },
+            "require": {
+                "codeigniter4/queue": "^1.0",
+                "codeigniter4/settings": "^2.0",
+                "ext-json": "*",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "codeigniter4/devkit": "^1.3",
+                "codeigniter4/framework": "^4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CodeIgniter\\Tasks\\": "src"
+                },
+                "exclude-from-classmap": [
+                    "**/Database/Migrations/**"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lonnie Ezell",
+                    "email": "lonnieje@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Task Scheduler for CodeIgniter 4",
+            "homepage": "https://github.com/codeigniter4/tasks",
+            "keywords": [
+                "codeigniter",
+                "codeigniter4",
+                "cron",
+                "task scheduling"
+            ],
+            "support": {
+                "issues": "https://github.com/codeigniter4/tasks/issues",
+                "source": "https://github.com/codeigniter4/tasks/tree/v1.0.1"
+            },
+            "time": "2026-03-30T05:38:19+00:00"
         },
         {
             "name": "dompdf/dompdf",
@@ -5546,5 +5723,5 @@
         "ext-intl": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }

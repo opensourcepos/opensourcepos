@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Dodaj, ažuriraj, obriši ili traži normative",
     "items"                      => "Artikli",
     "items_desc"                 => "Dodaj, ažuriraj, obriši ili traži artikle",
+    'jobs'                       => 'Red čekanja zadataka',
+    'jobs_desc'                  => 'Konfiguriraj i upravljaj redom čekanja pozadinskih zadataka.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers, Employees et al.",
     "migrate"                    => "",

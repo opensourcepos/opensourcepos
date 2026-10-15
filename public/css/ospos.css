@@ -176,3 +176,12 @@ button.btn.dropdown-toggle.btn-sm {
 .font-monospace {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.tooltip-inner {
+    max-width: 350px;
+    text-align: left;
+}
+
+.ui-tooltip {
+    max-width: 350px;
+}

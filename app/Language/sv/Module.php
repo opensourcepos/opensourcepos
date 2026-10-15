@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Lägg till, uppdatera, radera och söka artikelpaket.",
     "items"                      => "Artiklar",
     "items_desc"                 => "Lägg till, uppdatera, ta bort och sök efter artiklar.",
+    'jobs'                       => 'Jobbkö',
+    'jobs_desc'                  => 'Konfigurera och hantera bakgrundsjobbkön.',
     "messages"                   => "Meddelande",
     "messages_desc"              => "Skicka meddelanden till kunder, leverantörer och anställda.",
     "migrate"                    => "Migrera",

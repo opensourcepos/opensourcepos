@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Adicionar , atualizar, excluir e Pesquisar conjunto de itens.",
     "items"                      => "Itens",
     "items_desc"                 => "Adicionar,  atualizar,  excluir e Pesquisar itens.",
+    'jobs'                       => 'Fila de Tarefas',
+    'jobs_desc'                  => 'Configurar e gerenciar a fila de tarefas em segundo plano.',
     "messages"                   => "Mensagens",
     "messages_desc"              => "Enviar mensagens para os clientes, fornecedores, colaboradores etc.",
     "migrate"                    => "Migrar",

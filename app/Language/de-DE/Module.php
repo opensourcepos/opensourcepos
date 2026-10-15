@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Hinzufügen, Ändern, Löschen und Suchen von Artikel-Sets.",
     "items"                      => "Artikel",
     "items_desc"                 => "Hinzufügen, Ändern, Löschen und Suchen von Artikeln.",
+    'jobs'                       => 'Auftragswarteschlange',
+    'jobs_desc'                  => 'Konfigurieren und verwalten Sie die Auftragswarteschlange im Hintergrund.',
     "messages"                   => "Nachrichten",
     "messages_desc"              => "Sende Nachrichten an Kunden, Lieferanten und Mitarbeiter.",
     "migrate"                    => "Migrieren",

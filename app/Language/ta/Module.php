@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Add, Update, Delete and Search Item Kits.",
     "items"                      => "Items",
     "items_desc"                 => "Add, Update, Delete, and Search Items.",
+    'jobs'                       => 'பணி வரிசை',
+    'jobs_desc'                  => 'பின்னணி பணி வரிசையை உள்ளமைத்து நிர்வகிக்கவும்.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers and Employees.",
     "migrate"                    => "Migrate",

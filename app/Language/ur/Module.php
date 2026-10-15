@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "",
     "items"                      => "",
     "items_desc"                 => "",
+    'jobs'                       => 'قطارِ ملازمت',
+    'jobs_desc'                  => 'پس منظر میں چلنے والی ملازمتوں کی قطار کو ترتیب دیں اور منظم کریں۔',
     "messages"                   => "",
     "messages_desc"              => "",
     "migrate"                    => "",

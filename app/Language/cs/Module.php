@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Slouží k tvorbě, úpravě, mazání a hledání sad ze skladových položek.",
     "items"                      => "Sklad",
     "items_desc"                 => "Slouží k tvorbě, úpravám, mazání a hledání skladových položek.",
+    'jobs'                       => 'Fronta úloh',
+    'jobs_desc'                  => 'Konfigurace a správa fronty úloh na pozadí.',
     "messages"                   => "Zprávy",
     "messages_desc"              => "Slouží k posílání zpráv zákazníkům, dodavatelům a uživatelům.",
     "migrate"                    => "Migrace",

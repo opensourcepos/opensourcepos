@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "",
     "items"                      => "",
     "items_desc"                 => "",
+    'jobs'                       => 'Jobbkø',
+    'jobs_desc'                  => 'Konfigurer og administrer jobbkøen i bakgrunnen.',
     "messages"                   => "",
     "messages_desc"              => "",
     "migrate"                    => "",

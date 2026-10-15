@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Dodavanje, ažuriranje, brisanje i pretraživanje kompleta artikala.",
     "items"                      => "Artikli",
     "items_desc"                 => "Dodavanje, ažuriranje, brisanje i pretraživanje artikala.",
+    'jobs'                       => 'Red zadataka',
+    'jobs_desc'                  => 'Konfigurišite i upravljajte redom pozadinskih zadataka.',
     "messages"                   => "Poruke",
     "messages_desc"              => "Slanje poruka kupcima, dobavljačima i zaposlenima.",
     "migrate"                    => "Migracija",

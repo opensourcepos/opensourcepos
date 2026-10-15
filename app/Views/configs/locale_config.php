@@ -308,7 +308,7 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
-        $('span').tooltip();
+        $('span').tooltip({ container: 'body' });
 
         var primaryColor = $('.btn-primary').css('background-color');
         $('<style>').text(

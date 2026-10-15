@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Add, Update, Delete and Search Item Kits.",
     "items"                      => "Items",
     "items_desc"                 => "Add, Update, Delete, and Search Items.",
+    'jobs'                       => 'Опашка на задачи',
+    'jobs_desc'                  => 'Конфигуриране и управление на опашката на фоновите задачи.',
     "messages"                   => "Messages",
     "messages_desc"              => "Send Messages to Customers, Suppliers and Employees.",
     "migrate"                    => "Migrate",

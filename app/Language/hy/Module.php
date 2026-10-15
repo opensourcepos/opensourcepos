@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "",
     "items"                      => "",
     "items_desc"                 => "",
+    'jobs'                       => 'Առաջադրանքների հերթ',
+    'jobs_desc'                  => 'Կարգավորել և կառավարել ֆոնային առաջադրանքների հերթը։',
     "messages"                   => "",
     "messages_desc"              => "",
     "migrate"                    => "",

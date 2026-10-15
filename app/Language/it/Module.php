@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Aggiungi, Aggiorna, Modifica, e Ricerca Kits.",
     "items"                      => "Articoli",
     "items_desc"                 => "Aggiungi, Aggiorna, Modifica, e Ricerca Articoli.",
+    'jobs'                       => 'Coda dei Lavori',
+    'jobs_desc'                  => 'Configura e gestisci la coda dei lavori in background.',
     "messages"                   => "Messaggi",
     "messages_desc"              => "Invia Messaggia ai Clienti Fornitori e Impiegati.",
     "migrate"                    => "Migra",

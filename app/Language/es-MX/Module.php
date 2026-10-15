@@ -26,6 +26,8 @@ return [
     "item_kits_desc"             => "Agregar, Actualizar, Borrar y Buscar Kits de Artículos.",
     "items"                      => "Artículos",
     "items_desc"                 => "Agregar, Actualizar, Borrar, y Buscar Artículos.",
+    'jobs'                       => 'Cola de Trabajos',
+    'jobs_desc'                  => 'Configurar y administrar la cola de trabajos en segundo plano.',
     "messages"                   => "Mensajes",
     "messages_desc"              => "Enviar Mensajes a los Clientes, Proveedores y Empleados.",
     "migrate"                    => "Migrar",
