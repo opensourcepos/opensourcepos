@@ -143,8 +143,8 @@ if [ -n "$MYSQL_ROOT_PASS" ]; then
     printf '[client]\nuser=root\npassword=%s\n' "$MYSQL_ROOT_PASS" > "$ROOT_CNF"
 fi
 cleanup_temp_files() {
-    [ -n "$ROOT_CNF" ] && rm -f "$ROOT_CNF"
-    [ -n "$ROOT_SQL" ] && rm -f "$ROOT_SQL"
+    [ -n "${ROOT_CNF:-}" ] && rm -f "$ROOT_CNF" || true
+    [ -n "${ROOT_SQL:-}" ] && rm -f "$ROOT_SQL" || true
 }
 trap cleanup_temp_files EXIT
 
