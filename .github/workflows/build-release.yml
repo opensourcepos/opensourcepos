@@ -80,6 +80,10 @@ jobs:
         id: version
         run: |
           VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
+          # Official release tags use the clean version (no -dev suffix).
+          if [[ "${GITHUB_TAG:-}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            VERSION="${VERSION%-dev}"
+          fi
           BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/feature\///' | tr '/' '_')
           TAG=$(echo "${GITHUB_TAG:-$BRANCH}" | tr '/' '_')
           SHORT_SHA=$(git rev-parse --short=6 HEAD)
