@@ -1,10 +1,13 @@
 <?php
 
+namespace Tests\Helpers;
+
 use App\Libraries\CI3SecretConverter;
 use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
 use Config\Encryption as EncryptionConfig;
 use Config\Services;
+use RuntimeException;
 
 /**
  * The filesystem-touching helpers read their target paths from the shared
