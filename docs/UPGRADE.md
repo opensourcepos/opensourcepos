@@ -68,7 +68,7 @@ long as you protect your user-specific files first.** Two things to watch:
 
 ## Version-specific notes
 
-Check the [CHANGELOG](CHANGELOG.md) for your target version for the full list of
+Check the [CHANGELOG](../CHANGELOG.md) for your target version for the full list of
 changes. A few things that can require action when upgrading:
 
 ### 3.4.2 and later (production)
@@ -89,7 +89,7 @@ change.
 
 ## Still having trouble?
 
-- Read the [README](README.md) and the
+- Read the [README](../README.md) and the
   [GitHub issues](https://github.com/opensourcepos/opensourcepos/issues) — a
   similar issue may already be reported and answered.
 - Open a new issue with your OSPOS version, the version you upgraded from, and
