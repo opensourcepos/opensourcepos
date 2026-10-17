@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Vă rugăm să vizitați",
     "position"                       => "",
-    "powered_by"                     => "Sustinut de",
+    "powered_by"                     => "Sustinut de {app} {version}",
     "price"                          => "Preț",
     "print"                          => "Printează",
     "remove"                         => "Elimină",

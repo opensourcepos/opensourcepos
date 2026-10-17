@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "ກະລູນາເຂົ້າບ່ອນນີ້້",
     "position"                       => "",
-    "powered_by"                     => "ຂັບເຄື່ອນໂດຍ",
+    "powered_by"                     => "ຂັບເຄື່ອນໂດຍ {app} {version}",
     "price"                          => "ລາຄາ",
     "print"                          => "ສັ່ງພິມ",
     "remove"                         => "ລຶບ",

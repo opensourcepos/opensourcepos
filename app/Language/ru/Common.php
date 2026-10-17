@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Посетите",
     "position"                       => "",
-    "powered_by"                     => "ПО:",
+    "powered_by"                     => "ПО: {app} {version}",
     "price"                          => "Цена",
     "print"                          => "Печать",
     "remove"                         => "Удалить",
