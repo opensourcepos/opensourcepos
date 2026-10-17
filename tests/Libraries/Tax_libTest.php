@@ -446,4 +446,58 @@ final class Tax_libTest extends CIUnitTestCase
         // Expected 50 / 1.18 = 42.3728...
         $this->assertEqualsWithDelta(42.3728, (float) $taxExclusiveTotal, 0.001);
     }
+
+    public function testGetTaxesRejectsZeroPercentTax(): void
+    {
+        $this->itemTaxesMock->method('get_info')->with(1)->willReturn([
+            ['item_id' => 1, 'name' => 'Zero GST', 'percent' => '0.0000'],
+        ]);
+
+        $cart = [
+            1 => [
+                'item_id'         => 1,
+                'line'            => 1,
+                'name'            => 'Exempt Item',
+                'price'           => '50.00',
+                'quantity'        => '1',
+                'discount'        => '0',
+                'discount_type'   => 0,
+                'tax_category_id' => null,
+                'print_option'    => 0,
+                'stock_type'      => 0,
+                'item_type'       => 0,
+                'description'     => '',
+                'serialnumber'    => '',
+            ],
+        ];
+
+        $taxDetails = $this->taxLib->get_taxes($cart);
+        $taxes      = $taxDetails[0];
+
+        $this->assertEmpty($taxes);
+        $this->assertSame(lang('Sales.nontaxed_ind'), $cart[1]['taxed_flag']);
+    }
+
+    public function testApplyDestinationTaxRejectsZeroPriceItem(): void
+    {
+        $this->setupConfig(true, true);
+        $this->taxLib = new Tax_lib();
+
+        $item = [
+            'item_id'         => 1,
+            'line'            => 1,
+            'price'           => '0.00',
+            'quantity'        => '1',
+            'discount'        => '0',
+            'discount_type'   => 0,
+            'tax_category_id' => 1,
+        ];
+
+        $taxes     = [];
+        $itemTaxes = [];
+        $result    = $this->taxLib->apply_destination_tax($item, 'City', 'State', 1, 'sale', 0, $taxes, $itemTaxes, 1);
+
+        $this->assertFalse($result);
+        $this->assertEmpty($taxes);
+    }
 }
