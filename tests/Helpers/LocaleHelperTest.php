@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Helpers;
+
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use Config\OSPOS;
