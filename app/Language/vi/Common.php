@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Ghé thăm",
     "position"                       => "",
-    "powered_by"                     => "Cung cấp bởi",
+    "powered_by"                     => "Cung cấp bởi {app} {version}",
     "price"                          => "Giá",
     "print"                          => "In",
     "remove"                         => "Xóa bỏ",

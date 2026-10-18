@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "Telefoonnummer is vereist",
     "please_visit_my"                => "Bezoek de",
     "position"                       => "Positie",
-    "powered_by"                     => "Mogelijk gemaakt door",
+    "powered_by"                     => "Mogelijk gemaakt door {app} {version}",
     "price"                          => "Prijs",
     "print"                          => "Afdrukken",
     "remove"                         => "Verwijderen",

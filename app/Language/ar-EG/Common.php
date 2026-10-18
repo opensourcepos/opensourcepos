@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "رقم التليفون مطلوب",
     "please_visit_my"                => "برجاء زيارة",
     "position"                       => "",
-    "powered_by"                     => "مدعوم بواسطة",
+    "powered_by"                     => "مدعوم بواسطة {app} {version}",
     "price"                          => "السعر",
     "print"                          => "طباعة",
     "remove"                         => "إزالة",

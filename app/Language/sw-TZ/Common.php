@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Tafadhali tembelea",
     "position"                       => "",
-    "powered_by"                     => "Imewezeshwa na",
+    "powered_by"                     => "Imewezeshwa na {app} {version}",
     "price"                          => "Bei",
     "print"                          => "Chapisha",
     "remove"                         => "Ondoa",

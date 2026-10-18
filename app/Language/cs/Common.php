@@ -63,7 +63,7 @@ return [
     "phone_number_required"          => "",
     "please_visit_my"                => "Navštivte prosím",
     "position"                       => "",
-    "powered_by"                     => "Používá",
+    "powered_by"                     => "Používá {app} {version}",
     "price"                          => "Cena",
     "print"                          => "Tisk",
     "remove"                         => "Vyjmout",
