@@ -215,8 +215,9 @@ function writeExportXlsx(array $headers, iterable $rows): string
             $cellValues = [];
             foreach ($values as $index => $value) {
                 $format = $columnFormats[$index] ?? null;
+                $isNumericIfNumeric = in_array($index, $numericIfNumericIndexes, true);
 
-                if ($format !== null && in_array($index, $numericIfNumericIndexes, true) && !is_numeric($value)) {
+                if ($isNumericIfNumeric) {
                     $format = null;
                 }
 
