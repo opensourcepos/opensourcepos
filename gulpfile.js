@@ -146,6 +146,7 @@ gulp.task('debug-js', function() {
         './node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
+        './public/js/report_tables.js',
         './public/js/nominatim.autocomplete.js']).pipe(rev()).pipe(gulp.dest('public/resources/js'));
     return gulp.src('./app/Views/partial/header.php').pipe(inject(debugjs,{addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:debug:js -->'})).pipe(gulp.dest('./app/Views/partial'));
 });
@@ -187,6 +188,7 @@ gulp.task('prod-js', function() {
     const opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
+        './public/js/report_tables.js',
         './public/js/nominatim.autocomplete.js']).pipe(uglify());
 
 

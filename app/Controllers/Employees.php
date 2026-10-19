@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Models\Module;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\Services;
 
 /**
@@ -15,10 +17,13 @@ use Config\Services;
  */
 class Employees extends Persons
 {
+    private BaseConnection $db;
+
     public function __construct()
     {
         parent::__construct('employees');
 
+        $this->db = Database::connect();
         $this->module = model('Module');
     }
 
@@ -44,6 +49,36 @@ class Employees extends Persons
         }
 
         return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+    }
+
+    /**
+     * Streams employees matching the current search as a downloadable file.
+     * @noinspection PhpUnused
+     */
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search = $this->request->getGet('search');
+        $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort   = $this->sanitizeSortColumn(person_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'people.person_id');
+        $order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $employees = $this->employee->search($search, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($employees->getResult() as $person) {
+            $exportRows[] = getEmployeeExportRow($person);
+        }
+
+        $file = generateExportFile($format, employeeExportHeaders(), $exportRows, 'employees_' . date('Ymd_His'), $this->db->prefixTable('Employees'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

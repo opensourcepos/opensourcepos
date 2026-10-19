@@ -173,6 +173,37 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * @noinspection PhpUnused
+     */
+    public function summary_salesExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_sales->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'sale_date' => $row['sale_date'],
+                'sales'     => $row['sales'],
+                'quantity'  => $row['quantity_purchased'],
+                'subtotal'  => $row['subtotal'],
+                'tax'       => $row['tax'],
+                'total'     => $row['total'],
+                'cost'      => $row['cost'],
+                'profit'    => $row['profit']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_sales->getDataColumns(), $export_rows, 'summary_sales');
+    }
+
+    /**
      * Summary Categories report.
      * @param string $start_date
      * @param string $end_date
@@ -219,6 +250,36 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * @noinspection PhpUnused
+     */
+    public function summary_categoriesExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_categories->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'category' => $row['category'],
+                'quantity' => $row['quantity_purchased'],
+                'subtotal' => $row['subtotal'],
+                'tax'      => $row['tax'],
+                'total'    => $row['total'],
+                'cost'     => $row['cost'],
+                'profit'   => $row['profit']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_categories->getDataColumns(), $export_rows, 'summary_categories');
+    }
+
+    /**
      * Summary Expenses by Categories report.
      * @param string $start_date
      * @param string $end_date
@@ -253,6 +314,28 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function summary_expenses_categoriesExportAll(string $format, string $start_date, string $end_date, string $sale_type): ResponseInterface
+    {
+        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];
+
+        $report_data = $this->summary_expenses_categories->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'category_name'    => $row['category_name'],
+                'count'            => $row['count'],
+                'total_amount'     => $row['total_amount'],
+                'total_tax_amount' => $row['total_tax_amount']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_expenses_categories->getDataColumns(), $export_rows, 'summary_expenses_categories');
     }
 
     /**
@@ -304,6 +387,37 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * @noinspection PhpUnused
+     */
+    public function summary_customersExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_customers->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'customer_name' => $row['customer'],
+                'sales'         => $row['sales'],
+                'quantity'      => $row['quantity_purchased'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_customers->getDataColumns(), $export_rows, 'summary_customers');
+    }
+
+    /**
      * Summary Suppliers report.
      * @param string $start_date
      * @param string $end_date
@@ -347,6 +461,36 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function summary_suppliersExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_suppliers->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'supplier_name' => $row['supplier'],
+                'quantity'      => $row['quantity_purchased'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_suppliers->getDataColumns(), $export_rows, 'summary_suppliers');
     }
 
     /**
@@ -400,6 +544,39 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * @noinspection PhpUnused
+     */
+    public function summary_itemsExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_items->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'item_name'  => $row['name'],
+                'category'   => $row['category'],
+                'cost_price' => $row['cost_price'],
+                'unit_price' => $row['unit_price'],
+                'quantity'   => $row['quantity_purchased'],
+                'subtotal'   => $row['subtotal'],
+                'tax'        => $row['tax'],
+                'total'      => $row['total'],
+                'cost'       => $row['cost'],
+                'profit'     => $row['profit']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_items->getDataColumns(), $export_rows, 'summary_items');
+    }
+
+    /**
      * Summary Employees report.
      * @param string $start_date
      * @param string $end_date
@@ -445,6 +622,37 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function summary_employeesExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_employees->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'employee_name' => $row['employee'],
+                'sales'         => $row['sales'],
+                'quantity'      => $row['quantity_purchased'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_employees->getDataColumns(), $export_rows, 'summary_employees');
     }
 
     /**
@@ -494,6 +702,35 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * @noinspection PhpUnused
+     */
+    public function summary_taxesExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_taxes->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'tax_name'     => $row['name'],
+                'tax_percent'  => $row['percent'],
+                'report_count' => $row['count'],
+                'subtotal'     => $row['subtotal'],
+                'tax'          => $row['tax'],
+                'total'        => $row['total']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_taxes->getDataColumns(), $export_rows, 'summary_taxes');
+    }
+
+    /**
      * Summary Sales Taxes report
      * @return string
      */
@@ -531,6 +768,34 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function summary_sales_taxesExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => $sale_type,
+            'location_id' => $location_id
+        ];
+
+        $report_data = $this->summary_sales_taxes->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'reporting_authority' => $row['reporting_authority'],
+                'jurisdiction_name'   => $row['jurisdiction_name'],
+                'tax_category'        => $row['tax_category'],
+                'tax_rate'            => $row['tax_rate'],
+                'tax'                 => $row['tax']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_sales_taxes->getDataColumns(), $export_rows, 'summary_sales_taxes');
     }
 
     /**
@@ -593,6 +858,33 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * @noinspection PhpUnused
+     */
+    public function summary_discountsExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): ResponseInterface
+    {
+        $inputs = [
+            'start_date'    => $start_date,
+            'end_date'      => $end_date,
+            'sale_type'     => $sale_type,
+            'location_id'   => $location_id,
+            'discount_type' => $discount_type
+        ];
+
+        $report_data = $this->summary_discounts->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'total'    => $row['total'],
+                'discount' => $row['discount'],
+                'count'    => $row['count']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_discounts->getDataColumns(), $export_rows, 'summary_discounts');
+    }
+
+    /**
      * Summary Payments report
      * @return string
      */
@@ -649,6 +941,45 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function summary_paymentsExportAll(string $format, string $start_date, string $end_date): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'sale_type'   => 'complete',
+            'location_id' => 'all'
+        ];
+
+        $report_data = $this->summary_payments->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            // Skip the '<HR>' divider row - it's a display-only separator, not exportable data
+            if ($row['trans_group'] == '<HR>') {
+                continue;
+            }
+
+            if (empty($row['trans_type'])) {
+                $row['trans_type'] = lang('Reports.trans_nopay_sales');
+            }
+
+            $export_rows[] = [
+                'trans_group'    => $row['trans_group'],
+                'trans_type'     => $row['trans_type'],
+                'trans_sales'    => $row['trans_sales'],
+                'trans_amount'   => $row['trans_amount'],
+                'trans_payments' => $row['trans_payments'],
+                'trans_refunded' => $row['trans_refunded'],
+                'trans_due'      => $row['trans_due']
+            ];
+        }
+
+        return $this->exportReport($format, $this->summary_payments->getDataColumns(), $export_rows, 'summary_payments');
     }
 
     /**
@@ -1385,6 +1716,42 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * Exports only the summary rows, matching what the client-side exporter already does for this report.
+     * @noinspection PhpUnused
+     */
+    public function specific_customersExportAll(string $format, string $start_date, string $end_date, string $customer_id, string $sale_type, string $payment_type): ResponseInterface
+    {
+        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type];
+
+        $specific_customer = model(Specific_customer::class);
+
+        $specific_customer->create($inputs);
+
+        $headers = $specific_customer->getDataColumns();
+        $report_data = $specific_customer->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data['summary'] as $row) {
+            $export_rows[] = [
+                'id'            => $row['sale_id'],
+                'type_code'     => $row['type_code'],
+                'sale_time'     => $row['sale_time'],
+                'quantity'      => $row['items_purchased'],
+                'employee_name' => $row['employee_name'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit'],
+                'payment_type'  => $row['payment_type'],
+                'comment'       => $row['comment']
+            ];
+        }
+
+        return $this->exportReport($format, $headers['summary'], $export_rows, 'specific_customers');
+    }
+
+    /**
      * Detailed employee report input form. Used in app/Config/Routes.php
      *
      * @return string
@@ -1505,6 +1872,42 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular_details', $data);
+    }
+
+    /**
+     * Exports only the summary rows, matching what the client-side exporter already does for this report.
+     * @noinspection PhpUnused
+     */
+    public function specific_employeesExportAll(string $format, string $start_date, string $end_date, string $employee_id, string $sale_type): ResponseInterface
+    {
+        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type];
+
+        $specific_employee = model(Specific_employee::class);
+
+        $specific_employee->create($inputs);
+
+        $headers = $specific_employee->getDataColumns();
+        $report_data = $specific_employee->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data['summary'] as $row) {
+            $export_rows[] = [
+                'id'            => $row['sale_id'],
+                'type_code'     => $row['type_code'],
+                'sale_time'     => $row['sale_time'],
+                'quantity'      => $row['items_purchased'],
+                'customer_name' => $row['customer_name'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit'],
+                'payment_type'  => $row['payment_type'],
+                'comment'       => $row['comment']
+            ];
+        }
+
+        return $this->exportReport($format, $headers['summary'], $export_rows, 'specific_employees');
     }
 
     /**
@@ -1639,6 +2042,49 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * Exports only the summary rows, matching what the client-side exporter already does for this report.
+     * @noinspection PhpUnused
+     */
+    public function specific_discountsExportAll(string $format, string $start_date, string $end_date, string $discount, string $sale_type, string $discount_type): ResponseInterface
+    {
+        $inputs = [
+            'start_date'    => $start_date,
+            'end_date'      => $end_date,
+            'discount'      => $discount,
+            'sale_type'     => $sale_type,
+            'discount_type' => $discount_type
+        ];
+
+        $specific_discount = model(Specific_discount::class);
+
+        $specific_discount->create($inputs);
+
+        $headers = $specific_discount->getDataColumns();
+        $report_data = $specific_discount->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data['summary'] as $row) {
+            $export_rows[] = [
+                'id'            => $row['sale_id'],
+                'type_code'     => $row['type_code'],
+                'sale_time'     => $row['sale_time'],
+                'quantity'      => $row['items_purchased'],
+                'employee_name' => $row['employee_name'],
+                'customer_name' => $row['customer_name'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit'],
+                'payment_type'  => $row['payment_type'],
+                'comment'       => $row['comment']
+            ];
+        }
+
+        return $this->exportReport($format, $headers['summary'], $export_rows, 'specific_discounts');
+    }
+
+    /**
      * Gets the detailed sales data row for given sale_id. Used in app/Views/reports/tabular_details.php
      *
      * @param string $sale_id
@@ -1767,6 +2213,46 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function specific_suppliersExportAll(string $format, string $start_date, string $end_date, string $supplier_id, string $sale_type): ResponseInterface
+    {
+        $inputs = [
+            'start_date'  => $start_date,
+            'end_date'    => $end_date,
+            'supplier_id' => $supplier_id,
+            'sale_type'   => $sale_type
+        ];
+
+        $specific_supplier = model(Specific_supplier::class);
+
+        $specific_supplier->create($inputs);
+
+        $report_data = $specific_supplier->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'id'          => $row['sale_id'],
+                'type_code'   => $row['type_code'],
+                'sale_time'   => $row['sale_time'],
+                'name'        => $row['name'],
+                'category'    => $row['category'],
+                'item_number' => $row['item_number'],
+                'quantity'    => $row['items_purchased'],
+                'subtotal'    => $row['subtotal'],
+                'tax'         => $row['tax'],
+                'total'       => $row['total'],
+                'cost'        => $row['cost'],
+                'profit'      => $row['profit'],
+                'discount'    => ($row['discount_type'] == PERCENT) ? $row['discount'] . '%' : $row['discount']
+            ];
+        }
+
+        return $this->exportReport($format, $specific_supplier->getDataColumns(), $export_rows, 'specific_suppliers');
     }
 
     /**
@@ -1907,6 +2393,50 @@ class Reports extends Secure_Controller
         return view('reports/tabular_details', $data);
     }
 
+    /**
+     * Exports only the summary rows, matching what the client-side exporter already does for this report
+     * (dynamic attribute-definition columns are only part of the 'details' set, not 'summary').
+     * @noinspection PhpUnused
+     */
+    public function detailed_salesExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
+    {
+        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_SALES, true);
+
+        $inputs = [
+            'start_date'     => $start_date,
+            'end_date'       => $end_date,
+            'sale_type'      => $sale_type,
+            'location_id'    => $location_id,
+            'definition_ids' => array_keys($definition_names)
+        ];
+
+        $this->detailed_sales->create($inputs);
+
+        $headers = $this->detailed_sales->getDataColumns();
+        $report_data = $this->detailed_sales->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data['summary'] as $row) {
+            $export_rows[] = [
+                'id'            => $row['sale_id'],
+                'type_code'     => $row['type_code'],
+                'sale_time'     => $row['sale_time'],
+                'quantity'      => $row['items_purchased'],
+                'employee_name' => $row['employee_name'],
+                'customer_name' => $row['customer_name'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit'],
+                'payment_type'  => $row['payment_type'],
+                'comment'       => $row['comment']
+            ];
+        }
+
+        return $this->exportReport($format, $headers['summary'], $export_rows, 'detailed_sales');
+    }
+
     public function detailedItemSales(string $startDate, string $endDate, string $saleType = 'sales', string $locationId = 'all', string $discountType = 'all'): string
     {
         $this->clearCache();
@@ -1961,6 +2491,53 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function detailedItemSalesExportAll(string $format, string $startDate, string $endDate, string $saleType = 'sales', string $locationId = 'all', string $discountType = 'all'): ResponseInterface
+    {
+        $saleType = array_key_exists($saleType, $this->get_sale_type_options()) ? $saleType : 'sales';
+        $locationId = ctype_digit($locationId) ? (string) (int) $locationId : 'all';
+        $discountType = in_array($discountType, ['all', (string) PERCENT, (string) FIXED], true) ? $discountType : 'all';
+
+        $inputs = [
+            'start_date'    => $startDate,
+            'end_date'      => $endDate,
+            'sale_type'     => $saleType,
+            'location_id'   => $locationId,
+            'discount_type' => $discountType
+        ];
+
+        $this->detailed_item_sales->create($inputs);
+
+        $reportData = $this->detailed_item_sales->getData($inputs);
+
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
+                'sale_time'     => $row['sale_time'],
+                'sale_id'       => $row['sale_id'],
+                'customer_name' => $row['customer_name'],
+                'item_name'     => $row['item_name'],
+                'category'      => $row['category'],
+                'item_number'   => $row['item_number'],
+                'quantity'      => $row['quantity_purchased'],
+                'unit_price'    => $row['item_unit_price'],
+                'discount'      => ($row['discount_type'] == PERCENT) ? $row['discount'] . '%' : $row['discount'],
+                'subtotal'      => $row['subtotal'],
+                'tax'           => $row['tax'],
+                'total'         => $row['total'],
+                'cost'          => $row['cost'],
+                'profit'        => $row['profit'],
+                'employee_name' => $row['employee_name'],
+                'payment_type'  => $row['payment_type'],
+                'comment'       => $row['comment']
+            ];
+        }
+
+        return $this->exportReport($format, $this->detailed_item_sales->getDataColumns(), $exportRows, 'detailed_item_sales');
     }
 
     /**
@@ -2093,6 +2670,39 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * Exports only the summary rows, matching what the client-side exporter already does for this report.
+     * @noinspection PhpUnused
+     */
+    public function detailed_receivingsExportAll(string $format, string $start_date, string $end_date, string $receiving_type, string $location_id = 'all'): ResponseInterface
+    {
+        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_RECEIVINGS, true);
+
+        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
+
+        $this->detailed_receivings->create($inputs);
+
+        $headers = $this->detailed_receivings->getDataColumns();
+        $report_data = $this->detailed_receivings->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data['summary'] as $row) {
+            $export_rows[] = [
+                'id'             => $row['receiving_id'],
+                'receiving_time' => $row['receiving_time'],
+                'quantity'       => $row['items_purchased'],
+                'employee_name'  => $row['employee_name'],
+                'supplier_name'  => $row['supplier_name'],
+                'total'          => $row['total'],
+                'payment_type'   => $row['payment_type'],
+                'reference'      => $row['reference'],
+                'comment'        => $row['comment']
+            ];
+        }
+
+        return $this->exportReport($format, $headers['summary'], $export_rows, 'detailed_receivings');
+    }
+
+    /**
      * @return string
      */
     public function inventory_low(): string
@@ -2125,6 +2735,29 @@ class Reports extends Secure_Controller
         ];
 
         return view('reports/tabular', $data);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function inventory_lowExportAll(string $format): ResponseInterface
+    {
+        $inventory_low = model(Inventory_low::class);
+
+        $report_data = $inventory_low->getData([]);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'item_name'     => $row['name'],
+                'item_number'   => $row['item_number'],
+                'quantity'      => $row['quantity'],
+                'reorder_level' => $row['reorder_level'],
+                'location_name' => $row['location_name']
+            ];
+        }
+
+        return $this->exportReport($format, $inventory_low->getDataColumns(), $export_rows, 'inventory_low');
     }
 
     /**
@@ -2188,6 +2821,34 @@ class Reports extends Secure_Controller
     }
 
     /**
+     * @noinspection PhpUnused
+     */
+    public function inventory_summaryExportAll(string $format, string $location_id = 'all', string $item_count = 'all'): ResponseInterface
+    {
+        $inputs = ['location_id' => $location_id, 'item_count' => $item_count];
+
+        $report_data = $this->inventory_summary->getData($inputs);
+
+        $export_rows = [];
+        foreach ($report_data as $row) {
+            $export_rows[] = [
+                'item_name'         => $row['name'],
+                'item_number'       => $row['item_number'],
+                'category'          => $row['category'],
+                'quantity'          => $row['quantity'],
+                'low_sell_quantity' => $row['low_sell_quantity'],
+                'reorder_level'     => $row['reorder_level'],
+                'location_name'     => $row['location_name'],
+                'cost_price'        => $row['cost_price'],
+                'unit_price'        => $row['unit_price'],
+                'subtotal'          => $row['sub_total_value']
+            ];
+        }
+
+        return $this->exportReport($format, $this->inventory_summary->getDataColumns(), $export_rows, 'inventory_summary');
+    }
+
+    /**
      * Returns subtitle for the reports
      */
     private function _get_subtitle_report(array $inputs): string    // TODO: Hungarian Notation
@@ -2201,6 +2862,23 @@ class Reports extends Secure_Controller
         }
 
         return $subtitle;
+    }
+
+    /**
+     * Streams export rows to the browser in the given format, reusing the same
+     * generateExportFile()/response handling as Items::getExportAll().
+     */
+    private function exportReport(string $format, array $headers, iterable $rows, string $baseFilename): ResponseInterface
+    {
+        $file = generateExportFile($format, $headers, $rows, $baseFilename . '_' . date('Ymd_His'), $baseFilename);
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

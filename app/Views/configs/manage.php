@@ -2,13 +2,9 @@
 
 <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || request()->getGet('debug') == 'true') : ?>
     <!-- inject:config:debug:js -->
-    <script src="resources/js/bootstrap-tagsinput-855a7c7670.js"></script>
-    <script src="resources/js/clipboard-908af414ab.js"></script>
     <!-- endinject -->
 <?php else : ?>
     <!-- inject:config:prod:js -->
-    <script src="resources/bootstrap-tagsinput-0c955a2c2e.min.js"></script>
-    <script src="resources/clipboard-15f52a1ee5.min.js"></script>
     <!-- endinject -->
 <?php endif; ?>
 

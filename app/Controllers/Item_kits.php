@@ -7,11 +7,14 @@ use App\Libraries\Barcode_lib;
 use App\Models\Item;
 use App\Models\Item_kit;
 use App\Models\Item_kit_items;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\Services;
 
 class Item_kits extends Secure_Controller
 {
+    private BaseConnection $db;
     private Item $item;
     private Item_kit $item_kit;
     private Item_kit_items $item_kit_items;
@@ -20,6 +23,7 @@ class Item_kits extends Secure_Controller
     {
         parent::__construct('item_kits');
 
+        $this->db = Database::connect();
         $this->item = model(Item::class);
         $this->item_kit = model(Item_kit::class);
         $this->item_kit_items = model(Item_kit_items::class);
@@ -102,6 +106,38 @@ class Item_kits extends Secure_Controller
         $suggestions = $this->item_kit->get_search_suggestions($search);
 
         return $this->response->setJSON($suggestions);
+    }
+
+    /**
+     * Streams item kits matching the current search as a downloadable file.
+     * @noinspection PhpUnused
+     */
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search = $this->request->getGet('search') ?? '';
+        $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort   = $this->sanitizeSortColumn(item_kit_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_kit_id');
+        $order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $item_kits = $this->item_kit->search($search, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($item_kits->getResult() as $item_kit) {
+            // total_cost_price/total_unit_price aren't stored columns, they're computed per-row
+            $item_kit = $this->_add_totals_to_item_kit($item_kit);
+            $exportRows[] = getItemKitExportRow($item_kit);
+        }
+
+        $file = generateExportFile($format, itemKitExportHeaders(), $exportRows, 'item_kits_' . date('Ymd_His'), $this->db->prefixTable('item_kits'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

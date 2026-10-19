@@ -5,12 +5,15 @@ namespace App\Controllers;
 use App\Models\Cashup;
 use App\Models\Expense;
 use App\Models\Reports\Summary_payments;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\OSPOS;
 use Config\Services;
 
 class Cashups extends Secure_Controller
 {
+    private BaseConnection $db;
     private Cashup $cashup;
     private Expense $expense;
     private Summary_payments $summary_payments;
@@ -20,6 +23,7 @@ class Cashups extends Secure_Controller
     {
         parent::__construct('cashups');
 
+        $this->db = Database::connect();
         $this->cashup = model(Cashup::class);
         $this->expense = model(Expense::class);
         $this->summary_payments = model(Summary_payments::class);
@@ -69,6 +73,43 @@ class Cashups extends Secure_Controller
         }
 
         return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+    }
+
+    /**
+     * Streams cashups matching the current search/filters as a downloadable file.
+     * @noinspection PhpUnused
+     */
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search = $this->request->getGet('search');
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(cashup_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'cashup_id');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $filters = [
+            'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date'   => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'is_deleted' => false
+        ];
+
+        $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $request_filters);
+        $cash_ups = $this->cashup->search($search, $filters, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($cash_ups->getResult() as $cash_up) {
+            $exportRows[] = getCashupExportRow($cash_up);
+        }
+
+        $file = generateExportFile($format, cashupExportHeaders(), $exportRows, 'cashups_' . date('Ymd_His'), $this->db->prefixTable('cash_up'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

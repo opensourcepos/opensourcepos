@@ -141,6 +141,46 @@ function getSaleDataRow(object $sale): array
 }
 
 /**
+ * Column set for exporting sales: same as salesHeaders(), plus invoice_number when
+ * invoice_enable is on, minus the invoice/receipt/edit icon-only anchor columns.
+ */
+function salesExportHeaders(): array
+{
+    $headers = salesHeaders();
+    $config = config(OSPOS::class)->settings;
+
+    if ($config['invoice_enable']) {
+        $headers[] = ['invoice_number' => lang('Sales.invoice_number')];
+    }
+
+    return $headers;
+}
+
+/**
+ * Export row for a sale: raw (unformatted) values, matching salesExportHeaders()'s column set.
+ */
+function getSaleExportRow(object $sale): array
+{
+    $row = [
+        'sale_id'         => $sale->sale_id,
+        'sale_time'       => $sale->sale_time,
+        'customer_name'   => $sale->customer_name,
+        'amount_due'      => $sale->amount_due,
+        'amount_tendered' => $sale->amount_tendered,
+        'change_due'      => $sale->change_due,
+        'payment_type'    => $sale->payment_type
+    ];
+
+    $config = config(OSPOS::class)->settings;
+
+    if ($config['invoice_enable']) {
+        $row['invoice_number'] = $sale->invoice_number;
+    }
+
+    return $row;
+}
+
+/**
  * Get the html data last row for the sales
  */
 function getSaleDataLastRow(ResultInterface $sales): array
@@ -216,6 +256,28 @@ function get_people_manage_table_headers(): string
 /**
  * Get the html data row for the person
  */
+/**
+ * Column set for exporting employees: person_headers() minus the conditional messages column.
+ */
+function employeeExportHeaders(): array
+{
+    return person_headers();
+}
+
+/**
+ * Export row for an employee: raw (unformatted) values, matching employeeExportHeaders()'s column set.
+ */
+function getEmployeeExportRow(object $person): array
+{
+    return [
+        'people.person_id' => $person->person_id,
+        'last_name'        => $person->last_name,
+        'first_name'       => $person->first_name,
+        'email'            => $person->email,
+        'phone_number'     => $person->phone_number
+    ];
+}
+
 function get_person_data_row(object $person): array
 {
     $controller = get_controller();
@@ -282,6 +344,29 @@ function get_customer_manage_table_headers(): string
 /**
  * Get the html data row for the customer
  */
+/**
+ * Column set for exporting customers: customer_headers() minus the conditional messages column.
+ */
+function customerExportHeaders(): array
+{
+    return customer_headers();
+}
+
+/**
+ * Export row for a customer: raw (unformatted) values, matching customerExportHeaders()'s column set.
+ */
+function getCustomerExportRow(object $person, object $stats): array
+{
+    return [
+        'people.person_id' => $person->person_id,
+        'last_name'        => $person->last_name,
+        'first_name'       => $person->first_name,
+        'email'            => $person->email,
+        'phone_number'     => $person->phone_number,
+        'total'            => $stats->total
+    ];
+}
+
 function get_customer_data_row(object $person, object $stats): array
 {
     $controller = get_controller();
@@ -350,6 +435,31 @@ function get_suppliers_manage_table_headers(): string
 /**
  * Get the html data row for the supplier
  */
+/**
+ * Column set for exporting suppliers: supplier_headers() minus the conditional messages column.
+ */
+function supplierExportHeaders(): array
+{
+    return supplier_headers();
+}
+
+/**
+ * Export row for a supplier: raw (unformatted) values, matching supplierExportHeaders()'s column set.
+ */
+function getSupplierExportRow(object $supplier): array
+{
+    return [
+        'people.person_id' => $supplier->person_id,
+        'company_name'     => html_entity_decode($supplier->company_name),
+        'agency_name'      => $supplier->agency_name,
+        'category'         => $supplier->category,
+        'last_name'        => $supplier->last_name,
+        'first_name'       => $supplier->first_name,
+        'email'            => $supplier->email,
+        'phone_number'     => $supplier->phone_number
+    ];
+}
+
 function get_supplier_data_row(object $supplier): array
 {
     $controller = get_controller();
@@ -639,6 +749,28 @@ function get_giftcard_data_row(object $giftcard): array
     ];
 }
 
+/**
+ * Column set for exporting giftcards: giftcard_headers() minus the edit anchor column.
+ */
+function giftcardExportHeaders(): array
+{
+    return giftcard_headers();
+}
+
+/**
+ * Export row for a giftcard: raw (unformatted) values, matching giftcardExportHeaders()'s column set.
+ */
+function getGiftcardExportRow(object $giftcard): array
+{
+    return [
+        'giftcard_id'     => $giftcard->giftcard_id,
+        'last_name'       => $giftcard->last_name,
+        'first_name'      => $giftcard->first_name,
+        'giftcard_number' => $giftcard->giftcard_number,
+        'value'           => $giftcard->value
+    ];
+}
+
 function item_kit_headers(): array
 {
     return [
@@ -682,6 +814,29 @@ function get_item_kit_data_row(object $item_kit): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting item kits: item_kit_headers() minus the edit anchor column.
+ */
+function itemKitExportHeaders(): array
+{
+    return item_kit_headers();
+}
+
+/**
+ * Export row for an item kit: raw (unformatted) values, matching itemKitExportHeaders()'s column set.
+ */
+function getItemKitExportRow(object $item_kit): array
+{
+    return [
+        'item_kit_id'      => $item_kit->item_kit_id,
+        'item_kit_number'  => $item_kit->item_kit_number,
+        'name'             => $item_kit->name,
+        'description'      => $item_kit->description,
+        'total_cost_price' => $item_kit->total_cost_price,
+        'total_unit_price' => $item_kit->total_unit_price
     ];
 }
 
@@ -795,6 +950,40 @@ function get_attribute_definition_data_row(object $attribute_row): array
     ];
 }
 
+/**
+ * Column set for exporting attribute definitions: attribute_definition_headers() minus the edit anchor column.
+ */
+function attributeExportHeaders(): array
+{
+    return attribute_definition_headers();
+}
+
+/**
+ * Export row for an attribute definition: raw values, matching attributeExportHeaders()'s column set.
+ * definition_flags is kept as the resolved human-readable label string (not the raw bitmask),
+ * consistent with how the manage table displays it.
+ */
+function getAttributeExportRow(object $attribute_row): array
+{
+    $attribute = model(Attribute::class);
+
+    if (count($attribute->getDefinitionFlags()) == 0) {
+        $definition_flags = lang('Common.none_selected_text');
+    } elseif ($attribute->definition_type == GROUP) {
+        $definition_flags = "-";
+    } else {
+        $definition_flags = implode(', ', $attribute_row->definition_flags);
+    }
+
+    return [
+        'definition_id'    => $attribute_row->definition_id,
+        'definition_name'  => $attribute_row->definition_name,
+        'definition_type'  => $attribute_row->definition_type,
+        'definition_flags' => $definition_flags,
+        'definition_group' => $attribute_row->definition_group
+    ];
+}
+
 function expense_category_headers(): array
 {
     return [
@@ -832,6 +1021,26 @@ function get_expense_category_data_row(object $expense_category): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting expense categories: expense_category_headers() minus the edit anchor column.
+ */
+function expenseCategoryExportHeaders(): array
+{
+    return expense_category_headers();
+}
+
+/**
+ * Export row for an expense category: raw values, matching expenseCategoryExportHeaders()'s column set.
+ */
+function getExpenseCategoryExportRow(object $expense_category): array
+{
+    return [
+        'expense_category_id'  => $expense_category->expense_category_id,
+        'category_name'        => $expense_category->category_name,
+        'category_description' => $expense_category->category_description
     ];
 }
 
@@ -886,6 +1095,33 @@ function get_expenses_data_row(object $expense): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting expenses: expense_headers() minus the edit anchor column.
+ */
+function expenseExportHeaders(): array
+{
+    return expense_headers();
+}
+
+/**
+ * Export row for an expense: raw (unformatted) values, matching expenseExportHeaders()'s column set.
+ */
+function getExpenseExportRow(object $expense): array
+{
+    return [
+        'expense_id'        => $expense->expense_id,
+        'date'              => $expense->date,
+        'supplier_name'     => $expense->supplier_name,
+        'supplier_tax_code' => $expense->supplier_tax_code,
+        'amount'            => $expense->amount,
+        'tax_amount'        => $expense->tax_amount,
+        'payment_type'      => $expense->payment_type,
+        'category_name'     => $expense->category_name,
+        'description'       => $expense->description,
+        'created_by'        => $expense->first_name . ' ' . $expense->last_name
     ];
 }
 
@@ -988,6 +1224,38 @@ function get_cash_up_data_row(object $cash_up): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting cashups: cashup_headers() minus the edit anchor column.
+ */
+function cashupExportHeaders(): array
+{
+    return cashup_headers();
+}
+
+/**
+ * Export row for a cashup: raw (unformatted) values, matching cashupExportHeaders()'s column set.
+ * open_employee_id/close_employee_id keep the concatenated first/last name display values since
+ * no raw employee ID is available in the row payload.
+ */
+function getCashupExportRow(object $cash_up): array
+{
+    return [
+        'cashup_id'            => $cash_up->cashup_id,
+        'open_date'            => $cash_up->open_date,
+        'open_employee_id'     => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
+        'open_amount_cash'     => $cash_up->open_amount_cash,
+        'transfer_amount_cash' => $cash_up->transfer_amount_cash,
+        'close_date'           => $cash_up->close_date,
+        'close_employee_id'    => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
+        'closed_amount_cash'   => $cash_up->closed_amount_cash,
+        'note'                 => $cash_up->note ? 1 : 0,
+        'closed_amount_due'    => $cash_up->closed_amount_due,
+        'closed_amount_card'   => $cash_up->closed_amount_card,
+        'closed_amount_check'  => $cash_up->closed_amount_check,
+        'closed_amount_total'  => $cash_up->closed_amount_total
     ];
 }
 

@@ -59,7 +59,7 @@
                 showColumns: true,
                 uniqueId: 'id',
                 showExport: true,
-                exportDataType: 'all',
+                exportDataType: 'basic',
                 exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf'],
                 data: <?= json_encode($summary_data) ?>,
                 iconSize: 'sm',
@@ -93,6 +93,7 @@
             });
 
         init_dialog();
+        report_export_toggle.init();
     });
 </script>
 

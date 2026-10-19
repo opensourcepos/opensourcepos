@@ -61,7 +61,7 @@
                 pageSize: <?= $config['lines_per_page'] ?>,
                 sortable: true,
                 showExport: true,
-                exportDataType: 'all',
+                exportDataType: 'basic',
                 exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf'],
                 pagination: true,
                 showColumns: true,
@@ -75,6 +75,7 @@
                 },
                 loadingFontSize: '1em'
             });
+        report_export_toggle.init();
     });
 </script>
 
