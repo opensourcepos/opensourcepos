@@ -1,8 +1,9 @@
 # ------------------------------------------------------
 # Run this Powershell script to "build" OSPOS.
-# Execute this script from a terminal starting
-# with the project root as the working directory.
-# Use ".\build.ps1"
+# The script moves to the repository root itself, so it can
+# be invoked from any working directory.
+# Use ".\tools\build\build-package.ps1" from the repository root (if you are in
+# another directory, provide a valid path to this script)
 # The leading ".\" tells Powershell that you trust it.
 # ------------------------------------------------------
 # Tested with:
@@ -10,6 +11,9 @@
 # Node.js version 18.14.0
 # npm version 9.4.2
 # ------------------------------------------------------
+
+# Run from the repository root (two levels up from tools/build/)
+Set-Location -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
 Write-Output "============================================================================="
 Write-Output "Before continuing, delete the package-lock.json and  clear the dependencies"

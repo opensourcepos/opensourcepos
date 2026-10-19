@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Název daně obsahuje nepovolené znaky.',
     'tax_percent'                        => 'Sazba (procenta)',
     'tax_percent_number'                 => 'Sazba daně musí být číslo',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Musíte zadat sazbu daně.',
     'tax_percents'                       => 'Sazba daně',
     'temp'                               => '',

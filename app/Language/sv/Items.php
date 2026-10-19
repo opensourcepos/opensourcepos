@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Skattenamnet innehåller otillåtna tecken.',
     'tax_percent'                        => 'Skatt %',
     'tax_percent_number'                 => 'Skattprocent måste vara ett numeriskt värde',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Skattprocent är ett obligatoriskt fält.',
     'tax_percents'                       => 'Skatt %',
     'temp'                               => 'Tillfällig',

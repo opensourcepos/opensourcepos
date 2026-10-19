@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Vergi Oranı",
     "tax_rate_configuration"                 => "Vergi Oranı Yapılandırması",
     "tax_rate_error_adding_updating"         => "Vergi Oranı ekleme veya güncelleme işlemi başarısız oldu",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Vergi Oranı bir sayı olmalıdır",
     "tax_rate_required"                      => "Vergi Oranı zorunlu bir alandır",
     "tax_rate_successful_updated"            => "Başarıyla güncellendi",

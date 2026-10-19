@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Курс податку",
     "tax_rate_configuration"                 => "Форма ставки податку",
     "tax_rate_error_adding_updating"         => "Помилка ставки податку при додаванні оновлення",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Курс податку повинен бути позначений числом.",
     "tax_rate_required"                      => "Курс податку мусить бути заповнений.",
     "tax_rate_successful_updated"            => "Успішне оновлення податкової ставки",

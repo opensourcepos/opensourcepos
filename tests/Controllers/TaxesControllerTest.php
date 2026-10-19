@@ -268,4 +268,26 @@ class TaxesControllerTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
     }
+
+    /**
+     * Regression test: a negative tax rate must be
+     * rejected by Taxes::postSave so it can never be persisted to tax_code_rate.
+     */
+    public function testPostSave_RejectsNegativeTaxRate(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $response = $this->post('/taxes/save', [
+            'rate_tax_code_id'     => '1',
+            'rate_tax_category_id' => '1',
+            'rate_jurisdiction_id' => '1',
+            'tax_rate'             => '-50',
+            'tax_rounding_code'    => '0',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
 }

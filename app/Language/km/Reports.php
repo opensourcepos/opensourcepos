@@ -29,6 +29,7 @@ return [
     "date"                                    => "",
     "date_range"                              => "",
     "description"                             => "",
+    "detailed_item_sales_report"              => "",
     "detailed_receivings_report"              => "",
     "detailed_receivings_report_input"        => "",
     "detailed_reports"                        => "",

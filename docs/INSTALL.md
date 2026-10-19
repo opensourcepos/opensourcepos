@@ -71,6 +71,9 @@ Docker runs natively on Mac and Linux. Windows requires WSL2 to be installed. Pl
 
 **Be aware that this setup is not suited for production usage! Change the default passwords in the compose file before exposing the containers publicly.**
 
+> [!NOTE]
+> All commands in this guide must be run from the **repository root** directory, not from `docs/`.
+
 First create a **regular `.env` file** in the project root (a missing one is not
 auto-created as a file — see the compose `create_host_path: false` setting). Copy
 the shipped example:

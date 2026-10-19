@@ -375,6 +375,10 @@ class Taxes extends Secure_Controller
         $tax_category_id = $this->request->getPost('rate_tax_category_id', FILTER_SANITIZE_NUMBER_INT);
         $tax_rate = parse_tax($this->request->getPost('tax_rate'));
 
+        if (is_numeric($tax_rate) && $tax_rate < 0) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Taxes.tax_rate_non_negative')]);
+        }
+
         if ($tax_rate == 0) {    // TODO: Replace 0 with constant?
             $tax_category_info = $this->tax_category->get_info($tax_category_id);    // TODO: this variable is not used anywhere in the code
         }

@@ -70,6 +70,7 @@ return [
     "tax_rate"                               => "Taux Fiscal",
     "tax_rate_configuration"                 => "Configuration des Taux Fiscal",
     "tax_rate_error_adding_updating"         => "L'Ajout ou la modification du Taux Fiscal à échoué",
+    "tax_rate_non_negative"                  => "",
     "tax_rate_numeric"                       => "Le taux fiscal doit être un nombre",
     "tax_rate_required"                      => "Le taux de fiscal est un champ obligatoire",
     "tax_rate_successful_updated"            => "Vous avez mise à jour avec succès",
