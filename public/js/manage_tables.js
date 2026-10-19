@@ -315,7 +315,7 @@
         $toggleWrapper.attr({
             role: 'switch',
             tabindex: '0',
-            'aria-label': 'Export all rows',
+            'aria-label': lang.line('common_export_scope_toggle'),
             'aria-checked': $toggleInput.prop('checked')
         });
 

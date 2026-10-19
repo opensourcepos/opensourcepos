@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'ຕົກລົງ',
     'export_all'                     => 'ສົ່ງອອກທັງໝົດ',
     'export_page'                    => 'ສົ່ງອອກໜ້ານີ້',
+    'export_scope_toggle'            => 'ສົ່ງອອກທຸກແຖວ ຫຼື ສະເພາະໜ້າປັດຈຸບັນ',
     'fields_required_message'        => 'ຕ້ອງໄດ້ປ້ອນຂໍ້ມູນໃນປ່ອງທີ່ເປັນສີແດງ',
     'fields_required_message_unique' => '',
     'first_name'                     => 'ຊື່',

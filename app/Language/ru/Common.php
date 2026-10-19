@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Да',
     'export_all'                     => 'Экспортировать всё',
     'export_page'                    => 'Экспортировать страницу',
+    'export_scope_toggle'            => 'Экспортировать все строки или только текущую страницу',
     'fields_required_message'        => 'Поля, выделенные красным, обязательны для заполнения',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Имя',

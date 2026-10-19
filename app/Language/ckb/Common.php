@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'بەڵێ',
     'export_all'                     => 'هەناردەکردنی هەموو',
     'export_page'                    => 'هەناردەکردنی پەڕە',
+    'export_scope_toggle'            => 'هەناردەکردنی هەموو ڕیزەکان یان تەنها پەڕەی ئێستا',
     'fields_required_message'        => 'بوارە سورەکان پێویستن',
     'fields_required_message_unique' => '',
     'first_name'                     => 'ناوی یەکەم',

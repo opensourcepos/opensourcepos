@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'آره',
     'export_all'                     => 'خروجی گرفتن از همه',
     'export_page'                    => 'خروجی گرفتن از صفحه',
+    'export_scope_toggle'            => 'خروجی گرفتن از همه ردیف‌ها یا فقط صفحه فعلی',
     'fields_required_message'        => 'زمینه هایی به رنگ قرمز لازم است',
     'fields_required_message_unique' => '',
     'first_name'                     => 'نام کوچک',

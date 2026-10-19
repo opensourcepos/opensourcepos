@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Oui',
     'export_all'                     => 'Tout exporter',
     'export_page'                    => 'Exporter la page',
+    'export_scope_toggle'            => 'Exporter toutes les lignes ou seulement la page actuelle',
     'fields_required_message'        => 'Les champs en rouge sont requis',
     'fields_required_message_unique' => 'Les champs en rouge sont requis et doivent être uniques',
     'first_name'                     => 'Prénom',

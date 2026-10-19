@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Evet',
     'export_all'                     => 'Tümünü dışa aktar',
     'export_page'                    => 'Sayfayı dışa aktar',
+    'export_scope_toggle'            => 'Tüm satırları veya yalnızca geçerli sayfayı dışa aktar',
     'fields_required_message'        => 'Kırmızı alanlar zorunludur',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Ad',

@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => '',
     'export_all'                     => 'تمام ایکسپورٹ کریں',
     'export_page'                    => 'صفحہ ایکسپورٹ کریں',
+    'export_scope_toggle'            => 'تمام قطاریں یا صرف موجودہ صفحہ ایکسپورٹ کریں',
     'fields_required_message'        => '',
     'fields_required_message_unique' => '',
     'first_name'                     => '',

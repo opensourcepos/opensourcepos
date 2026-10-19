@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => '',
     'export_all'                     => 'Արտահանել բոլորը',
     'export_page'                    => 'Արտահանել էջը',
+    'export_scope_toggle'            => 'Արտահանել բոլոր տողերը կամ միայն ընթացիկ էջը',
     'fields_required_message'        => '',
     'fields_required_message_unique' => '',
     'first_name'                     => '',

@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Da',
     'export_all'                     => 'Izvezi sve',
     'export_page'                    => 'Izvezi stranicu',
+    'export_scope_toggle'            => 'Izvezi sve retke ili samo trenutnu stranicu',
     'fields_required_message'        => 'Polja u crvenom su obavezna',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Ime',

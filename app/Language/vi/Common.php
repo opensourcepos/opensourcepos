@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Có',
     'export_all'                     => 'Xuất tất cả',
     'export_page'                    => 'Xuất trang',
+    'export_scope_toggle'            => 'Xuất tất cả các hàng hoặc chỉ trang hiện tại',
     'fields_required_message'        => 'Những trường có màu đỏ là bắt buộc',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Tên',

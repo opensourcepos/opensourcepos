@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'نعم',
     'export_all'                     => 'تصدير الكل',
     'export_page'                    => 'تصدير الصفحة',
+    'export_scope_toggle'            => 'تصدير جميع الصفوف أو الصفحة الحالية فقط',
     'fields_required_message'        => 'الحقول التي بالأحمر مطلوبة',
     'fields_required_message_unique' => '',
     'first_name'                     => 'الاسم الأول',

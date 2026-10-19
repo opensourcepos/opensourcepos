@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => '',
     'export_all'                     => 'എല്ലാം എക്സ്പോർട്ട് ചെയ്യുക',
     'export_page'                    => 'പേജ് എക്സ്പോർട്ട് ചെയ്യുക',
+    'export_scope_toggle'            => 'എല്ലാ വരികളും അല്ലെങ്കിൽ നിലവിലെ പേജ് മാത്രം കയറ്റുമതി ചെയ്യുക',
     'fields_required_message'        => '',
     'fields_required_message_unique' => '',
     'first_name'                     => '',

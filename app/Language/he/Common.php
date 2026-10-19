@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'כן',
     'export_all'                     => 'ייצוא הכל',
     'export_page'                    => 'ייצוא עמוד',
+    'export_scope_toggle'            => 'ייצוא כל השורות או רק את הדף הנוכחי',
     'fields_required_message'        => 'שדות באדום הינם חובה',
     'fields_required_message_unique' => '',
     'first_name'                     => 'שם פרטי',

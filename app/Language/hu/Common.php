@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Igen',
     'export_all'                     => 'Összes exportálása',
     'export_page'                    => 'Oldal exportálása',
+    'export_scope_toggle'            => 'Minden sor exportálása vagy csak az aktuális oldal',
     'fields_required_message'        => 'A piros mezők kötelezők',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Vezetéknév',

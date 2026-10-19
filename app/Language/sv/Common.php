@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Ja',
     'export_all'                     => 'Exportera allt',
     'export_page'                    => 'Exportera sida',
+    'export_scope_toggle'            => 'Exportera alla rader eller endast aktuell sida',
     'fields_required_message'        => 'Fält markerade i rött är obligatoriska',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Förnamn',

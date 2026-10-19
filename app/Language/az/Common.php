@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Bəli',
     'export_all'                     => 'Hamısını ixrac et',
     'export_page'                    => 'Səhifəni ixrac et',
+    'export_scope_toggle'            => 'Bütün sətirləri və ya yalnız cari səhifəni ixrac edin',
     'fields_required_message'        => 'Qırmızı sahələr tələb olunur',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Ad',

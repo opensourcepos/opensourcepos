@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'ใช่',
     'export_all'                     => 'ส่งออกทั้งหมด',
     'export_page'                    => 'ส่งออกหน้านี้',
+    'export_scope_toggle'            => 'ส่งออกทุกแถวหรือเฉพาะหน้าปัจจุบัน',
     'fields_required_message'        => 'ช่องสีแดง จำเป็นต้องป้อน',
     'fields_required_message_unique' => '',
     'first_name'                     => 'ชื่อ',

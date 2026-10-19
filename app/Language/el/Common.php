@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Ναί',
     'export_all'                     => 'Εξαγωγή όλων',
     'export_page'                    => 'Εξαγωγή σελίδας',
+    'export_scope_toggle'            => 'Εξαγωγή όλων των γραμμών ή μόνο της τρέχουσας σελίδας',
     'fields_required_message'        => 'Τα κόκκινα πεδία απαιτούνται',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Κύριο όνομα',

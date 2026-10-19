@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Ya',
     'export_all'                     => 'Ekspor Semua',
     'export_page'                    => 'Ekspor Halaman',
+    'export_scope_toggle'            => 'Ekspor semua baris atau hanya halaman saat ini',
     'fields_required_message'        => 'Bagian yang berwarna merah harus diisi',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Nama Depan',

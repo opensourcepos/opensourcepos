@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Ndiyo',
     'export_all'                     => 'Hamisha vyote',
     'export_page'                    => 'Hamisha ukurasa',
+    'export_scope_toggle'            => 'Hamisha mistari yote au ukurasa wa sasa pekee',
     'fields_required_message'        => 'Sehemu zilizo na rangi nyekundu ni za lazima',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Jina la Kwanza',

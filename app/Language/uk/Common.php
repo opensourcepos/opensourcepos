@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Так',
     'export_all'                     => 'Експортувати все',
     'export_page'                    => 'Експортувати сторінку',
+    'export_scope_toggle'            => 'Експортувати всі рядки або лише поточну сторінку',
     'fields_required_message'        => 'Поля червоного кольору обов\'язкові для заповнення',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Ім\'я',

@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'Ja',
     'export_all'                     => 'Eksporter alt',
     'export_page'                    => 'Eksporter side',
+    'export_scope_toggle'            => 'Eksportér alle rækker eller kun den aktuelle side',
     'fields_required_message'        => 'Røde felter er obligatoriske',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Fornavn',

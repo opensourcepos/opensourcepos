@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => 'დიახ',
     'export_all'                     => 'ყველას ექსპორტი',
     'export_page'                    => 'გვერდის ექსპორტი',
+    'export_scope_toggle'            => 'ექსპორტი ყველა მწკრივის ან მხოლოდ მიმდინარე გვერდის',
     'fields_required_message'        => 'Fields in red are required',
     'fields_required_message_unique' => '',
     'first_name'                     => 'სახელი',

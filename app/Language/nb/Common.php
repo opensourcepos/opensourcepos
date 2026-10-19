@@ -27,6 +27,7 @@ return [
     'export_csv_yes'                 => '',
     'export_all'                     => 'Eksporter alt',
     'export_page'                    => 'Eksporter side',
+    'export_scope_toggle'            => 'Eksporter alle rader eller kun gjeldende side',
     'fields_required_message'        => '',
     'fields_required_message_unique' => '',
     'first_name'                     => '',
