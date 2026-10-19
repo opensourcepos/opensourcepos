@@ -52,7 +52,7 @@ return [
     'inventory_data_tracking'            => 'מעקב אחר נתוני מלאי',
     'inventory_date'                     => 'תאריך',
     'inventory_employee'                 => 'עובד',
-    'inventory_in_out_quantity'          => 'הכנס\הוצא כמות',
+    'inventory_in_out_quantity'          => 'הכנס\\הוצא כמות',
     'inventory_remarks'                  => 'הערות',
     'is_deleted'                         => 'נמחק',
     'is_printed'                         => '',

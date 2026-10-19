@@ -1,10 +1,14 @@
 # ----------------------------------------------------------------
 # Run this Powershell script to "build" OSPOS (one step at a time).
-# Execute this script from a terminal starting
-# with the project root as the working directory.
-# Use ".\build-steps.ps1"
+# The script moves to the repository root itself, so it can be
+# invoked from any working directory.
+# Use ".\tools\build\build-steps.ps1" from the repository root (if you are in
+# another directory, provide a valid path to this script)
 # The leading ".\" tells Powershell that you trust it.
 # ----------------------------------------------------------------
+
+# Run from the repository root (two levels up from tools/build/)
+Set-Location -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
 Write-Output "============================================================================="
 Write-Output "1. Run Composer Install and npm install"
