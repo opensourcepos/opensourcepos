@@ -1,281 +1,224 @@
 // Gulp Build Script
 
-import gulp from 'gulp'
-import clean from 'gulp-clean'
-import rev from 'gulp-rev'
-import concat from 'gulp-concat'
-import cleanCSS from 'gulp-clean-css'
-import rename from 'gulp-rename'
-import uglify from 'gulp-uglify'
-import inject from 'gulp-inject'
-import logStream from 'gulp-debug'
-import series from 'stream-series'
-import header from 'gulp-header'
-import tar from 'gulp-tar'
-import gzip from 'gulp-gzip'
-import zip from 'gulp-zip'
-import run from 'gulp-run'
+import gulp from 'gulp';
+import rev from 'gulp-rev';
+import concat from 'gulp-concat';
+import cleanCSS from 'gulp-clean-css';
+import uglify from 'gulp-uglify';
+import inject from 'gulp-inject';
+import tar from 'gulp-tar';
+import zip from 'gulp-zip';
 
-import { Stream } from 'readable-stream'
-const {finished, pipeline} = Stream.promises
+import { exec } from 'node:child_process';
+import fs from 'node:fs/promises';
+import { PassThrough, Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
+import { promisify } from 'node:util';
+
+const execAsync = promisify(exec);
 
 
-let prod0js;
-let prod1js;
+// -----------------------------------------------------------------------------
+// Shared Constants & Helpers
+// -----------------------------------------------------------------------------
 
-// Clear and remove the resources folder
-gulp.task('clean', function () {
+/**
+ * Navigation SVG icon mapping for menubar:
+ * - source:  Original SVG filename from 'node_modules/elegant-circles/svg/full-color/'
+ * - renamed: Target filename saved in 'public/images/menubar/'
+ */
+const MENUBAR_ICONS = [
+    { source: 'star.svg', renamed: 'attributes.svg' },
+    { source: 'bookshelf.svg', renamed: 'cashups.svg' },
+    { source: 'gear.svg', renamed: 'config.svg' },
+    { source: 'contacts.svg', renamed: 'customers.svg' },
+    { source: 'profle.svg', renamed: 'employees.svg' },
+    { source: 'compose.svg', renamed: 'expenses.svg' },
+    { source: 'clipboard.svg', renamed: 'expenses_categories.svg' },
+    { source: 'heart.svg', renamed: 'giftcards.svg' },
+    { source: 'door.svg', renamed: 'home.svg' },
+    { source: 'door.svg', renamed: 'office.svg' },
+    { source: 'stack.svg', renamed: 'item_kits.svg' },
+    { source: 'shop.svg', renamed: 'items.svg' },
+    { source: 'smartphone.svg', renamed: 'messages.svg' },
+    { source: 'tools.svg', renamed: 'migrate.svg' },
+    { source: 'dolly.svg', renamed: 'receivings.svg' },
+    { source: 'bar-chart.svg', renamed: 'reports.svg' },
+    { source: 'cart.svg', renamed: 'sales.svg' },
+    { source: 'briefcase.svg', renamed: 'suppliers.svg' },
+    { source: 'money.svg', renamed: 'taxes.svg' }
+];
+
+/**
+ * Bootswatch 5 themes that were not present in Bootswatch 3 are excluded to maintain theme parity.
+ */
+const BOOTSWATCH5_EXCLUDED_THEMES = [
+    'brite', 'litera', 'lux', 'materia', 'minty', 'morph',
+    'pulse', 'quartz', 'sketchy', 'solar', 'vapor', 'zephyr'
+];
+
+/**
+ * Standardized options helper for gulp-inject comment markers.
+ * Generates options matching the pattern <!-- inject:${tag} -->.
+ */
+const injectOptions = (tag, options = {}) => ({
+    addRootSlash: false,
+    ignorePath: '/public/',
+    starttag: `<!-- inject:${tag} -->`,
+    ...options
+});
+
+/**
+ * Emits Vinyl file objects from multiple streams sequentially.
+ * Native replacement for the stream-series package using Readable.from and PassThrough buffers.
+ */
+const streamSeries = (...streams) => {
+    const buffers = streams.map(stream => {
+        const passThrough = new PassThrough({ objectMode: true, highWaterMark: 64 });
+        stream.on('error', err => passThrough.destroy(err));
+        return stream.pipe(passThrough);
+    });
+
+    return Readable.from((async function* () {
+        for (const buffer of buffers) {
+            for await (const file of buffer) {
+                yield file;
+            }
+        }
+    })(), { objectMode: true });
+};
+
+
+// =============================================================================
+// Group 1: Clean & Licensing
+// =============================================================================
+
+// Remove compiled public resources directory before a fresh build
+gulp.task('clean', () => fs.rm('./public/resources', { recursive: true, force: true }));
+
+// Generate Composer and npm production/development license reports in public/license/
+gulp.task('update-licenses', async function() {
+    await fs.mkdir('public/license', { recursive: true });
+
+    return Promise.all([
+        execAsync('composer licenses --format=json --no-dev > public/license/composer.LICENSES'),
+        execAsync('npx license-report --only=prod --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-prod.LICENSES'),
+        execAsync('npx license-report --only=dev --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-dev.LICENSES'),
+        fs.copyFile('LICENSE', 'public/license/LICENSE')
+    ]);
+});
+
+
+// =============================================================================
+// Group 2: Vendor Themes & Static Asset Copies
+// =============================================================================
+
+// Copy all Bootswatch 3 theme stylesheets and fonts to public/resources/bootswatch/
+gulp.task('copy-bootswatch', function() {
     return pipeline(
-        gulp.src('./public/resources', {read: false, allowEmpty: true}),
-        clean()
+        gulp.src([
+            './node_modules/bootswatch/*/*.min.css',
+            './node_modules/bootswatch/fonts/*.*'
+        ], { base: './node_modules/bootswatch', encoding: false }),
+        gulp.dest('public/resources/bootswatch')
     );
 });
 
-gulp.task('compress', function() {
-    const sources = ['app*/**/*', 'public*/**/*', 'vendor*/**/*', '*.md', 'docs/**/*', 'LICENSE', 'docker*', 'Dockerfile', '**/.htaccess', 'writable*/**/*', '.env'] ;
-    gulp.src(sources, {encoding: false}).pipe(tar('opensourcepos.tar')).pipe(gulp.dest('dist'));
-    return gulp.src(sources, {encoding: false}).pipe(zip('opensourcepos.zip')).pipe(gulp.dest('dist'));
-});
-
-
-gulp.task('update-licenses', function() {
-    function run_completion(execStream) {
-        return finished(execStream.resume());
-    }
-
-    return Promise.all([
-        run_completion(run('composer licenses --format=json --no-dev > public/license/composer.LICENSES').exec()),
-        run_completion(run('npx license-report --only=prod --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-prod.LICENSES').exec()),
-        run_completion(run('npx license-report --only=dev --output=json --fields=name --fields=author --fields=homepage --fields=installedVersion --fields=licenseType > public/license/npm-dev.LICENSES').exec()),
-        pipeline(gulp.src('LICENSE'),gulp.dest('public/license'))
-    ]);
-});
-
-
-// Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
-gulp.task('copy-bootswatch', function() {
-    return Promise.all([
-        pipeline(gulp.src('./node_modules/bootswatch/cerulean/*.min.css'),gulp.dest('public/resources/bootswatch/cerulean')),
-        pipeline(gulp.src('./node_modules/bootswatch/cosmo/*.min.css'),gulp.dest('public/resources/bootswatch/cosmo')),
-        pipeline(gulp.src('./node_modules/bootswatch/cyborg/*.min.css'),gulp.dest('public/resources/bootswatch/cyborg')),
-        pipeline(gulp.src('./node_modules/bootswatch/darkly/*.min.css'),gulp.dest('public/resources/bootswatch/darkly')),
-        pipeline(gulp.src('./node_modules/bootswatch/flatly/*.min.css'),gulp.dest('public/resources/bootswatch/flatly')),
-        pipeline(gulp.src('./node_modules/bootswatch/journal/*.min.css'),gulp.dest('public/resources/bootswatch/journal')),
-        pipeline(gulp.src('./node_modules/bootswatch/lumen/*.min.css'),gulp.dest('public/resources/bootswatch/lumen')),
-        pipeline(gulp.src('./node_modules/bootswatch/paper/*.min.css'),gulp.dest('public/resources/bootswatch/paper')),
-        pipeline(gulp.src('./node_modules/bootswatch/readable/*.min.css'),gulp.dest('public/resources/bootswatch/readable')),
-        pipeline(gulp.src('./node_modules/bootswatch/sandstone/*.min.css'),gulp.dest('public/resources/bootswatch/sandstone')),
-        pipeline(gulp.src('./node_modules/bootswatch/simplex/*.min.css'),gulp.dest('public/resources/bootswatch/simplex')),
-        pipeline(gulp.src('./node_modules/bootswatch/slate/*.min.css'),gulp.dest('public/resources/bootswatch/slate')),
-        pipeline(gulp.src('./node_modules/bootswatch/spacelab/*.min.css'),gulp.dest('public/resources/bootswatch/spacelab')),
-        pipeline(gulp.src('./node_modules/bootswatch/superhero/*.min.css'),gulp.dest('public/resources/bootswatch/superhero')),
-        pipeline(gulp.src('./node_modules/bootswatch/united/*.min.css'),gulp.dest('public/resources/bootswatch/united')),
-        pipeline(gulp.src('./node_modules/bootswatch/yeti/*.min.css'),gulp.dest('public/resources/bootswatch/yeti')),
-        pipeline(gulp.src('./node_modules/bootswatch/fonts/*.*', {encoding:false}),gulp.dest('public/resources/bootswatch/fonts'))
-    ]);
-});
-
-// Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
+// Copy Bootswatch 5 theme stylesheets to public/resources/bootswatch5/,
+// excluding themes that were not present in Bootswatch 3
 gulp.task('copy-bootswatch5', function() {
-    return Promise.all([
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/cerulean/*.min.css'),gulp.dest('public/resources/bootswatch5/cerulean')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/cosmo/*.min.css'),gulp.dest('public/resources/bootswatch5/cosmo')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/cyborg/*.min.css'),gulp.dest('public/resources/bootswatch5/cyborg')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/darkly/*.min.css'),gulp.dest('public/resources/bootswatch5/darkly')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/flatly/*.min.css'),gulp.dest('public/resources/bootswatch5/flatly')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/journal/*.min.css'),gulp.dest('public/resources/bootswatch5/journal')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/lumen/*.min.css'),gulp.dest('public/resources/bootswatch5/lumen')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/sandstone/*.min.css'),gulp.dest('public/resources/bootswatch5/sandstone')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/simplex/*.min.css'),gulp.dest('public/resources/bootswatch5/simplex')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/slate/*.min.css'),gulp.dest('public/resources/bootswatch5/slate')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/spacelab/*.min.css'),gulp.dest('public/resources/bootswatch5/spacelab')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/superhero/*.min.css'),gulp.dest('public/resources/bootswatch5/superhero')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/united/*.min.css'),gulp.dest('public/resources/bootswatch5/united')),
-        pipeline(gulp.src('./node_modules/bootswatch5/dist/yeti/*.min.css'),gulp.dest('public/resources/bootswatch5/yeti'))
-    ]);
+    return pipeline(
+        gulp.src([
+            './node_modules/bootswatch5/dist/*/*.min.css',
+            `!./node_modules/bootswatch5/dist/{${BOOTSWATCH5_EXCLUDED_THEMES.join(',')}}/**`
+        ], { base: './node_modules/bootswatch5/dist', encoding: false }),
+        gulp.dest('public/resources/bootswatch5')
+    );
 });
 
-// Copy the bootstrap style into its own folder so OSPOS can select it from the collection
+// Copy base Bootstrap 3 and Bootstrap 5 stylesheets
 gulp.task('copy-bootstrap', function() {
     return Promise.all([
-        pipeline(gulp.src('./node_modules/bootstrap/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch/bootstrap')),
-        pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap')),
-        pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.rtl.min.css*'),gulp.dest('public/resources/bootswatch5/bootstrap'))
+        pipeline(
+            gulp.src('./node_modules/bootstrap/dist/css/bootstrap.min.css*', { encoding: false }),
+            gulp.dest('public/resources/bootswatch/bootstrap')
+        ),
+        pipeline(
+            gulp.src([
+                './node_modules/bootstrap5/dist/css/bootstrap.min.css*',
+                './node_modules/bootstrap5/dist/css/bootstrap.rtl.min.css*'
+            ], { encoding: false }),
+            gulp.dest('public/resources/bootswatch5/bootstrap')
+        )
     ]);
 });
 
-// /public/resources/ospos - contains the minimized files to be packed into opensourcepos.min.[css/js]
-// /public/resources/[css/js] - contains the unpacked versions to be used in development mode
-// /public/resources - contains the packed opensourcepos.min.[css/js] and the jquery.min.js
+// Copy and rename menubar navigation SVG icons to public/images/menubar/
+gulp.task('copy-menubar', async function() {
+    await fs.mkdir('public/images/menubar', { recursive: true });
 
-// Copy JavaScript into a folder which will be used as the source to create opensourcepos.min.js (except for jquery.mn.js)
-
-// Inject will be in the sequence of the files in the stream.  So make sure dependencies are in their proper order
-
-
-gulp.task('debug-js', function() {
-    const debugjs = gulp.src(['./node_modules/jquery/dist/jquery.js',
-        './node_modules/jquery-form/src/jquery.form.js',
-        './node_modules/jquery-validation/dist/jquery.validate.js',
-        './node_modules/jquery-ui-dist/jquery-ui.js',
-        './node_modules/bootstrap/dist/js/bootstrap.js',
-        './node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js',
-        './node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.js',
-        './node_modules/bootstrap-datetime-picker/js/bootstrap-datetimepicker.js',
-        './node_modules/bootstrap-select/dist/js/bootstrap-select.js',
-        './node_modules/bootstrap-table/dist/bootstrap-table.js',
-        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
-        './node_modules/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js',
-        './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
-        './node_modules/moment/min/moment.min.js',
-        './node_modules/bootstrap-daterangepicker/daterangepicker.js',
-        './node_modules/es6-promise/dist/es6-promise.js',
-        './node_modules/file-saver/dist/FileSaver.js',
-        './node_modules/html2canvas/dist/html2canvas.js',
-        './node_modules/jspdf/dist/jspdf.umd.js',
-        './node_modules/dompurify/dist/purify.js',
-        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
-        './node_modules/xlsx/dist/xlsx.full.min.js',
-        './node_modules/tableexport.jquery.plugin/tableExport.min.js',
-        './node_modules/chartist/dist/chartist.js',
-        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.js',
-        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.js',
-        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js',
-        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.js',
-        './node_modules/bootstrap-notify/bootstrap-notify.js',
-        './node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
-        './public/js/imgpreview.full.jquery.js',
-        './public/js/manage_tables.js',
-        './public/js/nominatim.autocomplete.js']).pipe(rev()).pipe(gulp.dest('public/resources/js'));
-    return gulp.src('./app/Views/partial/header.php').pipe(inject(debugjs,{addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:debug:js -->'})).pipe(gulp.dest('./app/Views/partial'));
-});
-
-gulp.task('prod-js', function() {
-
-    const prod0js = gulp.src('./node_modules/jquery/dist/jquery.min.js').pipe(rev()).pipe(gulp.dest('public/resources'));
-
-    const opensourcepos1js = gulp.src(['./node_modules/bootstrap/dist/js/bootstrap.min.js',
-        './node_modules/bootstrap-table/dist/bootstrap-table.min.js',
-        './node_modules/moment/min/moment.min.js',
-        './node_modules/jquery-ui-dist/jquery-ui.min.js',
-        './node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js',
-        './node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
-        './node_modules/bootstrap-select/dist/js/bootstrap-select.min.js',
-        './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js',
-        './node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js',
-        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js',
-        './node_modules/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js',
-        './node_modules/bootstrap-notify/bootstrap-notify.min.js',
-        './node_modules/jquery-form/dist/jquery.form.min.js',
-        './node_modules/jquery-validation/dist/jquery.validate.min.js',
-        './node_modules/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js',
-        './node_modules/es6-promise/dist/es6-promise.min.js',
-        './node_modules/file-saver/dist/FileSaver.min.js',
-        './node_modules/file-saver/dist/FileSaver.js',
-        './node_modules/html2canvas/dist/html2canvas.min.js',
-        './node_modules/chartist/dist/chartist.min.js',
-        './node_modules/jspdf/dist/jspdf.umd.min.js',
-        './node_modules/dompurify/dist/purify.min.js',
-        './node_modules/chartist/dist/chartist.min.js',
-        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js',
-        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js',
-        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js',
-        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
-        './node_modules/xlsx/dist/xlsx.full.min.js',
-        './node_modules/tableexport.jquery.plugin/tableExport.min.js'], { allowEmpty: true });
-
-    const opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
-        './public/js/imgpreview.full.jquery.js',
-        './public/js/manage_tables.js',
-        './public/js/nominatim.autocomplete.js']).pipe(uglify());
-
-
-    const prod1js = series(opensourcepos1js, opensourcepos2js).pipe(concat('opensourcepos.min.js'))
-        .pipe(rev())
-        .pipe(gulp.dest('./public/resources/'));
-
-    return gulp.src('./app/Views/partial/header.php').pipe(inject(
-        series(prod0js, prod1js), {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:prod:js -->'})).pipe(gulp.dest('./app/Views/partial'));
-
+    return Promise.all(
+        MENUBAR_ICONS.map(({ source, renamed }) =>
+            fs.copyFile(
+                `./node_modules/elegant-circles/svg/full-color/${source}`,
+                `public/images/menubar/${renamed}`
+            )
+        )
+    );
 });
 
 
-// Inject jQuery into login.php (debug mode) - reuse the jQuery file already created by debug-js
-gulp.task('debug-login-js', function() {
-    // Match only core jQuery (jquery-HASH.js), exclude jquery plugins (jquery-HASH.form.js, etc) and jquery-ui (jquery-ui-HASH.js)
-    // Pattern: jquery-[hash].js where hash is alphanumeric - core jQuery only
-    const loginDebugJs = gulp.src(['./public/resources/js/jquery-*.js', '!./public/resources/js/jquery-*.form.js', '!./public/resources/js/jquery-*.validate.js', '!./public/resources/js/jquery-ui-*.js']);
-    return gulp.src('./app/Views/login.php').pipe(inject(loginDebugJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:debug:js -->'})).pipe(gulp.dest('./app/Views'));
-});
+// =============================================================================
+// Group 3: Global Application Assets (injected into app/Views/partial/header.php)
+// =============================================================================
 
-// Inject jQuery into login.php (production mode) - reuse the jQuery file already created by prod-js
-gulp.task('prod-login-js', function() {
-    // jQuery prod file is already in resources/jquery-*.min.js from prod-js task
-    const loginProdJs = gulp.src('./public/resources/jquery-*.min.js');
-    return gulp.src('./app/Views/login.php').pipe(inject(loginProdJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:login:prod:js -->'})).pipe(gulp.dest('./app/Views'));
-});
-
-gulp.task('debug-config-js', function() {
-    const configDebugJs = gulp.src([
-        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.js',
-        './node_modules/clipboard/dist/clipboard.js'
-    ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
-    return gulp.src('./app/Views/configs/manage.php').pipe(inject(configDebugJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:config:debug:js -->'})).pipe(gulp.dest('./app/Views/configs'));
-});
-
-gulp.task('prod-config-js', function() {
-    const configProdJs = gulp.src([
-        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.min.js',
-        './node_modules/clipboard/dist/clipboard.min.js'
-    ]).pipe(rev()).pipe(gulp.dest('public/resources'));
-    return gulp.src('./app/Views/configs/manage.php').pipe(inject(configProdJs, {addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:config:prod:js -->'})).pipe(gulp.dest('./app/Views/configs'));
-});
-
-
+// Development mode: Injects individual global stylesheets into app/Views/partial/header.php
 gulp.task('debug-css', function() {
-    const debugcss = gulp.src(['./node_modules/jquery-ui-dist/jquery-ui.css',
+    const debugCss = gulp.src([
+        './node_modules/jquery-ui-dist/jquery-ui.css',
         './node_modules/bootstrap3-dialog/dist/css/bootstrap-dialog.css',
         './node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.css',
         './node_modules/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css',
+        './node_modules/bootstrap-daterangepicker/daterangepicker.css',
+        './node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css',
         './node_modules/bootstrap-select/dist/css/bootstrap-select.css',
         './node_modules/bootstrap-table/dist/bootstrap-table.css',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css',
-        './node_modules/bootstrap-daterangepicker/daterangepicker.css',
+        './node_modules/bootstrap-toggle/css/bootstrap-toggle.css',
         './node_modules/chartist/dist/chartist.css',
         './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
-        './node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css',
-        './node_modules/bootstrap-toggle/css/bootstrap-toggle.css',
         './public/css/bootstrap.autocomplete.css',
         './public/css/invoice.css',
-        './public/css/ospos_print.css',
         './public/css/ospos.css',
+        './public/css/ospos_print.css',
         './public/css/popupbox.css',
         './public/css/receipt.css',
         './public/css/register.css',
         './public/css/reports.css'
     ]).pipe(rev()).pipe(gulp.dest('public/resources/css'));
-    return gulp.src('./app/Views/partial/header.php').pipe(inject(debugcss,{addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:debug:css -->'})).pipe(gulp.dest('./app/Views/partial'));
+
+    return pipeline(
+        gulp.src('./app/Views/partial/header.php'),
+        inject(debugCss, injectOptions('debug:css')),
+        gulp.dest('./app/Views/partial')
+    );
 });
 
-
+// Production mode: Concatenates and minifies global stylesheets into opensourcepos.min.css for app/Views/partial/header.php
 gulp.task('prod-css', function() {
-    const opensourcepos1css = gulp.src(['./node_modules/jquery-ui-dist/jquery-ui.min.css',
+    const prodCss = gulp.src([
+        './node_modules/jquery-ui-dist/jquery-ui.min.css',
         './node_modules/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css',
         './node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
-        './node_modules/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css']);
-
-    const opensourcepos2css = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.css',
-        './node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css']).pipe(cleanCSS({compatibility: 'ie8'}));
-
-    const opensourcepos3css = gulp.src(['./node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
+        './node_modules/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css',
+        './node_modules/bootstrap-daterangepicker/daterangepicker.css',
+        './node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css',
+        './node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         './node_modules/bootstrap-table/dist/bootstrap-table.min.css',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.css',
         './node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css',
-        './node_modules/chartist/dist/chartist.min.css']);
-
-    const opensourcepos4css = gulp.src('./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css').pipe(cleanCSS({compatibility: 'ie8'}));
-
-    const opensourcepos5css = gulp.src(['./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
+        './node_modules/chartist/dist/chartist.min.css',
+        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
         './public/css/bootstrap.autocomplete.css',
         './public/css/invoice.css',
         './public/css/ospos.css',
@@ -284,61 +227,236 @@ gulp.task('prod-css', function() {
         './public/css/receipt.css',
         './public/css/register.css',
         './public/css/reports.css'
-    ]).pipe(cleanCSS({compatibility: 'ie8'}));
+    ])
+        .pipe(cleanCSS())
+        .pipe(concat('opensourcepos.min.css'))
+        .pipe(rev())
+        .pipe(gulp.dest('public/resources'));
 
-    const prodcss = series(opensourcepos1css, opensourcepos2css, opensourcepos3css, opensourcepos4css, opensourcepos5css)
-        .pipe(concat('opensourcepos.min.css')).pipe(rev()).pipe(gulp.dest('public/resources'));
-
-
-    return gulp.src('./app/Views/partial/header.php').pipe(inject(prodcss,{addRootSlash: false, ignorePath: '/public/', starttag: '<!-- inject:prod:css -->'})).pipe(gulp.dest('./app/Views/partial'));
+    return pipeline(
+        gulp.src('./app/Views/partial/header.php'),
+        inject(prodCss, injectOptions('prod:css')),
+        gulp.dest('./app/Views/partial')
+    );
 });
 
+// Development mode: Injects individual global scripts into app/Views/partial/header.php
+gulp.task('debug-js', function() {
+    const debugJs = gulp.src([
+        './node_modules/jquery/dist/jquery.js',
+        './node_modules/jquery-ui-dist/jquery-ui.js',
+        './node_modules/bootstrap/dist/js/bootstrap.js',
+        './node_modules/bootstrap-table/dist/bootstrap-table.js',
+        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
+        './node_modules/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js',
+        './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
+        './node_modules/moment/min/moment.min.js',
+        './node_modules/jquery-form/src/jquery.form.js',
+        './node_modules/jquery-validation/dist/jquery.validate.js',
+        './node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js',
+        './node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.js',
+        './node_modules/bootstrap-select/dist/js/bootstrap-select.js',
+        './node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
+        './node_modules/bootstrap-notify/bootstrap-notify.js',
+        './node_modules/bootstrap-datetime-picker/js/bootstrap-datetimepicker.js',
+        './node_modules/file-saver/dist/FileSaver.js',
+        './node_modules/html2canvas/dist/html2canvas.js',
+        './node_modules/jspdf/dist/jspdf.umd.js',
+        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
+        './node_modules/dompurify/dist/purify.js',
+        './node_modules/xlsx/dist/xlsx.full.min.js',
+        './node_modules/tableexport.jquery.plugin/tableExport.min.js',
+        './node_modules/chartist/dist/chartist.js',
+        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js',
+        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.js',
+        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.js',
+        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.js',
+        './node_modules/bootstrap-daterangepicker/daterangepicker.js',
+        './public/js/imgpreview.full.jquery.js',
+        './public/js/manage_tables.js',
+        './public/js/nominatim.autocomplete.js'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
 
-gulp.task('copy-fonts', function() {
-    return pipeline(gulp.src('./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.*', {encoding: false}),rev(),gulp.dest('public/resources'));
+    return pipeline(
+        gulp.src('./app/Views/partial/header.php'),
+        inject(debugJs, injectOptions('debug:js')),
+        gulp.dest('./app/Views/partial')
+    );
 });
 
+// Production mode: Bundles scripts into opensourcepos.min.js for app/Views/partial/header.php
+gulp.task('prod-js', function() {
+    const jqueryStream = gulp.src('./node_modules/jquery/dist/jquery.min.js')
+        .pipe(rev())
+        .pipe(gulp.dest('public/resources'));
 
-gulp.task('copy-menubar', function() {
-    return Promise.all([
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/star.svg"),rename("attributes.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/bookshelf.svg"),rename("cashups.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/gear.svg"),rename("config.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/contacts.svg"),rename("customers.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/profle.svg"),rename("employees.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/compose.svg"),rename("expenses.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/clipboard.svg"),rename("expenses_categories.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/heart.svg"),rename("giftcards.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/door.svg"),rename("home.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/stack.svg"),rename("item_kits.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/shop.svg"),rename("items.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/smartphone.svg"),rename("messages.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/tools.svg"),rename("migrate.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/door.svg"),rename("office.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/dolly.svg"),rename("receivings.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/bar-chart.svg"),rename("reports.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/cart.svg"),rename("sales.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src("./node_modules/elegant-circles/svg/full-color/briefcase.svg"),rename("suppliers.svg"),gulp.dest("public/images/menubar")),
-        pipeline(gulp.src('./node_modules/elegant-circles/svg/full-color/money.svg'),rename("taxes.svg"),gulp.dest("public/images/menubar"))
+    const preminifiedVendorJs = gulp.src([
+        './node_modules/jquery-ui-dist/jquery-ui.min.js',
+        './node_modules/bootstrap/dist/js/bootstrap.min.js',
+        './node_modules/bootstrap-table/dist/bootstrap-table.min.js',
+        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js',
+        './node_modules/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js',
+        './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js',
+        './node_modules/moment/min/moment.min.js',
+        './node_modules/jquery-form/dist/jquery.form.min.js',
+        './node_modules/jquery-validation/dist/jquery.validate.min.js',
+        './node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js',
+        './node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
+        './node_modules/bootstrap-select/dist/js/bootstrap-select.min.js',
+        './node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js',
+        './node_modules/bootstrap-notify/bootstrap-notify.min.js',
+        './node_modules/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js',
+        './node_modules/file-saver/dist/FileSaver.min.js',
+        './node_modules/html2canvas/dist/html2canvas.min.js',
+        './node_modules/jspdf/dist/jspdf.umd.min.js',
+        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js',
+        './node_modules/dompurify/dist/purify.min.js',
+        './node_modules/xlsx/dist/xlsx.full.min.js',
+        './node_modules/tableexport.jquery.plugin/tableExport.min.js',
+        './node_modules/chartist/dist/chartist.min.js',
+        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js',
+        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
+        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js',
+        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js'
     ]);
+
+    const uglifiedAppJs = gulp.src([
+        './node_modules/bootstrap-daterangepicker/daterangepicker.js',
+        './public/js/imgpreview.full.jquery.js',
+        './public/js/manage_tables.js',
+        './public/js/nominatim.autocomplete.js'
+    ]).pipe(uglify());
+
+    const coreBundleStream = streamSeries(preminifiedVendorJs, uglifiedAppJs)
+        .pipe(concat('opensourcepos.min.js'))
+        .pipe(rev())
+        .pipe(gulp.dest('./public/resources/'));
+
+    return pipeline(
+        gulp.src('./app/Views/partial/header.php'),
+        inject(streamSeries(jqueryStream, coreBundleStream), injectOptions('prod:js')),
+        gulp.dest('./app/Views/partial')
+    );
 });
 
 
-// Run all required tasks
+// =============================================================================
+// Group 4: Page-Scoped Assets
+// =============================================================================
+
+// Inject standalone jQuery into app/Views/login.php (development mode)
+gulp.task('debug-login-js', function() {
+    const loginDebugJs = gulp.src([
+        './public/resources/js/jquery-*.js',
+        '!./public/resources/js/jquery-*.form.js',
+        '!./public/resources/js/jquery-*.validate.js',
+        '!./public/resources/js/jquery-ui-*.js'
+    ], { read: false });
+
+    return pipeline(
+        gulp.src('./app/Views/login.php'),
+        inject(loginDebugJs, injectOptions('login:debug:js')),
+        gulp.dest('./app/Views')
+    );
+});
+
+// Inject production minified jQuery into app/Views/login.php (production mode)
+gulp.task('prod-login-js', function() {
+    const loginProdJs = gulp.src('./public/resources/jquery-*.min.js', { read: false });
+
+    return pipeline(
+        gulp.src('./app/Views/login.php'),
+        inject(loginProdJs, injectOptions('login:prod:js')),
+        gulp.dest('./app/Views')
+    );
+});
+
+// Inject individual TagsInput and Clipboard scripts into app/Views/configs/manage.php (development mode)
+gulp.task('debug-config-js', function() {
+    const configDebugJs = gulp.src([
+        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.js',
+        './node_modules/clipboard/dist/clipboard.js'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
+
+    return pipeline(
+        gulp.src('./app/Views/configs/manage.php'),
+        inject(configDebugJs, injectOptions('config:debug:js')),
+        gulp.dest('./app/Views/configs')
+    );
+});
+
+// Inject production TagsInput and Clipboard scripts into app/Views/configs/manage.php (production mode)
+gulp.task('prod-config-js', function() {
+    const configProdJs = gulp.src([
+        './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.min.js',
+        './node_modules/clipboard/dist/clipboard.min.js'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources'));
+
+    return pipeline(
+        gulp.src('./app/Views/configs/manage.php'),
+        inject(configProdJs, injectOptions('config:prod:js')),
+        gulp.dest('./app/Views/configs')
+    );
+});
+
+
+// =============================================================================
+// Group 5: Master Build Pipeline & Distribution Packaging
+// =============================================================================
+
+// Master build task: cleans resources, exports licenses, copies vendor assets, and generates all debug/prod bundles
 gulp.task('default',
-    gulp.series('clean',
-        'update-licenses',
-        'copy-bootswatch',
-        'copy-bootswatch5',
-        'copy-bootstrap',
-        'debug-js',
-        'prod-js',
-        'debug-login-js',
-        'prod-login-js',
-        'debug-config-js',
-        'prod-config-js',
-        'debug-css',
-        'prod-css',
-        'copy-fonts',
-        'copy-menubar'
+    gulp.series(
+        'clean',
+        gulp.parallel(
+            'update-licenses',
+            'copy-bootswatch',
+            'copy-bootswatch5',
+            'copy-bootstrap',
+            'copy-menubar',
+            gulp.series(
+                'debug-config-js',
+                'prod-config-js'
+            ),
+            gulp.series(
+                'debug-js',
+                'prod-js',
+                gulp.parallel(
+                    gulp.series('debug-css', 'prod-css'),
+                    gulp.series('debug-login-js', 'prod-login-js')
+                )
+            )
+        )
     ));
+
+// Archive project sources and assets into distributable tar and zip packages in dist/
+gulp.task('compress', async function() {
+    const sources = [
+        'app/**/*',
+        'public/**/*',
+        'vendor/**/*',
+        'writable/**/*',
+        'docs/**/*',
+        '*.md',
+        'LICENSE',
+        'docker*',
+        'Dockerfile',
+        '.env.example',
+        '**/.htaccess',
+        '!node_modules/**',
+        '!dist/**',
+        '!.git/**'
+    ];
+
+    await pipeline(
+        gulp.src(sources, { base: '.', encoding: false }),
+        tar('opensourcepos.tar'),
+        gulp.dest('dist')
+    );
+
+    await pipeline(
+        gulp.src(sources, { base: '.', encoding: false }),
+        zip('opensourcepos.zip'),
+        gulp.dest('dist')
+    );
+});
