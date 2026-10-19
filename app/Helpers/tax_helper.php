@@ -139,6 +139,40 @@ function get_tax_rates_manage_table_headers(): string
 }
 
 /**
+ * Column set for exporting tax rates: same data columns as the manage table,
+ * minus the edit icon column that only makes sense in the live UI.
+ *
+ * @return array Array of single-key [column_key => label] pairs
+ */
+function taxRateExportHeaders(): array
+{
+    return [
+        ['tax_code'           => lang('Taxes.tax_code')],
+        ['tax_code_name'      => lang('Taxes.tax_code_name')],
+        ['jurisdiction_name'  => lang('Taxes.jurisdiction_name')],
+        ['tax_category'       => lang('Taxes.tax_category')],
+        ['tax_rate'           => lang('Taxes.tax_rate')],
+        ['rounding_code_name' => lang('Taxes.rounding_code')]
+    ];
+}
+
+/**
+ * Export row for a tax rate: raw values matching taxRateExportHeaders()'s column set.
+ */
+function getTaxRateExportRow(object $tax_rates_row): array
+{
+    return [
+        'tax_rate_id'        => $tax_rates_row->tax_rate_id,
+        'tax_code'           => $tax_rates_row->tax_code,
+        'tax_code_name'      => $tax_rates_row->tax_code_name,
+        'tax_category'       => $tax_rates_row->tax_category,
+        'tax_rate'           => $tax_rates_row->tax_rate,
+        'jurisdiction_name'  => $tax_rates_row->jurisdiction_name,
+        'rounding_code_name' => Rounding_mode::get_rounding_code_name($tax_rates_row->tax_rounding_code)
+    ];
+}
+
+/**
  * Get the html data row for the tax
  */
 function get_tax_rates_data_row($tax_rates_row): array
