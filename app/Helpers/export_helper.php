@@ -129,7 +129,9 @@ function writeExportXml(array $headers, iterable $rows): string
 
 function sanitizeExportXmlTag(string $key): string
 {
-    return preg_replace('/[^a-zA-Z0-9_]/', '_', $key) ?: 'column';
+    $tag = preg_replace('/[^a-zA-Z0-9_]/', '_', $key) ?: 'column';
+
+    return preg_match('/^[0-9]/', $tag) ? 'col_' . $tag : $tag; //Tags cannot start with a number. Prefixed.
 }
 
 function writeExportSql(array $headers, iterable $rows, string $tableName): string
