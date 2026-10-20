@@ -59,14 +59,32 @@ function exportRowValues(array $headers, object|array $row): array
     return $values;
 }
 
+const EXPORT_CSV_FORMULA_PREFIXES = ['=', '+', '-', '@'];
+
+function sanitizeExportCsvValue(mixed $value): mixed
+{
+    if (!is_string($value) || $value === '' || is_numeric($value)) {
+        return $value;
+    }
+
+    foreach (EXPORT_CSV_FORMULA_PREFIXES as $prefix) {
+        if (str_starts_with($value, $prefix)) {
+            return "'" . $value;
+        }
+    }
+
+    return $value;
+}
+
 function writeExportCsv(array $headers, iterable $rows, string $delimiter): string
 {
     $stream = fopen('php://temp', 'r+');
 
-    fputcsv($stream, array_map(static fn ($header) => reset($header), $headers), $delimiter, '"', '\\');
+    fputcsv($stream, array_map(static fn ($header) => sanitizeExportCsvValue(reset($header)), $headers), $delimiter, '"', '\\');
 
     foreach ($rows as $row) {
-        fputcsv($stream, array_values(exportRowValues($headers, $row)), $delimiter, '"', '\\');
+        $values = array_map('sanitizeExportCsvValue', array_values(exportRowValues($headers, $row)));
+        fputcsv($stream, $values, $delimiter, '"', '\\');
     }
 
     rewind($stream);
