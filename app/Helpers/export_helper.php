@@ -134,16 +134,62 @@ function sanitizeExportXmlTag(string $key): string
     return preg_match('/^[0-9]/', $tag) ? 'col_' . $tag : $tag; //Tags cannot start with a number. Prefixed.
 }
 
+/**
+ * Export column keys that are real, directly-insertable columns on the given DB table,
+ * keyed by unprefixed table name. Keys not listed here are joined/decoded labels or
+ * computed values (e.g. a supplier's company_name on an item export, or items.quantity
+ * which is a computed inventory sum) that don't correspond to a column on that table,
+ * so writeExportSql() must drop them rather than emit a bogus INSERT.
+ */
+const EXPORT_SQL_RESTORABLE_COLUMNS = [
+    'people'                => ['people.person_id', 'last_name', 'first_name', 'email', 'phone_number'],
+    'customers'             => ['people.person_id'],
+    'suppliers'             => ['people.person_id', 'company_name', 'agency_name', 'category'],
+    'items'                 => ['items.item_id', 'item_number', 'name', 'category', 'cost_price', 'unit_price'],
+    'expense_categories'    => ['expense_category_id', 'category_name', 'category_description'],
+    'expenses'              => ['expense_id', 'date', 'amount', 'tax_amount', 'payment_type', 'description'],
+    'cash_up'               => [
+        'cashup_id', 'open_date', 'open_amount_cash', 'transfer_amount_cash', 'close_date',
+        'closed_amount_cash', 'note', 'closed_amount_due', 'closed_amount_card',
+        'closed_amount_check', 'closed_amount_total',
+    ],
+    'giftcards'             => ['giftcard_id', 'giftcard_number', 'value'],
+    'attribute_definitions' => ['definition_id', 'definition_name', 'definition_type'],
+    'item_kits'             => ['item_kit_id', 'item_kit_number', 'name', 'description'],
+    'sales'                 => ['sale_id', 'sale_time', 'invoice_number'],
+    'tax_rates'             => ['tax_rate'],
+];
+
+function exportSqlRestorableColumns(string $tableName): ?array
+{
+    $db = db_connect();
+    $unprefixed = str_starts_with($tableName, $db->DBPrefix) ? substr($tableName, strlen($db->DBPrefix)) : $tableName;
+
+    return EXPORT_SQL_RESTORABLE_COLUMNS[$unprefixed] ?? null;
+}
+
 function writeExportSql(array $headers, iterable $rows, string $tableName): string
 {
     $db = db_connect();
-    $columns = array_map(static fn ($header) => array_key_first($header), $headers);
-    $quotedColumns = implode(', ', array_map(static fn ($col) => '`' . $col . '`', $columns));
+    $restorableColumns = exportSqlRestorableColumns($tableName);
+
+    if ($restorableColumns === null) {
+        return "-- This dataset has no directly-restorable columns on `$tableName` (joined/computed values only); SQL export is not available for it.\n";
+    }
+
+    $keys = array_intersect(array_map(static fn ($header) => array_key_first($header), $headers), $restorableColumns);
+
+    if ($keys === []) {
+        return "-- None of this export's columns map to real `$tableName` columns; SQL export is not available for it.\n";
+    }
+
+    $keptColumns = array_map(static fn ($key) => str_contains($key, '.') ? substr($key, strrpos($key, '.') + 1) : $key, $keys);
+    $quotedColumns = implode(', ', array_map(static fn ($col) => '`' . $col . '`', $keptColumns));
 
     $lines = [];
 
     foreach ($rows as $row) {
-        $values = array_values(exportRowValues($headers, $row));
+        $values = array_values(array_intersect_key(exportRowValues($headers, $row), array_flip($keys)));
         $quotedValues = implode(', ', array_map(static fn ($value) => $db->escape($value), $values));
         $lines[] = "INSERT INTO `$tableName` ($quotedColumns) VALUES ($quotedValues);";
     }

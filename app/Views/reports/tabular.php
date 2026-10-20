@@ -62,7 +62,7 @@
                 sortable: true,
                 showExport: true,
                 exportDataType: 'basic',
-                exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf'],
+                exportTypes: ['json', 'xml', 'csv', 'txt', 'xlsx', 'pdf'],
                 pagination: true,
                 showColumns: true,
                 data: <?= json_encode($data) ?>,
