@@ -255,7 +255,13 @@ function writeExportXlsx(array $headers, iterable $rows): string
 {
     sweepStaleExportCache();
 
-    $tempPath = WRITEPATH . 'cache/exports/xlsx_' . bin2hex(random_bytes(8)) . '.xlsx';
+    $directory = WRITEPATH . 'cache/exports/';
+
+    if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+        throw new RuntimeException("Unable to create export cache directory: $directory");
+    }
+
+    $tempPath = $directory . 'xlsx_' . bin2hex(random_bytes(8)) . '.xlsx';
 
     $columns = array_map(static fn ($header) => array_key_first($header), $headers);
     $columnFormats = exportXlsxColumnFormats($headers);
