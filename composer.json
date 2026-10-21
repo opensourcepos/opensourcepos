@@ -25,7 +25,7 @@
         "matrix": "https://matrix.to/#/#opensourcepos_Lobby:gitter.im"
     },
     "require": {
-        "php": ">=8.2.35",
+        "php": ">=8.2.35 <8.3 || >=8.3.36 <8.4 || >=8.4.27",
         "ext-intl": "*",
         "codeigniter4/framework": "4.7.4",
         "dompdf/dompdf": "^3.1.6",
