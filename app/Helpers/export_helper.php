@@ -308,7 +308,7 @@ function writeExportXlsx(array $headers, iterable $rows): string
     $columnStyles = [];
     foreach ($columnFormats as $index => $format) {
         if ($format !== null) {
-            $columnStyles[$index] = new OpenSpout\Common\Entity\Style\Style(format: $format);
+            $columnStyles[$index] = (new OpenSpout\Common\Entity\Style\Style())->setFormat($format);
         }
     }
 
