@@ -338,7 +338,7 @@ function writeExportXlsx(array $headers, iterable $rows): string
                 $cellValues[$index] = ($format !== null && $value !== '' && is_numeric($value)) ? (float) $value : (string) $value;
             }
 
-            $writer->addRow(OpenSpout\Common\Entity\Row::fromValuesWithStyles($cellValues, $columnStyles));
+            $writer->addRow(OpenSpout\Common\Entity\Row::fromValuesWithStyles($cellValues, null, $columnStyles));
         }
 
         $writer->close();
@@ -379,6 +379,16 @@ const EXPORT_PDF_EXPAND_ATTRIBUTE_TYPES = [TEXT, DROPDOWN];
 const EXPORT_PDF_BARCODE_DIGITS = 15;
 const EXPORT_PDF_ID_DIGITS = 5;
 
+/**
+ * PDF column headers have no room for the attribute_ prefix CSV/JSON/XML/SQL/XLSX use to
+ * disambiguate attribute columns from same-named item columns - PDF widths are already tight,
+ * so just show the bare attribute name there.
+ */
+function exportPdfDisplayLabel(string $key, string $label): string
+{
+    return str_starts_with($key, 'attribute_') ? substr($label, strlen('attribute_')) : $label;
+}
+
 function exportPdfColumnWidths(tFPDF $pdf, array $headers, float $usableWidth): array
 {
     $widths = [];
@@ -387,7 +397,7 @@ function exportPdfColumnWidths(tFPDF $pdf, array $headers, float $usableWidth): 
 
     foreach (array_values($headers) as $index => $header) {
         $key = array_key_first($header);
-        $label = (string) reset($header);
+        $label = exportPdfDisplayLabel($key, (string) reset($header));
         $type = $header['type'] ?? null;
 
         $isExpand = in_array($key, EXPORT_PDF_EXPAND_COLUMNS, true)
@@ -572,7 +582,10 @@ function exportPdfRenderPageSet(ExportPdfWriter $pdf, array $headers, array $row
     $usableWidth = $pdf->GetPageWidth() - (2 * EXPORT_PDF_PAGE_MARGIN);
     $pdf->exportColumnWidths = array_values(exportPdfColumnWidths($pdf, $headers, $usableWidth));
     $pdf->exportColumnAlignments = exportPdfColumnAlignments($headers);
-    $pdf->exportHeaderValues = array_values(array_map(static fn ($header) => (string) reset($header), $headers));
+    $pdf->exportHeaderValues = array_values(array_map(
+        static fn ($header) => exportPdfDisplayLabel((string) array_key_first($header), (string) reset($header)),
+        $headers
+    ));
 
     $pdf->AddPage();
 

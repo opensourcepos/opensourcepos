@@ -591,8 +591,9 @@ function itemExportHeaders(): array
         $headers[] = ['tax_percents' => lang('Items.tax_percents')];
     }
 
-    foreach ($definitionsWithTypes as $definitionId => $definitionInfo) {
-        $headers[] = [$definitionId => $definitionInfo['name'], 'type' => $definitionInfo['type']];
+    foreach ($definitionsWithTypes as $definitionInfo) {
+        $label = 'attribute_' . $definitionInfo['name'];
+        $headers[] = [$label => $label, 'type' => $definitionInfo['type']];
     }
 
     return $headers;
@@ -713,7 +714,12 @@ function getItemExportRow(object $item, array $definitionNames, array $taxPercen
         'is_serialized'         => $item->is_serialized
     ];
 
-    return $columns + expandAttributeValues($definitionNames, (array) $item, raw: true);
+    $attributeValues = [];
+    foreach (expandAttributeValues($definitionNames, (array) $item, raw: true) as $definitionId => $value) {
+        $attributeValues['attribute_' . $definitionNames[$definitionId]['name']] = $value;
+    }
+
+    return $columns + $attributeValues;
 }
 
 function giftcard_headers(): array
