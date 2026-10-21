@@ -232,6 +232,10 @@ function writeExportSql(array $headers, iterable $rows, string $tableName): stri
         $lines[] = "INSERT INTO `$tableName` ($quotedColumns) VALUES ($quotedValues);";
     }
 
+    if ($lines === []) {
+        return "-- No rows matched this export.\n";
+    }
+
     return implode("\n", $lines);
 }
 

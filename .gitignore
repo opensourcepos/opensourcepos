@@ -90,3 +90,6 @@ auth.json
 /app/Database/database.sql
 /writable/cache/*
 /.env.bak
+/public/fonts/unifont/*.cw.dat
+/public/fonts/unifont/*.cw127.php
+/public/fonts/unifont/*.mtx.php
