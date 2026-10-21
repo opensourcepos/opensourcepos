@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Helpers;
+
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use Config\OSPOS;
@@ -14,6 +16,12 @@ class LocaleHelperTest extends CIUnitTestCase
         $config           = new OSPOS();
         $config->settings = ['dateformat' => 'Y-m-d'];
         Factories::injectMock('config', OSPOS::class, $config);
+    }
+
+    protected function tearDown(): void
+    {
+        Factories::reset();
+        parent::tearDown();
     }
 
     public function testValidDateReturnsTrue(): void
