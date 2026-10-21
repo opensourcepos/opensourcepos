@@ -4,6 +4,7 @@ namespace Tests\Controllers;
 
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -11,6 +12,7 @@ use App\Models\Item;
 use App\Models\Item_kit;
 use Config\OSPOS;
 use Exception;
+use ReflectionProperty;
 
 class ItemKitsControllerTest extends CIUnitTestCase
 {
@@ -77,6 +79,15 @@ class ItemKitsControllerTest extends CIUnitTestCase
         ]);
     }
 
+    // getBody() is empty for DownloadResponse; its content lives in the private $binary property.
+    protected function downloadResponseBody(ResponseInterface $response): string
+    {
+        $reflection = new ReflectionProperty($response, 'binary');
+        $reflection->setAccessible(true);
+
+        return (string) $reflection->getValue($response);
+    }
+
     private function createItemKit(): int
     {
         $itemData = [
@@ -135,5 +146,30 @@ class ItemKitsControllerTest extends CIUnitTestCase
 
         $response->assertStatus(200);
         $this->assertStringContainsString('KIT ' . $itemKitId, $response->getBody());
+    }
+
+    public function testGetExportAll_StreamsCsvDownload(): void
+    {
+        $this->createItemKit();
+        $this->loginAsAdmin();
+
+        $response = $this->get('/item_kits/exportall/csv');
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Disposition');
+        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('item_kits_', $response->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('Test Kit', $this->downloadResponseBody($response->response()));
+    }
+
+    public function testGetExportAll_StreamsPdfDownload(): void
+    {
+        $this->createItemKit();
+        $this->loginAsAdmin();
+
+        $response = $this->get('/item_kits/exportall/pdf');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
     }
 }

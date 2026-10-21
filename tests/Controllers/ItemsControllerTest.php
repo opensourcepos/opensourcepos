@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use App\Controllers\Items;
 use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
@@ -13,6 +14,8 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use ReflectionClass;
+use ReflectionMethod;
 use Tests\Support\EmployeeFixtureTrait;
 
 class ItemsControllerTest extends CIUnitTestCase
@@ -255,8 +258,8 @@ class ItemsControllerTest extends CIUnitTestCase
      */
     public function testSaveTaxData_RejectsNegativePercent(): void
     {
-        $controller = (new \ReflectionClass(\App\Controllers\Items::class))->newInstanceWithoutConstructor();
-        $method = new \ReflectionMethod($controller, 'save_tax_data');
+        $controller = (new ReflectionClass(Items::class))->newInstanceWithoutConstructor();
+        $method = new ReflectionMethod($controller, 'save_tax_data');
         $method->setAccessible(true);
 
         $row = [
@@ -1414,6 +1417,92 @@ class ItemsControllerTest extends CIUnitTestCase
         $csvLocationName = 'Warehouse';
         $isValid = in_array($csvLocationName, $allowedLocations);
         $this->assertTrue($isValid, 'Valid location name should pass validation');
+    }
+
+    private function seedExportableItem(string $itemName): array
+    {
+        $itemData = [
+            'item_id'    => null,
+            'name'       => $itemName,
+            'category'   => 'Test Category',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted'    => 0
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+
+        $locationId = 1;
+        $quantityData = [
+            'item_id'     => $itemData['item_id'],
+            'location_id' => $locationId,
+            'quantity'    => 10
+        ];
+        $this->item_quantity->save_value($quantityData, $itemData['item_id'], $locationId);
+
+        $inventoryData = [
+            'trans_inventory' => 10,
+            'trans_items'     => $itemData['item_id'],
+            'trans_location'  => $locationId,
+            'trans_comment'   => 'Export test seed',
+            'trans_user'      => 1
+        ];
+        $this->inventory->insert($inventoryData);
+
+        return $itemData;
+    }
+
+    public function testGetExportAll_StreamsCsvDownload(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $itemData = $this->seedExportableItem('Export All Csv Item ' . uniqid());
+
+        $response = $this->get('/items/exportAll/csv');
+
+        $response->assertStatus(200);
+        $contentDisposition = $response->getHeaderLine('Content-Disposition');
+        $this->assertStringContainsString('attachment', $contentDisposition);
+        $this->assertStringContainsString('items_', $contentDisposition);
+
+        $body = (string) $response->getBody();
+        $this->assertStringContainsString($itemData['name'], $body);
+    }
+
+    public function testGetExportAll_StreamsPdfDownload(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $this->seedExportableItem('Export All Pdf Item ' . uniqid());
+
+        $response = $this->get('/items/exportAll/pdf');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+
+        $body = (string) $response->getBody();
+        $this->assertNotEmpty($body);
+        $this->assertStringStartsWith('%PDF-', $body);
+    }
+
+    public function testGetExportAll_FiltersResultsBySearchTerm(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $matchingName = 'Zebra Widget ' . uniqid();
+        $otherName = 'Gadget Thing ' . uniqid();
+
+        $this->seedExportableItem($matchingName);
+        $this->seedExportableItem($otherName);
+
+        $response = $this->get('/items/exportAll/csv?search=' . urlencode('Zebra'));
+
+        $response->assertStatus(200);
+        $body = (string) $response->getBody();
+        $this->assertStringContainsString($matchingName, $body);
+        $this->assertStringNotContainsString($otherName, $body);
     }
 }
 

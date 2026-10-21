@@ -636,6 +636,21 @@ class security_helperTest extends CIUnitTestCase
         $this->assertSame("encryption.key='old'\n", file_get_contents($this->envPath));
     }
 
+    public function testAbortEncryptionConversionResyncsInMemoryKeyFromRestoredFile(): void
+    {
+        if (!is_dir(dirname($this->backupPath))) {
+            mkdir(dirname($this->backupPath), 0750, true);
+        }
+
+        config('Encryption')->key = 'new-key-value';
+        file_put_contents($this->envPath, "encryption.key='new-key-value'\n");
+        file_put_contents($this->backupPath, "encryption.key='old-key-value'\n");
+
+        abortEncryptionConversion();
+
+        $this->assertSame('old-key-value', config('Encryption')->key);
+    }
+
     public function testAbortEncryptionConversionThrowsWhenBackupUnreadable(): void
     {
         // Force a failed backup read: file_exists() is true (it is a directory)

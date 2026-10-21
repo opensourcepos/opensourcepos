@@ -210,4 +210,133 @@ class ReportsControllerTest extends CIUnitTestCase
 
         $response->assertStatus(200);
     }
+
+    public function testSummarySalesExportAll_StreamsCsvDownloadForGrantedEmployee(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'summarysalesexporter',
+            'email'    => 'summarysalesexporter@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/summary_sales/exportAll/csv/2024-01-01/2024-12-31/sales/all');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+    }
+
+    public function testSummarySalesExportAll_DeniesEmployeeWithoutReportsSalesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'summarysalesdenied',
+            'email'    => 'summarysalesdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/summary_sales/exportAll/csv/2024-01-01/2024-12-31/sales/all');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+    }
+
+    public function testSpecificCustomersExportAll_StreamsCsvDownloadForGrantedEmployee(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificcustomersexporter',
+            'email'    => 'specificcustomersexporter@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_customers/exportAll/csv/2024-01-01/2024-12-31/1/sales/all');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+    }
+
+    public function testInventorySummaryExportAll_StreamsCsvDownloadForGrantedEmployee(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'inventorysummaryexporter',
+            'email'    => 'inventorysummaryexporter@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_inventory', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/inventory_summary/exportAll/csv/all/all');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+    }
+
+    public function testAllReportExportAllMethods_ReturnDownloadableResponseForGrantedEmployee(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'allexportsviewer',
+            'email'    => 'allexportsviewer@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_categories', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_suppliers', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_items', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_employees', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_taxes', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_discounts', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_payments', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_receivings', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_inventory', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $routes = [
+            'summary_salesExportAll'              => '/reports/summary_sales/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_categoriesExportAll'         => '/reports/summary_categories/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_expenses_categoriesExportAll' => '/reports/summary_expenses_categories/exportAll/csv/2024-01-01/2024-12-31/sales',
+            'summary_customersExportAll'          => '/reports/summary_customers/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_suppliersExportAll'          => '/reports/summary_suppliers/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_itemsExportAll'              => '/reports/summary_items/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_employeesExportAll'          => '/reports/summary_employees/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_taxesExportAll'              => '/reports/summary_taxes/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_sales_taxesExportAll'        => '/reports/summary_sales_taxes/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'summary_discountsExportAll'          => '/reports/summary_discounts/exportAll/csv/2024-01-01/2024-12-31/sales/all/0',
+            'summary_paymentsExportAll'           => '/reports/summary_payments/exportAll/csv/2024-01-01/2024-12-31',
+            'inventory_lowExportAll'              => '/reports/inventory_low/exportAll/csv',
+            'inventory_summaryExportAll'          => '/reports/inventory_summary/exportAll/csv/all/all',
+            'detailedItemSalesExportAll'          => '/reports/detailed_item_sales/exportAll/csv/2024-01-01/2024-12-31/sales/all/all',
+            'detailed_salesExportAll'             => '/reports/detailed_sales/exportAll/csv/2024-01-01/2024-12-31/sales/all',
+            'detailed_receivingsExportAll'        => '/reports/detailed_receivings/exportAll/csv/2024-01-01/2024-12-31/receiving/all',
+            'specific_customersExportAll'         => '/reports/specific_customers/exportAll/csv/2024-01-01/2024-12-31/1/sales/all',
+            'specific_employeesExportAll'         => '/reports/specific_employees/exportAll/csv/2024-01-01/2024-12-31/1/sales',
+            'specific_discountsExportAll'         => '/reports/specific_discounts/exportAll/csv/2024-01-01/2024-12-31/0/sales/0',
+            'specific_suppliersExportAll'         => '/reports/specific_suppliers/exportAll/csv/2024-01-01/2024-12-31/1/sales',
+        ];
+
+        foreach ($routes as $methodName => $path) {
+            $response = $this->get($path);
+
+            $response->assertStatus(200, "Expected 200 for $methodName at $path");
+            $this->assertStringContainsString(
+                'attachment',
+                $response->getHeaderLine('Content-Disposition'),
+                "Expected attachment Content-Disposition for $methodName at $path"
+            );
+        }
+    }
 }

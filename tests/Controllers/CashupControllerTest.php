@@ -5,10 +5,12 @@ namespace Tests\Controllers;
 use App\Models\Cashup;
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use Config\OSPOS;
+use ReflectionProperty;
 use Tests\Support\EmployeeFixtureTrait;
 
 class CashupControllerTest extends CIUnitTestCase
@@ -75,6 +77,15 @@ class CashupControllerTest extends CIUnitTestCase
         ]);
     }
 
+    // getBody() is empty for DownloadResponse; its content lives in the private $binary property.
+    protected function downloadResponseBody(ResponseInterface $response): string
+    {
+        $reflection = new ReflectionProperty($response, 'binary');
+        $reflection->setAccessible(true);
+
+        return (string) $reflection->getValue($response);
+    }
+
     public function testTamperedTotalIsRecomputedServerSide(): void
     {
         $cashierId = $this->createCashupEmployee();
@@ -136,5 +147,66 @@ class CashupControllerTest extends CIUnitTestCase
         $this->assertEquals(155.0, (float) $cashup->closed_amount_total);
         $this->assertEquals($cashierId, (int) $cashup->open_employee_id);
         $this->assertEquals($cashierId, (int) $cashup->close_employee_id);
+    }
+
+    public function testGetExportAll_StreamsCsvDownload(): void
+    {
+        $cashierId = $this->createCashupEmployee();
+        $this->loginAs($cashierId);
+
+        $cashUpData = [
+            'open_date'            => '2026-09-05 08:00:00',
+            'close_date'           => '2026-09-05 16:00:00',
+            'open_amount_cash'     => '20',
+            'transfer_amount_cash' => '5',
+            'closed_amount_cash'   => '100',
+            'closed_amount_due'    => '15',
+            'closed_amount_card'   => '40',
+            'closed_amount_check'  => '25',
+            'closed_amount_total'  => '155',
+            'note'                 => false,
+            'description'          => 'Export-all CSV cashup',
+            'open_employee_id'     => $cashierId,
+            'close_employee_id'    => $cashierId,
+            'deleted'              => false,
+        ];
+        model(Cashup::class)->save_value($cashUpData);
+
+        $response = $this->get('/cashups/exportall/csv');
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Disposition');
+        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('cashups_', $response->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('Export-all CSV cashup', $this->downloadResponseBody($response->response()));
+    }
+
+    public function testGetExportAll_StreamsPdfDownload(): void
+    {
+        $cashierId = $this->createCashupEmployee();
+        $this->loginAs($cashierId);
+
+        $cashUpData = [
+            'open_date'            => '2026-09-05 08:00:00',
+            'close_date'           => '2026-09-05 16:00:00',
+            'open_amount_cash'     => '20',
+            'transfer_amount_cash' => '5',
+            'closed_amount_cash'   => '100',
+            'closed_amount_due'    => '15',
+            'closed_amount_card'   => '40',
+            'closed_amount_check'  => '25',
+            'closed_amount_total'  => '155',
+            'note'                 => false,
+            'description'          => 'Export-all PDF cashup',
+            'open_employee_id'     => $cashierId,
+            'close_employee_id'    => $cashierId,
+            'deleted'              => false,
+        ];
+        model(Cashup::class)->save_value($cashUpData);
+
+        $response = $this->get('/cashups/exportall/pdf');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
     }
 }

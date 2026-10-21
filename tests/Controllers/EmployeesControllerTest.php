@@ -3,12 +3,14 @@
 namespace Tests\Controllers;
 
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use App\Models\Module;
+use ReflectionProperty;
 use Tests\Support\EmployeeFixtureTrait;
 
 class EmployeesControllerTest extends CIUnitTestCase
@@ -82,6 +84,15 @@ class EmployeesControllerTest extends CIUnitTestCase
     protected function loginAsNonAdmin(int $personId): void
     {
         $this->withSession(['person_id' => $personId, 'menu_group' => 'home']);
+    }
+
+    // getBody() is empty for DownloadResponse; its content lives in the private $binary property.
+    protected function downloadResponseBody(ResponseInterface $response): string
+    {
+        $reflection = new ReflectionProperty($response, 'binary');
+        $reflection->setAccessible(true);
+
+        return (string) $reflection->getValue($response);
     }
 
     public function testNonAdminCannotViewAdminAccount(): void
@@ -370,5 +381,30 @@ class EmployeesControllerTest extends CIUnitTestCase
 
         $employeeModel = model(Employee::class);
         $this->assertTrue($employeeModel->has_grant('customers', (int) $createdEmployee->person_id));
+    }
+
+    public function testGetExportAll_StreamsCsvDownload(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->loginAsNonAdmin($nonAdminId);
+
+        $response = $this->get('/employees/exportall/csv');
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Disposition');
+        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('employees_', $response->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('NonAdmin', $this->downloadResponseBody($response->response()));
+    }
+
+    public function testGetExportAll_StreamsPdfDownload(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee();
+        $this->loginAsNonAdmin($nonAdminId);
+
+        $response = $this->get('/employees/exportall/pdf');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
     }
 }

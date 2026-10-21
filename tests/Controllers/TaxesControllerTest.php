@@ -6,6 +6,7 @@ use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use App\Models\Tax;
 use Tests\Support\EmployeeFixtureTrait;
 
 class TaxesControllerTest extends CIUnitTestCase
@@ -289,5 +290,56 @@ class TaxesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
+    }
+
+    public function testGetExportAll_StreamsCsvDownload(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $taxRateData = [
+            'rate_tax_code_id'     => 1,
+            'rate_tax_category_id' => 1,
+            'rate_jurisdiction_id' => 1,
+            'tax_rate'             => '12.3400',
+            'tax_rounding_code'    => 0,
+        ];
+        $tax = model(Tax::class);
+        $this->assertTrue($tax->save_value($taxRateData));
+
+        $response = $this->get('/taxes/exportAll/csv');
+
+        $response->assertStatus(200);
+        $contentDisposition = $response->getHeaderLine('Content-Disposition');
+        $this->assertStringContainsString('attachment', $contentDisposition);
+        $this->assertStringContainsString('tax_rates_', $contentDisposition);
+
+        $body = (string) $response->getBody();
+        $this->assertStringContainsString('12.3400', $body);
+    }
+
+    public function testGetExportAll_StreamsPdfDownload(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $taxRateData = [
+            'rate_tax_code_id'     => 1,
+            'rate_tax_category_id' => 1,
+            'rate_jurisdiction_id' => 1,
+            'tax_rate'             => '8.5000',
+            'tax_rounding_code'    => 0,
+        ];
+        $tax = model(Tax::class);
+        $this->assertTrue($tax->save_value($taxRateData));
+
+        $response = $this->get('/taxes/exportAll/pdf');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+
+        $body = (string) $response->getBody();
+        $this->assertNotEmpty($body);
+        $this->assertStringStartsWith('%PDF-', $body);
     }
 }
