@@ -1,4 +1,4 @@
-FROM php:8.2-apache AS ospos
+FROM php:8.2.35-apache AS ospos
 LABEL maintainer="jekkos"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && a2enmod rewrite
 
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
+# Mitigate CVE-2026-109619 (persistent worker use-after-free state corruption)
+RUN echo "session.upload_progress.enabled = 0" > /usr/local/etc/php/conf.d/security.ini
 
 WORKDIR /app
 COPY --chown=www-data:www-data . /app
