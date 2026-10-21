@@ -112,8 +112,8 @@ class Expenses extends Secure_Controller
             'is_deleted'  => false
         ];
 
-        $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-        $filters = array_merge($filters, $request_filters);
+        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $requestFilters);
         $expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
 
         $exportRows = [];

@@ -65,11 +65,11 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
         $sort   = $this->sanitizeSortColumn(expense_category_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'expense_category_id');
         $order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $expense_categories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
+        $expenseCategories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
 
         $exportRows = [];
-        foreach ($expense_categories->getResult() as $expense_category) {
-            $exportRows[] = getExpenseCategoryExportRow($expense_category);
+        foreach ($expenseCategories->getResult() as $expenseCategory) {
+            $exportRows[] = getExpenseCategoryExportRow($expenseCategory);
         }
 
         $file = generateExportFile($format, expenseCategoryExportHeaders(), $exportRows, 'expenses_categories_' . date('Ymd_His'), $this->db->prefixTable('expense_categories'));

@@ -113,11 +113,11 @@ class Taxes extends Secure_Controller
         $sort = $this->sanitizeSortColumn(get_tax_rates_manage_table_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'tax_rate_id');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $tax_rates = $this->tax->search($search, $limit, $offset, $sort, $order);
+        $taxRates = $this->tax->search($search, $limit, $offset, $sort, $order);
 
         $exportRows = [];
-        foreach ($tax_rates->getResult() as $tax_rate_row) {
-            $exportRows[] = getTaxRateExportRow($tax_rate_row);
+        foreach ($taxRates->getResult() as $taxRateRow) {
+            $exportRows[] = getTaxRateExportRow($taxRateRow);
         }
 
         $file = generateExportFile($format, taxRateExportHeaders(), $exportRows, 'tax_rates_' . date('Ymd_His'), $this->db->prefixTable('tax_rates'));

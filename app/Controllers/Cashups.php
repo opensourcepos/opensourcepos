@@ -92,13 +92,13 @@ class Cashups extends Secure_Controller
             'is_deleted' => false
         ];
 
-        $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-        $filters = array_merge($filters, $request_filters);
-        $cash_ups = $this->cashup->search($search, $filters, $limit, $offset, $sort, $order);
+        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $requestFilters);
+        $cashUps = $this->cashup->search($search, $filters, $limit, $offset, $sort, $order);
 
         $exportRows = [];
-        foreach ($cash_ups->getResult() as $cash_up) {
-            $exportRows[] = getCashupExportRow($cash_up);
+        foreach ($cashUps->getResult() as $cashUp) {
+            $exportRows[] = getCashupExportRow($cashUp);
         }
 
         $file = generateExportFile($format, cashupExportHeaders(), $exportRows, 'cashups_' . date('Ymd_His'), $this->db->prefixTable('cash_up'));

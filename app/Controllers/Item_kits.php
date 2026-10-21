@@ -120,13 +120,13 @@ class Item_kits extends Secure_Controller
         $sort   = $this->sanitizeSortColumn(item_kit_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_kit_id');
         $order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $item_kits = $this->item_kit->search($search, $limit, $offset, $sort, $order);
+        $itemKits = $this->item_kit->search($search, $limit, $offset, $sort, $order);
 
         $exportRows = [];
-        foreach ($item_kits->getResult() as $item_kit) {
+        foreach ($itemKits->getResult() as $itemKit) {
             // total_cost_price/total_unit_price aren't stored columns, they're computed per-row
-            $item_kit = $this->_add_totals_to_item_kit($item_kit);
-            $exportRows[] = getItemKitExportRow($item_kit);
+            $itemKit = $this->_add_totals_to_item_kit($itemKit);
+            $exportRows[] = getItemKitExportRow($itemKit);
         }
 
         $file = generateExportFile($format, itemKitExportHeaders(), $exportRows, 'item_kits_' . date('Ymd_His'), $this->db->prefixTable('item_kits'));

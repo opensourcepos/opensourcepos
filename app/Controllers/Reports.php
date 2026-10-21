@@ -184,11 +184,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_sales->getData($inputs);
+        $reportData = $this->summary_sales->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'sale_date' => $row['sale_date'],
                 'sales'     => $row['sales'],
                 'quantity'  => $row['quantity_purchased'],
@@ -200,7 +200,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_sales->getDataColumns(), $export_rows, 'summary_sales');
+        return $this->exportReport($format, $this->summary_sales->getDataColumns(), $exportRows, 'summary_sales');
     }
 
     /**
@@ -261,11 +261,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_categories->getData($inputs);
+        $reportData = $this->summary_categories->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'category' => $row['category'],
                 'quantity' => $row['quantity_purchased'],
                 'subtotal' => $row['subtotal'],
@@ -276,7 +276,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_categories->getDataColumns(), $export_rows, 'summary_categories');
+        return $this->exportReport($format, $this->summary_categories->getDataColumns(), $exportRows, 'summary_categories');
     }
 
     /**
@@ -323,11 +323,11 @@ class Reports extends Secure_Controller
     {
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];
 
-        $report_data = $this->summary_expenses_categories->getData($inputs);
+        $reportData = $this->summary_expenses_categories->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'category_name'    => $row['category_name'],
                 'count'            => $row['count'],
                 'total_amount'     => $row['total_amount'],
@@ -335,7 +335,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_expenses_categories->getDataColumns(), $export_rows, 'summary_expenses_categories');
+        return $this->exportReport($format, $this->summary_expenses_categories->getDataColumns(), $exportRows, 'summary_expenses_categories');
     }
 
     /**
@@ -398,11 +398,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_customers->getData($inputs);
+        $reportData = $this->summary_customers->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'customer_name' => $row['customer'],
                 'sales'         => $row['sales'],
                 'quantity'      => $row['quantity_purchased'],
@@ -414,7 +414,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_customers->getDataColumns(), $export_rows, 'summary_customers');
+        return $this->exportReport($format, $this->summary_customers->getDataColumns(), $exportRows, 'summary_customers');
     }
 
     /**
@@ -475,11 +475,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_suppliers->getData($inputs);
+        $reportData = $this->summary_suppliers->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'supplier_name' => $row['supplier'],
                 'quantity'      => $row['quantity_purchased'],
                 'subtotal'      => $row['subtotal'],
@@ -490,7 +490,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_suppliers->getDataColumns(), $export_rows, 'summary_suppliers');
+        return $this->exportReport($format, $this->summary_suppliers->getDataColumns(), $exportRows, 'summary_suppliers');
     }
 
     /**
@@ -555,11 +555,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_items->getData($inputs);
+        $reportData = $this->summary_items->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'item_name'  => $row['name'],
                 'category'   => $row['category'],
                 'cost_price' => $row['cost_price'],
@@ -573,7 +573,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_items->getDataColumns(), $export_rows, 'summary_items');
+        return $this->exportReport($format, $this->summary_items->getDataColumns(), $exportRows, 'summary_items');
     }
 
     /**
@@ -636,11 +636,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_employees->getData($inputs);
+        $reportData = $this->summary_employees->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'employee_name' => $row['employee'],
                 'sales'         => $row['sales'],
                 'quantity'      => $row['quantity_purchased'],
@@ -652,7 +652,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_employees->getDataColumns(), $export_rows, 'summary_employees');
+        return $this->exportReport($format, $this->summary_employees->getDataColumns(), $exportRows, 'summary_employees');
     }
 
     /**
@@ -713,11 +713,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_taxes->getData($inputs);
+        $reportData = $this->summary_taxes->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'tax_name'     => $row['name'],
                 'tax_percent'  => $row['percent'],
                 'report_count' => $row['count'],
@@ -727,7 +727,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_taxes->getDataColumns(), $export_rows, 'summary_taxes');
+        return $this->exportReport($format, $this->summary_taxes->getDataColumns(), $exportRows, 'summary_taxes');
     }
 
     /**
@@ -782,11 +782,11 @@ class Reports extends Secure_Controller
             'location_id' => $location_id
         ];
 
-        $report_data = $this->summary_sales_taxes->getData($inputs);
+        $reportData = $this->summary_sales_taxes->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'reporting_authority' => $row['reporting_authority'],
                 'jurisdiction_name'   => $row['jurisdiction_name'],
                 'tax_category'        => $row['tax_category'],
@@ -795,7 +795,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_sales_taxes->getDataColumns(), $export_rows, 'summary_sales_taxes');
+        return $this->exportReport($format, $this->summary_sales_taxes->getDataColumns(), $exportRows, 'summary_sales_taxes');
     }
 
     /**
@@ -870,18 +870,18 @@ class Reports extends Secure_Controller
             'discount_type' => $discount_type
         ];
 
-        $report_data = $this->summary_discounts->getData($inputs);
+        $reportData = $this->summary_discounts->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'total'    => $row['total'],
                 'discount' => $row['discount'],
                 'count'    => $row['count']
             ];
         }
 
-        return $this->exportReport($format, $this->summary_discounts->getDataColumns(), $export_rows, 'summary_discounts');
+        return $this->exportReport($format, $this->summary_discounts->getDataColumns(), $exportRows, 'summary_discounts');
     }
 
     /**
@@ -955,10 +955,10 @@ class Reports extends Secure_Controller
             'location_id' => 'all'
         ];
 
-        $report_data = $this->summary_payments->getData($inputs);
+        $reportData = $this->summary_payments->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
+        $exportRows = [];
+        foreach ($reportData as $row) {
             // Skip the '<HR>' divider row - it's a display-only separator, not exportable data
             if ($row['trans_group'] == '<HR>') {
                 continue;
@@ -968,7 +968,7 @@ class Reports extends Secure_Controller
                 $row['trans_type'] = lang('Reports.trans_nopay_sales');
             }
 
-            $export_rows[] = [
+            $exportRows[] = [
                 'trans_group'    => $row['trans_group'],
                 'trans_type'     => $row['trans_type'],
                 'trans_sales'    => $row['trans_sales'],
@@ -979,7 +979,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->summary_payments->getDataColumns(), $export_rows, 'summary_payments');
+        return $this->exportReport($format, $this->summary_payments->getDataColumns(), $exportRows, 'summary_payments');
     }
 
     /**
@@ -1723,16 +1723,16 @@ class Reports extends Secure_Controller
     {
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type];
 
-        $specific_customer = model(Specific_customer::class);
+        $specificCustomer = model(Specific_customer::class);
 
-        $specific_customer->create($inputs);
+        $specificCustomer->create($inputs);
 
-        $headers = $specific_customer->getDataColumns();
-        $report_data = $specific_customer->getData($inputs);
+        $headers = $specificCustomer->getDataColumns();
+        $reportData = $specificCustomer->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data['summary'] as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData['summary'] as $row) {
+            $exportRows[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
                 'sale_time'     => $row['sale_time'],
@@ -1748,7 +1748,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $headers['summary'], $export_rows, 'specific_customers');
+        return $this->exportReport($format, $headers['summary'], $exportRows, 'specific_customers');
     }
 
     /**
@@ -1882,16 +1882,16 @@ class Reports extends Secure_Controller
     {
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type];
 
-        $specific_employee = model(Specific_employee::class);
+        $specificEmployee = model(Specific_employee::class);
 
-        $specific_employee->create($inputs);
+        $specificEmployee->create($inputs);
 
-        $headers = $specific_employee->getDataColumns();
-        $report_data = $specific_employee->getData($inputs);
+        $headers = $specificEmployee->getDataColumns();
+        $reportData = $specificEmployee->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data['summary'] as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData['summary'] as $row) {
+            $exportRows[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
                 'sale_time'     => $row['sale_time'],
@@ -1907,7 +1907,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $headers['summary'], $export_rows, 'specific_employees');
+        return $this->exportReport($format, $headers['summary'], $exportRows, 'specific_employees');
     }
 
     /**
@@ -2055,16 +2055,16 @@ class Reports extends Secure_Controller
             'discount_type' => $discount_type
         ];
 
-        $specific_discount = model(Specific_discount::class);
+        $specificDiscount = model(Specific_discount::class);
 
-        $specific_discount->create($inputs);
+        $specificDiscount->create($inputs);
 
-        $headers = $specific_discount->getDataColumns();
-        $report_data = $specific_discount->getData($inputs);
+        $headers = $specificDiscount->getDataColumns();
+        $reportData = $specificDiscount->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data['summary'] as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData['summary'] as $row) {
+            $exportRows[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
                 'sale_time'     => $row['sale_time'],
@@ -2081,7 +2081,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $headers['summary'], $export_rows, 'specific_discounts');
+        return $this->exportReport($format, $headers['summary'], $exportRows, 'specific_discounts');
     }
 
     /**
@@ -2227,15 +2227,15 @@ class Reports extends Secure_Controller
             'sale_type'   => $sale_type
         ];
 
-        $specific_supplier = model(Specific_supplier::class);
+        $specificSupplier = model(Specific_supplier::class);
 
-        $specific_supplier->create($inputs);
+        $specificSupplier->create($inputs);
 
-        $report_data = $specific_supplier->getData($inputs);
+        $reportData = $specificSupplier->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'id'          => $row['sale_id'],
                 'type_code'   => $row['type_code'],
                 'sale_time'   => $row['sale_time'],
@@ -2252,7 +2252,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $specific_supplier->getDataColumns(), $export_rows, 'specific_suppliers');
+        return $this->exportReport($format, $specificSupplier->getDataColumns(), $exportRows, 'specific_suppliers');
     }
 
     /**
@@ -2400,24 +2400,24 @@ class Reports extends Secure_Controller
      */
     public function detailed_salesExportAll(string $format, string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): ResponseInterface
     {
-        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_SALES, true);
+        $definitionNames = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_SALES, true);
 
         $inputs = [
             'start_date'     => $start_date,
             'end_date'       => $end_date,
             'sale_type'      => $sale_type,
             'location_id'    => $location_id,
-            'definition_ids' => array_keys($definition_names)
+            'definition_ids' => array_keys($definitionNames)
         ];
 
         $this->detailed_sales->create($inputs);
 
         $headers = $this->detailed_sales->getDataColumns();
-        $report_data = $this->detailed_sales->getData($inputs);
+        $reportData = $this->detailed_sales->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data['summary'] as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData['summary'] as $row) {
+            $exportRows[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
                 'sale_time'     => $row['sale_time'],
@@ -2434,7 +2434,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $headers['summary'], $export_rows, 'detailed_sales');
+        return $this->exportReport($format, $headers['summary'], $exportRows, 'detailed_sales');
     }
 
     public function detailedItemSales(string $startDate, string $endDate, string $saleType = 'sales', string $locationId = 'all', string $discountType = 'all'): string
@@ -2675,18 +2675,18 @@ class Reports extends Secure_Controller
      */
     public function detailed_receivingsExportAll(string $format, string $start_date, string $end_date, string $receiving_type, string $location_id = 'all'): ResponseInterface
     {
-        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_RECEIVINGS, true);
+        $definitionNames = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_RECEIVINGS, true);
 
-        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
+        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definitionNames)];
 
         $this->detailed_receivings->create($inputs);
 
         $headers = $this->detailed_receivings->getDataColumns();
-        $report_data = $this->detailed_receivings->getData($inputs);
+        $reportData = $this->detailed_receivings->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data['summary'] as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData['summary'] as $row) {
+            $exportRows[] = [
                 'id'             => $row['receiving_id'],
                 'receiving_time' => $row['receiving_time'],
                 'quantity'       => $row['items_purchased'],
@@ -2699,7 +2699,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $headers['summary'], $export_rows, 'detailed_receivings');
+        return $this->exportReport($format, $headers['summary'], $exportRows, 'detailed_receivings');
     }
 
     /**
@@ -2711,9 +2711,9 @@ class Reports extends Secure_Controller
 
         $inputs = [];
 
-        $inventory_low = model(Inventory_low::class);
+        $inventoryLow = model(Inventory_low::class);
 
-        $report_data = $inventory_low->getData($inputs);
+        $reportData = $inventoryLow->getData($inputs);
 
         $tabular_data = [];
         foreach ($report_data as $row) {
@@ -2742,13 +2742,13 @@ class Reports extends Secure_Controller
      */
     public function inventory_lowExportAll(string $format): ResponseInterface
     {
-        $inventory_low = model(Inventory_low::class);
+        $inventoryLow = model(Inventory_low::class);
 
-        $report_data = $inventory_low->getData([]);
+        $reportData = $inventoryLow->getData([]);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'item_name'     => $row['name'],
                 'item_number'   => $row['item_number'],
                 'quantity'      => $row['quantity'],
@@ -2757,7 +2757,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $inventory_low->getDataColumns(), $export_rows, 'inventory_low');
+        return $this->exportReport($format, $inventoryLow->getDataColumns(), $exportRows, 'inventory_low');
     }
 
     /**
@@ -2827,11 +2827,11 @@ class Reports extends Secure_Controller
     {
         $inputs = ['location_id' => $location_id, 'item_count' => $item_count];
 
-        $report_data = $this->inventory_summary->getData($inputs);
+        $reportData = $this->inventory_summary->getData($inputs);
 
-        $export_rows = [];
-        foreach ($report_data as $row) {
-            $export_rows[] = [
+        $exportRows = [];
+        foreach ($reportData as $row) {
+            $exportRows[] = [
                 'item_name'         => $row['name'],
                 'item_number'       => $row['item_number'],
                 'category'          => $row['category'],
@@ -2845,7 +2845,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        return $this->exportReport($format, $this->inventory_summary->getDataColumns(), $export_rows, 'inventory_summary');
+        return $this->exportReport($format, $this->inventory_summary->getDataColumns(), $exportRows, 'inventory_summary');
     }
 
     /**
