@@ -70,7 +70,7 @@ class Employees extends Persons
             $exportRows[] = getEmployeeExportRow($person);
         }
 
-        $file = generateExportFile($format, employeeExportHeaders(), $exportRows, 'employees_' . date('Ymd_His'), $this->db->prefixTable('Employees'));
+        $file = generateExportFile($format, employeeExportHeaders(), $exportRows, 'employees_' . date('Ymd_His'), $this->db->prefixTable('people'));
 
         if ($format === 'pdf') {
             return $this->response->setContentType('application/pdf')

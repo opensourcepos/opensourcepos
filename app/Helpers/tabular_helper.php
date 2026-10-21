@@ -274,7 +274,14 @@ function getEmployeeExportRow(object $person): array
         'last_name'        => $person->last_name,
         'first_name'       => $person->first_name,
         'email'            => $person->email,
-        'phone_number'     => $person->phone_number
+        'phone_number'     => $person->phone_number,
+        'address_1'        => $person->address_1,
+        'address_2'        => $person->address_2,
+        'city'             => $person->city,
+        'state'            => $person->state,
+        'zip'              => $person->zip,
+        'country'          => $person->country,
+        'comments'         => $person->comments
     ];
 }
 
@@ -363,7 +370,8 @@ function getCustomerExportRow(object $person, object $stats): array
         'first_name'       => $person->first_name,
         'email'            => $person->email,
         'phone_number'     => $person->phone_number,
-        'total'            => $stats->total
+        'total'            => $stats->total,
+        'employee_id'      => $person->employee_id
     ];
 }
 
@@ -691,15 +699,18 @@ function getItemExportRow(object $item, array $definitionNames, array $taxPercen
     }
 
     $columns = [
-        'item_id'       => $item->item_id,
-        'item_number'   => $item->item_number,
-        'name'          => $name,
-        'category'      => $item->category,
-        'company_name'  => $item->company_name,
-        'cost_price'    => $item->cost_price,
-        'unit_price'    => $item->unit_price,
-        'quantity'      => $item->quantity ?? '',
-        'tax_percents'  => $taxPercents
+        'item_id'               => $item->item_id,
+        'item_number'           => $item->item_number,
+        'name'                  => $name,
+        'category'              => $item->category,
+        'company_name'          => $item->company_name,
+        'cost_price'            => $item->cost_price,
+        'unit_price'            => $item->unit_price,
+        'quantity'              => $item->quantity ?? '',
+        'tax_percents'          => $taxPercents,
+        'description'           => $item->description,
+        'allow_alt_description' => $item->allow_alt_description,
+        'is_serialized'         => $item->is_serialized
     ];
 
     return $columns + expandAttributeValues($definitionNames, (array) $item, raw: true);
@@ -961,9 +972,13 @@ function attributeExportHeaders(): array
 /**
  * Export row for an attribute definition: raw values, matching attributeExportHeaders()'s column set.
  * definition_flags is kept as the resolved human-readable label string (not the raw bitmask),
- * consistent with how the manage table displays it.
+ * consistent with how the manage table displays it. The raw bitmask is kept separately under
+ * definition_flags_raw (not in attributeExportHeaders(), so only the SQL writer reads it).
+ *
+ * @param int $rawDefinitionFlags The raw definition_flags bitmask, captured before the caller
+ *                                overwrites $attribute_row->definition_flags with resolved labels.
  */
-function getAttributeExportRow(object $attribute_row): array
+function getAttributeExportRow(object $attribute_row, int $rawDefinitionFlags): array
 {
     $attribute = model(Attribute::class);
 
@@ -976,11 +991,12 @@ function getAttributeExportRow(object $attribute_row): array
     }
 
     return [
-        'definition_id'    => $attribute_row->definition_id,
-        'definition_name'  => $attribute_row->definition_name,
-        'definition_type'  => $attribute_row->definition_type,
-        'definition_flags' => $definition_flags,
-        'definition_group' => $attribute_row->definition_group
+        'definition_id'        => $attribute_row->definition_id,
+        'definition_name'      => $attribute_row->definition_name,
+        'definition_type'      => $attribute_row->definition_type,
+        'definition_flags'     => $definition_flags,
+        'definition_flags_raw' => $rawDefinitionFlags,
+        'definition_group'     => $attribute_row->definition_group
     ];
 }
 
@@ -1112,16 +1128,18 @@ function expenseExportHeaders(): array
 function getExpenseExportRow(object $expense): array
 {
     return [
-        'expense_id'        => $expense->expense_id,
-        'date'              => $expense->date,
-        'supplier_name'     => $expense->supplier_name,
-        'supplier_tax_code' => $expense->supplier_tax_code,
-        'amount'            => $expense->amount,
-        'tax_amount'        => $expense->tax_amount,
-        'payment_type'      => $expense->payment_type,
-        'category_name'     => $expense->category_name,
-        'description'       => $expense->description,
-        'created_by'        => $expense->first_name . ' ' . $expense->last_name
+        'expense_id'          => $expense->expense_id,
+        'date'                => $expense->date,
+        'supplier_name'       => $expense->supplier_name,
+        'supplier_tax_code'   => $expense->supplier_tax_code,
+        'amount'              => $expense->amount,
+        'tax_amount'          => $expense->tax_amount,
+        'payment_type'        => $expense->payment_type,
+        'category_name'       => $expense->category_name,
+        'description'         => $expense->description,
+        'created_by'          => $expense->first_name . ' ' . $expense->last_name,
+        'employee_id'         => $expense->employee_id,
+        'expense_category_id' => $expense->expense_category_id
     ];
 }
 
@@ -1238,24 +1256,28 @@ function cashupExportHeaders(): array
 /**
  * Export row for a cashup: raw (unformatted) values, matching cashupExportHeaders()'s column set.
  * open_employee_id/close_employee_id keep the concatenated first/last name display values since
- * no raw employee ID is available in the row payload.
+ * no raw employee ID is available in the row payload; the raw ids are kept separately under
+ * *_raw keys (not in cashupExportHeaders(), so only the SQL writer reads them).
  */
 function getCashupExportRow(object $cash_up): array
 {
     return [
-        'cashup_id'            => $cash_up->cashup_id,
-        'open_date'            => $cash_up->open_date,
-        'open_employee_id'     => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
-        'open_amount_cash'     => $cash_up->open_amount_cash,
-        'transfer_amount_cash' => $cash_up->transfer_amount_cash,
-        'close_date'           => $cash_up->close_date,
-        'close_employee_id'    => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
-        'closed_amount_cash'   => $cash_up->closed_amount_cash,
-        'note'                 => $cash_up->note ? 1 : 0,
-        'closed_amount_due'    => $cash_up->closed_amount_due,
-        'closed_amount_card'   => $cash_up->closed_amount_card,
-        'closed_amount_check'  => $cash_up->closed_amount_check,
-        'closed_amount_total'  => $cash_up->closed_amount_total
+        'cashup_id'             => $cash_up->cashup_id,
+        'open_date'             => $cash_up->open_date,
+        'open_employee_id'      => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
+        'open_employee_id_raw'  => $cash_up->open_employee_id,
+        'open_amount_cash'      => $cash_up->open_amount_cash,
+        'transfer_amount_cash'  => $cash_up->transfer_amount_cash,
+        'close_date'            => $cash_up->close_date,
+        'close_employee_id'     => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
+        'close_employee_id_raw' => $cash_up->close_employee_id,
+        'closed_amount_cash'    => $cash_up->closed_amount_cash,
+        'note'                  => $cash_up->note ? 1 : 0,
+        'description'           => $cash_up->description,
+        'closed_amount_due'     => $cash_up->closed_amount_due,
+        'closed_amount_card'    => $cash_up->closed_amount_card,
+        'closed_amount_check'   => $cash_up->closed_amount_check,
+        'closed_amount_total'   => $cash_up->closed_amount_total
     ];
 }
 

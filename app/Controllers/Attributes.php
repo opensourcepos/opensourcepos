@@ -78,8 +78,9 @@ class Attributes extends Secure_Controller
 
         $exportRows = [];
         foreach ($attributes->getResult() as $attribute_row) {
+            $rawDefinitionFlags = $attribute_row->definition_flags;
             $attribute_row->definition_flags = $this->get_attributes($attribute_row->definition_flags);
-            $exportRows[] = getAttributeExportRow($attribute_row);
+            $exportRows[] = getAttributeExportRow($attribute_row, $rawDefinitionFlags);
         }
 
         $file = generateExportFile($format, attributeExportHeaders(), $exportRows, 'attributes_' . date('Ymd_His'), $this->db->prefixTable('attribute_definitions'));

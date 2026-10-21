@@ -162,13 +162,16 @@ function taxRateExportHeaders(): array
 function getTaxRateExportRow(object $tax_rates_row): array
 {
     return [
-        'tax_rate_id'        => $tax_rates_row->tax_rate_id,
-        'tax_code'           => $tax_rates_row->tax_code,
-        'tax_code_name'      => $tax_rates_row->tax_code_name,
-        'tax_category'       => $tax_rates_row->tax_category,
-        'tax_rate'           => $tax_rates_row->tax_rate,
-        'jurisdiction_name'  => $tax_rates_row->jurisdiction_name,
-        'rounding_code_name' => Rounding_mode::get_rounding_code_name($tax_rates_row->tax_rounding_code)
+        'tax_rate_id'             => $tax_rates_row->tax_rate_id,
+        'tax_code'                => $tax_rates_row->tax_code,
+        'tax_code_name'           => $tax_rates_row->tax_code_name,
+        'tax_category'            => $tax_rates_row->tax_category,
+        'tax_rate'                => $tax_rates_row->tax_rate,
+        'jurisdiction_name'       => $tax_rates_row->jurisdiction_name,
+        'rounding_code_name'      => Rounding_mode::get_rounding_code_name($tax_rates_row->tax_rounding_code),
+        'rate_tax_code_id'        => $tax_rates_row->rate_tax_code_id,
+        'rate_tax_category_id'    => $tax_rates_row->rate_tax_category_id,
+        'rate_jurisdiction_id'    => $tax_rates_row->rate_jurisdiction_id
     ];
 }
 

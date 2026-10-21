@@ -123,6 +123,8 @@ class Expense extends Model
                 MAX(expenses.tax_amount) AS tax_amount,
                 MAX(expenses.payment_type) AS payment_type,
                 MAX(expenses.description) AS description,
+                MAX(expenses.employee_id) AS employee_id,
+                MAX(expenses.expense_category_id) AS expense_category_id,
                 MAX(employees.first_name) AS first_name,
                 MAX(employees.last_name) AS last_name,
                 MAX(expense_categories.category_name) AS category_name

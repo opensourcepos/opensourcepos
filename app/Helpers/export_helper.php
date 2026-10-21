@@ -160,36 +160,74 @@ const EXPORT_SQL_RESTORABLE_COLUMNS = [
     'tax_rates'             => ['tax_rate'],
 ];
 
-function exportSqlRestorableColumns(string $tableName): ?array
+/**
+ * Columns that are NOT NULL with no default on the real table, so writeExportSql() must
+ * always include them (if present in the row) even though they aren't part of the visible
+ * $headers column set - without a value, the generated INSERT fails under strict SQL mode.
+ * Keyed by unprefixed table name => [db column => row array key].
+ */
+const EXPORT_SQL_REQUIRED_HIDDEN_COLUMNS = [
+    'people'                => [
+        'address_1' => 'address_1', 'address_2' => 'address_2', 'city' => 'city',
+        'state' => 'state', 'zip' => 'zip', 'country' => 'country', 'comments' => 'comments',
+    ],
+    'customers'             => ['employee_id' => 'employee_id'],
+    'items'                 => [
+        'description' => 'description', 'allow_alt_description' => 'allow_alt_description',
+        'is_serialized' => 'is_serialized',
+    ],
+    'expenses'              => ['employee_id' => 'employee_id', 'expense_category_id' => 'expense_category_id'],
+    'cash_up'               => [
+        'description' => 'description', 'open_employee_id' => 'open_employee_id_raw',
+        'close_employee_id' => 'close_employee_id_raw',
+    ],
+    'attribute_definitions' => ['definition_flags' => 'definition_flags_raw'],
+    'tax_rates'             => [
+        'rate_tax_code_id' => 'rate_tax_code_id', 'rate_tax_category_id' => 'rate_tax_category_id',
+        'rate_jurisdiction_id' => 'rate_jurisdiction_id',
+    ],
+];
+
+function exportSqlUnprefixedTableName(string $tableName): string
 {
     $db = db_connect();
-    $unprefixed = str_starts_with($tableName, $db->DBPrefix) ? substr($tableName, strlen($db->DBPrefix)) : $tableName;
 
-    return EXPORT_SQL_RESTORABLE_COLUMNS[$unprefixed] ?? null;
+    return str_starts_with($tableName, $db->DBPrefix) ? substr($tableName, strlen($db->DBPrefix)) : $tableName;
 }
 
 function writeExportSql(array $headers, iterable $rows, string $tableName): string
 {
     $db = db_connect();
-    $restorableColumns = exportSqlRestorableColumns($tableName);
+    $unprefixed = exportSqlUnprefixedTableName($tableName);
+    $restorableColumns = EXPORT_SQL_RESTORABLE_COLUMNS[$unprefixed] ?? null;
 
     if ($restorableColumns === null) {
         return "-- This dataset has no directly-restorable columns on `$tableName` (joined/computed values only); SQL export is not available for it.\n";
     }
 
-    $keys = array_intersect(array_map(static fn ($header) => array_key_first($header), $headers), $restorableColumns);
+    $headerKeys = array_intersect(array_map(static fn ($header) => array_key_first($header), $headers), $restorableColumns);
 
-    if ($keys === []) {
+    if ($headerKeys === []) {
         return "-- None of this export's columns map to real `$tableName` columns; SQL export is not available for it.\n";
     }
 
-    $keptColumns = array_map(static fn ($key) => str_contains($key, '.') ? substr($key, strrpos($key, '.') + 1) : $key, $keys);
-    $quotedColumns = implode(', ', array_map(static fn ($col) => '`' . $col . '`', $keptColumns));
+    $requiredHidden = EXPORT_SQL_REQUIRED_HIDDEN_COLUMNS[$unprefixed] ?? [];
+
+    $columns = array_merge(
+        array_map(static fn ($key) => str_contains($key, '.') ? substr($key, strrpos($key, '.') + 1) : $key, $headerKeys),
+        array_keys($requiredHidden)
+    );
+    $quotedColumns = implode(', ', array_map(static fn ($col) => '`' . $col . '`', $columns));
 
     $lines = [];
 
     foreach ($rows as $row) {
-        $values = array_values(array_intersect_key(exportRowValues($headers, $row), array_flip($keys)));
+        $values = array_values(array_intersect_key(exportRowValues($headers, $row), array_flip($headerKeys)));
+
+        foreach ($requiredHidden as $rowKey) {
+            $values[] = is_array($row) ? ($row[$rowKey] ?? null) : ($row->$rowKey ?? null);
+        }
+
         $quotedValues = implode(', ', array_map(static fn ($value) => $db->escape($value), $values));
         $lines[] = "INSERT INTO `$tableName` ($quotedColumns) VALUES ($quotedValues);";
     }
