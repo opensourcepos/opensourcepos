@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\helpers;
+namespace Tests\Helpers;
 
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Test\CIUnitTestCase;
