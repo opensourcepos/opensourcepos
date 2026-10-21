@@ -4,9 +4,12 @@ namespace Tests\Controllers;
 
 use App\Models\Attribute;
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use ReflectionProperty;
 use Tests\Support\EmployeeFixtureTrait;
 
 class AttributesControllerTest extends CIUnitTestCase
@@ -57,6 +60,24 @@ class AttributesControllerTest extends CIUnitTestCase
         ]);
     }
 
+    // Headers (Content-Disposition etc.) are only built in DownloadResponse::send(),
+    // which the test harness never calls; force it so header assertions work.
+    // getBody() is also empty for DownloadResponse - its content lives in the
+    // private $binary property.
+    protected function downloadResponseBody(ResponseInterface $response): string
+    {
+        if ($response instanceof DownloadResponse) {
+            $response->buildHeaders();
+
+            $reflection = new ReflectionProperty($response, 'binary');
+            $reflection->setAccessible(true);
+
+            return (string) $reflection->getValue($response);
+        }
+
+        return (string) $response->getBody();
+    }
+
     public function testGetExportAll_StreamsCsvDownload(): void
     {
         $employeeId = $this->createAttributesEmployee();
@@ -73,13 +94,15 @@ class AttributesControllerTest extends CIUnitTestCase
 
         model(Attribute::class)->saveDefinition($definitionData);
 
-        $response = $this->get('/attributes/exportAll/csv');
+        $response = $this->get('/attributes/exportAll/csv?search=');
 
         $response->assertStatus(200);
-        $contentDisposition = $response->getHeaderLine('Content-Disposition');
+        $body = $this->downloadResponseBody($response->response());
+
+        $contentDisposition = $response->response()->getHeaderLine('Content-Disposition');
         $this->assertStringContainsString('attachment', $contentDisposition);
         $this->assertStringContainsString('attributes_', $contentDisposition);
-        $this->assertStringContainsString($definitionName, $response->getBody());
+        $this->assertStringContainsString($definitionName, $body);
     }
 
     public function testGetExportAll_StreamsPdfDownload(): void
@@ -97,10 +120,10 @@ class AttributesControllerTest extends CIUnitTestCase
 
         model(Attribute::class)->saveDefinition($definitionData);
 
-        $response = $this->get('/attributes/exportAll/pdf');
+        $response = $this->get('/attributes/exportAll/pdf?search=');
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+        $this->assertStringContainsString('application/pdf', $response->response()->getHeaderLine('Content-Type'));
     }
 
     public function testGetExportAll_CapturesRawDefinitionFlagsBeforeResolution(): void
@@ -120,10 +143,10 @@ class AttributesControllerTest extends CIUnitTestCase
 
         model(Attribute::class)->saveDefinition($definitionData);
 
-        $response = $this->get('/attributes/exportAll/sql');
+        $response = $this->get('/attributes/exportAll/sql?search=');
 
         $response->assertStatus(200);
-        $body = $response->getBody();
+        $body = $this->downloadResponseBody($response->response());
         $this->assertStringContainsString('INSERT INTO', $body);
         $this->assertStringContainsString((string) $rawFlags, $body);
     }

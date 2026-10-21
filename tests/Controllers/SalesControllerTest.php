@@ -3,6 +3,7 @@
 namespace Tests\Controllers;
 
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
@@ -134,13 +135,22 @@ class SalesControllerTest extends CIUnitTestCase
         ]);
     }
 
-    // getBody() is empty for DownloadResponse; its content lives in the private $binary property.
+    // Headers (Content-Disposition etc.) are only built in DownloadResponse::send(),
+    // which the test harness never calls; force it so header assertions work.
+    // getBody() is also empty for DownloadResponse - its content lives in the
+    // private $binary property.
     protected function downloadResponseBody(ResponseInterface $response): string
     {
-        $reflection = new ReflectionProperty($response, 'binary');
-        $reflection->setAccessible(true);
+        if ($response instanceof DownloadResponse) {
+            $response->buildHeaders();
 
-        return (string) $reflection->getValue($response);
+            $reflection = new ReflectionProperty($response, 'binary');
+            $reflection->setAccessible(true);
+
+            return (string) $reflection->getValue($response);
+        }
+
+        return (string) $response->getBody();
     }
 
     /**
@@ -747,13 +757,15 @@ class SalesControllerTest extends CIUnitTestCase
         $this->loginAs($supervisorId);
 
         $today = date('Y-m-d');
-        $response = $this->get('/sales/exportall/csv?start_date=' . $today . '&end_date=' . $today);
+        $response = $this->get('/sales/exportall/csv?search=&start_date=' . $today . '&end_date=' . $today);
 
         $response->assertStatus(200);
+        $body = $this->downloadResponseBody($response->response());
+
         $response->assertHeader('Content-Disposition');
-        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
-        $this->assertStringContainsString('sales_', $response->getHeaderLine('Content-Disposition'));
-        $this->assertStringContainsString((string) $saleId, $this->downloadResponseBody($response->response()));
+        $this->assertStringContainsString('attachment', $response->response()->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('sales_', $response->response()->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString((string) $saleId, $body);
     }
 
     public function testGetExportAll_StreamsPdfDownload(): void
@@ -763,10 +775,10 @@ class SalesControllerTest extends CIUnitTestCase
         $this->loginAs($supervisorId);
 
         $today = date('Y-m-d');
-        $response = $this->get('/sales/exportall/pdf?start_date=' . $today . '&end_date=' . $today);
+        $response = $this->get('/sales/exportall/pdf?search=&start_date=' . $today . '&end_date=' . $today);
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+        $this->assertStringContainsString('application/pdf', $response->response()->getHeaderLine('Content-Type'));
     }
 
     public function testGetExportAll_RejectsEmployeeWithoutReportsSalesGrant(): void
@@ -775,9 +787,9 @@ class SalesControllerTest extends CIUnitTestCase
         $this->createSale($cashierId);
         $this->loginAs($cashierId);
 
-        $response = $this->get('/sales/exportall/csv');
+        $response = $this->get('/sales/exportall/csv?search=');
 
-        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(403, $response->response()->getStatusCode());
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
     }

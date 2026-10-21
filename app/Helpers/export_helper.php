@@ -606,7 +606,9 @@ function writeExportPdf(array $headers, iterable $rows): string
     $buildStart = microtime(true);
 
     set_time_limit(300);
-    define('FPDF_FONTPATH', FCPATH . 'fonts/');
+    if (!defined('FPDF_FONTPATH')) {
+        define('FPDF_FONTPATH', FCPATH . 'fonts/');
+    }
     require_once APPPATH . '../vendor/setasign/tfpdf/tfpdf.php';
 
     $pdf = new ExportPdfWriter('L', 'mm', 'A4');

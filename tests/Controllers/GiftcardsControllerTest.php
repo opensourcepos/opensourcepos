@@ -4,9 +4,12 @@ namespace Tests\Controllers;
 
 use App\Models\Giftcard;
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use ReflectionProperty;
 use Tests\Support\EmployeeFixtureTrait;
 
 class GiftcardsControllerTest extends CIUnitTestCase
@@ -57,6 +60,24 @@ class GiftcardsControllerTest extends CIUnitTestCase
         ]);
     }
 
+    // Headers (Content-Disposition etc.) are only built in DownloadResponse::send(),
+    // which the test harness never calls; force it so header assertions work.
+    // getBody() is also empty for DownloadResponse - its content lives in the
+    // private $binary property.
+    protected function downloadResponseBody(ResponseInterface $response): string
+    {
+        if ($response instanceof DownloadResponse) {
+            $response->buildHeaders();
+
+            $reflection = new ReflectionProperty($response, 'binary');
+            $reflection->setAccessible(true);
+
+            return (string) $reflection->getValue($response);
+        }
+
+        return (string) $response->getBody();
+    }
+
     public function testGetExportAll_StreamsCsvDownload(): void
     {
         $employeeId = $this->createGiftcardsEmployee();
@@ -71,13 +92,15 @@ class GiftcardsControllerTest extends CIUnitTestCase
         ];
         model(Giftcard::class)->save_value($giftcardData);
 
-        $response = $this->get('/giftcards/exportAll/csv');
+        $response = $this->get('/giftcards/exportAll/csv?search=');
 
         $response->assertStatus(200);
-        $contentDisposition = $response->getHeaderLine('Content-Disposition');
+        $body = $this->downloadResponseBody($response->response());
+
+        $contentDisposition = $response->response()->getHeaderLine('Content-Disposition');
         $this->assertStringContainsString('attachment', $contentDisposition);
         $this->assertStringContainsString('giftcards_', $contentDisposition);
-        $this->assertStringContainsString($giftcardNumber, $response->getBody());
+        $this->assertStringContainsString($giftcardNumber, $body);
     }
 
     public function testGetExportAll_StreamsPdfDownload(): void
@@ -93,9 +116,9 @@ class GiftcardsControllerTest extends CIUnitTestCase
         ];
         model(Giftcard::class)->save_value($giftcardData);
 
-        $response = $this->get('/giftcards/exportAll/pdf');
+        $response = $this->get('/giftcards/exportAll/pdf?search=');
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+        $this->assertStringContainsString('application/pdf', $response->response()->getHeaderLine('Content-Type'));
     }
 }

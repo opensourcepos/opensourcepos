@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -99,6 +100,15 @@ class ReportsControllerTest extends CIUnitTestCase
             'person_id'  => $personId,
             'menu_group' => 'home',
         ]);
+    }
+
+    // Headers (Content-Disposition etc.) are only built in DownloadResponse::send(),
+    // which the test harness never calls; force it so header assertions work.
+    protected function buildDownloadHeaders($response): void
+    {
+        if ($response instanceof DownloadResponse) {
+            $response->buildHeaders();
+        }
     }
 
     /**
@@ -226,7 +236,8 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/summary_sales/exportAll/csv/2024-01-01/2024-12-31/sales/all');
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+        $this->buildDownloadHeaders($response->response());
+        $this->assertStringContainsString('attachment', $response->response()->getHeaderLine('Content-Disposition'));
     }
 
     public function testSummarySalesExportAll_DeniesEmployeeWithoutReportsSalesGrant(): void
@@ -262,7 +273,8 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/specific_customers/exportAll/csv/2024-01-01/2024-12-31/1/sales/all');
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+        $this->buildDownloadHeaders($response->response());
+        $this->assertStringContainsString('attachment', $response->response()->getHeaderLine('Content-Disposition'));
     }
 
     public function testInventorySummaryExportAll_StreamsCsvDownloadForGrantedEmployee(): void
@@ -280,7 +292,8 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/inventory_summary/exportAll/csv/all/all');
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
+        $this->buildDownloadHeaders($response->response());
+        $this->assertStringContainsString('attachment', $response->response()->getHeaderLine('Content-Disposition'));
     }
 
     public function testAllReportExportAllMethods_ReturnDownloadableResponseForGrantedEmployee(): void
@@ -334,7 +347,7 @@ class ReportsControllerTest extends CIUnitTestCase
             $response->assertStatus(200, "Expected 200 for $methodName at $path");
             $this->assertStringContainsString(
                 'attachment',
-                $response->getHeaderLine('Content-Disposition'),
+                $response->response()->getHeaderLine('Content-Disposition'),
                 "Expected attachment Content-Disposition for $methodName at $path"
             );
         }

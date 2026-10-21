@@ -18,7 +18,7 @@ class export_helperTest extends CIUnitTestCase
 
     public function testSanitizeExportCsvValue_PrefixesPlusWithQuote(): void
     {
-        $this->assertSame("'+1234", sanitizeExportCsvValue('+1234'));
+        $this->assertSame("'+HYPERLINK(1)", sanitizeExportCsvValue('+HYPERLINK(1)'));
     }
 
     public function testSanitizeExportCsvValue_PrefixesMinusWithQuote(): void
@@ -126,7 +126,7 @@ class export_helperTest extends CIUnitTestCase
     public function testWriteExportXml_ProducesValidDocumentWithSanitizedTags(): void
     {
         $headers = [['123' => 'Numeric'], ['items.item_id' => 'Id']];
-        $rows = [(object) ['123' => 'foo', 'items.item_id' => '7']];
+        $rows = [(object) ['123' => 'foo', 'item_id' => '7']];
 
         $xml = writeExportXml($headers, $rows);
 
@@ -338,14 +338,16 @@ class export_helperTest extends CIUnitTestCase
         $ospos = new OSPOS();
         $ospos->settings = [
             'quantity_decimals' => 4,
-            'totals_decimals'   => 2,
+            'currency_decimals' => 2,
         ];
         Factories::injectMock('config', OSPOS::class, $ospos);
     }
 
     private function newPdfWriter(): ExportPdfWriter
     {
-        define('FPDF_FONTPATH', FCPATH . 'fonts/');
+        if (!defined('FPDF_FONTPATH')) {
+            define('FPDF_FONTPATH', FCPATH . 'fonts/');
+        }
         require_once APPPATH . '../vendor/setasign/tfpdf/tfpdf.php';
 
         $pdf = new ExportPdfWriter('L', 'mm', 'A4');
@@ -439,11 +441,13 @@ class export_helperTest extends CIUnitTestCase
 
     public function testExportPdfFormatRowValues_FormatsQuantityAndCurrencyColumns(): void
     {
-        parent::setUp();
+        $this->injectOsposConfig();
 
         $values = exportPdfFormatRowValues(['quantity' => '10', 'cost_price' => '5.5', 'name' => 'Widget']);
 
         $this->assertSame('Widget', $values['name']);
+        $this->assertSame(to_quantity_decimals('10'), $values['quantity']);
+        $this->assertSame(to_currency('5.5'), $values['cost_price']);
         $this->assertNotSame('10', $values['quantity']);
         $this->assertNotSame('5.5', $values['cost_price']);
     }

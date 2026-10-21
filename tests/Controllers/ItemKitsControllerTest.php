@@ -4,6 +4,7 @@ namespace Tests\Controllers;
 
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
@@ -79,13 +80,22 @@ class ItemKitsControllerTest extends CIUnitTestCase
         ]);
     }
 
-    // getBody() is empty for DownloadResponse; its content lives in the private $binary property.
+    // Headers (Content-Disposition etc.) are only built in DownloadResponse::send(),
+    // which the test harness never calls; force it so header assertions work.
+    // getBody() is also empty for DownloadResponse - its content lives in the
+    // private $binary property.
     protected function downloadResponseBody(ResponseInterface $response): string
     {
-        $reflection = new ReflectionProperty($response, 'binary');
-        $reflection->setAccessible(true);
+        if ($response instanceof DownloadResponse) {
+            $response->buildHeaders();
 
-        return (string) $reflection->getValue($response);
+            $reflection = new ReflectionProperty($response, 'binary');
+            $reflection->setAccessible(true);
+
+            return (string) $reflection->getValue($response);
+        }
+
+        return (string) $response->getBody();
     }
 
     private function createItemKit(): int
@@ -156,10 +166,12 @@ class ItemKitsControllerTest extends CIUnitTestCase
         $response = $this->get('/item_kits/exportall/csv');
 
         $response->assertStatus(200);
+        $body = $this->downloadResponseBody($response->response());
+
         $response->assertHeader('Content-Disposition');
-        $this->assertStringContainsString('attachment', $response->getHeaderLine('Content-Disposition'));
-        $this->assertStringContainsString('item_kits_', $response->getHeaderLine('Content-Disposition'));
-        $this->assertStringContainsString('Test Kit', $this->downloadResponseBody($response->response()));
+        $this->assertStringContainsString('attachment', $response->response()->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('item_kits_', $response->response()->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('Test Kit', $body);
     }
 
     public function testGetExportAll_StreamsPdfDownload(): void
@@ -170,6 +182,6 @@ class ItemKitsControllerTest extends CIUnitTestCase
         $response = $this->get('/item_kits/exportall/pdf');
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+        $this->assertStringContainsString('application/pdf', $response->response()->getHeaderLine('Content-Type'));
     }
 }

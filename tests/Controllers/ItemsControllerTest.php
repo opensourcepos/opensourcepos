@@ -4,6 +4,8 @@ namespace Tests\Controllers;
 
 use App\Controllers\Items;
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -16,6 +18,7 @@ use App\Models\Stock_location;
 use App\Models\Supplier;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use Tests\Support\EmployeeFixtureTrait;
 
 class ItemsControllerTest extends CIUnitTestCase
@@ -87,6 +90,24 @@ class ItemsControllerTest extends CIUnitTestCase
             'person_id'  => $personId,
             'menu_group' => 'home',
         ]);
+    }
+
+    // Headers (Content-Disposition etc.) are only built in DownloadResponse::send(),
+    // which the test harness never calls; force it so header assertions work.
+    // getBody() is also empty for DownloadResponse - its content lives in the
+    // private $binary property.
+    protected function downloadResponseBody(ResponseInterface $response): string
+    {
+        if ($response instanceof DownloadResponse) {
+            $response->buildHeaders();
+
+            $reflection = new ReflectionProperty($response, 'binary');
+            $reflection->setAccessible(true);
+
+            return (string) $reflection->getValue($response);
+        }
+
+        return (string) $response->getBody();
     }
 
     protected function baseItemPostData(): array
@@ -1458,14 +1479,14 @@ class ItemsControllerTest extends CIUnitTestCase
 
         $itemData = $this->seedExportableItem('Export All Csv Item ' . uniqid());
 
-        $response = $this->get('/items/exportAll/csv');
+        $response = $this->get('/items/exportAll/csv?search=');
 
         $response->assertStatus(200);
-        $contentDisposition = $response->getHeaderLine('Content-Disposition');
+        $body = $this->downloadResponseBody($response->response());
+
+        $contentDisposition = $response->response()->getHeaderLine('Content-Disposition');
         $this->assertStringContainsString('attachment', $contentDisposition);
         $this->assertStringContainsString('items_', $contentDisposition);
-
-        $body = (string) $response->getBody();
         $this->assertStringContainsString($itemData['name'], $body);
     }
 
@@ -1476,12 +1497,12 @@ class ItemsControllerTest extends CIUnitTestCase
 
         $this->seedExportableItem('Export All Pdf Item ' . uniqid());
 
-        $response = $this->get('/items/exportAll/pdf');
+        $response = $this->get('/items/exportAll/pdf?search=');
 
         $response->assertStatus(200);
-        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+        $this->assertStringContainsString('application/pdf', $response->response()->getHeaderLine('Content-Type'));
 
-        $body = (string) $response->getBody();
+        $body = (string) $response->response()->getBody();
         $this->assertNotEmpty($body);
         $this->assertStringStartsWith('%PDF-', $body);
     }
@@ -1500,7 +1521,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $response = $this->get('/items/exportAll/csv?search=' . urlencode('Zebra'));
 
         $response->assertStatus(200);
-        $body = (string) $response->getBody();
+        $body = $this->downloadResponseBody($response->response());
         $this->assertStringContainsString($matchingName, $body);
         $this->assertStringNotContainsString($otherName, $body);
     }

@@ -1,7 +1,6 @@
 <?php
 
 use CodeIgniter\Config\Factories;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\OSPOS;
@@ -18,17 +17,8 @@ class tabular_helperTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
-
         require_once __DIR__ . '/../../app/Helpers/tabular_helper.php';
         parent::setUp();
 
@@ -41,7 +31,7 @@ class tabular_helperTest extends CIUnitTestCase
             'thousands_separator'       => ',',
             'currency_symbol'           => '$',
             'quantity_decimals'         => 4,
-            'totals_decimals'           => 2,
+            'currency_decimals'         => 2,
         ];
         Factories::injectMock('config', OSPOS::class, $ospos);
     }
