@@ -138,6 +138,6 @@ Any person or company found breaching the license agreement might find a bunch o
 ## 🙏 Credits
 
 | <div align="center">JetBrains</div> | <div align="center">GitHub</div> |
-| --- | --- | --- |
+| --- | --- |
 | <div align="center"><a href="https://www.jetbrains.com/idea/" target="_blank"><img src="https://github.com/opensourcepos/opensourcepos/assets/12870258/187f9bbe-4484-475c-9b58-5e5d5f931f09" alt="IntelliJ IDEA Logo" height="50"></a></div> | <div align="center"><a href="https://github.com/features/actions" target="_blank"><img src="https://github.githubassets.com/images/modules/site/icons/eyebrow-panel/actions-icon.svg" alt="GitHub Actions Logo" height="50"></a></div> |
-|  Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of OSPOS. | Many thanks to [GitHub](https://github.com) for providing free continuous integration via GitHub Actions for open-source projects. |
+| Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of OSPOS. | Many thanks to [GitHub](https://github.com) for providing free continuous integration via GitHub Actions for open-source projects. |
