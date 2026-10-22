@@ -8,9 +8,10 @@ use Config\Database;
  * Executes a SQL migration script.
  * @param string $path Path to migration script.
  * @param bool $withTransaction Whether to wrap execution in a transaction.
+ * @param BaseConnection|null $db Connection to use (defaults to the default connection).
  * @return bool Whether the migration executed successfully.
  */
-function executeScript(string $path, bool $withTransaction = false): bool
+function executeScript(string $path, bool $withTransaction = false, ?BaseConnection $db = null): bool
 {
     $version = explode('_', basename($path, '.sql'), 2)[0];
     log_message('info', "Migrating to $version (file: $path)");
@@ -18,7 +19,7 @@ function executeScript(string $path, bool $withTransaction = false): bool
     $sqls = explode(';', file_get_contents($path));
     array_pop($sqls);
 
-    $db = Database::connect();
+    $db ??= Database::connect();
 
     if ($withTransaction) {
         $db->transStart();

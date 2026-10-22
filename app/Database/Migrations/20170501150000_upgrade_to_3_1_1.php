@@ -42,7 +42,7 @@ class Migration_Upgrade_To_3_1_1 extends Migration
             }
         }
 
-        if (!executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.0.2_to_3.1.1.sql')) {
+        if (!executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.0.2_to_3.1.1.sql', false, $this->db)) {
             throw new DatabaseException('Migration script 3.0.2_to_3.1.1.sql failed. Check logs for details.');
         }
 
