@@ -64,7 +64,17 @@ class Login extends BaseController
                 ignore_user_abort(true);
                 set_time_limit(3600);
 
-                $migration->setNamespace('App')->runLatestLocked();
+                try {
+                    $migration->setNamespace('App')->runLocked();
+                } catch (\Exception $e) {
+                    if (str_contains($e->getMessage(), 'Migration already in progress')) {
+                        $data['hasErrors'] = true;
+                        $validation->addError('username', lang('Login.migration_running'));
+                        return view('login', $data);
+                    }
+                    throw $e;
+                }
+
                 return redirect()->to('login');
             }
 
@@ -119,11 +129,10 @@ class Login extends BaseController
 
         try {
             $migration = new MY_Migration(config('Migrations'));
-            $migration->migrateToCI4();
 
             ignore_user_abort(true);
             set_time_limit(3600);
-            $migration->setNamespace('App')->runLatestLocked();
+            $migration->setNamespace('App')->runLocked();
 
             return $this->response->setJSON([
                 'success' => true,
