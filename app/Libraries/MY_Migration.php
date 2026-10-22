@@ -66,8 +66,10 @@ class MY_Migration extends MigrationRunner
     public function runLocked(): void
     {
         $db = Database::connect();
+        $dbName = $db->getDatabase();
+        $lockName = "ospos_migrations_{$dbName}";
 
-        $lock = $db->query("SELECT GET_LOCK('ospos_migrations', 0)");
+        $lock = $db->query("SELECT GET_LOCK('" . $lockName . "', 0)");
         $lockResult = $lock->getRow();
         if (!$lockResult || (int) array_values((array) $lockResult)[0] !== 1) {
             throw new Exception('Migration already in progress. Please wait for it to complete.');
@@ -77,7 +79,7 @@ class MY_Migration extends MigrationRunner
             $this->migrateToCI4();
             $this->latest();
         } finally {
-            $db->query("SELECT RELEASE_LOCK('ospos_migrations')");
+            $db->query("SELECT RELEASE_LOCK('" . $lockName . "')");
         }
     }
 
