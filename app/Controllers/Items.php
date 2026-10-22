@@ -704,12 +704,11 @@ class Items extends Secure_Controller
 
         if (!empty($taxNamesInput) || !empty($taxPercentsInput)) {
             $rules = [
-                'tax_names.*'    => 'required|max_length[255]|unicode_alpha_numeric_punct',
-                'tax_percents.*' => 'nonNegativeDecimal',
+                'tax_names.*'    => 'permit_empty|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_percents.*' => 'permit_empty|nonNegativeDecimal',
             ];
             $messages = [
                 'tax_names.*'    => [
-                    'required'                    => lang('Items.tax_name_invalid'),
                     'max_length'                  => lang('Items.tax_name_invalid'),
                     'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
                 ],
@@ -734,8 +733,8 @@ class Items extends Secure_Controller
 
         if (!empty($taxNamesInput) || !empty($taxPercentsInput)) {
             $rules = [
-                'tax_names.*'    => 'max_length[255]|unicode_alpha_numeric_punct',
-                'tax_percents.*' => 'nonNegativeDecimal',
+                'tax_names.*'    => 'permit_empty|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_percents.*' => 'permit_empty|nonNegativeDecimal',
             ];
             $messages = [
                 'tax_names.*'    => [
