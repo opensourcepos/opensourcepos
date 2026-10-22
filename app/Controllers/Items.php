@@ -851,7 +851,7 @@ class Items extends Secure_Controller
                 foreach ($taxPercents as $taxPercent) {
                     $taxPercentage = parse_tax($taxPercent);
 
-                    if (is_numeric($taxPercentage)) {
+                    if ($taxNames[$taxNameIndex] !== '' && is_numeric($taxPercentage)) {
                         $itemsTaxesData[] = ['name' => $taxNames[$taxNameIndex], 'percent' => $taxPercentage];
                     }
 
