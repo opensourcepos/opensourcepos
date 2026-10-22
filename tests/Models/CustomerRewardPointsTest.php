@@ -5,8 +5,8 @@ namespace Tests\Models;
 use App\Models\Customer;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
-use Tests\Support\DatabaseBootstrapTrait;
 
 /**
  * Regression tests: adjustRewardPoints() must apply
@@ -17,7 +17,6 @@ use Tests\Support\DatabaseBootstrapTrait;
 class CustomerRewardPointsTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
-    use DatabaseBootstrapTrait;
     use ConcurrentDbRaceTrait;
 
     protected $migrate     = true;
@@ -25,10 +24,14 @@ class CustomerRewardPointsTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
+    public static function setUpBeforeClass(): void
+    {
+        $seeder = Database::seeder('tests');
+        $seeder->call('TestDatabaseBootstrapSeeder');
+    }
+
     protected function setUp(): void
     {
-        $this->resetDatabaseOnce();
-
         parent::setUp();
     }
 

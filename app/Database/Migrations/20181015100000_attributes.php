@@ -12,7 +12,7 @@ class Migration_Attributes extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_attributes.sql', false, $this->db);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_attributes.sql');
     }
 
     /**

@@ -2,19 +2,18 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use App\Models\Module;
-use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 
 class EmployeesControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
-    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
     use EmployeeFixtureTrait;
 
@@ -25,13 +24,20 @@ class EmployeesControllerTest extends CIUnitTestCase
 
     protected $priorDisallowGrantChange;
 
+    private static bool $doneBootstrap = false;
+
     protected function setUp(): void
     {
         // Reset the test database to a known clean schema on the first test in
         // this class so stale employees from prior runs (whose usernames are
         // unique-key bound and whose grant sets leak into these assertions)
         // cannot contaminate the assertions below.
-        $this->resetDatabaseOnce();
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
 
         parent::setUp();
         // Reset any stale transaction state left on the shared in-process DB

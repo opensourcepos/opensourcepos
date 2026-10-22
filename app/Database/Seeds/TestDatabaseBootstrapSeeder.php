@@ -36,7 +36,7 @@ class TestDatabaseBootstrapSeeder extends Seeder
         $serverConn->close();
 
         // The application's shared 'tests' connection caches listTables()
-        // results in dataCache['table_names']. Because we dropped and
+        // results in dataCache['table_names'']. Because we dropped and
         // recreated the schema on a SEPARATE server connection above, that
         // cache is now stale. Reset it so subsequent listTables()/tableExists()
         // calls re-query the server instead of trusting a dropped schema's table

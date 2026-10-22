@@ -3,9 +3,9 @@
 namespace Tests\Models;
 
 use App\Models\Sale;
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
-use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\FailedQueryConnectionTrait;
 use Tests\Support\ItemFixtureTrait;
@@ -18,7 +18,6 @@ use Tests\Support\ItemFixtureTrait;
 class SaleTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
-    use DatabaseBootstrapTrait;
     use EmployeeFixtureTrait;
     use FailedQueryConnectionTrait;
     use ItemFixtureTrait;
@@ -29,11 +28,18 @@ class SaleTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
+    private static bool $doneBootstrap = false;
+
     private const LOCATION_ID = 1;
 
     protected function setUp(): void
     {
-        $this->resetDatabaseOnce();
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
 
         parent::setUp();
     }

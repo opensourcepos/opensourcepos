@@ -5,25 +5,20 @@ namespace Tests\Models;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Employee;
-use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 
 class EmployeeTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
-    use DatabaseBootstrapTrait;
     use EmployeeFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $seedOnce    = true;
     protected $refresh     = false;
     protected $namespace    = null;
 
     protected function setUp(): void
     {
-        $this->resetDatabaseOnce();
-
         parent::setUp();
     }
 

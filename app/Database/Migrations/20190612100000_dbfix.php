@@ -12,7 +12,7 @@ class Migration_DBFix extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_dbfix.sql', false, $this->db);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_dbfix.sql');
     }
 
     /**

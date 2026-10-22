@@ -12,7 +12,7 @@ class Migration_Upgrade_To_3_2_0 extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.1.1_to_3.2.0.sql', false, $this->db);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.1.1_to_3.2.0.sql');
     }
 
     /**
