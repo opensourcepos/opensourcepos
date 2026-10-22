@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
 use Config\OSPOS;
 use Config\Services;
+use Exception;
 
 /**
  * @property employee employee
@@ -66,7 +67,7 @@ class Login extends BaseController
 
                 try {
                     $migration->setNamespace('App')->runLocked();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     if (str_contains($e->getMessage(), 'Migration already in progress')) {
                         $data['hasErrors'] = true;
                         $validation->addError('username', lang('Login.migration_running'));
@@ -139,7 +140,14 @@ class Login extends BaseController
                 'message' => 'Migration completed successfully'
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            if (str_contains($e->getMessage(), 'Migration already in progress')) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.migration_running')
+                ])->setStatusCode(202);
+            }
+
             log_message('error', 'Migration failed: ' . $e->getMessage());
 
             return $this->response->setJSON([
