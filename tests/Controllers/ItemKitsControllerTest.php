@@ -2,21 +2,20 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Config\Factories;
+use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Item;
 use App\Models\Item_kit;
+use Config\OSPOS;
 use Exception;
-use Tests\Support\DatabaseBootstrapTrait;
-use Tests\Support\OsposConfigFixtureTrait;
 
 class ItemKitsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
-    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
-    use OsposConfigFixtureTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
@@ -24,16 +23,24 @@ class ItemKitsControllerTest extends CIUnitTestCase
     protected $refresh = false;
     protected $namespace = null;
 
+    private static bool $doneBootstrap = false;
+
     protected Item $item;
     protected Item_kit $itemKit;
 
     protected function setUp(): void
     {
-        $this->resetDatabaseOnce();
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
 
         parent::setUp();
 
-        $this->injectOsposSettings([
+        $ospos = new OSPOS();
+        $ospos->settings = [
             'company'                   => 'Test Co',
             'barcode_content'           => 'id',
             'barcode_type'              => 'C128',
@@ -49,7 +56,8 @@ class ItemKitsControllerTest extends CIUnitTestCase
             'barcode_page_cellspacing'  => 1,
             'barcode_generate_if_empty' => 0,
             'barcode_formats'           => 'null',
-        ]);
+        ];
+        Factories::injectMock('config', OSPOS::class, $ospos);
 
         $this->item = model(Item::class);
         $this->itemKit = model(Item_kit::class);
@@ -57,6 +65,7 @@ class ItemKitsControllerTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
+        Factories::reset();
         parent::tearDown();
     }
 

@@ -28,7 +28,7 @@ class fix_duplicate_attributes extends Migration
 
         dropForeignKeyConstraints($foreignKeys, 'attribute_links');
 
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_attribute_links_unique_constraint.sql', false, $this->db);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_attribute_links_unique_constraint.sql');
     }
 
     /**

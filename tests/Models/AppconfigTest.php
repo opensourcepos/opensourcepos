@@ -5,13 +5,12 @@ namespace Tests\Models;
 use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Config\OSPOS;
-use Tests\Support\DatabaseBootstrapTrait;
 
 class AppconfigTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
-    use DatabaseBootstrapTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
@@ -20,11 +19,10 @@ class AppconfigTest extends CIUnitTestCase
     protected $refresh = true;
     protected $namespace = null;
 
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->resetDatabaseOnce();
-
-        parent::setUp();
+        $seeder = Database::seeder('tests');
+        $seeder->call('TestDatabaseBootstrapSeeder');
     }
 
     private function appconfig(): Appconfig

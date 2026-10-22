@@ -27,7 +27,7 @@ class ConvertToCI4 extends Migration
     {
         helper('migration');
 
-        if (!executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_CI4Conversion.sql', false, $this->db)) {
+        if (!executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_CI4Conversion.sql')) {
             throw new DatabaseException('Migration script 3.4.0_CI4Conversion.sql failed. Check logs for details.');
         }
 

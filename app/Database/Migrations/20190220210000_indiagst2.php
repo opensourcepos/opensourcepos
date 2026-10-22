@@ -12,7 +12,7 @@ class Migration_IndiaGST2 extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_indiagst2.sql', false, $this->db);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_indiagst2.sql');
     }
 
     /**

@@ -12,7 +12,7 @@ class Migration_add_item_kit_number extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.3_add_kits_item_number.sql', false, $this->db);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.3_add_kits_item_number.sql');
     }
 
     /**

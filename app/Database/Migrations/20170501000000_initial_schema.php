@@ -25,7 +25,7 @@ class Migration_Initial_Schema extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/initial_schema.sql', false, $this->db);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/initial_schema.sql');
     }
 
     /**
