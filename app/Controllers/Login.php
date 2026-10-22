@@ -61,9 +61,10 @@ class Login extends BaseController
             }
 
             if (!$data['isLatest'] || $data['isNewInstall']) {
+                ignore_user_abort(true);
                 set_time_limit(3600);
 
-                $migration->setNamespace('App')->latest();
+                $migration->setNamespace('App')->runLatestLocked();
                 return redirect()->to('login');
             }
 
@@ -120,8 +121,9 @@ class Login extends BaseController
             $migration = new MY_Migration(config('Migrations'));
             $migration->migrateToCI4();
 
+            ignore_user_abort(true);
             set_time_limit(3600);
-            $migration->setNamespace('App')->latest();
+            $migration->setNamespace('App')->runLatestLocked();
 
             return $this->response->setJSON([
                 'success' => true,
