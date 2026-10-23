@@ -1,4 +1,4 @@
-FROM php:8.2-apache AS ospos
+FROM php:8.2.35-apache AS ospos
 LABEL maintainer="jekkos"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \

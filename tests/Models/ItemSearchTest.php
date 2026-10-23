@@ -5,13 +5,14 @@ namespace Tests\Models;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Item;
-use Config\Database;
 use Config\OSPOS;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\ItemSearchFixtureTrait;
 
 class ItemSearchTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use ItemSearchFixtureTrait;
 
     protected $migrate = true;
@@ -23,14 +24,10 @@ class ItemSearchTest extends CIUnitTestCase
 
     protected $item;
 
-    public static function setUpBeforeClass(): void
-    {
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
 
         $this->item = model(Item::class);

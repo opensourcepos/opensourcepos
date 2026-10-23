@@ -56,6 +56,22 @@ jobs:
           extensions: intl, mbstring, mysqli
           coverage: none
 
+      - name: Verify PHP patch level
+        run: |
+          ACTUAL=$(php -r 'echo PHP_VERSION;')
+          case "${ACTUAL%.*}" in
+            8.2) MIN="8.2.35" ;;
+            8.3) MIN="8.3.36" ;;
+            8.4) MIN="8.4.27" ;;
+            8.5) MIN="8.5.12" ;;
+            *) echo "::error::Unsupported PHP branch: $ACTUAL"; exit 1 ;;
+          esac
+          if [ "$(printf '%s\n' "$MIN" "$ACTUAL" | sort -V | head -1)" != "$MIN" ]; then
+            echo "::error::PHP $ACTUAL is below patched minimum $MIN (CVE-2026-109618 / CVE-2026-109619)"
+            exit 1
+          fi
+          echo "PHP $ACTUAL meets minimum $MIN"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
