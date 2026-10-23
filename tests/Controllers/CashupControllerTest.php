@@ -164,7 +164,7 @@ class CashupControllerTest extends CIUnitTestCase
             'closed_amount_due'    => '15',
             'closed_amount_card'   => '40',
             'closed_amount_check'  => '25',
-            'closed_amount_total'  => '155',
+            'closed_amount_total'  => '169.42',
             'note'                 => false,
             'description'          => 'Export-all CSV cashup',
             'open_employee_id'     => $cashierId,
@@ -173,7 +173,7 @@ class CashupControllerTest extends CIUnitTestCase
         ];
         model(Cashup::class)->save_value($cashUpData);
 
-        $response = $this->get('/cashups/exportall/csv?search=');
+        $response = $this->get('/cashups/exportall/csv?search=&start_date=2026-09-01&end_date=2026-09-30');
 
         $response->assertStatus(200);
         $body = $this->downloadResponseBody($response->response());
@@ -181,7 +181,7 @@ class CashupControllerTest extends CIUnitTestCase
         $response->assertHeader('Content-Disposition');
         $this->assertStringContainsString('attachment', $response->response()->getHeaderLine('Content-Disposition'));
         $this->assertStringContainsString('cashups_', $response->response()->getHeaderLine('Content-Disposition'));
-        $this->assertStringContainsString('Export-all CSV cashup', $body);
+        $this->assertStringContainsString('169.42', $body);
     }
 
     public function testGetExportAll_StreamsPdfDownload(): void
@@ -207,7 +207,7 @@ class CashupControllerTest extends CIUnitTestCase
         ];
         model(Cashup::class)->save_value($cashUpData);
 
-        $response = $this->get('/cashups/exportall/pdf?search=');
+        $response = $this->get('/cashups/exportall/pdf?search=&start_date=2026-09-01&end_date=2026-09-30');
 
         $response->assertStatus(200);
         $this->assertStringContainsString('application/pdf', $response->response()->getHeaderLine('Content-Type'));

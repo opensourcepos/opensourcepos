@@ -340,6 +340,7 @@ class ReportsControllerTest extends CIUnitTestCase
             $response = $this->get($path);
 
             $response->assertStatus(200, "Expected 200 for $methodName at $path");
+            $this->buildDownloadHeaders($response->response());
             $this->assertStringContainsString(
                 'attachment',
                 $response->response()->getHeaderLine('Content-Disposition'),

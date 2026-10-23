@@ -4,18 +4,19 @@ namespace Tests\Controllers;
 
 use App\Models\Expense;
 use App\Models\Expense_category;
-use CodeIgniter\Database\Config;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use ReflectionProperty;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 
 class ExpensesControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
     use EmployeeFixtureTrait;
 
@@ -25,16 +26,9 @@ class ExpensesControllerTest extends CIUnitTestCase
     protected $refresh = false;
     protected $namespace = null;
 
-    private static $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
         $this->db->resetTransStatus();
@@ -50,6 +44,7 @@ class ExpensesControllerTest extends CIUnitTestCase
         return $this->createEmployee(
             grants: [
                 ['permission_id' => 'expenses', 'menu_group' => 'home'],
+                ['permission_id' => 'expenses_categories', 'menu_group' => 'home'],
             ]
         );
     }

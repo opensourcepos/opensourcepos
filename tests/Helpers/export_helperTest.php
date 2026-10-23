@@ -1,11 +1,12 @@
 <?php
 
-use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\OSPOS;
+use Tests\Support\OsposConfigFixtureTrait;
 
 class export_helperTest extends CIUnitTestCase
 {
+    use OsposConfigFixtureTrait;
+
     protected function setUp(): void
     {
         require_once __DIR__ . '/../../app/Helpers/export_helper.php';
@@ -335,12 +336,12 @@ class export_helperTest extends CIUnitTestCase
     {
         parent::setUp();
 
-        $ospos = new OSPOS();
-        $ospos->settings = [
+        $this->injectOsposSettings([
             'quantity_decimals' => 4,
             'currency_decimals' => 2,
-        ];
-        Factories::injectMock('config', OSPOS::class, $ospos);
+            'number_locale'     => 'en_US',
+            'currency_symbol'   => '$',
+        ]);
     }
 
     private function newPdfWriter(): ExportPdfWriter

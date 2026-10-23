@@ -3,13 +3,14 @@
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
-use Config\OSPOS;
 use Tests\Support\ExportFixtureTrait;
+use Tests\Support\OsposConfigFixtureTrait;
 
 class tabular_helperTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use ExportFixtureTrait;
+    use OsposConfigFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -22,8 +23,7 @@ class tabular_helperTest extends CIUnitTestCase
         require_once __DIR__ . '/../../app/Helpers/tabular_helper.php';
         parent::setUp();
 
-        $ospos = new OSPOS();
-        $ospos->settings = [
+        $this->injectOsposSettings([
             'invoice_enable'            => false,
             'use_destination_based_tax' => false,
             'multi_pack_enabled'        => false,
@@ -32,8 +32,7 @@ class tabular_helperTest extends CIUnitTestCase
             'currency_symbol'           => '$',
             'quantity_decimals'         => 4,
             'currency_decimals'         => 2,
-        ];
-        Factories::injectMock('config', OSPOS::class, $ospos);
+        ]);
     }
 
     protected function tearDown(): void
