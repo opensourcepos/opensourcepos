@@ -74,7 +74,7 @@ class Stock_locationTest extends CIUnitTestCase
         return $locationId;
     }
 
-    public function testGetDefaultLocationIdReturnsRowMarkedDefaultRegardlessOfSortOrder(): void
+    public function testGetDefaultLocationId_ReturnsRowMarkedDefaultRegardlessOfSortOrder(): void
     {
         $this->db->table('stock_locations')->update(['is_default' => 0]);
 
@@ -86,7 +86,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertSame($defaultId, $result);
     }
 
-    public function testGetDefaultLocationIdFallsBackToLowestSortOrderWhenNoneMarkedDefault(): void
+    public function testGetDefaultLocationId_FallsBackToLowestSortOrderWhenNoneMarkedDefault(): void
     {
         // Remove the seeded base location so the inserted rows below are the only
         // candidates and are unambiguously ordered by sort_order.
@@ -103,7 +103,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertSame($lowestId, $result);
     }
 
-    public function testGetDefaultLocationIdReturnsNullWhenNoAllowedLocationForModule(): void
+    public function testGetDefaultLocationId_ReturnsNullWhenNoAllowedLocationForModule(): void
     {
         $this->db->table('grants')->emptyTable();
         $this->db->table('permissions')->emptyTable();
@@ -113,7 +113,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertNull($result);
     }
 
-    public function testSetDefaultLocationSetsTargetAndClearsOthers(): void
+    public function testSetDefaultLocation_SetsTargetAndClearsOthers(): void
     {
         $firstId = $this->insertLocation('Zeta', true);
         $secondId = $this->insertLocation('Eta');
@@ -129,7 +129,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertEquals(1, $defaults[$secondId]);
     }
 
-    public function testSaveSortOrderAppliesNewOrderExactly(): void
+    public function testSaveSortOrder_AppliesNewOrderExactly(): void
     {
         // saveSortOrder() only reassigns sort_order for the ids passed in, starting
         // the new range at 0 — any pre-existing row left out of the batch would
@@ -156,7 +156,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertLessThan($sortOrders[$idB], $sortOrders[$idA]);
     }
 
-    public function testSaveSortOrderHandlesCollidingRotationWithoutError(): void
+    public function testSaveSortOrder_HandlesCollidingRotationWithoutError(): void
     {
         // A reverse rotation is exactly the case naive sequential UPDATEs would
         // collide on against the unique sort_order index.
@@ -191,7 +191,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertSame($totalCount, $distinctCount, 'sort_order values must remain unique after rotation');
     }
 
-    public function testDeleteClearsSortOrder(): void
+    public function testDelete_ClearsSortOrder(): void
     {
         $idA = $this->insertLocation('Xi', false, false);
         $idB = $this->insertLocation('Omicron', false, false);
@@ -206,7 +206,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertNull($deletedRow->sort_order);
     }
 
-    public function testDeleteExcludesLocationFromGetAll(): void
+    public function testDelete_ExcludesLocationFromGetAll(): void
     {
         $idA = $this->insertLocation('Pi', false, false);
         $idB = $this->insertLocation('Rho', false, false);
@@ -219,7 +219,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertNotContains($idB, $remainingIds);
     }
 
-    public function testDeleteCompactsRemainingSortOrderAndAllowsSubsequentInsert(): void
+    public function testDelete_CompactsRemainingSortOrderAndAllowsSubsequentInsert(): void
     {
         $idA = $this->insertLocation('Sigma', false, false);
         $idB = $this->insertLocation('Tau', false, false);
@@ -281,7 +281,7 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertSame(count($remainingSortOrders), $distinctCount, 'sort_order values must remain unique after delete compaction');
     }
 
-    public function testSaveValueNewInsertAssignsNextSortOrder(): void
+    public function testSaveValue_NewInsertAssignsNextSortOrder(): void
     {
         $countBefore = $this->db->table('stock_locations')->where('deleted', 0)->countAllResults();
 
