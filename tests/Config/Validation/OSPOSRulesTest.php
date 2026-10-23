@@ -7,9 +7,9 @@ use App\Models\Employee;
 use CodeIgniter\Config\Factories;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\OSPOS;
 use Config\Services;
 use PHPUnit\Framework\MockObject\MockObject;
+use Tests\Support\OsposConfigFixtureTrait;
 
 /**
  * Regression tests for the login validation flow in OSPOSRules::login_check().
@@ -19,6 +19,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class OSPOSRulesTest extends CIUnitTestCase
 {
+    use OsposConfigFixtureTrait;
+
     protected function tearDown(): void
     {
         Factories::reset();
@@ -113,24 +115,32 @@ class OSPOSRulesTest extends CIUnitTestCase
     public static function validPathStrictProvider(): array
     {
         return [
-            'plain sendmail path'                   => ['/usr/sbin/sendmail', true],
-            'plain php path'                        => ['/usr/bin/php', true],
-            'path with dash and underscore'         => ['/opt/my-mail_bin/sendmail.exe', true],
+            'plain sendmail path'                    => ['/usr/sbin/sendmail', true],
+            'plain php path'                         => ['/usr/bin/php', true],
+            'path with dash and underscore'          => ['/opt/my-mail_bin/sendmail.exe', true],
+            'path with trailing args'                => ['/usr/sbin/sendmail -t -i', true],
+            'windows path'                           => ['C:\wamp64\bin\sendmail\sendmail.exe', true],
+            'windows path with trailing args'        => ['C:\wamp64\bin\sendmail\sendmail.exe -t -i', true],
             'empty string'                           => ['', false],
-            'trailing newline bypass payload'       => ["/usr/bin/php\n", false],
+            'trailing newline bypass payload'        => ["/usr/bin/php\n", false],
             'trailing newline plus injected command' => ["/usr/bin/php\nid", false],
-            'embedded newline mid-string'           => ["/usr/bin/php\n/bin/sh", false],
-            'semicolon injection'                   => ['/usr/bin/php;id', false],
-            'pipe injection'                        => ['/usr/bin/php|id', false],
-            'space separated args'                  => ['/usr/bin/php -r "phpinfo();"', false],
+            'embedded newline mid-string'            => ["/usr/bin/php\n/bin/sh", false],
+            'semicolon injection'                    => ['/usr/bin/php;id', false],
+            'pipe injection'                         => ['/usr/bin/php|id', false],
+            'ampersand injection'                    => ['/usr/bin/php & id', false],
+            'backtick injection'                     => ['/usr/bin/php `id`', false],
+            'dollar subshell injection'               => ['/usr/bin/php $(id)', false],
+            'quoted args'                             => ['/usr/bin/php -r "phpinfo();"', false],
+            'redirect injection'                     => ['/usr/bin/php > /tmp/out', false],
+            'cmd.exe env var expansion'               => ['C:\path\sendmail.exe %COMSPEC%', false],
+            'cmd.exe escape char'                     => ['C:\path\sendmail.exe ^& calc', false],
+            'cmd.exe command chaining'                => ['C:\path\sendmail.exe && calc', false],
         ];
     }
 
     private function injectSettings(array $settings): void
     {
-        $ospos = new OSPOS();
-        $ospos->settings = $settings;
-        Factories::injectMock('config', OSPOS::class, $ospos);
+        $this->injectOsposSettings($settings);
     }
 
     private function injectRequest(): void

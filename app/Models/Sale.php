@@ -805,7 +805,7 @@ class Sale extends Model
         // Start a transaction to assure data integrity
         $this->db->transStart();
 
-        $sale_status = $this->get_sale_status($sale_id);
+        $sale_status = $this->getSaleStatus($sale_id);
 
         if ($update_inventory && $sale_status == COMPLETED) {
             // Defect, not all item deletions will be undone?
@@ -1088,7 +1088,7 @@ class Sale extends Model
                 INNER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
                 WHERE ' . $where . '
-                GROUP BY sale_id, item_id, line
+                GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id, sales_items_taxes.line
             )';
 
         $this->db->query($sql);
@@ -1174,7 +1174,7 @@ class Sale extends Model
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items_taxes_temp') . ' AS sales_items_taxes
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
                 WHERE ' . $where . '
-                GROUP BY sale_id, item_id, line
+                GROUP BY sales.sale_id, items.item_id, sales_items.line, sales_items.discount_type
             )';
 
         $this->db->query($sql);
@@ -1193,7 +1193,7 @@ class Sale extends Model
                 . $this->db->prefixTable('sales') . ' where sale_status = ' . SUSPENDED . ' AND customer_id = ' . $customer_id);
         }
 
-        return $query->getResultArray() ?: [];
+        return $query ? $query->getResultArray() : [];
     }
 
     /**
@@ -1225,12 +1225,14 @@ class Sale extends Model
     /**
      * Gets the sale status for the selected sale
      */
-    public function get_sale_status(int $sale_id): int
+    public function getSaleStatus(int $sale_id): ?int
     {
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
 
-        return $builder->get()->getRow()->sale_status;
+        $row = $builder->get()->getRow();
+
+        return $row === null ? null : $row->sale_status;
     }
 
     /**
@@ -1421,7 +1423,9 @@ class Sale extends Model
             'payments.sale_id',
             'SUM(CASE WHEN `payments`.`cash_adjustment` = 0 THEN `payments`.`payment_amount` ELSE 0 END) AS sale_payment_amount',
             'SUM(CASE WHEN `payments`.`cash_adjustment` = 1 THEN `payments`.`payment_amount` ELSE 0 END) AS sale_cash_adjustment',
-            'GROUP_CONCAT(CONCAT(`payments`.`payment_type`, " ", (`payments`.`payment_amount` - `payments`.`cash_refund`)) SEPARATOR ", ") AS payment_type'
+            'SUM(`payments`.`cash_refund`) AS sale_cash_refund',
+            'GROUP_CONCAT(CONCAT(`payments`.`payment_type`, " ", (`payments`.`payment_amount` - `payments`.`cash_refund`)) SEPARATOR ", ") AS payment_type',
+            'GROUP_CONCAT(NULLIF(`payments`.`reference_code`, "") SEPARATOR ", ") AS reference_code'
         ]);
         $builder->join('sales', 'sales.sale_id = payments.sale_id', 'inner');
         $builder->where($where);

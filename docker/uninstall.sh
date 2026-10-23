@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd docker
+cd "$(dirname "$0")"
 
 . ./.env
 

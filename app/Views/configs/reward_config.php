@@ -13,8 +13,8 @@
             <ul id="reward_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.customer_reward_enable'), 'customer_reward_enable', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
+                <?= form_label(lang('Config.customer_reward_enable'), 'customer_reward_enable', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9">
                     <?= form_checkbox([
                         'name'    => 'customer_reward_enable',
                         'value'   => 'customer_reward_enable',
@@ -76,9 +76,9 @@
             const new_block = block.insertAfter($(this).parent());
             const new_block_id = 'customer_reward_' + ++id;
             const new_block_id_next = 'reward_points_' + id;
-            $(new_block).find('label').html("<?= lang('Config.customer_reward') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
-            $(new_block).find("input[id='" + previous_id + "']").attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
-            $(new_block).find("input[id='" + previous_id_next + "']").attr('id', new_block_id_next).removeAttr('disabled').attr('name', new_block_id_next).attr('class', 'form-control input-sm').val('');
+            $(new_block).find('label').html("<?= lang('Config.customer_reward') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-3 col-sm-2 text-danger required');
+            $(new_block).find("input[id='" + previous_id + "']").attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm required').val('');
+            $(new_block).find("input[id='" + previous_id_next + "']").attr('id', new_block_id_next).removeAttr('disabled').attr('name', new_block_id_next).attr('class', 'form-control input-sm required').val('');
             hide_show_remove();
         };
 

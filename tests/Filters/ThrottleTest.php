@@ -161,4 +161,102 @@ class ThrottleTest extends CIUnitTestCase
         $this->assertNotNull($result);
         $this->assertSame(429, $result->getStatusCode());
     }
+
+    public function testCustomCapacityIsHonored(): void
+    {
+        $ip     = '203.0.113.7';
+        $prev   = $this->captureEnv('throttle.capacity');
+
+        $this->putEnv('throttle.capacity', '2');
+
+        try {
+            $this->assertNull($this->filter->before($this->makeRequest('POST', $ip, 'c1')));
+            $this->assertNull($this->filter->before($this->makeRequest('POST', $ip, 'c2')));
+
+            $result = $this->filter->before($this->makeRequest('POST', $ip, 'c3'));
+
+            $this->assertNotNull($result);
+            $this->assertSame(429, $result->getStatusCode());
+        } finally {
+            $this->restoreEnv('throttle.capacity', $prev);
+        }
+    }
+
+    public function testZeroCapacityDisablesThrottling(): void
+    {
+        $ip   = '203.0.113.8';
+        $prev = $this->captureEnv('throttle.capacity');
+
+        $this->putEnv('throttle.capacity', '0');
+
+        try {
+            for ($i = 0; $i < 10; $i++) {
+                $result = $this->filter->before($this->makeRequest('POST', $ip, "z{$i}"));
+                $this->assertNull($result, "Attempt {$i} should not be throttled when disabled");
+            }
+        } finally {
+            $this->restoreEnv('throttle.capacity', $prev);
+        }
+    }
+
+    public function testInvalidCapacityFallsBackToDefault(): void
+    {
+        // A non-numeric value must fall back to the default (5), not disable.
+        $ip   = '203.0.113.9';
+        $prev = $this->captureEnv('throttle.capacity');
+
+        $this->putEnv('throttle.capacity', 'five');
+
+        try {
+            for ($i = 0; $i < 5; $i++) {
+                $this->assertNull($this->filter->before($this->makeRequest('POST', $ip, "v{$i}")));
+            }
+
+            // 6th attempt exceeds the default capacity of 5.
+            $result = $this->filter->before($this->makeRequest('POST', $ip, 'v6'));
+            $this->assertNotNull($result);
+            $this->assertSame(429, $result->getStatusCode());
+        } finally {
+            $this->restoreEnv('throttle.capacity', $prev);
+        }
+    }
+
+    private function captureEnv(string $key): array
+    {
+        return [
+            'putenv'  => getenv($key),
+            'hasENV'  => array_key_exists($key, $_ENV),
+            'ENV'     => $_ENV[$key] ?? null,
+            'hasSRV'  => array_key_exists($key, $_SERVER),
+            'SERVER'  => $_SERVER[$key] ?? null,
+        ];
+    }
+
+    private function putEnv(string $key, string $value): void
+    {
+        putenv("{$key}={$value}");
+        $_ENV[$key]    = $value;
+        $_SERVER[$key] = $value;
+    }
+
+    private function restoreEnv(string $key, array $prev): void
+    {
+        if ($prev['putenv'] === false) {
+            putenv($key);
+        } else {
+            putenv("{$key}={$prev['putenv']}");
+        }
+
+        if ($prev['hasENV']) {
+            $_ENV[$key] = $prev['ENV'];
+        } else {
+            unset($_ENV[$key]);
+        }
+
+        if ($prev['hasSRV']) {
+            $_SERVER[$key] = $prev['SERVER'];
+        } else {
+            unset($_SERVER[$key]);
+        }
+    }
 }

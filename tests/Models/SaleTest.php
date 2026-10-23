@@ -3,21 +3,24 @@
 namespace Tests\Models;
 
 use App\Models\Sale;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\FailedQueryConnectionTrait;
 use Tests\Support\ItemFixtureTrait;
 
 /**
- * Regression tests for GHSA-995p-52qw-5hh2: Sale::save_value() must reject
+ * Regression tests: Sale::save_value() must reject
  * (and roll back) a payment that would overdraw a gift card or a customer's
  * reward points, instead of silently applying a stale/negative balance.
  */
 class SaleTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use EmployeeFixtureTrait;
+    use FailedQueryConnectionTrait;
     use ItemFixtureTrait;
 
     protected $migrate     = true;
@@ -26,18 +29,11 @@ class SaleTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static bool $doneBootstrap = false;
-
     private const LOCATION_ID = 1;
 
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
     }
@@ -433,5 +429,15 @@ class SaleTest extends CIUnitTestCase
 
         $this->assertTrue($deleteResult);
         $this->assertEqualsWithDelta(10.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
+    }
+
+    public function testGetAllSuspended_ReturnsEmptyArrayWhenQueryFails(): void
+    {
+        $model = $this->modelWithFailingQuery(Sale::class);
+
+        // Exercises both the NEW_ENTRY branch and the customer-id branch.
+        $this->assertSame([], $model->get_all_suspended());
+        $this->assertSame([], $model->get_all_suspended(NEW_ENTRY));
+        $this->assertSame([], $model->get_all_suspended(123));
     }
 }

@@ -21,7 +21,7 @@
 
     $.notify = function(content, options) {
         const message = typeof content === "object" ? content.message : content;
-        const sanitizedMessage = DOMPurify.sanitize(message);
+        const sanitizedMessage = DOMPurify.sanitize(message, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
         return notify(sanitizedMessage, options);
     };
 
@@ -64,6 +64,11 @@
     };
 
     $(document).ajaxComplete(setup_csrf_token);
+    $(document).ajaxError(function(event, jqXHR, settings) {
+        if (jqXHR.status === 401) {
+            window.location.href = '<?= site_url('login') ?>';
+        }
+    });
     $(document).ready(function() {
         $("#logout").click(function(event) {
             event.preventDefault();

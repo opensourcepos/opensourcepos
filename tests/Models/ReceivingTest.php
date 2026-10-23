@@ -9,7 +9,7 @@ use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\ItemFixtureTrait;
 
 /**
- * Regression tests for GHSA-995p-52qw-5hh2: Receiving::delete_value() must
+ * Regression tests: Receiving::delete_value() must
  * correctly reverse the stock quantity change it applied via
  * Item_quantity::changeQuantity(), using the same atomic upsert as the
  * sale-checkout and sale-cancel paths.

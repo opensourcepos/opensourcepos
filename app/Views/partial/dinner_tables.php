@@ -14,10 +14,8 @@ foreach ($dinner_tables as $table_key => $table) {
 ?>
 
     <div class="form-group form-group-sm" style="<?= $table['deleted'] ? 'display: none;' : 'display: block;' ?>">
-        <?= form_label(lang('Config.dinner_table') . " $i", "dinner_table_$i", ['class' => 'required control-label col-xs-2']) ?>
-
-
-        <div class="col-xs-2">
+        <?= form_label(lang('Config.dinner_table') . " $i", "dinner_table_$i", ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+        <div class="col-xs-7 col-sm-4 col-md-3">
             <?php $form_data = [
                 'name'  => "dinner_table_$dinner_table_id",
                 'id'    => "dinner_table_$dinner_table_id",

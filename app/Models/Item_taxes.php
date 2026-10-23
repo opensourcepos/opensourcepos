@@ -31,6 +31,26 @@ class Item_taxes extends Model
     }
 
     /**
+     * @return array item_id => array of taxes for that item
+     */
+    public function getInfoMultiple(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $builder = $this->db->table('items_taxes');
+        $builder->whereIn('item_id', $itemIds);
+
+        $taxesByItemId = [];
+        foreach ($builder->get()->getResultArray() as $tax) {
+            $taxesByItemId[$tax['item_id']][] = $tax;
+        }
+
+        return $taxesByItemId;
+    }
+
+    /**
      * Inserts or updates an item's taxes
      */
     public function save_value(array &$items_taxes_data, int $item_id): bool

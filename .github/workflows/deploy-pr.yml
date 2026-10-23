@@ -54,7 +54,7 @@ jobs:
   comment:
     name: Comment deployment status
     needs: [prepare, deploy]
-    if: always()
+    if: always() && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
