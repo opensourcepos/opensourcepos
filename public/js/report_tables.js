@@ -62,7 +62,7 @@ const report_export_toggle = (function () {
 
             $exportItem.closest('.dropdown-menu').prev('[data-toggle="dropdown"]').dropdown('toggle');
 
-            const path = location.pathname.replace(/^(\/reports\/[^/]+)/, '$1/exportAll/' + format);
+            const path = location.pathname.replace(/(\/reports\/[^/]+)/, '$1/exportAll/' + format);
             window.location = path + location.search;
         }, true);
     };
