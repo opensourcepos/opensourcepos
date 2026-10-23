@@ -579,8 +579,6 @@ function exportPdfRenderPageSet(ExportPdfWriter $pdf, array $headers, array $row
 
 function writeExportPdf(array $headers, iterable $rows): string
 {
-    $buildStart = microtime(true);
-
     set_time_limit(300);
     if (!defined('FPDF_FONTPATH')) {
         define('FPDF_FONTPATH', FCPATH . 'fonts/');
@@ -596,11 +594,9 @@ function writeExportPdf(array $headers, iterable $rows): string
     [$primaryHeaders, $secondaryHeaders] = exportPdfSplitHeaders($headers);
 
     // Buffer rows once so both page sets can iterate them without re-querying the DB.
-    $rowCount = 0;
     $bufferedRows = [];
     foreach ($rows as $row) {
         $bufferedRows[] = $row;
-        $rowCount++;
     }
 
     exportPdfRenderPageSet($pdf, $primaryHeaders, $bufferedRows);
@@ -608,9 +604,6 @@ function writeExportPdf(array $headers, iterable $rows): string
     if ($secondaryHeaders !== []) {
         exportPdfRenderPageSet($pdf, $secondaryHeaders, $bufferedRows);
     }
-
-    $buildMs = (int) round((microtime(true) - $buildStart) * 1000);
-    log_message('debug', "Export pdf write: build={$buildMs}ms rows=$rowCount");
 
     return $pdf->Output('S');
 }

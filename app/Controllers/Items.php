@@ -203,25 +203,17 @@ class Items extends Secure_Controller
             $filters['definition_ids'] = array_keys($searchableDefinitions);
         }
 
-        $dbStart = microtime(true);
         $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
         $itemResults = $items->getResult();
-        $dbMs = (int) round((microtime(true) - $dbStart) * 1000);
 
         $taxPercentsByItemId = $this->buildTaxPercentsByItem($itemResults);
 
-        $buildStart = microtime(true);
         $exportRows = [];
         foreach ($itemResults as $item) {
             $exportRows[] = getItemExportRow($item, $definitionNamesWithTypes, $taxPercentsByItemId);
         }
-        $buildMs = (int) round((microtime(true) - $buildStart) * 1000);
 
-        $writeStart = microtime(true);
         $file = generateExportFile($format, itemExportHeaders(), $exportRows, 'items_' . date('Ymd_His'), $this->db->prefixTable('items'));
-        $writeMs = (int) round((microtime(true) - $writeStart) * 1000);
-
-        log_message('debug', "Export $format: db={$dbMs}ms build={$buildMs}ms write={$writeMs}ms rows=" . count($exportRows));
 
         if ($format === 'pdf') {
             return $this->response->setContentType('application/pdf')
