@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Xərc kateqoriyası adı tələb olunur',
     'add_item'                          => 'Kateqoriya əlavə et',
     'cannot_be_deleted'                 => 'Xərc kateqoriyası(ları) silinmədi',
     'category_id'                       => 'Kimlik',
+    'category_name_required'            => 'Xərc kateqoriyası adı tələb olunur',
     'confirm_delete'                    => 'Seçilmiş xərc kateqoriyasını silmək istədiyinizə əminsinizmi?',
     'confirm_restore'                   => 'Seçilmiş xərc kateqoriyasını bərpa etmək istədiyinizə əminsinizmi?',
     'description'                       => 'Kateqoriya təsviri',

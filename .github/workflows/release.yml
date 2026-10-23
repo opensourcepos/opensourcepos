@@ -60,7 +60,8 @@ jobs:
         id: version
         run: |
           APP_VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
-          TARGET="$APP_VERSION"
+          # Master carries a -dev snapshot suffix; strip it for the release target.
+          TARGET="${APP_VERSION%-dev}"
           if ! [[ "$TARGET" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "ERROR: target '$TARGET' is not in X.Y.Z form"; exit 1
           fi
@@ -133,7 +134,7 @@ jobs:
             patch) PATCH=$((PATCH + 1)) ;;
             *) echo "ERROR: unknown bump type ${{ inputs.next_bump }}"; exit 1 ;;
           esac
-          NEXT="${MAJOR}.${MINOR}.${PATCH}"
+          NEXT="${MAJOR}.${MINOR}.${PATCH}-dev"
           echo "Bumping to next dev version $NEXT"
 
           sed -i "s/public string \\\$application_version = '[^']*';/public string \\\$application_version = '$NEXT';/" app/Config/App.php

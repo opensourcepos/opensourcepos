@@ -44,6 +44,7 @@ return [
     'none_selected'                 => 'Silmək üçün heç bir müştəri seçməmisiniz.',
     'one_or_multiple'               => 'Müştəri(lər)',
     'quantity'                      => 'Miqdar',
+    'rewards_package'               => 'Mükafat Paketi',
     'stats_info'                    => 'Statistika',
     'successful_adding'             => 'Siz müştərini uğurla əlavə etdiniz',
     'successful_deleted'            => 'Siz uğurla sildiniz',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'Vergiyə cəlb olunur',
     'total'                         => 'Cəmi xərclənən',
     'update'                        => 'Müştərini Yenilə',
-    'rewards_package'               => 'Mükafat Paketi',
 ];

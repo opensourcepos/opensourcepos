@@ -110,6 +110,7 @@ return [
     'tax_category'                       => 'Категория налога',
     'tax_name_invalid'                   => 'Название налога содержит недопустимые символы.',
     'tax_percent'                        => 'Процент налога',
+    'tax_percent_non_negative'           => '',
     'tax_percent_number'                 => 'Процент налога должен быть числовым значением',
     'tax_percent_required'               => 'Процент налога - обязательное поле.',
     'tax_percents'                       => 'Процент(ы) налога',

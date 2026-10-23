@@ -26,7 +26,7 @@ return [
     'due'                        => 'Задолженность',
     'due_filter'                 => 'Задолженность',
     'employee'                   => 'Создано',
-    'error_adding_updating'      => 'Ошибка добавления/обновления расходов',
+    'error_adding_updating'      => 'Ошибка добавления / обновления расходов',
     'expense_id'                 => 'Id',
     'expenses_employee'          => 'Сотрудник',
     'info'                       => 'Информация о расходах',

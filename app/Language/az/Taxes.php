@@ -70,6 +70,7 @@ return [
     'tax_rate'                               => 'Vergi Dərəcəsi',
     'tax_rate_configuration'                 => 'Vergi Dərəcəsi Konfiqurasiyası',
     'tax_rate_error_adding_updating'         => 'Vergi Dərəcəsi əlavə edilmədi və ya yenilənmədi',
+    'tax_rate_non_negative'                  => '',
     'tax_rate_numeric'                       => 'Vergi Dərəcəsi rəqəmlə olmalıdır',
     'tax_rate_required'                      => 'Vergi Dərəcəsi tələb olunan sahədir',
     'tax_rate_successful_updated'            => 'Siz uğurla yenilədiniz',

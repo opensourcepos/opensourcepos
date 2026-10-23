@@ -40,10 +40,20 @@ jobs:
           extensions: intl, mbstring, mysqli, gd, bcmath, zip
           coverage: none
 
+      - name: Verify PHP patch level
+        run: |
+          MIN="8.2.35"
+          ACTUAL=$(php -r 'echo PHP_VERSION;')
+          if [ "$(printf '%s\n' "$MIN" "$ACTUAL" | sort -V | head -1)" != "$MIN" ]; then
+            echo "::error::PHP $ACTUAL is below patched minimum $MIN (CVE-2026-109618 / CVE-2026-109619)"
+            exit 1
+          fi
+          echo "PHP $ACTUAL meets minimum $MIN"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Get composer cache directory
         run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
@@ -80,6 +90,10 @@ jobs:
         id: version
         run: |
           VERSION=$(grep "application_version" app/Config/App.php | sed "s/.*= '\(.*\)';/\1/g")
+          # Official release tags use the clean version (no -dev suffix).
+          if [[ "${GITHUB_TAG:-}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            VERSION="${VERSION%-dev}"
+          fi
           BRANCH=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/feature\///' | tr '/' '_')
           TAG=$(echo "${GITHUB_TAG:-$BRANCH}" | tr '/' '_')
           SHORT_SHA=$(git rev-parse --short=6 HEAD)
@@ -89,6 +103,16 @@ jobs:
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
         env:
           GITHUB_TAG: ${{ github.ref_name }}
+
+      - name: Normalize version for official release
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          # The tagged commit may still carry a -dev suffix in source files.
+          # Strip it so the archive contents report the clean release version.
+          sed -i "s/application_version = '${VERSION}-dev'/application_version = '${VERSION}'/" app/Config/App.php
+          sed -i "s/\"version\": \"${VERSION}-dev\"/,\"version\": \"${VERSION}\",/" package.json 2>/dev/null || true
+          echo "App.php now reports: $(grep application_version app/Config/App.php)"
 
       - name: Validate release tag
         if: startsWith(github.ref, 'refs/tags/')
@@ -229,7 +253,7 @@ jobs:
           name: Unstable OpenSourcePOS
           body: |
             This is a build of the latest master which might contain bugs. Use at your own risk.
-            
+
             Check the releases section for the latest official release.
           files: |
             dist/opensourcepos.${{ steps.version.outputs.version }}.${{ steps.version.outputs.short-sha }}.zip

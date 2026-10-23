@@ -17,7 +17,7 @@ return [
     'this_month'                       => 'Bu ay',
     'this_year'                        => 'Bu il',
     'to'                               => 'Buna',
-    'today'                            => 'Bu gün',
+    'today'                            => 'Bugün',
     'today_last_year'                  => 'Keçən il bu gün',
     'weekstart'                        => '0',
     'yesterday'                        => 'Dünən',

@@ -6,7 +6,7 @@ This document describes the CI/CD workflows for OSPOS.
 
 ### Build Process
 - Setup PHP 8.2 with required extensions
-- Setup Node.js 20
+- Setup Node.js 22
 - Install composer dependencies
 - Install npm dependencies
 - Build frontend assets with Gulp

@@ -6,7 +6,7 @@
 ?>
 
 <div class="form-group form-group-sm">
-    <?= form_label(lang('Common.first_name'), 'first_name', ['class' => 'required control-label col-xs-3']) ?>
+    <?= form_label(lang('Common.first_name'), 'first_name', ['class' => 'control-label col-xs-3 text-danger required']) ?>
     <div class="col-xs-8">
         <?= form_input([
             'name'  => 'first_name',
@@ -18,7 +18,7 @@
 </div>
 
 <div class="form-group form-group-sm">
-    <?= form_label(lang('Common.last_name'), 'last_name', ['class' => 'required control-label col-xs-3']) ?>
+    <?= form_label(lang('Common.last_name'), 'last_name', ['class' => 'control-label col-xs-3 text-danger required']) ?>
     <div class="col-xs-8">
         <?= form_input([
             'name'  => 'last_name',
@@ -30,7 +30,7 @@
 </div>
 
 <div class="form-group form-group-sm">
-    <?= form_label(lang('Common.gender'), 'gender', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
+    <?= form_label(lang('Common.gender'), 'gender', !empty($basic_version) ? ['class' => 'control-label col-xs-3 text-danger required'] : ['class' => 'control-label col-xs-3']) ?>
     <div class="col-xs-4">
         <label class="radio-inline">
             <?= form_radio([

@@ -29,6 +29,7 @@ return [
     'date'                                    => 'Tarix',
     'date_range'                              => 'Tarix Aralığı',
     'description'                             => 'Təsvir',
+    'detailed_item_sales_report'              => '',
     'detailed_receivings_report'              => 'Ətraflı Qəbul Hesabatı',
     'detailed_receivings_report_input'        => 'Ətraflı Qəbul Hesabatının Girişi',
     'detailed_reports'                        => 'Ətraflı Hesabatlar',

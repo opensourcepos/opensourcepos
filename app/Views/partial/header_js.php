@@ -64,6 +64,11 @@
     };
 
     $(document).ajaxComplete(setup_csrf_token);
+    $(document).ajaxError(function(event, jqXHR, settings) {
+        if (jqXHR.status === 401) {
+            window.location.href = '<?= site_url('login') ?>';
+        }
+    });
     $(document).ready(function() {
         $("#logout").click(function(event) {
             event.preventDefault();

@@ -30,5 +30,7 @@ return [
     'show_in_receivings_visibility'    => 'Mədaxillər',
     'show_in_sales'                    => 'Satışlarda göstər',
     'show_in_sales_visibility'         => 'Satışlar',
+    'show_in_search'                   => 'Axtarışda göstər',
+    'show_in_search_visibility'        => 'Axtarış',
     'update'                           => 'Atributu yenilə',
 ];

@@ -69,7 +69,11 @@
                 iconSize: 'sm',
                 paginationVAlign: 'bottom',
                 escape: true,
-                search: true
+                search: true,
+                loadingTemplate: function (loadingMessage) {
+                    return '<div class="loading-message text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span><span role="status">' + loadingMessage + '</span></div>';
+                },
+                loadingFontSize: '1em'
             });
     });
 </script>

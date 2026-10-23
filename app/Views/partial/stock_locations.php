@@ -14,8 +14,8 @@ foreach ($stock_locations as $location => $location_data) {
 ?>
 
     <div class="form-group form-group-sm" style="<?= $location_data['deleted'] ? 'display: none;' : 'display: block;' ?>">
-        <?= form_label(lang('Config.stock_location') . " $i", "stock_location_$i", ['class' => 'required control-label col-xs-2']) ?>
-        <div class="col-xs-2">
+        <?= form_label(lang('Config.stock_location') . " $i", "stock_location_$i", ['class' => 'control-label col-xs-3 col-sm-2 text-danger required']) ?>
+        <div class="col-xs-7 col-sm-4 col-md-3">
             <?php $form_data = [
                 'name'  => "stock_location[$location_id]",
                 'id'    => "stock_location[$location_id]",
