@@ -339,7 +339,7 @@ class ReportsControllerTest extends CIUnitTestCase
         foreach ($routes as $methodName => $path) {
             $response = $this->get($path);
 
-            $response->assertStatus(200, "Expected 200 for $methodName at $path");
+            $this->assertEquals(200, $response->response()->getStatusCode(), "Expected 200 for $methodName at $path");
             $this->buildDownloadHeaders($response->response());
             $this->assertStringContainsString(
                 'attachment',
