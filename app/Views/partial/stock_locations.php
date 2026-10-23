@@ -15,7 +15,7 @@ foreach ($stock_locations as $location => $locationData) {
 
     <div class="form-group form-group-sm stock_location_row" data-location-id="<?= esc($locationId) ?>" style="<?= $locationData['deleted'] ? 'display: none;' : 'display: block;' ?>">
         <span class="drag_handle glyphicon glyphicon-resize-vertical col-xs-1" style="cursor: move; padding-top: 0.5em;"></span>
-        <div class="col-xs-1">
+        <div class="col-xs-1 text-center">
             <?= form_radio([
                 'name'      => 'stock_location_default',
                 'value'     => $locationId,
