@@ -55,6 +55,35 @@ class MY_Migration extends MigrationRunner
     }
 
     /**
+     * Runs the full migration sequence (CI3 history conversion + latest
+     * migrations) under a pessimistic DB lock to prevent concurrent
+     * execution (e.g. a page refresh re-triggering the same migration
+     * while the first request is still running).
+     *
+     * @throws Exception If the lock cannot be acquired (another migration is in progress).
+     * @return void
+     */
+    public function runLocked(): void
+    {
+        $db = Database::connect();
+        $dbName = $db->getDatabase();
+        $lockName = "ospos_migrations_{$dbName}";
+
+        $lock = $db->query("SELECT GET_LOCK('" . $lockName . "', 0)");
+        $lockResult = $lock->getRow();
+        if (!$lockResult || (int) array_values((array) $lockResult)[0] !== 1) {
+            throw new Exception('Migration already in progress. Please wait for it to complete.');
+        }
+
+        try {
+            $this->migrateToCI4();
+            $this->latest();
+        } finally {
+            $db->query("SELECT RELEASE_LOCK('" . $lockName . "')");
+        }
+    }
+
+    /**
      * @return void
      */
     public function migrateToCI4(): void
