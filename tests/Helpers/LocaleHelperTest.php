@@ -2,19 +2,30 @@
 
 namespace Tests\Helpers;
 
+use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
-use Tests\Support\OsposConfigFixtureTrait;
+use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class LocaleHelperTest extends CIUnitTestCase
 {
-    use OsposConfigFixtureTrait;
+    use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
+
+    protected $migrate     = true;
+    protected $migrateOnce = true;
+    protected $seedOnce    = true;
+    protected $refresh     = false;
+    protected $namespace   = null;
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
         require_once __DIR__ . '/../../app/Helpers/locale_helper.php';
 
-        $this->injectOsposSettings(['dateformat' => 'Y-m-d']);
+        model(Appconfig::class)->batch_save(['dateformat' => 'Y-m-d']);
     }
 
     public function testValidDateReturnsTrue(): void

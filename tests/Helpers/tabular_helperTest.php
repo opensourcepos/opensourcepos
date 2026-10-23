@@ -2,17 +2,17 @@
 
 namespace Tests\Helpers;
 
-use CodeIgniter\Config\Factories;
+use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\ExportFixtureTrait;
-use Tests\Support\OsposConfigFixtureTrait;
 
 class tabular_helperTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use ExportFixtureTrait;
-    use OsposConfigFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -22,25 +22,21 @@ class tabular_helperTest extends CIUnitTestCase
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         require_once __DIR__ . '/../../app/Helpers/tabular_helper.php';
         parent::setUp();
 
-        $this->injectOsposSettings([
+        model(Appconfig::class)->batch_save([
             'invoice_enable'            => false,
             'use_destination_based_tax' => false,
             'multi_pack_enabled'        => false,
             'number_locale'             => 'en_US',
-            'thousands_separator'       => ',',
+            'thousands_separator'      => ',',
             'currency_symbol'           => '$',
             'quantity_decimals'         => 4,
             'currency_decimals'         => 2,
         ]);
-    }
-
-    protected function tearDown(): void
-    {
-        Factories::reset();
-        parent::tearDown();
     }
 
     public function testSalesExportHeaders_ReturnsBaseColumnsWhenInvoiceDisabled(): void
@@ -55,8 +51,7 @@ class tabular_helperTest extends CIUnitTestCase
 
     public function testSalesExportHeaders_AppendsInvoiceNumberWhenInvoiceEnabled(): void
     {
-        $ospos = config(OSPOS::class);
-        $ospos->settings['invoice_enable'] = true;
+        model(Appconfig::class)->save(['invoice_enable' => true]);
 
         $keys = array_map('array_key_first', salesExportHeaders());
 
@@ -88,8 +83,7 @@ class tabular_helperTest extends CIUnitTestCase
 
     public function testGetSaleExportRow_IncludesInvoiceNumberWhenInvoiceEnabled(): void
     {
-        $ospos = config(OSPOS::class);
-        $ospos->settings['invoice_enable'] = true;
+        model(Appconfig::class)->save(['invoice_enable' => true]);
         $sale = $this->saleExportFixture();
 
         $row = getSaleExportRow($sale);
@@ -215,8 +209,7 @@ class tabular_helperTest extends CIUnitTestCase
 
     public function testItemExportHeaders_UsesTaxCategoryLabelWhenDestinationBasedTaxEnabled(): void
     {
-        $ospos = config(OSPOS::class);
-        $ospos->settings['use_destination_based_tax'] = true;
+        model(Appconfig::class)->save(['use_destination_based_tax' => true]);
 
         $headers = itemExportHeaders();
         $taxHeader = array_values(array_filter($headers, fn ($h) => array_key_first($h) === 'tax_percents'))[0];
@@ -251,8 +244,7 @@ class tabular_helperTest extends CIUnitTestCase
 
     public function testGetItemExportRow_AppendsNameSeparatorAndPackNameWhenMultiPackEnabled(): void
     {
-        $ospos = config(OSPOS::class);
-        $ospos->settings['multi_pack_enabled'] = true;
+        model(Appconfig::class)->save(['multi_pack_enabled' => true]);
         $item = $this->itemExportFixture(['pack_name' => 'Case of 6']);
 
         $row = getItemExportRow($item, [], []);

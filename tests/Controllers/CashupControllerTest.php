@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use App\Models\Appconfig;
 use App\Models\Cashup;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -11,7 +12,6 @@ use CodeIgniter\Test\FeatureTestTrait;
 use ReflectionProperty;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
-use Tests\Support\OsposConfigFixtureTrait;
 
 class CashupControllerTest extends CIUnitTestCase
 {
@@ -19,7 +19,6 @@ class CashupControllerTest extends CIUnitTestCase
     use DatabaseBootstrapTrait;
     use FeatureTestTrait;
     use EmployeeFixtureTrait;
-    use OsposConfigFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -33,7 +32,7 @@ class CashupControllerTest extends CIUnitTestCase
 
         parent::setUp();
 
-        $this->injectOsposSettings([
+        model(Appconfig::class)->batch_save([
             'company'             => 'Test Co',
             'dateformat'          => 'Y-m-d',
             'timeformat'          => 'H:i:s',

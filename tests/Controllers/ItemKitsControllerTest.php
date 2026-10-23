@@ -7,19 +7,18 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use App\Models\Appconfig;
 use App\Models\Item;
 use App\Models\Item_kit;
 use Exception;
 use ReflectionProperty;
 use Tests\Support\DatabaseBootstrapTrait;
-use Tests\Support\OsposConfigFixtureTrait;
 
 class ItemKitsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use DatabaseBootstrapTrait;
     use FeatureTestTrait;
-    use OsposConfigFixtureTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
@@ -36,7 +35,7 @@ class ItemKitsControllerTest extends CIUnitTestCase
 
         parent::setUp();
 
-        $this->injectOsposSettings([
+        model(Appconfig::class)->batch_save([
             'company'                   => 'Test Co',
             'barcode_content'           => 'id',
             'barcode_type'              => 'C128',

@@ -2,16 +2,30 @@
 
 namespace Tests\Helpers;
 
+use App\Libraries\ExportPdfWriter;
+use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
-use Tests\Support\OsposConfigFixtureTrait;
+use CodeIgniter\Test\DatabaseTestTrait;
+use InvalidArgumentException;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class export_helperTest extends CIUnitTestCase
 {
-    use OsposConfigFixtureTrait;
+    use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
+
+    protected $migrate     = true;
+    protected $migrateOnce = true;
+    protected $seedOnce    = true;
+    protected $refresh     = false;
+    protected $namespace   = null;
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         require_once __DIR__ . '/../../app/Helpers/export_helper.php';
+        parent::setUp();
     }
 
     public function testSanitizeExportCsvValue_PrefixesEqualsWithQuote(): void
@@ -167,7 +181,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testExportSqlUnprefixedTableName_StripsConfiguredPrefix(): void
     {
-        parent::setUp();
         $db = db_connect();
 
         $this->assertSame('items', exportSqlUnprefixedTableName($db->prefixTable('items')));
@@ -175,15 +188,11 @@ class export_helperTest extends CIUnitTestCase
 
     public function testExportSqlUnprefixedTableName_AcceptsUnprefixedNameUnchanged(): void
     {
-        parent::setUp();
-
         $this->assertSame('items', exportSqlUnprefixedTableName('items'));
     }
 
     public function testWriteExportSql_ReturnsCommentForNonRestorableTable(): void
     {
-        parent::setUp();
-
         $sql = writeExportSql([['foo' => 'Foo']], [], 'ospos_some_report_view');
 
         $this->assertStringContainsString('no directly-restorable columns', $sql);
@@ -191,7 +200,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testWriteExportSql_ReturnsCommentWhenNoHeaderColumnsMapToTable(): void
     {
-        parent::setUp();
         $db = db_connect();
 
         $sql = writeExportSql([['not_a_real_column' => 'Nope']], [], $db->prefixTable('giftcards'));
@@ -201,7 +209,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testWriteExportSql_ReturnsCommentForEmptyRowSet(): void
     {
-        parent::setUp();
         $db = db_connect();
 
         $sql = writeExportSql([['giftcard_id' => 'Id']], [], $db->prefixTable('giftcards'));
@@ -211,7 +218,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testWriteExportSql_ProducesInsertWithRequiredHiddenColumns(): void
     {
-        parent::setUp();
         $db = db_connect();
         $tableName = $db->prefixTable('giftcards');
 
@@ -231,7 +237,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testWriteExportSql_IncludesHiddenNotNullColumnsForItems(): void
     {
-        parent::setUp();
         $db = db_connect();
         $tableName = $db->prefixTable('items');
 
@@ -258,8 +263,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testSweepStaleExportCache_RemovesOnlyFilesOlderThanTenMinutes(): void
     {
-        parent::setUp();
-
         $directory = WRITEPATH . 'cache/exports/';
         if (!is_dir($directory)) {
             mkdir($directory, 0755, true);
@@ -336,9 +339,7 @@ class export_helperTest extends CIUnitTestCase
 
     private function injectOsposConfig(): void
     {
-        parent::setUp();
-
-        $this->injectOsposSettings([
+        model(Appconfig::class)->batch_save([
             'quantity_decimals' => 4,
             'currency_decimals' => 2,
             'number_locale'     => 'en_US',
@@ -457,8 +458,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testExportPdfFormatRowValues_AcceptsEmptyQuantityUnchanged(): void
     {
-        parent::setUp();
-
         $values = exportPdfFormatRowValues(['quantity' => '', 'cost_price' => '']);
 
         $this->assertSame('', $values['quantity']);
@@ -493,8 +492,6 @@ class export_helperTest extends CIUnitTestCase
 
     public function testWriteExportPdf_ProducesNonEmptyPdfDocument(): void
     {
-        parent::setUp();
-
         $headers = [['items.item_id' => 'Id'], ['name' => 'Name']];
         $rows = [(object) ['items.item_id' => 1, 'name' => 'Widget']];
 
