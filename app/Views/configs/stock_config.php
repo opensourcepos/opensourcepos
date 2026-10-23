@@ -11,6 +11,12 @@
             <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
             <ul id="stock_error_message_box" class="error_message_box"></ul>
 
+            <div class="form-group form-group-sm">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-1 text-center"><strong><?= lang('Config.stock_location_default_header') ?></strong></div>
+                <div class="col-xs-2"></div>
+                <div class="col-xs-2 text-center"><strong><?= lang('Config.stock_location_name_header') ?></strong></div>
+            </div>
             <div id="stock_locations">
                 <?= view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
             </div>
