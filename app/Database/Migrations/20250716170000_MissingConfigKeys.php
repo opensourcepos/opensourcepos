@@ -12,7 +12,7 @@ class Migration_MissingConfigKeys extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_missing_config_keys.sql', true);
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.4.2_missing_config_keys.sql', true, $this->db);
     }
 
     /**
