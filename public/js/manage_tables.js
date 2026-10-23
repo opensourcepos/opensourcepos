@@ -305,10 +305,15 @@
                 return;
             }
 
-            const format = $exportItem.attr('data-type') || $exportItem.closest('.export').data('type');
-
             event.preventDefault();
             event.stopImmediatePropagation();
+
+            if ($exportItem.hasClass('disabled') || $exportItem.attr('aria-disabled') === 'true') {
+                return;
+            }
+
+            const format = $exportItem.attr('data-type') || $exportItem.closest('.export').data('type');
+
             $exportItem.closest('.dropdown-menu').prev('[data-toggle="dropdown"]').dropdown('toggle');
 
             const queryString = export_all_enabled ? export_all_query_string() : export_page_query_string();

@@ -51,10 +51,15 @@ const report_export_toggle = (function () {
                 return;
             }
 
-            const format = $exportItem.attr('data-type') || $exportItem.closest('.export').data('type');
-
             event.preventDefault();
             event.stopImmediatePropagation();
+
+            if ($exportItem.hasClass('disabled') || $exportItem.attr('aria-disabled') === 'true') {
+                return;
+            }
+
+            const format = $exportItem.attr('data-type') || $exportItem.closest('.export').data('type');
+
             $exportItem.closest('.dropdown-menu').prev('[data-toggle="dropdown"]').dropdown('toggle');
 
             const path = location.pathname.replace(/^(\/reports\/[^/]+)/, '$1/exportAll/' + format);
