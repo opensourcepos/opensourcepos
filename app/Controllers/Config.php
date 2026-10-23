@@ -770,15 +770,15 @@ class Config extends Secure_Controller
      */
     public function postSaveLocations(): ResponseInterface
     {
-        $submittedLocations = $this->request->getPost('stock_location');
-        $submittedNewLocations = $this->request->getPost('stock_location_new');
+        $submittedLocations = $this->request->getPost('stock_location') ?? [];
+        $submittedNewLocations = $this->request->getPost('stock_location_new') ?? [];
 
-        if (!is_array($submittedLocations)) {
+        if (!is_array($submittedLocations) || !is_array($submittedNewLocations) || (empty($submittedLocations) && empty($submittedNewLocations))) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Config.saved_unsuccessfully')]);
         }
 
         $submittedLocations = $this->sanitizeSubmittedLocations($submittedLocations);
-        $submittedNewLocations = $this->sanitizeSubmittedLocations((array) $submittedNewLocations);
+        $submittedNewLocations = $this->sanitizeSubmittedLocations($submittedNewLocations);
 
         $this->db->transStart();
 
