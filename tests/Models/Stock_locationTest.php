@@ -5,31 +5,25 @@ namespace Tests\Models;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Stock_location;
-use Config\Database;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class Stock_locationTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
-    protected $seed = '';
     protected $seedOnce = true;
     protected $refresh = true;
     protected $namespace = null;
 
     protected $stockLocation;
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
 
         session()->set('person_id', 1);
@@ -243,6 +237,48 @@ class Stock_locationTest extends CIUnitTestCase
 
         $this->assertTrue($this->stockLocation->saveValue($locationData, NEW_ENTRY));
         $this->assertNotEmpty($locationData['location_id']);
+    }
+
+    public function testDelete_CompactsSortOrderAfterReorderWithoutCollision(): void
+    {
+        // Reordering first puts the surviving rows' sort_order out of insertion
+        // order, so delete()'s compaction must re-derive the dense range from
+        // the post-reorder state rather than assuming row N keeps position N.
+        $idA = $this->insertLocation('Chi', false, false);
+        $idB = $this->insertLocation('Psi', false, false);
+        $idC = $this->insertLocation('Omega', false, false);
+
+        // saveSortOrder() requires every active row in the batch (see
+        // testSaveSortOrderAppliesNewOrderExactly) or the untouched row collides
+        // with the temp range, so include whatever else is already in the table.
+        $allIds = array_column($this->db->table('stock_locations')->where('deleted', 0)->get()->getResultArray(), 'location_id');
+        $ordered = array_values(array_diff($allIds, [$idA, $idB, $idC]));
+        array_unshift($ordered, $idC, $idA, $idB);
+
+        $this->stockLocation->saveSortOrder($ordered);
+        $result = $this->stockLocation->delete($idA);
+
+        $this->assertTrue($result);
+
+        $remainingRows = $this->db->table('stock_locations')
+            ->where('deleted', 0)
+            ->orderBy('sort_order', 'ASC')
+            ->get()
+            ->getResultArray();
+        $remainingIds = array_map('intval', array_column($remainingRows, 'location_id'));
+        $remainingSortOrders = array_map('intval', array_column($remainingRows, 'sort_order'));
+
+        $this->assertNotContains($idA, $remainingIds);
+        $this->assertSame([$idC, $idB], array_values(array_intersect($remainingIds, [$idC, $idB])));
+        $this->assertSame(range(0, count($remainingSortOrders) - 1), $remainingSortOrders);
+
+        $distinctCount = $this->db->table('stock_locations')
+            ->distinct()
+            ->select('sort_order')
+            ->where('deleted', 0)
+            ->get()
+            ->getNumRows();
+        $this->assertSame(count($remainingSortOrders), $distinctCount, 'sort_order values must remain unique after delete compaction');
     }
 
     public function testSaveValueNewInsertAssignsNextSortOrder(): void

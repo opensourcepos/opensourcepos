@@ -698,7 +698,7 @@ class Item extends Model
     public function get_multiple_info(array $item_ids, ?int $location_id): ResultInterface
     {
         if ($location_id === null) {
-            return $this->db->table('items')->where('1', '0')->get();
+            return $this->db->table('items')->where('item_id', -1)->get();
         }
 
         $format = $this->db->escape(dateformat_mysql());

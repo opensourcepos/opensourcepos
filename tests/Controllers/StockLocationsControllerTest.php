@@ -65,6 +65,34 @@ class StockLocationsControllerTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
     }
 
+    public function testPostSaveLocations_RejectsNonArrayNewLocationsPayload(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'     => [],
+            'stock_location_new' => 'not-an-array',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostSaveLocations_RejectsWhenBothArraysEmpty(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'     => [],
+            'stock_location_new' => [],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
     public function testPostSaveLocations_AddsNewLocation(): void
     {
         $this->loginAsAdminWithGrants(['config']);
@@ -129,6 +157,23 @@ class StockLocationsControllerTest extends CIUnitTestCase
             ->get()
             ->getRow();
         $this->assertSame(1, (int) $removedRow->deleted);
+    }
+
+    public function testPostSaveLocations_BlankSubmittedNameKeepsLocationUnchanged(): void
+    {
+        $locationId = $this->createLocation('Unchanged Name');
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location' => [(string) $locationId => '   '],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->assertTrue($this->stock_location->exists($locationId));
+        $this->assertSame('Unchanged Name', $this->stock_location->getLocationName($locationId));
     }
 
     public function testPostSaveLocations_ReordersWithNewLocationToken(): void

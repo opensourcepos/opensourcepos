@@ -376,6 +376,7 @@ class Stock_location extends Model
         );
 
         if (!empty($remainingIds)) {
+            $this->runSortOrderCaseUpdate($table, $remainingIds, count($remainingIds) + 1);
             $this->runSortOrderCaseUpdate($table, $remainingIds, 0);
         }
 
