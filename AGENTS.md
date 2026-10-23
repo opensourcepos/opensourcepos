@@ -17,6 +17,17 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Run fixer before committing: `vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.no-header.php`
 - **JavaScript**: use `const` for variables that are never reassigned, `let` for variables that are. Never use `var`.
 
+## Clean Code
+
+Follow Robert C. Martin's *Clean Code* principles when writing or editing PHP:
+
+- **Small functions.** Functions should rarely exceed 20 lines. If a function body requires scrolling, extract.
+- **Single Level of Abstraction (SLAP).** Each function must operate at exactly one level of abstraction — either high-level orchestration (calling other named functions) or low-level detail, never both in the same function. A function that opens a database connection, loops over rows, formats strings, and returns a result is a SLAP violation; extract each concern.
+- **Extract instead of comment.** Any code block that warrants an inline comment (`// validate inputs`, `// build query`, `// format result`) must instead become a named private method. The comment becomes the method name.
+- **No procedural blocks inline in public methods.** Public controller/model methods should read as a sequence of private method calls — an orchestration layer. The implementation detail belongs in `private` helpers below.
+- **Single Responsibility.** A function does one thing. If you can describe what it does and the description contains "and", it does too much.
+- **Helpers and libraries.** Reusable logic that crosses method boundaries belongs in a library class or helper, not duplicated inline. When the same pattern appears twice, extract before a third use appears.
+
 ## Development
 
 - Create a new git worktree for each issue, based on the latest state of `origin/master`

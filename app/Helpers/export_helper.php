@@ -42,14 +42,30 @@ const EXPORT_QUANTITY_COLUMNS = ['quantity'];
 const EXPORT_CURRENCY_COLUMNS = ['cost_price', 'unit_price'];
 const EXPORT_NUMERIC_IF_NUMERIC_COLUMNS = ['item_number'];
 
+function exportRowProperty(object|array $row, string $property): mixed
+{
+    return is_array($row) ? ($row[$property] ?? '') : ($row->$property ?? '');
+}
+
+function exportResolveHeaderKey(object|array $row, string $key): string
+{
+    $hasFullKey = is_array($row) ? array_key_exists($key, $row) : (property_exists($row, $key) || isset($row->$key));
+
+    if ($hasFullKey) {
+        return $key;
+    }
+
+    return str_contains($key, '.') ? substr($key, strrpos($key, '.') + 1) : $key;
+}
+
 function exportRowValues(array $headers, object|array $row): array
 {
     $values = [];
 
     foreach ($headers as $header) {
         $key = array_key_first($header);
-        $property = str_contains($key, '.') ? substr($key, strrpos($key, '.') + 1) : $key;
-        $value = is_array($row) ? ($row[$property] ?? '') : ($row->$property ?? '');
+        $property = exportResolveHeaderKey($row, $key);
+        $value = exportRowProperty($row, $property);
 
         if (in_array($key, EXPORT_BLANKABLE_COLUMNS, true) && $value === '-') {
             $value = '';
