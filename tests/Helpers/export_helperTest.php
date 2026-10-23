@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Helpers;
+
 use CodeIgniter\Test\CIUnitTestCase;
 use Tests\Support\OsposConfigFixtureTrait;
 

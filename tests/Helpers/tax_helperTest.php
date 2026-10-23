@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Helpers;
+
 use App\Models\Enums\Rounding_mode;
 use CodeIgniter\Test\CIUnitTestCase;
 

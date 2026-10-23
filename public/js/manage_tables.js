@@ -273,7 +273,27 @@
         toggle_column_visibility();
         init_export_all_toggle();
         init_export_all_intercept();
+        init_xlsx_export_gate();
         dialog_support.init("button.modal-dlg");
+    };
+
+    const init_xlsx_export_gate = function () {
+        if (window.ospos_ext_zip_enabled) {
+            return;
+        }
+
+        const $xlsxItem = $('.export [data-type="xlsx"], .export[data-type="xlsx"]');
+
+        $xlsxItem
+            .addClass('disabled')
+            .attr('aria-disabled', 'true')
+            .attr('title', lang.line('common_export_xlsx_disabled_tooltip'))
+            .off('click')
+            .on('click', function(event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            })
+            .tooltip({ container: 'body' });
     };
 
     let export_all_enabled = false;

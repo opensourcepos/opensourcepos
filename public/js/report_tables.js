@@ -62,9 +62,29 @@ const report_export_toggle = (function () {
         }, true);
     };
 
+    const init_xlsx_export_gate = function () {
+        if (window.ospos_ext_zip_enabled) {
+            return;
+        }
+
+        const $xlsxItem = $('.export [data-type="xlsx"], .export[data-type="xlsx"]');
+
+        $xlsxItem
+            .addClass('disabled')
+            .attr('aria-disabled', 'true')
+            .attr('title', lang.line('common_export_xlsx_disabled_tooltip'))
+            .off('click')
+            .on('click', function(event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            })
+            .tooltip({ container: 'body' });
+    };
+
     const init = function () {
         init_export_all_toggle();
         init_export_all_intercept();
+        init_xlsx_export_gate();
     };
 
     return { init };
