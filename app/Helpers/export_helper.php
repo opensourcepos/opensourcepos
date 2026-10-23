@@ -146,7 +146,7 @@ function sanitizeExportXmlTag(string $key): string
 const EXPORT_SQL_RESTORABLE_COLUMNS = [
     'people'                => ['people.person_id', 'last_name', 'first_name', 'email', 'phone_number'],
     'customers'             => ['people.person_id'],
-    'suppliers'             => ['people.person_id', 'company_name', 'agency_name', 'category'],
+    'suppliers'             => ['people.person_id', 'company_name', 'agency_name'],
     'items'                 => ['items.item_id', 'item_number', 'name', 'category', 'cost_price', 'unit_price'],
     'expense_categories'    => ['expense_category_id', 'category_name', 'category_description'],
     'expenses'              => ['expense_id', 'date', 'amount', 'tax_amount', 'payment_type', 'description'],
@@ -174,6 +174,7 @@ const EXPORT_SQL_REQUIRED_HIDDEN_COLUMNS = [
         'state' => 'state', 'zip' => 'zip', 'country' => 'country', 'comments' => 'comments',
     ],
     'customers'             => ['employee_id' => 'employee_id'],
+    'suppliers'             => ['category' => 'category_raw'],
     'items'                 => [
         'description' => 'description', 'allow_alt_description' => 'allow_alt_description',
         'is_serialized' => 'is_serialized',

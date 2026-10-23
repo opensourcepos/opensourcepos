@@ -90,6 +90,7 @@ class Suppliers extends Persons
         $exportRows = [];
         foreach ($suppliers->getResult() as $supplier) {
             $row = getSupplierExportRow($supplier);
+            $row['category_raw'] = $supplier->category;
             $row['category'] = $this->supplier->get_category_name($supplier->category);
             $exportRows[] = $row;
         }
