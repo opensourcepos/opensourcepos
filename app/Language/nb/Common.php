@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Eksporter alt',
     'export_page'                    => 'Eksporter side',
     'export_scope_toggle'            => 'Eksporter alle rader eller kun gjeldende side',
+    'export_xlsx_disabled_tooltip'   => 'ext-zip kreves i PHP for Excel-eksport',
     'fields_required_message'        => '',
     'fields_required_message_unique' => '',
     'first_name'                     => '',

@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Eksportuj wszystko',
     'export_page'                    => 'Eksportuj stronę',
     'export_scope_toggle'            => 'Eksportuj wszystkie wiersze lub tylko bieżącą stronę',
+    'export_xlsx_disabled_tooltip'   => 'Eksport do Excela wymaga rozszerzenia ext-zip w PHP',
     'fields_required_message'        => 'Czerwone pola są wymagane',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Imię',

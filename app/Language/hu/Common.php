@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Összes exportálása',
     'export_page'                    => 'Oldal exportálása',
     'export_scope_toggle'            => 'Minden sor exportálása vagy csak az aktuális oldal',
+    'export_xlsx_disabled_tooltip'   => 'Az Excel exporthoz az ext-zip szükséges a PHP-ban',
     'fields_required_message'        => 'A piros mezők kötelezők',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Vezetéknév',

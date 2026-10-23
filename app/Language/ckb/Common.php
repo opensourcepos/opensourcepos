@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'هەناردەکردنی هەموو',
     'export_page'                    => 'هەناردەکردنی پەڕە',
     'export_scope_toggle'            => 'هەناردەکردنی هەموو ڕیزەکان یان تەنها پەڕەی ئێستا',
+    'export_xlsx_disabled_tooltip'   => 'ext-zip پێویستە لە PHP بۆ هەناردەکردنی ئێکسڵ',
     'fields_required_message'        => 'بوارە سورەکان پێویستن',
     'fields_required_message_unique' => '',
     'first_name'                     => 'ناوی یەکەم',

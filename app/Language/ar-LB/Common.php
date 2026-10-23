@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'تصدير الكل',
     'export_page'                    => 'تصدير الصفحة',
     'export_scope_toggle'            => 'تصدير جميع الصفوف أو الصفحة الحالية فقط',
+    'export_xlsx_disabled_tooltip'   => 'يتطلب PHP امتداد ext-zip لتصدير ملفات إكسل',
     'fields_required_message'        => 'الحقول التي بالأحمر مطلوبة',
     'fields_required_message_unique' => '',
     'first_name'                     => 'الاسم الأول',

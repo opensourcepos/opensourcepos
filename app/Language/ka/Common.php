@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'ყველას ექსპორტი',
     'export_page'                    => 'გვერდის ექსპორტი',
     'export_scope_toggle'            => 'ექსპორტი ყველა მწკრივის ან მხოლოდ მიმდინარე გვერდის',
+    'export_xlsx_disabled_tooltip'   => 'Excel-ში ექსპორტისთვის PHP-ში საჭიროა ext-zip',
     'fields_required_message'        => 'Fields in red are required',
     'fields_required_message_unique' => '',
     'first_name'                     => 'სახელი',

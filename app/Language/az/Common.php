@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Hamısını ixrac et',
     'export_page'                    => 'Səhifəni ixrac et',
     'export_scope_toggle'            => 'Bütün sətirləri və ya yalnız cari səhifəni ixrac edin',
+    'export_xlsx_disabled_tooltip'   => 'Excel ixracı üçün PHP-də ext-zip tələb olunur',
     'fields_required_message'        => 'Qırmızı sahələr tələb olunur',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Ad',

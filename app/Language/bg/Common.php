@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Експортиране на всичко',
     'export_page'                    => 'Експортиране на страницата',
     'export_scope_toggle'            => 'Експортиране на всички редове или само на текущата страница',
+    'export_xlsx_disabled_tooltip'   => 'За експортиране в Excel е необходимо разширението ext-zip в PHP',
     'fields_required_message'        => 'Полетата в червено са задължителни',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Име',

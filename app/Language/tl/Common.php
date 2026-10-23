@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'I-export ang Lahat',
     'export_page'                    => 'I-export ang Pahina',
     'export_scope_toggle'            => 'I-export ang lahat ng hilera o ang kasalukuyang pahina lamang',
+    'export_xlsx_disabled_tooltip'   => 'Kailangan ang ext-zip sa PHP para sa pag-export ng Excel',
     'fields_required_message'        => 'Fields in red are required',
     'fields_required_message_unique' => '',
     'first_name'                     => 'First name',

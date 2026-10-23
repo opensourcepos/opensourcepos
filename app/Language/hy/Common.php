@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Արտահանել բոլորը',
     'export_page'                    => 'Արտահանել էջը',
     'export_scope_toggle'            => 'Արտահանել բոլոր տողերը կամ միայն ընթացիկ էջը',
+    'export_xlsx_disabled_tooltip'   => 'Excel արտահանման համար PHP-ում անհրաժեշտ է ext-zip',
     'fields_required_message'        => '',
     'fields_required_message_unique' => '',
     'first_name'                     => '',

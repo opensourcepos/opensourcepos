@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Alles exporteren',
     'export_page'                    => 'Pagina exporteren',
     'export_scope_toggle'            => 'Alle rijen exporteren of enkel de huidige pagina',
+    'export_xlsx_disabled_tooltip'   => 'ext-zip is vereist in PHP voor Excel-export',
     'fields_required_message'        => 'Velden met een * moeten ingevuld worden',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Voornaam',

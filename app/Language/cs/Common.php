@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Exportovat vše',
     'export_page'                    => 'Exportovat stránku',
     'export_scope_toggle'            => 'Exportovat všechny řádky nebo pouze aktuální stránku',
+    'export_xlsx_disabled_tooltip'   => 'Pro export do Excelu je v PHP vyžadováno rozšíření ext-zip',
     'fields_required_message'        => 'Červená pole jsou vyžadována',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Jméno',

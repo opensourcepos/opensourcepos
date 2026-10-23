@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'خروجی گرفتن از همه',
     'export_page'                    => 'خروجی گرفتن از صفحه',
     'export_scope_toggle'            => 'خروجی گرفتن از همه ردیف‌ها یا فقط صفحه فعلی',
+    'export_xlsx_disabled_tooltip'   => 'برای خروجی اکسل، افزونه ext-zip در PHP لازم است',
     'fields_required_message'        => 'زمینه هایی به رنگ قرمز لازم است',
     'fields_required_message_unique' => '',
     'first_name'                     => 'نام کوچک',

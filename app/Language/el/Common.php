@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Εξαγωγή όλων',
     'export_page'                    => 'Εξαγωγή σελίδας',
     'export_scope_toggle'            => 'Εξαγωγή όλων των γραμμών ή μόνο της τρέχουσας σελίδας',
+    'export_xlsx_disabled_tooltip'   => 'Απαιτείται η επέκταση ext-zip στην PHP για εξαγωγή σε Excel',
     'fields_required_message'        => 'Τα κόκκινα πεδία απαιτούνται',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Κύριο όνομα',

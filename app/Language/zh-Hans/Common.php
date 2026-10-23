@@ -28,6 +28,7 @@ return [
     'export_all'                     => '导出全部',
     'export_page'                    => '导出本页',
     'export_scope_toggle'            => '导出所有行或仅导出当前页',
+    'export_xlsx_disabled_tooltip'   => '导出 Excel 需要 PHP 启用 ext-zip 扩展',
     'fields_required_message'        => '红色栏位是必填项',
     'fields_required_message_unique' => '',
     'first_name'                     => '名',

@@ -28,6 +28,7 @@ return [
     'export_all'                     => '匯出全部',
     'export_page'                    => '匯出本頁',
     'export_scope_toggle'            => '匯出所有列或僅匯出目前頁面',
+    'export_xlsx_disabled_tooltip'   => '匯出 Excel 需要 PHP 啟用 ext-zip 擴充功能',
     'fields_required_message'        => '紅色欄位為必填',
     'fields_required_message_unique' => '',
     'first_name'                     => '名字',

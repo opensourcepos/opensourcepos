@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Eksporter alt',
     'export_page'                    => 'Eksporter side',
     'export_scope_toggle'            => 'Eksportér alle rækker eller kun den aktuelle side',
+    'export_xlsx_disabled_tooltip'   => 'ext-zip er påkrævet i PHP for at eksportere til Excel',
     'fields_required_message'        => 'Røde felter er obligatoriske',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Fornavn',

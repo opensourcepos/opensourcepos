@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Izvezi sve',
     'export_page'                    => 'Izvezi stranicu',
     'export_scope_toggle'            => 'Izvezite sve redove ili samo trenutnu stranicu',
+    'export_xlsx_disabled_tooltip'   => 'ext-zip je potreban u PHP-u za izvoz u Excel',
     'fields_required_message'        => 'Polja u crvenom su obavezna',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Ime',

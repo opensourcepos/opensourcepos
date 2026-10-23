@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Експортувати все',
     'export_page'                    => 'Експортувати сторінку',
     'export_scope_toggle'            => 'Експортувати всі рядки або лише поточну сторінку',
+    'export_xlsx_disabled_tooltip'   => 'Для експорту в Excel у PHP потрібне розширення ext-zip',
     'fields_required_message'        => 'Поля червоного кольору обов\'язкові для заповнення',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Ім\'я',

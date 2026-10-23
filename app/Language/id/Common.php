@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'Ekspor Semua',
     'export_page'                    => 'Ekspor Halaman',
     'export_scope_toggle'            => 'Ekspor semua baris atau hanya halaman saat ini',
+    'export_xlsx_disabled_tooltip'   => 'ext-zip diperlukan di PHP untuk ekspor Excel',
     'fields_required_message'        => 'Bagian yang berwarna merah harus diisi',
     'fields_required_message_unique' => '',
     'first_name'                     => 'Nama Depan',

@@ -28,6 +28,7 @@ return [
     'export_all'                     => 'تمام ایکسپورٹ کریں',
     'export_page'                    => 'صفحہ ایکسپورٹ کریں',
     'export_scope_toggle'            => 'تمام قطاریں یا صرف موجودہ صفحہ ایکسپورٹ کریں',
+    'export_xlsx_disabled_tooltip'   => 'ایکسل ایکسپورٹ کے لیے PHP میں ext-zip درکار ہے',
     'fields_required_message'        => '',
     'fields_required_message_unique' => '',
     'first_name'                     => '',
