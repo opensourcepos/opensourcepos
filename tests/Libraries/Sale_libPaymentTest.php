@@ -14,10 +14,12 @@ use App\Models\Sale;
 use App\Models\Stock_location;
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\OSPOS;
+use Tests\Support\OsposConfigFixtureTrait;
 
 class Sale_libPaymentTest extends CIUnitTestCase
 {
+    use OsposConfigFixtureTrait;
+
     private Sale_lib $saleLib;
 
     protected int $priorBcscale;
@@ -35,15 +37,13 @@ class Sale_libPaymentTest extends CIUnitTestCase
         bcscale(0);
 
         // Inject mock OSPOS config so Sale_lib constructor and helpers don't need real settings
-        $ospos           = new OSPOS();
-        $ospos->settings = [
+        $this->injectOsposSettings([
             'cash_rounding_code' => '',
             'cash_decimals'      => 2,
             'currency_decimals'  => 2,
             'tax_decimals'       => 2,
             'quantity_decimals'  => 2,
-        ];
-        Factories::injectMock('config', OSPOS::class, $ospos);
+        ]);
 
         // Inject stub models so model() calls in Sale_lib::__construct() skip DB
         $stubMethods = ['__construct'];
