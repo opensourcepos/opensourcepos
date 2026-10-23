@@ -12,5 +12,5 @@ return [
     'phone_placeholder'     => 'Mobil Nömrə(lər) burada...',
     'sms_send'              => 'SMS Göndər',
     'successfully_sent'     => 'Mesaj uğurla göndərildi: ',
-    'unsuccessfully_sent'   => 'Mesaj uğursuz olaraq göndərildi: ',
+    'unsuccessfully_sent'   => 'Mesaj göndərilmədi: ',
 ];
