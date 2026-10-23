@@ -11,7 +11,7 @@ const report_export_toggle = (function () {
             'data-offstyle': 'default',
             'data-on': lang.line('common_export_all'),
             'data-off': lang.line('common_export_page')
-        }).prependTo('#title_bar');
+        }).prependTo('#toolbar');
 
         $toggleInput.bootstrapToggle();
 
