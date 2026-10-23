@@ -695,8 +695,12 @@ class Item extends Model
     /**
      * Gets information about multiple items
      */
-    public function get_multiple_info(array $item_ids, int $location_id): ResultInterface
+    public function get_multiple_info(array $item_ids, ?int $location_id): ResultInterface
     {
+        if ($location_id === null) {
+            return $this->db->table('items')->where('1', '0')->get();
+        }
+
         $format = $this->db->escape(dateformat_mysql());
 
         $builder = $this->db->table('items');

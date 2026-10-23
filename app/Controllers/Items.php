@@ -337,7 +337,8 @@ class Items extends Secure_Controller
      */
     public function getRow(string $itemIds): ResponseInterface    // TODO: An array would be better for parameter.
     {
-        $itemInfos = $this->item->get_multiple_info(explode(':', $itemIds), $this->item_lib->get_item_location());
+        $locationId = $this->item_lib->get_item_location();
+        $itemInfos = $this->item->get_multiple_info(explode(':', $itemIds), $locationId === null ? null : (int) $locationId);
         $itemResults = $itemInfos->getResult();
 
         $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
@@ -561,7 +562,8 @@ class Items extends Secure_Controller
     public function getGenerateBarcodes(string $item_ids): string    // TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
     {
         $item_ids = explode(':', $item_ids);
-        $result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
+        $locationId = $this->item_lib->get_item_location();
+        $result = $this->item->get_multiple_info($item_ids, $locationId === null ? null : (int) $locationId)->getResultArray();
         $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 
         foreach ($result as &$item) {

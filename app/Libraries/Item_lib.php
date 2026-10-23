@@ -24,9 +24,9 @@ class Item_lib
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function get_item_location(): string
+    public function get_item_location(): ?string
     {
         if (!$this->session->get('item_location')) {
             $location_id = $this->stock_location->getDefaultLocationId();
