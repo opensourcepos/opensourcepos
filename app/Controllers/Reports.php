@@ -2716,7 +2716,7 @@ class Reports extends Secure_Controller
         $reportData = $inventoryLow->getData($inputs);
 
         $tabular_data = [];
-        foreach ($report_data as $row) {
+        foreach ($reportData as $row) {
             $tabular_data[] = [
                 'item_name'     => $row['name'],
                 'item_number'   => $row['item_number'],
@@ -2729,9 +2729,9 @@ class Reports extends Secure_Controller
         $data = [
             'title'        => lang('Reports.inventory_low_report'),
             'subtitle'     => '',
-            'headers'      => $inventory_low->getDataColumns(),
+            'headers'      => $inventoryLow->getDataColumns(),
             'data'         => $tabular_data,
-            'summary_data' => $inventory_low->getSummaryData($inputs)
+            'summary_data' => $inventoryLow->getSummaryData($inputs)
         ];
 
         return view('reports/tabular', $data);
