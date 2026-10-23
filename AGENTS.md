@@ -11,11 +11,22 @@ This document provides guidance for AI agents working on the Open Source Point o
 - All newly written code (variables, classes, functions) must use PSR-compliant naming, regardless of surrounding code style
 - PHP 8.2+ features acceptable (named arguments, enums, readonly properties)
 - Write PHP 8.2+ compatible code with proper type declarations
-- Always import classes, functions, and constants with a `use` statement at the top of the file instead of referencing them inline via fully-qualified name (e.g. `use Config\Database;` then `Database::connect()`, not `\Config\Database::connect()`)
+- Always import classes, functions, and constants with a `use` statement at the top of the file instead of referencing them inline via qualified or fully-qualified name — this applies to every reference, including global-namespace classes like `ReflectionClass`/`ReflectionProperty`/`Exception` and type-hints in method signatures, not just namespaced application classes. Use `Database::connect()` with `use Config\Database;`, not `\Config\Database::connect()`; use `new ReflectionProperty(...)` with `use ReflectionProperty;`, not `new \ReflectionProperty(...)`; type-hint `ResponseInterface $response` with `use CodeIgniter\HTTP\ResponseInterface;`, not `\CodeIgniter\HTTP\ResponseInterface $response`
 - No useless comments or docblocks: if the code speaks for itself, explanatory comments are unnecessary. Do not add comments or docblocks that merely restate what the code already makes clear (e.g. `@param array $items` next to `array $items`, or a comment repeating a method's name) — only comment on non-obvious rationale, constraints, or behavior
 - Views in `app/Views/errors/html/` are excluded from the fixer
 - Run fixer before committing: `vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.no-header.php`
 - **JavaScript**: use `const` for variables that are never reassigned, `let` for variables that are. Never use `var`.
+
+## Clean Code
+
+Follow Robert C. Martin's *Clean Code* principles when writing or editing PHP:
+
+- **Small functions.** Functions should rarely exceed 20 lines. If a function body requires scrolling, extract.
+- **Single Level of Abstraction (SLAP).** Each function must operate at exactly one level of abstraction — either high-level orchestration (calling other named functions) or low-level detail, never both in the same function. A function that opens a database connection, loops over rows, formats strings, and returns a result is a SLAP violation; extract each concern.
+- **Extract instead of comment.** Any code block that warrants an inline comment (`// validate inputs`, `// build query`, `// format result`) must instead become a named private method. The comment becomes the method name.
+- **No procedural blocks inline in public methods.** Public controller/model methods should read as a sequence of private method calls — an orchestration layer. The implementation detail belongs in `private` helpers below.
+- **Single Responsibility.** A function does one thing. If you can describe what it does and the description contains "and", it does too much.
+- **Helpers and libraries.** Reusable logic that crosses method boundaries belongs in a library class or helper, not duplicated inline. When the same pattern appears twice, extract before a third use appears.
 
 ## Development
 

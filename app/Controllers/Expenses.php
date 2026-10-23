@@ -4,12 +4,15 @@ namespace App\Controllers;
 
 use App\Models\Expense;
 use App\Models\Expense_category;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\OSPOS;
 use Config\Services;
 
 class Expenses extends Secure_Controller
 {
+    private BaseConnection $db;
     private Expense $expense;
     private Expense_category $expense_category;
 
@@ -17,6 +20,7 @@ class Expenses extends Secure_Controller
     {
         parent::__construct('expenses');
 
+        $this->db = Database::connect();
         $this->expense = model(Expense::class);
         $this->expense_category = model(Expense_category::class);
     }
@@ -83,6 +87,49 @@ class Expenses extends Secure_Controller
         }
 
         return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
+    }
+
+    /**
+     * Streams expenses matching the current search/filters as a downloadable file.
+     * The synthetic totals footer row that getSearch() appends is intentionally excluded here.
+     * @noinspection PhpUnused
+     */
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search   = $this->request->getGet('search');
+        $limit    = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset   = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort     = $this->sanitizeSortColumn(expense_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'expense_id');
+        $order    = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $filters  = [
+            'start_date'  => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date'    => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'only_cash'   => false,
+            'only_due'    => false,
+            'only_check'  => false,
+            'only_credit' => false,
+            'only_debit'  => false,
+            'is_deleted'  => false
+        ];
+
+        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $requestFilters);
+        $expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($expenses->getResult() as $expense) {
+            $exportRows[] = getExpenseExportRow($expense);
+        }
+
+        $file = generateExportFile($format, expenseExportHeaders(), $exportRows, 'expenses_' . date('Ymd_His'), $this->db->prefixTable('expenses'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

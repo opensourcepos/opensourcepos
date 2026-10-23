@@ -108,7 +108,7 @@ class Items extends Secure_Controller
      **/
     public function getSearch(): ResponseInterface
     {
-        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
         $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -160,6 +160,68 @@ class Items extends Secure_Controller
         }
 
         return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
+    }
+
+    /**
+     * Streams items matching the current search/filters as a downloadable file.
+     * With no limit/offset given, exports every matching row; otherwise exports just that page.
+     * @noinspection PhpUnused
+     **/
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $this->item_lib->set_item_location($this->request->getGet('stock_location'));
+
+        $definitionNamesWithTypes = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
+        $definitionIds = array_keys($definitionNamesWithTypes);
+
+        $sort = $this->sanitizeSortColumn(itemSortColumns($definitionIds), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
+
+        $filters = [
+            'start_date'        => $this->request->getGet('start_date'),
+            'end_date'          => $this->request->getGet('end_date'),
+            'stock_location_id' => $this->item_lib->get_item_location(),
+            'empty_upc'         => false,
+            'low_inventory'     => false,
+            'is_serialized'     => false,
+            'no_description'    => false,
+            'search_custom'     => false,
+            'is_deleted'        => false,
+            'temporary'         => false,
+            'definition_ids'    => $definitionIds
+        ];
+
+        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $requestFilters);
+
+        if (!empty($filters['search_custom'])) {
+            $searchableDefinitions = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH);
+            $filters['definition_ids'] = array_keys($searchableDefinitions);
+        }
+
+        $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
+        $itemResults = $items->getResult();
+
+        $taxPercentsByItemId = $this->buildTaxPercentsByItem($itemResults);
+
+        $exportRows = [];
+        foreach ($itemResults as $item) {
+            $exportRows[] = getItemExportRow($item, $definitionNamesWithTypes, $taxPercentsByItemId);
+        }
+
+        $file = generateExportFile($format, itemExportHeaders(), $exportRows, 'items_' . date('Ymd_His'), $this->db->prefixTable('items'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**
