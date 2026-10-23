@@ -77,7 +77,7 @@ function exportRowValues(array $headers, object|array $row): array
     return $values;
 }
 
-const EXPORT_CSV_FORMULA_PREFIXES = ['=', '+', '-', '@'];
+const EXPORT_CSV_FORMULA_PREFIXES = ['=', '+', '-', '@', "\t", "\r"];
 
 function sanitizeExportCsvValue(mixed $value): mixed
 {
