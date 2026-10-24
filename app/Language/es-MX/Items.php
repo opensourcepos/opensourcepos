@@ -40,7 +40,7 @@ return [
     'edit_multiple_items' => 'Edición de varios elementos',
     'empty_upc_items' => 'Artículos sin código de barras',
     'error_adding_updating' => 'Error agregando/editando artículo/producto',
-    'error_updating_multiple' => '',
+    'error_updating_multiple' => 'Error al actualizar los elementos',
     'generate_barcodes' => '',
     'hsn_code' => '',
     'image' => '',
