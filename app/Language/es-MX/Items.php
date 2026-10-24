@@ -68,7 +68,7 @@ return [
     'low_sell_item' => 'Articulos/Productos de baja venta',
     'manually_editing_of_quantity' => 'Edición manual de cantidad',
     'markup' => '',
-    'name' => '',
+    'name' => 'Nombre de articulo',
     'name_required' => 'El nombre de artículo/producto es obligatorio.',
     'new' => 'Nuevo articulo',
     'no_description_items' => 'Artículo/Producto sin descripción',
