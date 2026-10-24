@@ -29,7 +29,7 @@ return [
     'error_updating_multiple' => 'Fallo en la actualización de la(s) Tarjeta(s) de regalo.',
     'generate_barcodes' => 'Generar códigos de barras',
     'giftcard' => 'Tarjeta de Regalo',
-    'giftcard_number' => 'Numero de la Tarjeta de Regalo',
+    'giftcard_number' => 'Número de tarjeta de regalo',
     'info_provided_by' => 'Información provista por',
     'inventory_comments' => 'Comentarios',
     'is_serialized' => 'La Tarjeta de Regalo tiene Numero de Serie',
