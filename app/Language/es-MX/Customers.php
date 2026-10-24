@@ -14,7 +14,7 @@ return [
     'confirm_restore' => '¿Está seguro que quiere restaurar los clientes seleccionados?',
     'consent' => 'Consentimiento de registro',
     'consent_required' => 'Consentimiento de registro es un campo requerido.',
-    'csv_import_failed' => 'Importación CSV fallida',
+    'csv_import_failed' => 'La importación del archivo CSV falló',
     'csv_import_nodata_wrongformat' => 'El archivo subido no contiene datos o no está formado correctamente.',
     'csv_import_partially_failed' => 'La importación del Cliente fue exitosa pero con algunos errores:',
     'csv_import_success' => 'Cliente importado exitosamente.',
