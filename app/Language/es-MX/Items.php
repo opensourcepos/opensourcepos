@@ -39,7 +39,7 @@ return [
     'edit_fields_you_want_to_update' => 'Editar los campos deseados para el/los articulos seleccionado(s).',
     'edit_multiple_items' => 'Edición de varios elementos',
     'empty_upc_items' => 'Artículos sin código de barras',
-    'error_adding_updating' => 'Error agregando/editando elemento',
+    'error_adding_updating' => 'Error agregando/editando artículo/producto',
     'error_updating_multiple' => '',
     'generate_barcodes' => '',
     'hsn_code' => '',
