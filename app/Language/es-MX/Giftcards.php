@@ -16,7 +16,7 @@ return [
     'confirm_bulk_edit' => '¿Estas seguro que deseas editar las Tarjeta(s) de regalo seleccionadas?',
     'confirm_delete' => '¿Estas seguro que deseas borrar las Tarjetas(s) de regalo seleccionadas?',
     'confirm_restore' => '¿Estas seguro que deseas restaurar las Tarjeta(s) de regalo seleccionadas?',
-    'cost_price' => 'Precio de mayoreo.',
+    'cost_price' => 'Precio de mayoreo',
     'count' => 'Actualizar inventario',
     'csv_import_failed' => 'Fallo en la importación de CSV.',
     'current_quantity' => 'Cantidad actual',
