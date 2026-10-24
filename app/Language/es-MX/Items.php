@@ -25,7 +25,7 @@ return [
     'cost_price_number' => 'El precio de mayoreo debe ser números.',
     'cost_price_required' => 'El precio de mayoreo es requerido.',
     'count' => 'Actualizar inventario',
-    'csv_import_failed' => 'Importación CSV fallida',
+    'csv_import_failed' => 'La importación del archivo CSV falló',
     'csv_import_invalid_location' => 'Ubicacion(es) inválidas de stock encontrada(s): {0}. Solo las ubicaciones válidas de stock son permitidas',
     'csv_import_nodata_wrongformat' => 'El documento CSV subido no tiene datos o su formato es incorrecto',
     'csv_import_partially_failed' => 'Hubieron {0} articulos fallido(s) en la importación, en las linea(s): {1}. Ninguna fila fue importada.',
