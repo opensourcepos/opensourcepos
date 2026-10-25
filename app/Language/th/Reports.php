@@ -29,7 +29,7 @@ return [
     'date' => 'วันที่',
     'date_range' => 'ระหว่างวันที่',
     'description' => 'คำอธิบาย',
-    'detailed_item_sales_report' => '',
+    'detailed_item_sales_report' => 'รายงานการขายสินค้าโดยละเอียด',
     'detailed_receivings_report' => 'รายงานรายละเอียกการรับของ',
     'detailed_receivings_report_input' => '',
     'detailed_reports' => 'รายละเอียดรายงาน',
