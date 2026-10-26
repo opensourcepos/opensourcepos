@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.date'), 'date', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Expenses.date'), 'date', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-6">
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -70,7 +70,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses.amount'), 'amount', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Expenses.amount'), 'amount', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-6">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>

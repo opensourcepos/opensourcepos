@@ -5,9 +5,9 @@ namespace Tests\Controllers;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Database\Seeds\TestDatabaseBootstrapSeeder;
 use App\Models\Employee;
 use Config\OSPOS;
+use Tests\Support\DatabaseBootstrapTrait;
 
 /**
  * Regression tests for the reports permission bypass
@@ -23,6 +23,7 @@ use Config\OSPOS;
 class ReportsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
 
     protected $migrate     = true;
@@ -30,18 +31,12 @@ class ReportsControllerTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = 'App';
 
-    private static bool $doneBootstrap = false;
-
     /**
      * Set up test environment
      */
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            TestDatabaseBootstrapSeeder::reset();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
 

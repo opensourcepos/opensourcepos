@@ -3,16 +3,17 @@
 namespace Tests\Controllers;
 
 use App\Jobs\BoundedQueueWorker;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Customer;
 use App\Models\Employee;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class CustomersCsvImportTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
 
     protected $migrate = true;
@@ -23,19 +24,12 @@ class CustomersCsvImportTest extends CIUnitTestCase
     protected Customer $customer;
     protected Employee $employee;
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
         // Reset the test database to a clean schema on the first test in this
         // class so leftover customers with the same emails from prior runs
         // cannot be rejected as duplicates by the import (check_email_exists).
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
         // Reset any stale transaction state left on the shared in-process DB

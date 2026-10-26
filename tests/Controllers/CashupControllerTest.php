@@ -3,19 +3,20 @@
 namespace Tests\Controllers;
 
 use App\Models\Cashup;
-use CodeIgniter\Config\Factories;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use Config\OSPOS;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\OsposConfigFixtureTrait;
 
 class CashupControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
     use EmployeeFixtureTrait;
+    use OsposConfigFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -23,34 +24,24 @@ class CashupControllerTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = 'App';
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
 
-        $ospos = new OSPOS();
-        $ospos->settings = [
+        $this->injectOsposSettings([
             'company'             => 'Test Co',
             'dateformat'          => 'Y-m-d',
             'timeformat'          => 'H:i:s',
             'number_locale'       => 'en_US',
             'currency_decimals'   => 2,
             'thousands_separator' => ',',
-        ];
-        Factories::injectMock('config', OSPOS::class, $ospos);
+        ]);
     }
 
     protected function tearDown(): void
     {
-        Factories::reset();
         parent::tearDown();
     }
 

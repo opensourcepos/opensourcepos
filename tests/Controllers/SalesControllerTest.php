@@ -2,13 +2,13 @@
 
 namespace Tests\Controllers;
 
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use Config\Database;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\ItemFixtureTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\SaleFixtureTrait;
@@ -28,6 +28,7 @@ use Tests\Support\SaleFixtureTrait;
 class SalesControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
     use ItemFixtureTrait;
     use EmployeeFixtureTrait;
@@ -39,16 +40,9 @@ class SalesControllerTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = 'App';
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
     }

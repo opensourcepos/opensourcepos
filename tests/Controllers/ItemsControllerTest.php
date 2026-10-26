@@ -190,6 +190,86 @@ class ItemsControllerTest extends CIUnitTestCase
     }
 
     /**
+     * Regression test: a negative tax percent must be
+     * rejected by postSave so it can never be persisted to items_taxes.
+     */
+    public function testPostSave_RejectsNegativeTaxPercent(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ['VAT'];
+        $postData['tax_percents'] = ['-200'];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    /**
+     * Boundary: a zero tax percent is valid (>= 0) and must not be rejected.
+     */
+    public function testPostSave_AcceptsZeroTaxPercent(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $postData = $this->baseItemPostData();
+        $postData['tax_names'] = ['VAT'];
+        $postData['tax_percents'] = ['0'];
+
+        $response = $this->post('/items/save', $postData);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * Regression test: a negative tax percent must be
+     * rejected by postBulkUpdate so it can never be persisted.
+     */
+    public function testPostBulkUpdate_RejectsNegativeTaxPercent(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => '1',
+            'tax_names'    => ['VAT'],
+            'tax_percents' => ['-50'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    /**
+     * Regression test: a CSV row with a negative Tax N Percent must be
+     * rejected by save_tax_data (not silently dropped), so postImportCsvFile
+     * fails the row instead of importing the item without its tax.
+     */
+    public function testSaveTaxData_RejectsNegativePercent(): void
+    {
+        $controller = (new \ReflectionClass(\App\Controllers\Items::class))->newInstanceWithoutConstructor();
+        $method = new \ReflectionMethod($controller, 'save_tax_data');
+        $method->setAccessible(true);
+
+        $row = [
+            'Tax 1 Name'    => 'VAT',
+            'Tax 1 Percent' => '-5',
+            'Tax 2 Name'    => '',
+            'Tax 2 Percent' => '',
+        ];
+
+        $this->assertFalse($method->invoke($controller, $row, ['item_id' => 1]));
+    }
+
+    /**
      * Regression test: an attribute definition whose
      * `definition_name` contains HTML must be entity-escaped when rendered in the
      * items attributes dropdown, not emitted as a live (executable) tag.
