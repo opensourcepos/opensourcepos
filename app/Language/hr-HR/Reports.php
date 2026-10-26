@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "",
     "taxes"                                   => "Porezi",
     "taxes_summary_report"                    => "Zbrojni izvještaj po porezima",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Ukupno",
     "total_inventory_value"                   => "Ukupan iznos inventure",
     "total_low_sell_quantity"                 => "",

@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "Poreska stopa",
     "taxes"                                   => "Porezi",
     "taxes_summary_report"                    => "Zbirni izvještaj poreza",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Ukupno",
     "total_inventory_value"                   => "Ukupan iznos zalihe",
     "total_low_sell_quantity"                 => "Ukupno količina niskih prodaja",

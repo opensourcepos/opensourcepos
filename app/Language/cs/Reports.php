@@ -128,6 +128,7 @@ return [
     "tax_rate"                                => "",
     "taxes"                                   => "Daně",
     "taxes_summary_report"                    => "Přehled podle DPH",
+    "toggle_cost_and_profit"                  => "",
     "total"                                   => "Celkem",
     "total_inventory_value"                   => "Celková cena skladu",
     "total_low_sell_quantity"                 => "",

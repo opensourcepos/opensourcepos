@@ -8,15 +8,25 @@ on:
 jobs:
   delete_unstable_release:
     runs-on: ubuntu-latest
-    steps: 
-      - name: "Delete last unstable release"
-        uses: sgpublic/delete-release-action@v1.2
-        env: 
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        with:
-          release-drop: false
-          release-drop-tag: false
-          pre-release-drop: true
-          pre-release-keep-count: -1
-          pre-release-drop-tag: true
-
+    steps:
+      - name: "Delete the unstable release (matched by name)"
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          RELEASE_NAME: "Unstable OpenSourcePOS"
+          TAG_NAME: "unstable"
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+          # Resolve the release id from its exact name so only this one release
+          # is ever touched; drafts and every other release are left alone.
+          id=$(curl -fsSL -H "Authorization: Bearer ${TOKEN}" "${api}/releases?per_page=100" \
+                | jq -r --arg n "${RELEASE_NAME}" '.[] | select(.name==$n) | .id // empty')
+          if [ -z "${id}" ]; then
+            echo "No release named '${RELEASE_NAME}' found; nothing to do."
+            exit 0
+          fi
+          curl -fsSL -X DELETE -H "Authorization: Bearer ${TOKEN}" "${api}/releases/${id}" >/dev/null
+          echo "Deleted release '${RELEASE_NAME}' (id=${id})"
+          curl -fsSL -X DELETE -H "Authorization: Bearer ${TOKEN}" "${api}/git/refs/tags/${TAG_NAME}" >/dev/null \
+            || echo "Tag '${TAG_NAME}' already gone; skipping."
+          echo "Deleted tag '${TAG_NAME}'"

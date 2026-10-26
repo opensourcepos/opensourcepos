@@ -128,6 +128,7 @@ return [
     'tax_rate' => "ڕێژەی باج",
     'taxes' => "باجەکان",
     'taxes_summary_report' => "‎ڕاپۆرتی پوختەی باجەکان",
+    'toggle_cost_and_profit' => "",
     'total' => "گشتی",
     'total_inventory_value' => "کۆی بەهای جەرد",
     'total_low_sell_quantity' => "کۆی گشتی بڕی فرۆشتنی کەم",
