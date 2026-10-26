@@ -177,6 +177,15 @@ button.btn.dropdown-toggle.btn-sm {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+.tooltip-inner {
+    max-width: 350px;
+    text-align: left;
+}
+
+.ui-tooltip {
+    max-width: 350px;
+}
+
 /* Spinner animation for bootstrap-table loading message */
 .glyphicon-refresh-animate {
     animation: spin 1s infinite linear;
