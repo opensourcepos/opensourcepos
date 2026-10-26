@@ -585,7 +585,7 @@ class Sale extends Model
                 $amount = (float) $payment['payment_amount'];
 
                 if ($saleType === SALE_TYPE_RETURN && $amount < 0) {
-                    if (empty($splitPayment[1]) || ! $giftcard->incrementGiftcardValue($splitPayment[1], abs($amount))) {
+                    if ($saleStatus == COMPLETED && (empty($splitPayment[1]) || ! $giftcard->incrementGiftcardValue($splitPayment[1], abs($amount)))) {
                         $this->db->transRollback();
 
                         return INSUFFICIENT_GIFTCARD_BALANCE;
