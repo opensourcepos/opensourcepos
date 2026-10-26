@@ -2,8 +2,6 @@
 
 use App\Models\Attribute;
 use App\Models\Employee;
-use App\Models\Item_taxes;
-use App\Models\Tax_category;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Session\Session;
@@ -403,9 +401,32 @@ function item_headers(): array
 }
 
 /**
+ * Get all sortable column keys for items table, including dynamic attribute columns.
+ *
+ * @param array|null $definitionIds Attribute definition IDs to append as sortable columns.
+ *                                  If null, resolved via a query against SHOW_IN_ITEMS.
+ * @return array Array of column headers in the format sanitizeSortColumn() expects
+ */
+function itemSortColumns(?array $definitionIds = null): array
+{
+    if ($definitionIds === null) {
+        $attribute = model(Attribute::class);
+        $definitionIds = array_keys($attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS));
+    }
+
+    $headers = item_headers();
+
+    foreach ($definitionIds as $definitionId) {
+        $headers[] = [(string) $definitionId => ''];
+    }
+
+    return $headers;
+}
+
+/**
  * Get the header for the items tabular view
  */
-function get_items_manage_table_headers(): string
+function getItemsManageTableHeaders(): string
 {
     $attribute = model(Attribute::class);
     $config = config(OSPOS::class)->settings;
@@ -421,8 +442,8 @@ function get_items_manage_table_headers(): string
 
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
-    foreach ($definitionsWithTypes as $definition_id => $definitionInfo) {
-        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => false];
+    foreach ($definitionsWithTypes as $definitionId => $definitionInfo) {
+        $headers[] = [$definitionId => $definitionInfo['name'], 'sortable' => true];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];
@@ -433,32 +454,17 @@ function get_items_manage_table_headers(): string
 
 /**
  * Get the html data row for the item
+ *
+ * @param object $item
+ * @param array $definitionNames Attribute definitions with types, keyed by definition_id (see Attribute::getDefinitionsByFlags(..., true))
+ * @param array $taxPercentsByItemId Pre-computed tax percent strings, keyed by item_id (see Items::buildTaxPercentsByItem())
+ * @return array
  */
-function get_item_data_row(object $item): array
+function getItemDataRow(object $item, array $definitionNames, array $taxPercentsByItemId): array
 {
-    $attribute = model(Attribute::class);
-    $item_taxes = model(Item_taxes::class);
-    $tax_category = model(Tax_category::class);
     $config = config(OSPOS::class)->settings;
 
-    if ($config['use_destination_based_tax']) {
-        if ($item->tax_category_id == null) {    // TODO: === ?
-            $tax_percents = '-';
-        } else {
-            $tax_category_info = $tax_category->get_info($item->tax_category_id);
-            $tax_percents = $tax_category_info->tax_category;
-        }
-    } else {
-        $item_tax_info = $item_taxes->get_info($item->item_id);
-        $tax_percents = '';
-        foreach ($item_tax_info as $tax_info) {
-            $tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
-        }
-
-        // Remove ', ' from last item
-        $tax_percents = substr($tax_percents, 0, -2);
-        $tax_percents = !$tax_percents ? '-' : $tax_percents;
-    }
+    $taxPercents = $taxPercentsByItemId[$item->item_id] ?? '-';
 
     $controller = get_controller();
 
@@ -471,16 +477,14 @@ function get_item_data_row(object $item): array
             : glob("./uploads/item_pics/$item->pic_filename");
 
         if (sizeof($images) > 0) {
-            $image_path = ltrim($images[0], './');
-            $image .= '<a class="rollover" href="' . base_url(implode('/', array_map('rawurlencode', explode('/', $image_path)))) . '"><img alt="Image thumbnail" src="' . site_url('items/PicThumb/' . rawurlencode(pathinfo($images[0], PATHINFO_BASENAME))) . '"></a>';
+            $imagePath = ltrim($images[0], './');
+            $image .= '<a class="rollover" href="' . base_url(implode('/', array_map('rawurlencode', explode('/', $imagePath)))) . '"><img alt="Image thumbnail" src="' . site_url('items/PicThumb/' . rawurlencode(pathinfo($images[0], PATHINFO_BASENAME))) . '"></a>';
         }
     }
 
     if ($config['multi_pack_enabled']) {
         $item->name .= NAME_SEPARATOR . $item->pack_name;
     }
-
-    $definition_names = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
 
     $columns = [
         'items.item_id' => $item->item_id,
@@ -491,7 +495,7 @@ function get_item_data_row(object $item): array
         'cost_price'    => to_currency($item->cost_price),
         'unit_price'    => to_currency($item->unit_price),
         'quantity'      => to_quantity_decimals($item->quantity),
-        'tax_percents'  => !$tax_percents ? '-' : $tax_percents,
+        'tax_percents'  => !$taxPercents ? '-' : $taxPercents,
         'item_pic'      => $image
     ];
 
@@ -524,7 +528,7 @@ function get_item_data_row(object $item): array
         )
     ];
 
-    return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
+    return $columns + expand_attribute_values($definitionNames, (array) $item) + $icons;
 }
 
 function giftcard_headers(): array

@@ -5,11 +5,13 @@ namespace Tests\Controllers;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use Tests\Support\TaxFixtureTrait;
 
 class ConfigTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;
+    use TaxFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -136,7 +138,7 @@ class ConfigTest extends CIUnitTestCase
     private function baseLocalePayload(array $overrides = []): array
     {
         return array_merge([
-            'language'         => 'en:English',
+            'language'         => 'en:english',
             'currency_symbol'  => '$',
             'currency_code'    => 'USD',
             'timezone'         => 'UTC',
@@ -151,6 +153,8 @@ class ConfigTest extends CIUnitTestCase
             'payment_options_order' => '',
             'cash_rounding_code'    => '',
             'financial_year'        => '1',
+            'payment_reference_code_min' => '3',
+            'payment_reference_code_max' => '20',
         ], $overrides);
     }
 
@@ -232,6 +236,61 @@ class ConfigTest extends CIUnitTestCase
         $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
             'payment_reference_code_min' => '10',
             'payment_reference_code_max' => '5',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    // ========== postSaveLocale: language_code allow-list (GHSA) ==========
+
+    public function testSaveLocale_RejectsPathTraversalLanguageCode(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => '../../public/uploads:evil',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('language', strtolower($result['message']));
+    }
+
+    public function testSaveLocale_RejectsLanguageCodeWithBackslash(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => '..\\..\\public\\uploads:evil',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsUnknownLanguage(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => 'xx:nonexistent',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsCaseMismatchedLanguage(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => 'en:English',
         ]));
 
         $response->assertStatus(200);
@@ -340,5 +399,47 @@ class ConfigTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
         $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
+
+    // ========== postSaveTax: negative default tax rate ==========
+
+    public function testSaveTax_RejectsNegativeDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => '-200.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_RejectsNegativeDefaultTaxRate2(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_2_rate' => '-50.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_AcceptsZeroDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => '0.00',
+            'default_tax_2_rate' => '0.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
     }
 }

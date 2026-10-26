@@ -900,7 +900,7 @@ class Sales extends Secure_Controller
                 $data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
                 // Resort and filter cart lines for printing
-                $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+                $data['cart'] = $this->sale_lib->sortAndFilterCart($data['cart']);
 
                 if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
                     $data['error_message'] = lang('Sales.insufficient_giftcard_balance');
@@ -955,7 +955,7 @@ class Sales extends Secure_Controller
 
                 $this->sale_lib->set_suspended_id($data['sale_id_num']);
 
-                $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+                $data['cart'] = $this->sale_lib->sortAndFilterCart($data['cart']);
 
                 $data['barcode'] = null;
 
@@ -995,7 +995,7 @@ class Sales extends Secure_Controller
 
                 $this->sale_lib->set_suspended_id($data['sale_id_num']);
 
-                $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+                $data['cart'] = $this->sale_lib->sortAndFilterCart($data['cart']);
                 $data['barcode'] = null;
 
                 $this->sale_lib->clear_all();
@@ -1014,7 +1014,7 @@ class Sales extends Secure_Controller
 
             $data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
-            $data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+            $data['cart'] = $this->sale_lib->sortAndFilterCart($data['cart']);
 
             if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
                 $data['error_message'] = lang('Sales.insufficient_giftcard_balance');

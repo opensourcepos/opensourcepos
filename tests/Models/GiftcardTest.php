@@ -5,11 +5,11 @@ namespace Tests\Models;
 use App\Models\Giftcard;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
-use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 
 /**
- * Regression tests for GHSA-995p-52qw-5hh2: decrementGiftcardValue() must
+ * Regression tests: decrementGiftcardValue() must
  * apply its balance check and its write in a single atomic UPDATE, so that
  * two concurrent decrements against the same gift card can never both read
  * the same stale balance and double-spend it.
@@ -17,6 +17,7 @@ use Tests\Support\ConcurrentDbRaceTrait;
 class GiftcardTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use ConcurrentDbRaceTrait;
 
     protected $migrate     = true;
@@ -24,14 +25,10 @@ class GiftcardTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    public static function setUpBeforeClass(): void
-    {
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
     }
 

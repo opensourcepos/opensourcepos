@@ -264,6 +264,19 @@ class Config extends Secure_Controller
         $data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
         $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 
+        // Integrations Related fields
+        $data['smtp_pass_set'] = !empty($this->config['smtp_pass']);
+        $data['msg_pwd_set']   = !empty($this->config['msg_pwd']);
+
+        if (checkEncryption()) {
+            if (!isset($this->encrypter)) {
+                helper('security');
+                $this->encrypter = Services::encrypter();
+            }
+
+            removeBackup();
+        }
+
         return view('configs/manage', $data);
     }
 
@@ -476,7 +489,12 @@ class Config extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
         }
 
-        $exploded = explode(":", $this->request->getPost('language'));
+        $language = $this->request->getPost('language');
+        if (!in_array($language, array_keys(get_languages()), true)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid language']);
+        }
+
+        $exploded = explode(":", $language);
         $currency_symbol = $this->request->getPost('currency_symbol');
         $batch_save_data = [
             'currency_symbol'            => htmlspecialchars($currency_symbol ?? ''),
@@ -515,10 +533,12 @@ class Config extends Secure_Controller
      */
     public function postSaveEmail(): ResponseInterface
     {
-        $password = '';
+        $postedPass = (string) $this->request->getPost('smtp_pass');
 
-        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
-            $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+        if (checkEncryption() && $postedPass !== '') {
+            $password = $this->encrypter->encrypt($postedPass);
+        } else {
+            $password = (string) ($this->config['smtp_pass'] ?? '');
         }
 
         $protocol = $this->request->getPost('protocol');
@@ -566,10 +586,12 @@ class Config extends Secure_Controller
      */
     public function postSaveMessage(): ResponseInterface
     {
-        $password = '';
+        $postedPwd = (string) $this->request->getPost('msg_pwd');
 
-        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
-            $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
+        if (checkEncryption() && $postedPwd !== '') {
+            $password = $this->encrypter->encrypt($postedPwd);
+        } else {
+            $password = (string) ($this->config['msg_pwd'] ?? '');
         }
 
         $batch_save_data = [
@@ -744,13 +766,17 @@ class Config extends Secure_Controller
      */
     public function postSaveTax(): ResponseInterface
     {
-        $default_tax_1_rate = $this->request->getPost('default_tax_1_rate');
-        $default_tax_2_rate = $this->request->getPost('default_tax_2_rate');
+        $default_tax_1_rate = parse_tax(filter_var($this->request->getPost('default_tax_1_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        $default_tax_2_rate = parse_tax(filter_var($this->request->getPost('default_tax_2_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+
+        if ((is_numeric($default_tax_1_rate) && $default_tax_1_rate < 0) || (is_numeric($default_tax_2_rate) && $default_tax_2_rate < 0)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Config.default_tax_rate_non_negative')]);
+        }
 
         $batch_save_data = [
-            'default_tax_1_rate'        => parse_tax(filter_var($default_tax_1_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'default_tax_1_rate'        => $default_tax_1_rate,
             'default_tax_1_name'        => $this->request->getPost('default_tax_1_name'),
-            'default_tax_2_rate'        => parse_tax(filter_var($default_tax_2_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'default_tax_2_rate'        => $default_tax_2_rate,
             'default_tax_2_name'        => $this->request->getPost('default_tax_2_name'),
             'tax_included'              => $this->request->getPost('tax_included') != null,
             'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != null,
@@ -958,11 +984,11 @@ class Config extends Secure_Controller
 
         $success = $this->appconfig->batch_save($batch_save_data);
 
-        // Update the register mode with the latest change so that if the user
-        // switches immediately back to the register the mode reflects the change
         if ($success) {
-            if ($this->config['invoice_enable']) {
-                $this->sale_lib->set_mode($this->config['default_register_mode']);
+            $settings = config(OSPOS::class)->settings;
+
+            if ($settings['invoice_enable']) {
+                $this->sale_lib->set_mode($settings['default_register_mode']);
             } else {
                 $this->sale_lib->set_mode('sale');
             }

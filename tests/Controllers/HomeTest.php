@@ -2,12 +2,12 @@
 
 namespace Tests\Controllers;
 
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Employee;
 use RuntimeException;
+use Tests\Support\DatabaseBootstrapTrait;
 
 /**
  * Test suite for Home controller password validation
@@ -19,6 +19,7 @@ use RuntimeException;
 class HomeTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
 
     protected $migrate     = true;
@@ -26,16 +27,9 @@ class HomeTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
     }
@@ -303,7 +297,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot view admin password change form
-     * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
+     * BOLA vulnerability fix.
      *
      * @return void
      */
@@ -319,7 +313,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot change admin password
-     * BOLA vulnerability fix: GHSA-q58g-gg7v-f9rf
+     * BOLA vulnerability fix.
      *
      * @return void
      */
@@ -448,7 +442,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot view another non-admin's password form
-     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * IDOR vulnerability fix.
      *
      * @return void
      */
@@ -470,7 +464,7 @@ class HomeTest extends CIUnitTestCase
 
     /**
      * Test non-admin cannot change another non-admin's password
-     * IDOR vulnerability fix: GHSA-mcc2-8rp2-q6ch
+     * IDOR vulnerability fix.
      *
      * @return void
      */
@@ -500,5 +494,51 @@ class HomeTest extends CIUnitTestCase
         $victim = $employeeModel->getInfo($victimId);
         $this->assertTrue(password_verify('victimpass123', $victim->password),
             'Non-admin should not be able to change another non-admin password');
+    }
+
+    /**
+     * Regression test: Home::__construct() previously
+     * read the raw (single-decoded) URI segment to decide whether to skip
+     * Secure_Controller's module-grant check for 'logout'. A route whose
+     * double-decoded method name resolves to 'logout' must still be treated
+     * as logout consistently - using the router's fully-resolved method name
+     * removes any single-vs-double-decode mismatch as an attack surface.
+     *
+     * @return void
+     */
+    public function testLogoutStillBypassesGrantCheckAfterFix(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'logoutnograntuser',
+            'email' => 'logoutnograntuser@test.com',
+            'grants' => []
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->get('/home/logout');
+
+        $response->assertRedirectTo('login');
+    }
+
+    /**
+     * A non-'logout' Home method must still enforce Secure_Controller's
+     * module-grant check (i.e. parent::__construct() is not skipped) for a
+     * logged-in employee with no 'home' grant.
+     *
+     * @return void
+     */
+    public function testNonLogoutMethodStillEnforcesModuleGrantCheck(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'nogranthome',
+            'email' => 'nogranthome@test.com',
+            'grants' => []
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->get('/home/changePassword/' . $nonAdminId);
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
     }
 }

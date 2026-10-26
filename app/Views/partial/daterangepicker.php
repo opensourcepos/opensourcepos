@@ -110,6 +110,10 @@
     start_date = start.format('YYYY-MM-DD');
     end_date = end.format('YYYY-MM-DD');
     });
+    $('#daterangepicker').on('apply.daterangepicker', function(ev, picker) {
+    start_date = picker.startDate.format('YYYY-MM-DD');
+    end_date = picker.endDate.format('YYYY-MM-DD');
+    });
 <?php } else { ?>
     $('#daterangepicker').css("width", "305");
     let start_date = "<?= date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) ?>";
@@ -216,5 +220,9 @@
     }, function(start, end, label) {
     start_date = start.format('YYYY-MM-DD HH:mm:ss');
     end_date = end.format('YYYY-MM-DD HH:mm:ss');
+    });
+    $('#daterangepicker').on('apply.daterangepicker', function(ev, picker) {
+    start_date = picker.startDate.format('YYYY-MM-DD HH:mm:ss');
+    end_date = picker.endDate.format('YYYY-MM-DD HH:mm:ss');
     });
 <?php } ?>

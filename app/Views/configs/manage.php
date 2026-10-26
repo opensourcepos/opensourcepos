@@ -1,5 +1,13 @@
 <?= view('partial/header') ?>
 
+<?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || request()->getGet('debug') == 'true') : ?>
+    <!-- inject:config:debug:js -->
+    <!-- endinject -->
+<?php else : ?>
+    <!-- inject:config:prod:js -->
+    <!-- endinject -->
+<?php endif; ?>
+
 <script type="text/javascript">
     dialog_support.init("a.modal-dlg");
 </script>
