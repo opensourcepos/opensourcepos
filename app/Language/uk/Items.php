@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Назва податку містить недопустимі символи.',
     'tax_percent'                        => 'Податковий відсоток',
     'tax_percent_number'                 => 'Податковий відсоток має бути числом',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Податковий відсоток - обов\'язкове поле.',
     'tax_percents'                       => 'Податкові відсотки',
     'temp'                               => 'Тимчасовий',

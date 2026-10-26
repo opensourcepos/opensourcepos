@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Messages.phone'), 'phone_label', ['for' => 'phone', 'class' => 'control-label col-xs-2 required']) ?>
+            <?= form_label(lang('Messages.phone'), 'phone_label', ['for' => 'phone', 'class' => 'control-label col-xs-2 text-danger required']) ?>
             <div class="col-xs-10">
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Messages.message'), 'message_label', ['for' => 'message', 'class' => 'control-label col-xs-2 required']) ?>
+            <?= form_label(lang('Messages.message'), 'message_label', ['for' => 'message', 'class' => 'control-label col-xs-2 text-danger required']) ?>
             <div class="col-xs-10">
                 <?= form_textarea(['class' => 'form-control input-sm required', 'name' => 'message', 'id' => 'message', 'value' => $config['msg_msg']]) ?>
             </div>

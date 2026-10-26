@@ -12,7 +12,7 @@
     <fieldset id="expenses_categories">
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Expenses_categories.name'), 'category_name', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Expenses_categories.name'), 'category_name', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-8">
                 <?= form_input([
                     'name'  => 'category_name',

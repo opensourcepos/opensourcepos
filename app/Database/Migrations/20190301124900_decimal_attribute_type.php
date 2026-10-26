@@ -12,7 +12,7 @@ class Migration_decimal_attribute_type extends Migration
     public function up(): void
     {
         helper('migration');
-        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_decimal_attribute_type.sql');
+        executeScript(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_decimal_attribute_type.sql', false, $this->db);
     }
 
     /**

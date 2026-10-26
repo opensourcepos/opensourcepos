@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Tên thuế chứa ký tự không được phép.',
     'tax_percent'                        => 'Phần trăm Thuế',
     'tax_percent_number'                 => 'Phần trăm Thuế phải dạng số',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Trường Phần trăm Thuế là bắt buộc.',
     'tax_percents'                       => 'Phần trăm Thuế',
     'temp'                               => 'Tạm thời',

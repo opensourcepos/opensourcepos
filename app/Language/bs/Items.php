@@ -111,6 +111,7 @@ return [
     'tax_name_invalid'                   => 'Naziv poreza sadrži nedozvoljene znakove.',
     'tax_percent'                        => 'Procenat poreza',
     'tax_percent_number'                 => 'Procenat poreza mora biti numerička vrijednost',
+    'tax_percent_non_negative'           => '',
     'tax_percent_required'               => 'Procenat poreza je obavezno polje.',
     'tax_percents'                       => 'Porez %',
     'temp'                               => 'Privremeno',

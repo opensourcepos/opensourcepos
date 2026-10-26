@@ -16,8 +16,8 @@
             <ul id="tax_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.tax_id'), 'tax_id', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-4 col-md-3 col-lg-2">
                     <?= form_input([
                         'name'  => 'tax_id',
                         'id'    => 'tax_id',
@@ -28,8 +28,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.tax_included'), 'tax_included', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.tax_included'), 'tax_included', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9">
                     <?= form_checkbox([
                         'name'    => 'tax_included',
                         'id'      => 'tax_included',
@@ -40,8 +40,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.default_tax_rate_1'), 'default_tax_1_rate', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.default_tax_rate_1'), 'default_tax_1_rate', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
                     <?= form_input([
                         'name'  => 'default_tax_1_name',
                         'id'    => 'default_tax_1_name',
@@ -49,20 +49,22 @@
                         'value' => $config['default_tax_1_name'] !== false ? $config['default_tax_1_name'] : lang('Items.sales_tax_1')
                     ]) ?>
                 </div>
-                <div class="col-xs-1 input-group">
-                    <?= form_input([
-                        'name'  => 'default_tax_1_rate',
-                        'id'    => 'default_tax_1_rate',
-                        'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_1_rate'])
-                    ]) ?>
-                    <span class="input-group-addon input-sm">%</span>
+                <div class="col-xs-3 col-sm-2">
+                    <div class="input-group input-group-sm">
+                        <?= form_input([
+                            'name'  => 'default_tax_1_rate',
+                            'id'    => 'default_tax_1_rate',
+                            'class' => 'form-control input-sm',
+                            'value' => to_tax_decimals($config['default_tax_1_rate'])
+                        ]) ?>
+                        <span class="input-group-addon input-sm">%</span>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.default_tax_rate_2'), 'default_tax_2_rate', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.default_tax_rate_2'), 'default_tax_2_rate', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
                     <?= form_input([
                         'name'  => 'default_tax_2_name',
                         'id'    => 'default_tax_2_name',
@@ -70,20 +72,22 @@
                         'value' => $config['default_tax_2_name'] !== false ? $config['default_tax_2_name'] : lang('Items.sales_tax_2')
                     ]) ?>
                 </div>
-                <div class="col-xs-1 input-group">
-                    <?= form_input([
-                        'name'  => 'default_tax_2_rate',
-                        'id'    => 'default_tax_2_rate',
-                        'class' => 'form-control input-sm',
-                        'value' => to_tax_decimals($config['default_tax_2_rate'])
-                    ]) ?>
-                    <span class="input-group-addon input-sm">%</span>
+                <div class="col-xs-3 col-sm-2">
+                    <div class="input-group input-group-sm">
+                        <?= form_input([
+                            'name'  => 'default_tax_2_rate',
+                            'id'    => 'default_tax_2_rate',
+                            'class' => 'form-control input-sm',
+                            'value' => to_tax_decimals($config['default_tax_2_rate'])
+                        ]) ?>
+                        <span class="input-group-addon input-sm">%</span>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.use_destination_based_tax'), 'use_destination_based_tax', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.use_destination_based_tax'), 'use_destination_based_tax', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9">
                     <?= form_checkbox([
                         'name'    => 'use_destination_based_tax',
                         'id'      => 'use_destination_based_tax',
@@ -94,8 +98,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.default_tax_code'), 'default_tax_code', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.default_tax_code'), 'default_tax_code', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-4 col-md-3 col-lg-2">
                     <?= form_dropdown(
                         'default_tax_code',
                         $tax_code_options,
@@ -106,8 +110,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.default_tax_category'), 'default_tax_category', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.default_tax_category'), 'default_tax_category', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-4 col-md-3 col-lg-2">
                     <?= form_dropdown(
                         'default_tax_category',
                         $tax_category_options,
@@ -118,8 +122,8 @@
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-2">
+                <?= form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', ['class' => 'control-label col-xs-3 col-sm-2']) ?>
+                <div class="col-xs-9 col-sm-4 col-md-3 col-lg-2">
                     <?= form_dropdown(
                         'default_tax_jurisdiction',
                         $tax_jurisdiction_options,

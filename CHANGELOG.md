@@ -1,4 +1,5 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.2...HEAD
+[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.4.3...HEAD
+[3.4.3]: https://github.com/opensourcepos/opensourcepos/compare/3.4.2...3.4.3
 [3.4.2]: https://github.com/opensourcepos/opensourcepos/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/opensourcepos/opensourcepos/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...3.4.0
@@ -33,6 +34,42 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [3.4.3] - 2026-10-21
+- chore: bump version to 3.4.3 by @github-actions[bot]
+- chore(deps): bump dompurify from 3.4.13 to 3.4.16 (#4723) by @dependabot[bot]
+- fix(release): delete the unstable release by name, leave drafts alone by @jekkos
+- chore(deps): bump moment from 2.30.1 to 2.31.0 (#4722) by @dependabot[bot]
+- chore(deps): bump brace-expansion (#4721) by @dependabot[bot]
+- feat(items): optimize search, attribute filtering, and sort for items view (#4652) by @objecttothis
+- fix(i18n): add missing toggle_cost_and_profit key to 32 locales (#4712) by @Rayan Abdul Cader
+- fix(expenses): refresh table when date range or filters change (#4633) by @richardmilles
+- fix(auth): return 401 JSON for AJAX requests on session timeout (#4728) by @jekkos
+- docs: add test-method naming convention to AGENTS.md (#4735) by @jekkos
+- fix(config): improve responsive layout, nested tabs behavior, and label theming (#4719) by @BudsieBuds
+- fix(taxes): reject invalid characters in tax code, category, and jurisdiction names (#4733) by @jekkos
+- fix(appconfig): refresh cached settings once and avoid stale same-request reads (#4732) by @jekkos
+- Return early from sortAndFilterCart() when no items are printable (#4713) by @Rayan Abdul Cader
+- fix: refresh cashups and items tables on filter and date range change (#4731) by @jekkos
+- chore: update Node.js version to 22 and npm-check-updates to 23.1.0 in workflows and documentation (#4741) by @BudsieBuds
+- fix(models): handle query() returning false in result-consuming methods (#4734) by @jekkos
+- feat(reports): add detailed item sales report (#4538) by @enricodelarosa
+- fix(taxes): reject negative tax rates and percentages (#4730) by @jekkos
+- fix(sales): inline invoice/quote email CSS for DOMPDF PDFs (#4747) (#4749) by @jekkos
+- docs: rewrite upgrade guide for the current CI4 install model (#4750) by @jekkos
+- refactor: move Windows build scripts into tools/build, drop CI4 migration scripts (#4729) by @jekkos
+- feat(config): scope config assets and add system info copy notifications (#4753) by @BudsieBuds
+- docs: move BUILD.md, INSTALL.md, UPGRADE.md into docs/ (#4755) by @jekkos
+- feat(tables): update loading text size and spinner to bootstrap-table (#4757) by @BudsieBuds
+- feat(db): add MySQL 8.4 support (#4048) by @Alexander Laurent
+- style(lang): add Georgian, normalize quote style across all locales, add parse tests (#4762) by @objecttothis
+- feat(install): add one-line Ubuntu installer (#4550) by @jekkos
+- fix(release): bump master version to 3.4.3-dev (#4752) by @jekkos
+- fix(config): add invoice_enable and work_order_enable to default settings fallback (#4761) by @Sai Asish Y
+- refactor(gulp): modernize build pipeline and streamline dependencies (#4759) by @BudsieBuds
+- refactor(tests): normalize test namespaces to PSR-4 and clean up composer dependencies (#4758) by @BudsieBuds
+- fix(ci): trigger PHP linting workflow on pull requests (#4764) by @BudsieBuds
+- fix(security): pin patched PHP 8.2.35+ for CVE-2026-109618/109619 (#4767) by @jekkos
 
 ## [3.4.2] - 2026-09-30
 - Fix writable folder permission check (#4270) (#4273) by @jekkos
