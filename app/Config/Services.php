@@ -2,7 +2,10 @@
 
 namespace Config;
 
+use App\Jobs\JobThrottleGate;
+use App\Libraries\ImportBatchService;
 use App\Libraries\MY_Language;
+use App\Models\JobThrottle;
 use Locale;
 use HTMLPurifier;
 use HTMLPurifier_Config;
@@ -75,5 +78,38 @@ class Services extends BaseService
         }
 
         return static::$htmlPurifier;
+    }
+
+    /**
+     * Tracks progress of a queued CSV import (issue #3833 Phase 3).
+     *
+     * @param bool $getShared
+     * @return ImportBatchService
+     */
+    public static function importBatch(bool $getShared = true): ImportBatchService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('importBatch');
+        }
+
+        return new ImportBatchService();
+    }
+
+    /**
+     * Gates queue draining against the configured job throttles. Bound as a
+     * service (rather than constructed directly by callers) so a future
+     * plugin can override this binding to layer its own throttling on top
+     * of, or instead of, the core job_throttles rows.
+     *
+     * @param bool $getShared
+     * @return JobThrottleGate
+     */
+    public static function jobThrottleGate(bool $getShared = true): JobThrottleGate
+    {
+        if ($getShared) {
+            return static::getSharedInstance('jobThrottleGate');
+        }
+
+        return new JobThrottleGate(model(JobThrottle::class));
     }
 }

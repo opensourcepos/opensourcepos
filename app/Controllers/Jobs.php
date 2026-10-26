@@ -2,11 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Jobs\BoundedQueueWorker;
 use App\Models\Appconfig;
+use App\Models\JobQueueManage;
 use App\Models\JobThrottle;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\I18n\Time;
+use CodeIgniter\Queue\Entities\QueueJob;
+use CodeIgniter\Queue\Enums\Status;
+use CodeIgniter\Queue\Models\QueueJobFailedModel;
+use CodeIgniter\Queue\Models\QueueJobModel;
 use Config\Database;
+use Config\Jobs as JobsConfig;
 use ReflectionException;
 
 class Jobs extends Secure_Controller
@@ -14,6 +22,7 @@ class Jobs extends Secure_Controller
     private BaseConnection $db;
     private Appconfig $appconfig;
     private JobThrottle $jobThrottle;
+    private JobQueueManage $jobQueueManage;
     private array $config;
 
     public function __construct()
@@ -23,6 +32,7 @@ class Jobs extends Secure_Controller
         $this->db = Database::connect();
         $this->appconfig = model(Appconfig::class);
         $this->jobThrottle = model(JobThrottle::class);
+        $this->jobQueueManage = model(JobQueueManage::class);
         $this->config = $this->global_view_data['config'];
     }
 
@@ -34,8 +44,279 @@ class Jobs extends Secure_Controller
     {
         $data['config'] = $this->config;
         $data['throttles'] = $this->jobThrottle->getAll()->getResultArray();
+        $data['queues'] = config(JobsConfig::class)->coreQueues;
+        $data['table_headers'] = get_jobs_manage_table_headers();
 
         return view('jobs/manage', $data);
+    }
+
+    /**
+     * Renders the edit modal for a single job (payload JSON, priority,
+     * available_at). Used in app/Views/jobs/job_edit.php.
+     *
+     * @return string|ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function getEditJob(string $source, string $id)
+    {
+        [$source, $id] = $this->splitUid("$source:$id");
+
+        if ($source === null || $source === 'failed') {
+            return $this->response->setStatusCode(404);
+        }
+
+        $job = model(QueueJobModel::class)->find($id);
+
+        if ($job === null) {
+            return $this->response->setStatusCode(404);
+        }
+
+        $data['uid'] = "$source:$id";
+        $data['queue'] = $job->queue;
+        $data['priority'] = $job->priority;
+        $data['payload'] = json_encode($job->payload, JSON_PRETTY_PRINT);
+        $data['available_at'] = $job->available_at->format('Y-m-d\TH:i');
+        $data['priorities'] = config('Queue')->queuePriorities[$job->queue] ?? ['high', 'normal', 'low'];
+
+        return view('jobs/job_edit', $data);
+    }
+
+    /**
+     * Saves the edited payload/priority/available_at for a pending or
+     * reserved job.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveJob(string $source, string $id): ResponseInterface
+    {
+        $uid = "$source:$id";
+        [$source, $id] = $this->splitUid($uid);
+
+        if ($source === null || $source === 'failed') {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+        }
+
+        $queueJobModel = model(QueueJobModel::class);
+        $job = $queueJobModel->find($id);
+
+        if ($job === null) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+        }
+
+        $payloadJson = $this->request->getPost('payload');
+        $payload = json_decode((string)$payloadJson, true);
+
+        if (!is_array($payload) || json_last_error() !== JSON_ERROR_NONE) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_payload_json')]);
+        }
+
+        $priority = $this->request->getPost('priority');
+        $allowedPriorities = config('Queue')->queuePriorities[$job->queue] ?? ['high', 'normal', 'low'];
+
+        if (!in_array($priority, $allowedPriorities, true)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_priority')]);
+        }
+
+        $availableAt = $this->request->getPost('available_at');
+        $availableAtTime = $availableAt ? new Time($availableAt) : $job->available_at;
+
+        $job->payload = $payload;
+        $job->priority = $priority;
+        $job->available_at = $availableAtTime;
+
+        $success = $queueJobModel->save($job);
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.saved_successfully' : 'Jobs.saved_unsuccessfully'),
+            'id'      => $uid,
+        ]);
+    }
+
+    /**
+     * Returns jobs table data rows. This will be called with AJAX.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function getSearch(): ResponseInterface
+    {
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+        $limit = (int)$this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = (int)$this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(job_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'date');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'desc';
+        $queues = $this->request->getGet('queues', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
+
+        $jobs = $this->jobQueueManage->search($search, $queues, $limit, $offset, $sort, $order);
+        $total_rows = $this->jobQueueManage->getFoundRows($search, $queues);
+
+        $data_rows = [];
+
+        foreach ($jobs as $job) {
+            $job->payload = $this->jobQueueManage->decodePayload($job);
+            $data_rows[] = get_job_data_row($job);
+        }
+
+        return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+    }
+
+    /**
+     * Deletes one or more jobs. Reserved (in-progress) jobs cannot be
+     * deleted.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postDelete(): ResponseInterface
+    {
+        $uids = $this->request->getPost('ids') ?? [];
+
+        $queueJobModel = model(QueueJobModel::class);
+        $queueJobFailedModel = model(QueueJobFailedModel::class);
+
+        $deleted = 0;
+        $blocked = 0;
+
+        foreach ($uids as $uid) {
+            [$source, $id] = $this->splitUid($uid);
+
+            if ($source === null) {
+                continue;
+            }
+
+            if ($source === 'failed') {
+                $deleted += $queueJobFailedModel->delete($id) ? 1 : 0;
+
+                continue;
+            }
+
+            $job = $queueJobModel->find($id);
+
+            if ($job === null) {
+                continue;
+            }
+
+            if ($job->status === Status::RESERVED->value) {
+                $blocked++;
+
+                continue;
+            }
+
+            $deleted += $queueJobModel->delete($id) ? 1 : 0;
+        }
+
+        if ($blocked > 0 && $deleted === 0) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.delete_blocked_in_progress')]);
+        }
+
+        $message = lang('Jobs.successful_deleted', [$deleted]);
+
+        if ($blocked > 0) {
+            $message .= ' ' . lang('Jobs.delete_blocked_in_progress');
+        }
+
+        return $this->response->setJSON(['success' => true, 'message' => $message]);
+    }
+
+    /**
+     * Processes (or requeues then processes) a single job. Used by the
+     * Manage tab's per-row play/requeue icon.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postProcessJob(): ResponseInterface
+    {
+        $uid = $this->request->getPost('id');
+        [$source, $id] = $this->splitUid($uid);
+
+        if ($source === null) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+        }
+
+        if ($source === 'reserved') {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.job_in_progress')]);
+        }
+
+        $queueJobModel = model(QueueJobModel::class);
+
+        if ($source === 'failed') {
+            $work = $this->requeueFailedJob($id);
+
+            if ($work === null) {
+                return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+            }
+        } else {
+            $work = $queueJobModel->find($id);
+
+            if ($work === null) {
+                return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+            }
+        }
+
+        $maxSeconds = (int)($this->config['jobs_manual_max_seconds'] ?? config(JobsConfig::class)->manualMaxSeconds);
+        $worker = new BoundedQueueWorker([$work->queue], microtime(true) + $maxSeconds);
+        $worker->runOne($work);
+
+        $success = $worker->getProcessedCount() > 0;
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.job_processed' : 'Jobs.job_failed'),
+        ]);
+    }
+
+    /**
+     * Moves a failed job back into queue_jobs as pending so it can be
+     * reprocessed, returning the freshly-inserted QueueJob.
+     */
+    private function requeueFailedJob(int $id): ?QueueJob
+    {
+        $queueJobFailedModel = model(QueueJobFailedModel::class);
+        $failedJob = $queueJobFailedModel->find($id);
+
+        if ($failedJob === null) {
+            return null;
+        }
+
+        $queueJobModel = model(QueueJobModel::class);
+        $newId = $queueJobModel->insert(new QueueJob([
+            'queue'        => $failedJob->queue,
+            'payload'      => $failedJob->payload,
+            'priority'     => $failedJob->priority,
+            'status'       => Status::PENDING->value,
+            'attempts'     => 0,
+            'available_at' => Time::now(),
+        ]));
+
+        if (!$newId) {
+            return null;
+        }
+
+        $queueJobFailedModel->delete($id);
+
+        return $queueJobModel->find($newId);
+    }
+
+    /**
+     * @param mixed $uid
+     * @return array{0: string|null, 1: int}
+     */
+    private function splitUid($uid): array
+    {
+        if (!is_string($uid) || !str_contains($uid, ':')) {
+            return [null, 0];
+        }
+
+        [$source, $id] = explode(':', $uid, 2);
+
+        if (!in_array($source, ['pending', 'reserved', 'failed'], true) || !ctype_digit($id)) {
+            return [null, 0];
+        }
+
+        return [$source, (int)$id];
     }
 
     /**
@@ -48,15 +329,22 @@ class Jobs extends Secure_Controller
     public function postSaveSettings(): ResponseInterface
     {
         $rules = [
-            'mode'             => 'required|in_list[auto,web,manual]',
-            'web_max_seconds'  => 'required|is_natural',
-            'task_max_seconds' => 'required|is_natural'
+            'mode'                  => 'required|in_list[auto,web,manual]',
+            'web_max_seconds'       => 'required|is_natural',
+            'task_max_seconds'      => 'required|is_natural',
+            'retry_limit'           => 'required|is_natural_no_zero',
+            'auto_purge'            => 'permit_empty|in_list[0,1]',
+            'retention_days'        => 'required|is_natural',
+            'failed_retention_days' => 'required|is_natural',
         ];
 
         $messages = [
-            'mode'             => ['in_list' => lang('Jobs.mode_invalid')],
-            'web_max_seconds'  => ['is_natural' => lang('Jobs.web_max_seconds_invalid')],
-            'task_max_seconds' => ['is_natural' => lang('Jobs.task_max_seconds_invalid')]
+            'mode'                  => ['in_list' => lang('Jobs.mode_invalid')],
+            'web_max_seconds'       => ['is_natural' => lang('Jobs.web_max_seconds_invalid')],
+            'task_max_seconds'      => ['is_natural' => lang('Jobs.task_max_seconds_invalid')],
+            'retry_limit'           => ['is_natural_no_zero' => lang('Jobs.retry_limit_invalid')],
+            'retention_days'        => ['is_natural' => lang('Jobs.retention_days_invalid')],
+            'failed_retention_days' => ['is_natural' => lang('Jobs.failed_retention_days_invalid')],
         ];
 
         if ($response = $this->validateFields($rules, $messages)) {
@@ -64,9 +352,13 @@ class Jobs extends Secure_Controller
         }
 
         $batchSaveData = [
-            'jobs_mode'             => $this->request->getPost('mode'),
-            'jobs_web_max_seconds'  => $this->request->getPost('web_max_seconds', FILTER_SANITIZE_NUMBER_INT),
-            'jobs_task_max_seconds' => $this->request->getPost('task_max_seconds', FILTER_SANITIZE_NUMBER_INT)
+            'jobs_mode'                  => $this->request->getPost('mode'),
+            'jobs_web_max_seconds'       => $this->request->getPost('web_max_seconds', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_task_max_seconds'      => $this->request->getPost('task_max_seconds', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_retry_limit'           => $this->request->getPost('retry_limit', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_auto_purge'            => $this->request->getPost('auto_purge') ? '1' : '0',
+            'jobs_retention_days'        => $this->request->getPost('retention_days', FILTER_SANITIZE_NUMBER_INT),
+            'jobs_failed_retention_days' => $this->request->getPost('failed_retention_days', FILTER_SANITIZE_NUMBER_INT),
         ];
 
         $success = $this->appconfig->batch_save($batchSaveData);
@@ -83,7 +375,7 @@ class Jobs extends Secure_Controller
      */
     public function postSaveThrottles(): ResponseInterface
     {
-        $allowedPeriods = ['minute', 'hour', 'day', 'month'];
+        $allowedPeriods = ['second', 'minute', 'hour', 'day', 'month'];
 
         $this->db->transStart();
 
@@ -142,24 +434,139 @@ class Jobs extends Secure_Controller
     }
 
     /**
-     * Stub for Phase 1 scaffolding. Real processing is wired up in a later phase.
+     * Synchronously drains queues, bounded by jobs_manual_max_seconds so the
+     * request can't hang indefinitely. When the scope is 'selected', drains only
+     * the queue names posted from the Utilities tab's queue multiselect;
+     * otherwise drains all core queues.
      *
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postProcessAllJobs(): ResponseInterface
+    public function postProcessJobs(): ResponseInterface
     {
-        return $this->response->setJSON(['success' => false, 'stub' => true, 'message' => lang('Jobs.not_yet_implemented')]);
+        $coreQueues = config(JobsConfig::class)->coreQueues;
+
+        if ($this->request->getPost('scope') !== 'selected') {
+            return $this->runWorker($coreQueues);
+        }
+
+        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+
+        if ($selectedQueues === []) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
+        }
+
+        return $this->runWorker(array_values($selectedQueues));
     }
 
     /**
-     * Stub for Phase 1 scaffolding. Real processing is wired up in a later phase.
+     * @param string[] $queues
+     */
+    private function runWorker(array $queues): ResponseInterface
+    {
+        $maxSeconds = (int)($this->config['jobs_manual_max_seconds'] ?? config(JobsConfig::class)->manualMaxSeconds);
+
+        $worker = new BoundedQueueWorker($queues, microtime(true) + $maxSeconds);
+        $worker->run();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Jobs.processed_jobs_result', [$worker->getProcessedCount(), $worker->getFailedCount()]),
+        ]);
+    }
+
+    /**
+     * Moves pending jobs out of queue_jobs into queue_paused_jobs for the
+     * given queues (or all core queues), leaving in-flight ('reserved') jobs
+     * alone to finish (issue #3833's pause/resume design). When the scope is
+     * 'selected', pauses only the queue names posted from the Utilities tab's
+     * queue multiselect.
      *
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function postProcessSelectedJobs(): ResponseInterface
+    public function postPauseJobs(): ResponseInterface
     {
-        return $this->response->setJSON(['success' => false, 'stub' => true, 'message' => lang('Jobs.not_yet_implemented')]);
+        $coreQueues = config(JobsConfig::class)->coreQueues;
+
+        if ($this->request->getPost('scope') !== 'selected') {
+            return $this->pauseQueues($coreQueues);
+        }
+
+        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+
+        if ($selectedQueues === []) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
+        }
+
+        return $this->pauseQueues(array_values($selectedQueues));
+    }
+
+    /**
+     * Moves a single pending job out of queue_jobs into queue_paused_jobs.
+     * Used by the Manage tab's per-row pause icon. Reserved ('in progress')
+     * jobs are left alone, same guard as the bulk pause path.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postPauseJob(): ResponseInterface
+    {
+        $uid = $this->request->getPost('id');
+        [$source, $id] = $this->splitUid($uid);
+
+        if ($source !== 'pending') {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+        }
+
+        return $this->pauseJobs($id);
+    }
+
+    /**
+     * @param string[] $queues
+     */
+    private function pauseQueues(array $queues): ResponseInterface
+    {
+        return $this->pauseJobs(null, $queues);
+    }
+
+    /**
+     * Moves pending jobs from queue_jobs into queue_paused_jobs, guarded by
+     * status = PENDING so in-flight ('reserved') jobs are never paused out
+     * from under a worker (issue #3833's pause/resume design). Pass $id to
+     * pause a single job (ignores $queues), or $queues to pause every
+     * pending job in those queues.
+     *
+     * @param string[]|null $queues
+     */
+    private function pauseJobs(?int $id, ?array $queues = null): ResponseInterface
+    {
+        $this->db->transStart();
+
+        $query = $this->db->table('queue_jobs')->where('status', Status::PENDING->value);
+        $query = $id !== null ? $query->where('id', $id) : $query->whereIn('queue', $queues);
+
+        $rows = $query->get()->getResultArray();
+
+        if ($rows !== []) {
+            $now = Time::now()->timestamp;
+
+            foreach ($rows as &$row) {
+                $row['paused_at'] = $now;
+                $row['paused_by'] = 'manual';
+                unset($row['status']);
+            }
+            unset($row);
+
+            $this->db->table('queue_paused_jobs')->insertBatch($rows);
+            $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
+        }
+
+        $this->db->transComplete();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Jobs.paused_jobs_result', [count($rows)]),
+        ]);
     }
 }

@@ -121,7 +121,7 @@ function csvImportHasRequiredItemHeaders(array $csv_rows, array $stock_locations
     }
 
     $template_header_line = substr(generate_import_items_csv($stock_locations, $attribute_names), 3);
-    $required_headers = str_getcsv($template_header_line);
+    $required_headers = str_getcsv($template_header_line, ',', '"', '\\');
 
     $present_headers = array_keys(reset($csv_rows));
 

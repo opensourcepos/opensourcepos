@@ -60,14 +60,17 @@ class Stock_location extends Model
 
     /**
      * @param string $module_id
+     * @param int|null $person_id Defaults to the current session's person_id.
+     *                            Pass explicitly when there is no HTTP session
+     *                            (e.g. a queue worker running under CLI).
      * @return ResultInterface
      */
-    public function get_undeleted_all(string $module_id = 'items'): ResultInterface
+    public function get_undeleted_all(string $module_id = 'items', ?int $person_id = null): ResultInterface
     {
         $builder = $this->db->table('stock_locations');
         $builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
         $builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-        $builder->where('person_id', $this->session->get('person_id'));
+        $builder->where('person_id', $person_id ?? $this->session->get('person_id'));
         $builder->like('permissions.permission_id', $module_id, 'after');
         $builder->where('deleted', 0);
 
@@ -95,11 +98,14 @@ class Stock_location extends Model
 
     /**
      * @param string $module_id
+     * @param int|null $person_id Defaults to the current session's person_id.
+     *                            Pass explicitly when there is no HTTP session
+     *                            (e.g. a queue worker running under CLI).
      * @return array
      */
-    public function get_allowed_locations(string $module_id = 'items'): array
+    public function get_allowed_locations(string $module_id = 'items', ?int $person_id = null): array
     {
-        $stock = $this->get_undeleted_all($module_id)->getResultArray();
+        $stock = $this->get_undeleted_all($module_id, $person_id)->getResultArray();
         $stock_locations = [];
 
         foreach ($stock as $location_data) {

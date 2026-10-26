@@ -43,16 +43,28 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
 
     foreach ($headers as $element) {    // TODO: This might be clearer to refactor this to `foreach($headers as $header)`
         reset($element);
-        $result[] = [
+        $class = isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '';
+
+        if (isset($element['class'])) {
+            $class = trim($class . ' ' . $element['class']);
+        }
+
+        $row = [
             'field'      => key($element),
             'title'      => current($element),
             'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
             'escape'     => !preg_match("/(edit|email|messages|item_pic)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
             'sortable'   => $element['sortable'] ?? current($element) != '',
             'checkbox'   => $element['checkbox'] ?? false,
-            'class'      => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
+            'class'      => $class,
             'sorter'     => $element['sorter'] ?? ''
         ];
+
+        if (isset($element['align'])) {
+            $row['align'] = $element['align'];
+        }
+
+        $result[] = $row;
     }
 
     return json_encode($result);
@@ -935,6 +947,134 @@ function get_controller(): string
     $controller_name = strtolower($router->controllerName());
     $controller_name_parts = explode('\\', $controller_name);
     return end($controller_name_parts);
+}
+
+function job_headers(): array
+{
+    return [
+        ['status'    => lang('Jobs.status'), 'align' => 'center'],
+        ['queue'     => lang('Jobs.queue'), 'align' => 'center'],
+        ['record_id' => lang('Common.id'), 'align' => 'center'],
+        ['name'      => lang('Jobs.name')],
+        ['code'      => lang('Jobs.code')],
+        ['priority'  => lang('Jobs.priority'), 'align' => 'center'],
+        ['attempts'  => lang('Jobs.error_count'), 'align' => 'center'],
+        ['error'     => lang('Jobs.last_error')],
+        ['date'      => lang('Common.date'), 'class' => 'text-nowrap']
+    ];
+}
+
+/**
+ * Get the header for the jobs manage tabular view
+ */
+function get_jobs_manage_table_headers(): string
+{
+    $headers = job_headers();
+
+    $headers[] = ['process' => '', 'sortable' => false, 'escape' => false];
+
+    return transform_headers($headers);
+}
+
+/**
+ * Resolves the affected item/person id, display name, and code (barcode or
+ * account number) from a queue job payload. Only item_import and
+ * customer_import (the only job types that exist today) carry this
+ * information; anything else falls back to dashes.
+ *
+ * @param array $payload Decoded job payload (['job' => ..., 'data' => [...]])
+ * @return array{id: string, name: string, code: string}
+ */
+function resolveJobSubject(array $payload): array
+{
+    $job = $payload['job'] ?? '';
+    $row = $payload['data']['row'] ?? null;
+
+    if ($job === 'item_import' && is_array($row)) {
+        $itemId = (int)($row['Id'] ?? 0);
+
+        return [
+            'id'   => $itemId > 0 ? (string)$itemId : '-',
+            'name' => $row['Item Name'] ?? '-',
+            'code' => empty($row['Barcode']) ? '-' : $row['Barcode']
+        ];
+    }
+
+    if ($job === 'customer_import' && is_array($row)) {
+        $firstName = $row[0] ?? '';
+        $lastName = $row[1] ?? '';
+        $accountNumber = $row[14] ?? '';
+        $name = trim("$firstName $lastName");
+
+        return [
+            'id'   => '-',
+            'name' => $name === '' ? '-' : $name,
+            'code' => $accountNumber === '' ? '-' : $accountNumber
+        ];
+    }
+
+    return ['id' => '-', 'name' => '-', 'code' => '-'];
+}
+
+/**
+ * Get the html data row for a job (either pending/reserved from queue_jobs
+ * or failed from queue_jobs_failed, tagged with a synthetic uid/source by
+ * the model's union query).
+ */
+function get_job_data_row(object $job): array
+{
+    $subject = resolveJobSubject($job->payload);
+
+    $statusIcons = [
+        'pending'  => 'glyphicon-play',
+        'reserved' => 'glyphicon-pause',
+        'failed'   => 'glyphicon-repeat'
+    ];
+
+    $processTitles = [
+        'pending'  => lang('Jobs.process_job'),
+        'reserved' => lang('Jobs.job_in_progress'),
+        'failed'   => lang('Jobs.requeue_job')
+    ];
+
+    $processAttrs = [
+        'class' => 'process_job print_hide',
+        'title' => $processTitles[$job->source],
+        'data-uid' => $job->uid
+    ];
+
+    if ($job->source === 'reserved') {
+        $processAttrs['class'] .= ' disabled';
+    }
+
+    $pauseLink = $job->source === 'pending'
+        ? '<a href="#" class="pause_job print_hide" data-uid="' . esc($job->uid) . '" title="' . esc(lang('Jobs.pause_job')) . '"><span class="glyphicon glyphicon-pause"></span></a>'
+        : '';
+
+    return [
+        'uid'       => $job->uid,
+        'status'    => lang('Jobs.status_' . $job->source),
+        'queue'     => $job->queue,
+        'record_id' => $subject['id'],
+        'name'      => $subject['name'],
+        'code'      => $subject['code'],
+        'priority'  => $job->priority,
+        'attempts'  => $job->attempts,
+        'error'     => $job->exception ?? '-',
+        'date'      => to_datetime($job->date),
+        'process'   => '<a href="#" class="' . $processAttrs['class'] . '" data-uid="' . esc($job->uid) . '" title="' . esc($processAttrs['title']) . '"><span class="glyphicon ' . $statusIcons[$job->source] . '"></span></a>' . $pauseLink,
+        'edit'      => $job->source === 'failed'
+            ? ''
+            : anchor(
+                "jobs/editJob/$job->source/" . substr($job->uid, strlen($job->source) + 1),
+                '<span class="glyphicon glyphicon-edit"></span>',
+                [
+                    'class'           => 'modal-dlg',
+                    'data-btn-submit' => lang('Common.submit'),
+                    'title'           => lang('Jobs.update_job')
+                ]
+            )
+    ];
 }
 
 /**
