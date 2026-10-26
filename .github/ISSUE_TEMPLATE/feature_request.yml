@@ -11,9 +11,9 @@ body:
     attributes:
       value: |
         ## Thanks for suggesting a new feature! 💡
-        
+
         We appreciate you taking the time to help improve OpenSourcePOS.
-        
+
         > 📋 **Before submitting:** Please search [existing feature requests](https://github.com/opensourcepos/opensourcepos/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) to ensure your idea hasn't already been suggested.
 
   # ─────────────────────────────────────────────────────────────────────────────
@@ -43,11 +43,12 @@ body:
       description: What version are you currently running?
       options:
         - development (unreleased)
+        - OpenSourcePOS 3.4.3
         - OpenSourcePOS 3.4.2
         - OpenSourcePOS 3.4.1
         - OpenSourcePOS 3.4.0
         - OpenSourcePOS 3.3.9
-        - OpenSourcePOS 3.3.8
+        - Older version (specify in description)
       default: 0
     validations:
       required: true
@@ -58,10 +59,10 @@ body:
       label: 🎯 Problem Statement
       description: |
         Is your feature request related to a problem? Please describe.
-        
+
         A clear description of what the problem is. Ex: I'm always frustrated when [...]
       placeholder: |
-        Example: I always have to manually calculate taxes for different regions, 
+        Example: I always have to manually calculate taxes for different regions,
         which is time-consuming and error-prone.
     validations:
       required: true
@@ -85,7 +86,7 @@ body:
       label: 🔄 Alternatives Considered
       description: A clear description of any alternative solutions or features you've considered.
       placeholder: |
-        Example: I considered using an external tax service, but it would be 
+        Example: I considered using an external tax service, but it would be
         better to have this integrated directly into OpenSourcePOS.
 
   # ─────────────────────────────────────────────────────────────────────────────
@@ -97,7 +98,7 @@ body:
       label: 📎 Additional Context
       description: |
         Add any other context, screenshots, mockups, or references about the feature request here.
-        
+
         **Helpful additions:**
         - Links to similar features in other software
         - Mockups or diagrams
@@ -112,7 +113,7 @@ body:
       label: ✅ Acceptance Criteria
       description: |
         (Optional) Define what "done" looks like for this feature.
-        
+
         Format: **Given** [context], **When** [action], **Then** [outcome]
       placeholder: |
         Given a customer is selected from region X

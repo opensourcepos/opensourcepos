@@ -1,11 +1,11 @@
 <?php
 
 return [
-    "half_down"  => "Yarım aşağı",
-    "half_even"  => "Yarım hətta",
-    "half_five"  => "Yarısı",
-    "half_odd"   => "Yarım təkliklərdə",
-    "half_up"    => "Yarım yuxarı",
-    "round_down" => "Yuvarla aşağı",
-    "round_up"   => "Yuvarla yuxarı",
+    'half_down'  => 'Yarımı aşağı',
+    'half_even'  => 'Yarımı cütə',
+    'half_five'  => 'Yarımı beşə',
+    'half_odd'   => 'Yarımı təkə',
+    'half_up'    => 'Yarımı yuxarı',
+    'round_down' => 'Aşağı yuvarlaqlaşdır',
+    'round_up'   => 'Yuxarı yuvarlaqlaşdır',
 ];

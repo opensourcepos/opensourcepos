@@ -148,10 +148,6 @@ button.btn.dropdown-toggle.btn-sm {
     box-shadow: none;
 }
 
-label.required {
-    color: red;
-}
-
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         padding: 10px 10px 9px;
@@ -188,4 +184,18 @@ label.required {
 
 .ui-tooltip {
     max-width: 350px;
+}
+
+/* Spinner animation for bootstrap-table loading message */
+.glyphicon-refresh-animate {
+    animation: spin 1s infinite linear;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-message .glyphicon {
+    margin-right: 5px;
 }

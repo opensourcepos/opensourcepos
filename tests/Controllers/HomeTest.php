@@ -2,12 +2,12 @@
 
 namespace Tests\Controllers;
 
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Employee;
 use RuntimeException;
+use Tests\Support\DatabaseBootstrapTrait;
 
 /**
  * Test suite for Home controller password validation
@@ -19,6 +19,7 @@ use RuntimeException;
 class HomeTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
 
     protected $migrate     = true;
@@ -26,16 +27,9 @@ class HomeTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
     }
