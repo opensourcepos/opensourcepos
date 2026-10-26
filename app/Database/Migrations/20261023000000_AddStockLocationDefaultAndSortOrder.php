@@ -34,14 +34,17 @@ class AddStockLocationDefaultAndSortOrder extends Migration
         // installs see no visible reorder. Deleted rows get NULL: they don't occupy a sort
         // position, so the active range always stays a dense 0..N-1 regardless of how many
         // locations have been deleted over the life of the install.
+        $this->db->query('SET @rank := -1');
+
         $this->db->query("
             UPDATE $table AS destination
             INNER JOIN (
                 SELECT
                     location_id,
-                    ROW_NUMBER() OVER (ORDER BY location_name ASC, location_id ASC) - 1 AS new_sort_order
+                    (@rank := @rank + 1) AS new_sort_order
                 FROM $table
                 WHERE deleted = 0
+                ORDER BY location_name ASC, location_id ASC
             ) AS ranked ON ranked.location_id = destination.location_id
             SET destination.sort_order = ranked.new_sort_order
         ");
