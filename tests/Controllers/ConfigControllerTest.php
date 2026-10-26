@@ -5,12 +5,17 @@ namespace Tests\Controllers;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use Config\OSPOS;
+use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\TaxFixtureTrait;
 
-class ConfigTest extends CIUnitTestCase
+class ConfigControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
+    use EmployeeFixtureTrait;
     use TaxFixtureTrait;
 
     protected $migrate     = true;
@@ -20,12 +25,20 @@ class ConfigTest extends CIUnitTestCase
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
+
+        config(OSPOS::class)->update_settings();
     }
 
     protected function resetSession(): void
     {
-        $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
+        $personId = $this->createEmployee(grants: [
+            ['permission_id' => 'config', 'menu_group' => 'office'],
+        ]);
+
+        $this->withSession(['person_id' => $personId, 'menu_group' => 'office']);
     }
 
     // ========== Valid Mailpath Tests ==========
