@@ -582,10 +582,20 @@ class Sale extends Model
             $paymentPrefix = $splitPayment[0];
 
             if ($paymentPrefix === lang('Sales.giftcard')) {
-                if (empty($splitPayment[1]) || ! $giftcard->decrementGiftcardValue($splitPayment[1], (float) $payment['payment_amount'])) {
-                    $this->db->transRollback();
+                $amount = (float) $payment['payment_amount'];
 
-                    return INSUFFICIENT_GIFTCARD_BALANCE;
+                if ($saleType === SALE_TYPE_RETURN && $amount < 0) {
+                    if (empty($splitPayment[1]) || ! $giftcard->incrementGiftcardValue($splitPayment[1], abs($amount))) {
+                        $this->db->transRollback();
+
+                        return INSUFFICIENT_GIFTCARD_BALANCE;
+                    }
+                } else {
+                    if (empty($splitPayment[1]) || ! $giftcard->decrementGiftcardValue($splitPayment[1], $amount)) {
+                        $this->db->transRollback();
+
+                        return INSUFFICIENT_GIFTCARD_BALANCE;
+                    }
                 }
             } elseif ($paymentPrefix === lang('Sales.rewards')) {
                 if (! $customer->adjustRewardPoints($customerId, -(float) $payment['payment_amount'])) {
