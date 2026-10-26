@@ -1,9 +1,13 @@
 <?= view('partial/header') ?>
 
 <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || request()->getGet('debug') == 'true') : ?>
+    <!-- inject:config:debug:css -->
+    <!-- endinject -->
     <!-- inject:config:debug:js -->
     <!-- endinject -->
 <?php else : ?>
+    <!-- inject:config:prod:css -->
+    <!-- endinject -->
     <!-- inject:config:prod:js -->
     <!-- endinject -->
 <?php endif; ?>

@@ -9,6 +9,18 @@
 
 <?= view('partial/header') ?>
 
+<?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || request()->getGet('debug') == 'true') : ?>
+    <!-- inject:reportsgraphical:debug:css -->
+    <!-- endinject -->
+    <!-- inject:reportsgraphical:debug:js -->
+    <!-- endinject -->
+<?php else : ?>
+    <!-- inject:reportsgraphical:prod:css -->
+    <!-- endinject -->
+    <!-- inject:reportsgraphical:prod:js -->
+    <!-- endinject -->
+<?php endif; ?>
+
 <script type="text/javascript">
     dialog_support.init("a.modal-dlg");
 </script>
