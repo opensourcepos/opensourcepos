@@ -6,13 +6,18 @@ use App\Models\Stock_location;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use Config\OSPOS;
 use Tests\Support\AdminAuthTrait;
+use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\TaxFixtureTrait;
 
-class ConfigTest extends CIUnitTestCase
+class ConfigControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
+    use EmployeeFixtureTrait;
     use TaxFixtureTrait;
     use AdminAuthTrait;
 
@@ -25,14 +30,22 @@ class ConfigTest extends CIUnitTestCase
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
 
         $this->stock_location = model(Stock_location::class);
+
+        config(OSPOS::class)->update_settings();
     }
 
     protected function resetSession(): void
     {
-        $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
+        $personId = $this->createEmployee(grants: [
+            ['permission_id' => 'config', 'menu_group' => 'office'],
+        ]);
+
+        $this->withSession(['person_id' => $personId, 'menu_group' => 'office']);
     }
 
     private function createLocation(string $name): int
