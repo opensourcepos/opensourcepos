@@ -589,7 +589,7 @@ class Item extends Model
     /**
      * Gets information about a particular item
      */
-    public function get_info(int $item_id): object
+    public function getInfo(int $item_id): object
     {
         $builder = $this->db->table('items');
         $builder->select('items.*');
@@ -695,15 +695,15 @@ class Item extends Model
     /**
      * Gets information about multiple items
      */
-    public function get_multiple_info(array $item_ids, ?int $location_id): ResultInterface
+    public function getMultipleInfo(array $itemIds, ?int $locationId): ResultInterface
     {
-        if ($location_id === null) {
-            return $this->db->table('items')->where('item_id', -1)->get();
+        if ($locationId === null) {
+            return $this->db->table($this->table)->where('item_id', -1)->get();
         }
 
         $format = $this->db->escape(dateformat_mysql());
 
-        $builder = $this->db->table('items');
+        $builder = $this->db->table($this->table);
         $builder->select('items.*');
         $builder->select('MAX(company_name) AS company_name');
         $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
@@ -716,8 +716,8 @@ class Item extends Model
         $builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND sale_id IS NULL AND receiving_id IS NULL', 'left');
         $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 
-        $builder->where('location_id', $location_id);
-        $builder->whereIn('items.item_id', $item_ids);
+        $builder->where('location_id', $locationId);
+        $builder->whereIn('items.item_id', $itemIds);
 
         $builder->groupBy('items.item_id');
 
@@ -1412,7 +1412,7 @@ class Item extends Model
     public function change_cost_price(int $item_id, float $items_received, float $new_price, ?float $old_price = null): bool
     {
         if ($old_price === null) {
-            $item_info = $this->get_info($item_id);
+            $item_info = $this->getInfo($item_id);
             $old_price = $item_info->cost_price;
         }
 
