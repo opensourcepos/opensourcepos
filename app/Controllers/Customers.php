@@ -366,8 +366,8 @@ class Customers extends Persons
 
                         // Empty email is allowed, but if provided it must be valid
                         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            $failCodes[] = 'Row ' . $i . ': Invalid email format';
-                            $i++;
+                            $failCodes[] = 'Row ' . $rowNumber . ': Invalid email format';
+                            ++$rowNumber;
                             continue;
                         }
 

@@ -137,7 +137,7 @@ class Sales extends Secure_Controller
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         }
 
-        $saleInfo = $this->sale->get_info($rowId)->getRow();
+        $saleInfo = $this->sale->getInfo($rowId)->getRow();
         $dataRow = getSaleDataRow($saleInfo);
 
         return $this->response->setJSON($dataRow);
@@ -1495,10 +1495,10 @@ class Sales extends Secure_Controller
 
         $data = [];
 
-        $saleInfo = $this->sale->get_info($saleId)->getRowArray();
+        $saleInfo = $this->sale->getInfo($saleId)->getRowArray();
         $data['selected_customer_id'] = $saleInfo['customer_id'];
         $data['selected_customer_name'] = $saleInfo['customer_name'];
-        $employeeInfo = $this->employee->get_info($saleInfo['employee_id']);
+        $employeeInfo = $this->employee->getInfo($saleInfo['employee_id']);
         $data['selected_employee_id'] = $saleInfo['employee_id'];
         $data['selected_employee_name'] = $employeeInfo->first_name . ' ' . $employeeInfo->last_name;
         $data['sale_info'] = $saleInfo;
@@ -1510,7 +1510,7 @@ class Sales extends Secure_Controller
 
         $data['payments'] = [];
 
-        foreach ($this->sale->getSalePayments($sale_id)->getResult() as $payment) {
+        foreach ($this->sale->getSalePayments($saleId)->getResult() as $payment) {
             foreach (get_object_vars($payment) as $property => $value) {
                 $payment->$property = $value;
             }

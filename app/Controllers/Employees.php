@@ -119,7 +119,7 @@ class Employees extends Persons
         $currentUser = $this->employee->get_logged_in_employee_info();
 
         if ($employeeId != NEW_ENTRY) {
-            $targetEmployee = $this->employee->get_info($employeeId);
+            $targetEmployee = $this->employee->getInfo($employeeId);
             if (!$this->employee->canModifyEmployee($targetEmployee->person_id, $currentUser->person_id)) {
                 return $this->response->setJSON([
                     'success' => false,
