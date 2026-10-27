@@ -11,6 +11,13 @@ CREATE TABLE IF NOT EXISTS `ospos_plugin_config` (
     KEY `idx_plugin_id` (`plugin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+CREATE TABLE IF NOT EXISTS `ospos_plugin_migrations` (
+    `plugin_id` varchar(100) NOT NULL,
+    `version`   bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+    `ran_at`    datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    PRIMARY KEY (`plugin_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
 INSERT IGNORE INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
     ('module_plugins', 'module_plugins_desc', 111, 'plugins');
 

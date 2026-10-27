@@ -817,7 +817,7 @@ Migration state is stored in `ospos_plugin_migrations`:
 | `version` | bigint unsigned | timestamp of last successful migration (0 = none run) |
 | `ran_at` | datetime | when the last migration ran |
 
-Each plugin tracks its version independently. The table is created by the core migration `20260627000000_PluginMigrationsTableCreate`.
+Each plugin tracks its version independently. The table is created by the core migration `20261026000000_PluginConfigTableCreate`.
 
 ### Changing a Schema After the Plugin Has Shipped
 
