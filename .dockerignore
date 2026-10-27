@@ -40,7 +40,8 @@ composer.lock
 package.json
 package-lock.json
 gulpfile.js
-.env.example
+.env
+.env.*
 .dockerignore
 
 # Temporary and backup files

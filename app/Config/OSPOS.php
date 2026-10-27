@@ -39,6 +39,7 @@ class OSPOS extends BaseConfig
 
         try {
             $db = Database::connect();
+            $db->resetDataCache();
 
             if (!$db->tableExists('app_config')) {
                 $this->settings = $this->getDefaultSettings();
@@ -58,10 +59,12 @@ class OSPOS extends BaseConfig
     private function getDefaultSettings(): array
     {
         return [
-            'language'      => 'english',
-            'language_code' => 'en',
-            'company'       => 'Home',
-            'barcode_type'  => 'Code39'
+            'language'          => 'english',
+            'language_code'     => 'en',
+            'company'           => 'Home',
+            'barcode_type'      => 'Code39',
+            'invoice_enable'    => '1',
+            'work_order_enable' => '0',
         ];
     }
 

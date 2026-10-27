@@ -2,9 +2,7 @@
 
 use CodeIgniter\Router\RouteCollection;
 
-/**
- * @var RouteCollection $routes
- */
+/** @var RouteCollection $routes */
 $routes->setDefaultController('Login');
 
 $routes->get('/', 'Login::index');
@@ -31,6 +29,8 @@ $routes->add('reports/inventory_low', 'Reports::inventory_low');
 $routes->add('reports/inventory_summary', 'Reports::inventory_summary_input');
 $routes->add('reports/inventory_summary/(:any)/(:any)/(:any)', 'Reports::inventory_summary/$1/$2/$3');
 
+$routes->add('reports/detailed_item_sales', 'Reports::dateInputItemSales');
+$routes->add('reports/detailed_item_sales/(:segment)/(:segment)/(:segment)/(:segment)/(:segment)', 'Reports::detailedItemSales/$1/$2/$3/$4/$5');
 $routes->add('reports/detailed_(:any)/(:any)/(:any)/(:any)', 'Reports::Detailed_$1/$2/$3/$4');
 $routes->add('reports/detailed_sales', 'Reports::date_input_sales');
 $routes->add('reports/detailed_receivings', 'Reports::date_input_recv');

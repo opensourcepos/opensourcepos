@@ -7,14 +7,17 @@ namespace Tests\Models\Reports;
 use App\Models\Reports\Summary_taxes;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class Summary_taxes_test extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
-    protected $refresh = true;
+    protected $seedOnce = true;
+    protected $refresh = false;
     protected $namespace = null;
 
     private array $seededSaleIds = [];
@@ -22,6 +25,8 @@ class Summary_taxes_test extends CIUnitTestCase
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
         $this->seedTestData();
     }

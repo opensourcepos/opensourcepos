@@ -12,7 +12,7 @@
     <div class="col-xs-8">
         <?= form_dropdown([
             'name'     => 'definition_name',
-            'options'  => $definition_names,
+            'options'  => esc($definition_names),
             'selected' => -1,
             'class'    => 'form-control',
             'id'       => 'definition_name'
@@ -45,7 +45,7 @@
                         $selected_value = $definition_value['selected_value'];
                         echo form_dropdown([
                             'name'               => "attribute_links[$definition_id]",
-                            'options'            => $definition_value['values'],
+                            'options'            => esc($definition_value['values']),
                             'selected'           => $selected_value,
                             'class'              => 'form-control',
                             'data-definition-id' => $definition_id

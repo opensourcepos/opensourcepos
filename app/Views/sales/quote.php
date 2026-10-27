@@ -164,7 +164,7 @@ if (isset($error_message)) {
         <?php foreach ($taxes as $tax_group_index => $tax) { ?>
             <tr>
                 <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+                <td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></td>
                 <td class="total-value" id="taxes"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
             </tr>
         <?php } ?>

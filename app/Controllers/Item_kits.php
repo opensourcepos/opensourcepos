@@ -255,39 +255,39 @@ class Item_kits extends Secure_Controller
     /**
      * AJAX called function that generates barcodes for selected item_kits.
      *
-     * @param string $item_kit_ids Colon separated list of item_kit_id values to generate barcodes for.
+     * @param string $itemKitIds Colon separated list of item_kit_id values to generate barcodes for.
      * @return string
      * @noinspection PhpUnused
      */
-    public function getGenerateBarcodes(string $item_kit_ids): string
+    public function getGenerateBarcodes(string $itemKitIds): string
     {
-        $barcode_lib = new Barcode_lib();
+        $barcodeLib = new Barcode_lib();
         $result = [];
 
-        $item_kit_ids = explode(':', $item_kit_ids);
-        foreach ($item_kit_ids as $item_kid_id) {
+        $itemKitIds = explode(':', $itemKitIds);
+        foreach ($itemKitIds as $itemKitId) {
             // Calculate the total cost and retail price of the Kit, so it can be added to the barcode text at the bottom
-            $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($item_kid_id));
+            $itemKit = $this->_add_totals_to_item_kit($this->item_kit->get_info($itemKitId));
 
-            $item_kid_id = 'KIT ' . urldecode($item_kid_id);
+            $itemKitId = 'KIT ' . $itemKitId;
 
             $result[] = [
-                'name'        => $item_kit->name,
-                'item_id'     => $item_kid_id,
-                'item_number' => $item_kid_id,
-                'cost_price'  => $item_kit->total_cost_price,
-                'unit_price'  => $item_kit->total_unit_price
+                'name'        => $itemKit->name,
+                'item_id'     => $itemKitId,
+                'item_number' => $itemKitId,
+                'cost_price'  => $itemKit->total_cost_price,
+                'unit_price'  => $itemKit->total_unit_price
             ];
         }
 
         $data['items'] = $result;
-        $barcode_config = $barcode_lib->get_barcode_config();
+        $barcodeConfig = $barcodeLib->get_barcode_config();
         // In case the selected barcode type is not Code39 or Code128 we set by default Code128
         // The rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
-        if ($barcode_config['barcode_type'] != 'C39' && $barcode_config['barcode_type'] != 'C128') {
-            $barcode_config['barcode_type'] = 'C128';
+        if ($barcodeConfig['barcode_type'] != 'C39' && $barcodeConfig['barcode_type'] != 'C128') {
+            $barcodeConfig['barcode_type'] = 'C128';
         }
-        $data['barcode_config'] = $barcode_config;
+        $data['barcode_config'] = $barcodeConfig;
 
         // Display barcodes
         return view("barcodes/barcode_sheet", $data);

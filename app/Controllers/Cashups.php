@@ -211,20 +211,29 @@ class Cashups extends Secure_Controller
         $close_date = $this->request->getPost('close_date');
         $close_date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $close_date);
 
+        $open_amount_cash     = parse_decimals($this->request->getPost('open_amount_cash'));
+        $transfer_amount_cash = parse_decimals($this->request->getPost('transfer_amount_cash'));
+        $closed_amount_cash   = parse_decimals($this->request->getPost('closed_amount_cash'));
+        $closed_amount_due    = parse_decimals($this->request->getPost('closed_amount_due'));
+        $closed_amount_card   = parse_decimals($this->request->getPost('closed_amount_card'));
+        $closed_amount_check  = parse_decimals($this->request->getPost('closed_amount_check'));
+
+        $logged_in_employee = $this->employee->get_logged_in_employee_info();
+
         $cash_up_data = [
             'open_date'            => $open_date_formatter->format('Y-m-d H:i:s'),
             'close_date'           => $close_date_formatter->format('Y-m-d H:i:s'),
-            'open_amount_cash'     => parse_decimals($this->request->getPost('open_amount_cash')),
-            'transfer_amount_cash' => parse_decimals($this->request->getPost('transfer_amount_cash')),
-            'closed_amount_cash'   => parse_decimals($this->request->getPost('closed_amount_cash')),
-            'closed_amount_due'    => parse_decimals($this->request->getPost('closed_amount_due')),
-            'closed_amount_card'   => parse_decimals($this->request->getPost('closed_amount_card')),
-            'closed_amount_check'  => parse_decimals($this->request->getPost('closed_amount_check')),
-            'closed_amount_total'  => parse_decimals($this->request->getPost('closed_amount_total')),
+            'open_amount_cash'     => $open_amount_cash,
+            'transfer_amount_cash' => $transfer_amount_cash,
+            'closed_amount_cash'   => $closed_amount_cash,
+            'closed_amount_due'    => $closed_amount_due,
+            'closed_amount_card'   => $closed_amount_card,
+            'closed_amount_check'  => $closed_amount_check,
+            'closed_amount_total'  => $this->_calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check),
             'note'                 => $this->request->getPost('note') != null,
             'description'          => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'open_employee_id'     => $this->request->getPost('open_employee_id', FILTER_SANITIZE_NUMBER_INT),
-            'close_employee_id'    => $this->request->getPost('close_employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'open_employee_id'     => $logged_in_employee->person_id,
+            'close_employee_id'    => $logged_in_employee->person_id,
             'deleted'              => $this->request->getPost('deleted') != null
         ];
 

@@ -25,8 +25,23 @@ use App\Models\Employee;
             );
         });
 
+        $('#filters').on('hidden.bs.select', function(e) {
+            table_support.refresh();
+        });
+
+        if ($('#stock_location').length) {
+            $('#stock_location').on('change', function() {
+                table_support.refresh();
+            });
+        }
+
         // Load the preset daterange picker
         <?= view('partial/daterangepicker') ?>
+
+        $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
+            table_support.refresh();
+        });
+
         // Set the beginning of time as starting date
         $('#daterangepicker').data('daterangepicker').setStartDate("<?= date($config['dateformat'], mktime(0, 0, 0, 01, 01, 2010)) ?>");
         // Update the hidden inputs with the selected dates before submitting the search data

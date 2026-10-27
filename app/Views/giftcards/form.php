@@ -49,7 +49,7 @@
 
 
         <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required control-label col-xs-3']) ?>
+            <?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'control-label col-xs-3 text-danger required']) ?>
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?php if (!is_right_side_currency_symbol()): ?>
