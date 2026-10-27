@@ -1694,9 +1694,9 @@ class Sales extends Secure_Controller
             if ($paymentType == lang('Sales.cash_adjustment')) {
                 $cashAdjustment = CASH_ADJUSTMENT_TRUE;
             } else {
-                $cash_adjustment = CASH_ADJUSTMENT_FALSE;
-                $amount_tendered += $payment_amount;
-                $sale_info = $this->sale->getInfo($sale_id)->getRowArray();
+                $cashAdjustment = CASH_ADJUSTMENT_FALSE;
+                $amountTendered += $paymentAmount;
+                $saleInfo = $this->sale->getInfo($saleId)->getRowArray();
 
                 if ($amountTendered > $saleInfo['amount_due']) {
                     $cashRefund = $amountTendered - $saleInfo['amount_due'];
