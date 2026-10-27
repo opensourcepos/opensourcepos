@@ -338,7 +338,8 @@ class Items extends Secure_Controller
      */
     public function getRow(string $itemIds): ResponseInterface    // TODO: An array would be better for parameter.
     {
-        $itemInfos = $this->item->getMultipleInfo(explode(':', $itemIds), $this->item_lib->get_item_location());
+        $locationId = $this->item_lib->get_item_location();
+        $itemInfos = $this->item->getMultipleInfo(explode(':', $itemIds), $locationId === null ? null : (int) $locationId);
         $itemResults = $itemInfos->getResult();
 
         $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
@@ -471,7 +472,7 @@ class Items extends Secure_Controller
             $data['image_path']    = '';
         }
 
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -509,7 +510,7 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -517,6 +518,8 @@ class Items extends Secure_Controller
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
+
+        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
 
         return view('items/form_inventory', $data);
     }
@@ -536,7 +539,7 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -544,6 +547,8 @@ class Items extends Secure_Controller
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
+
+        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
 
         return view('items/form_count_details', $data);
     }
@@ -558,7 +563,8 @@ class Items extends Secure_Controller
     public function getGenerateBarcodes(string $item_ids): string    // TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
     {
         $item_ids = explode(':', $item_ids);
-        $result = $this->item->getMultipleInfo($item_ids, $this->item_lib->get_item_location())->getResultArray();
+        $locationId = $this->item_lib->get_item_location();
+        $result = $this->item->getMultipleInfo($item_ids, $locationId === null ? null : (int) $locationId)->getResultArray();
         $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 
         foreach ($result as &$item) {
@@ -862,7 +868,7 @@ class Items extends Secure_Controller
             }
 
             // Save item quantity
-            $stockLocations = $this->stock_location->get_undeleted_all()->getResultArray();
+            $stockLocations = $this->stock_location->getUndeletedAll()->getResultArray();
             foreach ($stockLocations as $location) {
                 $updatedQuantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
 
