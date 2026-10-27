@@ -42,6 +42,7 @@ const MENUBAR_ICONS = [
     { source: 'shop.svg', renamed: 'items.svg' },
     { source: 'smartphone.svg', renamed: 'messages.svg' },
     { source: 'tools.svg', renamed: 'migrate.svg' },
+    { source: 'plugin.svg', renamed: 'plugins.svg' },
     { source: 'dolly.svg', renamed: 'receivings.svg' },
     { source: 'bar-chart.svg', renamed: 'reports.svg' },
     { source: 'cart.svg', renamed: 'sales.svg' },
