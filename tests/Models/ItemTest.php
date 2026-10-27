@@ -81,7 +81,7 @@ class ItemTest extends CIUnitTestCase
         $itemId = $this->createTestItem();
         $itemModel = model(Item::class);
 
-        $result = $itemModel->get_multiple_info([$itemId], null);
+        $result = $itemModel->getMultipleInfo([$itemId], null);
 
         $this->assertSame(0, $result->getNumRows());
     }
@@ -96,7 +96,7 @@ class ItemTest extends CIUnitTestCase
         ]);
         $itemModel = model(Item::class);
 
-        $result = $itemModel->get_multiple_info([$itemId], self::LOCATION_ID);
+        $result = $itemModel->getMultipleInfo([$itemId], self::LOCATION_ID);
 
         $this->assertSame(1, $result->getNumRows());
     }
