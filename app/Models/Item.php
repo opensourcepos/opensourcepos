@@ -825,7 +825,7 @@ class Item extends Model
     /**
      * Deletes one item
      */
-    public function delete($item_id = null, bool $purge = false): bool|int|string
+    public function delete($item_id = null, bool $purge = false): bool
     {
         $this->db->transStart();
 
@@ -835,16 +835,14 @@ class Item extends Model
 
         $builder = $this->db->table('items');
         $builder->where('item_id', $item_id);
-        $success = $builder->update(['deleted' => 1]);
+        $builder->update(['deleted' => 1]);
 
         $inventory = model(Inventory::class);
-        $success &= $inventory->reset_quantity($item_id);
+        $inventory->reset_quantity($item_id);
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $this->db->transStatus();
     }
 
     /**
@@ -872,19 +870,17 @@ class Item extends Model
 
         $builder = $this->db->table('items');
         $builder->whereIn('item_id', $item_ids);
-        $success = $builder->update(['deleted' => 1]);
+        $builder->update(['deleted' => 1]);
 
         $inventory = model(Inventory::class);
 
         foreach ($item_ids as $item_id) {
-            $success &= $inventory->reset_quantity($item_id);
+            $inventory->reset_quantity($item_id);
         }
 
         $this->db->transComplete();
 
-        $success &= $this->db->transStatus();
-
-        return $success;
+        return $this->db->transStatus();
     }
 
     /**
