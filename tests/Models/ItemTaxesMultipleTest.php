@@ -5,31 +5,28 @@ namespace Tests\Models;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Item_taxes;
-use Config\Database;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\ItemSearchFixtureTrait;
 
 class ItemTaxesMultipleTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use ItemSearchFixtureTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
     protected $seed = '';
     protected $seedOnce = true;
-    protected $refresh = true;
+    protected $refresh = false;
     protected $namespace = null;
 
     protected $item_taxes;
 
-    public static function setUpBeforeClass(): void
-    {
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
 
         $this->item_taxes = model(Item_taxes::class);

@@ -90,6 +90,11 @@ class Appconfig extends Model
     }
 
     /**
+     * Persists many key/value pairs in a single transaction and refreshes the
+     * cached settings exactly once after the transaction commits successfully.
+     *
+     * @param array $data Map of setting keys to their new values.
+     * @return bool true when the save was successful and false if it failed.
      * @throws ReflectionException
      */
     public function batch_save(array $data): bool
@@ -99,12 +104,16 @@ class Appconfig extends Model
         $this->db->transStart();
 
         foreach ($data as $key => $value) {
-            $success &= $this->save([$key => $value]);
+            $success &= parent::save(['key' => $key, 'value' => $value]);
         }
 
         $this->db->transComplete();
 
         $success &= $this->db->transStatus();
+
+        if ($success) {
+            config(OSPOS::class)->update_settings();
+        }
 
         return $success;
     }

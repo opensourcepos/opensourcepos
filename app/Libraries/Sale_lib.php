@@ -187,62 +187,66 @@ class Sale_lib
      * @param array $cart
      * @return array
      */
-    public function sort_and_filter_cart(array $cart): array
+    public function sortAndFilterCart(array $cart): array
     {
         if (empty($cart)) {
             return $cart;
         }
 
-        $filtered_cart = [];
+        $filteredCart = [];
 
         foreach ($cart as $k => $v) {    // TODO: We should not be using single-letter variable names for readability.  Several of these foreach loops should be refactored.
             if ($v['print_option'] == PRINT_YES) {
                 if ($v['price'] == 0.0) {
                     $v['discount'] = 0.0;
                 }
-                $filtered_cart[] = $v;
+                $filteredCart[] = $v;
             }
+        }
+
+        if (empty($filteredCart)) {
+            return $filteredCart;
         }
 
         // TODO: This set of if/elseif/else needs to be converted to a switch statement
         // Entry sequence (this will render kits in the expected sequence)
         if ($this->config['line_sequence'] == '0') {
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['line'][$k] = $v['line'];
             }
-            array_multisort($sort['line'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['line'], SORT_ASC, $filteredCart);
         }
         // Group by Stock Type (nonstock first - type 1, stock next - type 0)
         elseif ($this->config['line_sequence'] == '1') {    // TODO: Need to change these to constants
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['stock_type'][$k] = $v['stock_type'];
                 $sort['description'][$k] = $v['description'];
                 $sort['name'][$k] = $v['name'];
             }
-            array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filteredCart);
         }
         // Group by Item Category
         elseif ($this->config['line_sequence'] == '2') {    // TODO: Need to change these to constants
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['category'][$k] = $v['stock_type'];
                 $sort['description'][$k] = $v['description'];
                 $sort['name'][$k] = $v['name'];
             }
-            array_multisort($sort['category'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['category'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filteredCart);
         }
         // Group by entry sequence in descending sequence (the Standard)
         else {
             $sort = [];
-            foreach ($filtered_cart as $k => $v) {
+            foreach ($filteredCart as $k => $v) {
                 $sort['line'][$k] = $v['line'];
             }
-            array_multisort($sort['line'], SORT_ASC, $filtered_cart);
+            array_multisort($sort['line'], SORT_ASC, $filteredCart);
         }
 
-        return $filtered_cart;
+        return $filteredCart;
     }
 
     /**
@@ -918,12 +922,15 @@ class Sale_lib
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function get_sale_location(): int
+    public function get_sale_location(): ?int
     {
         if (!$this->session->get('sales_location')) {
-            $this->set_sale_location($this->stock_location->get_default_location_id('sales'));
+            $defaultId = $this->stock_location->getDefaultLocationId('sales');
+            if ($defaultId !== null) {
+                $this->set_sale_location($defaultId);
+            }
         }
 
         return $this->session->get('sales_location');
@@ -1150,7 +1157,7 @@ class Sale_lib
                 $insertkey => [
                     'item_id'               => $item_id,
                     'item_location'         => $item_location,
-                    'stock_name'            => $this->stock_location->get_location_name($item_location),
+                    'stock_name'            => $this->stock_location->getLocationName($item_location),
                     'line'                  => $insertkey,
                     'name'                  => $item_info->name,
                     'item_number'           => $item_info->item_number,
@@ -1373,7 +1380,7 @@ class Sale_lib
         // Establish cash_mode for this sale by inspecting the payments
         if ($this->session->get('cash_rounding')) {
             $cash_types_only = true;
-            foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
+            foreach ($this->sale->getSalePayments($sale_id)->getResult() as $row) {
                 if ($row->payment_type != lang('Sales.cash') && $row->payment_type != lang('Sales.cash_adjustment')) {
                     $cash_types_only = false;
                 }
@@ -1390,7 +1397,7 @@ class Sale_lib
         }
 
         // Now load payments
-        foreach ($this->sale->get_sale_payments($sale_id)->getResult() as $row) {
+        foreach ($this->sale->getSalePayments($sale_id)->getResult() as $row) {
             $this->addPayment($row->payment_type, $row->payment_amount, $row->reference_code ?? null, $row->cash_adjustment);
         }
 
@@ -1469,7 +1476,7 @@ class Sale_lib
     public function is_customer_taxable(): bool    // TODO: This function is never called in the code
     {
         $customer_id = $this->get_customer();
-        $customer = $this->customer->get_info($customer_id);
+        $customer = $this->customer->getInfo($customer_id);
 
         // Do not charge sales tax if we have a customer that is not taxable
         return $customer->taxable or $customer_id == -1;    // TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.

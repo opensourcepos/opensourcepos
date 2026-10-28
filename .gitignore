@@ -57,9 +57,9 @@ $RECYCLE.BIN/
 
 # Other
 build/
+!tools/build/
 generate_languages.php
 dist
-docs
 /patches
 translations
 /.buildpath
@@ -90,3 +90,5 @@ auth.json
 /app/Database/database.sql
 /writable/cache/*
 /.env.bak
+/.php-cs-fixer.cache
+/build

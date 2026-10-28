@@ -337,7 +337,8 @@ class Items extends Secure_Controller
      */
     public function getRow(string $itemIds): ResponseInterface    // TODO: An array would be better for parameter.
     {
-        $itemInfos = $this->item->get_multiple_info(explode(':', $itemIds), $this->item_lib->get_item_location());
+        $locationId = $this->item_lib->get_item_location();
+        $itemInfos = $this->item->getMultipleInfo(explode(':', $itemIds), $locationId === null ? null : (int) $locationId);
         $itemResults = $itemInfos->getResult();
 
         $definitionNames = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
@@ -376,7 +377,7 @@ class Items extends Secure_Controller
             unset($data['definition_names'][$definition_id]);
         }
 
-        $item_info = $this->item->get_info($item_id);
+        $item_info = $this->item->getInfo($item_id);
 
         $data['allow_temp_item'] = ($data['allow_temp_item'] === 1 && $item_id !== NEW_ENTRY && $item_info->item_type != ITEM_TEMP) ? 0 : 1;
 
@@ -470,7 +471,7 @@ class Items extends Secure_Controller
             $data['image_path']    = '';
         }
 
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -482,7 +483,7 @@ class Items extends Secure_Controller
         $data['selected_low_sell_item_id'] = $item_info->low_sell_item_id;
 
         if ($item_id !== NEW_ENTRY && $item_info->item_id !== $item_info->low_sell_item_id) {
-            $low_sell_item_info = $this->item->get_info($item_info->low_sell_item_id);
+            $low_sell_item_info = $this->item->getInfo($item_info->low_sell_item_id);
             $data['selected_low_sell_item'] = implode(NAME_SEPARATOR, [$low_sell_item_info->name, $low_sell_item_info->pack_name]);
         } else {
             $data['selected_low_sell_item'] = '';
@@ -500,7 +501,7 @@ class Items extends Secure_Controller
      */
     public function getInventory(int $item_id = NEW_ENTRY): string
     {
-        $item_info = $this->item->get_info($item_id);    // TODO: Duplicate code
+        $item_info = $this->item->getInfo($item_id);    // TODO: Duplicate code
 
         foreach (get_object_vars($item_info) as $property => $value) {
             $item_info->$property = $value;
@@ -508,7 +509,7 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -516,6 +517,8 @@ class Items extends Secure_Controller
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
+
+        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
 
         return view('items/form_inventory', $data);
     }
@@ -527,7 +530,7 @@ class Items extends Secure_Controller
      */
     public function getCountDetails(int $item_id = NEW_ENTRY): string
     {
-        $item_info = $this->item->get_info($item_id);    // TODO: Duplicate code
+        $item_info = $this->item->getInfo($item_id);    // TODO: Duplicate code
 
         foreach (get_object_vars($item_info) as $property => $value) {
             $item_info->$property = $value;
@@ -535,7 +538,7 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
-        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+        $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
@@ -543,6 +546,8 @@ class Items extends Secure_Controller
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
+
+        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
 
         return view('items/form_count_details', $data);
     }
@@ -557,7 +562,8 @@ class Items extends Secure_Controller
     public function getGenerateBarcodes(string $item_ids): string    // TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
     {
         $item_ids = explode(':', $item_ids);
-        $result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
+        $locationId = $this->item_lib->get_item_location();
+        $result = $this->item->getMultipleInfo($item_ids, $locationId === null ? null : (int) $locationId)->getResultArray();
         $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 
         foreach ($result as &$item) {
@@ -700,16 +706,20 @@ class Items extends Secure_Controller
         }
 
         $taxNamesInput = $this->request->getPost('tax_names');
+        $taxPercentsInput = $this->request->getPost('tax_percents');
 
-        if (!empty($taxNamesInput)) {
+        if (!empty($taxNamesInput) || !empty($taxPercentsInput)) {
             $rules = [
-                'tax_names.*' => 'required|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_names.*'    => 'permit_empty|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_percents.*' => 'permit_empty|nonNegativeDecimal',
             ];
             $messages = [
-                'tax_names.*' => [
-                    'required'                    => lang('Items.tax_name_invalid'),
+                'tax_names.*'    => [
                     'max_length'                  => lang('Items.tax_name_invalid'),
                     'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+                'tax_percents.*' => [
+                    'nonNegativeDecimal' => lang('Items.tax_percent_non_negative'),
                 ],
             ];
 
@@ -725,15 +735,20 @@ class Items extends Secure_Controller
     private function validateBulkUpdateFields(): ?ResponseInterface
     {
         $taxNamesInput = $this->request->getPost('tax_names');
+        $taxPercentsInput = $this->request->getPost('tax_percents');
 
-        if (!empty($taxNamesInput)) {
+        if (!empty($taxNamesInput) || !empty($taxPercentsInput)) {
             $rules = [
-                'tax_names.*' => 'max_length[255]|unicode_alpha_numeric_punct',
+                'tax_names.*'    => 'permit_empty|max_length[255]|unicode_alpha_numeric_punct',
+                'tax_percents.*' => 'permit_empty|nonNegativeDecimal',
             ];
             $messages = [
-                'tax_names.*' => [
+                'tax_names.*'    => [
                     'max_length'                  => lang('Items.tax_name_invalid'),
                     'unicode_alpha_numeric_punct' => lang('Items.tax_name_invalid'),
+                ],
+                'tax_percents.*' => [
+                    'nonNegativeDecimal' => lang('Items.tax_percent_non_negative'),
                 ],
             ];
 
@@ -842,7 +857,7 @@ class Items extends Secure_Controller
                 foreach ($taxPercents as $taxPercent) {
                     $taxPercentage = parse_tax($taxPercent);
 
-                    if (is_numeric($taxPercentage)) {
+                    if (isset($taxNames[$taxNameIndex]) && trim((string) $taxNames[$taxNameIndex]) !== '' && is_numeric($taxPercentage)) {
                         $itemsTaxesData[] = ['name' => $taxNames[$taxNameIndex], 'percent' => $taxPercentage];
                     }
 
@@ -852,7 +867,7 @@ class Items extends Secure_Controller
             }
 
             // Save item quantity
-            $stockLocations = $this->stock_location->get_undeleted_all()->getResultArray();
+            $stockLocations = $this->stock_location->getUndeletedAll()->getResultArray();
             foreach ($stockLocations as $location) {
                 $updatedQuantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
 
@@ -998,7 +1013,7 @@ class Items extends Secure_Controller
     public function postSaveInventory($item_id = NEW_ENTRY): ResponseInterface
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-        $cur_item_info = $this->item->get_info($item_id);
+        $cur_item_info = $this->item->getInfo($item_id);
         $location_id = $this->request->getPost('stock_location');
         $new_quantity = $this->request->getPost('newquantity');
         $inv_data = [
@@ -1465,11 +1480,19 @@ class Items extends Secure_Controller
     {
         $items_taxes_data = [];
 
-        if (is_numeric($row['Tax 1 Percent']) && $row['Tax 1 Name'] !== '') {
+        if (is_numeric($row['Tax 1 Percent']) && (float)$row['Tax 1 Percent'] < 0) {
+            return false;
+        }
+
+        if (is_numeric($row['Tax 1 Percent']) && (float)$row['Tax 1 Percent'] >= 0 && $row['Tax 1 Name'] !== '') {
             $items_taxes_data[] = ['name' => $row['Tax 1 Name'], 'percent' => $row['Tax 1 Percent']];
         }
 
-        if (is_numeric($row['Tax 2 Percent']) && $row['Tax 2 Name'] !== '') {
+        if (is_numeric($row['Tax 2 Percent']) && (float)$row['Tax 2 Percent'] < 0) {
+            return false;
+        }
+
+        if (is_numeric($row['Tax 2 Percent']) && (float)$row['Tax 2 Percent'] >= 0 && $row['Tax 2 Name'] !== '') {
             $items_taxes_data[] = ['name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']];
         }
 

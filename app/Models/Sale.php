@@ -40,7 +40,7 @@ class Sale extends Model
     /**
      * Get sale info
      */
-    public function get_info(int $sale_id): ResultInterface
+    public function getInfo(int $sale_id): ResultInterface
     {
         $config = config(OSPOS::class)->settings;
         $this->create_temp_table(['sale_id' => $sale_id]);
@@ -615,10 +615,10 @@ class Sale extends Model
 
         $this->save_customer_rewards($customerId, $saleId, $totalAmount, $totalAmountUsed);
 
-        $customer = $customer->get_info($customerId);
+        $customer = $customer->getInfo($customerId);
 
         foreach ($items as $line => $itemData) {
-            $curItemInfo = $item->get_info($itemData['item_id']);
+            $curItemInfo = $item->getInfo($itemData['item_id']);
 
             if ($itemData['price'] == 0.00) {
                 $itemData['discount'] = 0.00;
@@ -814,10 +814,10 @@ class Sale extends Model
             $item = model(Item::class);
             $item_quantity = model(Item_quantity::class);
 
-            $items = $this->get_sale_items($sale_id)->getResultArray();
+            $items = $this->getSaleItems($sale_id)->getResultArray();
 
             foreach ($items as $item_data) {
-                $cur_item_info = $item->get_info($item_data['item_id']);
+                $cur_item_info = $item->getInfo($item_data['item_id']);
 
                 if ($cur_item_info->stock_type == HAS_STOCK) {
                     // Create query to update inventory tracking
@@ -849,7 +849,7 @@ class Sale extends Model
     /**
      * Gets sale item
      */
-    public function get_sale_items(int $sale_id): ResultInterface
+    public function getSaleItems(int $sale_id): ResultInterface
     {
         $builder = $this->db->table('sales_items');
         $builder->where('sale_id', $sale_id);
@@ -915,7 +915,7 @@ class Sale extends Model
     /**
      * Gets sale payments
      */
-    public function get_sale_payments(int $sale_id): ResultInterface
+    public function getSalePayments(int $sale_id): ResultInterface
     {
         $builder = $this->db->table('sales_payments');
         $builder->where('sale_id', $sale_id);
@@ -956,7 +956,7 @@ class Sale extends Model
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
 
-        return $customer->get_info($builder->get()->getRow()->customer_id);
+        return $customer->getInfo($builder->get()->getRow()->customer_id);
     }
 
     /**
@@ -969,7 +969,7 @@ class Sale extends Model
 
         $employee = model(Employee::class);
 
-        return $employee->get_info($builder->get()->getRow()->employee_id);
+        return $employee->getInfo($builder->get()->getRow()->employee_id);
     }
 
     /**
@@ -1088,7 +1088,7 @@ class Sale extends Model
                 INNER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
                 WHERE ' . $where . '
-                GROUP BY sale_id, item_id, line
+                GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id, sales_items_taxes.line
             )';
 
         $this->db->query($sql);
@@ -1174,7 +1174,7 @@ class Sale extends Model
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items_taxes_temp') . ' AS sales_items_taxes
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
                 WHERE ' . $where . '
-                GROUP BY sale_id, item_id, line
+                GROUP BY sales.sale_id, items.item_id, sales_items.line, sales_items.discount_type
             )';
 
         $this->db->query($sql);
@@ -1193,7 +1193,7 @@ class Sale extends Model
                 . $this->db->prefixTable('sales') . ' where sale_status = ' . SUSPENDED . ' AND customer_id = ' . $customer_id);
         }
 
-        return $query->getResultArray() ?: [];
+        return $query ? $query->getResultArray() : [];
     }
 
     /**
@@ -1394,7 +1394,7 @@ class Sale extends Model
             $customerRewards = model(Customer_rewards::class);
             $rewards = model(Rewards::class);
 
-            $packageId = $customer->get_info($customer_id)->package_id;
+            $packageId = $customer->getInfo($customer_id)->package_id;
 
             if (! empty($packageId)) {
                 $pointsPercent     = $customerRewards->get_points_percent($packageId);

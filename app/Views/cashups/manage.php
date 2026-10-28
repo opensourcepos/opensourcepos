@@ -14,8 +14,16 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#filters').on('hidden.bs.select', function(e) {
+            table_support.refresh();
+        });
+
         // Load the preset datarange picker
         <?= view('partial/daterangepicker') ?>
+
+        $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
+            table_support.refresh();
+        });
 
         <?= view('partial/bootstrap_tables_locale') ?>
 

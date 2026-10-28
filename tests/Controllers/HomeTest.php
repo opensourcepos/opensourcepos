@@ -2,12 +2,12 @@
 
 namespace Tests\Controllers;
 
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use App\Models\Employee;
 use RuntimeException;
+use Tests\Support\DatabaseBootstrapTrait;
 
 /**
  * Test suite for Home controller password validation
@@ -19,6 +19,7 @@ use RuntimeException;
 class HomeTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
 
     protected $migrate     = true;
@@ -26,16 +27,9 @@ class HomeTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
     }
@@ -65,7 +59,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was not changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Password should not have been changed');
     }
@@ -95,7 +89,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pa$$w0rd', $admin->password),
             'Password with 8 chars should be accepted');
 
@@ -189,7 +183,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password works
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify($specialPassword, $admin->password));
 
         // Restore original password
@@ -229,7 +223,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was NOT changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Single character password should be rejected (CVE fix)');
     }
@@ -340,7 +334,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify admin password was NOT changed
         $employee = model(Employee::class);
-        $admin = $employee->get_info(1);
+        $admin = $employee->getInfo(1);
         $this->assertTrue(password_verify('pointofsale', $admin->password),
             'Admin password should not have been changed by non-admin');
     }
@@ -383,7 +377,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $user = $employee->get_info($nonAdminId);
+        $user = $employee->getInfo($nonAdminId);
         $this->assertTrue(password_verify('newpassword123', $user->password));
     }
 
@@ -425,7 +419,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $user = $employee->get_info($nonAdminId);
+        $user = $employee->getInfo($nonAdminId);
         $this->assertTrue(password_verify('adminset123', $user->password));
     }
 
@@ -497,7 +491,7 @@ class HomeTest extends CIUnitTestCase
 
         // Verify victim's password was NOT changed
         $employeeModel = model(Employee::class);
-        $victim = $employeeModel->get_info($victimId);
+        $victim = $employeeModel->getInfo($victimId);
         $this->assertTrue(password_verify('victimpass123', $victim->password),
             'Non-admin should not be able to change another non-admin password');
     }

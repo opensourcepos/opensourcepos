@@ -8,8 +8,6 @@ use Config\OSPOS;
 
 ?>
 
-<script type="text/javascript" src="js/clipboard.min.js"></script>
-
 <form id="config_wrapper" class="form-horizontal">
     <p><?= lang('Config.server_notice') ?></p>
 
@@ -194,12 +192,25 @@ use Config\OSPOS;
 <div class="row">
     <div class="col-xs-12 text-center">
         <br>
-        <a class="copy" role="button" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new?template=bug+report.yml" target="_blank"> <?= lang('Config.report_an_issue') ?></a>
+        <a class="copy" role="button" data-clipboard-action="copy" data-clipboard-target="#issuetemplate"><?= lang('Config.system_info_copy') ?></a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new?template=bug+report.yml" target="_blank"> <?= lang('Config.report_an_issue') ?></a>
         <script type="text/javascript">
             const clipboard = new ClipboardJS('.copy');
 
             clipboard.on('success', function(e) {
                 document.getSelection().removeAllRanges();
+                $.notify({
+                    message: '<?= esc(lang('Config.system_info_copy_success'), 'js') ?>'
+                }, {
+                    type: 'success'
+                });
+            });
+
+            clipboard.on('error', function(e) {
+                $.notify({
+                    message: '<?= esc(lang('Config.system_info_copy_error'), 'js') ?>'
+                }, {
+                    type: 'danger'
+                });
             });
 
             const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;

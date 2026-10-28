@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Item;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 
 /**
  * Regression coverage for mass assignment in bulk edit.
@@ -15,15 +16,13 @@ use CodeIgniter\Test\DatabaseTestTrait;
 class ItemBulkUpdateTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
 
-    /**
-     * The schema is taken as it stands rather than migrated, so these tests run
-     * against an existing test database without dropping it. Every row created
-     * here is rolled back in tearDown().
-     */
-    protected $migrate   = false;
-    protected $refresh   = false;
-    protected $namespace = null;
+    protected $migrate     = true;
+    protected $migrateOnce = true;
+    protected $seedOnce    = true;
+    protected $refresh     = false;
+    protected $namespace   = null;
 
     protected Item $item;
 
@@ -35,6 +34,8 @@ class ItemBulkUpdateTest extends CIUnitTestCase
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
 
         $this->item = model(Item::class);
