@@ -202,8 +202,8 @@ class CashupControllerTest extends CIUnitTestCase
         $response = $this->get("/cashups/view/$cashupId");
 
         $response->assertStatus(200);
-        $response->assertSee(to_currency_no_money(145));
-        $response->assertSee(to_currency_no_money(20));
-        $response->assertSee(to_currency_no_money(55));
+        $response->assertSeeInField('closed_amount_cash', to_currency_no_money(145));
+        $response->assertSeeInField('closed_amount_due', to_currency_no_money(20));
+        $response->assertSeeInField('closed_amount_total', to_currency_no_money(55));
     }
 }
