@@ -303,7 +303,7 @@ class Receiving_lib
         }
 
         $insertKey = $maxKey + 1;
-        $itemInfo = $this->item->get_info((int) $itemId);
+        $itemInfo = $this->item->getInfo((int) $itemId);
 
         $price = $price != null ? $price : $itemInfo->cost_price;
 
