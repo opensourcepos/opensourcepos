@@ -62,4 +62,22 @@ trait SaleFixtureTrait
 
         return $saleId;
     }
+
+    protected function createSalePayment(int $saleId, int $employeeId, string $paymentType, float $amount): int
+    {
+        $db = Database::connect();
+
+        $db->table('sales_payments')->insert([
+            'sale_id'         => $saleId,
+            'payment_type'    => $paymentType,
+            'payment_amount'  => $amount,
+            'cash_refund'     => 0,
+            'cash_adjustment' => 0,
+            'employee_id'     => $employeeId,
+            'payment_time'    => date('Y-m-d H:i:s'),
+            'reference_code'  => '',
+        ]);
+
+        return (int) $db->insertID();
+    }
 }
