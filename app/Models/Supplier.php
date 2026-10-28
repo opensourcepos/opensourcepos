@@ -88,17 +88,15 @@ class Supplier extends Person
         }
     }
 
-    /**
-     * Gets information about multiple suppliers
-     */
-    public function get_multiple_info(array $person_ids): ResultInterface
+    public function getMultipleInfo(array $personIds, array $columns = []): array
     {
-        $builder = $this->db->table('suppliers');
-        $builder->join('people', 'people.person_id = suppliers.person_id');
-        $builder->whereIn('suppliers.person_id', $person_ids);
-        $builder->orderBy('last_name', 'asc');
-
-        return $builder->get();
+        $builder = $this->db->table('suppliers')
+            ->join('people', 'people.person_id = suppliers.person_id')
+            ->whereIn('suppliers.person_id', $personIds);
+        if (!empty($columns)) {
+            $builder->select(implode(', ', $columns));
+        }
+        return $builder->get()->getResultArray();
     }
 
     /**

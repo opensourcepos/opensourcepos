@@ -33,7 +33,6 @@ return [
     'customer_discount'                 => 'Endirim',
     'customer_email'                    => 'E-poçt',
     'customer_location'                 => 'Yer',
-    'customer_mailchimp_status'         => 'Mailchimp Statusu',
     'customer_optional'                 => '(Borclu Ödənişlər üçün tələb olunur)',
     'customer_required'                 => '(Vacib)',
     'customer_total'                    => 'Cəmi',

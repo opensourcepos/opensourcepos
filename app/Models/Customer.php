@@ -44,7 +44,7 @@ class Customer extends Person
     }
 
     /**
-     * Checks if account number exists
+     * Checks if the account number exists
      */
     public function check_account_number_exists(string $account_number, string $person_id = ''): bool
     {

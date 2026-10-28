@@ -18,7 +18,6 @@ use stdClass;
  */
 class Item extends Model
 {
-
     public const ALLOWED_SUGGESTIONS_COLUMNS = ['name', 'item_number', 'description', 'cost_price', 'unit_price'];
     public const ALLOWED_SUGGESTIONS_COLUMNS_WITH_EMPTY = ['', 'name', 'item_number', 'description', 'cost_price', 'unit_price'];
 
@@ -586,6 +585,63 @@ class Item extends Model
         return $builder->get();
     }
 
+    public function getAllItemIds(): array
+    {
+        return array_column(
+            $this->select('item_id')->where('deleted', 0)->findAll(),
+            'item_id'
+        );
+    }
+
+    public function getPicFilenamesBulk(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $rows = $this->select('item_id, pic_filename')->whereIn('item_id', $itemIds)->findAll();
+
+        return array_column($rows, 'pic_filename', 'item_id');
+    }
+
+    /**
+     * Used by plugins, do not remove.
+     */
+    public function getExportDataBulk(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $rows = $this->select('item_id, item_number, name, description, unit_price, pic_filename')
+            ->whereIn('item_id', $itemIds)
+            ->findAll();
+
+        $data = [];
+
+        foreach ($rows as $row) {
+            $data[$row['item_id']] = $row;
+        }
+
+        return $data;
+    }
+
+    public function getDistinctCategories(): array
+    {
+        $results = $this->db->table('items')
+            ->select('category')
+            ->where('deleted', 0)
+            ->where('category !=', '')
+            ->where('category IS NOT NULL')
+            ->distinct()
+            ->orderBy('category', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $categories = array_column($results, 'category');
+        return array_combine($categories, $categories);
+    }
+
     /**
      * Gets information about a particular item
      */
@@ -722,6 +778,15 @@ class Item extends Model
         $builder->groupBy('items.item_id');
 
         return $builder->get();
+    }
+
+    public function getItems(array $itemIds, array $columns = []): array
+    {
+        $builder = $this->db->table($this->table)->whereIn('item_id', $itemIds);
+        if (!empty($columns)) {
+            $builder->select(implode(', ', $columns));
+        }
+        return $builder->get()->getResultArray();
     }
 
     /**
