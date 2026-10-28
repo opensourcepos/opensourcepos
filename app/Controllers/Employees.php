@@ -76,7 +76,7 @@ class Employees extends Persons
      */
     public function getView(int $employee_id = NEW_ENTRY): string
     {
-        $person_info = $this->employee->get_info($employee_id);
+        $person_info = $this->employee->getInfo($employee_id);
         $current_user = $this->employee->get_logged_in_employee_info();
 
         if ($employee_id != NEW_ENTRY && !$this->employee->canModifyEmployee($person_info->person_id, $current_user->person_id)) {
@@ -119,7 +119,7 @@ class Employees extends Persons
         $currentUser = $this->employee->get_logged_in_employee_info();
 
         if ($employeeId != NEW_ENTRY) {
-            $targetEmployee = $this->employee->get_info($employeeId);
+            $targetEmployee = $this->employee->getInfo($employeeId);
             if (!$this->employee->canModifyEmployee($targetEmployee->person_id, $currentUser->person_id)) {
                 return $this->response->setJSON([
                     'success' => false,

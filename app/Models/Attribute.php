@@ -304,7 +304,7 @@ class Attribute extends Model
         $builder->orderBy('definition_name', 'ASC');
 
         if (!$groups) {
-            $builder->whereNotIn('definition_type', GROUP);
+            $builder->whereNotIn('definition_type', [GROUP]);
         }
 
         $results = $builder->get()->getResultArray();

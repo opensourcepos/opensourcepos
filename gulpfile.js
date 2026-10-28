@@ -24,7 +24,7 @@ const execAsync = promisify(exec);
 
 /**
  * Navigation SVG icon mapping for menubar:
- * - source:  Original SVG filename from 'node_modules/elegant-circles/svg/full-color/'
+ * - source: Original SVG filename from 'node_modules/elegant-circles/svg/full-color/'
  * - renamed: Target filename saved in 'public/images/menubar/'
  */
 const MENUBAR_ICONS = [
@@ -70,7 +70,7 @@ const injectOptions = (tag, options = {}) => ({
 
 /**
  * Emits Vinyl file objects from multiple streams sequentially.
- * Native replacement for the stream-series package using Readable.from and PassThrough buffers.
+ * Native replacement for the stream-series package using Readable from and PassThrough buffers.
  */
 const streamSeries = (...streams) => {
     const buffers = streams.map(stream => {
@@ -360,7 +360,7 @@ gulp.task('debug-login-js', function() {
     );
 });
 
-// Inject production minified jQuery into app/Views/login.php (production mode)
+// Inject production-minified jQuery into app/Views/login.php (production mode)
 gulp.task('prod-login-js', function() {
     const loginProdJs = gulp.src('./public/resources/jquery-*.min.js', { read: false });
 
