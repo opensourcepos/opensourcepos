@@ -63,7 +63,7 @@ return [
     'phone_number_required'          => '',
     'please_visit_my'                => 'تکایە سەردانی',
     'position'                       => '',
-    'powered_by'                     => 'پاڵپشتی دەکرێت لەلایەن',
+    'powered_by'                     => 'پاڵپشتی دەکرێت لەلایەن {app} {version}',
     'price'                          => 'نرخ',
     'print'                          => 'چاپکردن',
     'remove'                         => 'لابردن',
