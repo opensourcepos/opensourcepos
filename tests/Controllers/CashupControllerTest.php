@@ -36,6 +36,7 @@ class CashupControllerTest extends CIUnitTestCase
             'timeformat'          => 'H:i:s',
             'number_locale'       => 'en_US',
             'currency_decimals'   => 2,
+            'currency_symbol'     => '$',
             'thousands_separator' => ',',
         ]);
     }
@@ -127,5 +128,25 @@ class CashupControllerTest extends CIUnitTestCase
         $this->assertEquals(155.0, (float) $cashup->closed_amount_total);
         $this->assertEquals($cashierId, (int) $cashup->open_employee_id);
         $this->assertEquals($cashierId, (int) $cashup->close_employee_id);
+    }
+
+    public function testPostAjaxCashupTotal_ReturnsCalculatedTotal(): void
+    {
+        $cashierId = $this->createCashupEmployee();
+        $this->loginAs($cashierId);
+
+        // 100 - 20 - 5 + 15 + 40 + 25 = 155
+        $response = $this->post('/cashups/ajax_cashup_total', [
+            'open_amount_cash'     => '20',
+            'transfer_amount_cash' => '5',
+            'closed_amount_cash'   => '100',
+            'closed_amount_due'    => '15',
+            'closed_amount_card'   => '40',
+            'closed_amount_check'  => '25',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertSame('155.00', $result['total']);
     }
 }
