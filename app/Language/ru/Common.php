@@ -67,7 +67,7 @@ return [
     'phone_number_required'          => 'Номер телефона - обязательное поле для заполнения.',
     'please_visit_my'                => 'Посетите',
     'position'                       => 'Должность',
-    'powered_by'                     => 'ПО:',
+    'powered_by'                     => 'ПО: {app} {version}',
     'price'                          => 'Цена',
     'print'                          => 'Печать',
     'remove'                         => 'Удалить',

@@ -67,7 +67,7 @@ return [
     'phone_number_required'          => 'Telefon nömrəsi tələb olunan sahədir.',
     'please_visit_my'                => 'Zəhmət olmasa ziyarət edin',
     'position'                       => 'Vəzifə',
-    'powered_by'                     => 'Dəstəkləyən',
+    'powered_by'                     => 'Yaradıcı {app} {version}',
     'price'                          => 'Qiymət',
     'print'                          => 'Çap Et',
     'remove'                         => 'Sil',
