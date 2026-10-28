@@ -28,7 +28,7 @@ permissions:
 jobs:
   test:
     name: PHP ${{ matrix.php-version }} / ${{ matrix.db-image }} Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
@@ -37,6 +37,7 @@ jobs:
           - '8.2'
           - '8.3'
           - '8.4'
+          - '8.5'
         db-image:
           - 'mariadb:10.5'
           - 'mariadb:10.6'
@@ -72,25 +73,6 @@ jobs:
           fi
           echo "PHP $ACTUAL meets minimum $MIN"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Get npm cache directory
-        run: echo "NPM_CACHE_DIR=$(npm config get cache)" >> $GITHUB_ENV
-
-      - name: Cache npm dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.NPM_CACHE_DIR }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install npm dependencies
-        run: npm install
-
       - name: Start database
         run: |
           docker run -d --name mysql \
@@ -124,7 +106,7 @@ jobs:
         run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.COMPOSER_CACHE_FILES_DIR }}
           key: ${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
