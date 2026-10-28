@@ -92,3 +92,6 @@ auth.json
 /.env.bak
 /.php-cs-fixer.cache
 /build
+/public/fonts/unifont/*.cw.dat
+/public/fonts/unifont/*.cw127.php
+/public/fonts/unifont/*.mtx.php

@@ -274,6 +274,7 @@ gulp.task('debug-js', function() {
         './node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
+        './public/js/report_tables.js',
         './public/js/nominatim.autocomplete.js'
     ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
 
@@ -324,6 +325,7 @@ gulp.task('prod-js', function() {
         './node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
+        './public/js/report_tables.js',
         './public/js/nominatim.autocomplete.js'
     ]).pipe(uglify());
 

@@ -3,18 +3,22 @@
 namespace App\Controllers;
 
 use App\Models\Giftcard;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\OSPOS;
 use Config\Services;
 
 class Giftcards extends Secure_Controller
 {
+    private BaseConnection $db;
     private Giftcard $giftcard;
 
     public function __construct()
     {
         parent::__construct('giftcards');
 
+        $this->db = Database::connect();
         $this->giftcard = model(Giftcard::class);
     }
 
@@ -48,6 +52,36 @@ class Giftcards extends Secure_Controller
         }
 
         return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+    }
+
+    /**
+     * Streams giftcards matching the current search as a downloadable file.
+     * @noinspection PhpUnused
+     */
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search = $this->request->getGet('search');
+        $limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort   = $this->sanitizeSortColumn(giftcard_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'giftcard_id');
+        $order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $giftcards = $this->giftcard->search($search, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($giftcards->getResult() as $giftcard) {
+            $exportRows[] = getGiftcardExportRow($giftcard);
+        }
+
+        $file = generateExportFile($format, giftcardExportHeaders(), $exportRows, 'giftcards_' . date('Ymd_His'), $this->db->prefixTable('giftcards'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

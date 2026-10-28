@@ -201,6 +201,7 @@ class Autoload extends AutoloadConfig
         'form',
         'cookie',
         'tabular',
+        'export',
         'locale',
         'security'
     ];
