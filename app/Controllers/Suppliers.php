@@ -34,7 +34,7 @@ class Suppliers extends Persons
      */
     public function getRow($row_id): ResponseInterface
     {
-        $data_row = get_supplier_data_row($this->supplier->get_info($row_id));
+        $data_row = get_supplier_data_row($this->supplier->getInfo($row_id));
         $data_row['category'] = $this->supplier->get_category_name($data_row['category']);
 
         return $this->response->setJSON($data_row);
@@ -97,7 +97,7 @@ class Suppliers extends Persons
      */
     public function getView(int $supplier_id = NEW_ENTRY): string
     {
-        $info = $this->supplier->get_info($supplier_id);
+        $info = $this->supplier->getInfo($supplier_id);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }

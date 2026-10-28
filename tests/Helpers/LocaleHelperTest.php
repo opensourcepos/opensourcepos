@@ -1,19 +1,20 @@
 <?php
 
-use CodeIgniter\Config\Factories;
+namespace Tests\Helpers;
+
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\OSPOS;
+use Tests\Support\OsposConfigFixtureTrait;
 
 class LocaleHelperTest extends CIUnitTestCase
 {
+    use OsposConfigFixtureTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
         require_once __DIR__ . '/../../app/Helpers/locale_helper.php';
 
-        $config           = new OSPOS();
-        $config->settings = ['dateformat' => 'Y-m-d'];
-        Factories::injectMock('config', OSPOS::class, $config);
+        $this->injectOsposSettings(['dateformat' => 'Y-m-d']);
     }
 
     public function testValidDateReturnsTrue(): void

@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   test:
-    name: PHP ${{ matrix.php-version }} Tests
+    name: PHP ${{ matrix.php-version }} / ${{ matrix.db-image }} Tests
     runs-on: ubuntu-22.04
 
     strategy:
@@ -37,6 +37,13 @@ jobs:
           - '8.2'
           - '8.3'
           - '8.4'
+        db-image:
+          - 'mariadb:10.5'
+          - 'mariadb:10.6'
+          - 'mariadb:10.11'
+          - 'mysql:5.7'
+          - 'mysql:8.0'
+          - 'mysql:8.4'
 
     steps:
       - name: Checkout
@@ -48,6 +55,22 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: intl, mbstring, mysqli
           coverage: none
+
+      - name: Verify PHP patch level
+        run: |
+          ACTUAL=$(php -r 'echo PHP_VERSION;')
+          case "${ACTUAL%.*}" in
+            8.2) MIN="8.2.35" ;;
+            8.3) MIN="8.3.36" ;;
+            8.4) MIN="8.4.27" ;;
+            8.5) MIN="8.5.12" ;;
+            *) echo "::error::Unsupported PHP branch: $ACTUAL"; exit 1 ;;
+          esac
+          if [ "$(printf '%s\n' "$MIN" "$ACTUAL" | sort -V | head -1)" != "$MIN" ]; then
+            echo "::error::PHP $ACTUAL is below patched minimum $MIN (CVE-2026-109618 / CVE-2026-109619)"
+            exit 1
+          fi
+          echo "PHP $ACTUAL meets minimum $MIN"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -68,7 +91,7 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
-      - name: Start MariaDB
+      - name: Start database
         run: |
           docker run -d --name mysql \
              -e MYSQL_ROOT_PASSWORD=root \
@@ -76,13 +99,19 @@ jobs:
             -e MYSQL_USER=admin \
             -e MYSQL_PASSWORD=pointofsale \
             -p 3306:3306 \
-            mariadb:10.5
-          # Wait for MariaDB to be ready
+            ${{ matrix.db-image }}
+          # Wait for database to be ready (max 60 attempts)
+          retries=0
           until docker exec mysql mysqladmin ping -h 127.0.0.1 -u root -proot --silent; do
-            echo "Waiting for MariaDB..."
+            retries=$((retries + 1))
+            if [ $retries -ge 60 ]; then
+              echo "Database failed to start after 60 attempts"
+              exit 1
+            fi
+            echo "Waiting for database... (attempt $retries/60)"
             sleep 2
           done
-          echo "MariaDB is ready!"
+          echo "Database is ready!"
 
           # Grant admin the CREATE/DROP privileges it needs to drop and
           # recreate the test database at the start of each test class.
@@ -140,14 +169,18 @@ jobs:
           MYSQL_HOST_NAME: 127.0.0.1
         run: composer test -- --no-coverage --log-junit test-results/junit.xml
 
+      - name: Set artifact name
+        if: always()
+        run: echo "DB_LABEL=$(echo '${{ matrix.db-image }}' | tr ':' '-')" >> $GITHUB_ENV
+
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-results-php-${{ matrix.php-version }}
+          name: test-results-php-${{ matrix.php-version }}-${{ env.DB_LABEL }}
           path: test-results/
           retention-days: 30
 
-      - name: Stop MariaDB
+      - name: Stop database
         if: always()
         run: docker stop mysql && docker rm mysql

@@ -148,6 +148,10 @@ class OSPOSRules
      */
     public function nonNegativeDecimal(string $candidate, ?string &$error = null): bool
     {
+        if (trim($candidate) === '') {
+            return true;
+        }
+
         $value = parse_decimals($candidate);
 
         return $value !== false && $value >= 0;
