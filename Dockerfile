@@ -1,5 +1,9 @@
-FROM php:8.2.35-apache AS ospos
+FROM php:8.2-apache AS ospos
 LABEL maintainer="jekkos"
+
+COPY composer.json /tmp/composer.json
+RUN php -r '$c = json_decode(file_get_contents("/tmp/composer.json"), true); $branch = PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION; if (preg_match("/(?:^|[|,\s])>=?\s*" . preg_quote($branch, "/") . "\.(\d+)/", $c["require"]["php"] ?? "", $m) && version_compare(PHP_VERSION, $branch . "." . $m[1], "<")) { fwrite(STDERR, "ERROR: PHP version " . PHP_VERSION . " is below required minimum " . $branch . "." . $m[1] . " (from composer.json). Run docker build --pull to update base image.\n"); exit(1); }' \
+    && rm /tmp/composer.json
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libicu-dev \
@@ -9,11 +13,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite
 
-RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
+RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini \
+    && echo "expose_php = Off" > /usr/local/etc/php/conf.d/security.ini
 
 WORKDIR /app
-COPY --chown=www-data:www-data . /app
-RUN chmod 750 /app/writable/logs /app/writable/uploads /app/writable/cache /app/public/uploads /app/public/uploads/item_pics \
+COPY . /app
+RUN rm -f /app/composer.json \
+    && chmod -R go-w /app \
+    && chown -R www-data:www-data /app/writable /app/public/uploads \
+    && chmod 750 /app/writable/logs /app/writable/uploads /app/writable/cache /app/public/uploads /app/public/uploads/item_pics \
     && chmod 640 /app/writable/uploads/importCustomers.csv \
     && ln -s /app/*[^public] /var/www \
     && rm -rf /var/www/html \

@@ -35,7 +35,6 @@ git-svn-diff.py
 branding/
 
 # Build configs (not needed at runtime)
-composer.json
 composer.lock
 package.json
 package-lock.json
