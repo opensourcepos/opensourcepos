@@ -176,8 +176,8 @@ class Cashups extends Secure_Controller
         $cashUpsInfo->closed_amount_total = $this->calculateTotal(new CashupAmounts(
             $cashUpsInfo->open_amount_cash,
             $cashUpsInfo->transfer_amount_cash,
-            $cashUpsInfo->closed_amount_due,
             $cashUpsInfo->closed_amount_cash,
+            $cashUpsInfo->closed_amount_due,
             $cashUpsInfo->closed_amount_card,
             $cashUpsInfo->closed_amount_check
         ));
@@ -393,8 +393,8 @@ class Cashups extends Secure_Controller
         return new CashupAmounts(
             parse_decimals($this->request->getPost('open_amount_cash')),
             parse_decimals($this->request->getPost('transfer_amount_cash')),
-            parse_decimals($this->request->getPost('closed_amount_due')),
             parse_decimals($this->request->getPost('closed_amount_cash')),
+            parse_decimals($this->request->getPost('closed_amount_due')),
             parse_decimals($this->request->getPost('closed_amount_card')),
             parse_decimals($this->request->getPost('closed_amount_check'))
         );
