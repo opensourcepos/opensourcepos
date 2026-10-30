@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Has borrado satisfactoriamente a',
     'successful_updating'   => 'Has actualizado el proveedor satisfactoriamente',
     'supplier'              => 'Proveedor',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'Identificador del Impuesto',
     'update'                => 'Actualizar Proveedor',
 ];

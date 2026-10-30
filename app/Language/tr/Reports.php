@@ -9,7 +9,7 @@ return [
     'category'                                => 'Kategori',
     'code_canceled'                           => 'İptal',
     'code_invoice'                            => 'Fatura',
-    'code_pos'                                => 'POS',
+    'code_pos'                                => '',
     'code_quote'                              => 'Fiyat',
     'code_return'                             => 'Geri',
     'code_type'                               => 'Tip',

@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'שיעור מס ברירת מחדל',
     'error_adding_updating'                  => 'הוספה או עדכון של קוד מס נכשלו',
     'group_seq'                              => 'רצף קבוצות',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'שם תחום שיפוט',
     'name'                                   => 'שם',
     'new'                                    => 'מס חדש',

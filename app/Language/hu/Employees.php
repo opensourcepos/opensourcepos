@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Sikeresen törölt egy munkavállalót',
     'successful_updating'                   => 'Sikeresen módosította a munkavállalót',
     'system_language'                       => '',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => '',
     'update'                                => 'Munkavállaló módosítása',
     'username'                              => 'Felhasználó név',

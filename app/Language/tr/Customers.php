@@ -34,7 +34,7 @@ return [
     'mailchimp_activity_total'      => 'E-posta gönder',
     'mailchimp_activity_unopen'     => 'E-posta açılmadı',
     'mailchimp_email_client'        => 'E-posta istemcisi',
-    'mailchimp_info'                => 'MailChimp',
+    'mailchimp_info'                => '',
     'mailchimp_member_rating'       => 'Değerlendirme',
     'mailchimp_status'              => 'Durum',
     'mailchimp_vip'                 => 'VİP',
@@ -44,6 +44,7 @@ return [
     'none_selected'                 => 'Silmek için müşteri seçmediniz.',
     'one_or_multiple'               => 'müşteri',
     'quantity'                      => 'Miktar',
+    'rewards_package'               => 'Ödül Paketi',
     'stats_info'                    => 'İstatistikler',
     'successful_adding'             => 'Müşteri eklendi',
     'successful_deleted'            => 'Silme başarılı',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'Vergilendirilebilir',
     'total'                         => 'Toplam',
     'update'                        => 'Müşteri Güncelle',
-    'rewards_package'               => 'Ödül Paketi',
 ];

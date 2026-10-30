@@ -51,7 +51,7 @@ return [
     'supplier_address'             => 'Adresse',
     'supplier_email'               => 'Courriel fournisseur',
     'supplier_location'            => 'Localisation fournisseur',
-    'total'                        => 'Total',
+    'total'                        => '',
     'transaction_failed'           => 'Transaction(s) de réception(s) échouée(s).',
     'unable_to_add_item'           => 'Ajout de l\'article à la réception échoué.',
     'unsuccessfully_updated'       => 'Mise à jour de la réception échouée.',

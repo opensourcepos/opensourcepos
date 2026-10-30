@@ -19,6 +19,6 @@ return [
     'to'                               => 'До',
     'today'                            => 'Сьогодні',
     'today_last_year'                  => 'Сьогодні минулого року',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'Вчора',
 ];

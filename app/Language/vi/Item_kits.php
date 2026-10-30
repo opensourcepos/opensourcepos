@@ -17,8 +17,6 @@ return [
     'item'                      => 'Hàng hóa',
     'item_kit_number'           => 'Mã vạch',
     'item_kit_number_duplicate' => 'Số kít mục tin đã sẵn có trong cơ sở dữ liệu.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Hàng hóa',
     'kit'                       => 'Mã gói',
     'kit_and_components'        => 'Gói và Thành phần',

@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Umefanikiwa kufuta',
     'successful_updating'                   => 'Umefanikiwa kusasisha mfanyakazi',
     'system_language'                       => 'Lugha ya Mfumo',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Imeshindikana kubadili Nenosiri.',
     'update'                                => 'Sasisha Mfanyakazi',
     'username'                              => 'Jina la Mtumiaji',

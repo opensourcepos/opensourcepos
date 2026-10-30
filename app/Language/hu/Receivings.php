@@ -34,7 +34,7 @@ return [
     'receipt'                      => 'Átvételi nyugta',
     'receipt_number'               => 'Átvételi #',
     'receiving'                    => 'Átvétel',
-    'reference'                    => 'Reference',
+    'reference'                    => '',
     'register'                     => 'Termék átvétel',
     'requisition'                  => 'Átadás',
     'return'                       => 'Visszáru',

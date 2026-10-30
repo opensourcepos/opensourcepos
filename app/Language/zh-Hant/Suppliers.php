@@ -2,7 +2,7 @@
 
 return [
     'account_number'        => '帳號 #',
-    'agency_name'           => ' ',
+    'agency_name'           => '',
     'cannot_be_deleted'     => '無法刪除所選擇的供應商，選定的供應商中至少有一家已有銷售紀錄。',
     'category'              => '供應商類別',
     'company_name'          => '公司名稱',
@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => '您已成功刪除供應商',
     'successful_updating'   => '您已成功更新供應商',
     'supplier'              => '供應商',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => '稅務編號',
     'update'                => '更新供應商',
 ];

@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'נמחק בהצלחה',
     'successful_updating'                   => 'עדכנת בהצלחה את פרטי העובד',
     'system_language'                       => 'שפת מערכת',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'שינוי הסיסמה נכשל.',
     'update'                                => 'עדכן עובד',
     'username'                              => 'שם משתמש',

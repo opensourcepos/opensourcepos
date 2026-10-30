@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'skuld',
     'employee'                   => 'Skapad av',
     'error_adding_updating'      => 'Det gick inte att lägga till / uppdatera kostnader',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Anställd',
     'info'                       => 'Utgifter info',
     'ip_address'                 => '',

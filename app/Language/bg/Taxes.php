@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => '',
     'error_adding_updating'                  => 'Добавянето или актуализацията на данъчния код беше неуспешна.',
     'group_seq'                              => '',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => '',
     'name'                                   => '',
     'new'                                    => 'Нов данъчен код',

@@ -20,7 +20,7 @@ return [
     'expenses_desc'              => 'Onkosten toevoegen, bijwerken, verwijderen en zoeken.',
     'giftcards'                  => 'Cadeaubonnen',
     'giftcards_desc'             => 'Cadeaubonnen toevoegen, bijwerken, verwijderen en zoeken.',
-    'home'                       => 'Home',
+    'home'                       => '',
     'home_desc'                  => 'Home menu modules weergeven.',
     'item_kits'                  => 'Artikelsets',
     'item_kits_desc'             => 'Artikelsets toevoegen, bijwerken, verwijderen en zoeken.',

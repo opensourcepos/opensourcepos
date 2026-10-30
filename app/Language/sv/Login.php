@@ -9,7 +9,7 @@ return [
     'invalid_gcaptcha'              => 'Ogiltig jag är ingen robot.',
     'invalid_installation'          => 'Installationen är inte korrekt, kontrollera din php.ini fil.',
     'invalid_username_and_password' => 'Ogiltigt användarnamn eller lösenord.',
-    'login'                         => 'Login',
+    'login'                         => '',
     'logout'                        => 'Logga ut',
     'migrating_database'            => 'Migrerar databas',
     'migration_auth_message'        => 'Admin-uppgifter krävs för att godkänna databasmigrationen till version {0}. Logga in för att fortsätta.',

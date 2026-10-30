@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Tegoed',
     'employee'                   => 'Aangemaakt door',
     'error_adding_updating'      => 'Fout bij het toevoegen of updaten van een onkost',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Werknemer',
     'info'                       => 'Onkostennota',
     'ip_address'                 => '',

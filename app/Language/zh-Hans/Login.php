@@ -20,7 +20,7 @@ return [
     'migration_error_connection'    => '',
     'migration_failed'              => '',
     'migration_initializing'        => '',
-    'migration_needed'              => '',
+    'migration_needed'              => '登录后，数据库将会迁移到{0}。',
     'migration_required'            => '',
     'migration_running'             => '',
     'password'                      => '密码',

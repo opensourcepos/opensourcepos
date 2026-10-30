@@ -26,7 +26,7 @@ return [
     'enable_expected'            => 'Gözlənilən Məbləği Aktiv Et',
     'error_adding_updating'      => 'Kassa hesabatı əlavə edilərkən/yenilənərkən xəta baş verdi',
     'giftcard'                   => 'Hədiyyə Kartı',
-    'id'                         => 'Id',
+    'id'                         => '',
     'info'                       => 'Kassa Hesabatı Məlumatı',
     'info_employee'              => 'Əməkdaş Məlumatı',
     'is_deleted'                 => 'Silindi',

@@ -19,6 +19,6 @@ return [
     'to'                               => 'Para',
     'today'                            => 'Hoje',
     'today_last_year'                  => 'Hoje Último Ano',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'Ontem',
 ];

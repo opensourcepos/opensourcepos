@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Bạn đã xóa thành công',
     'successful_updating'                   => 'Bạn đã cập nhật nhân viên thành công',
     'system_language'                       => 'Ngôn ngữ hệ thống',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Gặp lỗi khi thay đổi mật khẩu.',
     'update'                                => 'Cập nhật Nhân viên',
     'username'                              => 'Tài khoản',

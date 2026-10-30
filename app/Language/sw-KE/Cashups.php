@@ -26,7 +26,7 @@ return [
     'enable_expected'            => '',
     'error_adding_updating'      => 'Hitilafu katika kuongeza/kusasisha Fedha Taslimu',
     'giftcard'                   => '',
-    'id'                         => 'Id',
+    'id'                         => '',
     'info'                       => 'Taarifa za Fedha Taslimu',
     'info_employee'              => '',
     'is_deleted'                 => 'Imefutwa',

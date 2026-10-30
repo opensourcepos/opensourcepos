@@ -17,8 +17,6 @@ return [
     'item'                      => 'صنف',
     'item_kit_number'           => 'الباركود',
     'item_kit_number_duplicate' => 'رقم مجموعة الأدوات موجود في قاعدة البيانات.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'أصناف',
     'kit'                       => 'كود المجموعة',
     'kit_and_components'        => 'المجموعة ومحتوياتها',

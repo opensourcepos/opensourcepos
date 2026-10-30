@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => '',
     'error_adding_updating'                  => '',
     'group_seq'                              => '',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => '',
     'name'                                   => '',
     'new'                                    => '',

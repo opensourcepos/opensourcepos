@@ -17,8 +17,6 @@ return [
     'item'                      => 'Articulo',
     'item_kit_number'           => 'Código de barras',
     'item_kit_number_duplicate' => 'El Número del Kit de Artículo ya está presente en la base de datos.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Artículos',
     'kit'                       => 'ID del Kit',
     'kit_and_components'        => 'Kits y Componentes',

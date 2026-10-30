@@ -3,7 +3,7 @@
 return [
     'first_name'            => 'Prénom',
     'last_name'             => 'Nom de famille',
-    'message'               => 'Message',
+    'message'               => '',
     'message_placeholder'   => 'Votre message ici...',
     'message_required'      => 'Message requis',
     'multiple_phones'       => '(Si plusieur destinataires, séparer les numéros avec une virgule)',

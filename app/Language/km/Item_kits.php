@@ -17,8 +17,6 @@ return [
     'item'                      => 'ទំនិញ',
     'item_kit_number'           => '',
     'item_kit_number_duplicate' => '',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'មុខទំនិញ',
     'kit'                       => 'លេខសំគាល់ក្រុមទំនិញ',
     'kit_and_components'        => 'កញ្ចប់និងសមាសភាគ',

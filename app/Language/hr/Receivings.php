@@ -34,7 +34,7 @@ return [
     'receipt'                      => 'Ulazni račun',
     'receipt_number'               => 'Ulazni rč. broj',
     'receiving'                    => 'Primka',
-    'reference'                    => 'Reference',
+    'reference'                    => '',
     'register'                     => 'Stavke primke',
     'requisition'                  => 'Međusklad.',
     'return'                       => 'Povrat',

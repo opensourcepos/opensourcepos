@@ -19,6 +19,6 @@ return [
     'to'                               => 'Hasta',
     'today'                            => 'Hoy',
     'today_last_year'                  => 'Hoy, del año pasado',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'Ayer',
 ];

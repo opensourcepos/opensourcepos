@@ -26,7 +26,7 @@ return [
     'enable_expected'            => '',
     'error_adding_updating'      => 'Errore durante l\'aggiunta/aggiornamento incasso',
     'giftcard'                   => '',
-    'id'                         => 'Id',
+    'id'                         => '',
     'info'                       => 'Info incassi',
     'info_employee'              => '',
     'is_deleted'                 => 'Cancellato',

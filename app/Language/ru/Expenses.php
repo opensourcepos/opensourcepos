@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Задолженность',
     'employee'                   => 'Создано',
     'error_adding_updating'      => 'Ошибка добавления / обновления расходов',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Сотрудник',
     'info'                       => 'Информация о расходах',
     'ip_address'                 => 'IP-адрес',

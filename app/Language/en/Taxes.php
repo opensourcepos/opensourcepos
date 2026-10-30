@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Default Tax Rate',
     'error_adding_updating'                  => 'Tax Code add or update failed',
     'group_seq'                              => 'Group Seq',
+    'jurisdiction_id'                        => 'Jurisdiction ID',
     'jurisdiction_name'                      => 'Jurisdiction Name',
     'name'                                   => 'Name',
     'new'                                    => 'New Tax',

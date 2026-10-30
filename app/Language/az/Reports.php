@@ -9,7 +9,7 @@ return [
     'category'                                => 'Kateqoriya',
     'code_canceled'                           => 'LĞV',
     'code_invoice'                            => 'HES',
-    'code_pos'                                => 'POS',
+    'code_pos'                                => '',
     'code_quote'                              => 'T',
     'code_return'                             => 'GER',
     'code_type'                               => 'Növ',

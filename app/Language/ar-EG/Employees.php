@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'لقد تم حذف الموظف بنجاح',
     'successful_updating'                   => 'لقد تم تحديث بيانات الموظف بنجاح',
     'system_language'                       => 'لغة النظام',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'فشل في تغيير كلمة المرور.',
     'update'                                => 'تحديث بيانات موظف',
     'username'                              => 'اسم المستخدم',

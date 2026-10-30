@@ -2,14 +2,14 @@
 
 return [
     'gcaptcha'                      => 'Non sono un robot.',
-    'go'                            => 'Go',
+    'go'                            => '',
     'initialization_message'        => '',
     'initialization_required'       => '',
     'initialize'                    => '',
     'invalid_gcaptcha'              => 'Verifica di non essere un robot.',
     'invalid_installation'          => 'L\'installazione non è corretta, controlla il tuo file php.ini.',
     'invalid_username_and_password' => 'Username o Password non validi.',
-    'login'                         => 'Login',
+    'login'                         => '',
     'logout'                        => 'Uscita',
     'migrating_database'            => 'Migrazione del database',
     'migration_auth_message'        => 'Le credenziali di amministratore sono richieste per autorizzare la migrazione del database alla versione {0}. Effettua il login per continuare.',
@@ -23,9 +23,9 @@ return [
     'migration_needed'              => 'Dopo l\'accesso verrà avviata una migrazione del database a {0}.',
     'migration_required'            => 'Migratione del database richiesta',
     'migration_running'             => 'Esecuzione migrazioni database...',
-    'password'                      => 'Password',
+    'password'                      => '',
     'required_username'             => 'Il campo nome utente è obbligatorio.',
     'too_many_attempts'             => 'Troppi tentativi. Attendere un momento e riprovare.',
-    'username'                      => 'Username',
+    'username'                      => '',
     'welcome'                       => 'Benvenuto in {0}!',
 ];

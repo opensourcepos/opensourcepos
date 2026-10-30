@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Taruf Pajak Default',
     'error_adding_updating'                  => 'Penambahan atau pembaharuan Kode Pajak gagal',
     'group_seq'                              => 'Urutan grup',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Nama Yuridiksi',
     'name'                                   => 'Nama',
     'new'                                    => 'Pajak baru',

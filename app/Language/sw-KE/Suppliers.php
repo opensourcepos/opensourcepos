@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Umefanikiwa kufuta',
     'successful_updating'   => 'Umefanikiwa kusasisha Msambazaji',
     'supplier'              => 'Msambazaji',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'Kitambulisho cha Kodi',
     'update'                => 'Sasisha Msambazaji',
 ];

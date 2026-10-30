@@ -17,8 +17,6 @@ return [
     'item'                      => 'Termék',
     'item_kit_number'           => '',
     'item_kit_number_duplicate' => '',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Termékek',
     'kit'                       => 'Csomag ID',
     'kit_and_components'        => '',

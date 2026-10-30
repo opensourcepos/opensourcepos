@@ -51,7 +51,7 @@ return [
     'supplier_address'             => 'Endereço',
     'supplier_email'               => 'e-mail',
     'supplier_location'            => 'Localização',
-    'total'                        => 'Total',
+    'total'                        => '',
     'transaction_failed'           => 'Recebimentos Transações Falharam.',
     'unable_to_add_item'           => 'Não é possível adicionar item para recebimento.',
     'unsuccessfully_updated'       => 'Recebimento não atualizado.',

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Nama Kategori Biaya harus diisi',
     'add_item'                          => 'Tambah Kategori',
     'cannot_be_deleted'                 => 'Tidak dapat menghapus Kategori Biaya',
     'category_id'                       => 'ID',
+    'category_name_required'            => 'Nama Kategori Biaya harus diisi',
     'confirm_delete'                    => 'Anda yakin ingin menghapus Kategori Biaya terpilih?',
     'confirm_restore'                   => 'Apakah Anda yakin ingin mengembalikan Kategori Biaya yang dipilih?',
     'description'                       => 'Deskripsi Kategori',

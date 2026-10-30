@@ -6,7 +6,7 @@ return [
     'bulk_edit'                          => 'Massändra',
     'cannot_be_deleted'                  => 'Det gick inte att radera valda presentkort, ett eller flera av de valda presentkorten har försäljning.',
     'cannot_find_giftcard'               => 'Presentkort hittades inte.',
-    'cannot_use'                         => 'Giftcard {0} cannot be used for this sale. Invalid Customer!',
+    'cannot_use'                         => '',
     'card_value'                         => 'Värde',
     'category'                           => 'Kategori',
     'change_all_to_allow_alt_desc'       => 'Tillåt alternativ beskrivning för alla.',

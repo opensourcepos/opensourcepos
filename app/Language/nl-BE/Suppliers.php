@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Er werd(en)',
     'successful_updating'   => 'Wijzigingen leveranciersgegevens bewaard',
     'supplier'              => 'Leverancier',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'BTW Id',
     'update'                => 'Bewerk Leverancier',
 ];

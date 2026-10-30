@@ -11,7 +11,7 @@ return [
     'cannot_be_deleted'             => 'Could not delete selected customers, one or more of the selected customers has sales.',
     'company_name'                  => 'Company',
     'confirm_delete'                => 'Are you sure you want to delete the selected customer(s)?',
-    'confirm_restore'               => 'Are you sure you want to restore selected customers(s)?',
+    'confirm_restore'               => 'Are you sure you want to restore selected customer(s)?',
     'consent'                       => 'Registration consent',
     'consent_required'              => 'Registration consent is a required field.',
     'csv_import_failed'             => 'CSV import failed',
@@ -44,6 +44,7 @@ return [
     'none_selected'                 => 'You have not selected any customer(s) to delete.',
     'one_or_multiple'               => 'Customer(s)',
     'quantity'                      => 'Quantity',
+    'rewards_package'               => 'Rewards Package',
     'stats_info'                    => 'Stats',
     'successful_adding'             => 'You have successfully added customer',
     'successful_deleted'            => 'You have successfully deleted',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'Taxable',
     'total'                         => 'Total spent',
     'update'                        => 'Update Customer',
-    'rewards_package'               => 'Rewards Package',
 ];

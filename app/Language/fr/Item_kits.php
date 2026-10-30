@@ -17,8 +17,6 @@ return [
     'item'                      => 'Article',
     'item_kit_number'           => 'Code à barres',
     'item_kit_number_duplicate' => 'Ce numéro d\'ensemble existe déjà dans la base de données.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Articles',
     'kit'                       => 'Groupes ID',
     'kit_and_components'        => 'Groupes et composants',

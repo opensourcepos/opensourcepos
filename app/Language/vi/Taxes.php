@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Thuế suất mặc định',
     'error_adding_updating'                  => 'Gặp lỗi khi thêm hay cập nhật Mã thuế',
     'group_seq'                              => '',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Tên quyền',
     'name'                                   => 'Tên',
     'new'                                    => 'Mã thuế mới',

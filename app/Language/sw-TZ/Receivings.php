@@ -56,5 +56,4 @@ return [
     'unable_to_add_item'           => 'Kuongeza bidhaa kwenye Manunuzi kimeshindikana.',
     'unsuccessfully_updated'       => 'Kusasisha Manunuzi kimeshindikana.',
     'update'                       => 'Sasisha',
-    'stock_locaiton'               => 'Store',
 ];

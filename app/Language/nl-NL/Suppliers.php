@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'U heeft verwijderd',
     'successful_updating'   => 'Leverancier bijgewerkt',
     'supplier'              => 'Leverancier',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'Belasting ID',
     'update'                => 'Leverancier bijwerken',
 ];

@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Siz uğurla sildiniz',
     'successful_updating'                   => 'Siz əməkdaşı uğurla yenilədiniz',
     'system_language'                       => 'Sistem Dili',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Şifrənin dəyişdirilməsi uğursuz oldu.',
     'update'                                => 'Əməkdaşı Yenilə',
     'username'                              => 'İstifadəçi Adı',
