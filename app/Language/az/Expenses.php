@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Borc',
     'employee'                   => 'Yaradan',
     'error_adding_updating'      => 'Xərc əlavə edilərkən/yenilənərkən xəta baş verdi',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Əməkdaş',
     'info'                       => 'Xərc Məlumatı',
     'ip_address'                 => 'IP Ünvanı',

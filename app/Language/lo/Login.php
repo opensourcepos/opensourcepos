@@ -2,7 +2,7 @@
 
 return [
     'gcaptcha'                      => 'ຂ້ອຍບໍ່ແມ່ນເຄື່ອງຈັກ.',
-    'go'                            => 'Go',
+    'go'                            => '',
     'initialization_message'        => '',
     'initialization_required'       => '',
     'initialize'                    => '',
@@ -20,12 +20,12 @@ return [
     'migration_error_connection'    => '',
     'migration_failed'              => '',
     'migration_initializing'        => '',
-    'migration_needed'              => '',
+    'migration_needed'              => 'ການຍ້າຍຖານຂໍ້ມູນ {0} ຈະເລີ່ມຫຼັງຈາກເຂົ້າສູ່ລະບົບ',
     'migration_required'            => '',
     'migration_running'             => '',
-    'password'                      => 'Password',
+    'password'                      => '',
     'required_username'             => '',
     'too_many_attempts'             => 'ພະຍາຍາມຫຼາຍເກີນໄປ. ກະລຸນາລໍຖ້າບຶດໜຶ່ງ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.',
-    'username'                      => 'Username',
+    'username'                      => '',
     'welcome'                       => '',
 ];

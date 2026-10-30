@@ -20,7 +20,7 @@ return [
     'count'                              => 'Mise à Jour Inventaire',
     'csv_import_failed'                  => 'Échec de l\'import.',
     'current_quantity'                   => 'Quantité Restante',
-    'description'                        => 'Description',
+    'description'                        => '',
     'details_count'                      => 'Détails d\'inventaire',
     'do_nothing'                         => 'Ne rien faire',
     'edit_fields_you_want_to_update'     => 'Modifier les chaps que vous voulez éditer pour TOUTES les cartes.',

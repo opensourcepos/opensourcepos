@@ -43,7 +43,7 @@ return [
     'error_updating_multiple'            => 'Malları yeniləyərkən xəta baş verdi',
     'generate_barcodes'                  => 'Barkod Yarat',
     'hsn_code'                           => 'Harmonizə Sistem Nomenklaturası',
-    'image'                              => 'Avatar',
+    'image'                              => '',
     'import_items_csv'                   => 'CSV-dən Mal İdxalı',
     'info_provided_by'                   => 'Məlumatı təqdim edən',
     'inventory'                          => 'İnventar',

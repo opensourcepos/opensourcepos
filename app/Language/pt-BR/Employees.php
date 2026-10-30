@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Você apagou o funcionário com sucesso',
     'successful_updating'                   => 'Você atualizou com sucesso o funcionário',
     'system_language'                       => 'Idioma do sistema',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Falha na mudança de senha.',
     'update'                                => 'Atualizar funcionário',
     'username'                              => 'Usuário',

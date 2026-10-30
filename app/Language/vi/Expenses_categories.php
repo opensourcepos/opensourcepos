@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Trường tên Thể loại chi phí là bắt buộc',
     'add_item'                          => 'Thêm thể loại',
     'cannot_be_deleted'                 => 'Không thể xóa Thể loại Chi phí',
     'category_id'                       => 'Mã số',
+    'category_name_required'            => 'Trường tên Thể loại chi phí là bắt buộc',
     'confirm_delete'                    => 'Bạn chắc chắn muốn xóa các Thể loại chi phí được chọn không?',
     'confirm_restore'                   => 'Bạn có thực sự muốn hoàn nguyên lại thể loại phí đã chọn không?',
     'description'                       => 'Mô tả Thể loại',

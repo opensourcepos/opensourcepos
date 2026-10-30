@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Silme başarılı',
     'successful_updating'                   => 'Personel güncellendi',
     'system_language'                       => 'Sistem dili',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Parola değişikliği başarısız oldu.',
     'update'                                => 'Personeli Güncelle',
     'username'                              => 'Kullanıcı Adı',

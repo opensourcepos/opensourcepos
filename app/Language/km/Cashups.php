@@ -3,7 +3,7 @@
 return [
     'amount'                     => 'ទឹកប្រាក់',
     'amount_number'              => 'ចំនួនទឹកប្រាក់ត្រូវតែជាលេខ',
-    'amount_required'            => 'ត្រង់ទឹកប្រាក់​ ត្រូវការបំពេញ',
+    'amount_required'            => "ត្រង់ទឹកប្រាក់\u{200b} ត្រូវការបំពេញ",
     'cancel_cashups'             => '',
     'cancel_cashups_enter'       => '',
     'cannot_be_deleted'          => 'សាច់ប្រាក់សរុប មិនអាចលុបចោលបានទេ',

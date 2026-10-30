@@ -8,7 +8,7 @@ return [
     'definition_error_adding_updating' => '{0} atributu əlavə edilə və ya yenilənə bilmədi. Zəhmət olmasa xəta jurnalını yoxlayın.',
     'definition_flags'                 => 'Atributun görünürlüyü',
     'definition_group'                 => 'Qrup',
-    'definition_id'                    => 'Id',
+    'definition_id'                    => '',
     'definition_invalid_group'         => 'Seçilmiş qrup mövcud deyil və ya etibarsızdır.',
     'definition_name'                  => 'Atribut əlavə et',
     'definition_name_required'         => 'Atribut adı tələb olunan sahədir',

@@ -17,8 +17,6 @@ return [
     'item'                      => 'Product',
     'item_kit_number'           => 'Streepjescode',
     'item_kit_number_duplicate' => 'Artikel Kit Nummer is reeds aanwezig in de database.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Producten',
     'kit'                       => 'Productset Id',
     'kit_and_components'        => 'Productset en onderdelen',

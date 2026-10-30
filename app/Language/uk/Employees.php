@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Працівника успішно видалено',
     'successful_updating'                   => 'Працівника успішно оновлено',
     'system_language'                       => 'Мова системи',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Не вдалось змінити пароль.',
     'update'                                => 'Оновити працівника',
     'username'                              => 'Ім\'я користувача',

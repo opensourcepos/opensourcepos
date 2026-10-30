@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'ลบข้อมูลสำเร็จ',
     'successful_updating'                   => 'ปรับปรุงข้อมูลพนักงานเรียบร้อยแล้ว',
     'system_language'                       => 'ภาษาของระบบ',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'เปลี่ยนรหัสผ่านไม่สำเร็จ',
     'update'                                => 'แก้ไขข้อมูลพนักงาน',
     'username'                              => 'ชื่อผู้ใช้งาน',

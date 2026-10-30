@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'nombre requerido-',
     'add_item'                          => 'Agregar categoria',
     'cannot_be_deleted'                 => 'No pudo borrar',
-    'category_id'                       => 'Id',
+    'category_id'                       => '',
+    'category_name_required'            => 'nombre requerido-',
     'confirm_delete'                    => 'Esta seguro de quere borrar lo(s) categorias(s) seleccionado(s)?',
     'confirm_restore'                   => '¿Está seguro de que desea restaurar la categoría de gastos seleccionada?',
     'description'                       => 'Descripcion Categoria',

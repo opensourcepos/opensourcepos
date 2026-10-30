@@ -16,7 +16,7 @@ return [
     'this_financial_year'              => 'Année fiscale en cours',
     'this_month'                       => 'Ce mois',
     'this_year'                        => 'Cette Année',
-    'to'                               => 'To',
+    'to'                               => '',
     'today'                            => 'Aujourd\'hui',
     'today_last_year'                  => 'Même jour l\'année passée',
     'weekstart'                        => '1',

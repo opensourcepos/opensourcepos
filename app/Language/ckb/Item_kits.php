@@ -17,8 +17,6 @@ return [
     'item'                      => 'ئایتم',
     'item_kit_number'           => 'باڕکۆد',
     'item_kit_number_duplicate' => 'ژمارەی کیتی ئایتمی پێشتر لە داتابەیسدا هەیە.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'ئایتمەکان',
     'kit'                       => 'ناسنامەی کیت',
     'kit_and_components'        => 'کیت و پێکهاتەکانی',

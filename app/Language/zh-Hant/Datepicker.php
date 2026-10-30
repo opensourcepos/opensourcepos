@@ -16,9 +16,9 @@ return [
     'this_financial_year'              => '當前財政年度',
     'this_month'                       => '這個月',
     'this_year'                        => '今年',
-    'to'                               => 'To',
+    'to'                               => '',
     'today'                            => '今天',
     'today_last_year'                  => '去年的今天',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => '昨天',
 ];

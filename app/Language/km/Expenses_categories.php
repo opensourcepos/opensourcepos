@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'តំរូវអោយបំពេញឈ្មោះប្រភេទចំណាយ',
     'add_item'                          => 'បន្ថែមប្រភេទ',
     'cannot_be_deleted'                 => 'មិនអាចលប់ប្រភេទចំណាយបាន',
     'category_id'                       => 'លេខសំគាល់',
+    'category_name_required'            => 'តំរូវអោយបំពេញឈ្មោះប្រភេទចំណាយ',
     'confirm_delete'                    => 'តើអ្នកពិតជាចង់លប់ប្រភេទចំណាយដែលបានជ្រើរើសមែនទេ?',
     'confirm_restore'                   => '',
     'description'                       => 'ពិពណ៌នាអំពីប្រភេទ',

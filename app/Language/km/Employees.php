@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'អ្នកទទួលបានជោគជ័យក្នុងការលុប',
     'successful_updating'                   => 'អ្នកទទួលបានជោគជ័យ ក្នុងការកែប្រែបុគ្គលិក',
     'system_language'                       => 'ភាសារបស់ប្រព័ន្ធ',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'ការផ្លាស់ប្ដូរពាក្យសម្ងាត់មិនបានសំរេច។',
     'update'                                => 'កែប្រែបុគ្គលិក',
     'username'                              => 'ឈ្នោះអ្នកប្រើប្រាស់',

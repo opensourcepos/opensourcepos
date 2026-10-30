@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Nom de la catégorie de dépenses requis',
     'add_item'                          => 'Ajouter une catégorie',
     'cannot_be_deleted'                 => 'Impossible de supprimer la ou les dépenses de catégorie',
     'category_id'                       => 'ID',
+    'category_name_required'            => 'Nom de la catégorie de dépenses requis',
     'confirm_delete'                    => 'Êtes-vous sûr de vouloir supprimer la catégorie de dépenses sélectionnée ?',
     'confirm_restore'                   => 'Voulez-vous restaurer la Catégorie de Dépense selectionnée ?',
     'description'                       => 'Description de la catégorie',

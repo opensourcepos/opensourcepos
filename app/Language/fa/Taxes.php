@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'نرخ پیش فرض مالیات',
     'error_adding_updating'                  => 'کد مالیاتی اضافه یا به روز نشد',
     'group_seq'                              => 'گروه Seq',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'نام صلاحیت',
     'name'                                   => 'نام',
     'new'                                    => 'مالیات جدید',

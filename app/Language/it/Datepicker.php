@@ -16,9 +16,9 @@ return [
     'this_financial_year'              => 'Anno Fiscale Corrente',
     'this_month'                       => 'Mese Corrente',
     'this_year'                        => 'Anno Corrente',
-    'to'                               => 'To',
+    'to'                               => '',
     'today'                            => 'Oggi',
     'today_last_year'                  => 'Oggi Ultimo Anno',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'Ieri',
 ];

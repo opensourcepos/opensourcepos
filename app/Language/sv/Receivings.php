@@ -39,7 +39,7 @@ return [
     'requisition'                  => 'Rekvisition',
     'return'                       => 'Retur',
     'select_supplier'              => 'Välj leverantör (valfritt)',
-    'ship_pack'                    => 'Ship Pack',
+    'ship_pack'                    => '',
     'start_typing_supplier_name'   => 'Börja skriva leverantörens namn ...',
     'stock'                        => 'Lager',
     'stock_destination'            => 'Lagerplats',

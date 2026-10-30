@@ -49,7 +49,7 @@ return [
     'successfully_updated'         => 'Ricezione correttamente aggiornata',
     'supplier'                     => 'Fornitore',
     'supplier_address'             => 'Indirizzo',
-    'supplier_email'               => 'Email',
+    'supplier_email'               => '',
     'supplier_location'            => 'Luogo',
     'total'                        => 'Totale',
     'transaction_failed'           => 'Transazione di Ricezione fallita.',

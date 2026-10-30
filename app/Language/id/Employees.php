@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Berhasil menghapus Kartu Hadiah',
     'successful_updating'                   => 'Anda telah berhasil memperbarui karyawan',
     'system_language'                       => 'Bahasa Sistem',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Gagal mengubah kata sandi.',
     'update'                                => 'Ubah Karyawan',
     'username'                              => 'Nama Pengguna',

@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Löschung erfolgreich',
     'successful_updating'                   => 'Änderung erfolgreich',
     'system_language'                       => '',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => '',
     'update'                                => 'Mitarbeiter ändern',
     'username'                              => 'Benutzername',

@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'معدل الضريبة الافتراضي',
     'error_adding_updating'                  => 'فشل إضافة أو تحديث قانون الضرائب',
     'group_seq'                              => 'تسلسل المجموعة',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'اسم الولاية القضائية',
     'name'                                   => 'الاسم',
     'new'                                    => 'ضريبة جديدة',

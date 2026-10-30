@@ -26,7 +26,7 @@ return [
     'enable_expected'            => '',
     'error_adding_updating'      => 'Greška prilikom dodavanja/ažuriranja isplate',
     'giftcard'                   => '',
-    'id'                         => 'Id',
+    'id'                         => '',
     'info'                       => 'Informacije o isplatama',
     'info_employee'              => '',
     'is_deleted'                 => 'Izbrisano',

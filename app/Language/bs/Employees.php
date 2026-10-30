@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Uspješno ste izbrisali zaposlenika',
     'successful_updating'                   => 'Uspješno ste ažurirali zaposlenika',
     'system_language'                       => 'Sistemski jezik',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Promjena lozinke nije uspjela.',
     'update'                                => 'Ažuriraj zaposlenika',
     'username'                              => 'Korisničko ime',

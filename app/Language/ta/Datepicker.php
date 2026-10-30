@@ -19,6 +19,6 @@ return [
     'to'                               => 'வரை',
     'today'                            => 'இன்று',
     'today_last_year'                  => 'கடந்த ஆண்டு இன்று',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'நேற்று',
 ];

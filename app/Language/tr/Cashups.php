@@ -26,7 +26,7 @@ return [
     'enable_expected'            => '',
     'error_adding_updating'      => 'Nakit ekleme / güncelleme hatası',
     'giftcard'                   => '',
-    'id'                         => 'Id',
+    'id'                         => '',
     'info'                       => 'Nakit Bilgi',
     'info_employee'              => '',
     'is_deleted'                 => 'Silindi',

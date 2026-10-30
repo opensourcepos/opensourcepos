@@ -44,6 +44,7 @@ return [
     'none_selected'                 => 'Nem választott ki egyetlen vásárlót sem a törléshez',
     'one_or_multiple'               => 'vevő(k)',
     'quantity'                      => '',
+    'rewards_package'               => '',
     'stats_info'                    => '',
     'successful_adding'             => 'Sikeresen hozzáadott egy vevőt',
     'successful_deleted'            => 'Sikeres törlés.',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'Adóköteles',
     'total'                         => 'Összesen',
     'update'                        => 'Vevő módosítása',
-    'rewards_package'               => '',
 ];

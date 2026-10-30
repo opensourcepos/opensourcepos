@@ -19,6 +19,6 @@ return [
     'to'                               => 'ເຖິງ',
     'today'                            => 'ມື້ນີ້',
     'today_last_year'                  => 'ມື້ນີ້ຂອງປີກາຍ',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'ມື້ວານນີ້',
 ];

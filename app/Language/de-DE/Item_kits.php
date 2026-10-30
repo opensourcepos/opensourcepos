@@ -17,8 +17,6 @@ return [
     'item'                      => 'Artikel',
     'item_kit_number'           => '',
     'item_kit_number_duplicate' => '',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Artikel',
     'kit'                       => 'Set-ID',
     'kit_and_components'        => 'Set und Komponenten',

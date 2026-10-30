@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Du har lagt till leverantör',
     'successful_updating'   => 'Du har lagt till leverantör',
     'supplier'              => 'Leverantör',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'Skatteid',
     'update'                => 'Uppdatera leverantör',
 ];

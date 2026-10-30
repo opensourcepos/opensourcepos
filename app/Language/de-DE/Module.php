@@ -20,7 +20,7 @@ return [
     'expenses_desc'              => 'Hinzufügen, Ändern, Löschen und Suchen von Ausgaben.',
     'giftcards'                  => 'Gutscheine',
     'giftcards_desc'             => 'Hinzufügen, Ändern, Löschen und Suchen von Gutscheinen.',
-    'home'                       => 'Home',
+    'home'                       => '',
     'home_desc'                  => 'Auflistung der Module des Home-Menüs.',
     'item_kits'                  => 'Artikel-Sets',
     'item_kits_desc'             => 'Hinzufügen, Ändern, Löschen und Suchen von Artikel-Sets.',

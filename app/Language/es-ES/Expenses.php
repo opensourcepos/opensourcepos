@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Hasta',
     'employee'                   => 'Creado por',
     'error_adding_updating'      => 'Error añadiendo/actualizando',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Empleado',
     'info'                       => 'Info de gasto',
     'ip_address'                 => 'Dirección IP',

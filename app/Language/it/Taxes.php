@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Tassazione predefinita',
     'error_adding_updating'                  => 'Aggiunta o modifica Codice Fiscale Fallito',
     'group_seq'                              => 'Gruppo Seq',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Nome giurisdizione',
     'name'                                   => 'Nome',
     'new'                                    => 'Nuovo Codice Imposta',

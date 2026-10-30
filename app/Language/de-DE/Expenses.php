@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'ausstehend',
     'employee'                   => 'Angelegt Von',
     'error_adding_updating'      => 'Fehler beim hinzufügen/aktualisieren',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Mitarbeiter',
     'info'                       => 'Ausgaben Info',
     'ip_address'                 => '',

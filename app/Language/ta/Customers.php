@@ -16,7 +16,7 @@ return [
     'consent_required'              => 'பதிவு ஒப்புதல் என்பது தேவையான தரவு.',
     'csv_import_failed'             => 'CSV இறக்குமதி தோல்வியுற்றது',
     'csv_import_nodata_wrongformat' => 'பதிவேற்றிய கோப்பில் தரவு இல்லை அல்லது தவறாக வடிவமைக்கப்பட்டுள்ளது.',
-    'csv_import_partially_failed'   => 'Customer import successful with some failures:',
+    'csv_import_partially_failed'   => '',
     'csv_import_success'            => 'வாடிக்கையாளரின் இறக்குமதி வெற்றிகரமாக முடிந்தது.',
     'customer'                      => 'வாடிக்கையாளர்',
     'date'                          => 'தேதி',
@@ -44,6 +44,7 @@ return [
     'none_selected'                 => 'நீக்க எந்த வாடிக்கையாளரையும் நீங்கள் தேர்ந்தெடுக்கவில்லை.',
     'one_or_multiple'               => 'வாடிக்கையாளர் (கள்)',
     'quantity'                      => 'அளவு',
+    'rewards_package'               => 'வெகுமதி தொகுப்பு',
     'stats_info'                    => 'புள்ளிவிவரங்கள்',
     'successful_adding'             => 'நீங்கள் வெற்றிகரமாக வாடிக்கையாளரைச் சேர்த்துள்ளீர்கள்',
     'successful_deleted'            => 'நீங்கள் வெற்றிகரமாக நீக்கிவிட்டீர்கள்',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'வரி விதிக்கப்படக்கூடியது',
     'total'                         => 'மொத்தம் செலவிடப்பட்டது',
     'update'                        => 'வாடிக்கையாளரைப் புதுப்பிக்கவும்',
-    'rewards_package'               => 'வெகுமதி தொகுப்பு',
 ];

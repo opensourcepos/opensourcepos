@@ -19,6 +19,6 @@ return [
     'to'                               => 'sampai',
     'today'                            => 'Hari ini',
     'today_last_year'                  => 'Hari ini tahun kemarin',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'Kemarin',
 ];

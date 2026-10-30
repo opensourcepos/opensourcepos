@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => '預設稅率',
     'error_adding_updating'                  => '統編(Tax Code)新增或修改失敗',
     'group_seq'                              => '組序列',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => '稅務裁決單位',
     'name'                                   => '姓名',
     'new'                                    => '新稅',

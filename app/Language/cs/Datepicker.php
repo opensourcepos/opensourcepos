@@ -19,6 +19,6 @@ return [
     'to'                               => 'Do',
     'today'                            => 'Dnes',
     'today_last_year'                  => 'Stejný den loni',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'Včera',
 ];

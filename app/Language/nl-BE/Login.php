@@ -9,7 +9,7 @@ return [
     'invalid_gcaptcha'              => 'Controleer of u geen robot bent.',
     'invalid_installation'          => 'De installatie is onvolledig. Kijk uw php.ini file na.',
     'invalid_username_and_password' => 'Ongeldige gebruiker en/of paswoord.',
-    'login'                         => 'Login',
+    'login'                         => '',
     'logout'                        => 'Log-uit',
     'migrating_database'            => 'Database migreren',
     'migration_auth_message'        => 'Beheerdersreferenties zijn vereist om de databasemigratie naar versie {0} te autoriseren. Log in om verder te gaan.',

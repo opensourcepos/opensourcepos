@@ -19,6 +19,6 @@ return [
     'to'                               => 'به',
     'today'                            => 'امروز',
     'today_last_year'                  => 'امروز سال گذشته',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'دیروز',
 ];

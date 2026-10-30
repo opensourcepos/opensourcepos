@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Has borrado satisfactoriamente a',
     'successful_updating'                   => 'Has actualizado el empleado satisfactoriamente',
     'system_language'                       => 'Idioma de sistema',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Cambio de contraseña fallido.',
     'update'                                => 'Actualizar Empleado',
     'username'                              => 'Usuario',

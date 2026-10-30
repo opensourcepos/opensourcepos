@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Uspješno ste obrisali radnika',
     'successful_updating'                   => 'Uspješno ste ažurirali radnika',
     'system_language'                       => '',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => '',
     'update'                                => 'Ažuriraj radnika',
     'username'                              => 'Korisničko ime',

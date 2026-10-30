@@ -19,6 +19,6 @@ return [
     'to'                               => 'بۆ',
     'today'                            => 'ئەمڕۆ',
     'today_last_year'                  => 'ئەمڕۆ ساڵی ڕابردوو',
-    'weekstart'                        => '0',
+    'weekstart'                        => '',
     'yesterday'                        => 'دوێنێ',
 ];

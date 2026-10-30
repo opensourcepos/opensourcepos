@@ -44,6 +44,7 @@ return [
     'none_selected'                 => 'לא בחרת לקוחות כלשהם למחיקה.',
     'one_or_multiple'               => 'לקוח\\ות',
     'quantity'                      => 'כמות',
+    'rewards_package'               => 'חבילת תגמולים',
     'stats_info'                    => 'נתונים סטטיסטיים',
     'successful_adding'             => 'הלקוח נוסף בהצלחה',
     'successful_deleted'            => 'נמחק בהצלחה',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'חייב מס',
     'total'                         => 'סך הכול הוצאה',
     'update'                        => 'עדכן לקוח',
-    'rewards_package'               => 'חבילת תגמולים',
 ];

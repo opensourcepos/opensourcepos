@@ -49,7 +49,7 @@ return [
     'successfully_updated'         => 'Upraveno',
     'supplier'                     => 'Dodavatel',
     'supplier_address'             => 'Adresa',
-    'supplier_email'               => 'Email',
+    'supplier_email'               => '',
     'supplier_location'            => '',
     'total'                        => 'Celkem',
     'transaction_failed'           => 'Zpracování příjmu neproběhlo.',

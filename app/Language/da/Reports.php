@@ -79,7 +79,7 @@ return [
     'payment_type'                            => 'Betalings type',
     'payments'                                => 'Betalinger',
     'payments_summary_report'                 => 'Betalingsoversigtsrapport',
-    'profit'                                  => 'Profit',
+    'profit'                                  => '',
     'quantity'                                => 'Antal',
     'quantity_purchased'                      => 'Mængde købt',
     'quotes'                                  => '',
