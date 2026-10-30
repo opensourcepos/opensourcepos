@@ -26,7 +26,7 @@ return [
     'item_kits_desc'             => 'Dodaj, ažuriraj, obriši ili traži normative',
     'items'                      => 'Artikli',
     'items_desc'                 => 'Dodaj, ažuriraj, obriši ili traži artikle',
-    'messages'                   => 'Messages',
+    'messages'                   => '',
     'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
     'migrate'                    => '',
     'migrate_desc'               => '',

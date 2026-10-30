@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'اسم الصنف',
     'mode'                         => 'وضع الإستلام',
     'new_supplier'                 => 'مورد جديد',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'إستلام/إستلامات',
     'print_after_sale'             => 'طباعة بعد الإستلام',
     'quantity'                     => 'الكمية.',

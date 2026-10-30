@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'ຊື່ປະເພດຄ່າໃຊ້ຈ່າຍຈຳເປັນຕ້ອງໃສ່',
     'add_item'                          => 'ເພີ່ມປະເພດ',
     'cannot_be_deleted'                 => 'ບໍ່ສາມາດລຶບປະເພດຄ່າໃຊ້ຈ່າຍໄດ້',
-    'category_id'                       => 'Id',
+    'category_id'                       => '',
+    'category_name_required'            => 'ຊື່ປະເພດຄ່າໃຊ້ຈ່າຍຈຳເປັນຕ້ອງໃສ່',
     'confirm_delete'                    => 'ທ່ານຕ້ອງການລຶບປະເພດຄ່າໃຊ້ຈ່າຍທີ່ທ່ານເລືອກແທ້ບໍ່ ?',
     'confirm_restore'                   => '',
     'description'                       => 'ຄຳອະທິບາຍປະເພດ',

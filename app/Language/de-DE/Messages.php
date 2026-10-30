@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'Handynummer ist ein Pflichtfeld',
     'phone_placeholder'     => 'Handy-Nummer(n) hier.....',
     'sms_send'              => 'SMS Senden',
-    'successfully_sent'     => 'Nachricht erfolgreich gesendet an: ',
-    'unsuccessfully_sent'   => 'Nachricht NICHT erfolgreich gesendet an: ',
+    'successfully_sent'     => 'Nachricht erfolgreich gesendet an:',
+    'unsuccessfully_sent'   => 'Nachricht NICHT erfolgreich gesendet an:',
 ];

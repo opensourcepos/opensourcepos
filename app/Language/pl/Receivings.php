@@ -28,6 +28,7 @@ return [
     'item_name'                    => '',
     'mode'                         => '',
     'new_supplier'                 => '',
+    'not_authorized'               => '',
     'one_or_multiple'              => '',
     'print_after_sale'             => '',
     'quantity'                     => '',

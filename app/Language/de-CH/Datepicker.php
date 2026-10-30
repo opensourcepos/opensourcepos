@@ -2,10 +2,10 @@
 
 return [
     'all_time'                         => 'Von Beginn weg',
-    'apply'                            => 'Apply',
-    'cancel'                           => 'Cancel',
-    'custom'                           => 'Custom',
-    'from'                             => 'From',
+    'apply'                            => '',
+    'cancel'                           => '',
+    'custom'                           => '',
+    'from'                             => '',
     'last_30'                          => 'Letzte 30 Tage',
     'last_7'                           => 'Letzte 7 Tage',
     'last_financial_year'              => '',
@@ -16,7 +16,7 @@ return [
     'this_financial_year'              => '',
     'this_month'                       => 'Dieser Monat',
     'this_year'                        => 'Dieses Jahr',
-    'to'                               => 'To',
+    'to'                               => '',
     'today'                            => 'Heute',
     'today_last_year'                  => 'Heute letzten Jahres',
     'weekstart'                        => '1',

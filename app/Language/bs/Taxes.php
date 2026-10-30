@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Podrazumjevana stopa poreza',
     'error_adding_updating'                  => 'Dodavanje ili ažuriranje šifre poreza nije uspjelo',
     'group_seq'                              => 'Grupa Sekv',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Naziv nadležnosti',
     'name'                                   => 'Naziv',
     'new'                                    => 'Nova šifra poreza',

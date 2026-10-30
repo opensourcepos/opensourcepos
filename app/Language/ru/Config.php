@@ -200,7 +200,7 @@ return [
     'location_info'                             => 'Информация о настройках расположения',
     'login_form'                                => 'Стиль формы входа',
     'logout'                                    => 'Хотите сделать резервную копию перед выходом? Нажмите [OK] для резервного копирования или [Отмена] для выхода.',
-    'mailchimp'                                 => 'MailChimp',
+    'mailchimp'                                 => '',
     'mailchimp_api_key'                         => 'API-ключ MailChimp',
     'mailchimp_api_key_set'                     => '',
     'mailchimp_configuration'                   => 'Настройки MailChimp',

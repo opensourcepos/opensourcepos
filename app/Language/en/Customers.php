@@ -44,6 +44,7 @@ return [
     'none_selected'                 => 'You have not selected any customer(s) to delete.',
     'one_or_multiple'               => 'Customer(s)',
     'quantity'                      => 'Quantity',
+    'rewards_package'               => 'Rewards Package',
     'stats_info'                    => 'Stats',
     'successful_adding'             => 'You have successfully added customer',
     'successful_deleted'            => 'You have successfully deleted',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'Taxable',
     'total'                         => 'Total spent',
     'update'                        => 'Update Customer',
-    'rewards_package'               => 'Rewards Package',
 ];
