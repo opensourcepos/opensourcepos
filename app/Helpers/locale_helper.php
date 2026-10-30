@@ -70,11 +70,12 @@ function get_languages(): array
         'fa:persian'                  => 'Persian',
         'fr:french'                   => 'French',
         'he:hebrew'                   => 'Hebrew',
-        'hr-HR:croatian'              => 'Croatian (Croatia)',
+        'hr:croatian'                 => 'Croatian',
         'hu:hungarian'                => 'Hungarian',
         'hy:armenian'                 => 'Armenian',
         'id:indonesian'               => 'Indonesian',
         'it:italian'                  => 'Italian',
+        'ka:georgian'                 => 'Georgian',
         'km:centralkhmer'             => 'Khmer (Central)',
         'lo:lao'                      => 'Lao',
         'ml:malayalam'                => 'Malayalam',
@@ -96,7 +97,7 @@ function get_languages(): array
         'ur:urdu'                     => 'Urdu',
         'vi:vietnamese'               => 'Vietnamese',
         'zh-Hans:simplified-chinese'  => 'Chinese (Simplified)',
-        'zh-Hant:traditional-chinese' => 'Chinese (Traditional)'
+        'zh-Hant:traditional-chinese' => 'Chinese (Traditional)',
     ];
     asort($languages);
     return $languages;
