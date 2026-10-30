@@ -58,7 +58,7 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.february') ?>",
         "<?= lang('Calendar.march') ?>",
         "<?= lang('Calendar.april') ?>",
-        "<?= lang('Calendar.may') ?>",
+        "<?= lang('Calendar.mayl') ?>",
         "<?= lang('Calendar.june') ?>",
         "<?= lang('Calendar.july') ?>",
         "<?= lang('Calendar.august') ?>",

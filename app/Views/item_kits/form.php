@@ -286,7 +286,7 @@
             messages: {
                 name: "<?= lang('Items.name_required') ?>",
                 category: "<?= lang('Items.category_required') ?>",
-                item_kit_number: "<?= lang('Item_kits.item_number_duplicate') ?>"
+                item_kit_number: "<?= lang('Item_kits.item_kit_number_duplicate') ?>"
             }
         }, form_support.error));
     });
