@@ -6,7 +6,7 @@ return [
     'cannot_be_deleted'            => 'Receiving(s) delete failed.',
     'comments'                     => 'Comments',
     'complete_receiving'           => 'Finish',
-    'confirm_cancel_receiving'     => 'Are you sure you want to clear this receiving? All items will cleared.',
+    'confirm_cancel_receiving'     => 'Are you sure you want to clear this receiving? All items will be cleared.',
     'confirm_delete'               => 'Are you sure you want to delete this receiving? This action cannot be undone.',
     'confirm_finish_receiving'     => 'Are you sure you want to submit this receiving? This cannot be undone.',
     'confirm_restore'              => '',

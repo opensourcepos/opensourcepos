@@ -46,6 +46,6 @@ return [
     'supplier_name'              => 'Supplier',
     'supplier_tax_code'          => 'Tax Code',
     'tax_amount'                 => 'Tax',
-    'tax_amount_number'          => '',
+    'tax_amount_number'          => 'Tax Amount must be a number',
     'update'                     => 'Update Expense',
 ];
