@@ -10,7 +10,7 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open('cashups/save/' . $cash_ups_info->cashup_id, ['id' => 'cashups_edit_form', 'class' => 'form-horizontal'])    // TODO: String Interpolation ?>
+<?= form_open("cashups/save/$cash_ups_info->cashup_id", ['id' => 'cashups_edit_form', 'class' => 'form-horizontal']) ?>
     <fieldset id="item_basic_info">
 
         <div class="form-group form-group-sm">

@@ -873,7 +873,7 @@ function cashup_headers(): array
         ['close_date'           => lang('Cashups.closed_date')],
         ['close_employee_id'    => lang('Cashups.close_employee')],
         ['closed_amount_cash'   => lang('Cashups.closed_amount_cash')],
-        ['note'                 => lang('Cashups.note')],
+        ['note'                 => lang('Cashups.note'), 'escape' => false],
         ['closed_amount_due'    => lang('Cashups.closed_amount_due')],
         ['closed_amount_card'   => lang('Cashups.closed_amount_card')],
         ['closed_amount_check'  => lang('Cashups.closed_amount_check')],
