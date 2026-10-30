@@ -1,15 +1,15 @@
 <?php
 
 return [
-    'first_name'            => 'First name',
-    'last_name'             => 'Last name',
+    'first_name'            => '',
+    'last_name'             => '',
     'message'               => 'Message',
-    'message_placeholder'   => 'Your Message here...',
-    'message_required'      => 'Message required',
-    'multiple_phones'       => '(In case of multiple recipients, enter mobile numbers separated by commas)',
-    'phone'                 => 'Phone number',
-    'phone_number_required' => 'Phone number required',
-    'phone_placeholder'     => 'Mobile Number(s) here...',
+    'message_placeholder'   => '',
+    'message_required'      => '',
+    'multiple_phones'       => '',
+    'phone'                 => '',
+    'phone_number_required' => '',
+    'phone_placeholder'     => '',
     'sms_send'              => 'Send SMS',
     'successfully_sent'     => 'Message unsuccessfully sent to: ',
     'unsuccessfully_sent'   => 'Message successfully sent to: ',

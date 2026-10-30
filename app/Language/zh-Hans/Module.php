@@ -26,7 +26,7 @@ return [
     'item_kits_desc'             => '添加，更新，刪除，搜索產品套件',
     'items'                      => '產品',
     'items_desc'                 => '添加，更新，刪除，搜索產品',
-    'messages'                   => 'Messages',
+    'messages'                   => '',
     'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
     'migrate'                    => '',
     'migrate_desc'               => '',

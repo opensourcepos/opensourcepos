@@ -36,7 +36,7 @@ return [
     'customer_mailchimp_status' => 'สถานะของระบบส่งเมล์เมล์ชิม',
     'customer_optional' => '(ต้องระบุวันที่ชำระเงิน)',
     'customer_required' => '(ต้องระบุ)',
-    'customer_total' => 'Total',
+    'customer_total' => '',
     'date' => 'วันที่ขาย',
     'date_range' => 'ระหว่างวันที่',
     'date_required' => 'กรุณากรอกวันที่ให้ถูกต้อง',

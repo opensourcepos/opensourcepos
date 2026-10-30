@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'Ukupno potrošeno',
     'unknown'                        => 'Nepoznato',
     'view_recent_sales'              => 'Pogledaj nedavne prodaje',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'Dobrodošli',
     'welcome_message'                => 'Dobrodošli u OSPOS, kliknite na modul ispod da biste započeli.',
     'yes'                            => '',

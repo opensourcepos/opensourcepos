@@ -18,7 +18,7 @@ return [
     'date'                           => 'Datum',
     'delete'                         => 'Verwijder',
     'det'                            => 'details',
-    'download_import_template'       => 'Download Import CSV Template (CSV)',
+    'download_import_template'       => '',
     'edit'                           => 'bewerk',
     'email'                          => 'Email',
     'email_invalid_format'           => 'Je moet een geldig email adres invullen.',

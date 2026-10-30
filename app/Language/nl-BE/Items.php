@@ -115,7 +115,7 @@ return [
     'tax_percent_required'               => 'BTW Percentage is een verplicht veld.',
     'tax_percents'                       => 'VAT',
     'temp'                               => 'Tijdelijk',
-    'type'                               => 'Item Type',
+    'type'                               => '',
     'unit_price'                         => 'Verkoopprijs',
     'unit_price_number'                  => 'Eenheidsprijs moet een getal zijn.',
     'unit_price_required'                => 'Verkoopprijs is een verplicht veld.',

@@ -28,7 +28,7 @@ return [
     'employee'                      => 'Служител',
     'error_adding_updating'         => 'Добавянето или актуализирането на клиента е неуспешно.',
     'import_items_csv'              => 'Импортиране на клиент от CSV',
-    'mailchimp_activity_click'      => 'Email click',
+    'mailchimp_activity_click'      => '',
     'mailchimp_activity_lastopen'   => 'Последно отворен Имейл',
     'mailchimp_activity_open'       => 'Имейлът е отворен',
     'mailchimp_activity_total'      => 'Имейлът е изпратен',

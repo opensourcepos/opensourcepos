@@ -20,7 +20,7 @@ return [
     'det'                            => 'λεπτομέρειες',
     'download_import_template'       => 'Λήψη Πρότυπου Εισαγωγής  CSV  (CSV)',
     'edit'                           => 'επεξεργασία',
-    'email'                          => 'Email',
+    'email'                          => '',
     'email_invalid_format'           => 'Η διεύθυνση ηλ.ταχυδρομείου εχει λανθασμενη μορφή.',
     'export_csv'                     => 'Εξαγωγή CSV',
     'export_csv_no'                  => 'Όχι',

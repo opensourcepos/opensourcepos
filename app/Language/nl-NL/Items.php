@@ -42,7 +42,7 @@ return [
     'error_adding_updating'              => 'Fout bij toevoegen/bijwerken artikel',
     'error_updating_multiple'            => 'Fout bij bijwerken artikelen',
     'generate_barcodes'                  => 'Streepjescodes genereren',
-    'hsn_code'                           => 'Harmonized System Nomenclature',
+    'hsn_code'                           => '',
     'image'                              => 'Avatar',
     'import_items_csv'                   => 'Artikel importeren vanuit CSV',
     'info_provided_by'                   => 'Informatie aangeleverd door',

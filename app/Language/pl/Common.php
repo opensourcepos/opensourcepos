@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'Całkowite wydatki',
     'unknown'                        => 'Nieznany',
     'view_recent_sales'              => 'Wyświetl ostatnie sprzedaże',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'Witamy',
     'welcome_message'                => 'Witamy w OSPOS, kliknij moduł, aby rozpocząć.',
     'yes'                            => '',

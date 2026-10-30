@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'Dépenses totales',
     'unknown'                        => 'Inconnu(e)',
     'view_recent_sales'              => 'Voir ventes récentes',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'Bienvenue',
     'welcome_message'                => 'Bienvenue sur OSPOS, choisissez un module ci-dessous pour commencer.',
     'yes'                            => 'Oui',

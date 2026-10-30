@@ -316,7 +316,7 @@ return [
     'shortcuts_duplicate_bindings'              => '',
     'shortcuts_save_error'                      => '',
     'system_conf'                               => 'Cài đặt & Cấu hình',
-    'system_info'                               => 'System Info',
+    'system_info'                               => '',
     'system_info_copy'                          => '',
     'system_info_copy_error'                    => '',
     'system_info_copy_success'                  => '',

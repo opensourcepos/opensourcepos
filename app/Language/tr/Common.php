@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'Toplam Harcama',
     'unknown'                        => 'Bilinmeyen',
     'view_recent_sales'              => 'Yeni satışları göster',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'Hoş Geldiniz',
     'welcome_message'                => 'OSPOS\'a hoş geldiniz, başlamak için modüle tıklayın.',
     'yes'                            => '',

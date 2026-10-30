@@ -41,7 +41,7 @@ return [
     'import_csv'                     => 'CSV Import',
     'import_full_path'               => 'Voller Dateipfad zum CSV File notwendig',
     'import_remove_file'             => 'Remove',
-    'import_select_file'             => 'Select file',
+    'import_select_file'             => '',
     'inv'                            => 'Lag',
     'last_name'                      => 'Nachname',
     'last_name_required'             => 'Nachname ist erforderlich',

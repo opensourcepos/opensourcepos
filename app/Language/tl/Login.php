@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'gcaptcha'                      => 'I\'m not a robot.',
+    'gcaptcha'                      => '',
     'go'                            => 'Go',
     'initialization_message'        => '',
     'initialization_required'       => '',
     'initialize'                    => '',
     'invalid_gcaptcha'              => 'Invalid I\'m not a robot.',
-    'invalid_installation'          => 'The installation is not correct, check your php.ini file.',
+    'invalid_installation'          => '',
     'invalid_username_and_password' => 'Invalid Username or Password.',
     'login'                         => 'Login',
     'logout'                        => '',

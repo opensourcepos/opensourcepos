@@ -2,7 +2,7 @@
 
 return [
     'gcaptcha'                      => 'ຂ້ອຍບໍ່ແມ່ນເຄື່ອງຈັກ.',
-    'go'                            => 'Go',
+    'go'                            => '',
     'initialization_message'        => '',
     'initialization_required'       => '',
     'initialize'                    => '',
@@ -23,9 +23,9 @@ return [
     'migration_needed'              => '',
     'migration_required'            => '',
     'migration_running'             => '',
-    'password'                      => 'Password',
+    'password'                      => '',
     'required_username'             => '',
     'too_many_attempts'             => 'ພະຍາຍາມຫຼາຍເກີນໄປ. ກະລຸນາລໍຖ້າບຶດໜຶ່ງ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.',
-    'username'                      => 'Username',
+    'username'                      => '',
     'welcome'                       => '',
 ];

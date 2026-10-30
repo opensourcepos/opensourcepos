@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'account_number'        => 'Account Number',
+    'account_number'        => '',
     'agency_name'           => 'Име на агенцията',
     'cannot_be_deleted'     => 'Избраните доставчици не можаха да бъдат изтрити. Един или повече от тях имат продажби.',
     'category'              => '',
@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Вие успешно изтрихте',
     'successful_updating'   => 'Обновяването на доставчика е успешно',
     'supplier'              => 'Доставчик',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => '',
     'update'                => 'Актуализиране на доставчик',
 ];

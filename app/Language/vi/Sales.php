@@ -109,7 +109,7 @@ return [
     'key_suspend'                       => 'Tạm hoãn đơn hàng',
     'key_suspended'                     => 'Xem đơn hàng tạm hoãn',
     'key_system'                        => 'Phím tắt hệ thống',
-    'key_tendered'                      => 'Edit Amount Tendered',
+    'key_tendered'                      => '',
     'key_title'                         => 'Phím tắt bán hàng',
     'mode'                              => 'Chế độ đăng ký',
     'must_enter_numeric'                => 'Số tiền thanh toán phải là dạng số.',

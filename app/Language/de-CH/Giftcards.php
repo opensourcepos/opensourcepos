@@ -30,7 +30,7 @@ return [
     'generate_barcodes'                  => 'Generiere Barcodes',
     'giftcard'                           => 'Gutschein',
     'giftcard_number'                    => 'Gutschein-Nr.',
-    'info_provided_by'                   => 'Info provided by',
+    'info_provided_by'                   => '',
     'inventory_comments'                 => 'Kommentare',
     'is_serialized'                      => 'Gutschein hat Seriennummer',
     'low_inventory_giftcards'            => 'Gutscheine mit Minderbestand',
