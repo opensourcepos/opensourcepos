@@ -41,7 +41,7 @@ return [
     'discount_type'                           => '',
     'discounts'                               => 'Slevy',
     'discounts_summary_report'                => 'Přehled podle slev',
-    'earned'                                  => 'Points Earned',
+    'earned'                                  => '',
     'employee'                                => 'Zaměstnanec',
     'employees'                               => 'Zaměstnanci',
     'employees_summary_report'                => 'Přehled podle zaměstnanců',
@@ -145,7 +145,7 @@ return [
     'trans_type'                              => '',
     'type'                                    => 'Typ',
     'unit_price'                              => 'Prodejní cena',
-    'used'                                    => 'Points Used',
-    'work_orders'                             => 'Work Orders',
+    'used'                                    => '',
+    'work_orders'                             => '',
     'zero_and_less'                           => 'Nula a méně',
 ];

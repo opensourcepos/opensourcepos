@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'ທ່ານໄດ້ລຶບຜູ້ສະໜອງສຳເລັດແລ້ວ',
     'successful_updating'   => 'ທ່ານໄດ້ແກ້ໄຂຜູ້ສະໜອງສຳເລັດແລ້ວ',
     'supplier'              => 'ຜູ້ສະໜອງ',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => '',
     'update'                => 'ແກ້ໄຂຜູ້ສະໜອງ',
 ];

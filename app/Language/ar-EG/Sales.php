@@ -96,7 +96,7 @@ return [
     'key_finish_quote'                  => 'انهاء عملية البيع/الفاتورة من دون الدفع',
     'key_finish_sale'                   => 'اضافة دفع نقدي كمل واتمام عملية البيع',
     'key_full'                          => 'الإظهار في صفحه كامله',
-    'key_function'                      => 'Function',
+    'key_function'                      => '',
     'key_help'                          => 'اختصارات',
     'key_help_modal'                    => 'إظهار الاختصارات',
     'key_in'                            => 'تكبير الصفحه',

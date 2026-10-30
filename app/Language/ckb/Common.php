@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'کۆی گشتی خەرجکراو',
     'unknown'                        => 'نەزاندراو',
     'view_recent_sales'              => 'بینینی فرۆشتنی ئەم دواییە',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'بەخێربێن',
     'welcome_message'                => 'بەخێربێن بۆ OSPOS، کلیک لە مۆدیولێکی خوارەوە بکە بۆ دەستپێکردن.',
     'yes'                            => 'بەڵێ',

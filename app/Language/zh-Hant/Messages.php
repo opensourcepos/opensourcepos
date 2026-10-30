@@ -3,7 +3,7 @@
 return [
     'first_name'            => '名字',
     'last_name'             => '姓氏',
-    'message'               => 'Message',
+    'message'               => '',
     'message_placeholder'   => '你的訊息.....',
     'message_required'      => '訊息必須填寫',
     'multiple_phones'       => '（如果是多個收件人，請輸入以逗號分隔的手機號碼）',

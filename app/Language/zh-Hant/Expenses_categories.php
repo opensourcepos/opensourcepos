@@ -4,7 +4,7 @@ return [
     'category_name_required'            => '費用類別名稱為必填',
     'add_item'                          => '新增類別',
     'cannot_be_deleted'                 => '不可刪除費用類別',
-    'category_id'                       => 'Id',
+    'category_id'                       => '',
     'confirm_delete'                    => '你確定要刪除選擇的費用類別嗎？',
     'confirm_restore'                   => '你確定要還原選擇的費用類別嗎？',
     'description'                       => '類別說明',

@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'Total gasto',
     'unknown'                        => 'Desconhecido',
     'view_recent_sales'              => 'Ver Vendas Recentes',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'Bem-vindo',
     'welcome_message'                => 'Bem-vindo.',
     'yes'                            => 'Sim',

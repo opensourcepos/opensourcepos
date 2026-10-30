@@ -45,7 +45,7 @@ return [
     'number_information'                 => '禮金券編號',
     'number_required'                    => '請輸入禮金券編號',
     'one_or_multiple'                    => '禮金券',
-    'person_id'                          => 'Customer',
+    'person_id'                          => '',
     'quantity'                           => '數量',
     'quantity_required'                  => '數量是必填字段。請按關閉（X）來取消',
     'remaining_balance'                  => 'Giftcard {0} remaining value is {1}!',

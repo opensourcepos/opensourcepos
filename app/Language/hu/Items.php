@@ -37,7 +37,7 @@ return [
     'do_nothing'                         => 'Ne csináljon semmit',
     'edit'                               => '',
     'edit_fields_you_want_to_update'     => 'Edit the fields you want to edit for ALL selected items',
-    'edit_multiple_items'                => 'Editing Multiple Items',
+    'edit_multiple_items'                => '',
     'empty_upc_items'                    => 'Üres UPC term.',
     'error_adding_updating'              => 'Termék módositása/hozzáadása sikertelen.',
     'error_updating_multiple'            => 'Termék módositás sikertelen',

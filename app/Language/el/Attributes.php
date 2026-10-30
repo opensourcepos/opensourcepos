@@ -9,7 +9,7 @@ return [
     'definition_invalid_group'         => 'Η επιλεγμένη ομάδα δεν υπάρχει ή δεν είναι έγκυρη.',
     'definition_flags'                 => 'Ορατότητα χαρακτηριστικών',
     'definition_group'                 => 'Ομάδα',
-    'definition_id'                    => 'Id',
+    'definition_id'                    => '',
     'definition_name'                  => 'Προσθήκη χαρακτηριστικού',
     'definition_name_required'         => 'Το όνομα του χαρακτηριστικού είναι υποχρεωτικό πεδίο',
     'definition_one_or_multiple'       => 'Χαρακτηριστικό(ά)',

@@ -43,7 +43,7 @@ return [
     'error_updating_multiple'            => '更新產品錯誤',
     'generate_barcodes'                  => '產生條碼',
     'hsn_code'                           => '協調系統命名法',
-    'image'                              => 'Avatar',
+    'image'                              => '',
     'import_items_csv'                   => 'Import items from CSV sheet',
     'info_provided_by'                   => '訊息提供者',
     'inventory'                          => '庫存',

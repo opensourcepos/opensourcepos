@@ -21,7 +21,7 @@ return [
     'giftcards'                  => 'Carte Regalo',
     'giftcards_desc'             => 'Aggiungi, Aggiorna, Modifica, e Ricerca Carte Regalo.',
     'home'                       => 'Home',
-    'home_desc'                  => 'List home menu modules.',
+    'home_desc'                  => '',
     'item_kits'                  => 'Kits',
     'item_kits_desc'             => 'Aggiungi, Aggiorna, Modifica, e Ricerca Kits.',
     'items'                      => 'Articoli',

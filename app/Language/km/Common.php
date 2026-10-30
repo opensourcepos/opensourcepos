@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'ចំណាយសរុប',
     'unknown'                        => 'មិនស្គាល់',
     'view_recent_sales'              => 'មើលការលក់ថ្មីៗ',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'សូមស្វាគមន៍',
     'welcome_message'                => 'សូមស្វាគមន៍មកកាន់ OSPOS, សូមចុចលើម៉ូឌុលខាងក្រោមដើម្បីចាប់ផ្តើម',
     'yes'                            => '',

@@ -56,7 +56,7 @@ return [
     'new'                            => 'جدید',
     'no'                             => '',
     'no_persons_to_display'          => 'هیچ کس برای نمایش وجود ندارد.',
-    'none_selected_text'             => '[Select]',
+    'none_selected_text'             => '',
     'or'                             => 'یا',
     'people'                         => '',
     'phone_number'                   => 'شماره تلفن',

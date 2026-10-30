@@ -28,7 +28,7 @@ return [
     'employee'                      => 'Empleado',
     'error_adding_updating'         => 'Error agregando/actualizando cliente.',
     'import_items_csv'              => 'Importar Clientes desde CSV',
-    'mailchimp_activity_click'      => 'Email click',
+    'mailchimp_activity_click'      => '',
     'mailchimp_activity_lastopen'   => 'Último correo abierto',
     'mailchimp_activity_open'       => 'Correo abierto',
     'mailchimp_activity_total'      => 'Correo enviado',

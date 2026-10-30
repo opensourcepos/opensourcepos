@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'Cəmi Xərclənən',
     'unknown'                        => 'Naməlum',
     'view_recent_sales'              => 'Son Satışlara Bax',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'Xoş Gəlmisiniz',
     'welcome_message'                => 'OSPOS-a xoş gəlmisiniz, başlamaq üçün aşağıdakı modullardan birinə klikləyin.',
     'yes'                            => 'Bəli',

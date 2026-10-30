@@ -80,7 +80,7 @@ return [
     'total_spent'                    => 'Jumla Iliyotumika',
     'unknown'                        => 'Haijulikani',
     'view_recent_sales'              => 'Angalia Mauzo ya Hivi Karibuni',
-    'website'                        => 'opensourcepos.org',
+    'website'                        => '',
     'welcome'                        => 'Karibu',
     'welcome_message'                => 'Karibu OSPOS, bonyeza moduli hapa chini kuanza.',
     'yes'                            => 'Ndiyo',

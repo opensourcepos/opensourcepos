@@ -36,7 +36,7 @@ return [
     'gender_undefined'               => '',
     'icon'                           => '',
     'id'                             => 'Id',
-    'import'                         => 'Import',
+    'import'                         => '',
     'import_change_file'             => '更改',
     'import_csv'                     => 'CSV 导入',
     'import_full_path'               => '需要CSV文件的完整路径',

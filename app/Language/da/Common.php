@@ -18,7 +18,7 @@ return [
     'date'                           => 'Dato',
     'delete'                         => 'Slet',
     'det'                            => 'Detaljer',
-    'download_import_template'       => 'Download Import CSV Template (CSV)',
+    'download_import_template'       => '',
     'edit'                           => 'Rediger',
     'email'                          => 'Email',
     'email_invalid_format'           => 'Email adressen er ikke i det korrekte format.',
