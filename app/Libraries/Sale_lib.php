@@ -1496,6 +1496,7 @@ class Sale_lib
             // Set a new discount only if the current one is 0
             if ($item['discount'] == 0.0) {    // TODO: === ?
                 $item['discount'] = $discount;
+                $item['discount_type'] = $discount_type;
                 $item['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type);
                 $item['discounted_total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, true);
             }
