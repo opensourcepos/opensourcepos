@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Novo Item',
     'no_description'                    => 'Sem descrição',
     'no_items_in_cart'                  => 'Não há itens na cesta.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Você não selecionou nenhuma venda para apagar.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'Esta ação não é autorizada.',

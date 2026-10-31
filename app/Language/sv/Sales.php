@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Ny artikel',
     'no_description'                    => 'Inget',
     'no_items_in_cart'                  => 'Det finns inga varor i kundvagnen.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Du har inte valt någon Försäljning (ar) att radera.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'Den här åtgärden är inte tillåten.',

@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Neuer Artikel',
     'no_description'                    => 'nichts',
     'no_items_in_cart'                  => 'Warenkorb ist leer',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Sie haben keinen Auftrag zum Löschen ausgewählt',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => '',

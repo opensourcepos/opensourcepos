@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Nová položka',
     'no_description'                    => 'Žádný',
     'no_items_in_cart'                  => 'Nejsou zde žádné položky.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Nebylo nic vybráno ke smazání.',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => 'Tato akce nebyla povolena.',

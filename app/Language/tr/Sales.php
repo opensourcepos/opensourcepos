@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Yeni Ürün',
     'no_description'                    => 'Açıklama yok',
     'no_items_in_cart'                  => 'Sepette ürün yok.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Silinecek satış seçmediniz.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'Bu işlem için yetkisiz.',

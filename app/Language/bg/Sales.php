@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Нов продукт',
     'no_description'                    => 'Нито един',
     'no_items_in_cart'                  => 'В количката няма продукти.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Не сте избрали каквито и да е Продажби за изтриване.',
     'nontaxed_ind'                      => ' sales nontaxed ind ',
     'not_authorized'                    => 'Това действие не е разрешено.',

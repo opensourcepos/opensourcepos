@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'ئایتمی نوێ',
     'no_description'                    => 'هیچ وەسفێک نییە',
     'no_items_in_cart'                  => 'هیچ ئایتمێک لە عەرەبانەکەدا نییە.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'تۆ هیچ فرۆشتنێکت هەڵنەبژاردووە بۆ سڕینەوە.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'ئەم کارە ڕێگەپێدراو نییە.',

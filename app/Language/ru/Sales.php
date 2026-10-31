@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Новый товар',
     'no_description'                    => 'Нет описания',
     'no_items_in_cart'                  => 'В корзине нет товаров.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Вы не выбрали ни одной продажи для удаления.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'Это действие не разрешено.',

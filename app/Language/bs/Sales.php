@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Novi artikal',
     'no_description'                    => 'Nema opisa',
     'no_items_in_cart'                  => 'Nema artikala u korpi.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Niste izabrali nijedu prodaju za brisanje.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'Ova radnja nije ovlašćena.',

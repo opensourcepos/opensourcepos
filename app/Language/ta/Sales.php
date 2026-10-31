@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'புதிய பொருள்',
     'no_description'                    => 'No description',
     'no_items_in_cart'                  => 'வண்டியில் எந்த பொருட்களும் இல்லை.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'விற்பனை(களை) நீக்க நீங்கள் எந்தப் பொருட்களையும் தேர்ந்தெடுக்கவில்லை.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'இந்த செயலுக்கு அங்கீகாரம் இல்லை.',

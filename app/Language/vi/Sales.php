@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Hàng hóa mới',
     'no_description'                    => 'Không',
     'no_items_in_cart'                  => 'Không có Hàng hóa trong rổ hàng.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Bạn chưa chọn bất kỳ một lần bán hàng nào để mà xóa.',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => 'Thao tác này không được phép.',

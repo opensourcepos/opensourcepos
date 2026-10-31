@@ -124,6 +124,7 @@ return [
     'new_item'                          => '新增產品',
     'no_description'                    => 'None',
     'no_items_in_cart'                  => '購物車中沒有任何產品',
+    'no_sales_to_display'               => '',
     'none_selected'                     => '您還沒有選擇任何產品進行編輯',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => '',

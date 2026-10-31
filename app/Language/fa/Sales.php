@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'گزینه جدید',
     'no_description'                    => 'بدون توضیح',
     'no_items_in_cart'                  => 'هیچ کالایی در سبد خرید وجود ندارد. ر.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'شما هیچ فروشی (فروش) را برای حذف انتخاب نکرده اید.',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => 'این اقدام مجاز نیست.',

@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Articol nou',
     'no_description'                    => 'Fara descriere',
     'no_items_in_cart'                  => 'Nu sunt articole in cosul de cumparaturi.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Nu ati selecta nicio Vanzare de sters.',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => 'Aceasta actiune nu este autorizata.',

@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'صنف جديد',
     'no_description'                    => 'بدون وصف',
     'no_items_in_cart'                  => 'لايوجد أصناف فى السلة.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'لم تقم بإختيار أى عمليات بيع لحذفها.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'هذه العملية لا يمكن فعلها لعدم تخويلك.',

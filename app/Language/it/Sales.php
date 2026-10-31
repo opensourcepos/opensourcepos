@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Nuovo Articolo',
     'no_description'                    => 'Nessun',
     'no_items_in_cart'                  => 'Non ci sono Articoli nel carrello.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Non hai selezionato alcuna vendita da cancellare.',
     'nontaxed_ind'                      => ' vendita non tassata ',
     'not_authorized'                    => 'Questa azione non può essere autorizzata.',

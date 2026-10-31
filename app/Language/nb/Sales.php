@@ -124,6 +124,7 @@ return [
     'new_item'                          => '',
     'no_description'                    => '',
     'no_items_in_cart'                  => '',
+    'no_sales_to_display'               => '',
     'none_selected'                     => '',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => '',

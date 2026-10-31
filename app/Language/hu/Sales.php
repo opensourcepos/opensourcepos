@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Új termék',
     'no_description'                    => 'Nincs leírás',
     'no_items_in_cart'                  => 'Nincsenek termékek a kosárban',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Nem választott ki értékesitést törlésre',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => '',

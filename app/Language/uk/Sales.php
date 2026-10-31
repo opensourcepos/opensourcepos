@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Новий товар',
     'no_description'                    => 'Без опису',
     'no_items_in_cart'                  => 'В кошику немає товарів.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Ви не обрали продажі для видалення.',
     'nontaxed_ind'                      => ' Неоподатковуваний ІД ',
     'not_authorized'                    => 'Ця дія не дозволена.',

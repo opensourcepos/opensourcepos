@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Barang Baru',
     'no_description'                    => 'Tidak ada deskripsi',
     'no_items_in_cart'                  => 'Tidak ada Barang dalam Keranjang Belanja.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Anda belum memilih Penjualan untuk dihapus.',
     'nontaxed_ind'                      => ' . ',
     'not_authorized'                    => 'Aksi ini tidak resmi.',

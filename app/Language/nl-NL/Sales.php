@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Nieuw artikel',
     'no_description'                    => 'Geen beschrijving',
     'no_items_in_cart'                  => 'Geen artikelen in de winkelwagen.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Geen verko(o)p(en) geselecteerd om te verwijderen.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'Deze actie is niet geautoriseerd.',

@@ -124,6 +124,7 @@ return [
     'new_item' => 'สินค้าใหม่',
     'no_description' => 'ไม่ระบุรายละเอียด',
     'no_items_in_cart' => 'ไม่พบสินค้าในตระกร้า',
+    'no_sales_to_display'               => '',
     'none_selected' => 'คุณยังไม่ได้เลือกการขายที่จะลบ',
     'nontaxed_ind' => ' . ',
     'not_authorized' => 'การกระทำนี้ไม่ได้รับอนุญาต',

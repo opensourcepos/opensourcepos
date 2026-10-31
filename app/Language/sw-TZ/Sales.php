@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Bidhaa Mpya',
     'no_description'                    => 'Hakuna maelezo',
     'no_items_in_cart'                  => 'Hakuna bidhaa kwenye Kikapu cha Ununuzi.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Hujachagua mauzo yoyote ya kufuta.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'Hatua hii haijaruhusiwa.',

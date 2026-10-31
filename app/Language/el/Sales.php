@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Νέο Είδος',
     'no_description'                    => 'Δεν έχει περιγραφή',
     'no_items_in_cart'                  => 'Δεν υπάρχουν είδη στο καλάθι.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Δεν έχετε επιλέξει Πώληση/σεις για διαγραφή.',
     'nontaxed_ind'                      => '',
     'not_authorized'                    => 'Αυτή η ενέργεια δεν είναι εξουσιοδοτημένη.',

@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Nouvel Élément',
     'no_description'                    => 'Aucun',
     'no_items_in_cart'                  => 'Il n\'y a rien dans votre panier.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'Vous n\'avez sélectionné aucun élément.',
     'nontaxed_ind'                      => ' - ',
     'not_authorized'                    => 'Cette action n\'est pas autorisée.',

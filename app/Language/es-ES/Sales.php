@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'Artículo Nuevo',
     'no_description'                    => 'Ninguno',
     'no_items_in_cart'                  => 'No hay artículos en el carrito.',
+    'no_sales_to_display'               => '',
     'none_selected'                     => 'No has seleccionado venta para borrar.',
     'nontaxed_ind'                      => ' Ventas no gravadas ',
     'not_authorized'                    => 'Esta accion no esta autorizada.',
