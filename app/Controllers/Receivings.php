@@ -232,12 +232,12 @@ class Receivings extends Secure_Controller
      * @return string
      * @noinspection PhpUnused
      */
-    public function getEdit($receiving_id): string
+    public function getEdit($receiving_id): ResponseInterface|string
     {
         $personId = $this->session->get('person_id');
 
         if (!$this->employee->has_grant('reports_receivings', $personId)) {
-            return redirect()->to('no_access/receivings/reports_receivings');
+            return redirect()->to('no_access/index/receivings/reports_receivings');
         }
 
         $data = [];
@@ -421,12 +421,12 @@ class Receivings extends Secure_Controller
      * @return string
      * @noinspection PhpUnused
      */
-    public function getReceipt($receiving_id): string
+    public function getReceipt($receiving_id): ResponseInterface|string
     {
         $personId = $this->session->get('person_id');
 
         if (!$this->employee->has_grant('reports_receivings', $personId)) {
-            return redirect()->to('no_access/receivings/reports_receivings');
+            return redirect()->to('no_access/index/receivings/reports_receivings');
         }
 
         $receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
@@ -520,7 +520,7 @@ class Receivings extends Secure_Controller
         $personId = $this->session->get('person_id');
 
         if (!$this->employee->has_grant('reports_receivings', $personId)) {
-            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Receivings.not_authorized')]);
         }
 
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: newdate does not follow naming conventions
