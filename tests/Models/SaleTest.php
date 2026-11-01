@@ -448,6 +448,7 @@ class SaleTest extends CIUnitTestCase
         $itemId         = $this->createTestItem(HAS_NO_STOCK);
 
         $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
         $items      = $this->buildCartLine($itemId, 1, 30.00);
         $payments   = [
             0 => [
@@ -462,7 +463,7 @@ class SaleTest extends CIUnitTestCase
 
         $result = $saleModel->save_value(
             NEW_ENTRY,
-            COMPLETED,
+            $saleStatus,
             $items,
             NEW_ENTRY,
             $employeeId,
@@ -487,6 +488,7 @@ class SaleTest extends CIUnitTestCase
         $itemId         = $this->createTestItem(HAS_NO_STOCK);
 
         $saleModel  = model(Sale::class);
+        $saleStatus = SUSPENDED;
         $items      = $this->buildCartLine($itemId, 1, 30.00);
         $payments   = [
             0 => [
@@ -501,7 +503,7 @@ class SaleTest extends CIUnitTestCase
 
         $result = $saleModel->save_value(
             NEW_ENTRY,
-            SUSPENDED,
+            $saleStatus,
             $items,
             NEW_ENTRY,
             $employeeId,
@@ -527,6 +529,7 @@ class SaleTest extends CIUnitTestCase
         $salesCountBefore = $this->countSalesRows();
 
         $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
         $items      = $this->buildCartLine($itemId, 1, 30.00);
         $payments   = [
             0 => [
@@ -541,7 +544,7 @@ class SaleTest extends CIUnitTestCase
 
         $result = $saleModel->save_value(
             NEW_ENTRY,
-            COMPLETED,
+            $saleStatus,
             $items,
             NEW_ENTRY,
             $employeeId,
