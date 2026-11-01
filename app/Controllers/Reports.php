@@ -103,6 +103,8 @@ class Reports extends Secure_Controller
             'specific_employees'         => 'reports_employees',
             'specific_discounts'         => 'reports_discounts',
             'specific_suppliers'         => 'reports_suppliers',
+            'get_detailed_sales'         => 'reports_sales',
+            'get_detailed_receivings'    => 'reports_receivings',
         ];
 
         // Normalize the report name: strip graphical_ prefix and _graph/_row suffixes
@@ -114,9 +116,14 @@ class Reports extends Secure_Controller
 
         $submoduleId = $reportPermissions[$reportName] ?? null;
 
+        // Default-deny: reject unmapped report names (except index/empty parent routes)
+        if ($submoduleId === null && !in_array($methodName, [null, '', 'index'], true)) {
+            throw new RedirectException('no_access/index/reports');
+        }
+
         // Check access to report submodule
         if ($submoduleId !== null && !$this->employee->has_grant($submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
-            throw new RedirectException('no_access/reports/' . $submoduleId);
+            throw new RedirectException('no_access/index/reports/' . $submoduleId);
         }
 
         helper('report');
