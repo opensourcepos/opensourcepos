@@ -234,6 +234,12 @@ class Receivings extends Secure_Controller
      */
     public function getEdit($receiving_id): string
     {
+        $personId = $this->session->get('person_id');
+
+        if (!$this->employee->has_grant('reports_receivings', $personId)) {
+            return redirect()->to('no_access/receivings/reports_receivings');
+        }
+
         $data = [];
 
         $data['suppliers'] = ['' => 'No Supplier'];
@@ -287,6 +293,12 @@ class Receivings extends Secure_Controller
      */
     public function postDelete(int $receiving_id = -1, bool $update_inventory = true): ResponseInterface
     {
+        $personId = $this->session->get('person_id');
+
+        if (!$this->employee->has_grant('reports_receivings', $personId)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
+        }
+
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$receiving_id];    // TODO: Replace -1 with constant
 
@@ -411,6 +423,12 @@ class Receivings extends Secure_Controller
      */
     public function getReceipt($receiving_id): string
     {
+        $personId = $this->session->get('person_id');
+
+        if (!$this->employee->has_grant('reports_receivings', $personId)) {
+            return redirect()->to('no_access/receivings/reports_receivings');
+        }
+
         $receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
         $this->receiving_lib->copy_entire_receiving($receiving_id);
         $data['cart'] = $this->receiving_lib->get_cart();
@@ -499,6 +517,12 @@ class Receivings extends Secure_Controller
      */
     public function postSave(int $receiving_id = -1): ResponseInterface    // TODO: Replace -1 with a constant
     {
+        $personId = $this->session->get('person_id');
+
+        if (!$this->employee->has_grant('reports_receivings', $personId)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
+        }
+
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: newdate does not follow naming conventions
 
         $date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
