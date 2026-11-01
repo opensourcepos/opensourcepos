@@ -272,6 +272,6 @@ class OSPOSRules
             return false;
         }
 
-        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.: \\\\]+\z/', $candidate);
+        return (bool) preg_match('/\A[a-zA-Z0-9_\-\/.:\\\\]+\z/', $candidate);
     }
 }
