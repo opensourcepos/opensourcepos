@@ -140,4 +140,53 @@ class GiftcardTest extends CIUnitTestCase
         $this->assertSame(1, (int) $result1 + (int) $result2);
         $this->assertEqualsWithDelta(40.00, $this->getGiftcardValue($giftcardNumber), 0.001);
     }
+
+    public function testIncrementGiftcardValueSucceeds(): void
+    {
+        $giftcardNumber = $this->createGiftcard(50.00);
+        $giftcardModel  = model(Giftcard::class);
+
+        $result = $giftcardModel->incrementGiftcardValue((string) $giftcardNumber, 30.00);
+
+        $this->assertTrue($result);
+        $this->assertEqualsWithDelta(80.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testIncrementGiftcardValueFailsWhenDeleted(): void
+    {
+        $giftcardNumber = $this->createGiftcard(50.00);
+
+        \Config\Database::connect()->table('giftcards')
+            ->where('giftcard_number', $giftcardNumber)
+            ->update(['deleted' => 1]);
+
+        $giftcardModel = model(Giftcard::class);
+
+        $result = $giftcardModel->incrementGiftcardValue((string) $giftcardNumber, 30.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testIncrementGiftcardValueRejectsNegativeAmount(): void
+    {
+        $giftcardNumber = $this->createGiftcard(50.00);
+        $giftcardModel  = model(Giftcard::class);
+
+        $result = $giftcardModel->incrementGiftcardValue((string) $giftcardNumber, -10.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testIncrementGiftcardValueRejectsZeroAmount(): void
+    {
+        $giftcardNumber = $this->createGiftcard(50.00);
+        $giftcardModel  = model(Giftcard::class);
+
+        $result = $giftcardModel->incrementGiftcardValue((string) $giftcardNumber, 0.00);
+
+        $this->assertFalse($result);
+        $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
 }
