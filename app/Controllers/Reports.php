@@ -118,12 +118,12 @@ class Reports extends Secure_Controller
 
         // Default-deny: reject unmapped report names (except index/empty parent routes)
         if ($submoduleId === null && !in_array($methodName, [null, '', 'index'], true)) {
-            throw new RedirectException('no_access/index/reports');
+            throw new RedirectException('no_access/reports/reports');
         }
 
         // Check access to report submodule
         if ($submoduleId !== null && !$this->employee->has_grant($submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
-            throw new RedirectException('no_access/index/reports/' . $submoduleId);
+            throw new RedirectException('no_access/reports/' . $submoduleId);
         }
 
         helper('report');
