@@ -50,6 +50,10 @@ if (isset($error)) {
     echo '<div class="alert alert-dismissible alert-danger">' . esc($error) . '</div>';
 }
 
+if (!empty($error_message)) {
+    echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
+}
+
 if (!empty($warning)) {
     echo '<div class="alert alert-dismissible alert-warning">' . esc($warning) . '</div>';
 }
