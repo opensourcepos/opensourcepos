@@ -237,7 +237,7 @@ class HomeTest extends CIUnitTestCase
      *
      * @return void
      */
-    public function testHomeWithOnlyOfficeModulesDoesNotCrash(): void
+    public function testGetIndex_ShowsOfficeLinkForOfficeOnlyEmployee(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'grants' => [
@@ -252,7 +252,7 @@ class HomeTest extends CIUnitTestCase
         $response = $this->get('/home');
 
         $response->assertStatus(200);
-        $response->assertSee('Office');
+        $this->assertStringContainsString('href="' . base_url('office') . '"', $response->getBody());
     }
 
     /**
@@ -261,7 +261,7 @@ class HomeTest extends CIUnitTestCase
      *
      * @return void
      */
-    public function testHomeDoesNotShowOfficeWithoutOfficeGrant(): void
+    public function testGetIndex_HidesOfficeLinkWithoutOfficeGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'grants' => [

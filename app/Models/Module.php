@@ -128,6 +128,38 @@ class Module extends Model
     }
 
     /**
+     * Gets the allowed navigation modules for the selected menu group.
+     */
+    public function getNavigationModules(int $personId, ?string $menuGroup, bool $hasOfficeGrant): array
+    {
+        $allowedModules = $menuGroup == 'home'
+            ? $this->get_allowed_home_modules($personId)->getResult()
+            : $this->get_allowed_office_modules($personId)->getResult();
+
+        if ($menuGroup != 'home' || !empty($allowedModules) || !$hasOfficeGrant) {
+            return $allowedModules;
+        }
+
+        $officeModules = $this->get_allowed_office_modules($personId)->getResult();
+
+        if (empty($officeModules)) {
+            return $allowedModules;
+        }
+
+        // Office-only employees need an Office link, unless its navigation group is hidden.
+        $builder = $this->db->table('modules');
+        $builder->where('module_id', 'office');
+        $builder->where('sort !=', 0);
+        $officeModule = $builder->get()->getRow();
+
+        if ($officeModule !== null) {
+            $allowedModules[] = $officeModule;
+        }
+
+        return $allowedModules;
+    }
+
+    /**
      * This method is used to set the show the office navigation icon on the home page
      * which happens when the sort value is greater than zero
      */
