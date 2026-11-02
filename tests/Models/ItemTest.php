@@ -3,10 +3,31 @@
 namespace Tests\Models;
 
 use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Item;
+use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\ItemFixtureTrait;
 
 class ItemTest extends CIUnitTestCase
 {
+    use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
+    use ItemFixtureTrait;
+
+    protected $migrate     = true;
+    protected $migrateOnce = true;
+    protected $refresh     = false;
+    protected $namespace   = null;
+
+    private const LOCATION_ID = 1;
+
+    protected function setUp(): void
+    {
+        $this->resetDatabaseOnce();
+
+        parent::setUp();
+    }
+
     public function testSuggestionsColumnValidationRejectsSQLInjection(): void
     {
         // These malicious values should not be in the allowed columns list
@@ -53,5 +74,30 @@ class ItemTest extends CIUnitTestCase
         // Ensure empty string is only in WITH_EMPTY variant
         $this->assertNotContains('', Item::ALLOWED_SUGGESTIONS_COLUMNS,
             'Empty string should not be in required columns list');
+    }
+
+    public function testGetMultipleInfo_ReturnsEmptyResultWhenLocationIdIsNull(): void
+    {
+        $itemId = $this->createTestItem();
+        $itemModel = model(Item::class);
+
+        $result = $itemModel->getMultipleInfo([$itemId], null);
+
+        $this->assertSame(0, $result->getNumRows());
+    }
+
+    public function testGetMultipleInfo_ReturnsRowForMatchingLocation(): void
+    {
+        $itemId = $this->createTestItem();
+        \Config\Database::connect()->table('item_quantities')->insert([
+            'item_id'     => $itemId,
+            'location_id' => self::LOCATION_ID,
+            'quantity'    => 5,
+        ]);
+        $itemModel = model(Item::class);
+
+        $result = $itemModel->getMultipleInfo([$itemId], self::LOCATION_ID);
+
+        $this->assertSame(1, $result->getNumRows());
     }
 }

@@ -2,6 +2,7 @@
 /**
  * @var object $item_info
  * @var array $stock_locations
+ * @var int|null $stock_location
  * @var array $item_quantities
  * @var string $controller_name
  */
@@ -61,7 +62,7 @@
         <div class="form-group form-group-sm">
             <?= form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
-                <?= form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange' => 'fill_quantity(this.value)', 'class' => 'form-control']) ?>
+                <?= form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => 'fill_quantity(this.value)', 'class' => 'form-control']) ?>
             </div>
         </div>
 
@@ -73,7 +74,7 @@
                     'id'       => 'quantity',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => to_quantity_decimals(current($item_quantities))
+                    'value'    => to_quantity_decimals($item_quantities[$stock_location] ?? current($item_quantities))
                 ]) ?>
             </div>
         </div>

@@ -176,3 +176,17 @@ button.btn.dropdown-toggle.btn-sm {
 .font-monospace {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+/* Spinner animation for bootstrap-table loading message */
+.glyphicon-refresh-animate {
+    animation: spin 1s infinite linear;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-message .glyphicon {
+    margin-right: 5px;
+}

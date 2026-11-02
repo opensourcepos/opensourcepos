@@ -9,7 +9,7 @@ use CodeIgniter\Model;
  */
 class Item_taxes extends Model
 {
-    protected $table = 'item_taxes';
+    protected $table = 'items_taxes';
     protected $primaryKey = 'item_id';
     protected $useAutoIncrement = false;
     protected $useSoftDeletes = false;

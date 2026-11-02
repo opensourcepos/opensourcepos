@@ -9,14 +9,17 @@ trait FailedQueryConnectionTrait
 {
     protected function failingConnection(): BaseConnection
     {
-        $driverClass = get_class(\Config\Database::connect($this->DBGroup));
+        $realConnection = \Config\Database::connect($this->DBGroup);
+        $driverClass     = get_class($realConnection);
+        $builderClass    = str_replace('Connection', 'Builder', $driverClass);
 
         $db = $this->getMockBuilder($driverClass)
             ->disableOriginalConstructor()
-            ->onlyMethods(['query', 'error'])
+            ->onlyMethods(['query', 'error', 'table'])
             ->getMock();
         $db->method('query')->willReturn(false);
         $db->method('error')->willReturn(['code' => 1, 'message' => 'simulated query failure']);
+        $db->method('table')->willReturnCallback(static fn (string $tableName) => new $builderClass($tableName, $db));
 
         return $db;
     }
