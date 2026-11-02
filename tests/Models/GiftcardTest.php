@@ -5,8 +5,8 @@ namespace Tests\Models;
 use App\Models\Giftcard;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
-use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 
 /**
  * Regression tests: decrementGiftcardValue() must
@@ -17,6 +17,7 @@ use Tests\Support\ConcurrentDbRaceTrait;
 class GiftcardTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use ConcurrentDbRaceTrait;
 
     protected $migrate     = true;
@@ -24,14 +25,10 @@ class GiftcardTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    public static function setUpBeforeClass(): void
-    {
-        $seeder = Database::seeder('tests');
-        $seeder->call('TestDatabaseBootstrapSeeder');
-    }
-
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
     }
 

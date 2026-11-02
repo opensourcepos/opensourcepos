@@ -18,7 +18,7 @@ services:
             # survive container recreation (a named volume is a directory and
             # forces .env to be a directory, breaking atomicWriteFile's rename).
             # create_host_path is explicitly false so a missing host file fails
-            # startup instead of being auto-created as a directory (see INSTALL.md).
+            # startup instead of being auto-created as a directory (see docs/INSTALL.md).
             - type: bind
               source: ./.env
               target: /app/.env

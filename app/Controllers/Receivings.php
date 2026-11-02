@@ -253,7 +253,7 @@ class Receivings extends Secure_Controller
             }
         } else {
             $stored_employee_id = $receiving_info['employee_id'];
-            $stored_employee = $this->employee->get_info($stored_employee_id);
+            $stored_employee = $this->employee->getInfo($stored_employee_id);
             $data['employees'][$stored_employee_id] = $stored_employee->first_name . ' ' . $stored_employee->last_name;
         }
 
@@ -334,7 +334,7 @@ class Receivings extends Secure_Controller
         $data['comment'] = $this->receiving_lib->get_comment();
         $data['reference'] = $this->receiving_lib->get_reference();
         $data['payment_type'] = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
+        $data['show_stock_locations'] = $this->stock_location->showLocations('receivings');
         $data['stock_location'] = $this->receiving_lib->get_stock_source();
         if ($this->request->getPost('amount_tendered') != null) {
             $data['amount_tendered'] = parse_decimals($this->request->getPost('amount_tendered'));
@@ -342,12 +342,12 @@ class Receivings extends Secure_Controller
         }
 
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-        $employee_info = $this->employee->get_info($employee_id);
+        $employee_info = $this->employee->getInfo($employee_id);
         $data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
         $supplier_id = $this->receiving_lib->get_supplier();
         if ($supplier_id != -1) {
-            $supplier_info = $this->supplier->get_info($supplier_id);
+            $supplier_info = $this->supplier->getInfo($supplier_id);
             $data['supplier'] = $supplier_info->company_name;    // TODO: duplicated code
             $data['first_name'] = $supplier_info->first_name;
             $data['last_name'] = $supplier_info->last_name;
@@ -417,17 +417,17 @@ class Receivings extends Secure_Controller
         $data['total'] = $this->receiving_lib->get_total();
         $data['mode'] = $this->receiving_lib->get_mode();
         $data['transaction_time'] = to_datetime(strtotime($receiving_info['receiving_time']));
-        $data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
+        $data['show_stock_locations'] = $this->stock_location->showLocations('receivings');
         $data['payment_type'] = $receiving_info['payment_type'];
         $data['reference'] = $this->receiving_lib->get_reference();
         $data['receiving_id'] = 'RECV ' . $receiving_id;
         $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
-        $employee_info = $this->employee->get_info($receiving_info['employee_id']);
+        $employee_info = $this->employee->getInfo($receiving_info['employee_id']);
         $data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
         $supplier_id = $this->receiving_lib->get_supplier();    // TODO: Duplicated code
         if ($supplier_id != -1) {
-            $supplier_info = $this->supplier->get_info($supplier_id);
+            $supplier_info = $this->supplier->getInfo($supplier_id);
             $data['supplier'] = $supplier_info->company_name;
             $data['first_name'] = $supplier_info->first_name;
             $data['last_name'] = $supplier_info->last_name;
@@ -475,7 +475,7 @@ class Receivings extends Secure_Controller
         $supplier_id = $this->receiving_lib->get_supplier();
 
         if ($supplier_id != -1) {    // TODO: Duplicated Code... replace -1 with a constant
-            $supplier_info = $this->supplier->get_info($supplier_id);
+            $supplier_info = $this->supplier->getInfo($supplier_id);
             $data['supplier'] = $supplier_info->company_name;
             $data['first_name'] = $supplier_info->first_name;
             $data['last_name'] = $supplier_info->last_name;

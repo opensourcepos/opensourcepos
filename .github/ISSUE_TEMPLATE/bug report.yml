@@ -66,12 +66,12 @@ body:
       description: What version of our software are you running?
       options:
         - development (unreleased)
+        - OpenSourcePOS 3.4.3
         - OpenSourcePOS 3.4.2
         - OpenSourcePOS 3.4.1
         - OpenSourcePOS 3.4.0
         - OpenSourcePOS 3.3.9
-        - OpenSourcePOS 3.3.8
-      default: 0
+        - Older version (specify in description)
     validations:
       required: true
 
@@ -81,6 +81,7 @@ body:
       label: 🔧 PHP Version
       description: What version of PHP are you running?
       options:
+        - PHP 8.5
         - PHP 8.4
         - PHP 8.3
         - PHP 8.2

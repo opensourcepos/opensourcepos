@@ -6,7 +6,7 @@ Please make sure you tick (add an x between the square brackets with no spaces) 
 
 - [] Reporting an issue of an unmodified OSPOS installation
 - [] Checked [open and closed issues](https://github.com/opensourcepos/opensourcepos/issues?utf8=%E2%9C%93&q=is%3Aissue) and no similar issue was already reported (please make sure you searched!)
-- [] Read [README](https://github.com/opensourcepos/opensourcepos/blob/master/README.md), [WHATS_NEW](https://github.com/opensourcepos/opensourcepos/blob/master/WHATS_NEW.txt), [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) and [UPGRADE](https://github.com/opensourcepos/opensourcepos/blob/master/UPGRADE.txt)
+- [] Read [README](https://github.com/opensourcepos/opensourcepos/blob/master/README.md), [WHATS_NEW](https://github.com/opensourcepos/opensourcepos/blob/master/WHATS_NEW.txt), [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/docs/INSTALL.md) and [UPGRADE](https://github.com/opensourcepos/opensourcepos/blob/master/docs/UPGRADE.md)
 - [] Read the [FAQ](https://github.com/opensourcepos/opensourcepos#faq) for any known install and/or upgrade gotchas (in specific PHP extensions installed)
 - [] Read the [wiki](https://github.com/opensourcepos/opensourcepos/wiki)
 - [] Executed any database upgrade scripts if an upgrade pre 3.0.0 (e.g. database/2.4_to_3.0.sql)

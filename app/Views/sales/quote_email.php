@@ -20,7 +20,7 @@
 <head>
     <meta charset="utf-8">
     <title><?= lang('Sales.send_quote') ?></title>
-    <link rel="stylesheet" href="<?= base_url('css/invoice_email.css') ?>">
+    <style><?= file_get_contents(ROOTPATH . 'public/css/invoice_email.css') ?></style>
 </head>
 
 <body>

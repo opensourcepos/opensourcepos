@@ -1,0 +1,671 @@
+<?php
+
+namespace Tests\Controllers;
+
+use App\Models\Stock_location;
+use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
+use CodeIgniter\Test\FeatureTestTrait;
+use Config\OSPOS;
+use Tests\Support\AdminAuthTrait;
+use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\TaxFixtureTrait;
+
+class ConfigControllerTest extends CIUnitTestCase
+{
+    use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
+    use FeatureTestTrait;
+    use EmployeeFixtureTrait;
+    use TaxFixtureTrait;
+    use AdminAuthTrait;
+
+    protected $migrate     = true;
+    protected $migrateOnce = true;
+    protected $refresh     = false;
+    protected $namespace   = null;
+
+    protected Stock_location $stock_location;
+
+    protected function setUp(): void
+    {
+        $this->resetDatabaseOnce();
+
+        parent::setUp();
+
+        $this->stock_location = model(Stock_location::class);
+
+        config(OSPOS::class)->update_settings();
+    }
+
+    protected function resetSession(): void
+    {
+        $personId = $this->createEmployee(grants: [
+            ['permission_id' => 'config', 'menu_group' => 'office'],
+        ]);
+
+        $this->withSession(['person_id' => $personId, 'menu_group' => 'office']);
+    }
+
+    private function createLocation(string $name): int
+    {
+        $locationData = ['location_name' => $name];
+        $this->stock_location->saveValue($locationData, NEW_ENTRY);
+
+        return (int) $locationData['location_id'];
+    }
+
+    // ========== Valid Mailpath Tests ==========
+
+    public function testValidMailpath_AcceptsStandardPath(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveEmail', [
+            'protocol' => 'sendmail',
+            'mailpath' => '/usr/sbin/sendmail'
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testValidMailpath_AcceptsPathWithDots(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveEmail', [
+            'protocol' => 'sendmail',
+            'mailpath' => '/usr/local/bin/sendmail.local'
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testValidMailpath_AcceptsEmptyStringForNonSendmailProtocol(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveEmail', [
+            'protocol' => 'mail',
+            'mailpath' => ''
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testSendmailProtocol_RequiresMailpath(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveEmail', [
+            'protocol' => 'sendmail',
+            'mailpath' => ''
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('invalid', strtolower($result['message']));
+    }
+
+    public function testNonSendmailProtocol_RejectsMaliciousMailpath(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveEmail', [
+            'protocol' => 'smtp',
+            'mailpath' => '/usr/sbin/sendmail; cat /etc/passwd'
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('invalid', strtolower($result['message']));
+    }
+
+    // ========== Command Injection Prevention Tests ==========
+
+    public function testMailpath_RejectsCommandInjection_Semicolon(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveEmail', [
+            'protocol' => 'sendmail',
+            'mailpath' => '/usr/sbin/sendmail; cat /etc/passwd'
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('invalid', strtolower($result['message']));
+    }
+
+    public function testMailpath_AcceptsSendmailPathWithTrailingArgs(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveEmail', [
+            'protocol' => 'sendmail',
+            'mailpath' => '/usr/sbin/sendmail -t -i'
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    // ========== postSaveLocale: payment_reference_code_min / max ==========
+
+    private function baseLocalePayload(array $overrides = []): array
+    {
+        return array_merge([
+            'language'         => 'en:english',
+            'currency_symbol'  => '$',
+            'currency_code'    => 'USD',
+            'timezone'         => 'UTC',
+            'dateformat'       => 'Y-m-d',
+            'timeformat'       => 'H:i',
+            'number_locale'    => 'en_US',
+            'currency_decimals' => '2',
+            'tax_decimals'     => '2',
+            'quantity_decimals' => '2',
+            'cash_decimals'    => '2',
+            'country_codes'    => 'US',
+            'payment_options_order' => '',
+            'cash_rounding_code'    => '',
+            'financial_year'        => '1',
+            'payment_reference_code_min' => '3',
+            'payment_reference_code_max' => '20',
+        ], $overrides);
+    }
+
+    public function testSaveLocale_AcceptsValidReferenceCodeMinMax(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '3',
+            'payment_reference_code_max' => '20',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testSaveLocale_AcceptsMinEqualToMax(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '10',
+            'payment_reference_code_max' => '10',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testSaveLocale_RejectsNonNumericReferenceCodeLimits(): void
+    {
+        $this->resetSession();
+
+        // Non-numeric values fail integer validation, so the controller returns success===false.
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => 'abc',
+            'payment_reference_code_max' => 'xyz',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsZeroReferenceCodeMin(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '0',
+            'payment_reference_code_max' => '20',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsNegativeReferenceCodeMin(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '-1',
+            'payment_reference_code_max' => '20',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsMaxLessThanMin(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'payment_reference_code_min' => '10',
+            'payment_reference_code_max' => '5',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    // ========== postSaveLocale: language_code allow-list (GHSA) ==========
+
+    public function testSaveLocale_RejectsPathTraversalLanguageCode(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => '../../public/uploads:evil',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('language', strtolower($result['message']));
+    }
+
+    public function testSaveLocale_RejectsLanguageCodeWithBackslash(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => '..\\..\\public\\uploads:evil',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsUnknownLanguage(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => 'xx:nonexistent',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveLocale_RejectsCaseMismatchedLanguage(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveLocale', $this->baseLocalePayload([
+            'language' => 'en:English',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    // ========== postSaveGeneral: theme validation ==========
+
+    private function baseGeneralPayload(array $overrides = []): array
+    {
+        return array_merge([
+            'theme'                          => 'flatly',
+            'login_form'                     => 'floating_labels',
+            'default_sales_discount_type'    => '',
+            'default_sales_discount'         => '0.00',
+            'default_receivings_discount_type' => '',
+            'default_receivings_discount'    => '0.00',
+            'enforce_privacy'                => '',
+            'receiving_calculate_average_price' => '',
+            'lines_per_page'                 => '20',
+            'notify_horizontal_position'     => 'bottom',
+            'notify_vertical_position'       => 'right',
+            'image_max_width'                => '1000',
+            'image_max_height'               => '1000',
+            'image_max_size'                 => '5120',
+            'image_allowed_types'            => ['jpg', 'jpeg', 'gif', 'png'],
+            'gcaptcha_enable'                => '',
+            'gcaptcha_secret_key'            => '',
+            'gcaptcha_site_key'              => '',
+            'suggestions_first_column'       => 'name',
+            'suggestions_second_column'      => '',
+            'suggestions_third_column'       => '',
+            'giftcard_number'                => '',
+            'derive_sale_quantity'           => '',
+            'multi_pack_enabled'             => '',
+            'include_hsn'                    => '',
+            'category_dropdown'              => '',
+            'show_office_group'              => '',
+        ], $overrides);
+    }
+
+    public function testSaveGeneral_AcceptsValidTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'darkly',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testSaveGeneral_AcceptsEmptyTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => '',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    public function testSaveGeneral_RejectsUnknownTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'nonexistent',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
+
+    public function testSaveGeneral_RejectsXssPayloadInTheme(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'x" onerror="alert(document.domain)" x="',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
+
+    public function testSaveGeneral_RejectsNonThemeDirectory(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveGeneral', $this->baseGeneralPayload([
+            'theme' => 'fonts',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('theme', strtolower($result['message']));
+    }
+
+    // ========== postSaveTax: negative default tax rate ==========
+
+    public function testSaveTax_RejectsNegativeDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => '-200.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_RejectsNegativeDefaultTaxRate2(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_2_rate' => '-50.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_AcceptsZeroDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => '0.00',
+            'default_tax_2_rate' => '0.00',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+    }
+
+    // ========== postSaveLocations ==========
+
+    public function testPostSaveLocations_RejectsNonArrayPayload(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location' => 'not-an-array',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostSaveLocations_RejectsNonArrayNewLocationsPayload(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'     => [],
+            'stock_location_new' => 'not-an-array',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostSaveLocations_RejectsWhenBothArraysEmpty(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'     => [],
+            'stock_location_new' => [],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostSaveLocations_AddsNewLocation(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'     => [],
+            'stock_location_new' => ['Warehouse'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $row = $this->db->table('stock_locations')
+            ->where('location_name', 'Warehouse')
+            ->where('deleted', 0)
+            ->get()
+            ->getRow();
+
+        $this->assertNotNull($row);
+
+        $permissionCount = $this->db->table('permissions')
+            ->where('location_id', $row->location_id)
+            ->countAllResults();
+        $this->assertSame(3, $permissionCount); // items, sales, receivings
+    }
+
+    public function testPostSaveLocations_RenamesExistingLocation(): void
+    {
+        $locationId = $this->createLocation('Original Name');
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location' => [(string) $locationId => 'Renamed'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->assertSame('Renamed', $this->stock_location->getLocationName($locationId));
+    }
+
+    public function testPostSaveLocations_RemovesLocationNotInSubmittedSet(): void
+    {
+        $keptId    = $this->createLocation('Keep Me');
+        $removedId = $this->createLocation('Remove Me');
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location' => [(string) $keptId => 'Keep Me'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->assertTrue($this->stock_location->exists($keptId));
+
+        $removedRow = $this->db->table('stock_locations')
+            ->where('location_id', $removedId)
+            ->get()
+            ->getRow();
+        $this->assertSame(1, (int) $removedRow->deleted);
+    }
+
+    public function testPostSaveLocations_BlankSubmittedNameKeepsLocationUnchanged(): void
+    {
+        $locationId = $this->createLocation('Unchanged Name');
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location' => [(string) $locationId => '   '],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->assertTrue($this->stock_location->exists($locationId));
+        $this->assertSame('Unchanged Name', $this->stock_location->getLocationName($locationId));
+    }
+
+    public function testPostSaveLocations_ReordersWithNewLocationToken(): void
+    {
+        $existingId = $this->createLocation('Existing');
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'       => [
+                (string) $existingId => 'Existing',
+            ],
+            'stock_location_new'   => ['Brand New'],
+            'stock_location_order' => 'new-0,' . $existingId,
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $newRow = $this->db->table('stock_locations')
+            ->where('location_name', 'Brand New')
+            ->get()
+            ->getRow();
+
+        $this->assertNotNull($newRow);
+        $this->assertLessThan(
+            (int) $this->db->table('stock_locations')->where('location_id', $existingId)->get()->getRow()->sort_order,
+            (int) $newRow->sort_order
+        );
+    }
+
+    public function testPostSaveLocations_SetsValidDefaultLocation(): void
+    {
+        $locationId = $this->createLocation('Default Candidate');
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'         => [(string) $locationId => 'Default Candidate'],
+            'stock_location_default' => (string) $locationId,
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $row = $this->db->table('stock_locations')
+            ->where('location_id', $locationId)
+            ->get()
+            ->getRow();
+        $this->assertSame(1, (int) $row->is_default);
+    }
+
+    public function testPostSaveLocations_IgnoresDefaultForDeletedLocation(): void
+    {
+        $keptId    = $this->createLocation('Keep Me');
+        $removedId = $this->createLocation('Remove Me');
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveLocations', [
+            'stock_location'         => [(string) $keptId => 'Keep Me'],
+            'stock_location_default' => (string) $removedId,
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $removedRow = $this->db->table('stock_locations')
+            ->where('location_id', $removedId)
+            ->get()
+            ->getRow();
+        $this->assertSame(0, (int) $removedRow->is_default);
+    }
+}

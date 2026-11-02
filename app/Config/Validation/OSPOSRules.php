@@ -86,8 +86,6 @@ class OSPOSRules
 
             $result = curl_exec($ch);
 
-            curl_close($ch);
-
             $status = json_decode($result, true);
 
             if (!empty($status['success'])) {
@@ -148,6 +146,10 @@ class OSPOSRules
      */
     public function nonNegativeDecimal(string $candidate, ?string &$error = null): bool
     {
+        if (trim($candidate) === '') {
+            return true;
+        }
+
         $value = parse_decimals($candidate);
 
         return $value !== false && $value >= 0;
