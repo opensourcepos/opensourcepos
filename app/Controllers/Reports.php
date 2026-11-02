@@ -59,7 +59,6 @@ class Reports extends Secure_Controller
         parent::__construct('reports');
         $request = Services::request();
         $methodName = urldecode($request->getUri()->getSegment(2));
-        $exploder = explode('_', $methodName);
 
         $this->attribute = config(Attribute::class);
         $this->config = config(OSPOS::class)->settings;
@@ -82,17 +81,42 @@ class Reports extends Secure_Controller
         $this->detailed_receivings = model(Detailed_receivings::class);
         $this->inventory_summary = model(Inventory_summary::class);
 
-        if (sizeof($exploder) > 1) {
-            preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $methodName, $matches);
-            preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
-            $submoduleId = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
-        } else {
-            $submoduleId = null;
+        // Map report URL names to their required permission
+        $reportPermissions = [
+            'summary_sales'              => 'reports_sales',
+            'summary_expenses_categories'=> 'reports_expenses_categories',
+            'summary_payments'           => 'reports_payments',
+            'summary_discounts'          => 'reports_discounts',
+            'summary_categories'         => 'reports_categories',
+            'summary_customers'          => 'reports_customers',
+            'summary_items'              => 'reports_items',
+            'summary_suppliers'          => 'reports_suppliers',
+            'summary_employees'          => 'reports_employees',
+            'summary_taxes'              => 'reports_taxes',
+            'summary_sales_taxes'        => 'reports_sales_taxes',
+            'detailed_item_sales'        => 'reports_sales',
+            'detailed_sales'             => 'reports_sales',
+            'detailed_receivings'        => 'reports_receivings',
+            'inventory_summary'          => 'reports_inventory',
+            'inventory_low'              => 'reports_inventory',
+            'specific_customers'         => 'reports_customers',
+            'specific_employees'         => 'reports_employees',
+            'specific_discounts'         => 'reports_discounts',
+            'specific_suppliers'         => 'reports_suppliers',
+        ];
+
+        // Normalize the report name: strip graphical_ prefix and _graph/_row suffixes
+        $reportName = $methodName;
+        if (str_starts_with($reportName, 'graphical_')) {
+            $reportName = substr($reportName, 10);
         }
+        $reportName = preg_replace('/_(graph|row)$/', '', $reportName);
+
+        $submoduleId = $reportPermissions[$reportName] ?? null;
 
         // Check access to report submodule
-        if ($submoduleId !== null && !$this->employee->has_grant('reports_' . $submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
-            throw new RedirectException('no_access/reports/reports_' . $submoduleId);
+        if ($submoduleId !== null && !$this->employee->has_grant($submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
+            throw new RedirectException('no_access/reports/' . $submoduleId);
         }
 
         helper('report');

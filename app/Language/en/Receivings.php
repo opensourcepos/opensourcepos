@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Item Name',
     'mode'                         => 'Receiving Mode',
     'new_supplier'                 => 'New Supplier',
+    'not_authorized'               => 'This action is not authorized.',
     'one_or_multiple'              => 'receiving(s)',
     'print_after_sale'             => 'Print After Sale',
     'quantity'                     => 'Qty.',
