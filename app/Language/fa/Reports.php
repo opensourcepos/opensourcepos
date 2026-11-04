@@ -9,7 +9,7 @@ return [
     'category'                                => 'دسته بندی',
     'code_canceled'                           => 'کنسل',
     'code_invoice'                            => 'سیاهه فروش',
-    'code_pos'                                => 'POS',
+    'code_pos'                                => '',
     'code_quote'                              => '',
     'code_return'                             => 'درست',
     'code_type'                               => 'نوع',

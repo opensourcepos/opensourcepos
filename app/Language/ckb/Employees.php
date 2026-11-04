@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'بەسەرکەوتووی سڕیتەوە',
     'successful_updating'                   => 'بەسەرکەوتوویی فەرمانبەرەکەت نوێ کردۆتەوە',
     'system_language'                       => 'زمانی سیستەم',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'گۆڕینی وشەی نهێنی سەرکەوتوو نەبوو.',
     'update'                                => 'فەرمانبەر نوێبکەوە',
     'username'                              => 'ناوی بەکارهێنەر',

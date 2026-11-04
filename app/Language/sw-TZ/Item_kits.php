@@ -17,8 +17,6 @@ return [
     'item'                      => 'Bidhaa',
     'item_kit_number'           => 'Msimbo wa Mstari',
     'item_kit_number_duplicate' => 'Nambari ya Kifurushi cha Bidhaa tayari ipo kwenye kanzidata.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Bidhaa',
     'kit'                       => 'ID ya Kifurushi',
     'kit_and_components'        => 'Kifurushi na Vipengele',

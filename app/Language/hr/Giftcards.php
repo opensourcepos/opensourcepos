@@ -6,7 +6,7 @@ return [
     'bulk_edit'                          => 'Grupno uređivanje',
     'cannot_be_deleted'                  => 'Nije moguće obrisati poklon bon, jedan ili više poklon bonova ima prodaju.',
     'cannot_find_giftcard'               => 'Ne možemo pronaći informacije o poklon bonu',
-    'cannot_use'                         => 'Giftcard {0} cannot be used for this sale. Invalid Customer!',
+    'cannot_use'                         => '',
     'card_value'                         => 'Vrijednost',
     'category'                           => 'Kategorija',
     'change_all_to_allow_alt_desc'       => 'Dozvoli Alt opis za sve',

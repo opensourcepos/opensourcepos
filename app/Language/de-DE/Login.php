@@ -9,7 +9,7 @@ return [
     'invalid_gcaptcha'              => 'Ich bin kein Roboter ist ungültig.',
     'invalid_installation'          => 'Die Installation ist nicht korrekt, überprüfen Sie Ihre php.ini-Datei.',
     'invalid_username_and_password' => 'Ungültiger Benutzername oder Passwort.',
-    'login'                         => 'Login',
+    'login'                         => '',
     'logout'                        => 'Abmelden',
     'migrating_database'            => 'Datenbank wird migriert',
     'migration_auth_message'        => 'Administrator-Anmeldedaten sind erforderlich, um die Datenbank-Migration auf Version {0} zu autorisieren. Bitte melden Sie sich an, um fortzufahren.',

@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'Telefonní číslo je vyžadováno',
     'phone_placeholder'     => 'Telefonní číslo...',
     'sms_send'              => 'Odeslat SMS',
-    'successfully_sent'     => 'Zpráva byla odeslána: ',
-    'unsuccessfully_sent'   => 'Zpráva nebyla odeslána: ',
+    'successfully_sent'     => 'Zpráva byla odeslána:',
+    'unsuccessfully_sent'   => 'Zpráva nebyla odeslána:',
 ];
