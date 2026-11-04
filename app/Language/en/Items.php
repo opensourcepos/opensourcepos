@@ -76,6 +76,7 @@ return [
     'none'                               => 'None',
     'none_selected'                      => 'You have not selected any Item(s) to edit',
     'nonstock'                           => 'Non-stocked',
+    'not_authorized'                     => 'This action is not authorized.',
     'number_information'                 => 'Item Number',
     'number_required'                    => 'Barcode is a required field.',
     'one_or_multiple'                    => 'item(s)',
