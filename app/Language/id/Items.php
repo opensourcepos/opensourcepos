@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Basis data Barcode',
     'update'                             => 'Ubah',
     'use_inventory_menu'                 => 'Gunakan Inv. Menu',
+    'not_authorized'                      => 'Not authorized',
 ];

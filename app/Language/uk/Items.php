@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC база данх',
     'update'                             => 'Оновити Товар',
     'use_inventory_menu'                 => 'Використайте меню інвентаря',
+    'not_authorized'                      => 'Not authorized',
 ];

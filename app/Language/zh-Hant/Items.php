@@ -122,4 +122,5 @@ return [
     'upc_database'                       => '',
     'update'                             => '更新產品',
     'use_inventory_menu'                 => '使用庫存清單',
+    'not_authorized'                      => 'Not authorized',
 ];

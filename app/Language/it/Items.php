@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Archivio Codice a Barre',
     'update'                             => 'Aggiorna Articolo',
     'use_inventory_menu'                 => 'Usa Menu Inventario',
+    'not_authorized'                      => 'Not authorized',
 ];

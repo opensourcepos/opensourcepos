@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Streepjescode database',
     'update'                             => 'Artikel bijwerken',
     'use_inventory_menu'                 => 'Voorraadmenu gebruiken',
+    'not_authorized'                      => 'Not authorized',
 ];

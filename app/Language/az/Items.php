@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Barkod Məlumat Bazası',
     'update'                             => 'Malı Yenilə',
     'use_inventory_menu'                 => 'İnventar Menyusundan İstifadə Et',
+    'not_authorized'                      => 'Not authorized',
 ];

@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC adatbázis',
     'update'                             => 'Termék módosítás',
     'use_inventory_menu'                 => 'Készl. menü haszn.',
+    'not_authorized'                      => 'Not authorized',
 ];

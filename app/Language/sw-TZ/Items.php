@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Kanzidata ya Misimbomstari',
     'update'                             => 'Sasisha Bidhaa',
     'use_inventory_menu'                 => 'Tumia Menyu ya Hisa',
+    'not_authorized'                      => 'Not authorized',
 ];

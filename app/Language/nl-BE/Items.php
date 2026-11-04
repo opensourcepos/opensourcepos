@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC Database',
     'update'                             => 'Bewerk Product',
     'use_inventory_menu'                 => 'Gebruik inventaris menu',
+    'not_authorized'                      => 'Not authorized',
 ];

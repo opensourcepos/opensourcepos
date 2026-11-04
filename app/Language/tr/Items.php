@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC Veritabanı',
     'update'                             => 'Ürün Güncelle',
     'use_inventory_menu'                 => 'Stok Menüsünü Kullan',
+    'not_authorized'                      => 'Not authorized',
 ];

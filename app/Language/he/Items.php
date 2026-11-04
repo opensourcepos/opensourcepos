@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'מסד נתונים של הברקוד',
     'update'                             => 'עדכן פריט',
     'use_inventory_menu'                 => 'השתמש בתפריט מלאי',
+    'not_authorized'                      => 'Not authorized',
 ];

@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Streckkod databas',
     'update'                             => 'Uppdatera artikeln',
     'use_inventory_menu'                 => 'Använd Inventory Menu',
+    'not_authorized'                      => 'Not authorized',
 ];

@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'ទិន្នន័យ លេខកូត',
     'update'                             => 'កែប្រែទំនិញ',
     'use_inventory_menu'                 => 'ប្រើប្រាស់បញ្ជីទំនិញ',
+    'not_authorized'                      => 'Not authorized',
 ];
