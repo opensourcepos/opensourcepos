@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Tasa impositiva por defecto',
     'error_adding_updating'                  => 'Error añadiendo o actualizando el impuesto',
     'group_seq'                              => 'Seq. de grupo',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Nombre de jurisdicción',
     'name'                                   => 'Nombre',
     'new'                                    => 'Impuesto nuevo',

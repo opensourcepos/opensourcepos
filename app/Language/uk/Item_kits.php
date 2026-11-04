@@ -17,8 +17,6 @@ return [
     'item'                      => 'Товар',
     'item_kit_number'           => 'Штрихкод',
     'item_kit_number_duplicate' => 'Товарний комплект вже присутній у базі.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Товари',
     'kit'                       => 'ІН комплекту',
     'kit_and_components'        => 'Комплект та комплектуючі',

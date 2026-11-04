@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Ürün Adı',
     'mode'                         => 'Alım Türü',
     'new_supplier'                 => 'Yeni Sağlayıcı',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'alıcı (lar)',
     'print_after_sale'             => 'Satıştan sonra yazdır',
     'quantity'                     => 'Adet',

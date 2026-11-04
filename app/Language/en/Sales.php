@@ -124,6 +124,7 @@ return [
     'new_item'                          => 'New Item',
     'no_description'                    => 'No description',
     'no_items_in_cart'                  => 'There are no Items in the cart.',
+    'no_sales_to_display'               => 'No Sales to display.',
     'none_selected'                     => 'You have not selected any Sale(s) to delete.',
     'nontaxed_ind'                      => ' ',
     'not_authorized'                    => 'This action is not authorized.',

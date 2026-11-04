@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Tên Hàng hóa',
     'mode'                         => 'Chế độ nhập hàng',
     'new_supplier'                 => 'Nhà cung cấp mới',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'nhập hàng',
     'print_after_sale'             => 'In sau khi Bán hàng',
     'quantity'                     => 'Số lượng',

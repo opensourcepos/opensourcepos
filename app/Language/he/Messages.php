@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'מספר טלפון נדרש',
     'phone_placeholder'     => 'מספר נייד כאן ...',
     'sms_send'              => 'שלח הודעת טקסט',
-    'successfully_sent'     => 'ההודעה נשלחה בהצלחה אל: ',
-    'unsuccessfully_sent'   => 'שגיאה בשליחת הודעה אל: ',
+    'successfully_sent'     => 'ההודעה נשלחה בהצלחה אל:',
+    'unsuccessfully_sent'   => 'שגיאה בשליחת הודעה אל:',
 ];
