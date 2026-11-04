@@ -1420,10 +1420,13 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $db = Config::connect($this->DBGroup);
 
-        $locationA = ['location_name' => 'AuthWarehouse_' . uniqid(), 'deleted' => 0];
+        $suffixA = bin2hex(random_bytes(8));
+        $suffixB = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "AuthWarehouse_{$suffixA}", 'deleted' => 0];
         $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
 
-        $locationB = ['location_name' => 'UnauthWarehouse_' . uniqid(), 'deleted' => 0];
+        $locationB = ['location_name' => "UnauthWarehouse_{$suffixB}", 'deleted' => 0];
         $this->assertTrue($this->stock_location->saveValue($locationB, NEW_ENTRY));
 
         $locAId = (int) $locationA['location_id'];
@@ -1476,7 +1479,8 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $db = Config::connect($this->DBGroup);
 
-        $locationA = ['location_name' => 'AllowedWh_' . uniqid(), 'deleted' => 0];
+        $suffix = bin2hex(random_bytes(8));
+        $locationA = ['location_name' => "AllowedWh_{$suffix}", 'deleted' => 0];
         $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
         $locAId = (int) $locationA['location_id'];
 

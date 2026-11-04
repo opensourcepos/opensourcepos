@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Cơ sở dữ liệu mã vạch',
     'update'                             => 'Cập nhật Hàng hóa',
     'use_inventory_menu'                 => 'Dùng trình đơn Tồn kho',
+    'not_authorized'                      => 'Not authorized',
 ];

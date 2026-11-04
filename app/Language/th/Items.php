@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC ฐานข้อมูล',
     'update'                             => 'ปรับแต่งสินค้า',
     'use_inventory_menu'                 => 'ใช้เมนูสินค้าคงเหลือ',
+    'not_authorized'                      => 'Not authorized',
 ];

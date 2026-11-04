@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC baza',
     'update'                             => 'Ažuriraj artikl',
     'use_inventory_menu'                 => 'Koristi inv. meni',
+    'not_authorized'                      => 'Not authorized',
 ];

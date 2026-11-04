@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'База данных штрих-кодов',
     'update'                             => 'Обновление товара',
     'use_inventory_menu'                 => 'Использовать меню запасов',
+    'not_authorized'                      => 'Not authorized',
 ];

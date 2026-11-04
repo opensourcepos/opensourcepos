@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC قاعدة بيانات',
     'update'                             => 'تحديث بيانات صنف',
     'use_inventory_menu'                 => 'استخدام تحديث المخزن',
+    'not_authorized'                      => 'Not authorized',
 ];

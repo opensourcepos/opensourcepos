@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Databáze čárových kódů',
     'update'                             => 'Upravit položku',
     'use_inventory_menu'                 => 'Použít nabídku Sklad',
+    'not_authorized'                      => 'Not authorized',
 ];

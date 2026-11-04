@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'داتابەیسی باڕکۆد',
     'update'                             => 'نوێکردنەوەی ئایتم',
     'use_inventory_menu'                 => 'لیستەی جەرد بەکاربهێنە',
+    'not_authorized'                      => 'Not authorized',
 ];

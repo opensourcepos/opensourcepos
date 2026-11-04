@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'UPC Datenbank',
     'update'                             => 'Ändere Artikel',
     'use_inventory_menu'                 => 'Verwende Bestandesmenu',
+    'not_authorized'                      => 'Not authorized',
 ];

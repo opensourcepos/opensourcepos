@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'بانک اطلاعات بارکد',
     'update'                             => 'به روز کردن مورد',
     'use_inventory_menu'                 => 'استفاده از فهرست موجودی',
+    'not_authorized'                      => 'Not authorized',
 ];

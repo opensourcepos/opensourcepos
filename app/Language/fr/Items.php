@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Base de données des codes à barres',
     'update'                             => 'Éditer l\'article',
     'use_inventory_menu'                 => 'Utiliser le menu inventaire',
+    'not_authorized'                      => 'Not authorized',
 ];

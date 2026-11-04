@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Base de datos UPC',
     'update'                             => 'Actualizar Artículo',
     'use_inventory_menu'                 => 'Usar Menú de Inventario',
+    'not_authorized'                      => 'Not authorized',
 ];

@@ -122,4 +122,5 @@ return [
     'upc_database'                       => 'Baza podataka bar-kodova',
     'update'                             => 'Ažuriraj artikal',
     'use_inventory_menu'                 => 'Koristite meni zalihe',
+    'not_authorized'                      => 'Not authorized',
 ];
