@@ -61,10 +61,11 @@ const BOOTSWATCH5_EXCLUDED_THEMES = [
  * Standardized options helper for gulp-inject comment markers.
  * Generates options matching the pattern <!-- inject:${tag} -->.
  */
-const injectOptions = (tag, options = {}) => ({
+const injectOptions = (tag, { defer = false, ...options } = {}) => ({
     addRootSlash: false,
     ignorePath: '/public/',
     starttag: `<!-- inject:${tag} -->`,
+    ...(defer && { transform: filepath => `<script src="${filepath}" defer></script>` }),
     ...options
 });
 
@@ -170,6 +171,8 @@ gulp.task('copy-menubar', async function() {
 
 // =============================================================================
 // Group 3: Global Application Assets (injected into app/Views/partial/header.php)
+//
+// JavaScript is split into synchronous core assets and deferred export libraries.
 // =============================================================================
 
 // Development mode: Injects individual global stylesheets into app/Views/partial/header.php
@@ -180,13 +183,10 @@ gulp.task('debug-css', function() {
         './node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.css',
         './node_modules/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css',
         './node_modules/bootstrap-daterangepicker/daterangepicker.css',
-        './node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css',
         './node_modules/bootstrap-select/dist/css/bootstrap-select.css',
         './node_modules/bootstrap-table/dist/bootstrap-table.css',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css',
         './node_modules/bootstrap-toggle/css/bootstrap-toggle.css',
-        './node_modules/chartist/dist/chartist.css',
-        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
         './public/css/bootstrap.autocomplete.css',
         './public/css/invoice.css',
         './public/css/ospos.css',
@@ -212,13 +212,10 @@ gulp.task('prod-css', function() {
         './node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
         './node_modules/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css',
         './node_modules/bootstrap-daterangepicker/daterangepicker.css',
-        './node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css',
         './node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         './node_modules/bootstrap-table/dist/bootstrap-table.min.css',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.css',
         './node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css',
-        './node_modules/chartist/dist/chartist.min.css',
-        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
         './public/css/bootstrap.autocomplete.css',
         './public/css/invoice.css',
         './public/css/ospos.css',
@@ -240,14 +237,13 @@ gulp.task('prod-css', function() {
     );
 });
 
-// Development mode: Injects individual global scripts into app/Views/partial/header.php
+// Development mode: Revisions and injects individual core and deferred scripts into app/Views/partial/header.php
 gulp.task('debug-js', function() {
-    const debugJs = gulp.src([
+    const debugCoreJs = gulp.src([
         './node_modules/jquery/dist/jquery.js',
         './node_modules/jquery-ui-dist/jquery-ui.js',
         './node_modules/bootstrap/dist/js/bootstrap.js',
         './node_modules/bootstrap-table/dist/bootstrap-table.js',
-        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
         './node_modules/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
         './node_modules/moment/min/moment.min.js',
@@ -259,32 +255,32 @@ gulp.task('debug-js', function() {
         './node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
         './node_modules/bootstrap-notify/bootstrap-notify.js',
         './node_modules/bootstrap-datetime-picker/js/bootstrap-datetimepicker.js',
-        './node_modules/file-saver/dist/FileSaver.js',
-        './node_modules/html2canvas/dist/html2canvas.js',
-        './node_modules/jspdf/dist/jspdf.umd.js',
-        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
         './node_modules/dompurify/dist/purify.js',
-        './node_modules/xlsx/dist/xlsx.full.min.js',
-        './node_modules/tableexport.jquery.plugin/tableExport.min.js',
-        './node_modules/chartist/dist/chartist.js',
-        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js',
-        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.js',
-        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.js',
-        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.js',
         './node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
         './public/js/nominatim.autocomplete.js'
     ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
 
+    const debugDeferredJs = gulp.src([
+        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
+        './node_modules/file-saver/dist/FileSaver.js',
+        './node_modules/html2canvas/dist/html2canvas.js',
+        './node_modules/jspdf/dist/jspdf.umd.js',
+        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
+        './node_modules/xlsx/dist/xlsx.full.min.js',
+        './node_modules/tableexport.jquery.plugin/tableExport.min.js'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
+
     return pipeline(
         gulp.src('./app/Views/partial/header.php'),
-        inject(debugJs, injectOptions('debug:js')),
+        inject(debugCoreJs, injectOptions('debug:js')),
+        inject(debugDeferredJs, injectOptions('debug:deferred:js', { defer: true })),
         gulp.dest('./app/Views/partial')
     );
 });
 
-// Production mode: Bundles scripts into opensourcepos.min.js for app/Views/partial/header.php
+// Production mode: Bundles core scripts into opensourcepos.min.js and export libraries into opensourcepos-deferred.min.js for app/Views/partial/header.php
 gulp.task('prod-js', function() {
     const jqueryStream = gulp.src('./node_modules/jquery/dist/jquery.min.js')
         .pipe(rev())
@@ -294,7 +290,6 @@ gulp.task('prod-js', function() {
         './node_modules/jquery-ui-dist/jquery-ui.min.js',
         './node_modules/bootstrap/dist/js/bootstrap.min.js',
         './node_modules/bootstrap-table/dist/bootstrap-table.min.js',
-        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js',
         './node_modules/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js',
         './node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js',
         './node_modules/moment/min/moment.min.js',
@@ -306,18 +301,7 @@ gulp.task('prod-js', function() {
         './node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js',
         './node_modules/bootstrap-notify/bootstrap-notify.min.js',
         './node_modules/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js',
-        './node_modules/file-saver/dist/FileSaver.min.js',
-        './node_modules/html2canvas/dist/html2canvas.min.js',
-        './node_modules/jspdf/dist/jspdf.umd.min.js',
-        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js',
-        './node_modules/dompurify/dist/purify.min.js',
-        './node_modules/xlsx/dist/xlsx.full.min.js',
-        './node_modules/tableexport.jquery.plugin/tableExport.min.js',
-        './node_modules/chartist/dist/chartist.min.js',
-        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js',
-        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
-        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js',
-        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js'
+        './node_modules/dompurify/dist/purify.min.js'
     ]);
 
     const uglifiedAppJs = gulp.src([
@@ -332,9 +316,23 @@ gulp.task('prod-js', function() {
         .pipe(rev())
         .pipe(gulp.dest('./public/resources/'));
 
+    const deferredExportStream = gulp.src([
+        './node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js',
+        './node_modules/file-saver/dist/FileSaver.min.js',
+        './node_modules/html2canvas/dist/html2canvas.min.js',
+        './node_modules/jspdf/dist/jspdf.umd.min.js',
+        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js',
+        './node_modules/xlsx/dist/xlsx.full.min.js',
+        './node_modules/tableexport.jquery.plugin/tableExport.min.js'
+    ])
+        .pipe(concat('opensourcepos-deferred.min.js'))
+        .pipe(rev())
+        .pipe(gulp.dest('./public/resources/'));
+
     return pipeline(
         gulp.src('./app/Views/partial/header.php'),
         inject(streamSeries(jqueryStream, coreBundleStream), injectOptions('prod:js')),
+        inject(deferredExportStream, injectOptions('prod:deferred:js', { defer: true })),
         gulp.dest('./app/Views/partial')
     );
 });
@@ -371,8 +369,12 @@ gulp.task('prod-login-js', function() {
     );
 });
 
-// Inject individual TagsInput and Clipboard scripts into app/Views/configs/manage.php (development mode)
-gulp.task('debug-config-js', function() {
+// Inject individual TagsInput CSS, TagsInput JS, and ClipboardJS into app/Views/configs/manage.php (development mode)
+gulp.task('debug-config', function() {
+    const configDebugCss = gulp.src('./node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css')
+        .pipe(rev())
+        .pipe(gulp.dest('public/resources/css'));
+
     const configDebugJs = gulp.src([
         './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.js',
         './node_modules/clipboard/dist/clipboard.js'
@@ -380,22 +382,86 @@ gulp.task('debug-config-js', function() {
 
     return pipeline(
         gulp.src('./app/Views/configs/manage.php'),
+        inject(configDebugCss, injectOptions('config:debug:css')),
         inject(configDebugJs, injectOptions('config:debug:js')),
         gulp.dest('./app/Views/configs')
     );
 });
 
-// Inject production TagsInput and Clipboard scripts into app/Views/configs/manage.php (production mode)
-gulp.task('prod-config-js', function() {
+// Bundle TagsInput CSS into config.min.css and JS (TagsInput + Clipboard) into config.min.js for app/Views/configs/manage.php (production mode)
+gulp.task('prod-config', function() {
+    const configProdCss = gulp.src('./node_modules/bootstrap-tagsinput-2021/src/bootstrap-tagsinput.css')
+        .pipe(cleanCSS())
+        .pipe(concat('config.min.css'))
+        .pipe(rev())
+        .pipe(gulp.dest('public/resources'));
+
     const configProdJs = gulp.src([
         './node_modules/bootstrap-tagsinput-2021/dist/bootstrap-tagsinput.min.js',
         './node_modules/clipboard/dist/clipboard.min.js'
-    ]).pipe(rev()).pipe(gulp.dest('public/resources'));
+    ])
+        .pipe(concat('config.min.js'))
+        .pipe(rev())
+        .pipe(gulp.dest('public/resources'));
 
     return pipeline(
         gulp.src('./app/Views/configs/manage.php'),
+        inject(configProdCss, injectOptions('config:prod:css')),
         inject(configProdJs, injectOptions('config:prod:js')),
         gulp.dest('./app/Views/configs')
+    );
+});
+
+// Inject individual Chartist CSS, core JS, and plugins into app/Views/reports/graphical.php (development mode)
+gulp.task('debug-reportsgraphical', function() {
+    const reportsGraphicalDebugCss = gulp.src([
+        './node_modules/chartist/dist/chartist.css',
+        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources/css'));
+
+    const reportsGraphicalDebugJs = gulp.src([
+        './node_modules/chartist/dist/chartist.js',
+        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js',
+        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.js',
+        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.js',
+        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.js'
+    ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
+
+    return pipeline(
+        gulp.src('./app/Views/reports/graphical.php'),
+        inject(reportsGraphicalDebugCss, injectOptions('reportsgraphical:debug:css')),
+        inject(reportsGraphicalDebugJs, injectOptions('reportsgraphical:debug:js')),
+        gulp.dest('./app/Views/reports')
+    );
+});
+
+// Bundle Chartist CSS into reportsgraphical.min.css and JS into reportsgraphical.min.js for app/Views/reports/graphical.php (production mode)
+gulp.task('prod-reportsgraphical', function() {
+    const chartistMinCss = gulp.src('./node_modules/chartist/dist/chartist.min.css');
+    const chartistTooltipCss = gulp.src('./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css')
+        .pipe(cleanCSS());
+
+    const reportsGraphicalProdCss = streamSeries(chartistMinCss, chartistTooltipCss)
+        .pipe(concat('reportsgraphical.min.css'))
+        .pipe(rev())
+        .pipe(gulp.dest('public/resources'));
+
+    const reportsGraphicalProdJs = gulp.src([
+        './node_modules/chartist/dist/chartist.min.js',
+        './node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js',
+        './node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
+        './node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js',
+        './node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js'
+    ])
+        .pipe(concat('reportsgraphical.min.js'))
+        .pipe(rev())
+        .pipe(gulp.dest('public/resources'));
+
+    return pipeline(
+        gulp.src('./app/Views/reports/graphical.php'),
+        inject(reportsGraphicalProdCss, injectOptions('reportsgraphical:prod:css')),
+        inject(reportsGraphicalProdJs, injectOptions('reportsgraphical:prod:js')),
+        gulp.dest('./app/Views/reports')
     );
 });
 
@@ -415,8 +481,12 @@ gulp.task('default',
             'copy-bootstrap',
             'copy-menubar',
             gulp.series(
-                'debug-config-js',
-                'prod-config-js'
+                'debug-config',
+                'prod-config'
+            ),
+            gulp.series(
+                'debug-reportsgraphical',
+                'prod-reportsgraphical'
             ),
             gulp.series(
                 'debug-js',
