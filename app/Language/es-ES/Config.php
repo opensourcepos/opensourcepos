@@ -228,7 +228,7 @@ return [
     'number_locale_invalid'                     => 'Localización ingresada invalida. Revisa el link en el tooltip para encontrar informacion.',
     'number_locale_required'                    => 'Numero localizacion es un campo requerido.',
     'number_locale_tooltip'                     => 'Encontrar una zonificacion adecuada en este enlace.',
-    'os_timezone'                               => 'Zona Horaria Local:',
+    'os_timezone'                               => 'Zona horaria OSPOS:',
     'ospos_info'                                => 'Información de la Instalación OSPOS',
     'payment_options_order'                     => 'Orden de opciones de pago',
     'payment_reference_code_length_limits'      => 'Código de referencia de pago<br>Límites de longitud',
