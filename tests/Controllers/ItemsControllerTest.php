@@ -1416,15 +1416,10 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->assertTrue($isValid, 'Valid location name should pass validation');
     }
 
-    /**
-     * Regression test: an employee authorized for Warehouse A must not be
-     * able to modify inventory at Warehouse B via postSaveInventory.
-     */
-    public function testPostSaveInventoryRejectsUnauthorizedStockLocation(): void
+    public function testPostSaveInventory_RejectsUnauthorizedStockLocation(): void
     {
         $db = Config::connect($this->DBGroup);
 
-        // Create two stock locations
         $locationA = ['location_name' => 'AuthWarehouse_' . uniqid(), 'deleted' => 0];
         $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
 
@@ -1434,7 +1429,6 @@ class ItemsControllerTest extends CIUnitTestCase
         $locAId = (int) $locationA['location_id'];
         $locBId = (int) $locationB['location_id'];
 
-        // Create permission rows for both locations
         $db->table('permissions')->insert([
             'permission_id' => 'items_' . str_replace(' ', '_', $locationA['location_name']),
             'module_id'     => 'items',
@@ -1446,7 +1440,6 @@ class ItemsControllerTest extends CIUnitTestCase
             'location_id'   => $locBId,
         ]);
 
-        // Create an employee authorized ONLY for Warehouse A
         $personId = $this->createEmployee(
             grants: [
                 ['permission_id' => 'items', 'menu_group' => 'home'],
@@ -1455,7 +1448,6 @@ class ItemsControllerTest extends CIUnitTestCase
         );
         $this->loginAsItemsEmployee($personId);
 
-        // Create a test item with quantity at both locations
         $itemData = $this->baseItemPostData();
         $response = $this->post('/items/save', $itemData);
         $response->assertStatus(200);
@@ -1463,11 +1455,9 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->assertTrue($itemResult['success']);
         $itemId = (int) $itemResult['id'];
 
-        // Set initial quantities at both locations
         $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
         $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locBId, 'quantity' => 5], $itemId, $locBId);
 
-        // Attempt to modify inventory at the UNAUTHORIZED location B
         $response = $this->post("/items/saveInventory/{$itemId}", [
             'stock_location' => $locBId,
             'newquantity'    => 3,
@@ -1478,19 +1468,14 @@ class ItemsControllerTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
 
-        // Verify Warehouse B quantity was NOT changed
         $qtyB = $this->item_quantity->get_item_quantity($itemId, $locBId);
         $this->assertEquals(5, (int) $qtyB->quantity, 'Unauthorized location quantity must not change');
     }
 
-    /**
-     * Positive case: an employee authorized for a location CAN modify inventory there.
-     */
-    public function testPostSaveInventoryAllowsAuthorizedStockLocation(): void
+    public function testPostSaveInventory_AcceptsAuthorizedStockLocation(): void
     {
         $db = Config::connect($this->DBGroup);
 
-        // Create a stock location
         $locationA = ['location_name' => 'AllowedWh_' . uniqid(), 'deleted' => 0];
         $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
         $locAId = (int) $locationA['location_id'];
@@ -1501,7 +1486,6 @@ class ItemsControllerTest extends CIUnitTestCase
             'location_id'   => $locAId,
         ]);
 
-        // Create an employee authorized for this location
         $personId = $this->createEmployee(
             grants: [
                 ['permission_id' => 'items', 'menu_group' => 'home'],
@@ -1510,17 +1494,14 @@ class ItemsControllerTest extends CIUnitTestCase
         );
         $this->loginAsItemsEmployee($personId);
 
-        // Create a test item
         $itemData = $this->baseItemPostData();
         $response = $this->post('/items/save', $itemData);
         $itemResult = json_decode($response->getJSON(), true);
         $this->assertTrue($itemResult['success']);
         $itemId = (int) $itemResult['id'];
 
-        // Set initial quantity
         $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
 
-        // Modify inventory at the AUTHORIZED location
         $response = $this->post("/items/saveInventory/{$itemId}", [
             'stock_location' => $locAId,
             'newquantity'    => 5,
@@ -1531,7 +1512,6 @@ class ItemsControllerTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
 
-        // Verify quantity was increased by 5
         $qtyA = $this->item_quantity->get_item_quantity($itemId, $locAId);
         $this->assertEquals(15, (int) $qtyA->quantity, 'Authorized location quantity should increase');
     }
