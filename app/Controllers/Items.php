@@ -1015,6 +1015,11 @@ class Items extends Secure_Controller
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $cur_item_info = $this->item->getInfo($item_id);
         $location_id = $this->request->getPost('stock_location');
+
+        if (!$this->stock_location->is_allowed_location((int)$location_id, 'items')) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
+        }
+
         $new_quantity = $this->request->getPost('newquantity');
         $inv_data = [
             'trans_date'      => date('Y-m-d H:i:s'),
