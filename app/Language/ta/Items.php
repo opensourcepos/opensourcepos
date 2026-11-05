@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'கையிருப்பு பொருட்களை கூட்டு அல்லது கழி',
+return [    'add_minus'                          => 'கையிருப்பு பொருட்களை கூட்டு அல்லது கழி',
     'allow_alt_description'              => 'மாற்று விளக்கத்தை அனுமதி',
     'amount_entry'                       => 'தொகை உள்ளிடு',
     'bulk_edit'                          => 'மொத்த திருத்தம்',
@@ -76,6 +75,7 @@ return [
     'none'                               => '',
     'none_selected'                      => '',
     'nonstock'                           => '',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => '',
     'number_required'                    => '',
     'one_or_multiple'                    => '',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => '',
     'upc_database'                       => '',
     'update'                             => '',
-    'use_inventory_menu'                 => '',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => '',];

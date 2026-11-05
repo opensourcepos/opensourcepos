@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'הוספה או החסרה של מלאי.',
+return [    'add_minus'                          => 'הוספה או החסרה של מלאי.',
     'allow_alt_description'              => 'אפשר תיאור חלופי',
     'amount_entry'                       => 'ערך כניסה',
     'bulk_edit'                          => 'עריכה גורפת',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'ריק',
     'none_selected'                      => 'לא בחרת פריט כלשהו לעריכה',
     'nonstock'                           => 'לא במלאי',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'מספר פריט',
     'number_required'                    => 'ברקוד הינו שדה חובה.',
     'one_or_multiple'                    => 'פריט(ים)',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => 'מחיר קמעונאי הינו שדה חובה.',
     'upc_database'                       => 'מסד נתונים של הברקוד',
     'update'                             => 'עדכן פריט',
-    'use_inventory_menu'                 => 'השתמש בתפריט מלאי',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => 'השתמש בתפריט מלאי',];

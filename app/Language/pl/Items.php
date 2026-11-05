@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Ilość do dodania lub odjęcia.',
+return [    'add_minus'                          => 'Ilość do dodania lub odjęcia.',
     'allow_alt_description'              => '',
     'amount_entry'                       => '',
     'bulk_edit'                          => '',
@@ -76,6 +75,7 @@ return [
     'none'                               => '',
     'none_selected'                      => '',
     'nonstock'                           => '',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => '',
     'number_required'                    => '',
     'one_or_multiple'                    => '',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => '',
     'upc_database'                       => '',
     'update'                             => '',
-    'use_inventory_menu'                 => '',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => '',];

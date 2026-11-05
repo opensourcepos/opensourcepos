@@ -1432,21 +1432,13 @@ class ItemsControllerTest extends CIUnitTestCase
         $locAId = (int) $locationA['location_id'];
         $locBId = (int) $locationB['location_id'];
 
-        $db->table('permissions')->insert([
-            'permission_id' => 'items_' . str_replace(' ', '_', $locationA['location_name']),
-            'module_id'     => 'items',
-            'location_id'   => $locAId,
-        ]);
-        $db->table('permissions')->insert([
-            'permission_id' => 'items_' . str_replace(' ', '_', $locationB['location_name']),
-            'module_id'     => 'items',
-            'location_id'   => $locBId,
-        ]);
+        $permA = 'items_' . $locationA['location_name'];
+        $permB = 'items_' . $locationB['location_name'];
 
         $personId = $this->createEmployee(
             grants: [
                 ['permission_id' => 'items', 'menu_group' => 'home'],
-                ['permission_id' => 'items_' . str_replace(' ', '_', $locationA['location_name']), 'menu_group' => 'home'],
+                ['permission_id' => $permA, 'menu_group' => 'home'],
             ]
         );
         $this->loginAsItemsEmployee($personId);
@@ -1484,16 +1476,12 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
         $locAId = (int) $locationA['location_id'];
 
-        $db->table('permissions')->insert([
-            'permission_id' => 'items_' . str_replace(' ', '_', $locationA['location_name']),
-            'module_id'     => 'items',
-            'location_id'   => $locAId,
-        ]);
+        $permA = 'items_' . $locationA['location_name'];
 
         $personId = $this->createEmployee(
             grants: [
                 ['permission_id' => 'items', 'menu_group' => 'home'],
-                ['permission_id' => 'items_' . str_replace(' ', '_', $locationA['location_name']), 'menu_group' => 'home'],
+                ['permission_id' => $permA, 'menu_group' => 'home'],
             ]
         );
         $this->loginAsItemsEmployee($personId);
