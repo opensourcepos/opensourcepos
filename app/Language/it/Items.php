@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Inventario da aggiungere o sottrarre.',
+return [    'add_minus'                          => 'Inventario da aggiungere o sottrarre.',
     'allow_alt_description'              => 'Permetti Descrizione alternativa',
     'amount_entry'                       => 'Importo Inserito',
     'bulk_edit'                          => 'Modifica collettiva',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Nessuno',
     'none_selected'                      => 'Non hai selezionato alcun articolo da modificare',
     'nonstock'                           => 'Non-stockato',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Numero Articolo',
     'number_required'                    => 'Il Codice a barre è un campo obbligatorio.',
     'one_or_multiple'                    => 'articolo/i',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => 'Prezzo al dettaglio è un campo obbligatorio.',
     'upc_database'                       => 'Archivio Codice a Barre',
     'update'                             => 'Aggiorna Articolo',
-    'use_inventory_menu'                 => 'Usa Menu Inventario',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => 'Usa Menu Inventario',];

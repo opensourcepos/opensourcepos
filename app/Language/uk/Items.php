@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Додати/видалити товар.',
+return [    'add_minus'                          => 'Додати/видалити товар.',
     'allow_alt_description'              => 'Дозволити альтернативний опис',
     'amount_entry'                       => 'Введення кількості',
     'bulk_edit'                          => 'Масове редагування',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Нічого',
     'none_selected'                      => 'Ви не обрали жодного товару для редагування',
     'nonstock'                           => 'Немає в наявності',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Номер товару',
     'number_required'                    => 'Штрих-код - обов\'язкове поле.',
     'one_or_multiple'                    => 'Товар(и)',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => 'Роздрібна ціна - обов\'язкове поле.',
     'upc_database'                       => 'UPC база данх',
     'update'                             => 'Оновити Товар',
-    'use_inventory_menu'                 => 'Використайте меню інвентаря',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => 'Використайте меню інвентаря',];

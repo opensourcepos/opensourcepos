@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => "ស្តុក\u{200b} សំរាប់បន្ថែម រឺក៏ដកទំនិញ។",
+return [    'add_minus'                          => "ស្តុក\u{200b} សំរាប់បន្ថែម រឺក៏ដកទំនិញ។",
     'allow_alt_description'              => 'យល់ព្រម ចំពោះការពិព៌ណនា ផ្សេងទៀត',
     'amount_entry'                       => 'ចំនួន ត្រូវបញ្ជូល',
     'bulk_edit'                          => 'កែប្រែជាក្រុម',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'គ្មាន',
     'none_selected'                      => 'អ្នកមិនបានជ្រើសរើសទំនិញណាមួយសំរាប់កែប្រែនោះទេ',
     'nonstock'                           => 'មិនមានស្ដុក',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'លេខរបស់ទំនិញ',
     'number_required'                    => 'ត្រូវការលេខកូតចាំបាច់។',
     'one_or_multiple'                    => 'ទំនិញ',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => 'តម្លៃលក់រាយ ត្រូវការជាចាំបាច់។',
     'upc_database'                       => 'ទិន្នន័យ លេខកូត',
     'update'                             => 'កែប្រែទំនិញ',
-    'use_inventory_menu'                 => 'ប្រើប្រាស់បញ្ជីទំនិញ',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => 'ប្រើប្រាស់បញ្ជីទំនិញ',];

@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Bestandsänderung',
+return [    'add_minus'                          => 'Bestandsänderung',
     'allow_alt_description'              => 'Erlaube Alt. Bez.',
     'amount_entry'                       => '',
     'bulk_edit'                          => 'Sammeländerung',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Nichts',
     'none_selected'                      => 'Sie haben keine Artikel zum Ändern gewählt',
     'nonstock'                           => '',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Artikelnummer',
     'number_required'                    => 'UPC/EAN/ISBN ist erforderlich',
     'one_or_multiple'                    => 'Artikel',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => 'Preis ist erforderlich',
     'upc_database'                       => 'UPC Datenbank',
     'update'                             => 'Ändere Artikel',
-    'use_inventory_menu'                 => 'Verwende Bestandesmenu',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => 'Verwende Bestandesmenu',];

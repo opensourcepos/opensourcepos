@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Změna množství.',
+return [    'add_minus'                          => 'Změna množství.',
     'allow_alt_description'              => 'Povolit alternativní popis',
     'amount_entry'                       => 'Množství',
     'bulk_edit'                          => 'Hromadná editace',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Žádný',
     'none_selected'                      => '',
     'nonstock'                           => 'Neskladová',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Číslo položky',
     'number_required'                    => 'Musíte zadat čárový kód.',
     'one_or_multiple'                    => 'Položky',
@@ -121,6 +121,4 @@ return [
     'unit_price_required'                => 'Musíte zadat koncovou cenu.',
     'upc_database'                       => 'Databáze čárových kódů',
     'update'                             => 'Upravit položku',
-    'use_inventory_menu'                 => 'Použít nabídku Sklad',
-    'not_authorized'                      => 'Not authorized',
-];
+    'use_inventory_menu'                 => 'Použít nabídku Sklad',];
