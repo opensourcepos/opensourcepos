@@ -56,14 +56,15 @@ class Secure_Controller extends BaseController
             $this->session->set('menu_group', $menu_group);
         }
 
-        $allowed_modules = $menu_group == 'home'
-            ? $this->module->get_allowed_home_modules($logged_in_employee_info->person_id)
-            : $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
+        $allowed_modules = $this->module->getNavigationModules(
+            $logged_in_employee_info->person_id,
+            $menu_group,
+            $this->employee->has_module_grant('office', $logged_in_employee_info->person_id)
+        );
 
-        $this->global_view_data = [];
-        foreach ($allowed_modules->getResult() as $module) {
-            $this->global_view_data['allowed_modules'][] = $module;
-        }
+        $this->global_view_data = [
+            'allowed_modules' => $allowed_modules
+        ];
 
         $this->global_view_data += [
             'user_info'       => $logged_in_employee_info,

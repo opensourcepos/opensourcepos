@@ -40,12 +40,15 @@ class No_access extends BaseController
         }
 
         $menuGroup = session()->get('menu_group');
-        $allowedModules = $menuGroup == 'home'
-            ? $this->module->get_allowed_home_modules($userInfo->person_id)
-            : $this->module->get_allowed_office_modules($userInfo->person_id);
+
+        $allowedModules = $this->module->getNavigationModules(
+            $userInfo->person_id,
+            $menuGroup,
+            $this->employee->has_module_grant('office', $userInfo->person_id)
+        );
 
         $data['user_info']       = $userInfo;
-        $data['allowed_modules'] = $allowedModules->getResult();
+        $data['allowed_modules'] = $allowedModules;
         $data['config']          = config(OSPOS::class)->settings;
 
         return view('partial/header', $data) . view('no_access', $data) . view('partial/footer');
