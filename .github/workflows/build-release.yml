@@ -193,6 +193,7 @@ jobs:
           context: .
           target: ospos
           platforms: linux/amd64,linux/arm64
+          pull: true
           push: true
           tags: ${{ steps.tags.outputs.tags }}
 

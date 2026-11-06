@@ -17,8 +17,8 @@ We release patches for security vulnerabilities.
 
 | Version   | Supported          |
 | --------- | ------------------ |
-| >= 3.4.2  | :white_check_mark: |
-| < 3.4.2   | :x:                |
+| >= 3.4.3  | :white_check_mark: |
+| < 3.4.3   | :x:                |
 
 ## Security Advisories
 

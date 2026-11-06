@@ -7,9 +7,9 @@ use App\Models\Employee;
 use CodeIgniter\Config\Factories;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\OSPOS;
 use Config\Services;
 use PHPUnit\Framework\MockObject\MockObject;
+use Tests\Support\OsposConfigFixtureTrait;
 
 /**
  * Regression tests for the login validation flow in OSPOSRules::login_check().
@@ -19,6 +19,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class OSPOSRulesTest extends CIUnitTestCase
 {
+    use OsposConfigFixtureTrait;
+
     protected function tearDown(): void
     {
         Factories::reset();
@@ -138,9 +140,7 @@ class OSPOSRulesTest extends CIUnitTestCase
 
     private function injectSettings(array $settings): void
     {
-        $ospos = new OSPOS();
-        $ospos->settings = $settings;
-        Factories::injectMock('config', OSPOS::class, $ospos);
+        $this->injectOsposSettings($settings);
     }
 
     private function injectRequest(): void

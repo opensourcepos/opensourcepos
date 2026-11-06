@@ -15,7 +15,7 @@ use Config\Database;
 class OSPOS extends BaseConfig
 {
     public array $settings = [];
-    public string $commit_sha1 = 'dev';    // TODO: Travis scripts need to be updated to replace this with the commit hash on build
+    public string $commit_sha1 = 'dev';
     private CacheInterface $cache;
 
     public function __construct()
@@ -59,10 +59,12 @@ class OSPOS extends BaseConfig
     private function getDefaultSettings(): array
     {
         return [
-            'language'      => 'english',
-            'language_code' => 'en',
-            'company'       => 'Home',
-            'barcode_type'  => 'Code39'
+            'language'          => 'english',
+            'language_code'     => 'en',
+            'company'           => 'Home',
+            'barcode_type'      => 'Code39',
+            'invoice_enable'    => '1',
+            'work_order_enable' => '0',
         ];
     }
 

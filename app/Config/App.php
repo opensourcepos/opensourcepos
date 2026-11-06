@@ -12,7 +12,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public string $application_version = '3.4.3';
+    public string $application_version = '3.4.4-dev';
 
     /**
      * This is the commit hash for the version you are currently using.
@@ -175,11 +175,12 @@ class App extends BaseConfig
         'fa',
         'fr',
         'he',
-        'hr-HR',
+        'hr',
         'hu',
         'hy',
         'id',
         'it',
+        'ka',
         'km',
         'lo',
         'ml',
@@ -191,6 +192,8 @@ class App extends BaseConfig
         'ro',
         'ru',
         'sv',
+        'sw-KE',
+        'sw-TZ',
         'ta',
         'th',
         'tl',
