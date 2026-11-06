@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Suppression réussie',
     'successful_updating'   => 'Fournisseur édité avec succès',
     'supplier'              => 'Fournisseur',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'Id. de taxe',
     'update'                => 'Modifier le fournisseur',
 ];

@@ -17,8 +17,6 @@ return [
     'item'                      => 'Item Barang',
     'item_kit_number'           => 'Kode bar',
     'item_kit_number_duplicate' => 'Nomor Paket Item telah ada di basis data.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Item Barang',
     'kit'                       => 'ID Paket',
     'kit_and_components'        => 'Kit dan komponen',

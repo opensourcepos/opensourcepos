@@ -8,7 +8,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Config\Database;
 use Config\Services;
 
-class Expenses_categories extends Secure_Controller    // TODO: Is this class ever used?
+class Expenses_categories extends Secure_Controller
 {
     private BaseConnection $db;
     private Expense_category $expense_category;
@@ -147,13 +147,15 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
     {
         $expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if ($this->expense_category->delete_list($expense_category_to_delete)) {    // TODO: Convert to ternary notation.
+        if ($this->expense_category->delete_list($expense_category_to_delete)) {
             return $this->response->setJSON([
                 'success' => true,
                 'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')
             ]);
         } else {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Expenses_categories.cannot_be_deleted')]);
         }
     }
 }

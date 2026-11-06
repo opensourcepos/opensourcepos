@@ -16,9 +16,9 @@ return [
     'this_financial_year'              => 'Huidig Boekjaar',
     'this_month'                       => 'Deze Maand',
     'this_year'                        => 'Dit Jaar',
-    'to'                               => 'To',
+    'to'                               => '',
     'today'                            => 'Vandaag',
     'today_last_year'                  => 'Vandaag vorig jaar',
-    'weekstart'                        => '0',
+    'weekstart'                        => '1',
     'yesterday'                        => 'Gisteren',
 ];

@@ -17,8 +17,6 @@ return [
     'item'                      => 'مورد',
     'item_kit_number'           => '',
     'item_kit_number_duplicate' => '',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'موارد',
     'kit'                       => 'شناسه کیت',
     'kit_and_components'        => 'کیت و قطعات',

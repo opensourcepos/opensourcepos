@@ -19,6 +19,6 @@ return [
     'to'                               => 'Đến',
     'today'                            => 'Hôm nay',
     'today_last_year'                  => 'Hôm nay của năm ngoái',
-    'weekstart'                        => '0',
+    'weekstart'                        => '1',
     'yesterday'                        => 'Hôm qua',
 ];

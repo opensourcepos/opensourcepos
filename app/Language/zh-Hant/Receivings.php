@@ -28,6 +28,7 @@ return [
     'item_name'                    => '產品名稱',
     'mode'                         => '進貨模式',
     'new_supplier'                 => '新供應商',
+    'not_authorized'               => '',
     'one_or_multiple'              => '進貨',
     'print_after_sale'             => '出貨時打印收據',
     'quantity'                     => '數量.',

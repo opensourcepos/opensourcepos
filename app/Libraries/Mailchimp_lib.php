@@ -117,8 +117,6 @@ class MailchimpConnector
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpVerb);
 
             $result = curl_exec($ch);
-
-            curl_close($ch);
         }
 
         return $result ? json_decode($result, true) : false;

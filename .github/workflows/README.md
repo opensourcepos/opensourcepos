@@ -50,12 +50,12 @@ The `GITHUB_TOKEN` is automatically provided by GitHub Actions.
 
 This repository also has these workflows:
 - `.github/workflows/main.yml` - PHP linting with PHP-CS-Fixer
-- `.github/workflows/phpunit.yml` - PHPUnit tests (runs on all PHP versions 8.1-8.4)
+- `.github/workflows/phpunit.yml` - PHPUnit tests (runs on all PHP versions 8.2-8.5)
 - `.github/workflows/php-linter.yml` - PHP linting
 
 ## Testing
 
-PHPUnit tests are run separately via `.github/workflows/phpunit.yml` on every push and pull request, testing against PHP 8.1, 8.2, 8.3, and 8.4.
+PHPUnit tests are run separately via `.github/workflows/phpunit.yml` on every push and pull request, testing against PHP 8.2, 8.3, 8.4, and 8.5.
 
 To test the build workflow:
 1. Add the required secrets
