@@ -113,7 +113,11 @@ class Items extends Secure_Controller
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $this->item_lib->set_item_location($this->request->getGet('stock_location'));
+        $stockLocation = $this->request->getGet('stock_location');
+        if ($stockLocation !== null && $stockLocation !== '' && !$this->stock_location->is_allowed_location((int) $stockLocation, 'items')) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
+        }
+        $this->item_lib->set_item_location($stockLocation);
 
         $definitionNamesWithTypes = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
         $definitionIds = array_keys($definitionNamesWithTypes);
@@ -538,16 +542,27 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
+        $allowedLocations = $this->stock_location->get_allowed_locations('items');
         $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
+            if (!array_key_exists($location['location_id'], $allowedLocations)) {
+                continue;
+            }
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
 
-        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
+        $defaultLocation = $this->stock_location->getDefaultLocationId();
+        if (array_key_exists($defaultLocation, $allowedLocations)) {
+            $data['stock_location'] = $defaultLocation;
+        } elseif (count($allowedLocations) > 0) {
+            $data['stock_location'] = array_key_first($allowedLocations);
+        } else {
+            $data['stock_location'] = null;
+        }
 
         return view('items/form_count_details', $data);
     }
