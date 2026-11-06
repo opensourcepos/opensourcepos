@@ -40,7 +40,8 @@ The features include:
 - Messaging (SMS)
 - Multilanguage
 - Selectable Bootstrap based UI theme with Bootswatch
-- MailChimp integration
+- Extensible plugin system with per-plugin database migrations
+- MailChimp integration (via plugin)
 - Optional Google reCAPTCHA to protect the login page from brute force attacks
 - GDPR ready
 

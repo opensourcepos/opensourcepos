@@ -14,6 +14,19 @@ class LanguageFilesTest extends CIUnitTestCase
     private static array $englishKeysCache = [];
 
     /**
+     * @var array<string, array>
+     */
+    private static array $parsedFileCache = [];
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function getParsedFile(string $file): array
+    {
+        return self::$parsedFileCache[$file] ??= include $file;
+    }
+
+    /**
      * @return array<string, array{0: string}>
      */
     public static function languageFileProvider(): array
@@ -34,7 +47,7 @@ class LanguageFilesTest extends CIUnitTestCase
     public function testLanguageFile_ParsesToArray(string $file): void
     {
         try {
-            $result = include $file;
+            $result = self::getParsedFile($file);
         } catch (ParseError $parseError) {
             $this->fail("Failed to parse {$file}: {$parseError->getMessage()}");
         }
@@ -48,10 +61,10 @@ class LanguageFilesTest extends CIUnitTestCase
         $baseName = basename($file);
         if (! isset(self::$englishKeysCache[$baseName])) {
             $enFile = realpath(__DIR__ . '/../app/Language/en/' . $baseName);
-            self::$englishKeysCache[$baseName] = array_keys(include $enFile);
+            self::$englishKeysCache[$baseName] = array_keys(self::getParsedFile($enFile));
         }
 
-        $currentKeys = array_keys(include $file);
+        $currentKeys = array_keys(self::getParsedFile($file));
         $expectedKeys = self::$englishKeysCache[$baseName];
 
         $extra = array_diff($currentKeys, $expectedKeys);
@@ -70,7 +83,7 @@ class LanguageFilesTest extends CIUnitTestCase
             return;
         }
 
-        $keys = array_keys(include $file);
+        $keys = array_keys(self::getParsedFile($file));
         $sortedKeys = $keys;
         sort($sortedKeys, SORT_STRING);
 

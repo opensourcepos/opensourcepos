@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
@@ -50,7 +51,7 @@ class Login extends BaseController
             $data = [
                 'hasErrors'       => false,
                 'isNewInstall'   => $currentVersion === 0,
-                'isLatest'        => $latestVersion === $currentVersion,
+                'isLatest'        => $latestVersion === $currentVersion && !service('pluginManager')->hasPendingMigrations(),
                 'latestVersion'   => $latestVersion,
                 'gcaptchaEnabled' => $gcaptchaEnabled,
                 'config'           => $config,
@@ -92,6 +93,8 @@ class Login extends BaseController
 
                 return view('login', $data);
             }
+
+            Events::trigger('user_logged_in', (int)session('person_id'), []);
         }
 
         return redirect()->to('home');
@@ -134,6 +137,8 @@ class Login extends BaseController
             ignore_user_abort(true);
             set_time_limit(3600);
             $migration->setNamespace('App')->runLocked();
+
+            service('pluginManager')->runPendingMigrations();
 
             return $this->response->setJSON([
                 'success' => true,

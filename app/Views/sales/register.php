@@ -344,7 +344,7 @@ helper('url');
                     </tr>
                     <?php if (!empty($mailchimp_info)) { ?>
                         <tr>
-                            <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.customer_mailchimp_status') ?></th>
+                            <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.mailchimp_customer_status') ?></th>
                             <th style="width: 45%; text-align: right;"><?= esc($mailchimp_info['status']) ?></th>
                         </tr>
                     <?php } ?>
@@ -535,7 +535,7 @@ helper('url');
                 <?php } ?>
             </div>
 
-            <?= form_open("$controller_name/cancel", ['id' => 'buttons_form']) ?>
+            <?= form_open("$controller_name/cancel", ['id' => 'buttons_form', 'data-plugin-form' => 'true']) ?>
             <div class="form-group" id="buttons_sale">
                 <div class="btn btn-sm btn-default pull-left" id="suspend_sale_button"><span class="glyphicon glyphicon-align-justify">&nbsp;</span><?= lang(ucfirst($controller_name) . '.suspend_sale') ?></div>
                 <?php if (!$pos_mode && isset($customer)) { // Only show this part if the payment covers the total ?>
@@ -564,7 +564,6 @@ helper('url');
                                     <?= lang(ucfirst($controller_name) . '.print_after_sale') ?>
                                 </label>
                             </div>
-
                             <?php if (!empty($customer_email)) { ?>
                                 <div class="col-xs-6">
                                     <label for="email_receipt" class="control-label checkbox">
@@ -581,6 +580,7 @@ helper('url');
                                     </label>
                                 </div>
                             <?php } ?>
+                            <?= pluginContent('sales_register_buttons') ?>
                         </div>
                     </div>
                     <?php if (($mode == 'sale_invoice') && $config['invoice_enable']) { ?>

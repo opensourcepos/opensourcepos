@@ -61,6 +61,39 @@ class Inventory extends Model
     }
 
     /**
+     * Retrieves the earliest transaction date (date added) for an item.
+     *
+     * @param int $itemId
+     * @return string|null The earliest trans_date in Y-m-d H:i:s format, or null if no transactions exist
+     */
+    public function getDateAdded(int $itemId): ?string
+    {
+        $result = $this->db->table('inventory')
+            ->selectMin('trans_date', 'date_added')
+            ->where('trans_items', $itemId)
+            ->get()
+            ->getRowArray();
+
+        return $result['date_added'] ?? null;
+    }
+
+    public function getDatesAdded(array $itemIds): array
+    {
+        if (empty($itemIds)) {
+            return [];
+        }
+
+        $results = $this->db->table('inventory')
+            ->select('trans_items, MIN(trans_date) AS date_added')
+            ->whereIn('trans_items', $itemIds)
+            ->groupBy('trans_items')
+            ->get()
+            ->getResultArray();
+
+        return array_column($results, 'date_added', 'trans_items');
+    }
+
+    /**
      * @param int $item_id ID number for the item to have quantity reset.
      * @return bool|int|string The row id of the inventory table on insert or false on failure
      */

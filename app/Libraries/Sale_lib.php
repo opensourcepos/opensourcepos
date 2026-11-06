@@ -1319,6 +1319,7 @@ class Sale_lib
         // POS #
         $pieces = explode(' ', $receipt_sale_id);
         $sale_id = $pieces[1];
+        $this->session->set('return_original_sale_id', (int)$sale_id);
 
         $this->empty_cart();
         $this->remove_customer();
@@ -1416,6 +1417,11 @@ class Sale_lib
         return $this->session->get('sale_id');
     }
 
+    public function getReturnOriginalSaleId(): int
+    {
+        return (int)($this->session->get('return_original_sale_id') ?? 0);
+    }
+
     /**
      * @return void
      */
@@ -1435,6 +1441,7 @@ class Sale_lib
         $this->empty_payments();
         $this->remove_customer();
         $this->clear_cash_flags();
+        $this->session->remove('return_original_sale_id');
     }
 
     /**

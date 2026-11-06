@@ -33,7 +33,6 @@ return [
     'customer_discount'                 => 'Korting',
     'customer_email'                    => '',
     'customer_location'                 => '',
-    'customer_mailchimp_status'         => 'MailChimp staat',
     'customer_optional'                 => '(Optioneel)',
     'customer_required'                 => '(Vereist)',
     'customer_total'                    => 'Totaal',
