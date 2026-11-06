@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Instellingen',
     'info_configuration'                        => 'Instellingen',
     'input_groups'                              => 'Invoer Groepen',
-    'integrations'                              => 'Integraties',
-    'integrations_configuration'                => 'Integraties',
     'invoice'                                   => 'Factuur',
     'invoice_configuration'                     => 'Print Instellingen',
     'invoice_default_comments'                  => 'Factuur Mededeling',

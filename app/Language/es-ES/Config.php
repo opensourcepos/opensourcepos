@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Información',
     'info_configuration'                        => 'Información del Comercio',
     'input_groups'                              => 'Introducir Grupos',
-    'integrations'                              => 'Componentes Integrados',
-    'integrations_configuration'                => 'Componentes de Terceros Integrados',
     'invoice'                                   => 'Factura',
     'invoice_configuration'                     => 'Parámetros de Impresión',
     'invoice_default_comments'                  => 'Comentarios predeterminados en la factura',

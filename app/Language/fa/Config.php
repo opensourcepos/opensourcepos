@@ -168,8 +168,6 @@ return [
     'info'                                      => 'اطلاعات',
     'info_configuration'                        => 'اطلاعات فروشگاه',
     'input_groups'                              => '',
-    'integrations'                              => 'ادغام',
-    'integrations_configuration'                => 'ادغام های شخص ثالث',
     'invoice'                                   => 'صورتحساب',
     'invoice_configuration'                     => 'تنظیمات چاپ فاکتور',
     'invoice_default_comments'                  => 'نظرات پیش فرض فاکتور',

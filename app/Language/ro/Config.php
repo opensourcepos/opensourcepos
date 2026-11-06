@@ -168,8 +168,6 @@ return [
     'info'                                      => '',
     'info_configuration'                        => '',
     'input_groups'                              => '',
-    'integrations'                              => '',
-    'integrations_configuration'                => '',
     'invoice'                                   => '',
     'invoice_configuration'                     => '',
     'invoice_default_comments'                  => '',

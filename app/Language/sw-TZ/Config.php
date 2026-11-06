@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Taarifa',
     'info_configuration'                        => 'Taarifa za Duka',
     'input_groups'                              => 'Makundi ya Uingizaji',
-    'integrations'                              => 'Muunganiko',
-    'integrations_configuration'                => 'Muunganiko wa Watu wengine',
     'invoice'                                   => 'Ankara',
     'invoice_configuration'                     => 'Mpangilio wa Uchapishaji wa Ankara',
     'invoice_default_comments'                  => 'Maoni ya Chaguo-msingi ya Ankara',

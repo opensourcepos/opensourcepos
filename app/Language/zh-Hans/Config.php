@@ -168,8 +168,6 @@ return [
     'info'                                      => '儲存組態',
     'info_configuration'                        => '儲存組態',
     'input_groups'                              => '',
-    'integrations'                              => '',
-    'integrations_configuration'                => '',
     'invoice'                                   => '',
     'invoice_configuration'                     => '',
     'invoice_default_comments'                  => '',

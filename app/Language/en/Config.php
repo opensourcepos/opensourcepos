@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Information',
     'info_configuration'                        => 'Store Information',
     'input_groups'                              => 'Input Groups',
-    'integrations'                              => 'Integrations',
-    'integrations_configuration'                => 'Third Party Integrations',
     'invoice'                                   => 'Invoice',
     'invoice_configuration'                     => 'Invoice Print Settings',
     'invoice_default_comments'                  => 'Default Invoice Comments',

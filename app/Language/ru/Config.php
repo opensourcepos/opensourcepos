@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Информация',
     'info_configuration'                        => 'Информация о магазине',
     'input_groups'                              => 'Группы полей ввода',
-    'integrations'                              => 'Интеграции',
-    'integrations_configuration'                => 'Сторонние интеграции',
     'invoice'                                   => 'Накладная',
     'invoice_configuration'                     => 'Настройки печати накладной',
     'invoice_default_comments'                  => 'Комментарии к накладной по умолчанию',

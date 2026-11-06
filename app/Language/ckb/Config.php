@@ -227,8 +227,6 @@ return [
     'perm_risk'                                 => 'ڕێگەپێدانی هەڵە ئەم نەرمەکاڵایە دەخاتە مەترسییەوە.',
     'phone'                                     => 'تەلەفوونی کۆمپانیا',
     'phone_required'                            => 'خانەی تەلەفوونی کۆمپانیا پێویستە.',
-    'plugins'                                   => 'یەکگرتنەکان',
-    'plugins_configuration'                     => 'یەکگرتنەکانی لایەنی سێیەم',
     'print_bottom_margin'                       => 'پەراوێزی خوارەوە',
     'print_bottom_margin_number'                => 'پەراوێزی خوارەوە دەبێت ژمارە بێت.',
     'print_bottom_margin_required'              => 'خانەی پەراوێزی خوارەوە پێویستە.',

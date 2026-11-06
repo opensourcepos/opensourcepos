@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Entreprise',
     'info_configuration'                        => 'Çonfiguration de l\'Entreprise',
     'input_groups'                              => 'Groupes d\'entrée',
-    'integrations'                              => 'Intégrations',
-    'integrations_configuration'                => 'Intégration de parties tierces',
     'invoice'                                   => 'Facture',
     'invoice_configuration'                     => 'Paramètres d\'impression de facture',
     'invoice_default_comments'                  => 'Commentaires par facture par défaut',

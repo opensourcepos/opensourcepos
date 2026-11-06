@@ -227,8 +227,6 @@ return [
     'perm_risk'                                 => 'Setelan izin yang salah berbahaya bagi keamanan perangkat lunak.',
     'phone'                                     => 'Telepon Perusahaan',
     'phone_required'                            => 'Telepon Perusahaan wajib diisi.',
-    'plugins'                                   => 'Integrasi',
-    'plugins_configuration'                     => 'Integrasi pihak ketiga',
     'print_bottom_margin'                       => 'Margin Bawah',
     'print_bottom_margin_number'                => 'Default margin bawah harus angka.',
     'print_bottom_margin_required'              => 'Default margin Bawah harus di isi.',

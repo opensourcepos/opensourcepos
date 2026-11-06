@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Інформація',
     'info_configuration'                        => 'Інформація про Магазин',
     'input_groups'                              => '',
-    'integrations'                              => 'Інтеграції',
-    'integrations_configuration'                => 'Інтеграція сторонніх організацій',
     'invoice'                                   => 'Рахунок-фактура',
     'invoice_configuration'                     => 'Налаштування друку рахунків-фактур',
     'invoice_default_comments'                  => 'Коментарі до рахунків за замовчуванням',

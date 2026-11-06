@@ -168,8 +168,6 @@ return [
     'info'                                      => '',
     'info_configuration'                        => 'Información de la tienda',
     'input_groups'                              => 'Grupos de Entrada',
-    'integrations'                              => 'Integraciones',
-    'integrations_configuration'                => 'Integraciones Externas',
     'invoice'                                   => 'Factura',
     'invoice_configuration'                     => 'Configuración de impresión de facturas',
     'invoice_default_comments'                  => 'Comentarios por defecto en factura',

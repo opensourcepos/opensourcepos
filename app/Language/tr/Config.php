@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Bilgi',
     'info_configuration'                        => 'Mağaza Bilgisi',
     'input_groups'                              => 'Girdi Kümeleri',
-    'integrations'                              => 'Tümleşimler',
-    'integrations_configuration'                => 'Üçüncü Taraf Tümleşimler',
     'invoice'                                   => 'Fatura',
     'invoice_configuration'                     => 'Fatura Yazdırma Ayarları',
     'invoice_default_comments'                  => 'Ön Tanımlı Fatura Yorumları',

@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Instellungen',
     'info_configuration'                        => 'Instellungen',
     'input_groups'                              => '',
-    'integrations'                              => '',
-    'integrations_configuration'                => '',
     'invoice'                                   => 'Rechnungs',
     'invoice_configuration'                     => 'Druckereinstellungen',
     'invoice_default_comments'                  => 'Rechnungskommentar',

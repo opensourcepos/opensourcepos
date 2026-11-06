@@ -168,8 +168,6 @@ return [
     'info'                                      => '',
     'info_configuration'                        => 'Butiksinformation',
     'input_groups'                              => 'Inmatningsgrupper',
-    'integrations'                              => 'Integrationer',
-    'integrations_configuration'                => 'Tredjepartsintegrationer',
     'invoice'                                   => 'Faktura',
     'invoice_configuration'                     => 'Faktura utskriftsinställningar',
     'invoice_default_comments'                  => 'Standardfaktura kommentarer',

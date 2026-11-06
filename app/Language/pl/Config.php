@@ -227,8 +227,6 @@ return [
     'perm_risk'                                 => '',
     'phone'                                     => '',
     'phone_required'                            => '',
-    'plugins'                                   => '',
-    'plugins_configuration'                     => '',
     'print_bottom_margin'                       => '',
     'print_bottom_margin_number'                => '',
     'print_bottom_margin_required'              => '',

@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Info',
     'info_configuration'                        => 'Info o web trgovini',
     'input_groups'                              => '',
-    'integrations'                              => '',
-    'integrations_configuration'                => '',
     'invoice'                                   => 'Račun',
     'invoice_configuration'                     => 'Postavke štamapnja',
     'invoice_default_comments'                  => 'Komentar na računu',

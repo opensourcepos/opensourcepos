@@ -168,8 +168,6 @@ return [
     'info'                                      => 'Məlumat',
     'info_configuration'                        => 'Mağaza Məlumatı',
     'input_groups'                              => 'Giriş Qrupları',
-    'integrations'                              => 'İnteqrasiyalar',
-    'integrations_configuration'                => 'Üçüncü Tərəf İnteqrasiyaları',
     'invoice'                                   => 'Qaimə',
     'invoice_configuration'                     => 'Qaimə Çap Parametrləri',
     'invoice_default_comments'                  => 'Standart Qaimə Şərhləri',
