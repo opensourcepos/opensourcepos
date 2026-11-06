@@ -19,6 +19,6 @@ return [
     'to'                               => 'Tot',
     'today'                            => 'Vandaag',
     'today_last_year'                  => 'Vandaag afgelopen jaar',
-    'weekstart'                        => '0',
+    'weekstart'                        => '1',
     'yesterday'                        => 'Gisteren',
 ];

@@ -2,25 +2,41 @@ name: PHP Linting
 
 on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   phplint:
-
+    name: PHP Lint ${{ matrix.php-version }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - '8.2'
+          - '8.3'
+          - '8.4'
+          - '8.5'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          fetch-depth: 0
-      - name: PHP Lint 8.2
-        uses: dbfx/github-phplint/8.2@master
-        with:
-          folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./folder/excluded/*\""
-      - name: PHP Lint 8.3
-        uses: dbfx/github-phplint/8.3@master
-        with:
-          folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./folder/excluded/*\""
-      - name: PHP Lint 8.4
-        uses: dbfx/github-phplint/8.4@master
-        with:
-          folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./folder/excluded/*\""
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: Run PHP Lint
+        run: |
+          if [ "${{ matrix.php-version }}" = "8.2" ]; then
+            find . -type f -name "*.php" ! -path "./vendor/*" ! -path "./node_modules/*" -exec sh -c 'for file do php -l "$file" || exit 1; done' sh {} +
+          else
+            find . -type f -name "*.php" ! -path "./vendor/*" ! -path "./node_modules/*" -exec php -l {} +
+          fi
+          php -l spark

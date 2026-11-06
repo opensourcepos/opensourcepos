@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Назва товару',
     'mode'                         => 'Спосіб отримання',
     'new_supplier'                 => 'Новий постачальник',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'надходження',
     'print_after_sale'             => 'Роздрукувати після продажу',
     'quantity'                     => 'Кількість',

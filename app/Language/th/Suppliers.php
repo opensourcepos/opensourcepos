@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'ลบสำเร็จ',
     'successful_updating'   => 'ปรับปรุงผู้ผลิตสำเร็จ',
     'supplier'              => 'ผู้ผลิต',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'เลขที่ผู้เสียภาษี',
     'update'                => 'แก้ไขข้อมูลผู้ผลิต',
 ];

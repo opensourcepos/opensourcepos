@@ -10,7 +10,7 @@ return [
     'invalid_installation'          => '',
     'invalid_username_and_password' => 'Neispravno ime/lozinka',
     'login'                         => 'Prijava',
-    'logout'                        => '',
+    'logout'                        => 'Odjava',
     'migrating_database'            => 'Migracija baze podataka',
     'migration_auth_message'        => '',
     'migration_complete'            => '',

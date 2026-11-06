@@ -28,7 +28,7 @@ return [
     'items_desc'                 => 'Ajouter, Éditer, Supprimer, et Chercher des articles en vente.',
     'jobs'                       => 'File d\'attente des tâches',
     'jobs_desc'                  => 'Configurer et gérer la file d\'attente des tâches en arrière-plan.',
-    'messages'                   => 'Messages',
+    'messages'                   => '',
     'messages_desc'              => 'Envoyer un message aux Client, Fournisseurs, Employés et al.',
     'migrate'                    => 'Émigrer',
     'migrate_desc'               => 'Mettre à jour la base de données OSPOS.',

@@ -103,7 +103,7 @@ class CustomerCsvRowProcessor
             return false;
         }
 
-        if (!$this->customer->save_customer($personData, $customerData)) {
+        if (!$this->customer->saveCustomer($personData, $customerData)) {
             return false;
         }
 

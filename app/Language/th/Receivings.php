@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'ชื่อสินคัา',
     'mode'                         => 'ประเภทธุรกรรม',
     'new_supplier'                 => 'ผู้ผลิตรายใหม่',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'ใบรับสินค้า',
     'print_after_sale'             => 'พิมพ์บิลหลังการขาย',
     'quantity'                     => 'จำนวน.',

@@ -59,7 +59,6 @@ class Reports extends Secure_Controller
         parent::__construct('reports');
         $request = Services::request();
         $methodName = urldecode($request->getUri()->getSegment(2));
-        $exploder = explode('_', $methodName);
 
         $this->attribute = config(Attribute::class);
         $this->config = config(OSPOS::class)->settings;
@@ -82,17 +81,42 @@ class Reports extends Secure_Controller
         $this->detailed_receivings = model(Detailed_receivings::class);
         $this->inventory_summary = model(Inventory_summary::class);
 
-        if (sizeof($exploder) > 1) {
-            preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $methodName, $matches);
-            preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
-            $submoduleId = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
-        } else {
-            $submoduleId = null;
+        // Map report URL names to their required permission
+        $reportPermissions = [
+            'summary_sales'              => 'reports_sales',
+            'summary_expenses_categories'=> 'reports_expenses_categories',
+            'summary_payments'           => 'reports_payments',
+            'summary_discounts'          => 'reports_discounts',
+            'summary_categories'         => 'reports_categories',
+            'summary_customers'          => 'reports_customers',
+            'summary_items'              => 'reports_items',
+            'summary_suppliers'          => 'reports_suppliers',
+            'summary_employees'          => 'reports_employees',
+            'summary_taxes'              => 'reports_taxes',
+            'summary_sales_taxes'        => 'reports_sales_taxes',
+            'detailed_item_sales'        => 'reports_sales',
+            'detailed_sales'             => 'reports_sales',
+            'detailed_receivings'        => 'reports_receivings',
+            'inventory_summary'          => 'reports_inventory',
+            'inventory_low'              => 'reports_inventory',
+            'specific_customers'         => 'reports_customers',
+            'specific_employees'         => 'reports_employees',
+            'specific_discounts'         => 'reports_discounts',
+            'specific_suppliers'         => 'reports_suppliers',
+        ];
+
+        // Normalize the report name: strip graphical_ prefix and _graph/_row suffixes
+        $reportName = $methodName;
+        if (str_starts_with($reportName, 'graphical_')) {
+            $reportName = substr($reportName, 10);
         }
+        $reportName = preg_replace('/_(graph|row)$/', '', $reportName);
+
+        $submoduleId = $reportPermissions[$reportName] ?? null;
 
         // Check access to report submodule
-        if ($submoduleId !== null && !$this->employee->has_grant('reports_' . $submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
-            throw new RedirectException('no_access/reports/reports_' . $submoduleId);
+        if ($submoduleId !== null && !$this->employee->has_grant($submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
+            throw new RedirectException('no_access/reports/' . $submoduleId);
         }
 
         helper('report');
@@ -1364,7 +1388,7 @@ class Reports extends Secure_Controller
             }
         }
 
-        $customer_info = $this->customer->get_info($customer_id);
+        $customer_info = $this->customer->getInfo($customer_id);
         $customer_name = !empty($customer_info->company_name)    // TODO: This variable is not used anywhere in the code. Should it be or can it be deleted?
             ? "[ $customer_info->company_name ]"
             : $customer_info->company_name;
@@ -1491,7 +1515,7 @@ class Reports extends Secure_Controller
             }
         }
 
-        $employee_info = $this->employee->get_info($employee_id);
+        $employee_info = $this->employee->getInfo($employee_id);
         // TODO: Duplicated Code
         $data = [
             'title'                => $employee_info->first_name . ' ' . $employee_info->last_name . ' ' . lang('Reports.report'),
@@ -1757,7 +1781,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        $supplier_info = $this->supplier->get_info((int) $supplier_id);
+        $supplier_info = $this->supplier->getInfo((int) $supplier_id);
         $data = [
             'title'        => $supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . lang('Reports.report'),
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
@@ -1827,7 +1851,7 @@ class Reports extends Secure_Controller
         $details_data = [];
         $details_data_rewards = [];
 
-        $show_locations = $this->stock_location->multiple_locations();
+        $show_locations = $this->stock_location->multipleLocations();
 
         foreach ($report_data['summary'] as $key => $row) {    // TODO: Duplicated Code
             if ($row['sale_status'] == CANCELED) {
@@ -1867,7 +1891,7 @@ class Reports extends Secure_Controller
             foreach ($report_data['details'][$key] as $drow) {
                 $quantity_purchased = to_quantity_decimals($drow['quantity_purchased']);
                 if ($show_locations) {
-                    $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
+                    $quantity_purchased .= ' [' . $this->stock_location->getLocationName($drow['item_location']) . ']';
                 }
 
                 $attribute_values = expand_attribute_values($definition_names, $drow);
@@ -2034,7 +2058,7 @@ class Reports extends Secure_Controller
         $summary_data = [];
         $details_data = [];
 
-        $show_locations = $this->stock_location->multiple_locations();
+        $show_locations = $this->stock_location->multipleLocations();
 
         foreach ($report_data['summary'] as $key => $row) {
             $summary_data[] = [
@@ -2063,7 +2087,7 @@ class Reports extends Secure_Controller
             foreach ($report_data['details'][$key] as $drow) {
                 $quantity_purchased = $drow['receiving_quantity'] > 1 ? to_quantity_decimals($drow['quantity_purchased']) . ' x ' . to_quantity_decimals($drow['receiving_quantity']) : to_quantity_decimals($drow['quantity_purchased']);
                 if ($show_locations) {
-                    $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
+                    $quantity_purchased .= ' [' . $this->stock_location->getLocationName($drow['item_location']) . ']';
                 }
 
                 $attribute_values = expand_attribute_values($definition_names, $drow);
