@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Expense Category name required',
     'add_item'                          => 'Add Category',
     'cannot_be_deleted'                 => 'Could not delete Category Expense(s)',
     'category_id'                       => 'Id',
+    'category_name_required'            => 'Expense Category name required',
     'confirm_delete'                    => 'Are you sure you want to delete the selected Expense Category?',
     'confirm_restore'                   => 'Are you sure you want to restore the selected Expense Category?',
     'description'                       => 'Category Description',

@@ -1,15 +1,15 @@
 <?php
 
 return [
-    'gcaptcha'                      => 'I\'m not a robot.',
-    'go'                            => 'Go',
+    'gcaptcha'                      => '',
+    'go'                            => '',
     'initialization_message'        => '',
     'initialization_required'       => '',
     'initialize'                    => '',
-    'invalid_gcaptcha'              => 'Invalid I\'m not a robot.',
-    'invalid_installation'          => 'The installation is not correct, check your php.ini file.',
-    'invalid_username_and_password' => 'Invalid Username or Password.',
-    'login'                         => 'Login',
+    'invalid_gcaptcha'              => '',
+    'invalid_installation'          => '',
+    'invalid_username_and_password' => '',
+    'login'                         => '',
     'logout'                        => '',
     'migrating_database'            => 'Inililipat ang Database',
     'migration_auth_message'        => '',
@@ -23,9 +23,9 @@ return [
     'migration_needed'              => '',
     'migration_required'            => '',
     'migration_running'             => '',
-    'password'                      => 'Password',
+    'password'                      => '',
     'required_username'             => '',
     'too_many_attempts'             => 'Masyadong maraming pagtatangka. Mangyaring maghintay sandali at subukang muli.',
-    'username'                      => 'Username',
+    'username'                      => '',
     'welcome'                       => '',
 ];

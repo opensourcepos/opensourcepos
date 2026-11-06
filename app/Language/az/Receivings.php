@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Mal Adı',
     'mode'                         => 'Qəbul Rejimi',
     'new_supplier'                 => 'Yeni Təchizatçı',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'qəbul(lar)',
     'print_after_sale'             => 'Satışdan Sonra Çap Et',
     'quantity'                     => 'Say',

@@ -17,8 +17,6 @@ return [
     'item'                      => 'Artikal',
     'item_kit_number'           => 'Barkod',
     'item_kit_number_duplicate' => 'Broj kompleta predmeta već je prisutan u bazi podataka.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Artikli',
     'kit'                       => 'ID kompleta',
     'kit_and_components'        => 'Komplet i komponente',

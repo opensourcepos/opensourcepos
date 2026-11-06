@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Gider Kategorisi adı gerekli',
     'add_item'                          => 'Kategori ekleyin',
     'cannot_be_deleted'                 => 'Gider kategorisi silinemez',
     'category_id'                       => 'No',
+    'category_name_required'            => 'Gider Kategorisi adı gerekli',
     'confirm_delete'                    => 'Seçili Gider Kategorisini silmek istediğinizden emin misiniz?',
     'confirm_restore'                   => 'Seçili Gider Kategorisini geri yüklemek istediğinize emin misiniz?',
     'description'                       => 'Kategori Tanımı',

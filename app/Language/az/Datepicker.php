@@ -19,6 +19,6 @@ return [
     'to'                               => 'Buna',
     'today'                            => 'Bugün',
     'today_last_year'                  => 'Keçən il bu gün',
-    'weekstart'                        => '0',
+    'weekstart'                        => '1',
     'yesterday'                        => 'Dünən',
 ];
