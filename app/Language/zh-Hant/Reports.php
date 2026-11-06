@@ -20,7 +20,7 @@ return [
     'completed_sales'                         => '完成銷售',
     'confirm_delete'                          => '您確定要刪除選定的條目嗎？',
     'confirm_restore'                         => '您確定要恢復選定的條目嗎？',
-    'cost'                                    => 'Cost',
+    'cost'                                    => '',
     'cost_price'                              => '成本價',
     'count'                                   => '計',
     'customer'                                => '客戶',

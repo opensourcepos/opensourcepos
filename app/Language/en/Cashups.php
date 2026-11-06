@@ -34,7 +34,7 @@ return [
     'no_cashups_to_display'      => 'There are no Cashups to display',
     'none_selected'              => 'You have not selected any Cashups',
     'note'                       => 'Notes',
-    'one_or_multiple'            => 'Cashups(s)',
+    'one_or_multiple'            => 'Cashup(s)',
     'open_amount_cash'           => 'Open Cash',
     'open_date'                  => 'Open Date',
     'open_employee'              => 'Opened By',

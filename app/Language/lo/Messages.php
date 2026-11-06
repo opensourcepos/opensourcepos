@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'ເບີໂທຈຳເປັນຕ້ອງໃສ່',
     'phone_placeholder'     => 'ໃສ່ເບີໂທບ່ອນນີ້...',
     'sms_send'              => 'ສົ່ງ SMS',
-    'successfully_sent'     => 'ສົ່ງຂໍ້ຄວາມສຳເລັດ ໄປຫາ: ',
-    'unsuccessfully_sent'   => 'ສົ່ງຂໍ້ຄວາມບໍ່ສຳເລັດ ໄປຫາ: ',
+    'successfully_sent'     => 'ສົ່ງຂໍ້ຄວາມສຳເລັດ ໄປຫາ:',
+    'unsuccessfully_sent'   => 'ສົ່ງຂໍ້ຄວາມບໍ່ສຳເລັດ ໄປຫາ:',
 ];

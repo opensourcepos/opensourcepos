@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Название товара',
     'mode'                         => 'Режим закупок',
     'new_supplier'                 => 'Новый поставщик',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'закупка(и)',
     'print_after_sale'             => 'Распечатать после продажи',
     'quantity'                     => 'Кол-во.',

@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'Telefon nömrəsi tələb olunur',
     'phone_placeholder'     => 'Mobil Nömrə(lər) burada...',
     'sms_send'              => 'SMS Göndər',
-    'successfully_sent'     => 'Mesaj uğurla göndərildi: ',
-    'unsuccessfully_sent'   => 'Mesaj göndərilmədi: ',
+    'successfully_sent'     => 'Mesaj uğurla göndərildi:',
+    'unsuccessfully_sent'   => 'Mesaj göndərilmədi:',
 ];

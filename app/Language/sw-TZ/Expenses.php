@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Deni',
     'employee'                   => 'Imeundwa na',
     'error_adding_updating'      => 'Hitilafu katika kuongeza/kusasisha Matumizi',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Mfanyakazi',
     'info'                       => 'Taarifa za Matumizi',
     'ip_address'                 => '',

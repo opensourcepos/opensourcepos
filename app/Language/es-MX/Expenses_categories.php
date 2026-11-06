@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Nombre requerido',
     'add_item'                          => 'Agregar categoría',
     'cannot_be_deleted'                 => 'No se puede eliminar la Categoría de Gastos',
-    'category_id'                       => 'Id',
+    'category_id'                       => '',
+    'category_name_required'            => 'Nombre requerido',
     'confirm_delete'                    => 'Esta seguro de eliminar la categoría de gasto seleccionada?',
     'confirm_restore'                   => 'Está seguro que quiere restaurar la categoría de gasto seleccionada?',
     'description'                       => 'Descripción de Categoría',

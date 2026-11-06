@@ -19,6 +19,6 @@ return [
     'to'                               => 'Till',
     'today'                            => 'Idag',
     'today_last_year'                  => 'Idag föregående år',
-    'weekstart'                        => '0',
+    'weekstart'                        => '1',
     'yesterday'                        => 'I går',
 ];
