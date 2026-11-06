@@ -99,7 +99,11 @@ use App\Models\Inventory;
         $employee = model(Employee::class);
         $inventory = model(Inventory::class);
 
-        $inventoryArray = $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
+        $allowedLocationIds = array_keys($stock_locations);
+        $inventoryArray = array_values(array_filter(
+            $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray(),
+            fn($row) => in_array($row['trans_location'], array_map('intval', $allowedLocationIds))
+        ));
         $employeeName = [];
 
         foreach ($inventoryArray as $row) {
