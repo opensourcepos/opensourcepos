@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Dospijeće',
     'employee'                   => 'Napravio',
     'error_adding_updating'      => 'Greška pri dodavanju / ažuriranju troškova',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Zaposlenik',
     'info'                       => 'Informacije o troškovima',
     'ip_address'                 => '',

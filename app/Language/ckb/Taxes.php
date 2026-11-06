@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'ڕێژەی باجی بنەڕەتی',
     'error_adding_updating'                  => 'زیادکردن یان نوێکردنەوەی کۆدی باج شکستی هێنا',
     'group_seq'                              => 'ڕیزبەندی گروپ',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'ناوی دەسەڵاتی دادوەری',
     'name'                                   => 'ناو',
     'new'                                    => 'باجی نوێ',

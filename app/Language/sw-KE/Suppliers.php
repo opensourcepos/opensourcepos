@@ -9,7 +9,7 @@ return [
     'company_name_required' => 'Jina la Kampuni ni kiashiria kinachohitajika.',
     'confirm_delete'        => 'Una uhakika unataka kufuta Wasambazaji waliochaguliwa?',
     'confirm_restore'       => 'Una uhakika unataka kurejesha Wasambazaji waliochaguliwa?',
-    'cost'                  => 'Wasambazaji wa Wazalishaji (Cost Supplier) ',
+    'cost'                  => 'Wasambazaji wa Wazalishaji (Cost Supplier)',
     'error_adding_updating' => 'Kusasisha au kuongeza Wasambazaji kimeshindikana.',
     'goods'                 => 'Wasambazaji wa Bidhaa (Goods Supplier)',
     'new'                   => 'Msambazaji Mpya',
@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Umefanikiwa kufuta',
     'successful_updating'   => 'Umefanikiwa kusasisha Msambazaji',
     'supplier'              => 'Msambazaji',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'Kitambulisho cha Kodi',
     'update'                => 'Sasisha Msambazaji',
 ];

@@ -17,7 +17,7 @@ return [
     'confirm_restore'            => 'Êtes-vous certain de vouloir restaurer les dépenses sélectionnées ?',
     'credit'                     => 'Carte de crédit',
     'credit_filter'              => 'Carte de crédit',
-    'date'                       => 'Date',
+    'date'                       => '',
     'date_number'                => 'La date doit être un nombre',
     'date_required'              => 'Date est un champ obligatoire',
     'debit'                      => 'Carte de débit',

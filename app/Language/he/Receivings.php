@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'שם פריט',
     'mode'                         => 'סוג החזרה',
     'new_supplier'                 => 'ספק חדש',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'החזרה(ות)',
     'print_after_sale'             => 'הדפס לאחר מכירה',
     'quantity'                     => 'כמות.',

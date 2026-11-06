@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'Telefon numarası giriniz',
     'phone_placeholder'     => 'Mobil numaralar...',
     'sms_send'              => 'SMS Gönder',
-    'successfully_sent'     => 'Mesaj başarıyla gönderildi : ',
-    'unsuccessfully_sent'   => 'Mesaj gönderilemedi. Alıcı : ',
+    'successfully_sent'     => 'Mesaj başarıyla gönderildi:',
+    'unsuccessfully_sent'   => 'Mesaj gönderilemedi. Alıcı:',
 ];

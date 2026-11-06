@@ -28,7 +28,7 @@ return [
     'items_desc'                 => 'Dodaj, ažuriraj, obriši ili traži artikle',
     'jobs'                       => 'Red čekanja zadataka',
     'jobs_desc'                  => 'Konfiguriraj i upravljaj redom čekanja pozadinskih zadataka.',
-    'messages'                   => 'Messages',
+    'messages'                   => '',
     'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
     'migrate'                    => '',
     'migrate_desc'               => '',

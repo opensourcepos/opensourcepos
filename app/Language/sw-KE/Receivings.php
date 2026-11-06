@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Jina la Bidhaa',
     'mode'                         => 'Hali ya Manunuzi',
     'new_supplier'                 => 'Msambazaji Mpya',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'Manunuzi',
     'print_after_sale'             => 'Chapisha Baada ya Mauzo',
     'quantity'                     => 'Kiasi',
@@ -43,7 +44,7 @@ return [
     'start_typing_supplier_name'   => 'Anza kuandika jina la msambazaji...',
     'stock'                        => 'Hisa',
     'stock_destination'            => 'Mahali Hisa Inapoenda',
-    'stock_location'               => '',
+    'stock_location'               => 'Mahali pa Hisa',
     'stock_source'                 => 'Chanzo cha Hisa',
     'successfully_deleted'         => 'Umefanikiwa kufuta',
     'successfully_updated'         => 'Manunuzi yamesasishwa kwa mafanikio',
@@ -56,5 +57,4 @@ return [
     'unable_to_add_item'           => 'Kuongeza bidhaa kwenye Manunuzi kimeshindikana.',
     'unsuccessfully_updated'       => 'Kusasisha Manunuzi kimeshindikana.',
     'update'                       => 'Sasisha',
-    'stock_locaiton'               => 'Mahali pa Hisa',
 ];

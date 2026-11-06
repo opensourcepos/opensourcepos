@@ -9,7 +9,7 @@ return [
     'cashups'                    => 'סגירת קופת מזומנים',
     'cashups_desc'               => 'הוספה, עדכון, מחיקה וחיפוש בקופת מזומן.',
     'config'                     => 'הגדרות',
-    'config_desc'                => 'שנה הגדרות OSPOS\'s .',
+    'config_desc'                => 'שנה הגדרות OSPOS\'s.',
     'customers'                  => 'לקוחות',
     'customers_desc'             => 'הוספה, עדכון, מחיקה וחיפוש לקוחות.',
     'employees'                  => 'עובדים',

@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Όνομα Είδους',
     'mode'                         => 'Τρόπος Παραλαβής',
     'new_supplier'                 => 'Νέος Προμηθευτής',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'παραλαβή/ες',
     'print_after_sale'             => 'Εκτύπωση μετά Πώλησης',
     'quantity'                     => 'Ποσ.',

@@ -44,7 +44,7 @@ return [
     'number'                             => 'شماره کارت هدیه باید یک عدد باشد.',
     'number_information'                 => 'شماره کارت هدیه',
     'number_required'                    => 'شماره کارت هدیه فیلد مورد نیاز است.',
-    'one_or_multiple'                    => 'کارت هدیه)',
+    'one_or_multiple'                    => 'کارت هدیه (ها)',
     'person_id'                          => 'مشتری',
     'quantity'                           => 'تعداد',
     'quantity_required'                  => 'مقدار یک فیلد ضروری است. لطفاً برای لغو (X) را ببندید.',

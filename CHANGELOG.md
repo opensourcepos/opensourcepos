@@ -69,7 +69,7 @@ All notable changes to this project will be documented in this file.
 - refactor(gulp): modernize build pipeline and streamline dependencies (#4759) by @BudsieBuds
 - refactor(tests): normalize test namespaces to PSR-4 and clean up composer dependencies (#4758) by @BudsieBuds
 - fix(ci): trigger PHP linting workflow on pull requests (#4764) by @BudsieBuds
-- fix(security): pin patched PHP 8.2.35+ for CVE-2026-109618/109619 (#4767) by @jekkos
+- fix(security): pin patched PHP 8.2.35+ (#4767) by @jekkos
 
 ## [3.4.2] - 2026-09-30
 - Fix writable folder permission check (#4270) (#4273) by @jekkos
