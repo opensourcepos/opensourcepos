@@ -113,7 +113,7 @@ class CustomersControllerTest extends CIUnitTestCase
         ];
 
         $customer = model(Customer::class);
-        $this->assertTrue($customer->save_customer($personData, $customerData));
+        $this->assertTrue($customer->saveCustomer($personData, $customerData));
 
         $response = $this->get('/customers/exportAll/csv?search=');
 
@@ -161,7 +161,7 @@ class CustomersControllerTest extends CIUnitTestCase
         ];
 
         $customer = model(Customer::class);
-        $this->assertTrue($customer->save_customer($personData, $customerData));
+        $this->assertTrue($customer->saveCustomer($personData, $customerData));
 
         $response = $this->get('/customers/exportAll/pdf?search=');
 
