@@ -118,9 +118,9 @@ class OSPOSRulesTest extends CIUnitTestCase
             'plain sendmail path'                    => ['/usr/sbin/sendmail', true],
             'plain php path'                         => ['/usr/bin/php', true],
             'path with dash and underscore'          => ['/opt/my-mail_bin/sendmail.exe', true],
-            'path with trailing args'                => ['/usr/sbin/sendmail -t -i', true],
+            'path with trailing args'                => ['/usr/sbin/sendmail -t -i', false],
             'windows path'                           => ['C:\wamp64\bin\sendmail\sendmail.exe', true],
-            'windows path with trailing args'        => ['C:\wamp64\bin\sendmail\sendmail.exe -t -i', true],
+            'windows path with trailing args'        => ['C:\wamp64\bin\sendmail\sendmail.exe -t -i', false],
             'empty string'                           => ['', false],
             'trailing newline bypass payload'        => ["/usr/bin/php\n", false],
             'trailing newline plus injected command' => ["/usr/bin/php\nid", false],
@@ -135,6 +135,10 @@ class OSPOSRulesTest extends CIUnitTestCase
             'cmd.exe env var expansion'               => ['C:\path\sendmail.exe %COMSPEC%', false],
             'cmd.exe escape char'                     => ['C:\path\sendmail.exe ^& calc', false],
             'cmd.exe command chaining'                => ['C:\path\sendmail.exe && calc', false],
+            'RCE shell with -c flag'                  => ['/bin/sh -c id', false],
+            'RCE bash with -c flag'                   => ['/bin/bash -c id', false],
+            'RCE env binary'                          => ['/usr/bin/env /bin/sh', false],
+            'RCE command substitution'                => ['/bin/sh -c "id > /tmp/pwned"', false],
         ];
     }
 
