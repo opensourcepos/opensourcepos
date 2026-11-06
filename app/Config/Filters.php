@@ -14,6 +14,7 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\IsLoggedIn;
+use App\Filters\JobRunner;
 
 class Filters extends BaseFilters
 {
@@ -38,6 +39,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'isLoggedIn'    => IsLoggedIn::class,
         'throttle'      => Throttle::class,
+        'jobrunner'     => JobRunner::class,
     ];
 
     /**
@@ -85,6 +87,7 @@ class Filters extends BaseFilters
             'toolbar',
             'honeypot',
             'secureheaders',
+            'jobrunner',
         ],
     ];
 
@@ -129,6 +132,10 @@ class Filters extends BaseFilters
         if ($isTesting) {
             // Remove the 'csrf' key from $globals['before'] while preserving array structure
             $this->globals['before'] = array_filter($this->globals['before'], static fn($key) => $key !== 'csrf', ARRAY_FILTER_USE_KEY);
+
+            // Remove 'jobrunner' from $globals['after'] so simulated test requests don't
+            // trigger the Tasks scheduler and spam the heartbeat log
+            $this->globals['after'] = array_filter($this->globals['after'], static fn($value) => $value !== 'jobrunner');
         }
     }
 }
