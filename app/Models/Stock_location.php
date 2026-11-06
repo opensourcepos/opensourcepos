@@ -63,14 +63,17 @@ class Stock_location extends Model
 
     /**
      * @param string $moduleId
+     * @param int|null $personId Defaults to the current session's person_id.
+     *                           Pass explicitly when there is no HTTP session
+     *                           (e.g. a queue worker running under CLI).
      * @return ResultInterface
      */
-    public function getUndeletedAll(string $moduleId = 'items'): ResultInterface
+    public function getUndeletedAll(string $moduleId = 'items', ?int $personId = null): ResultInterface
     {
         $builder = $this->db->table('stock_locations');
         $builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
         $builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-        $builder->where('person_id', $this->session->get('person_id'));
+        $builder->where('person_id', $personId ?? $this->session->get('person_id'));
         $builder->like('permissions.permission_id', $moduleId, 'after');
         $builder->where('deleted', 0);
         $builder->orderBy('stock_locations.sort_order', 'ASC');
@@ -79,12 +82,12 @@ class Stock_location extends Model
     }
 
     /**
-     * @param string $module_id
+     * @param string $moduleId
      * @return bool
      */
-    public function showLocations(string $module_id = 'items'): bool
+    public function showLocations(string $moduleId = 'items'): bool
     {
-        $stockLocations = $this->get_allowed_locations($module_id);
+        $stockLocations = $this->get_allowed_locations($moduleId);
 
         return count($stockLocations) > 1;
     }
@@ -98,12 +101,15 @@ class Stock_location extends Model
     }
 
     /**
-     * @param string $module_id
+     * @param string $moduleId
+     * @param int|null $personId Defaults to the current session's person_id.
+     *                           Pass explicitly when there is no HTTP session
+     *                           (e.g. a queue worker running under CLI).
      * @return array
      */
-    public function get_allowed_locations(string $module_id = 'items'): array
+    public function get_allowed_locations(string $moduleId = 'items', ?int $personId = null): array
     {
-        $stock = $this->getUndeletedAll($module_id)->getResultArray();
+        $stock = $this->getUndeletedAll($moduleId, $personId)->getResultArray();
         $stockLocations = [];
 
         foreach ($stock as $locationData) {

@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use App\Jobs\BoundedQueueWorker;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -18,7 +19,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
     protected $migrate = true;
     protected $migrateOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     protected Customer $customer;
     protected Employee $employee;
@@ -49,6 +50,18 @@ class CustomersCsvImportTest extends CIUnitTestCase
     protected function loginAsEmployee(): void
     {
         $this->withSession(['person_id' => 1, 'menu_group' => 'office']);
+    }
+
+    /**
+     * Customer CSV imports are queued, not processed synchronously
+     * (issue #3833 Phase 3) — drain the 'imports' queue the same way
+     * BoundedQueueWorkerTest does, so each row's job actually runs before
+     * assertions check the resulting DB state.
+     */
+    protected function drainImportsQueue(): void
+    {
+        $worker = new BoundedQueueWorker(['imports'], microtime(true) + 5);
+        $worker->run();
     }
 
     protected function createCsvFile(array $rows): string
@@ -87,7 +100,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $this->loginAsEmployee();
 
         $csvContent = [
-            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone Number', 'Address 1', 'Address2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount_Type', 'Taxable'],
             ['John', 'Doe', '1', '1', 'john.doe@example.com', '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', '', '', '', '']
         ];
 
@@ -105,10 +118,12 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         $result->assertOK();
         $resultBody = json_decode($result->getJSON(), true);
-        $this->assertTrue($resultBody['success'], 'Import should fully succeed');
+        $this->assertTrue($resultBody['success'], 'Import should be queued successfully');
+
+        $this->drainImportsQueue();
 
         $importedCustomer = $this->findCustomerByEmail('john.doe@example.com');
-        $this->assertNotNull($importedCustomer);
+        $this->assertNotNull($importedCustomer, 'Customer should be imported after the queue drains');
 
         unlink($tempFile);
     }
@@ -118,7 +133,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $this->loginAsEmployee();
 
         $csvContent = [
-            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone Number', 'Address 1', 'Address2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount_Type', 'Taxable'],
             ['John', 'Doe', '1', '1', 'not-an-email', '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', '', '', '', '']
         ];
 
@@ -135,11 +150,11 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $result = $this->post('/customers/importCsvFile');
 
         $result->assertOK();
-        
+
         $resultBody = json_decode($result->getJSON(), true);
-        $this->assertFalse($resultBody['success'], 'Import should fail for invalid email');
-        $this->assertStringContainsString('Row 1', $resultBody['message'], 'Error message should reference failing row');
-        $this->assertStringContainsString('Invalid email format', $resultBody['message'], 'Error message should mention email validation');
+        $this->assertTrue($resultBody['success'], 'Row is queued even though it will fail validation inside the job');
+
+        $this->drainImportsQueue();
 
         $importedCustomer = $this->findCustomerByEmail('not-an-email');
         $this->assertNull($importedCustomer, 'Customer with invalid email should not be imported');
@@ -154,7 +169,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $maliciousEmail = '<script>alert("xss")</script>@example.com';
 
         $csvContent = [
-            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone Number', 'Address 1', 'Address2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount_Type', 'Taxable'],
             ['John', 'Doe', '1', '1', $maliciousEmail, '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', '', '', '', '']
         ];
 
@@ -172,8 +187,10 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         $result->assertOK();
 
+        $this->drainImportsQueue();
+
         $importedCustomer = $this->findCustomersByEmailLike('example.com');
-        
+
         $this->assertNotNull($importedCustomer, 'Customer should be imported after sanitization');
         $this->assertStringNotContainsString('<script>', $importedCustomer['email'], 'Script tags should be removed');
         $this->assertStringNotContainsString('</script>', $importedCustomer['email'], 'Script tags should be removed');
@@ -186,7 +203,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $this->loginAsEmployee();
 
         $csvContent = [
-            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone Number', 'Address 1', 'Address2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount_Type', 'Taxable'],
             ['Valid', 'User', '1', '1', 'valid@example.com', '555-1111', '123 Main St', '', 'City1', 'ST', '12345', 'US', '', '', '', '', '', ''],
             ['Invalid', 'User', '1', '1', 'invalid-email', '555-2222', '456 Oak Ave', '', 'City2', 'ST', '23456', 'US', '', '', '', '', '', ''],
             ['Another', 'Valid', '1', '1', 'another@example.com', '555-3333', '789 Pine Rd', '', 'City3', 'ST', '34567', 'US', '', '', '', '', '', '']
@@ -206,6 +223,8 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         $result->assertOK();
 
+        $this->drainImportsQueue();
+
         $validCustomer1 = $this->findCustomerByEmail('valid@example.com');
         $this->assertNotNull($validCustomer1, 'Valid customer should be imported');
 
@@ -224,7 +243,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         $emailWithSpecialChars = 'test"user@example.com';
         $csvContent = [
-            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone Number', 'Address 1', 'Address2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount_Type', 'Taxable'],
             ['Test', 'User', '1', '1', $emailWithSpecialChars, '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', '', '', '', '']
         ];
 
@@ -242,8 +261,10 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         $result->assertOK();
 
+        $this->drainImportsQueue();
+
         $importedCustomer = $this->findCustomersByEmailLike('example.com');
-        
+
         $this->assertNotNull($importedCustomer, 'Sanitized email should be imported');
         $this->assertStringNotContainsString('"', $importedCustomer['email'], 'Quote characters should be sanitized');
 
@@ -256,7 +277,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         // Empty email should be allowed - customers may not have email addresses
         $csvContent = [
-            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone Number', 'Address 1', 'Address2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount_Type', 'Taxable'],
             ['Empty', 'Mail', '1', '1', '', '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', '', '', '', '']
         ];
 
@@ -275,7 +296,9 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $result->assertOK();
 
         $resultBody = json_decode($result->getJSON(), true);
-        $this->assertTrue($resultBody['success'], 'Import should succeed with empty email');
+        $this->assertTrue($resultBody['success'], 'Import should be queued successfully with empty email');
+
+        $this->drainImportsQueue();
 
         // Find customer by name since email is empty
         $importedCustomer = $this->customer->select('customers.*, people.*')
