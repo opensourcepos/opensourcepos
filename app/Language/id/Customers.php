@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'Anda belum memilih pelanggan untuk dihapus.',
     'one_or_multiple'               => 'Pelanggan',
     'quantity'                      => 'Kuantitas',
+    'rewards_package'               => 'Paket Hadiah',
     'stats_info'                    => 'Statistik',
     'successful_adding'             => 'Anda telah berhasil menambah pelanggan',
     'successful_deleted'            => 'Berhasil menghapus Kartu Hadiah',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Dikenakan pajak',
     'total'                         => 'Total',
     'update'                        => 'Ubah Pelanggan',
-    'rewards_package'               => 'Paket Hadiah',
 ];

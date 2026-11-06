@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'Niste izabrali nijednog kupca za brisanje.',
     'one_or_multiple'               => 'kupac(i)',
     'quantity'                      => 'Količina',
+    'rewards_package'               => 'Nagrade',
     'stats_info'                    => 'Statistika',
     'successful_adding'             => 'Uspješno ste dodali kupca',
     'successful_deleted'            => 'Kupac je uspješno izbrisan',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Oporezivo',
     'total'                         => 'Ukupno',
     'update'                        => 'Ažuriraj kupca',
-    'rewards_package'               => 'Nagrade',
 ];

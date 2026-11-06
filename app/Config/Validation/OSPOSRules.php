@@ -86,8 +86,6 @@ class OSPOSRules
 
             $result = curl_exec($ch);
 
-            curl_close($ch);
-
             $status = json_decode($result, true);
 
             if (!empty($status['success'])) {

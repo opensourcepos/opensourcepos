@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'Не сте избрали клиент (и), който да изтриете.',
     'one_or_multiple'               => 'Клиент(ти)',
     'quantity'                      => 'Количество',
+    'rewards_package'               => 'Пакетни награди',
     'stats_info'                    => 'Статус',
     'successful_adding'             => 'Успешно добавихте клиент',
     'successful_deleted'            => 'Вие успешно сте изтрили',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Облагаем',
     'total'                         => 'Общо изразходвани средства',
     'update'                        => 'Актуализиране на клиента',
-    'rewards_package'               => 'Пакетни награди',
 ];

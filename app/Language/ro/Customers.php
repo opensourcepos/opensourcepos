@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'Nu ati selectat niciun client de sters.',
     'one_or_multiple'               => 'client(i)',
     'quantity'                      => 'Cantitate',
+    'rewards_package'               => 'Pachet recompense',
     'stats_info'                    => 'Statistici',
     'successful_adding'             => 'Ati adaugat cu succes clientul',
     'successful_deleted'            => 'Ati sters cu succes',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Taxabil',
     'total'                         => 'Total cheltuit',
     'update'                        => 'Actualizeaza Client',
-    'rewards_package'               => 'Pachet recompense',
 ];

@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Dovuto',
     'employee'                   => 'Creata da',
     'error_adding_updating'      => 'Errore aggiunta/aggiornamento Spesa',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Impiegato',
     'info'                       => 'Spesa Info',
     'ip_address'                 => '',

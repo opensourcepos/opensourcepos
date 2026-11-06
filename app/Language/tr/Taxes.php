@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Öntanımlı Vergi Oranı',
     'error_adding_updating'                  => 'Vergi Kodu ekleme ya da güncelleme başarısız oldu',
     'group_seq'                              => 'Küme Sırası',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Yetki Adı',
     'name'                                   => 'Ad',
     'new'                                    => 'Yeni Vergi Kodu',

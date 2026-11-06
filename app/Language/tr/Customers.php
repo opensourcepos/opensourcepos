@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'Silmek için müşteri seçmediniz.',
     'one_or_multiple'               => 'müşteri',
     'quantity'                      => 'Miktar',
+    'rewards_package'               => 'Ödül Paketi',
     'stats_info'                    => 'İstatistikler',
     'successful_adding'             => 'Müşteri eklendi',
     'successful_deleted'            => 'Silme başarılı',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Vergilendirilebilir',
     'total'                         => 'Toplam',
     'update'                        => 'Müşteri Güncelle',
-    'rewards_package'               => 'Ödül Paketi',
 ];

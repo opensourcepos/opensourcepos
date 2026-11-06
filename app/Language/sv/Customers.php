@@ -7,7 +7,7 @@ return [
     'available_points_value'        => '',
     'average'                       => 'Genomsnittlig spenderad',
     'avg_discount'                  => 'Genomsnittlig rabatt',
-    'basic_information'             => 'Information',
+    'basic_information'             => '',
     'cannot_be_deleted'             => 'Kunde inte radera valda kunder, en eller flera av de valda kunderna har försäljning.',
     'company_name'                  => 'Företag',
     'confirm_delete'                => 'Är du säker på att du vill radera den valda kunden / kunderna?',
@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'Du har inte valt någon kund att radera.',
     'one_or_multiple'               => 'Kunder',
     'quantity'                      => 'Antal',
+    'rewards_package'               => 'Belöningspaket',
     'stats_info'                    => 'Status',
     'successful_adding'             => 'Du har lagt till en kund',
     'successful_deleted'            => 'Du har tagit bort',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Skattetabell',
     'total'                         => 'Totalt spenderat',
     'update'                        => 'Uppdatera kund',
-    'rewards_package'               => 'Belöningspaket',
 ];

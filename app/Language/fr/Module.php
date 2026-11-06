@@ -26,7 +26,7 @@ return [
     'item_kits_desc'             => 'Ajouter, Éditer, Supprimer, et Chercher des articles vendus en kits.',
     'items'                      => 'Articles vendus',
     'items_desc'                 => 'Ajouter, Éditer, Supprimer, et Chercher des articles en vente.',
-    'messages'                   => 'Messages',
+    'messages'                   => '',
     'messages_desc'              => 'Envoyer un message aux Client, Fournisseurs, Employés et al.',
     'migrate'                    => 'Émigrer',
     'migrate_desc'               => 'Mettre à jour la base de données OSPOS.',

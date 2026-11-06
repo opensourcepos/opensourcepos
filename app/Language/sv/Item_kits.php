@@ -17,8 +17,6 @@ return [
     'item'                      => 'Artikel',
     'item_kit_number'           => 'Streckkod',
     'item_kit_number_duplicate' => 'Artikelpaketet nummer finns redan i databasen.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Artiklar',
     'kit'                       => 'Artikelpaket ID',
     'kit_and_components'        => 'Artikelpaket och delar',

@@ -535,7 +535,6 @@ class Sale extends Model
         $config = config(OSPOS::class)->settings;
         $attribute = model(Attribute::class);
         $customer = model(Customer::class);
-        $giftcard = model(Giftcard::class);
         $inventory = model('Inventory');
         $item = model(Item::class);
 
@@ -582,7 +581,12 @@ class Sale extends Model
             $paymentPrefix = $splitPayment[0];
 
             if ($paymentPrefix === lang('Sales.giftcard')) {
-                if (empty($splitPayment[1]) || ! $giftcard->decrementGiftcardValue($splitPayment[1], (float) $payment['payment_amount'])) {
+                if (! $this->applyGiftcardPayment(
+                    $splitPayment[1] ?? null,
+                    (float) $payment['payment_amount'],
+                    $saleType,
+                    $saleStatus
+                )) {
                     $this->db->transRollback();
 
                     return INSUFFICIENT_GIFTCARD_BALANCE;
@@ -693,6 +697,27 @@ class Sale extends Model
         $this->db->transComplete();
 
         return $this->db->transStatus() ? $saleId : -1;
+    }
+
+    private function applyGiftcardPayment(?string $giftcardNumber, float $amount, int $saleType, string $saleStatus): bool
+    {
+        $isReturnCredit = $saleType === SALE_TYPE_RETURN && $amount < 0;
+
+        if ($isReturnCredit && $saleStatus != COMPLETED) {
+            return true;
+        }
+
+        if (empty($giftcardNumber)) {
+            return false;
+        }
+
+        $giftcard = model(Giftcard::class);
+
+        if ($isReturnCredit) {
+            return $giftcard->incrementGiftcardValue($giftcardNumber, abs($amount));
+        }
+
+        return $giftcard->decrementGiftcardValue($giftcardNumber, $amount);
     }
 
     /**

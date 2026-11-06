@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'ناوی ئایتم',
     'mode'                         => 'دۆخی وەرگرتن',
     'new_supplier'                 => 'دابینکەری نوێ',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'وەرگرتن(ەکان)',
     'print_after_sale'             => 'چاپکردن دوای فرۆشتن',
     'quantity'                     => 'بڕ',

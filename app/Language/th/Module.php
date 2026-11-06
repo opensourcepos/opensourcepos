@@ -26,7 +26,7 @@ return [
     'item_kits_desc'             => 'เพิ่ม, อัพเดท, ลบ, และค้นหา สินค้าหมู่',
     'items'                      => 'สินค้า',
     'items_desc'                 => 'เพิ่ม, อัพเดท, ลบ, และค้นหา สินค้า',
-    'messages'                   => 'Messages',
+    'messages'                   => '',
     'messages_desc'              => 'ส่งข้อความถึง ลูกค้า, คู่ค้า และพนักงาน',
     'migrate'                    => 'โยกย้าย',
     'migrate_desc'               => 'ปรับปรุงฐานข้อมูล OSPOS',

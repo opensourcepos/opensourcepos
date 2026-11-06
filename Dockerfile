@@ -1,4 +1,4 @@
-FROM php:8.2.35-apache AS ospos
+FROM php:8.2-apache AS ospos
 LABEL maintainer="jekkos"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -9,11 +9,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite
 
-RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
+RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini \
+    && echo "expose_php = Off" > /usr/local/etc/php/conf.d/security.ini
 
 WORKDIR /app
-COPY --chown=www-data:www-data . /app
-RUN chmod 750 /app/writable/logs /app/writable/uploads /app/writable/cache /app/public/uploads /app/public/uploads/item_pics \
+COPY . /app
+
+RUN --mount=type=bind,from=composer:2,source=/usr/bin/composer,target=/usr/local/bin/composer \
+    composer --no-interaction --no-plugins --no-scripts check-platform-reqs --lock --no-dev
+
+RUN chown -R root:www-data /app \
+    && chmod -R go-w,o= /app \
+    && chown -R www-data:www-data /app/writable /app/public/uploads \
+    && chmod 750 /app/writable/logs /app/writable/uploads /app/writable/cache /app/public/uploads /app/public/uploads/item_pics \
     && chmod 640 /app/writable/uploads/importCustomers.csv \
     && ln -s /app/*[^public] /var/www \
     && rm -rf /var/www/html \

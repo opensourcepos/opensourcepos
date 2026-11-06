@@ -17,8 +17,6 @@ return [
     'item'                      => 'Item',
     'item_kit_number'           => 'Barcode',
     'item_kit_number_duplicate' => 'Item Kit Number is already present in the database.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Items',
     'kit'                       => 'Kit ID',
     'kit_and_components'        => 'Kit and Components',

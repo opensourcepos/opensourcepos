@@ -10,6 +10,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
 use Config\OSPOS;
 use Config\Services;
+use Exception;
 
 /**
  * @property employee employee
@@ -62,9 +63,20 @@ class Login extends BaseController
             }
 
             if (!$data['isLatest'] || $data['isNewInstall']) {
+                ignore_user_abort(true);
                 set_time_limit(3600);
 
-                $migration->setNamespace('App')->latest();
+                try {
+                    $migration->setNamespace('App')->runLocked();
+                } catch (Exception $e) {
+                    if (str_contains($e->getMessage(), 'Migration already in progress')) {
+                        $data['hasErrors'] = true;
+                        $validation->addError('username', lang('Login.migration_running'));
+                        return view('login', $data);
+                    }
+                    throw $e;
+                }
+
                 return redirect()->to('login');
             }
 
@@ -121,10 +133,10 @@ class Login extends BaseController
 
         try {
             $migration = new MY_Migration(config('Migrations'));
-            $migration->migrateToCI4();
 
+            ignore_user_abort(true);
             set_time_limit(3600);
-            $migration->setNamespace('App')->latest();
+            $migration->setNamespace('App')->runLocked();
 
             service('pluginManager')->runPendingMigrations();
 
@@ -133,7 +145,14 @@ class Login extends BaseController
                 'message' => 'Migration completed successfully'
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            if (str_contains($e->getMessage(), 'Migration already in progress')) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Login.migration_running')
+                ])->setStatusCode(202);
+            }
+
             log_message('error', 'Migration failed: ' . $e->getMessage());
 
             return $this->response->setJSON([

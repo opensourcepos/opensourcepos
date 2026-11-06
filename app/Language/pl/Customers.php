@@ -34,6 +34,7 @@ return [
     'none_selected'                 => '',
     'one_or_multiple'               => '',
     'quantity'                      => 'Ilość',
+    'rewards_package'               => '',
     'stats_info'                    => '',
     'successful_adding'             => '',
     'successful_deleted'            => '',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => '',
     'total'                         => '',
     'update'                        => '',
-    'rewards_package'               => '',
 ];

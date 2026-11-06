@@ -81,6 +81,7 @@ body:
       label: 🔧 PHP Version
       description: What version of PHP are you running?
       options:
+        - PHP 8.5
         - PHP 8.4
         - PHP 8.3
         - PHP 8.2

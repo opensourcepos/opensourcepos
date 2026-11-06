@@ -19,6 +19,6 @@ return [
     'to'                               => 'Hadi',
     'today'                            => 'Leo',
     'today_last_year'                  => 'Leo Mwaka Uliopita',
-    'weekstart'                        => '0',
+    'weekstart'                        => '1',
     'yesterday'                        => 'Jana',
 ];

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Nazwa Kategorii Wydatków jest wymagana',
     'add_item'                          => 'Dodaj Kategorię',
     'cannot_be_deleted'                 => 'Nie można usunąć Kategorię Wydatki',
-    'category_id'                       => 'Id',
+    'category_id'                       => '',
+    'category_name_required'            => 'Nazwa Kategorii Wydatków jest wymagana',
     'confirm_delete'                    => 'Czy jesteś pewien, że chcesz usunąć zaznaczone Kategorie Wydatków?',
     'confirm_restore'                   => 'Czy jesteś pewien, że chcesz przywrócić zaznaczone Kategorie Wydatków?',
     'description'                       => 'Opis kategorii',

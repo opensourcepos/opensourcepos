@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'Hujachagua mteja/wateja wa kufuta.',
     'one_or_multiple'               => 'Mteja/wateja',
     'quantity'                      => 'Kiasi',
+    'rewards_package'               => 'Kifurushi cha Zawadi',
     'stats_info'                    => 'Takwimu',
     'successful_adding'             => 'Umefanikiwa kuongeza mteja',
     'successful_deleted'            => 'Umefanikiwa kufuta',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Inatozwa Kodi',
     'total'                         => 'Jumla ya matumizi',
     'update'                        => 'Sasisha Mteja',
-    'rewards_package'               => 'Kifurushi cha Zawadi',
 ];

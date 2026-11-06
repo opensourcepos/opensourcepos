@@ -34,7 +34,8 @@ return [
     'none_selected'                 => 'Non hai selezionato nessun cliente da eliminare.',
     'one_or_multiple'               => 'cliente(i)',
     'quantity'                      => 'Quantità',
-    'stats_info'                    => 'Stats',
+    'rewards_package'               => 'Pacchetto di ricompensa',
+    'stats_info'                    => '',
     'successful_adding'             => 'Hai aggiunto con Successo un cliente',
     'successful_deleted'            => 'Eliminazione con successo',
     'successful_updating'           => 'Aggiornamento del cliente terminato correttamente',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'Tassabile',
     'total'                         => 'Spesa Totale',
     'update'                        => 'Aggiorna Cliente',
-    'rewards_package'               => 'Pacchetto di ricompensa',
 ];

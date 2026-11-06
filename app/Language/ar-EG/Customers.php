@@ -34,6 +34,7 @@ return [
     'none_selected'                 => 'لم تختار عملاء للحذف.',
     'one_or_multiple'               => 'عميل/عملاء',
     'quantity'                      => 'العدد',
+    'rewards_package'               => 'فئة المكافئة',
     'stats_info'                    => 'الحالة',
     'successful_adding'             => 'لقد أضفت عميل بنجاح',
     'successful_deleted'            => 'لقد قمت بالحذف بنجاح',
@@ -43,5 +44,4 @@ return [
     'taxable'                       => 'خاضع للضريبة',
     'total'                         => 'المجموع',
     'update'                        => 'تحديث بيانات عميل',
-    'rewards_package'               => 'فئة المكافئة',
 ];
