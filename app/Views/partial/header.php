@@ -29,7 +29,7 @@ $request = Services::request();
         <!-- inject:debug:js -->
         <!-- endinject -->
     <?php else : ?>
-        <!--inject:prod:css -->
+        <!-- inject:prod:css -->
         <!-- endinject -->
 
         <!-- Tweaks to the UI for a particular theme should drop here  -->

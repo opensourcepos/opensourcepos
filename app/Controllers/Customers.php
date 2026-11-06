@@ -7,8 +7,10 @@ use App\Libraries\Mailchimp_lib;
 use App\Models\Customer;
 use App\Models\Customer_rewards;
 use App\Models\Tax_code;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\OSPOS;
 use Config\Services;
 use stdClass;
@@ -16,6 +18,7 @@ use stdClass;
 class Customers extends Persons
 {
     private string $_list_id;
+    private BaseConnection $db;
     private Mailchimp_lib $mailchimp_lib;
     private Customer_rewards $customer_rewards;
     private Customer $customer;
@@ -25,6 +28,7 @@ class Customers extends Persons
     public function __construct()
     {
         parent::__construct('customers');
+        $this->db = Database::connect();
         $this->mailchimp_lib = new Mailchimp_lib();
         $this->customer_rewards = model(Customer_rewards::class);
         $this->customer = model(Customer::class);
@@ -126,6 +130,48 @@ class Customers extends Persons
         $suggestions = $this->customer->get_search_suggestions($search);
 
         return $this->response->setJSON($suggestions);
+    }
+
+    /**
+     * Streams customers matching the current search as a downloadable file.
+     * @noinspection PhpUnused
+     */
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search = $this->request->getGet('search');
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(customer_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'people.person_id');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $customers = $this->customer->search($search, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($customers->getResult() as $person) {
+            // Retrieve the total amount the customer spent so far together with min, max and average values
+            $stats = $this->customer->get_stats($person->person_id);
+            if (empty($stats)) {
+                $stats = new stdClass();
+                $stats->total = 0;
+                $stats->min = 0;
+                $stats->max = 0;
+                $stats->average = 0;
+                $stats->avg_discount = 0;
+                $stats->quantity = 0;
+            }
+
+            $exportRows[] = getCustomerExportRow($person, $stats);
+        }
+
+        $file = generateExportFile($format, customerExportHeaders(), $exportRows, 'customers_' . date('Ymd_His'), $this->db->prefixTable('customers'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

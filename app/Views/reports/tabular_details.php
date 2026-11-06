@@ -59,8 +59,8 @@
                 showColumns: true,
                 uniqueId: 'id',
                 showExport: true,
-                exportDataType: 'all',
-                exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf'],
+                exportDataType: 'basic',
+                exportTypes: ['json', 'xml', 'csv', 'txt', 'xlsx', 'pdf'],
                 data: <?= json_encode($summary_data) ?>,
                 iconSize: 'sm',
                 loadingTemplate: function (loadingMessage) {
@@ -93,6 +93,7 @@
             });
 
         init_dialog();
+        report_export_toggle.init();
     });
 </script>
 
