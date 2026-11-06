@@ -19,6 +19,6 @@ return [
     'to'                               => '',
     'today'                            => '',
     'today_last_year'                  => '',
-    'weekstart'                        => '',
+    'weekstart'                        => '1',
     'yesterday'                        => '',
 ];

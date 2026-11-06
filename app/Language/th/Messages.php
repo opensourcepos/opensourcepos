@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'จำเป็นต้องระบุหมายเลขโทรศัพท์',
     'phone_placeholder'     => 'ระบุหมายเลขโทรศัพท์มือถือ',
     'sms_send'              => 'ส่งข้อความ SMS',
-    'successfully_sent'     => 'ส่งข้อความสำเร็จแล้วถึง: ',
-    'unsuccessfully_sent'   => 'ส่งข้อความไม่สำเร็จถึง: ',
+    'successfully_sent'     => 'ส่งข้อความสำเร็จแล้วถึง:',
+    'unsuccessfully_sent'   => 'ส่งข้อความไม่สำเร็จถึง:',
 ];

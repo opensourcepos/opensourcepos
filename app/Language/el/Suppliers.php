@@ -19,7 +19,7 @@ return [
     'successful_deleted'    => 'Έχετε διαγράψει επιτυχώς',
     'successful_updating'   => 'Έχετε ενημερώσει επιτυχώς τον Προμηθευτή',
     'supplier'              => 'Προμηθευτής',
-    'supplier_id'           => 'Id',
+    'supplier_id'           => '',
     'tax_id'                => 'Id Φόρου',
     'update'                => 'Ενημέρωση Προμηθευτή',
 ];

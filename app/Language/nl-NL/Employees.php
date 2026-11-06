@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'U heeft verwijderd',
     'successful_updating'                   => 'Werknemer bijgewerkt',
     'system_language'                       => 'Systeemtaal',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Wachtwoord wijzigen mislukt.',
     'update'                                => 'Werknemer bijwerken',
     'username'                              => 'Gebruikersnaam',

@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Kiwango cha Kodi cha Chaguo-msingi',
     'error_adding_updating'                  => 'Kuongeza au kusasisha Nambari ya Kodi (Tax Code) kimeshindikana',
     'group_seq'                              => 'Mpangilio wa Kundi',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Jina la Eneo la Kodi (Jurisdiction Name)',
     'name'                                   => 'Jina',
     'new'                                    => 'Kodi Mpya',

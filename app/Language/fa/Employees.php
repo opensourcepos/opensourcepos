@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'شما با موفقیت حذف شده اید',
     'successful_updating'                   => 'شما با موفقیت کارمند را به روز کردید',
     'system_language'                       => 'زبان سیستم',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'تغییر رمز انجام نشد.',
     'update'                                => 'به روزرسانی کارمند',
     'username'                              => 'نام کاربری',

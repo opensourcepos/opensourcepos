@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'No. telepon dibutuhkan',
     'phone_placeholder'     => 'Masukkan no. telepon disini...',
     'sms_send'              => 'Kirim SMS',
-    'successfully_sent'     => 'Pesan berhasil dikirim ke: ',
-    'unsuccessfully_sent'   => 'Pesan gagal dikirim ke: ',
+    'successfully_sent'     => 'Pesan berhasil dikirim ke:',
+    'unsuccessfully_sent'   => 'Pesan gagal dikirim ke:',
 ];

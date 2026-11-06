@@ -6,7 +6,7 @@ return [
     'bulk_edit'                          => 'Sammeländerung',
     'cannot_be_deleted'                  => 'Konnte gewählte Gutscheine nicht löschen, einer oder mehrere weisen Verkäufe auf.',
     'cannot_find_giftcard'               => 'Konnte keinen Gutschein finden.',
-    'cannot_use'                         => 'Giftcard {0} cannot be used for this sale. Invalid Customer.',
+    'cannot_use'                         => '',
     'card_value'                         => 'Wert',
     'category'                           => 'Kategorie',
     'change_all_to_allow_alt_desc'       => 'Erlaube Alt. Bez. für ALLE.',

@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Artikelnaam',
     'mode'                         => 'Leveringsmodus',
     'new_supplier'                 => 'Nieuwe leverancier',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'levering(en)',
     'print_after_sale'             => 'Afdrukken na verkoop',
     'quantity'                     => 'Aantal',

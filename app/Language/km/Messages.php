@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'តំរូវអោយបំពេញលេខទូរស័ព្ទ',
     'phone_placeholder'     => 'បំពេញលេខទូរស័ព្ទនៅទីនេះ...',
     'sms_send'              => 'ផ្ញើរសារ',
-    'successfully_sent'     => 'ការផ្ញើរសារបានជោគជ័យទៅកាន់: ',
-    'unsuccessfully_sent'   => 'ការផ្ញើរសារមិនបានជោគជ័យទៅកាន់: ',
+    'successfully_sent'     => 'ការផ្ញើរសារបានជោគជ័យទៅកាន់:',
+    'unsuccessfully_sent'   => 'ការផ្ញើរសារមិនបានជោគជ័យទៅកាន់:',
 ];
