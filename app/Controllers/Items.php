@@ -117,6 +117,9 @@ class Items extends Secure_Controller
         if ($stockLocation !== null && $stockLocation !== '' && !$this->stock_location->is_allowed_location((int) $stockLocation, 'items')) {
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
         }
+        if ($stockLocation !== null && $stockLocation !== '') {
+            $stockLocation = (string) (int) $stockLocation;
+        }
         $this->item_lib->set_item_location($stockLocation);
 
         $definitionNamesWithTypes = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
@@ -556,7 +559,7 @@ class Items extends Secure_Controller
         }
 
         $defaultLocation = $this->stock_location->getDefaultLocationId();
-        if (array_key_exists($defaultLocation, $allowedLocations)) {
+        if ($defaultLocation !== null && array_key_exists($defaultLocation, $allowedLocations)) {
             $data['stock_location'] = $defaultLocation;
         } elseif (count($allowedLocations) > 0) {
             $data['stock_location'] = array_key_first($allowedLocations);
