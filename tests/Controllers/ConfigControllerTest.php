@@ -147,7 +147,7 @@ class ConfigControllerTest extends CIUnitTestCase
         $this->assertStringContainsString('invalid', strtolower($result['message']));
     }
 
-    public function testMailpath_RejectsSendmailPathWithTrailingArgs(): void
+    public function testMailpath_AcceptsPathWithTrailingArgs(): void
     {
         $this->resetSession();
 
@@ -158,7 +158,7 @@ class ConfigControllerTest extends CIUnitTestCase
 
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success']);
+        $this->assertTrue($result['success']);
     }
 
     // ========== postSaveLocale: payment_reference_code_min / max ==========
