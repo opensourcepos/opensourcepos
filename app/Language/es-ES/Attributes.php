@@ -15,7 +15,7 @@ return [
     'definition_one_or_multiple' => 'atributo(s)',
     'definition_successful_adding' => 'Has añadido el atributo correctamente',
     'definition_successful_deleted' => 'Ha eliminado con éxito',
-    'definition_successful_updating' => 'Se ha añadido el atributo correctamente.',
+    'definition_successful_updating' => 'Se ha actualizado el atributo correctamente',
     'definition_type' => 'Tipo de Atributo',
     'definition_type_required' => 'Tipo de Atributo es un campo obligatorio',
     'definition_unit' => 'Unidad de medida',
