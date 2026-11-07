@@ -257,9 +257,10 @@ class OSPOSRules
 
     /**
      * Validates a plain filesystem path. Allows colon and backslash for Windows paths.
-     * Rejects spaces, shell metacharacters, and trailing arguments since this value is
-     * concatenated unescaped into a popen() call. Uses \A...\z, not ^...$, since $
-     * also matches before a trailing newline.
+     * Rejects shell metacharacters and control characters. Spaces are permitted
+     * because legitimate directory names may contain them; the path is escaped
+     * with escapeshellarg() at the execution boundary in Email_lib.
+     * Uses \A...\z, not ^...$, since $ also matches before a trailing newline.
      *
      * @param string $candidate
      * @param string|null $error
