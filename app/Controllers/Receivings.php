@@ -117,7 +117,9 @@ class Receivings extends Secure_Controller
             $this->receiving_lib->clear_reference();
             $mode = $this->request->getPost('mode', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $this->receiving_lib->set_mode($mode);
-        } elseif ($this->stock_location->is_allowed_location($stock_source, 'receivings')) {
+        } elseif ($this->stock_location->is_allowed_location($stock_source, 'receivings') &&
+            $this->stock_location->is_allowed_location((int) $stock_destination, 'receivings')
+        ) {
             $this->receiving_lib->set_stock_source($stock_source);
             $this->receiving_lib->set_stock_destination($stock_destination);
         }
