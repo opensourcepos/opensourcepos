@@ -106,6 +106,8 @@ class Reports extends Secure_Controller
             'specific_employees'         => 'reports_employees',
             'specific_discounts'         => 'reports_discounts',
             'specific_suppliers'         => 'reports_suppliers',
+            'get_detailed_sales'         => 'reports_sales',
+            'get_detailed_receivings'    => 'reports_receivings',
         ];
 
         // Helper/UI methods that don't require report-specific permissions
