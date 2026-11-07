@@ -5,6 +5,8 @@ namespace Tests\Controllers;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use CodeIgniter\Config\Services;
+use Config\OSPOS;
 use App\Models\Stock_location;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
@@ -28,6 +30,7 @@ class ReceivingsControllerTest extends CIUnitTestCase
     {
         $this->resetDatabaseOnce();
         parent::setUp();
+        config(OSPOS::class)->update_settings();
         $this->stock_location = model(Stock_location::class);
     }
 
@@ -68,7 +71,7 @@ class ReceivingsControllerTest extends CIUnitTestCase
         ]);
 
         $response->assertStatus(200);
-        $this->assertNotEquals((string) $locBId, $this->session->get('recv_stock_destination'));
+        $this->assertNotEquals((string) $locBId, Services::session()->get('recv_stock_destination'));
     }
 
     public function testPostChangeMode_AcceptsAuthorizedDestination(): void
@@ -95,6 +98,6 @@ class ReceivingsControllerTest extends CIUnitTestCase
         ]);
 
         $response->assertStatus(200);
-        $this->assertEquals((string) $locAId, $this->session->get('recv_stock_destination'));
+        $this->assertEquals((string) $locAId, Services::session()->get('recv_stock_destination'));
     }
 }
