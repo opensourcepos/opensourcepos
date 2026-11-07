@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Eklenen/Çıkarılan Adet.',
+return [    'add_minus'                          => 'Eklenen/Çıkarılan Adet.',
     'allow_alt_description'              => 'Dip Nota izin ver',
     'amount_entry'                       => 'Miktar Girişi',
     'bulk_edit'                          => 'Toplu Düzenleme',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Hiçbiri',
     'none_selected'                      => 'Düzenlemek için ürün seçmediniz',
     'nonstock'                           => 'Stokta Olmayan',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Ürün No',
     'number_required'                    => 'Barkod alanı zorunludur.',
     'one_or_multiple'                    => 'ürün',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => 'Satış Fiyatı zorunlu alandır.',
     'upc_database'                       => 'UPC Veritabanı',
     'update'                             => 'Ürün Güncelle',
-    'use_inventory_menu'                 => 'Stok Menüsünü Kullan',
-];
+    'use_inventory_menu'                 => 'Stok Menüsünü Kullan',];

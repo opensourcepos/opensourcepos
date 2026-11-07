@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Добавить/убрать товар.',
+return [    'add_minus'                          => 'Добавить/убрать товар.',
     'allow_alt_description'              => 'Разрешить альтернативное описание',
     'amount_entry'                       => 'Ввод количества',
     'bulk_edit'                          => 'Массовое редактирование',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Нет',
     'none_selected'                      => 'Вы не выбрали ни одного товара для редактирования',
     'nonstock'                           => 'Не учитывается на складе',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Номер товара',
     'number_required'                    => 'Штрих-код - обязательное поле.',
     'one_or_multiple'                    => 'товар(ов)',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => 'Розничная цена - обязательное поле.',
     'upc_database'                       => 'База данных штрих-кодов',
     'update'                             => 'Обновление товара',
-    'use_inventory_menu'                 => 'Использовать меню запасов',
-];
+    'use_inventory_menu'                 => 'Использовать меню запасов',];

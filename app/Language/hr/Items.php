@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Dodavanje/skidanje s inventure',
+return [    'add_minus'                          => 'Dodavanje/skidanje s inventure',
     'allow_alt_description'              => 'Dozvoli Alt opis',
     'amount_entry'                       => '',
     'bulk_edit'                          => 'Zajedno uređenje',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Egysem',
     'none_selected'                      => 'Niste odabrali nijedan artikal za uređivanje',
     'nonstock'                           => '',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Redni broj',
     'number_required'                    => 'UPC/EAN/ISBN je potreban',
     'one_or_multiple'                    => 'Artikal(i)',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => 'Maloprodajna cijena je obavezna',
     'upc_database'                       => 'UPC baza',
     'update'                             => 'Ažuriraj artikl',
-    'use_inventory_menu'                 => 'Koristi inv. meni',
-];
+    'use_inventory_menu'                 => 'Koristi inv. meni',];

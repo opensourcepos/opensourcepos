@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => '增/減庫存',
+return [    'add_minus'                          => '增/減庫存',
     'allow_alt_description'              => '允許ALT描述',
     'amount_entry'                       => '',
     'bulk_edit'                          => '批次編輯',
@@ -76,6 +75,7 @@ return [
     'none'                               => '無',
     'none_selected'                      => '您還沒有選擇任何產品進行編輯',
     'nonstock'                           => '',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => '產品編號',
     'number_required'                    => '',
     'one_or_multiple'                    => '產品',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => '單價為必填欄位',
     'upc_database'                       => '',
     'update'                             => '更新產品',
-    'use_inventory_menu'                 => '使用庫存清單',
-];
+    'use_inventory_menu'                 => '使用庫存清單',];

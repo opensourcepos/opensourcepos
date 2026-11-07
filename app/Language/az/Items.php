@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'İnventarı artırmaq və ya azaltmaq.',
+return [    'add_minus'                          => 'İnventarı artırmaq və ya azaltmaq.',
     'allow_alt_description'              => 'Alternativ Təsvirə İcazə Ver',
     'amount_entry'                       => 'Məbləğ Əlavəsi',
     'bulk_edit'                          => 'Kütləvi Redaktə',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Heç biri',
     'none_selected'                      => 'Redaktə etmək üçün heç bir Mal seçməmisiniz',
     'nonstock'                           => 'Ehtiyatsız',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Malın Nömrəsi',
     'number_required'                    => 'Barkod tələb olunan sahədir.',
     'one_or_multiple'                    => 'mal(lar)',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => 'Pərakəndə satış qiyməti tələb olunan sahədir.',
     'upc_database'                       => 'Barkod Məlumat Bazası',
     'update'                             => 'Malı Yenilə',
-    'use_inventory_menu'                 => 'İnventar Menyusundan İstifadə Et',
-];
+    'use_inventory_menu'                 => 'İnventar Menyusundan İstifadə Et',];

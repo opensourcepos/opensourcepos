@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Hisa ya kuongeza au kutoa.',
+return [    'add_minus'                          => 'Hisa ya kuongeza au kutoa.',
     'allow_alt_description'              => 'Ruhusu Maelezo Mbadala',
     'amount_entry'                       => 'Uingizaji wa Kiasi',
     'bulk_edit'                          => 'Hariri kwa Wingi',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Hakuna',
     'none_selected'                      => 'Hujachagua Bidhaa yoyote kuhariri',
     'nonstock'                           => 'Isiyo na Akiba',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Namba ya Bidhaa',
     'number_required'                    => 'Msimbo wa Mstari ni kiashiria kinachohitajika.',
     'one_or_multiple'                    => 'bidhaa',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => 'Bei ya Rejareja ni kiashiria kinachohitajika.',
     'upc_database'                       => 'Kanzidata ya Misimbomstari',
     'update'                             => 'Sasisha Bidhaa',
-    'use_inventory_menu'                 => 'Tumia Menyu ya Hisa',
-];
+    'use_inventory_menu'                 => 'Tumia Menyu ya Hisa',];

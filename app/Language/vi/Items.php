@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Hàng tồn kho để thêm hay bớt.',
+return [    'add_minus'                          => 'Hàng tồn kho để thêm hay bớt.',
     'allow_alt_description'              => 'Cho phép Mô tả thay thế',
     'amount_entry'                       => 'Đầu mục tổng số',
     'bulk_edit'                          => 'Sửa hàng loạt',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'Không',
     'none_selected'                      => 'Bạn chưa chọn bất kỳ một Hàng hóa nào để mà sửa',
     'nonstock'                           => 'Hết hàng',
+    'not_authorized'                      => 'Not authorized',
     'number_information'                 => 'Số hàng hóa',
     'number_required'                    => 'Trường Mã vạch là bắt buộc.',
     'one_or_multiple'                    => 'hàng hóa',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => 'Trường giá bán lẻ là bắt buộc.',
     'upc_database'                       => 'Cơ sở dữ liệu mã vạch',
     'update'                             => 'Cập nhật Hàng hóa',
-    'use_inventory_menu'                 => 'Dùng trình đơn Tồn kho',
-];
+    'use_inventory_menu'                 => 'Dùng trình đơn Tồn kho',];

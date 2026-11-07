@@ -1,7 +1,6 @@
 <?php
 
-return [
-    'add_minus'                          => 'Inventory to add or subtract.',
+return [    'add_minus'                          => 'Inventory to add or subtract.',
     'allow_alt_description'              => 'Allow Alternate Description',
     'amount_entry'                       => 'Amount Entry',
     'bulk_edit'                          => 'Bulk Edit',
@@ -76,6 +75,7 @@ return [
     'none'                               => 'None',
     'none_selected'                      => 'You have not selected any Item(s) to edit',
     'nonstock'                           => 'Non-stocked',
+    'not_authorized'                     => 'This action is not authorized.',
     'number_information'                 => 'Item Number',
     'number_required'                    => 'Barcode is a required field.',
     'one_or_multiple'                    => 'item(s)',
@@ -121,5 +121,4 @@ return [
     'unit_price_required'                => 'Retail Price is a required field.',
     'upc_database'                       => 'Barcode Database',
     'update'                             => 'Update Item',
-    'use_inventory_menu'                 => 'Use Inventory Menu',
-];
+    'use_inventory_menu'                 => 'Use Inventory Menu',];
