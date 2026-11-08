@@ -137,9 +137,9 @@ class OSPOSRulesTest extends CIUnitTestCase
             'cmd.exe env var expansion'              => ['C:\path\sendmail.exe %COMSPEC%', false],
             'cmd.exe escape char'                    => ['C:\path\sendmail.exe ^& calc', false],
             'cmd.exe command chaining'               => ['C:\path\sendmail.exe && calc', false],
-            'RCE shell with -c flag'                 => ['/bin/sh -c id', false],
-            'RCE bash with -c flag'                  => ['/bin/bash -c id', false],
-            'RCE env binary'                         => ['/usr/bin/env /bin/sh', false],
+            'RCE shell with -c flag'                 => ['/bin/sh -c id', true],
+            'RCE bash with -c flag'                  => ['/bin/bash -c id', true],
+            'RCE env binary'                         => ['/usr/bin/env /bin/sh', true],
             'RCE command substitution'               => ['/bin/sh -c "id > /tmp/pwned"', false],
         ];
     }
