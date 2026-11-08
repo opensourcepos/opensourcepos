@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'account_number'                => 'Account #',
+    'account_number'                => '',
     'account_number_duplicate'      => 'Accountnummer is al aanwezig in de database.',
     'available_points'              => 'Beschikbare punten',
     'available_points_value'        => '',
@@ -34,16 +34,17 @@ return [
     'mailchimp_activity_total'      => 'E-mail verstuurd',
     'mailchimp_activity_unopen'     => 'E-mail ongeopend',
     'mailchimp_email_client'        => 'E-mailclient',
-    'mailchimp_info'                => 'MailChimp',
+    'mailchimp_info'                => '',
     'mailchimp_member_rating'       => 'Beoordeling',
-    'mailchimp_status'              => 'Status',
-    'mailchimp_vip'                 => 'VIP',
+    'mailchimp_status'              => '',
+    'mailchimp_vip'                 => '',
     'max'                           => 'Max. uitgave',
     'min'                           => 'Min. uitgave',
     'new'                           => 'Nieuwe klant',
     'none_selected'                 => 'Geen klant(en) geselecteerd om te verwijderen.',
     'one_or_multiple'               => 'klant(en)',
     'quantity'                      => 'Hoeveelheid',
+    'rewards_package'               => 'Beloningspakket',
     'stats_info'                    => 'Statistieken',
     'successful_adding'             => 'Klant toegevoegd',
     'successful_deleted'            => 'U heeft verwijderd',
@@ -53,5 +54,4 @@ return [
     'taxable'                       => 'Belastbaar',
     'total'                         => 'Totale uitgave',
     'update'                        => 'Klant bijwerken',
-    'rewards_package'               => 'Beloningspakket',
 ];

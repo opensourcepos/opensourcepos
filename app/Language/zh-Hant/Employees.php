@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => '成功刪除員工資料',
     'successful_updating'                   => '成功更新員工資料',
     'system_language'                       => '系統語言',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => '密碼更改失敗。',
     'update'                                => '更新員工',
     'username'                              => '帳號',

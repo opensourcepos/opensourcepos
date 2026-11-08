@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'نام مورد',
     'mode'                         => 'دریافت حالت',
     'new_supplier'                 => 'تامین کننده جدید',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'دریافت (ها)',
     'print_after_sale'             => 'چاپ بعد از فروش',
     'quantity'                     => 'کمی',

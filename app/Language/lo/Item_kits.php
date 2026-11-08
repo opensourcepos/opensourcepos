@@ -17,8 +17,6 @@ return [
     'item'                      => 'ສິນຄ້າ',
     'item_kit_number'           => '',
     'item_kit_number_duplicate' => '',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'ສິນຄ້າ',
     'kit'                       => 'ID ຊຸດສິນຄ້າ',
     'kit_and_components'        => 'ສ່ວນປະກອບ ແລະ ຊຸດສິນຄ້າ',

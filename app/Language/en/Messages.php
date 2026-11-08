@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'Phone number required',
     'phone_placeholder'     => 'Mobile Number(s) here...',
     'sms_send'              => 'Send SMS',
-    'successfully_sent'     => 'Message successfully sent to: ',
-    'unsuccessfully_sent'   => 'Message unsuccessfully sent to: ',
+    'successfully_sent'     => 'Message successfully sent to:',
+    'unsuccessfully_sent'   => 'Message unsuccessfully sent to:',
 ];

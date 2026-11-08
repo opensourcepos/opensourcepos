@@ -17,8 +17,6 @@ return [
     'item'                      => 'Ürün',
     'item_kit_number'           => 'Barkod',
     'item_kit_number_duplicate' => 'Ürün Takımı Numarası veri tabanında zaten var.',
-    'item_number'               => '',
-    'item_number_duplicate'     => '',
     'items'                     => 'Ürünler',
     'kit'                       => 'Takım Kimliği',
     'kit_and_components'        => 'Takım ve Bileşenler',

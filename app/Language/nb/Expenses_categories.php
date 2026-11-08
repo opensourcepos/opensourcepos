@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => '',
     'add_item'                          => '',
     'cannot_be_deleted'                 => '',
     'category_id'                       => '',
+    'category_name_required'            => '',
     'confirm_delete'                    => '',
     'confirm_restore'                   => '',
     'description'                       => '',
