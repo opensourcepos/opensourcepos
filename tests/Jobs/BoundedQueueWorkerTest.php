@@ -98,9 +98,15 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
 
     public function testRun_UsesDefaultPriorityForUnconfiguredQueue(): void
     {
-        // No queuePriorities entry for 'default' — the queue package assigns
-        // the 'default' priority to jobs pushed without setPriority(), so the
-        // fallback must use ['default'] or those jobs remain pending forever.
+        // Config\Queue pre-configures 'default' with ['high','normal','low'].
+        // Unset it so the worker hits the ['default'] fallback branch.
+        $queueConfig = new QueueConfig();
+        $queueConfig->jobHandlers = ['success' => SucceedingTestJob::class];
+        $queueConfig->queuePriorities = [];
+        Factories::injectMock('config', 'Queue', $queueConfig);
+
+        // The queue package assigns priority 'default' when none is set via
+        // setPriority(), so the fallback ['default'] must pop this job.
         service('queue')->push('default', 'success', []);
 
         $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
