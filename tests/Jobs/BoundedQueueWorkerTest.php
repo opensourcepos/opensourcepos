@@ -73,6 +73,29 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
     }
 
+    public function testRun_UsesPerQueuePrioritiesFromConfig(): void
+    {
+        $queueConfig = new QueueConfig();
+        $queueConfig->jobHandlers = [
+            'success' => SucceedingTestJob::class,
+        ];
+        $queueConfig->queuePriorities = [
+            'urgent_queue' => ['critical', 'normal'],
+        ];
+        $queueConfig->queueDefaultPriority = [
+            'urgent_queue' => 'critical',
+        ];
+        Factories::injectMock('config', 'Queue', $queueConfig);
+
+        service('queue')->setPriority('critical')->push('urgent_queue', 'success', []);
+
+        $worker = new BoundedQueueWorker(['urgent_queue'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getProcessedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
+    }
+
     public function testStopsAtDeadlineWithoutDrainingEverything(): void
     {
         service('queue')->push('default', 'success', []);

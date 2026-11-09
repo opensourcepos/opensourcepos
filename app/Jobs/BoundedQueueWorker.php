@@ -58,7 +58,7 @@ class BoundedQueueWorker
                 break;
             }
 
-            $work = $this->popNext($queue);
+            $work = $this->popNext($queue, $config);
 
             if ($work === null) {
                 break;
@@ -142,10 +142,11 @@ class BoundedQueueWorker
         Database::connect()->table('queue_jobs')->where('id', $work->id)->delete();
     }
 
-    private function popNext(QueueInterface $queue): ?QueueJob
+    private function popNext(QueueInterface $queue, QueueConfig $config): ?QueueJob
     {
         foreach ($this->queues as $queueName) {
-            $work = $queue->pop($queueName, ['high', 'normal', 'low']);
+            $priorities = $config->queuePriorities[$queueName] ?? ['high', 'normal', 'low'];
+            $work = $queue->pop($queueName, $priorities);
 
             if ($work !== null) {
                 return $work;
