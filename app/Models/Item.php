@@ -89,7 +89,7 @@ class Item extends Model
     /**
      * Determines if a given item_number exists
      */
-    public function item_number_exists(string $item_number, string $item_id = ''): bool
+    public function item_number_exists(string $itemNumber, string $itemId = ''): bool
     {
         $config = config(OSPOS::class)->settings;
 
@@ -98,14 +98,13 @@ class Item extends Model
         }
 
         $builder = $this->db->table('items');
-        $builder->where('item_number', $item_number);
+        $builder->where('item_number', $itemNumber);
         $builder->where('deleted !=', 1);
-        $builder->where('item_id !=', intval($item_id));
 
-        // Check if $item_id is a number and not a string starting with 0
+        // Check if $itemId is a number and not a string starting with 0
         // because cases like 00012345 will be seen as a number where it is a barcode
-        if (ctype_digit($item_id) && !str_starts_with($item_id, '0')) {
-            $builder->where('item_id !=', intval($item_id));
+        if (ctype_digit($itemId) && !str_starts_with($itemId, '0')) {
+            $builder->where('item_id !=', intval($itemId));
         }
         return ($builder->get()->getNumRows()) >= 1;
     }
@@ -1010,12 +1009,12 @@ class Item extends Model
     public function get_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
     {
         $suggestions = [];
-        $non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
+        $nonKit = [ITEM, ITEM_AMOUNT_ENTRY];
 
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->like('name', $search);    // TODO: this and the next 11 lines are duplicated directly below.  We should extract a method here.
         $builder->orderBy('name', 'asc');
 
@@ -1026,7 +1025,7 @@ class Item extends Model
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->like('item_number', $search);
         $builder->orderBy('item_number', 'asc');
 
@@ -1072,9 +1071,7 @@ class Item extends Model
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 
-                if (!array_walk($suggestions, function ($value, $label) use ($entry) {
-                    return $entry['label'] != $label;
-                })) {
+                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1082,12 +1079,14 @@ class Item extends Model
             // Search in attributes
             if ($filters['search_custom'] !== false) {
                 $builder = $this->db->table('attribute_links');
+                $builder->select($this->get_search_suggestion_format('items.item_id, items.name, items.pack_name'));
                 $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
                 $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+                $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
-                $builder->where('deleted', $filters['is_deleted']);
-                $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+                $builder->where('items.deleted', $filters['is_deleted']);
+                $builder->whereIn('items.item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
 
                 foreach ($builder->get()->getResult() as $row) {
                     $suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
@@ -1114,12 +1113,12 @@ class Item extends Model
     public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
     {
         $suggestions = [];
-        $non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
+        $nonKit = [ITEM, ITEM_AMOUNT_ENTRY];
 
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->where('stock_type', '0'); // Stocked items only
         $builder->like('name', $search);
         $builder->orderBy('name', 'asc');
@@ -1131,7 +1130,7 @@ class Item extends Model
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->where('stock_type', '0'); // Stocked items only
         $builder->like('item_number', $search);
         $builder->orderBy('item_number', 'asc');
@@ -1145,7 +1144,7 @@ class Item extends Model
             $builder = $this->db->table('items');
             $builder->select('category');
             $builder->where('deleted', $filters['is_deleted']);
-            $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+            $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
             $builder->where('stock_type', '0'); // Stocked items only
             $builder->distinct();
             $builder->like('category', $search);
@@ -1173,16 +1172,14 @@ class Item extends Model
             $builder = $this->db->table('items');
             $builder->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
             $builder->where('deleted', $filters['is_deleted']);
-            $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+            $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
             $builder->where('stock_type', '0'); // Stocked items only
             $builder->like('description', $search);    // TODO: duplicated code, refactor method.
             $builder->orderBy('description', 'asc');
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
-                if (!array_walk($suggestions, function ($value, $label) use ($entry) {
-                    return $entry['label'] != $label;
-                })) {
+                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1190,12 +1187,14 @@ class Item extends Model
             // Search by custom fields
             if ($filters['search_custom'] !== false) {    // TODO: duplicated code.  We should refactor out a method... this can be replaced with `if ($filters['search_custom']`... no need for the double negative
                 $builder = $this->db->table('attribute_links');
+                $builder->select($this->get_search_suggestion_format('items.item_id, items.name, items.pack_name'));
                 $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
                 $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+                $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
-                $builder->where('stock_type', '0'); // Stocked items only
-                $builder->where('deleted', $filters['is_deleted']);
+                $builder->where('items.stock_type', '0'); // Stocked items only
+                $builder->where('items.deleted', $filters['is_deleted']);
 
                 foreach ($builder->get()->getResult() as $row) {
                     $suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
@@ -1221,7 +1220,7 @@ class Item extends Model
     public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
     {
         $suggestions = [];
-        $non_kit = [ITEM, ITEM_AMOUNT_ENTRY];    // TODO: This variable is never used.
+        $nonKit = [ITEM, ITEM_AMOUNT_ENTRY];    // TODO: This variable is never used.
 
         $builder = $this->db->table('items');
         $builder->select('item_id, name');
@@ -1283,9 +1282,7 @@ class Item extends Model
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $row->name];
-                if (!array_walk($suggestions, function ($value, $label) use ($entry) {
-                    return $entry['label'] != $label;
-                })) {
+                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1293,12 +1290,14 @@ class Item extends Model
             // Search in attributes
             if ($filters['search_custom'] !== false) {    // TODO: Duplicate code... same as above... no double negatives
                 $builder = $this->db->table('attribute_links');
+                $builder->select($this->get_search_suggestion_format('items.item_id, items.name, items.pack_name'));
                 $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
                 $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+                $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
-                $builder->where('stock_type', '0'); // Stocked items only
-                $builder->where('deleted', $filters['is_deleted']);
+                $builder->where('items.stock_type', '0'); // Stocked items only
+                $builder->where('items.deleted', $filters['is_deleted']);
 
                 foreach ($builder->get()->getResult() as $row) {
                     $suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
@@ -1405,26 +1404,31 @@ class Item extends Model
      * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
      *
      */
-    public function change_cost_price(int $item_id, float $items_received, float $new_price, ?float $old_price = null): bool
+    public function change_cost_price(int $itemId, float $itemsReceived, float $newPrice, ?float $oldPrice = null): bool
     {
-        if ($old_price === null) {
-            $item_info = $this->getInfo($item_id);
-            $old_price = $item_info->cost_price;
+        if ($oldPrice === null) {
+            $itemInfo = $this->getInfo($itemId);
+            $oldPrice = $itemInfo->cost_price;
         }
 
         $builder = $this->db->table('item_quantities');
         $builder->selectSum('quantity');
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
         $builder->join('stock_locations', 'stock_locations.location_id=item_quantities.location_id');
         $builder->where('stock_locations.deleted', 0);
-        $old_total_quantity = $builder->get()->getRow()->quantity;
+        $oldTotalQuantity = $builder->get()->getRow()->quantity;
 
-        $total_quantity = $old_total_quantity + $items_received;
-        $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
+        $totalQuantity = $oldTotalQuantity + $itemsReceived;
 
-        $data = ['cost_price' => $average_price];
+        if ($oldTotalQuantity <= 0 || $totalQuantity <= 0) {
+            $averagePrice = to_decimals($newPrice);
+        } else {
+            $averagePrice = bcdiv(bcadd(bcmul((string)$itemsReceived, (string)$newPrice), bcmul((string)$oldTotalQuantity, (string)$oldPrice)), (string)$totalQuantity);
+        }
 
-        return $this->save_value($data, $item_id);
+        $data = ['cost_price' => $averagePrice];
+
+        return $this->save_value($data, $itemId);
     }
 
     /**

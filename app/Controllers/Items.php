@@ -212,43 +212,43 @@ class Items extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function getPicThumb(string $pic_filename): ResponseInterface
+    public function getPicThumb(string $picFilename): ResponseInterface
     {
         helper('file');
 
         // Security: Sanitize filename to prevent path traversal
         // Use basename() to strip directory components and prevent '../' attacks
-        $pic_filename = basename(rawurldecode($pic_filename));
-        $file_extension = strtolower(pathinfo($pic_filename, PATHINFO_EXTENSION));
+        $picFilename = str_replace(['*', '?', '[', ']'], '', basename(rawurldecode($picFilename)));
+        $fileExtension = strtolower(pathinfo($picFilename, PATHINFO_EXTENSION));
 
         // Validate file extension against system-configured allowed image types
         // Handle both legacy pipe-separated and current comma-separated formats
         // Fallback to types that GD library can process for thumbnail generation
-        $allowed_types = $this->config['image_allowed_types'] ?? 'jpg,jpeg,gif,png,webp,bmp,tif,tiff';
-        $allowed_extensions = strpos($allowed_types, '|') !== false
-            ? explode('|', $allowed_types)
-            : explode(',', $allowed_types);
+        $allowedTypes = $this->config['image_allowed_types'] ?? 'jpg,jpeg,gif,png,webp,bmp,tif,tiff';
+        $allowedExtensions = strpos($allowedTypes, '|') !== false
+            ? explode('|', $allowedTypes)
+            : explode(',', $allowedTypes);
 
-        if (!in_array($file_extension, $allowed_extensions, true)) {
+        if (!in_array($fileExtension, $allowedExtensions, true)) {
             return $this->response->setStatusCode(400)->setBody('Invalid file type');
         }
 
-        $images = glob("./uploads/item_pics/$pic_filename");
-        $base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
+        $images = glob("./uploads/item_pics/$picFilename");
+        $basePath = './uploads/item_pics/' . pathinfo($picFilename, PATHINFO_FILENAME);
 
         if (sizeof($images) > 0) {
-            $image_path = $images[0];
-            $thumb_path = $base_path . "_thumb.$file_extension";
+            $imagePath = $images[0];
+            $thumbPath = $basePath . "_thumb.$fileExtension";
 
-            if (sizeof($images) < 2 && !file_exists($thumb_path)) {
+            if (sizeof($images) < 2 && !file_exists($thumbPath)) {
                 $image = Services::image('gd2');
-                $image->withFile($image_path)
+                $image->withFile($imagePath)
                     ->resize(52, 32, true, 'height')
-                    ->save($thumb_path);
+                    ->save($thumbPath);
             }
 
-            $this->response->setContentType(mime_content_type($thumb_path));
-            $this->response->setBody(file_get_contents($thumb_path));
+            $this->response->setContentType(mime_content_type($thumbPath));
+            $this->response->setBody(file_get_contents($thumbPath));
         }
 
         return $this->response;
@@ -805,7 +805,7 @@ class Items extends Secure_Controller
             'receiving_quantity'    => $receivingQuantity,
             'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
             'is_serialized'         => $this->request->getPost('is_serialized') != null,
-            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($qtyPerPack),
+            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : $qtyPerPack,
             'pack_name'             => $this->request->getPost('pack_name') == null ? $defaultPackName : $this->request->getPost('pack_name'),
             'low_sell_item_id'      => $this->request->getPost('low_sell_item_id') === null ? $itemId : intval($this->request->getPost('low_sell_item_id')),
             'deleted'               => $this->request->getPost('is_deleted') != null,
@@ -923,12 +923,12 @@ class Items extends Secure_Controller
     private function upload_image(): array
     {
         $file = $this->request->getFile('items_image');
-        if (!$file) {
+        if (!$file || $file->getError() === UPLOAD_ERR_NO_FILE) {
             return [];
         }
 
         helper(['form']);
-        $validation_rule = [
+        $validationRule = [
             'items_image' => [
                 'label' => 'Item Image',
                 'rules' => [
@@ -942,7 +942,7 @@ class Items extends Secure_Controller
             ]
         ];
 
-        if (!$this->validate($validation_rule)) {
+        if (!$this->validate($validationRule)) {
             return (['error' => $this->validator->getError('items_image')]);
         }
 
@@ -950,16 +950,16 @@ class Items extends Secure_Controller
         $info = pathinfo($filename);
 
         // Sanitize filename to remove problematic characters like spaces
-        $sanitized_name = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $info['filename']);
+        $sanitizedName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $info['filename']);
 
-        $file_info = [
+        $fileInfo = [
             'orig_name' => $filename,
-            'raw_name'  => $sanitized_name,
+            'raw_name'  => $sanitizedName,
             'file_ext'  => $file->guessExtension()
         ];
 
-        $file->move(FCPATH . 'uploads/item_pics/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
-        return ($file_info);
+        $file->move(FCPATH . 'uploads/item_pics/', $fileInfo['raw_name'] . '.' . $fileInfo['file_ext'], true);
+        return ($fileInfo);
     }
 
 
@@ -1068,10 +1068,10 @@ class Items extends Secure_Controller
             $taxPercents = $this->request->getPost('tax_percents');
             $taxUpdated = false;
 
-            foreach ($taxPercents as $tax_percent) {
-                if (!empty($taxNames[$tax_percent]) && is_numeric($taxPercents[$tax_percent])) {
+            foreach ($taxPercents ?? [] as $key => $taxPercent) {
+                if (!empty($taxNames[$key]) && is_numeric($taxPercents[$key])) {
                     $taxUpdated = true;
-                    $itemsTaxesData[] = ['name' => $taxNames[$tax_percent], 'percent' => $taxPercents[$tax_percent]];
+                    $itemsTaxesData[] = ['name' => $taxNames[$key], 'percent' => $taxPercents[$key]];
                 }
             }
 
@@ -1181,7 +1181,7 @@ class Items extends Secure_Controller
                             'reorder_level' => $row['Reorder Level'],
                             'deleted'       => false,
                             'hsn_code'      => $row['HSN'],
-                            'pic_filename'  => $row['Image']
+                            'pic_filename'  => str_replace(['*', '?', '[', ']'], '', basename($row['Image']))
                         ];
 
                         if (!empty($row['Supplier ID'])) {

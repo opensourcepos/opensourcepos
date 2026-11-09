@@ -1415,5 +1415,46 @@ class ItemsControllerTest extends CIUnitTestCase
         $isValid = in_array($csvLocationName, $allowedLocations);
         $this->assertTrue($isValid, 'Valid location name should pass validation');
     }
+
+    public function testPostBulkUpdate_PersistsTaxesByIndexAndHandlesNullTaxes(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $itemData = [
+            'name'       => 'BulkTaxItem ' . uniqid(),
+            'category'   => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted'    => 0,
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+        $itemId = (int) $itemData['item_id'];
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => (string) $itemId,
+            'tax_names'    => ['VAT', 'GST'],
+            'tax_percents' => ['20', '5'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $savedTaxes = $this->item_taxes->get_info($itemId);
+        $this->assertCount(2, $savedTaxes);
+        $taxesByName = array_column($savedTaxes, 'percent', 'name');
+        $this->assertArrayHasKey('VAT', $taxesByName);
+        $this->assertEqualsWithDelta(20.0, (float) $taxesByName['VAT'], 0.01);
+        $this->assertArrayHasKey('GST', $taxesByName);
+        $this->assertEqualsWithDelta(5.0, (float) $taxesByName['GST'], 0.01);
+
+        $responseNoTaxes = $this->post('/items/bulkupdate', [
+            'item_ids' => (string) $itemId,
+            'category' => 'UpdatedCategory',
+        ]);
+        $responseNoTaxes->assertStatus(200);
+        $this->assertTrue(json_decode($responseNoTaxes->getJSON(), true)['success']);
+    }
 }
 

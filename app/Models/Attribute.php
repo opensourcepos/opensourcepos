@@ -42,17 +42,19 @@ class Attribute extends Model
     public const SHOW_IN_SALES = 2;
     public const SHOW_IN_RECEIVINGS = 4;
     public const SHOW_IN_SEARCH = 8;
-    public function deleteDropdownAttributeValue(string $attribute_value, int $definition_id): bool
+    public function deleteDropdownAttributeValue(string $attributeValue, int $definitionId): bool
     {
-        $attribute_id = $this->getAttributeIdByValue($attribute_value);
-        $this->deleteAttributeLinksByDefinitionIdAndAttributeId($definition_id, $attribute_id);
+        $attributeId = $this->getAttributeIdByValue($attributeValue);
+        if ($attributeId !== null) {
+            $this->deleteAttributeLinksByDefinitionIdAndAttributeId($definitionId, $attributeId);
+        }
 
         //Delete attribute value if not linked other attributes
         $subQuery = $this->db->table('attribute_links');
         $subQuery->select('attribute_id');
 
         $builder = $this->db->table('attribute_values');
-        $builder->where('attribute_value', $attribute_value);
+        $builder->where('attribute_value', $attributeValue);
         $builder->whereNotIn('attribute_id', $subQuery);
 
         return $builder->delete();
@@ -434,28 +436,28 @@ class Attribute extends Model
      * @param string $to_type
      * @return boolean
      */
-    private function convert_definition_data(int $definition_id, string $from_type, string $to_type): bool
+    private function convert_definition_data(int $definitionId, string $fromType, string $toType): bool
     {
         $success = false;
 
-        if ($from_type === TEXT) {
-            if (in_array($to_type, [DATE, DECIMAL], true)) {
-                if ($this->check_data_validity($definition_id, $from_type, $to_type)) {
-                    $attributes_to_convert = $this->get_attributes_by_definition($definition_id);
-                    $success = $this->attribute_cleanup($attributes_to_convert, $definition_id, $to_type);
+        if ($fromType === TEXT) {
+            if (in_array($toType, [DATE, DECIMAL], true)) {
+                if ($this->check_data_validity($definitionId, $fromType, $toType)) {
+                    $attributesToConvert = $this->get_attributes_by_definition($definitionId);
+                    $success = $this->attribute_cleanup($attributesToConvert, $definitionId, $toType);
                 }
-            } elseif ($to_type === DROPDOWN) {
+            } elseif ($toType === DROPDOWN) {
                 $success = true;
-            } elseif ($to_type === CHECKBOX) {    // TODO: duplicated code.
-                $checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
+            } elseif ($toType === CHECKBOX) {    // TODO: duplicated code.
+                $checkboxAttributeValues = $this->checkbox_attribute_values($definitionId);
 
                 $this->db->transStart();
 
                 $query = 'UPDATE ' . $this->db->prefixTable('attribute_links') . ' links ';
                 $query .= 'JOIN ' . $this->db->prefixTable('attribute_values') . ' vals ';
                 $query .= 'ON vals.attribute_id = links.attribute_id ';
-                $query .= "SET links.attribute_id = IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
-                $query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+                $query .= "SET links.attribute_id = IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkboxAttributeValues[0], $checkboxAttributeValues[1]) ";
+                $query .= 'WHERE definition_id = ' . $this->db->escape($definitionId);
                 $success = $this->db->query($query);
 
                 // TODO: In order to convert this query to QueryBuilder, CI needs to fix their issue with JOINs being ignored in UPDATE queries and ideally fix their issue with backticks and dbprefix not being prepended when SQL functions are used.
@@ -463,41 +465,41 @@ class Attribute extends Model
                 // $db_prefix = $this->db->getPrefix();
                 // $builder = $this->db->table('attribute_links');
                 // $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'inner');
-                // $builder->set('attribute_links.attribute_id', "IF((`$db_prefix" . "attribute_values`.`attribute_value` IN('false','0','') OR (`". $db_prefix ."attribute_values`.`attribute_value` IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1])", false);
-                // $builder->where('attribute_links.definition_id', $definition_id);
+                // $builder->set('attribute_links.attribute_id', "IF((`$db_prefix" . "attribute_values`.`attribute_value` IN('false','0','') OR (`". $db_prefix ."attribute_values`.`attribute_value` IS NULL)), $checkboxAttributeValues[0], $checkboxAttributeValues[1])", false);
+                // $builder->where('attribute_links.definition_id', $definitionId);
                 // $success = $builder->update();
 
                 $this->db->transComplete();
             }
-        } elseif ($from_type === DROPDOWN) {
-            if (in_array($to_type, [TEXT, CHECKBOX], true)) {
-                if ($to_type === CHECKBOX) {    // TODO: Duplicated code.
-                    $checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
+        } elseif ($fromType === DROPDOWN) {
+            if (in_array($toType, [TEXT, CHECKBOX], true)) {
+                if ($toType === CHECKBOX) {    // TODO: Duplicated code.
+                    $checkboxAttributeValues = $this->checkbox_attribute_values($definitionId);
 
                     $this->db->transStart();
 
                     $query = 'UPDATE ' . $this->db->prefixTable('attribute_links') . ' links ';
                     $query .= 'JOIN ' . $this->db->prefixTable('attribute_values') . ' vals ';
                     $query .= 'ON vals.attribute_id = links.attribute_id ';
-                    $query .= "SET links.attribute_id = IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
-                    $query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+                    $query .= "SET links.attribute_id = IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkboxAttributeValues[0], $checkboxAttributeValues[1]) ";
+                    $query .= 'WHERE definition_id = ' . $this->db->escape($definitionId);
                     $success = $this->db->query($query);
 
                     // TODO: Same issue here. Replace the code above with the code below when it's fixed.
                     // $builder = $this->db->table('attribute_links');
                     // $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'inner');
-                    // $builder->set('attribute_links.attribute_id', "IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1])", false);
-                    // $builder->where('definition_id', $definition_id);
+                    // $builder->set('attribute_links.attribute_id', "IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkboxAttributeValues[0], $checkboxAttributeValues[1])", false);
+                    // $builder->where('definition_id', $definitionId);
                     // $success = $builder->update();
-                    //
-                    // $this->db->transComplete();
+
+                    $this->db->transComplete();
                 }
             }
         } else {
             $success = true;
         }
 
-        $this->delete_orphaned_links($definition_id);
+        $this->delete_orphaned_links($definitionId);
         $this->deleteOrphanedValues();
         return $success;
     }
@@ -706,7 +708,7 @@ class Attribute extends Model
      * @param int|null $definition_flags
      * @return ResultInterface
      */
-    public function get_link_values(int $item_id, string $sale_receiving_fk, ?int $id, ?int $definition_flags): ResultInterface
+    public function get_link_values(int $itemId, string $saleReceivingFk, ?int $id, ?int $definitionFlags): ResultInterface
     {
         $format = $this->db->escape(dateformat_mysql());
 
@@ -717,17 +719,17 @@ class Attribute extends Model
         $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
         $builder->where('definition_type <>', GROUP);
         $builder->where('deleted', ACTIVE);
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
 
-        if (!empty($id)) {
-            $builder->where($sale_receiving_fk, $id);
+        if (!empty($id) && in_array($saleReceivingFk, ['sale_id', 'receiving_id'], true)) {
+            $builder->where($saleReceivingFk, $id);
         } else {
             $builder->where('sale_id', null);
             $builder->where('receiving_id', null);
         }
 
-        if (!empty($id)) {
-            $builder->where(new RawSql("definition_flags & $definition_flags"));
+        if (!empty($id) && $definitionFlags !== null) {
+            $builder->where(new RawSql("definition_flags & $definitionFlags"));
         }
         return $builder->get();
     }
@@ -826,15 +828,19 @@ class Attribute extends Model
      * @param int $id
      * @return void
      */
-    public function copy_attribute_links(int $item_id, string $sale_receiving_fk, int $id): void
+    public function copy_attribute_links(int $itemId, string $saleReceivingFk, int $id): void
     {
-        $query = 'SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id);
+        if (!in_array($saleReceivingFk, ['sale_id', 'receiving_id'], true)) {
+            return;
+        }
+
+        $query = 'SELECT ' . $this->db->escape($itemId) . ', definition_id, attribute_id, ' . $this->db->escape($id);
         $query .= ' FROM ' . $this->db->prefixTable('attribute_links');
-        $query .= ' WHERE item_id = ' . $this->db->escape($item_id);
+        $query .= ' WHERE item_id = ' . $this->db->escape($itemId);
         $query .= ' AND sale_id IS NULL AND receiving_id IS NULL';
 
         $builder = $this->db->table('attribute_links');
-        $builder->ignore(true)->setQueryAsData(new RawSql($query), null, 'item_id, definition_id, attribute_id, ' . $sale_receiving_fk)->insertBatch();
+        $builder->ignore(true)->setQueryAsData(new RawSql($query), null, 'item_id, definition_id, attribute_id, ' . $saleReceivingFk)->insertBatch();
     }
 
     /**
@@ -1003,7 +1009,7 @@ class Attribute extends Model
                 && $storedValue !== $value) {
                 $attributeId = $this->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
             } elseif (!$this->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
-                return false;
+                $attributeId = false;
             }
         }
 
@@ -1132,20 +1138,24 @@ class Attribute extends Model
      * @param string $definition_type This dictates what column should be populated in any new attribute_values that are created
      * @return bool
      */
-    public function attribute_cleanup(array $attributes, int $definition_id, string $definition_type): bool
+    public function attribute_cleanup(array $attributes, int $definitionId, string $definitionType): bool
     {
         $this->db->transBegin();
 
         foreach ($attributes as $attribute) {
-            $new_attribute_id = $this->saveAttributeValue($attribute['attribute_value'], $definition_id, false, $attribute['attribute_id'], $definition_type);
+            $newAttributeId = $this->saveAttributeValue($attribute['attribute_value'], $definitionId, false, $attribute['attribute_id'], $definitionType);
 
-            if (!$this->saveAttributeLink($attribute['item_id'], $definition_id, $new_attribute_id)) {
+            if ($newAttributeId === 0 || !$this->saveAttributeLink($attribute['item_id'], $definitionId, $newAttributeId)) {
                 log_message('error', 'Transaction failed');
                 $this->db->transRollback();
                 return false;
             }
         }
-        $success = $this->delete_orphaned_links($definition_id);
+        $success = $this->delete_orphaned_links($definitionId);
+        if (!$success) {
+            $this->db->transRollback();
+            return false;
+        }
 
         $this->db->transCommit();
         return $success;
@@ -1168,15 +1178,17 @@ class Attribute extends Model
     }
 
     /**
-     * @param string $attribute_value
-     * @return int
+     * @param string $attributeValue
+     * @return int|null
      */
-    private function getAttributeIdByValue(string $attribute_value): int
+    private function getAttributeIdByValue(string $attributeValue): ?int
     {
         $builder = $this->db->table('attribute_values');
         $builder->select('attribute_id');
-        $builder->where('attribute_value', $attribute_value);
-        return $builder->get()->getRow('attribute_id');
+        $builder->where('attribute_value', $attributeValue);
+        $row = $builder->get()->getRow();
+
+        return $row ? (int) $row->attribute_id : null;
     }
 
     /**

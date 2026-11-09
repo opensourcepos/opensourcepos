@@ -20,8 +20,8 @@ class Cashup extends Model
     protected $allowedFields = [
         'open_date',
         'close_date',
-        'open_cash_amount',
-        'transfer_cash_amount',
+        'open_amount_cash',
+        'transfer_amount_cash',
         'note',
         'closed_amount_cash',
         'closed_amount_card',
@@ -59,13 +59,13 @@ class Cashup extends Model
     }
 
     /**
-     * @param string $cashup_ids
+     * @param array $cashupIds
      * @return ResultInterface
      */
-    public function get_multiple_info(string $cashup_ids): ResultInterface
+    public function get_multiple_info(array $cashupIds): ResultInterface
     {
         $builder = $this->db->table('cash_up');
-        $builder->whereIn('cashup_id', $cashup_ids);
+        $builder->whereIn('cashup_id', $cashupIds);
         $builder->orderBy('cashup_id', 'asc');
 
         return $builder->get();
@@ -225,12 +225,12 @@ class Cashup extends Model
     /**
      * Inserts or updates a cashup
      */
-    public function save_value(array &$cash_up_data, $cashup_id = NEW_ENTRY): bool
+    public function save_value(array &$cashUpData, $cashupId = NEW_ENTRY): bool
     {
-        if (!$cashup_id == NEW_ENTRY || !$this->exists($cashup_id)) {
+        if ($cashupId == NEW_ENTRY || !$this->exists($cashupId)) {
             $builder = $this->db->table('cash_up');
-            if ($builder->insert($cash_up_data)) {
-                $cash_up_data['cashup_id'] = $this->db->insertID();
+            if ($builder->insert($cashUpData)) {
+                $cashUpData['cashup_id'] = $this->db->insertID();
 
                 return true;
             }
@@ -239,9 +239,9 @@ class Cashup extends Model
         }
 
         $builder = $this->db->table('cash_up');
-        $builder->where('cashup_id', $cashup_id);
+        $builder->where('cashup_id', $cashupId);
 
-        return $builder->update($cash_up_data);
+        return $builder->update($cashUpData);
     }
 
     /**

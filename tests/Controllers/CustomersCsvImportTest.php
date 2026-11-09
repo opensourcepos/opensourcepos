@@ -289,4 +289,49 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
         unlink($tempFile);
     }
+
+    public function testPostImportCsvFile_RejectsDuplicateAccountNumberWhenEmailIsUnique(): void
+    {
+        $this->loginAsEmployee();
+
+        $accountNumber = 'ACC-' . uniqid();
+        $firstEmail = 'first.' . uniqid() . '@example.com';
+        $secondEmail = 'second.' . uniqid() . '@example.com';
+
+        $firstCsv = [
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First', 'Customer', '1', '1', $firstEmail, '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', $accountNumber, '', '', '']
+        ];
+        $tempFile1 = $this->createCsvFile($firstCsv);
+        $_FILES['file_path'] = [
+            'name'     => 'first.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile1,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile1)
+        ];
+        $firstResult = $this->post('/customers/importCsvFile');
+        $firstResult->assertOK();
+        $this->assertTrue(json_decode($firstResult->getJSON(), true)['success']);
+        unlink($tempFile1);
+
+        $secondCsv = [
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['Second', 'Customer', '1', '1', $secondEmail, '555-5678', '456 Oak Ave', '', 'Springfield', 'IL', '62701', 'US', '', '', $accountNumber, '', '', '']
+        ];
+        $tempFile2 = $this->createCsvFile($secondCsv);
+        $_FILES['file_path'] = [
+            'name'     => 'second.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile2,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile2)
+        ];
+        $secondResult = $this->post('/customers/importCsvFile');
+        $secondResult->assertOK();
+        $secondBody = json_decode($secondResult->getJSON(), true);
+        $this->assertFalse($secondBody['success']);
+        $this->assertNull($this->findCustomerByEmail($secondEmail));
+        unlink($tempFile2);
+    }
 }

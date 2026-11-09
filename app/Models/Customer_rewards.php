@@ -10,7 +10,7 @@ use CodeIgniter\Model;
  */
 class Customer_rewards extends Model
 {
-    protected $table = 'customer_packages';
+    protected $table = 'customers_packages';
     protected $primaryKey = 'package_id';
     protected $useAutoIncrement = true;
     protected $useSoftDeletes = false;

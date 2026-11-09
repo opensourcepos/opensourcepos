@@ -69,7 +69,6 @@ class Person extends Model
     public function get_total_rows(): int
     {
         $builder = $this->db->table('people');
-        $builder->where('deleted', 0);
 
         return $builder->countAllResults();
     }
