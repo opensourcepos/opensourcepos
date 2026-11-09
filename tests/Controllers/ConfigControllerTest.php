@@ -147,7 +147,7 @@ class ConfigControllerTest extends CIUnitTestCase
         $this->assertStringContainsString('invalid', strtolower($result['message']));
     }
 
-    public function testMailpath_AcceptsSendmailPathWithTrailingArgs(): void
+    public function testMailpath_AcceptsPathWithTrailingArgs(): void
     {
         $this->resetSession();
 
