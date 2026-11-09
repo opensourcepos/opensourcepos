@@ -113,7 +113,7 @@ The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once
 1. Open PowerShell **as Administrator** (`Register-ScheduledTask` requires elevation) and `cd` to your OSPOS project root.
 2. Run the script, replacing `-PhpPath` and `-ProjectPath` with your actual PHP and install paths:
    ```powershell
-   .\tools\Windows\create-windows-task-scheduler-task.ps1 -PhpPath 'C:\php\php.exe' -ProjectPath 'C:\laragon\www\opensourcepos'
+   .\tools\Windows\create-windows-task-scheduler-task.ps1 -PhpPath '[PATH TO PHP EXECUTABLE]' -ProjectPath '[PATH TO PROJECT ROOT]'
    ```
    - `-PhpPath`: full path to `php.exe`.
    - `-ProjectPath`: the OSPOS project root — the directory containing the `spark` file.
