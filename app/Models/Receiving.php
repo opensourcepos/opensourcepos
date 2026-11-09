@@ -215,43 +215,45 @@ class Receiving extends Model
     /**
      * @throws ReflectionException
      */
-    public function delete_value(int $receiving_id, int $employee_id, bool $update_inventory = true): bool
+    public function delete_value(int $receivingId, int $employeeId, bool $updateInventory = true): bool
     {
         // Start a transaction to assure data integrity
         $this->db->transStart();
 
-        if ($update_inventory) {
+        if ($updateInventory) {
             // TODO: defect, not all item deletions will be undone? get array with all the items involved in the sale to update the inventory tracking
-            $items = $this->get_receiving_items($receiving_id)->getResultArray();
+            $items = $this->get_receiving_items($receivingId)->getResultArray();
 
             $inventory = model('Inventory');
-            $item_quantity = model(Item_quantity::class);
+            $itemQuantity = model(Item_quantity::class);
 
             foreach ($items as $item) {
+                $itemsReceived = (float) $item['receiving_quantity'] != 0 ? $item['quantity_purchased'] * (-$item['receiving_quantity']) : -$item['quantity_purchased'];
+
                 // Create query to update inventory tracking
-                $inv_data = [
+                $invData = [
                     'trans_date'      => date('Y-m-d H:i:s'),
                     'trans_items'     => $item['item_id'],
-                    'trans_user'      => $employee_id,
-                    'trans_comment'   => 'Deleting receiving ' . $receiving_id,
+                    'trans_user'      => $employeeId,
+                    'trans_comment'   => 'Deleting receiving ' . $receivingId,
                     'trans_location'  => $item['item_location'],
-                    'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
+                    'trans_inventory' => $itemsReceived
                 ];
                 // Update inventory
-                $inventory->insert($inv_data, false);
+                $inventory->insert($invData, false);
 
                 // Update quantities
-                $item_quantity->changeQuantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
+                $itemQuantity->changeQuantity($item['item_id'], $item['item_location'], $itemsReceived);
             }
         }
 
         // Delete all items
         $builder = $this->db->table('receivings_items');
-        $builder->delete(['receiving_id' => $receiving_id]);
+        $builder->delete(['receiving_id' => $receivingId]);
 
         // Delete sale itself
         $builder = $this->db->table('receivings');
-        $builder->delete(['receiving_id' => $receiving_id]);
+        $builder->delete(['receiving_id' => $receivingId]);
 
         // Execute transaction
         $this->db->transComplete();
@@ -306,7 +308,7 @@ class Receiving extends Model
     public function create_temp_table(array $inputs): void
     {
         $config = config(OSPOS::class)->settings;
-        $db_prefix = $this->db->getPrefix();
+        $dbPrefix = $this->db->getPrefix();
 
         if (empty($inputs['receiving_id'])) {
             $where = empty($config['date_or_time_format'])
@@ -327,20 +329,20 @@ class Receiving extends Model
             'MAX(`payment_type`) AS payment_type',
             'MAX(`employee_id`) AS employee_id',
             'items.item_id AS item_id',
-            'MAX(`' . $db_prefix . 'receivings`.`supplier_id`) AS supplier_id',
+            'MAX(`' . $dbPrefix . 'receivings`.`supplier_id`) AS supplier_id',
             'MAX(`quantity_purchased`) AS quantity_purchased',
-            'MAX(`' . $db_prefix . 'receivings_items`.`receiving_quantity`) AS item_receiving_quantity',
+            'MAX(`' . $dbPrefix . 'receivings_items`.`receiving_quantity`) AS item_receiving_quantity',
             'MAX(`item_cost_price`) AS item_cost_price',
             'MAX(`item_unit_price`) AS item_unit_price',
             'MAX(`discount`) AS discount',
             'MAX(`discount_type`) AS discount_type',
             'receivings_items.line AS line',
             'MAX(`serialnumber`) AS serialnumber',
-            'MAX(`' . $db_prefix . 'receivings_items`.`description`) AS description',
-            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS subtotal',
-            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS total',
-            'MAX((CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - discount END) - (`item_cost_price` * `quantity_purchased`)) AS profit',
-            'MAX(`item_cost_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` ) AS cost'
+            'MAX(`' . $dbPrefix . 'receivings_items`.`description`) AS description',
+            'MAX(CASE WHEN `' . $dbPrefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS subtotal',
+            'MAX(CASE WHEN `' . $dbPrefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS total',
+            'MAX((CASE WHEN `' . $dbPrefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` - `discount` END) - (`item_cost_price` * `quantity_purchased`)) AS profit',
+            'MAX(`item_cost_price` * `quantity_purchased` * `' . $dbPrefix . 'receivings_items`.`receiving_quantity` ) AS cost'
         ]);
         $builder->join('receivings', 'receivings_items.receiving_id = receivings.receiving_id', 'inner');
         $builder->join('items', 'receivings_items.item_id = items.item_id', 'inner');

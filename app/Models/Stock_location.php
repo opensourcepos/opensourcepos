@@ -297,6 +297,8 @@ class Stock_location extends Model
 
         $originalLocationName = $this->getLocationName($locationId);
 
+        $this->db->transStart();
+
         if ($originalLocationName != $locationName) {
             $builder = $this->db->table('permissions');
             $builder->delete(['location_id' => $locationId]);
@@ -308,8 +310,11 @@ class Stock_location extends Model
 
         $builder = $this->db->table('stock_locations');
         $builder->where('location_id', $locationId);
+        $builder->update($locationDataToSave);
 
-        return $builder->update($locationDataToSave);
+        $this->db->transComplete();
+
+        return $this->db->transStatus();
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Receiving;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\ItemFixtureTrait;
 
@@ -34,7 +35,7 @@ class ReceivingTest extends CIUnitTestCase
 
     protected function createSupplier(): int
     {
-        $db = \Config\Database::connect();
+        $db = Database::connect();
 
         $db->table('people')->insert([
             'first_name'   => 'Test',
@@ -104,5 +105,61 @@ class ReceivingTest extends CIUnitTestCase
 
         $this->assertTrue($deleteResult);
         $this->assertEqualsWithDelta(0.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
+    }
+
+    public function testDeleteValue_RestoresStockWhenReceivingQuantityIsZero(): void
+    {
+        $employeeId = $this->createEmployee();
+        $supplierId = $this->createSupplier();
+        $itemId     = $this->createTestItem(HAS_STOCK);
+
+        $receivingModel = model(Receiving::class);
+        $items          = $this->buildReceivingLine($itemId, 5, 1.00);
+        $items[0]['receiving_quantity'] = 0;
+
+        $receivingId = $receivingModel->save_value(
+            $items,
+            $supplierId,
+            $employeeId,
+            'test receiving zero pack',
+            'REF-' . uniqid(),
+            'Cash'
+        );
+
+        $this->assertGreaterThan(0, $receivingId);
+        $this->assertEqualsWithDelta(5.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
+
+        $deleteResult = $receivingModel->delete_value($receivingId, $employeeId, true);
+
+        $this->assertTrue($deleteResult);
+        $this->assertEqualsWithDelta(0.0, $this->getItemQuantity($itemId, self::LOCATION_ID), 0.001);
+    }
+
+    public function testCreateTempTable_CompilesAndExecutesValidSql(): void
+    {
+        $employeeId = $this->createEmployee();
+        $supplierId = $this->createSupplier();
+        $itemId     = $this->createTestItem(HAS_STOCK);
+
+        $receivingModel = model(Receiving::class);
+        $items          = $this->buildReceivingLine($itemId, 3, 10.00);
+
+        $receivingId = $receivingModel->save_value(
+            $items,
+            $supplierId,
+            $employeeId,
+            'temp table test',
+            'REF-' . uniqid(),
+            'Cash'
+        );
+
+        $db = Database::connect();
+        $db->query('DROP TEMPORARY TABLE IF EXISTS ' . $db->prefixTable('receivings_items_temp'));
+
+        $receivingModel->create_temp_table(['receiving_id' => $receivingId]);
+
+        $row = $db->table('receivings_items_temp')->where('receiving_id', $receivingId)->get()->getRowArray();
+        $this->assertNotEmpty($row);
+        $this->assertEqualsWithDelta(30.00, (float) $row['total'], 0.001);
     }
 }

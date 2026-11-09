@@ -61,27 +61,29 @@ class Inventory extends Model
     }
 
     /**
-     * @param int $item_id ID number for the item to have quantity reset.
+     * @param int $itemId ID number for the item to have quantity reset.
      * @return bool|int|string The row id of the inventory table on insert or false on failure
      */
-    public function reset_quantity(int $item_id): bool|int|string
+    public function reset_quantity(int $itemId): bool|int|string
     {
-        $inventory_sums = $this->get_inventory_sum($item_id);
-        foreach ($inventory_sums as $inventory_sum) {
-            if ($inventory_sum['sum'] > 0) {
-                $employee = model(Employee::class);
+        $inventorySums = $this->get_inventory_sum($itemId);
+        $employee = model(Employee::class);
+        $success = true;
 
-                return $this->insert([
-                    'trans_inventory' => -1 * $inventory_sum['sum'],
-                    'trans_items'     => $item_id,
-                    'trans_location'  => $inventory_sum['location_id'],
+        foreach ($inventorySums as $inventorySum) {
+            if ((float) $inventorySum['sum'] != 0) {
+                $result = $this->insert([
+                    'trans_inventory' => -1 * $inventorySum['sum'],
+                    'trans_items'     => $itemId,
+                    'trans_location'  => $inventorySum['location_id'],
                     'trans_comment'   => lang('Items.is_deleted'),
                     'trans_user'      => $employee->get_logged_in_employee_info()->person_id
                 ]);
+                $success = $success && ($result !== false);
             }
         }
 
-        return true;
+        return $success;
     }
 
     /**

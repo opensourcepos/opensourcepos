@@ -8,7 +8,6 @@ use App\Models\Item_kit_items;
 use App\Models\Item_quantity;
 use App\Models\Receiving;
 use App\Models\Stock_location;
-
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
 
@@ -212,12 +211,14 @@ class Receiving_lib
     }
 
     /**
-     * @param int $stock_source
+     * @param int $stockSource
      * @return void
      */
-    public function set_stock_source(int $stock_source): void
+    public function set_stock_source(int $stockSource): void
     {
-        $this->session->set('recv_stock_source', $stock_source);
+        if ($this->stock_location->is_allowed_location($stockSource, 'receivings')) {
+            $this->session->set('recv_stock_source', $stockSource);
+        }
     }
 
     /**
@@ -244,12 +245,14 @@ class Receiving_lib
     }
 
     /**
-     * @param string $stock_destination
+     * @param string|null $stockDestination
      * @return void
      */
-    public function set_stock_destination(?string $stock_destination): void
+    public function set_stock_destination(?string $stockDestination): void
     {
-        $this->session->set('recv_stock_destination', $stock_destination);
+        if ($stockDestination === null || $this->stock_location->is_allowed_location((int) $stockDestination, 'receivings')) {
+            $this->session->set('recv_stock_destination', $stockDestination);
+        }
     }
 
     /**
@@ -263,7 +266,7 @@ class Receiving_lib
 
     /**
      * @param string $itemId
-     * @param int $quantity
+     * @param float|int|string $quantity
      * @param int|null $itemLocation
      * @param float $discount
      * @param int $discountType
@@ -275,7 +278,7 @@ class Receiving_lib
      * @param bool $includeDeleted
      * @return bool
      */
-    public function add_item(string $itemId, int $quantity = 1, ?int $itemLocation = null, float $discount = 0, int $discountType = 0, ?float $price = null, ?string $description = null, ?string $serialNumber = null, ?float $receivingQuantity = null, ?int $receivingId = null, bool $includeDeleted = false): bool
+    public function add_item(string $itemId, float|int|string $quantity = 1, ?int $itemLocation = null, float $discount = 0, int $discountType = 0, ?float $price = null, ?string $description = null, ?string $serialNumber = null, ?float $receivingQuantity = null, ?int $receivingId = null, bool $includeDeleted = false): bool
     {
         $config = config(OSPOS::class)->settings;
         $itemInfo = $this->item->get_info_by_id_or_number($itemId, $includeDeleted);
@@ -353,7 +356,7 @@ class Receiving_lib
 
         if ($itemAlreadyInSale) {
             $items[$updateKey]['quantity'] += $quantity;
-            $items[$updateKey]['total'] = $this->get_item_total($items[$updateKey]['quantity'], $price, $discount, $discountType, $items[$updateKey]['receiving_quantity']);
+            $items[$updateKey]['total'] = $this->get_item_total($items[$updateKey]['quantity'], $items[$updateKey]['price'], $items[$updateKey]['discount'], $items[$updateKey]['discount_type'], $items[$updateKey]['receiving_quantity']);
         } else {
             $items += $item;
         }
@@ -366,35 +369,36 @@ class Receiving_lib
     /**
      * @param $line
      * @param string $description
-     * @param string $serialnumber
-     * @param float $quantity
+     * @param string $serialNumber
+     * @param float|int|string $quantity
      * @param float $discount
-     * @param int|null $discount_type
+     * @param int|null $discountType
      * @param float $price
-     * @param float $receiving_quantity
+     * @param float $receivingQuantity
      * @return bool
      */
-    public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, ?int $discount_type, float $price, float $receiving_quantity): bool
+    public function edit_item($line, string $description, string $serialNumber, float|int|string $quantity, float $discount, ?int $discountType, float $price, float $receivingQuantity): bool
     {
         $items = $this->get_cart();
         if (isset($items[$line])) {
-            $line = &$items[$line];
-            $line['description'] = $description;
-            $line['serialnumber'] = $serialnumber;
-            $line['quantity'] = $quantity;
-            $line['receiving_quantity'] = $receiving_quantity;
-            $line['discount'] = $discount;
+            $items[$line]['description'] = $description;
+            $items[$line]['serialnumber'] = $serialNumber;
+            $items[$line]['quantity'] = $quantity;
+            $items[$line]['receiving_quantity'] = $receivingQuantity;
+            $items[$line]['discount'] = $discount;
 
-            if (!is_null($discount_type)) {
-                $line['discount_type'] = $discount_type;
+            if (!is_null($discountType)) {
+                $items[$line]['discount_type'] = $discountType;
             }
 
-            $line['price'] = $price;
-            $line['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity);
+            $items[$line]['price'] = $price;
+            $items[$line]['total'] = $this->get_item_total($quantity, $price, $discount, $items[$line]['discount_type'], $receivingQuantity);
             $this->set_cart($items);
+
+            return true;
         }
 
-        return false;    // TODO: This function will always return false.
+        return false;
     }
 
     /**
@@ -408,29 +412,36 @@ class Receiving_lib
     }
 
     /**
-     * @param int $receipt_receiving_id
+     * @param int|string $receiptReceivingId
      * @return void
      */
-    public function return_entire_receiving(int $receipt_receiving_id): void
+    public function return_entire_receiving(int|string $receiptReceivingId): void
     {
         // RECV #
-        $pieces = explode(' ', $receipt_receiving_id);
+        $pieces = explode(' ', (string) $receiptReceivingId);
 
         if (preg_match("/(RECV|KIT)/", $pieces[0])) {    // TODO: this needs to be converted to ternary notation.
-            $receiving_id = $pieces[1];
+            $receivingId = (int) $pieces[1];
         } else {
-            $receiving_id = $this->receiving->get_receiving_by_reference($receipt_receiving_id)->getRow()->receiving_id;
+            $row = $this->receiving->get_receiving_by_reference((string) $receiptReceivingId)->getRow();
+            if ($row === null) {
+                return;
+            }
+            $receivingId = (int) $row->receiving_id;
         }
 
         $this->empty_cart();
         $this->remove_supplier();
         $this->clear_comment();
 
-        foreach ($this->receiving->get_receiving_items($receiving_id)->getResult() as $row) {
-            $this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
+        foreach ($this->receiving->get_receiving_items($receivingId)->getResult() as $row) {
+            $this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receivingId, true);
         }
 
-        $this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
+        $supplier = $this->receiving->get_supplier($receivingId);
+        if (!empty($supplier->person_id)) {
+            $this->set_supplier((int) $supplier->person_id);
+        }
     }
 
     /**
@@ -452,19 +463,22 @@ class Receiving_lib
     }
 
     /**
-     * @param int $receiving_id
+     * @param int|string $receivingId
      * @return void
      */
-    public function copy_entire_receiving(int $receiving_id): void
+    public function copy_entire_receiving(int|string $receivingId): void
     {
         $this->empty_cart();
         $this->remove_supplier();
 
-        foreach ($this->receiving->get_receiving_items($receiving_id)->getResult() as $row) {
-            $this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
+        foreach ($this->receiving->get_receiving_items((int) $receivingId)->getResult() as $row) {
+            $this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, (int) $receivingId, true);
         }
 
-        $this->set_supplier((int) $this->receiving->get_supplier($receiving_id)->person_id);
+        $supplier = $this->receiving->get_supplier((int) $receivingId);
+        if (!empty($supplier->person_id)) {
+            $this->set_supplier((int) $supplier->person_id);
+        }
         // $this->set_reference($this->receiving->get_info($receiving_id)->getRow()->reference);    // TODO: If this code won't be added back in, then let's delete it.
     }
 

@@ -137,14 +137,13 @@ class Giftcard extends Model
     /**
      * Inserts or updates a giftcard
      */
-    public function save_value(array &$giftcard_data, int $giftcard_id = NEW_ENTRY): bool
+    public function save_value(array &$giftcardData, int $giftcardId = NEW_ENTRY): bool
     {
         $builder = $this->db->table('giftcards');
 
-        if ($giftcard_id == NEW_ENTRY || !$this->exists($giftcard_id)) {
-            if ($builder->insert($giftcard_data)) {
-                $giftcard_data['giftcard_number'] = $this->db->insertID();
-                $giftcard_data['giftcard_id'] = $this->db->insertID();
+        if ($giftcardId == NEW_ENTRY || !$this->exists($giftcardId)) {
+            if ($builder->insert($giftcardData)) {
+                $giftcardData['giftcard_id'] = $this->db->insertID();
 
                 return true;
             }
@@ -152,9 +151,9 @@ class Giftcard extends Model
             return false;
         }
 
-        $builder->where('giftcard_id', $giftcard_id);
+        $builder->where('giftcard_id', $giftcardId);
 
-        return $builder->update($giftcard_data);
+        return $builder->update($giftcardData);
     }
 
     /**
@@ -242,18 +241,38 @@ class Giftcard extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'giftcard_number', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'giftcard_number';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows == null) {
+            $rows = 0;
+        }
+        if ($limit_from == null) {
+            $limit_from = 0;
+        }
+        if ($sort == null) {
+            $sort = 'giftcard_number';
+        }
+        if ($order == null) {
+            $order = 'asc';
+        }
+        if ($count_only == null) {
+            $count_only = false;
+        }
 
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'giftcard_number';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows == null) {
+            $rows = 0;
+        }
+        if ($limit_from == null) {
+            $limit_from = 0;
+        }
+        if ($sort == null) {
+            $sort = 'giftcard_number';
+        }
+        if ($order == null) {
+            $order = 'asc';
+        }
+        if ($count_only == null) {
+            $count_only = false;
+        }
 
         $builder = $this->db->table('giftcards');
 
@@ -289,14 +308,15 @@ class Giftcard extends Model
     /**
      * Gets gift card value
      */
-    public function get_giftcard_value(string $giftcard_number): float    // TODO: we may need to do a search for all float values and for currencies cast them to strings at the point where we get them from the database.
+    public function get_giftcard_value(string $giftcardNumber): float    // TODO: we may need to do a search for all float values and for currencies cast them to strings at the point where we get them from the database.
     {
-        if (!$this->exists($this->getGiftcardId($giftcard_number))) {
+        $giftcardId = $this->getGiftcardId($giftcardNumber);
+        if ($giftcardId === false || !$this->exists($giftcardId)) {
             return 0;
         }
 
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcard_number);
+        $builder->where('giftcard_number', $giftcardNumber);
 
         return $builder->get()->getRow()->value;
     }
@@ -361,29 +381,30 @@ class Giftcard extends Model
     {
         $value = str_replace('.', 'DE', $value);
         $random = bin2hex(openssl_random_pseudo_bytes(3));
-        $giftcard_name = "$random-$value";
+        $giftcardName = "$random-$value";
 
-        if ($this->exists_giftcard_name($giftcard_name)) {
-            $this->generate_unique_giftcard_name($value);
+        if ($this->exists_giftcard_name($giftcardName)) {
+            return $this->generate_unique_giftcard_name($value);
         }
 
-        return strtoupper($giftcard_name);
+        return strtoupper($giftcardName);
     }
 
     /**
      * Gets gift card customer_id by gift card number
      *
-     * @param string $giftcard_number Gift card number
+     * @param string $giftcardNumber Gift card number
      * @return int The customer_id of the gift card if it exists, 0 otherwise.
      */
-    public function get_giftcard_customer(string $giftcard_number): int|null
+    public function get_giftcard_customer(string $giftcardNumber): int|null
     {
-        if (!$this->exists($this->getGiftcardId($giftcard_number))) {
+        $giftcardId = $this->getGiftcardId($giftcardNumber);
+        if ($giftcardId === false || !$this->exists($giftcardId)) {
             return 0;
         }
 
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcard_number);
+        $builder->where('giftcard_number', $giftcardNumber);
 
         return $builder->get()->getRow()->person_id;
     }

@@ -108,21 +108,21 @@ class Receivings extends Secure_Controller
      */
     public function postChangeMode(): string
     {
-        $stock_destination = $this->request->getPost('stock_destination', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $stock_source = $this->request->getPost('stock_source', FILTER_SANITIZE_NUMBER_INT);
+        $stockDestination = $this->request->getPost('stock_destination', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $stockSource = $this->request->getPost('stock_source', FILTER_SANITIZE_NUMBER_INT);
 
-        if ((!$stock_source || $stock_source == $this->receiving_lib->get_stock_source()) &&
-            (!$stock_destination || $stock_destination == $this->receiving_lib->get_stock_destination())
+        if ((!$stockSource || $stockSource == $this->receiving_lib->get_stock_source()) &&
+            (!$stockDestination || $stockDestination == $this->receiving_lib->get_stock_destination())
         ) {
             $this->receiving_lib->clear_reference();
             $mode = $this->request->getPost('mode', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $this->receiving_lib->set_mode($mode);
-        } elseif ($this->stock_location->is_allowed_location($stock_source, 'receivings') &&
-            ($stock_destination === null ||
-                $this->stock_location->is_allowed_location((int) $stock_destination, 'receivings'))
+        } elseif ($this->stock_location->is_allowed_location((int) $stockSource, 'receivings') &&
+            ($stockDestination === null ||
+                $this->stock_location->is_allowed_location((int) $stockDestination, 'receivings'))
         ) {
-            $this->receiving_lib->set_stock_source($stock_source);
-            $this->receiving_lib->set_stock_destination($stock_destination);
+            $this->receiving_lib->set_stock_source((int) $stockSource);
+            $this->receiving_lib->set_stock_destination($stockDestination);
         }
 
         return $this->_reload();    // TODO: Hungarian notation
@@ -183,7 +183,7 @@ class Receivings extends Secure_Controller
             $this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
         } elseif ($this->item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt)) {
             $this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type);
-        } elseif (!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount,  $discount_type)) {
+        } elseif (!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type)) {
             $data['error'] = lang('Receivings.unable_to_add_item');
         }
 
@@ -193,35 +193,36 @@ class Receivings extends Secure_Controller
     /**
      * Edit line item in current receiving. Used in app/Views/receivings/receiving.php
      *
-     * @param int|string|null $item_id
+     * @param int|string|null $itemId
      * @return string
      * @noinspection PhpUnused
      */
-    public function postEditItem(int|string|null $item_id): string
+    public function postEditItem(int|string|null $itemId): string
     {
         $data = [];
 
-        $validation_rule = [
+        $validationRule = [
             'price'    => 'trim|required|decimal_locale',
             'quantity' => 'trim|required|decimal_locale',
             'discount' => 'trim|permit_empty|decimal_locale',
         ];
 
-        $price = parse_decimals($this->request->getPost('price'));
-        $quantity = parse_quantity($this->request->getPost('quantity'));
-        $raw_receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
+        $price = parse_decimals($this->request->getPost('price') ?? '');
+        $quantity = parse_quantity($this->request->getPost('quantity') ?? '');
+        $rawReceivingQuantity = parse_quantity($this->request->getPost('receiving_quantity') ?? '');
 
         $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: Duplicated code
-        $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-        $discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT);
-        $discount = $discount_type
-            ? parse_quantity(filter_var($this->request->getPost('discount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
-            : parse_decimals(filter_var($this->request->getPost('discount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        $serialNumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+        $discountType = $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT);
+        $discount = $discountType
+            ? parse_quantity($this->request->getPost('discount') ?? '')
+            : parse_decimals($this->request->getPost('discount') ?? '');
+        $discount = $discount ?: 0;
 
-        $receiving_quantity = filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $receivingQuantity = filter_var($rawReceivingQuantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        if ($this->validate($validation_rule)) {
-            $this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $receiving_quantity);
+        if ($this->validate($validationRule)) {
+            $this->receiving_lib->edit_item($itemId, $description, $serialNumber, $quantity, $discount, $discountType !== null ? (int) $discountType : null, $price, (float) $receivingQuantity);
         } else {
             $data['error'] = lang('Receivings.error_editing_item');
         }

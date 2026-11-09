@@ -297,4 +297,17 @@ class Stock_locationTest extends CIUnitTestCase
 
         $this->assertSame($countBefore, (int) $savedRow->sort_order);
     }
+
+    public function testSaveValue_UpdatesExistingLocationNameAndPermissionsAtomically(): void
+    {
+        $suffix = bin2hex(random_bytes(8));
+        $locationData = ['location_name' => "OldLoc_{$suffix}"];
+        $this->assertTrue($this->stockLocation->saveValue($locationData, NEW_ENTRY));
+        $locationId = (int) $locationData['location_id'];
+
+        $updatedData = ['location_name' => "NewLoc_{$suffix}"];
+        $this->assertTrue($this->stockLocation->saveValue($updatedData, $locationId));
+
+        $this->assertSame("NewLoc_{$suffix}", $this->stockLocation->getLocationName($locationId));
+    }
 }
