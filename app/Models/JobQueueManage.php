@@ -78,6 +78,12 @@ class JobQueueManage
             ->select('queue, payload, priority, attempts, exception, failed_at AS date')
             ->whereIn('queue', $queues);
 
+        $paused = $this->db->table('queue_paused_jobs')
+            ->select("CONCAT('paused:', id) AS uid", false)
+            ->select("'paused' AS source", false)
+            ->select('queue, payload, priority, attempts, NULL AS exception, paused_at AS date')
+            ->whereIn('queue', $queues);
+
         if ($search !== '') {
             $pending->groupStart()
                 ->like('queue', $search)
@@ -88,9 +94,13 @@ class JobQueueManage
                 ->orLike('payload', $search)
                 ->orLike('exception', $search)
                 ->groupEnd();
+            $paused->groupStart()
+                ->like('queue', $search)
+                ->orLike('payload', $search)
+                ->groupEnd();
         }
 
-        return $pending->union($failed)->getCompiledSelect();
+        return $pending->union($failed)->union($paused)->getCompiledSelect();
     }
 
     /**

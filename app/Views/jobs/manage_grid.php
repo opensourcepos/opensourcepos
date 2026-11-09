@@ -115,6 +115,27 @@ use App\Models\Employee;
 
                 return false;
             });
+
+            $('.resume_job').off('click').on('click', function(event) {
+                event.preventDefault();
+
+                const $link = $(this);
+                const uid = $link.data('uid');
+
+                $.post('jobs/resumeJob', {id: uid}, function(response) {
+                    $.notify(response.message, {type: response.success ? 'success' : 'danger'});
+
+                    if (response.success) {
+                        fadeOutRow(uid, function() {
+                            removeRowAndBackfill(uid);
+                        });
+                    } else {
+                        table_support.refresh();
+                    }
+                }, 'json');
+
+                return false;
+            });
         };
 
         table_support.init({

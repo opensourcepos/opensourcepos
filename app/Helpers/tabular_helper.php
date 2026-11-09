@@ -1028,13 +1028,15 @@ function get_job_data_row(object $job): array
     $statusIcons = [
         'pending'  => 'glyphicon-play',
         'reserved' => 'glyphicon-pause',
-        'failed'   => 'glyphicon-repeat'
+        'failed'   => 'glyphicon-repeat',
+        'paused'   => 'glyphicon-play-circle'
     ];
 
     $processTitles = [
         'pending'  => lang('Jobs.process_job'),
         'reserved' => lang('Jobs.job_in_progress'),
-        'failed'   => lang('Jobs.requeue_job')
+        'failed'   => lang('Jobs.requeue_job'),
+        'paused'   => lang('Jobs.resume_job')
     ];
 
     $processAttrs = [
@@ -1043,12 +1045,16 @@ function get_job_data_row(object $job): array
         'data-uid' => $job->uid
     ];
 
-    if ($job->source === 'reserved') {
+    if ($job->source === 'reserved' || $job->source === 'paused') {
         $processAttrs['class'] .= ' disabled';
     }
 
     $pauseLink = $job->source === 'pending'
         ? '<a href="#" class="pause_job print_hide" data-uid="' . esc($job->uid) . '" title="' . esc(lang('Jobs.pause_job')) . '"><span class="glyphicon glyphicon-pause"></span></a>'
+        : '';
+
+    $resumeLink = $job->source === 'paused'
+        ? '<a href="#" class="resume_job print_hide" data-uid="' . esc($job->uid) . '" title="' . esc(lang('Jobs.resume_job')) . '"><span class="glyphicon glyphicon-play"></span></a>'
         : '';
 
     return [
@@ -1062,8 +1068,8 @@ function get_job_data_row(object $job): array
         'attempts'  => $job->attempts,
         'error'     => $job->exception ?? '-',
         'date'      => to_datetime($job->date),
-        'process'   => '<a href="#" class="' . $processAttrs['class'] . '" data-uid="' . esc($job->uid) . '" title="' . esc($processAttrs['title']) . '"><span class="glyphicon ' . $statusIcons[$job->source] . '"></span></a>' . $pauseLink,
-        'edit'      => $job->source === 'failed'
+        'process'   => '<a href="#" class="' . $processAttrs['class'] . '" data-uid="' . esc($job->uid) . '" title="' . esc($processAttrs['title']) . '"><span class="glyphicon ' . $statusIcons[$job->source] . '"></span></a>' . $pauseLink . $resumeLink,
+        'edit'      => ($job->source === 'failed' || $job->source === 'paused')
             ? ''
             : anchor(
                 "jobs/editJob/$job->source/" . substr($job->uid, strlen($job->source) + 1),

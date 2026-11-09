@@ -312,11 +312,83 @@ class Jobs extends Secure_Controller
 
         [$source, $id] = explode(':', $uid, 2);
 
-        if (!in_array($source, ['pending', 'reserved', 'failed'], true) || !ctype_digit($id)) {
+        if (!in_array($source, ['pending', 'reserved', 'failed', 'paused'], true) || !ctype_digit($id)) {
             return [null, 0];
         }
 
         return [$source, (int)$id];
+    }
+
+    /**
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postResumeJobs(): ResponseInterface
+    {
+        $coreQueues = config(JobsConfig::class)->coreQueues;
+
+        if ($this->request->getPost('scope') !== 'selected') {
+            return $this->resumeQueues($coreQueues);
+        }
+
+        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+
+        if ($selectedQueues === []) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
+        }
+
+        return $this->resumeQueues(array_values($selectedQueues));
+    }
+
+    /**
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postResumeJob(): ResponseInterface
+    {
+        $uid = $this->request->getPost('id');
+        [$source, $id] = $this->splitUid($uid);
+
+        if ($source !== 'paused') {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
+        }
+
+        return $this->resumeJobs($id);
+    }
+
+    private function resumeQueues(array $queues): ResponseInterface
+    {
+        return $this->resumeJobs(null, $queues);
+    }
+
+    private function resumeJobs(?int $id, ?array $queues = null): ResponseInterface
+    {
+        $this->db->transStart();
+
+        $query = $this->db->table('queue_paused_jobs');
+        $query = $id !== null ? $query->where('id', $id) : $query->whereIn('queue', $queues);
+
+        $rows = $query->get()->getResultArray();
+
+        if ($rows !== []) {
+            $pendingStatus = Status::PENDING->value;
+
+            foreach ($rows as &$row) {
+                $row['status'] = $pendingStatus;
+                unset($row['paused_at'], $row['paused_by']);
+            }
+            unset($row);
+
+            $this->db->table('queue_jobs')->insertBatch($rows);
+            $this->db->table('queue_paused_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
+        }
+
+        $this->db->transComplete();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Jobs.resumed_jobs_result', ['count' => count($rows)]),
+        ]);
     }
 
     /**

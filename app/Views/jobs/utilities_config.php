@@ -18,6 +18,9 @@
                 <button type="button" id="pause_all_jobs" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-pause">&nbsp;</span><?= lang('Jobs.pause_all_jobs') ?>
                 </button>
+                <button type="button" id="resume_all_jobs" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-play">&nbsp;</span><?= lang('Jobs.resume_all_jobs') ?>
+                </button>
             </div>
         </div>
 
@@ -39,6 +42,9 @@
                 </button>
                 <button type="button" id="pause_selected_jobs" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-pause">&nbsp;</span><?= lang('Jobs.pause_selected_jobs') ?>
+                </button>
+                <button type="button" id="resume_selected_jobs" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-play">&nbsp;</span><?= lang('Jobs.resume_selected_jobs') ?>
                 </button>
             </div>
         </div>
@@ -80,6 +86,26 @@
 
         $('#pause_selected_jobs').click(function() {
             $.post('<?= 'jobs/pauseJobs' ?>', {scope: 'selected', selected_jobs: $('#selected_jobs').val()}, function(response) {
+                $.notify({
+                    message: response.message
+                }, {
+                    type: response.success ? 'success' : 'warning'
+                });
+            }, 'json');
+        });
+
+        $('#resume_all_jobs').click(function() {
+            $.post('<?= 'jobs/resumeJobs' ?>', {scope: 'all'}, function(response) {
+                $.notify({
+                    message: response.message
+                }, {
+                    type: response.success ? 'success' : 'warning'
+                });
+            }, 'json');
+        });
+
+        $('#resume_selected_jobs').click(function() {
+            $.post('<?= 'jobs/resumeJobs' ?>', {scope: 'selected', selected_jobs: $('#selected_jobs').val()}, function(response) {
                 $.notify({
                     message: response.message
                 }, {
