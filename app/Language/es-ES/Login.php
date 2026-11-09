@@ -3,9 +3,9 @@
 return [
     'gcaptcha'                      => 'No soy un robot.',
     'go'                            => 'Ir',
-    'initialization_message'        => '',
-    'initialization_required'       => '',
-    'initialize'                    => '',
+    'initialization_message'        => 'La base de datos no ha sido inicializada.',
+    'initialization_required'       => 'Inicialización de la base de datos requerida',
+    'initialize'                    => 'Inicializar',
     'invalid_gcaptcha'              => 'Por favor verifique si usted no es un robot.',
     'invalid_installation'          => 'La instalación no es correcta, comprueba el fichero php.ini.',
     'invalid_username_and_password' => 'Usuario y/o Contraseña no validos.',

@@ -55,7 +55,7 @@ class Cashup extends Model
 
         $employee = model(Employee::class);
 
-        return $employee->get_info($builder->get()->getRow()->employee_id);
+        return $employee->getInfo($builder->get()->getRow()->employee_id);
     }
 
     /**

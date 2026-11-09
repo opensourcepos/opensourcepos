@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => '',
     'successful_updating'                   => '',
     'system_language'                       => '',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => '',
     'update'                                => '',
     'username'                              => '',

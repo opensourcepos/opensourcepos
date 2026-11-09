@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'Nome da Categoria de Despesa Requerido',
     'add_item'                          => 'Adicionar categoria',
     'cannot_be_deleted'                 => 'Não foi possível excluir a (s) despesa (s) de categoria',
-    'category_id'                       => 'Id',
+    'category_id'                       => '',
+    'category_name_required'            => 'Nome da Categoria de Despesa Requerido',
     'confirm_delete'                    => 'Tem certeza de que deseja excluir a categoria de despesa selecionada?',
     'confirm_restore'                   => 'Tem certeza de que deseja restaurar a categoria de despesa selecionada?',
     'description'                       => 'Categoria Descrição',

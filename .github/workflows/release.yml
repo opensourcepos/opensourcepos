@@ -1,25 +1,27 @@
 name: Release
 
 # Cuts the current release (changelog + tag + draft release) and, optionally,
-# bumps App.php to the next dev version. One workflow, full release cycle.
+# bumps master to the next dev version. One workflow, full release cycle.
 #
 # Flow:
 #   1. Release current version:
 #        - generate git-cliff changelog section (base..HEAD)
 #        - insert it into CHANGELOG.md + GFM compare refs
-#        - commit + push the changelog
+#        - normalize source version to clean release (strip -dev)
+#        - update issue templates / SECURITY.md
+#        - commit + push the release commit
 #        - tag the current version and push the tag with the repo PAT
 #          (a PAT push triggers build-release.yml, whose official-release job
 #           creates the DRAFT GitHub Release with the changelog + assets)
 #   2. (optional) bump to the next dev version:
-#        - update App.php / package.json / docker-compose / issue templates
+#        - bump App.php / package.json / package-lock.json to next dev snapshot
 #        - commit + push
 
 on:
   workflow_dispatch:
     inputs:
       next_bump:
-        description: 'After cutting this release, bump App.php to the next dev version'
+        description: 'After cutting this release, bump master to the next dev version'
         required: true
         type: choice
         options:
@@ -29,6 +31,10 @@ on:
           - skip
         default: 'patch'
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -36,6 +42,7 @@ jobs:
   release:
     name: Cut release and bump next version
     runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Checkout
@@ -101,12 +108,53 @@ jobs:
           sed -i "$((LINE-1))r /tmp/section_final.md" CHANGELOG.md
           echo "Inserted $TARGET section before line $LINE"
 
-      - name: Commit changelog
+      - name: Commit release and docs
         run: |
+          TARGET="${{ steps.version.outputs.target }}"
+
+          # Normalize source version to clean release version so git tag does not carry -dev suffix
+          sed -i "s/public string \\\$application_version = '[^']*';/public string \\\$application_version = '$TARGET';/" app/Config/App.php
+          sed -i "s/\"version\": \"[^\"]*\",/\"version\": \"$TARGET\",/" package.json
+          awk -v v="$TARGET" '
+            /"name": "@opensourcepos\/opensourcepos"/ { expect=1 }
+            expect && /"version": / { sub(/"version": "[^"]*"/, "\"version\": \"" v "\""); expect=0 }
+            { print }
+          ' package-lock.json > .package-lock.tmp && mv .package-lock.tmp package-lock.json
+
+          # Update SECURITY.md supported version to current release
+          sed -i -E "s/>= [0-9]+\.[0-9]+\.[0-9]+/>= $TARGET/" SECURITY.md
+          sed -i -E "s/< [0-9]+\.[0-9]+\.[0-9]+/< $TARGET/" SECURITY.md
+
+          # Update issue templates with the released version
+          for template in ".github/ISSUE_TEMPLATE/bug report.yml" ".github/ISSUE_TEMPLATE/feature_request.yml"; do
+            [ -f "$template" ] || continue
+            awk -v v="$TARGET" -v max=5 '
+              BEGIN { in_opts=0; count=0 }
+              /id: ospos-version/ { in_opts=1 }
+              in_opts && /- (master \/ )?development \(unreleased\)/ {
+                print
+                print "        - OpenSourcePOS " v
+                next
+              }
+              in_opts && /^[ ]*- OpenSourcePOS / {
+                if ($0 ~ "OpenSourcePOS " v "$") next
+                count++
+                if (count < max) print
+                next
+              }
+              in_opts && /^[ ]*(default:|validations:|- type:|- Other|- Older)/ {
+                in_opts=0
+                print
+                next
+              }
+              { print }
+            ' "$template" > "$template.tmp" && mv "$template.tmp" "$template"
+          done
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add CHANGELOG.md
-          git commit -m "docs: add ${{ steps.version.outputs.target }} changelog"
+          git add CHANGELOG.md app/Config/App.php package.json package-lock.json SECURITY.md .github/ISSUE_TEMPLATE/
+          git commit -m "chore(release): release ${{ steps.version.outputs.target }}"
           git push origin HEAD
 
       - name: Tag and push (PAT triggers build-release.yml)
@@ -146,12 +194,6 @@ jobs:
             expect && /"version": / { sub(/"version": "[^"]*"/, "\"version\": \"" v "\""); expect=0 }
             { print }
           ' package-lock.json > .package-lock.tmp && mv .package-lock.tmp package-lock.json
-          # Update the "latest X.Y version" README line only when major.minor changes
-          NEW_MM=$(echo "$NEXT" | cut -d. -f1,2)
-          OLD_MM=$(echo "$CURRENT" | cut -d. -f1,2)
-          if [ "$NEW_MM" != "$OLD_MM" ]; then
-            sed -i "s/The latest \`[0-9]*\.[0-9]*\` version/The latest \`${NEW_MM}\` version/" README.md
-          fi
 
           echo "=== version refs after bump ==="
           grep "application_version" app/Config/App.php
@@ -161,6 +203,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add app/Config/App.php package.json package-lock.json
-          [ "$NEW_MM" != "$OLD_MM" ] && git add README.md
           git commit -m "chore: bump version to $NEXT"
           git push origin HEAD

@@ -3,19 +3,26 @@
 namespace Tests\Controllers;
 
 use App\Models\Cashup;
-use CodeIgniter\Config\Factories;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use Config\OSPOS;
+use Tests\Support\CashupFixtureTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\ExpenseFixtureTrait;
+use Tests\Support\OsposConfigFixtureTrait;
+use Tests\Support\SaleFixtureTrait;
 
 class CashupControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
     use EmployeeFixtureTrait;
+    use OsposConfigFixtureTrait;
+    use CashupFixtureTrait;
+    use ExpenseFixtureTrait;
+    use SaleFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -23,34 +30,25 @@ class CashupControllerTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
 
-        $ospos = new OSPOS();
-        $ospos->settings = [
+        $this->injectOsposSettings([
             'company'             => 'Test Co',
             'dateformat'          => 'Y-m-d',
             'timeformat'          => 'H:i:s',
             'number_locale'       => 'en_US',
             'currency_decimals'   => 2,
+            'currency_symbol'     => '$',
             'thousands_separator' => ',',
-        ];
-        Factories::injectMock('config', OSPOS::class, $ospos);
+        ]);
     }
 
     protected function tearDown(): void
     {
-        Factories::reset();
         parent::tearDown();
     }
 
@@ -75,7 +73,7 @@ class CashupControllerTest extends CIUnitTestCase
         ]);
     }
 
-    public function testTamperedTotalIsRecomputedServerSide(): void
+    public function testPostSave_RecomputesTamperedTotalServerSide(): void
     {
         $cashierId = $this->createCashupEmployee();
         $this->loginAs($cashierId);
@@ -105,7 +103,7 @@ class CashupControllerTest extends CIUnitTestCase
         $this->assertEquals(60.0, (float) $cashup->closed_amount_total);
     }
 
-    public function testConsistentTotalIsStoredAndOwnerIsForcedToAuthenticatedUser(): void
+    public function testPostSave_StoresConsistentTotalAndForcesOwnerToAuthenticatedUser(): void
     {
         $cashierId = $this->createCashupEmployee();
         $this->loginAs($cashierId);
@@ -136,5 +134,76 @@ class CashupControllerTest extends CIUnitTestCase
         $this->assertEquals(155.0, (float) $cashup->closed_amount_total);
         $this->assertEquals($cashierId, (int) $cashup->open_employee_id);
         $this->assertEquals($cashierId, (int) $cashup->close_employee_id);
+    }
+
+    public function testPostAjaxCashupTotal_ReturnsCalculatedTotal(): void
+    {
+        $cashierId = $this->createCashupEmployee();
+        $this->loginAs($cashierId);
+
+        // 100 - 20 - 5 + 15 + 40 + 25 = 155
+        $response = $this->post('/cashups/ajax_cashup_total', [
+            'open_amount_cash'     => '20',
+            'transfer_amount_cash' => '5',
+            'closed_amount_cash'   => '100',
+            'closed_amount_due'    => '15',
+            'closed_amount_card'   => '40',
+            'closed_amount_check'  => '25',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertSame('155.00', $result['total']);
+    }
+
+    public function testGetView_PrefillsOpenDatesForNewEntry(): void
+    {
+        $cashierId = $this->createCashupEmployee();
+        $this->loginAs($cashierId);
+
+        $response = $this->get('/cashups/view/-1');
+
+        $response->assertStatus(200);
+        $response->assertSee(date('Y-m-d'));
+    }
+
+    public function testGetView_DoesNotRecalculateAlreadyClosedCashup(): void
+    {
+        $cashierId = $this->createCashupEmployee();
+        $this->loginAs($cashierId);
+
+        $cashupId = $this->createCashup($cashierId, $cashierId, ['closed_amount_cash' => 75.00]);
+
+        $response = $this->get("/cashups/view/$cashupId");
+
+        $response->assertStatus(200);
+        $response->assertSee(to_currency_no_money(75.00));
+    }
+
+    public function testGetView_AggregatesPaymentsAndSubtractsCashExpensesOnPendingClose(): void
+    {
+        $cashierId = $this->createCashupEmployee();
+        $this->loginAs($cashierId);
+
+        $cashupId = $this->createCashup($cashierId, $cashierId, [
+            'open_amount_cash'     => 100,
+            'transfer_amount_cash' => 10,
+        ]);
+
+        $cashSaleId = $this->createSale($cashierId);
+        $this->createSalePayment($cashSaleId, $cashierId, 'Cash', 50);
+
+        $dueSaleId = $this->createSale($cashierId);
+        $this->createSalePayment($dueSaleId, $cashierId, 'Due', 20);
+
+        $categoryId = $this->createExpenseCategory();
+        $this->createExpense($cashierId, $categoryId, ['amount' => 15]);
+
+        $response = $this->get("/cashups/view/$cashupId");
+
+        $response->assertStatus(200);
+        $response->assertSeeInField('closed_amount_cash', to_currency_no_money(145));
+        $response->assertSeeInField('closed_amount_due', to_currency_no_money(20));
+        $response->assertSeeInField('closed_amount_total', to_currency_no_money(55));
     }
 }

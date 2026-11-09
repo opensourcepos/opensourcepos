@@ -2,7 +2,7 @@
 
 return [
     'administrator'                         => '',
-    'basic_information'                     => 'Information',
+    'basic_information'                     => '',
     'cannot_be_deleted'                     => 'Det går inte att radera valda anställda, en eller flera av dem har behandlat försäljningar eller du försöker radera ditt konto.',
     'change_employee'                       => '',
     'change_password'                       => 'Ändra lösenord',
@@ -22,7 +22,7 @@ return [
     'error_updating_admin'                  => '',
     'error_updating_demo_admin'             => 'Du kan inte ändra demo admin-användaren.',
     'language'                              => 'Språk',
-    'login_info'                            => 'Login',
+    'login_info'                            => '',
     'manager'                               => '',
     'new'                                   => 'Ny anställd',
     'none_selected'                         => 'Du har inte valt någon anställd att radera.',
@@ -41,6 +41,7 @@ return [
     'successful_deleted'                    => 'Du har tagit bort',
     'successful_updating'                   => 'Du har uppdaterat anställda',
     'system_language'                       => 'System Språk',
+    'unauthorized_modify'                   => '',
     'unsuccessful_change_password'          => 'Lösenordsbyte misslyckades.',
     'update'                                => 'Uppdatera anställd',
     'username'                              => 'Användarnamn',

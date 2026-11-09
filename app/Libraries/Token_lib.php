@@ -178,7 +178,7 @@ class Token_lib
                 $quantity = (isset($parsed_results['W'])) ? (int) $parsed_results['W'] / 1000 : 1;
                 $item_id_or_number_or_item_kit_or_receipt = (isset($parsed_results['I'])) ?
                     $parsed_results['I'] : $item_id_or_number_or_item_kit_or_receipt;
-                $price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : null;
+                $price = (isset($parsed_results['P'])) ? (float) $parsed_results['P'] : null;
             }
         } else {
             $quantity = 1;

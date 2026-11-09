@@ -3,9 +3,9 @@
 namespace Tests\Models;
 
 use App\Models\Sale;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\FailedQueryConnectionTrait;
 use Tests\Support\ItemFixtureTrait;
@@ -18,6 +18,7 @@ use Tests\Support\ItemFixtureTrait;
 class SaleTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use EmployeeFixtureTrait;
     use FailedQueryConnectionTrait;
     use ItemFixtureTrait;
@@ -28,18 +29,11 @@ class SaleTest extends CIUnitTestCase
     protected $refresh     = false;
     protected $namespace   = null;
 
-    private static bool $doneBootstrap = false;
-
     private const LOCATION_ID = 1;
 
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
     }
@@ -445,5 +439,126 @@ class SaleTest extends CIUnitTestCase
         $this->assertSame([], $model->get_all_suspended());
         $this->assertSame([], $model->get_all_suspended(NEW_ENTRY));
         $this->assertSame([], $model->get_all_suspended(123));
+    }
+
+    public function testSaveValueReturnCreditsGiftcardOnCompleted(): void
+    {
+        $employeeId     = $this->createEmployee();
+        $giftcardNumber = $this->createGiftcard(50.00);
+        $itemId         = $this->createTestItem(HAS_NO_STOCK);
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items      = $this->buildCartLine($itemId, 1, 30.00);
+        $payments   = [
+            0 => [
+                'payment_type'    => lang('Sales.giftcard') . ':' . $giftcardNumber,
+                'payment_amount'  => -30.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+        ];
+        $salesTaxes = [[], []];
+
+        $result = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test return',
+            null,
+            null,
+            null,
+            SALE_TYPE_RETURN,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $result);
+        $this->assertEqualsWithDelta(80.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testSaveValueReturnSkipsGiftcardCreditOnSuspended(): void
+    {
+        $employeeId     = $this->createEmployee();
+        $giftcardNumber = $this->createGiftcard(50.00);
+        $itemId         = $this->createTestItem(HAS_NO_STOCK);
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items      = $this->buildCartLine($itemId, 1, 30.00);
+        $payments   = [
+            0 => [
+                'payment_type'    => lang('Sales.giftcard') . ':' . $giftcardNumber,
+                'payment_amount'  => -30.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+        ];
+        $salesTaxes = [[], []];
+
+        $result = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test suspended return',
+            null,
+            null,
+            null,
+            SALE_TYPE_RETURN,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $result);
+        $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testSaveValueReturnRejectsEmptyGiftcardNumber(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId     = $this->createTestItem(HAS_NO_STOCK);
+
+        $salesCountBefore = $this->countSalesRows();
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items      = $this->buildCartLine($itemId, 1, 30.00);
+        $payments   = [
+            0 => [
+                'payment_type'    => lang('Sales.giftcard') . ':',
+                'payment_amount'  => -30.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+        ];
+        $salesTaxes = [[], []];
+
+        $result = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test return no card',
+            null,
+            null,
+            null,
+            SALE_TYPE_RETURN,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertSame(INSUFFICIENT_GIFTCARD_BALANCE, $result);
+        $this->assertSame($salesCountBefore, $this->countSalesRows());
     }
 }

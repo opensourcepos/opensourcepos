@@ -11,6 +11,6 @@ return [
     'phone_number_required' => 'Número do Celular é obrigatório',
     'phone_placeholder'     => 'Numero(s) do(s) Celulares aqui ...',
     'sms_send'              => 'Enviar SMS',
-    'successfully_sent'     => 'Mensagem enviada com sucesso para: ',
-    'unsuccessfully_sent'   => 'Mensagem sem sucesso no envio para: ',
+    'successfully_sent'     => 'Mensagem enviada com sucesso para:',
+    'unsuccessfully_sent'   => 'Mensagem sem sucesso no envio para:',
 ];

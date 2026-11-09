@@ -10,7 +10,7 @@ return [
     'invalid_installation'          => '',
     'invalid_username_and_password' => 'Érvénytelen felhasználói név vagy jelszó',
     'login'                         => 'Belépés',
-    'logout'                        => '',
+    'logout'                        => 'Kilépés',
     'migrating_database'            => 'Adatbázis migrálása',
     'migration_auth_message'        => '',
     'migration_complete'            => '',

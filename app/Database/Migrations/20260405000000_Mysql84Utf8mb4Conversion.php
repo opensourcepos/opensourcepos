@@ -21,7 +21,7 @@ class Migration_Mysql84Utf8mb4Conversion extends Migration
             }
 
             $script = APPPATH . 'Database/Migrations/sqlscripts/3.4.3_mysql84_utf8mb4_conversion.sql';
-            if (!executeScript($script)) {
+            if (!executeScript($script, false, $this->db)) {
                 throw new RuntimeException('Failed to execute utf8mb4 conversion migration: ' . $script);
             }
 

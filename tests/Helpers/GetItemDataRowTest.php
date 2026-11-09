@@ -2,13 +2,14 @@
 
 namespace Tests\Helpers;
 
-use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\OSPOS;
 use stdClass;
+use Tests\Support\OsposConfigFixtureTrait;
 
 class GetItemDataRowTest extends CIUnitTestCase
 {
+    use OsposConfigFixtureTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -20,8 +21,7 @@ class GetItemDataRowTest extends CIUnitTestCase
 
     protected function injectSettings(array $overrides = []): void
     {
-        $config = new OSPOS();
-        $config->settings = array_merge([
+        $this->injectOsposSettings(array_merge([
             'multi_pack_enabled'        => 0,
             'use_destination_based_tax' => 0,
             'number_locale'             => 'en_US',
@@ -29,9 +29,7 @@ class GetItemDataRowTest extends CIUnitTestCase
             'quantity_decimals'         => 0,
             'thousands_separator'       => 1,
             'currency_symbol'           => '$',
-        ], $overrides);
-
-        Factories::injectMock('config', OSPOS::class, $config);
+        ], $overrides));
     }
 
     protected function makeItem(array $overrides = []): stdClass

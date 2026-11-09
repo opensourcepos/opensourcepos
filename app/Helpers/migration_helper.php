@@ -8,9 +8,10 @@ use Config\Database;
  * Executes a SQL migration script.
  * @param string $path Path to migration script.
  * @param bool $withTransaction Whether to wrap execution in a transaction.
+ * @param BaseConnection|null $db Connection to use (defaults to the default connection).
  * @return bool Whether the migration executed successfully.
  */
-function executeScript(string $path, bool $withTransaction = false): bool
+function executeScript(string $path, bool $withTransaction = false, ?BaseConnection $db = null): bool
 {
     $version = explode('_', basename($path, '.sql'), 2)[0];
     log_message('info', "Migrating to $version (file: $path)");
@@ -18,7 +19,7 @@ function executeScript(string $path, bool $withTransaction = false): bool
     $sqls = explode(';', file_get_contents($path));
     array_pop($sqls);
 
-    $db = Database::connect();
+    $db ??= Database::connect();
 
     if ($withTransaction) {
         $db->transStart();
@@ -84,8 +85,8 @@ function dropForeignKeyConstraints(array $foreignKeys, string $table): void
  * TODO: This function should be moved to a more global location since it may be needed outside of migrations.
  * @return string The prefix before overriding.
  */
-function overridePrefix(string $prefix = ''): string {
-    $db = Database::connect();
+function overridePrefix(string $prefix = '', ?BaseConnection $db = null): string {
+    $db ??= Database::connect();
 
     $originalPrefix = $db->getPrefix();
     $db->setPrefix($prefix);
@@ -136,46 +137,49 @@ function createPrimaryKey(string $table, string $index): void {
 function dropAllForeignKeyConstraints(?string $table = null, ?string $column = null, ?BaseConnection $db = null): array {
     $db ??= Database::connect();
     $prefixedTable = $table !== null ? $db->getPrefix() . $table : null;
-    $prefix = overridePrefix();
+    $prefix = overridePrefix('', $db);
 
-    $builder = $db->table('information_schema.KEY_COLUMN_USAGE kcu');
-    $builder->distinct();
-    $builder->select('kcu.CONSTRAINT_NAME, kcu.TABLE_NAME, kcu.COLUMN_NAME, kcu.REFERENCED_TABLE_NAME, kcu.REFERENCED_COLUMN_NAME, kcu.ORDINAL_POSITION, rc.DELETE_RULE, rc.UPDATE_RULE');
-    $builder->join(
-        'information_schema.REFERENTIAL_CONSTRAINTS rc',
-        'kcu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA AND kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME AND kcu.TABLE_NAME = rc.TABLE_NAME',
-        'left'
-    );
-
-    if ($table !== null && $column !== null) {
-        $scopedBuilder = $db->table('information_schema.KEY_COLUMN_USAGE scoped');
-        $scopedBuilder->distinct();
-        $scopedBuilder->select('scoped.CONSTRAINT_NAME, scoped.TABLE_NAME');
-        $scopedBuilder->where('scoped.TABLE_SCHEMA', $db->database);
-        $scopedBuilder->groupStart();
-        $scopedBuilder->where('scoped.REFERENCED_TABLE_NAME', $prefixedTable);
-        $scopedBuilder->where('scoped.REFERENCED_COLUMN_NAME', $column);
-        $scopedBuilder->groupEnd();
-        $scopedBuilder->orGroupStart();
-        $scopedBuilder->where('scoped.TABLE_NAME', $prefixedTable);
-        $scopedBuilder->where('scoped.COLUMN_NAME', $column);
-        $scopedBuilder->groupEnd();
-
+    try {
+        $builder = $db->table('information_schema.KEY_COLUMN_USAGE kcu');
+        $builder->distinct();
+        $builder->select('kcu.CONSTRAINT_NAME, kcu.TABLE_NAME, kcu.COLUMN_NAME, kcu.REFERENCED_TABLE_NAME, kcu.REFERENCED_COLUMN_NAME, kcu.ORDINAL_POSITION, rc.DELETE_RULE, rc.UPDATE_RULE');
         $builder->join(
-            '(' . $scopedBuilder->getCompiledSelect() . ') matched',
-            'matched.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME AND matched.TABLE_NAME = kcu.TABLE_NAME',
-            'inner',
-            false
+            'information_schema.REFERENTIAL_CONSTRAINTS rc',
+            'kcu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA AND kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME AND kcu.TABLE_NAME = rc.TABLE_NAME',
+            'left'
         );
+
+        if ($table !== null && $column !== null) {
+            $scopedBuilder = $db->table('information_schema.KEY_COLUMN_USAGE scoped');
+            $scopedBuilder->distinct();
+            $scopedBuilder->select('scoped.CONSTRAINT_NAME, scoped.TABLE_NAME');
+            $scopedBuilder->where('scoped.TABLE_SCHEMA', $db->database);
+            $scopedBuilder->groupStart();
+            $scopedBuilder->where('scoped.REFERENCED_TABLE_NAME', $prefixedTable);
+            $scopedBuilder->where('scoped.REFERENCED_COLUMN_NAME', $column);
+            $scopedBuilder->groupEnd();
+            $scopedBuilder->orGroupStart();
+            $scopedBuilder->where('scoped.TABLE_NAME', $prefixedTable);
+            $scopedBuilder->where('scoped.COLUMN_NAME', $column);
+            $scopedBuilder->groupEnd();
+
+            $builder->join(
+                '(' . $scopedBuilder->getCompiledSelect() . ') matched',
+                'matched.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME AND matched.TABLE_NAME = kcu.TABLE_NAME',
+                'inner',
+                false
+            );
+        }
+
+        $builder->where('kcu.TABLE_SCHEMA', $db->database);
+        $builder->where('rc.CONSTRAINT_NAME IS NOT NULL', null, false);
+        $builder->orderBy('kcu.CONSTRAINT_NAME');
+        $builder->orderBy('kcu.ORDINAL_POSITION');
+
+        $result = $builder->get();
+    } finally {
+        overridePrefix($prefix, $db);
     }
-
-    $builder->where('kcu.TABLE_SCHEMA', $db->database);
-    $builder->where('rc.CONSTRAINT_NAME IS NOT NULL', null, false);
-    $builder->orderBy('kcu.CONSTRAINT_NAME');
-    $builder->orderBy('kcu.ORDINAL_POSITION');
-
-    $result = $builder->get();
-    overridePrefix($prefix);
 
     if ($result === false) {
         $detail = 'unknown error';
@@ -346,18 +350,20 @@ function foreignKeyExists(string $constraintName, string $tableName): bool {
 
     $prefix = overridePrefix();
 
-    $db = Database::connect();
-    $builder = $db->table('INFORMATION_SCHEMA.TABLE_CONSTRAINTS');
-    $builder->select('CONSTRAINT_NAME');
-    $builder->where('TABLE_SCHEMA', $db->database);
-    $builder->where('TABLE_NAME', $prefix . $tableName);
-    $builder->where('CONSTRAINT_TYPE', 'FOREIGN KEY');
-    $builder->where('CONSTRAINT_NAME', $constraintName);
-    $query = $builder->get();
+    try {
+        $db = Database::connect();
+        $builder = $db->table('INFORMATION_SCHEMA.TABLE_CONSTRAINTS');
+        $builder->select('CONSTRAINT_NAME');
+        $builder->where('TABLE_SCHEMA', $db->database);
+        $builder->where('TABLE_NAME', $prefix . $tableName);
+        $builder->where('CONSTRAINT_TYPE', 'FOREIGN KEY');
+        $builder->where('CONSTRAINT_NAME', $constraintName);
+        $query = $builder->get();
 
-    overridePrefix($prefix);
-
-    return $query->getNumRows() > 0;
+        return $query->getNumRows() > 0;
+    } finally {
+        overridePrefix($prefix);
+    }
 }
 
 /**
@@ -371,23 +377,26 @@ function dropColumnIfExists(string $table, string $column): void
 {
     $prefix = overridePrefix();
 
-    $db = Database::connect();
-    $builder = $db->table('information_schema.COLUMNS');
+    try {
+        $db = Database::connect();
+        $builder = $db->table('information_schema.COLUMNS');
 
-    // Check if the column exists in the table
-    $builder->select('COLUMN_NAME')
-        ->where('TABLE_SCHEMA', $db->database)
-        ->where('TABLE_NAME', $prefix . $table)
-        ->where('COLUMN_NAME', $column);
+        // Check if the column exists in the table
+        $builder->select('COLUMN_NAME')
+            ->where('TABLE_SCHEMA', $db->database)
+            ->where('TABLE_NAME', $prefix . $table)
+            ->where('COLUMN_NAME', $column);
 
-    $query = $builder->get();
+        $query = $builder->get();
 
-    if ($query->getNumRows() > 0)
-    {
-        // Drop the column if it exists
-        $db->query("ALTER TABLE `" . $prefix . "$table` DROP COLUMN `$column`");
+        if ($query->getNumRows() > 0)
+        {
+            // Drop the column if it exists
+            $db->query("ALTER TABLE `" . $prefix . "$table` DROP COLUMN `$column`");
+        }
+    } finally {
+        overridePrefix($prefix);
     }
-    overridePrefix($prefix);
 }
 
 /**
