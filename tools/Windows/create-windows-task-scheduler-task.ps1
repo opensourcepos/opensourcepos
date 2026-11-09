@@ -34,6 +34,6 @@ param(
 $Action = New-ScheduledTaskAction -Execute $PhpPath -Argument 'spark tasks:run' -WorkingDirectory $ProjectPath
 $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 1)
 $Principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType S4U -RunLevel Limited
-$Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable
+$Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries
 
 Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings -Description "Runs OSPOS background tasks every minute"
