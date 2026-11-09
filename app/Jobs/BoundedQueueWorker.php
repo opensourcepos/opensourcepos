@@ -145,7 +145,7 @@ class BoundedQueueWorker
     private function popNext(QueueInterface $queue, QueueConfig $config): ?QueueJob
     {
         foreach ($this->queues as $queueName) {
-            $priorities = $config->queuePriorities[$queueName] ?? ['high', 'normal', 'low'];
+            $priorities = $config->queuePriorities[$queueName] ?? ['default'];
             $work = $queue->pop($queueName, $priorities);
 
             if ($work !== null) {

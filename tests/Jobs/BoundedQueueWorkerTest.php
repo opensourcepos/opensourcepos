@@ -96,6 +96,20 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
     }
 
+    public function testRun_UsesDefaultPriorityForUnconfiguredQueue(): void
+    {
+        // No queuePriorities entry for 'default' — the queue package assigns
+        // the 'default' priority to jobs pushed without setPriority(), so the
+        // fallback must use ['default'] or those jobs remain pending forever.
+        service('queue')->push('default', 'success', []);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getProcessedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
+    }
+
     public function testStopsAtDeadlineWithoutDrainingEverything(): void
     {
         service('queue')->push('default', 'success', []);
