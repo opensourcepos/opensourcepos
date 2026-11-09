@@ -415,8 +415,14 @@ class Customers extends Persons
             return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_failed')]);
         }
 
+        helper('importfile');
+
         if (($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) === false) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_nodata_wrongformat')]);
+        }
+
+        if (bomExists($handle)) {
+            fseek($handle, 3);
         }
 
         $headers = fgetcsv($handle);

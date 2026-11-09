@@ -1111,7 +1111,7 @@ class Items extends Secure_Controller
         $name = 'import_items.csv';
         $allowed_locations = $this->stock_location->get_allowed_locations();
         $allowedAttributes = $this->attribute->getDefinitionNames();
-        $data = generate_import_items_csv($allowed_locations, $allowedAttributes);
+        $data = generateImportItemsCsv($allowed_locations, $allowedAttributes);
 
         return $this->response->download($name, $data);
     }
