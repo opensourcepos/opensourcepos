@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Employee;
-use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\HTTP\RedirectResponse;
 
 /**
  * @property Employee employee
@@ -17,21 +17,22 @@ class Office extends Secure_Controller
         parent::__construct('office', null, 'office');
     }
 
-    /**
-     * @return string
-     */
     public function getIndex(): string
     {
         return view('home/office');
     }
 
-    /**
-     * @return void
-     */
-    public function logout(): void
+    public function getLogout(): RedirectResponse
+    {
+        return $this->logout();
+    }
+
+    public function logout(): RedirectResponse
     {
         $this->employee = model(Employee::class);
 
         $this->employee->logout();
+
+        return redirect()->to('login');
     }
 }

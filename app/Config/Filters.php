@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\IsLoggedIn;
 use App\Filters\Throttle;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
@@ -13,7 +14,6 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
-use App\Filters\IsLoggedIn;
 
 class Filters extends BaseFilters
 {
@@ -77,8 +77,8 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             'honeypot',
-            'isLoggedIn' => ['except' => 'login|migrate'],
-            'csrf' => ['except' => 'login|migrate'],
+            'isLoggedIn' => ['except' => ['login', 'migrate']],
+            'csrf'       => ['except' => ['login', 'migrate']],
             'invalidchars',
         ],
         'after' => [
@@ -128,7 +128,7 @@ class Filters extends BaseFilters
         // Remove CSRF filter from globals in testing environment
         if ($isTesting) {
             // Remove the 'csrf' key from $globals['before'] while preserving array structure
-            $this->globals['before'] = array_filter($this->globals['before'], static fn($key) => $key !== 'csrf', ARRAY_FILTER_USE_KEY);
+            $this->globals['before'] = array_filter($this->globals['before'], static fn ($key) => $key !== 'csrf', ARRAY_FILTER_USE_KEY);
         }
     }
 }
