@@ -119,7 +119,17 @@ The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once
    - `-ProjectPath`: the OSPOS project root — the directory containing the `spark` file.
    - Optionally pass `-TaskName` to override the default task name of `OSPOS Task Runner`.
 3. Verify the task in Task Scheduler: it should show a 1-minute repeat interval, and the **General** tab should show "Run whether user is logged on or not" with "Do not store password" checked.
-4. Before trusting the scheduled task, verify it manually: open `cmd.exe`, `cd` to the OSPOS project root, and run the same `php.exe spark tasks:run` command. You should see `Running Tasks...` then `Completed Running Tasks`, and a new heartbeat line in `writable/logs/`.
+4. Verify the registered task fires correctly:
+   - **Start it now** (PowerShell as Administrator):
+     ```powershell
+     Start-ScheduledTask -TaskName 'OSPOS Task Runner'
+     ```
+   - **Check its last result** — `0x0` means success:
+     ```powershell
+     Get-ScheduledTaskInfo -TaskName 'OSPOS Task Runner' | Select-Object LastRunTime, LastTaskResult
+     ```
+   - **Confirm the heartbeat** — a new timestamped line should appear in `writable/logs/` within a few seconds of the task finishing.
+   - If the last result is non-zero or no heartbeat appears, open `cmd.exe`, `cd` to the OSPOS project root, and run `php.exe spark tasks:run` interactively to see the raw output (`Running Tasks...` → `Completed Running Tasks`).
 
 ### `manual` mode
 
