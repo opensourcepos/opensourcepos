@@ -45,7 +45,7 @@ class Email_lib
             'userAgent'   => 'OSPOS',
             'validate'    => true,
             'protocol'    => $this->config['protocol'] ?? 'mail',
-            'mailPath'    => $this->config['mailpath'] ?? '/usr/sbin/sendmail',
+            'mailPath'    => escapeshellarg($this->config['mailpath'] ?? '/usr/sbin/sendmail'),
             'SMTPHost'    => $this->config['smtp_host'] ?? '',
             'SMTPUser'    => $this->config['smtp_user'] ?? '',
             'SMTPPass'    => $smtp_pass,
