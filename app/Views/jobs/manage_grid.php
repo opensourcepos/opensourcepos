@@ -156,7 +156,7 @@ use App\Models\Employee;
             }
         });
 
-        const pollingFrequencySeconds = <?= (int)$config['table_polling_frequency'] ?>;
+        const pollingFrequencySeconds = <?= (int)($config['table_polling_frequency'] ?? 0) ?>;
 
         if (pollingFrequencySeconds > 0) {
             let pollInFlight = false;
