@@ -5,34 +5,29 @@ namespace Tests\Jobs;
 use App\Jobs\BoundedQueueWorker;
 use App\Models\JobThrottle;
 use CodeIgniter\Config\Factories;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Jobs as JobsConfig;
 use Config\Queue as QueueConfig;
 use Config\Services;
+use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\Jobs\FailingTestJob;
 use Tests\Support\Jobs\SucceedingTestJob;
 
 class BoundedQueueWorkerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
+    protected $seedOnce = true;
     protected $refresh = false;
     protected $namespace = 'App';
 
-    private static bool $doneBootstrap = false;
-
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
 
@@ -103,6 +98,7 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $queueConfig = new QueueConfig();
         $queueConfig->jobHandlers = ['success' => SucceedingTestJob::class];
         $queueConfig->queuePriorities = [];
+        $queueConfig->queueDefaultPriority = [];
         Factories::injectMock('config', 'Queue', $queueConfig);
 
         // The queue package assigns priority 'default' when none is set via
