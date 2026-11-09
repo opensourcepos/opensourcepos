@@ -75,7 +75,9 @@ class BoundedQueueWorker
             $failedRetentionDays = (int)($appConfig['jobs_failed_retention_days'] ?? $jobsConfig->failedRetentionDays);
             $retentionDays = (int)($appConfig['jobs_retention_days'] ?? $jobsConfig->retentionDays);
 
-            $queue->flush($failedRetentionDays * 24, null);
+            if ($failedRetentionDays > 0) {
+                $queue->flush($failedRetentionDays * 24, null);
+            }
             service('importBatch')->purgeFinished($retentionDays);
         }
     }
