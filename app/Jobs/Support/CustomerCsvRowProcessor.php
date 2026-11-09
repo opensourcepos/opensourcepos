@@ -49,9 +49,13 @@ class CustomerCsvRowProcessor
      */
     public function process(array $data, int $employeeId): bool
     {
+        if (count($data) < 18) {
+            return false;
+        }
+
         $consent = $data[3] == '' ? 0 : 1;
 
-        if (count($data) < 16 || !$consent) {
+        if (!$consent) {
             return false;
         }
 
