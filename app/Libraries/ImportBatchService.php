@@ -55,14 +55,20 @@ class ImportBatchService
      * check for still-referenced jobs instead of scanning payload JSON, and
      * so the context_id foreign key protects import_batch_contexts rows.
      */
-    public function pushRow(string $queue, string $job, array $data, string $batchId, string $priority): void
+    public function pushRow(string $queue, string $job, array $data, string $batchId, string $priority): bool
     {
         $result = service('queue')->setPriority($priority)->push($queue, $job, $data);
+
+        if (!$result->getStatus()) {
+            return false;
+        }
 
         db_connect()->table('queue_jobs')->where('id', $result->getJobId())->update([
             'batch_id'   => $batchId,
             'context_id' => $this->importBatchContext->getIdForBatch($batchId),
         ]);
+
+        return true;
     }
 
     /**

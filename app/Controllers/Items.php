@@ -1169,18 +1169,31 @@ class Items extends Secure_Controller
             }
 
             $importBatch = service('importBatch');
+            $db = db_connect();
+            $db->transBegin();
+
             $batchId = $importBatch->create('items', count($csvRows), [
                 'definition_names' => $attributeDefinitionNames,
                 'attribute_data'   => $attributeData,
             ]);
 
+            $success = true;
+
             foreach ($csvRows as $row) {
-                $importBatch->pushRow('imports', 'item_import', [
+                $success = $success && $importBatch->pushRow('imports', 'item_import', [
                     'batch_id'    => $batchId,
                     'row'         => $row,
                     'employee_id' => $employeeId,
                 ], $batchId, 'low');
             }
+
+            if (!$success) {
+                $db->transRollback();
+
+                return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_failed')]);
+            }
+
+            $db->transCommit();
 
             return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_queued', [count($csvRows)])]);
         } catch (Exception $e) {
