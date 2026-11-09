@@ -5,12 +5,12 @@ $config = config(OSPOS::class)->settings; ?>
 
 const pickerconfig = function(config) {
     return $.extend({
-        format: "<?= $this->data["format"] ?? dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat'])?>",
+        format: "<?= $this->data['format'] ?? dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat'])?>",
         <?php
         $t = $config['timeformat'];
-        $m = $t[strlen($t) - 1];
-        if (str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A')) {
-        ?>
+$m         = $t[strlen($t) - 1];
+if (str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A')) {
+    ?>
             showMeridian: true,
         <?php } else {  ?>
             showMeridian: false,
@@ -22,7 +22,7 @@ const pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?= current_language_code() ?>"
-    }, <?php echo isset($config) ?>);
+    }, config || {});
 };
 
 $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {

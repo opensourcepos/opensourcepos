@@ -7,32 +7,28 @@ use Config\OSPOS;
 class Summary_discounts extends Summary_report
 {
     /**
-     * @return array[]
+     * @return list<array>
      */
     protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
             ['discount' => lang('Reports.discount'), 'sorter' => 'number_sorter'],
-            ['count'    => lang('Reports.count')],
-            ['total'    => lang('Reports.total')]
+            ['count' => lang('Reports.count')],
+            ['total' => lang('Reports.total')],
         ];
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getData(array $inputs): array
     {
-        $config = config(OSPOS::class)->settings;
+        $config  = config(OSPOS::class)->settings;
         $builder = $this->db->table('sales_items AS sales_items');
 
-        if ($inputs['discount_type'] == FIXED) {
-            $currency_symbol = $this->db->escape($config['currency_symbol']);
-            $builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT(' . $currency_symbol . ', sales_items.discount)) AS discount, count(*) AS count');
+        if ($inputs['discount_type'] === FIXED) {
+            $currencySymbol = $this->db->escape($config['currency_symbol']);
+            $builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT(' . $currencySymbol . ', sales_items.discount)) AS discount, count(*) AS count');
             $builder->where('discount_type', FIXED);
-        } elseif ($inputs['discount_type'] == PERCENT) {
-            $builder->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
+        } elseif ($inputs['discount_type'] === PERCENT) {
+            $builder->select('SUM(item_unit_price * quantity_purchased) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
             $builder->where('discount_type', PERCENT);
         }
 

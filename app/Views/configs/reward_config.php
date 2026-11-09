@@ -19,7 +19,7 @@
                         'name'    => 'customer_reward_enable',
                         'value'   => 'customer_reward_enable',
                         'id'      => 'customer_reward_enable',
-                        'checked' => $config['customer_reward_enable'] == 1
+                        'checked' => $config['customer_reward_enable'] === 1,
                     ]) ?>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 'name'  => 'submit_reward',
                 'id'    => 'submit_reward',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -57,13 +57,13 @@
 
         $("#customer_reward_enable").change(enable_disable_customer_reward_enable);
 
-        let table_count = <?= sizeof($customer_rewards) ?>;
+        let table_count = <?= count($customer_rewards) ?>;
 
         const hide_show_remove = function() {
-            if ($("input[name*='customer_rewards']:enabled").length > 1) {
-                $(".remove_customer_rewards").show();
+            if ($("input[name*='customer_reward']:enabled").length > 1) {
+                $(".remove_customer_reward").show();
             } else {
-                $(".remove_customer_rewards").hide();
+                $(".remove_customer_reward").hide();
             }
         };
 
@@ -123,7 +123,7 @@
                         }, {
                             type: response.success ? 'success' : 'danger'
                         });
-                        $("#customer_rewards").load('<?= "config/customerRewards" ?>', init_add_remove_tables);
+                        $("#customer_rewards").load('<?= 'config/customerRewards' ?>', init_add_remove_tables);
                     },
                     dataType: 'json'
                 });
@@ -135,8 +135,8 @@
                 <?php
                 $i = 0;
 
-                foreach ($customer_rewards as $customer_reward => $table) {
-                ?>
+foreach ($customer_rewards as $customer_reward => $table) {
+    ?>
                     <?= 'customer_reward_' . ++$i ?>: {
                         required: true,
                         customer_reward: true,
@@ -147,10 +147,10 @@
 
             messages: {
                 <?php
-                $i = 0;
+    $i = 0;
 
-                foreach ($customer_rewards as $customer_reward => $table) {
-                ?>
+foreach ($customer_rewards as $customer_reward => $table) {
+    ?>
                     <?= 'customer_reward_' . ++$i ?>: "<?= lang('Config.customer_reward_required') ?>",
                 <?php } ?>
             }

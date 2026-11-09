@@ -5,17 +5,10 @@ namespace App\Models\Reports;
 use App\Models\Sale;
 
 /**
- *
- *
- * @property sale sale
- *
+ * @property Sale sale
  */
 class Specific_customer extends Report
 {
-    /**
-     * @param array $inputs
-     * @return void
-     */
     public function create(array $inputs): void
     {
         // Create our temp tables to work with the data in our report
@@ -23,25 +16,22 @@ class Specific_customer extends Report
         $sale->create_temp_table($inputs);
     }
 
-    /**
-     * @return array
-     */
     public function getDataColumns(): array
     {
         return [
             'summary' => [
-                ['id'            => lang('Reports.sale_id')],
-                ['type_code'     => lang('Reports.code_type')],
-                ['sale_time'     => lang('Reports.date'), 'sortable' => false],
-                ['quantity'      => lang('Reports.quantity')],
+                ['id' => lang('Reports.sale_id')],
+                ['type_code' => lang('Reports.code_type')],
+                ['sale_time' => lang('Reports.date'), 'sortable' => false],
+                ['quantity' => lang('Reports.quantity')],
                 ['employee_name' => lang('Reports.sold_by')],
-                ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-                ['tax'           => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-                ['total'         => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-                ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter'],
-                ['payment_type'  => lang('Reports.payment_type'), 'sortable' => false],
-                ['comment'       => lang('Reports.comments')]
+                ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+                ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+                ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+                ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+                ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+                ['payment_type' => lang('Reports.payment_type'), 'sortable' => false],
+                ['comment' => lang('Reports.comments')],
             ],
             'details' => [
                 lang('Reports.name'),
@@ -54,31 +44,27 @@ class Specific_customer extends Report
                 lang('Reports.total'),
                 lang('Reports.cost'),
                 lang('Reports.profit'),
-                lang('Reports.discount')
+                lang('Reports.discount'),
             ],
             'details_rewards' => [
                 lang('Reports.used'),
-                lang('Reports.earned')
-            ]
+                lang('Reports.earned'),
+            ],
         ];
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getData(array $inputs): array
     {
         $builder = $this->db->table('sales_items_temp');
         $builder->select('
             sale_id,
             MAX(CASE
-            WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'
-            WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
-            WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('Reports.code_work_order') . '\'
-            WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('Reports.code_quote') . '\'
-            WHEN sale_type = ' . SALE_TYPE_RETURN . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_return') . '\'
-            WHEN sale_status = ' . CANCELED . ' THEN \'' . lang('Reports.code_canceled') . '\'
+            WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN ' . $this->db->escape(lang('Reports.code_pos')) . '
+            WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN ' . $this->db->escape(lang('Reports.code_invoice')) . '
+            WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN ' . $this->db->escape(lang('Reports.code_work_order')) . '
+            WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN ' . $this->db->escape(lang('Reports.code_quote')) . '
+            WHEN sale_type = ' . SALE_TYPE_RETURN . ' && sale_status = ' . COMPLETED . ' THEN ' . $this->db->escape(lang('Reports.code_return')) . '
+            WHEN sale_status = ' . CANCELED . ' THEN ' . $this->db->escape(lang('Reports.code_canceled')) . '
             ELSE \'\'
             END) AS type_code,
             MAX(sale_status) as sale_status,
@@ -95,9 +81,9 @@ class Specific_customer extends Report
 
         $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicated code
 
-        if ($inputs['payment_type'] == 'invoices') {
+        if ($inputs['payment_type'] === 'invoices') {
             $builder->where('sale_type', SALE_TYPE_INVOICE);
-        } elseif ($inputs['payment_type'] != 'all') {
+        } elseif ($inputs['payment_type'] !== 'all') {
             $builder->like('payment_type', lang('Sales.' . $inputs['payment_type']));
         }
 
@@ -142,7 +128,7 @@ class Specific_customer extends Report
         $builder->groupBy('sale_id');    // TODO: Duplicated code
         $builder->orderBy('MAX(sale_time)');
 
-        $data = [];
+        $data            = [];
         $data['summary'] = $builder->get()->getResultArray();
         $data['details'] = [];
         $data['rewards'] = [];
@@ -162,10 +148,6 @@ class Specific_customer extends Report
         return $data;
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getSummaryData(array $inputs): array
     {
         $builder = $this->db->table('sales_items_temp');
@@ -173,9 +155,9 @@ class Specific_customer extends Report
 
         $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicate code
 
-        if ($inputs['payment_type'] == 'invoices') {
+        if ($inputs['payment_type'] === 'invoices') {
             $builder->where('sale_type', SALE_TYPE_INVOICE);
-        } elseif ($inputs['payment_type'] != 'all') {
+        } elseif ($inputs['payment_type'] !== 'all') {
             $builder->like('payment_type', lang('Sales.' . $inputs['payment_type']));
         }
 

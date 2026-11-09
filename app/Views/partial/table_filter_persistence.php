@@ -8,12 +8,12 @@
  * Filter restoration from URL is handled server-side in the controller.
  *
  * @param array $options Additional filter options
- *   - 'additional_params': Array of additional parameter names to track (e.g., ['stock_location'])
- *   - 'filter_select_id': Filter multiselect element ID (default: 'filters')
+ *                       - 'additional_params': Array of additional parameter names to track (e.g., ['stock_location'])
+ *                       - 'filter_select_id': Filter multiselect element ID (default: 'filters')
  */
-$options = $options ?? [];
+$options ??= [];
 $additional_params = $options['additional_params'] ?? [];
-$filter_select_id = $options['filter_select_id'] ?? 'filters';
+$filter_select_id  = $options['filter_select_id'] ?? 'filters';
 ?>
 
 <script type="text/javascript">
@@ -56,7 +56,7 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
             });
 
             // Update URL without page reload
-            const new_url = window.location.pathname;
+            let new_url = window.location.pathname;
             const params_str = params.toString();
             if (params_str) {
                 new_url += '?' + params_str;

@@ -2,7 +2,7 @@
 /**
  * @var array $labels_1
  * @var array $series_data_1
- * @var bool $show_currency
+ * @var bool  $show_currency
  * @var array $config
  */
 ?>
@@ -10,8 +10,8 @@
 <script type="text/javascript">
     // Labels and data series
     const data = {
-        labels: <?= json_encode(esc($labels_1, 'js')) ?>,
-        series: <?= json_encode(esc($series_data_1, 'js')) ?>
+        labels: <?= json_encode($labels_1, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
+        series: <?= json_encode($series_data_1, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
     };
 
     // We are setting a few options for our chart and override the defaults
@@ -33,17 +33,17 @@
 
         <?php
             $currency_symbol = esc($config['currency_symbol'], 'js');
-            $currency_prefix = '';
-            $currency_suffix = '';
+$currency_prefix             = '';
+$currency_suffix             = '';
 
-            if ($show_currency) {
-                if (is_right_side_currency_symbol()) {
-                    $currency_suffix = $currency_symbol;
-                } else {
-                    $currency_prefix = $currency_symbol;
-                }
-            }
-        ?>
+if ($show_currency) {
+    if (is_right_side_currency_symbol()) {
+        $currency_suffix = $currency_symbol;
+    } else {
+        $currency_prefix = $currency_symbol;
+    }
+}
+?>
 
         plugins: [
             Chartist.plugins.tooltip({

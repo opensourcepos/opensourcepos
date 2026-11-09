@@ -1,21 +1,21 @@
 <?php
 /**
- * @var array $labels_1
+ * @var array  $labels_1
  * @var string $yaxis_title
- * @var array $series_data_1
- * @var bool $show_currency
+ * @var array  $series_data_1
+ * @var bool   $show_currency
  * @var string $xaxis_title
- * @var array $config
+ * @var array  $config
  */
 ?>
 
 <script type="text/javascript">
     // Labels and data series
     const data = {
-        labels: <?= esc(json_encode($labels_1), 'js') ?>,
+        labels: <?= json_encode($labels_1, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
         series: [{
             name: '<?= esc($yaxis_title, 'js') ?>',
-            data: <?= esc(json_encode($series_data_1), 'js') ?>
+            data: <?= json_encode($series_data_1, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
         }]
     };
 
@@ -49,17 +49,17 @@
             // used for the labels on each axis.
             <?php
                 $currency_symbol = esc($config['currency_symbol'], 'js');
-                $currency_prefix = '';
-                $currency_suffix = '';
+$currency_prefix                 = '';
+$currency_suffix                 = '';
 
-                if ($show_currency) {
-                    if (is_right_side_currency_symbol()) {
-                        $currency_suffix = $currency_symbol;
-                    } else {
-                        $currency_prefix = $currency_symbol;
-                    }
-                }
-            ?>
+if ($show_currency) {
+    if (is_right_side_currency_symbol()) {
+        $currency_suffix = $currency_symbol;
+    } else {
+        $currency_prefix = $currency_symbol;
+    }
+}
+?>
 
             labelInterpolationFnc: function(value) {
                 return '<?= $currency_prefix ?>' + value + '<?= $currency_suffix ?>';

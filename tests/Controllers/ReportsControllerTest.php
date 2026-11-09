@@ -2,11 +2,17 @@
 
 namespace Tests\Controllers;
 
+use App\Controllers\Reports;
+use App\Models\Employee;
+use App\Models\Reports\Detailed_receivings;
+use App\Models\Reports\Detailed_sales;
+use App\Models\Reports\Summary_categories;
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Models\Employee;
 use Config\OSPOS;
+use ReflectionMethod;
 use Tests\Support\DatabaseBootstrapTrait;
 
 /**
@@ -204,5 +210,97 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports');
 
         $response->assertStatus(200);
+    }
+
+    public function testGetPaymentType_IsPrivateHelper(): void
+    {
+        $paymentTypeReflection = new ReflectionMethod(Reports::class, 'get_payment_type');
+        $saleTypeReflection    = new ReflectionMethod(Reports::class, 'get_sale_type_options');
+
+        $this->assertTrue($paymentTypeReflection->isPrivate());
+        $this->assertTrue($saleTypeReflection->isPrivate());
+    }
+
+    public function testDetailedSales_RendersEmptyDateRangeWithoutError(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/detailed_sales/2020-01-01/2020-01-02/complete/all');
+
+        $response->assertStatus(200);
+    }
+
+    public function testDetailedReceivings_RendersEmptyDateRangeWithoutError(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/detailed_receivings/2020-01-01/2020-01-02/receiving/all');
+
+        $response->assertStatus(200);
+    }
+
+    public function testSummaryPayments_RendersEmptyDateRangeWithoutError(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/summary_payments/2020-01-01/2020-01-02/complete/all');
+
+        $response->assertStatus(200);
+    }
+
+    public function testGraphicalSummaryDiscounts_OutputsUnescapedJsonArrays(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/graphical_summary_discounts/2020-01-01/2020-01-02/complete/all/0');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('labels: []', $response->getBody());
+    }
+
+    public function testGraphicalSummaryCategories_HandlesZeroTotalWithoutDivisionByZero(): void
+    {
+        $this->loginAs(1);
+
+        $mockSummaryCategories = $this->createMock(Summary_categories::class);
+        $mockSummaryCategories->method('getData')->willReturn([
+            ['category' => 'ZeroCategory', 'total' => 0.0],
+        ]);
+        $mockSummaryCategories->method('getSummaryData')->willReturn([
+            'subtotal' => 0.0,
+            'tax'      => 0.0,
+            'total'    => 0.0,
+            'cost'     => 0.0,
+            'profit'   => 0.0,
+        ]);
+        Factories::injectMock('models', Summary_categories::class, $mockSummaryCategories);
+
+        $response = $this->get('/reports/graphical_summary_categories/2020-01-01/2020-01-02/complete/all');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('ZeroCategory 0%', $response->getBody());
+    }
+
+    public function testGetDataBySaleId_ReturnsEmptyArrayWhenNotFound(): void
+    {
+        $detailedSales = model(Detailed_sales::class);
+        $detailedSales->create([
+            'start_date'  => '2020-01-01',
+            'end_date'    => '2020-01-02',
+            'sale_type'   => 'complete',
+            'location_id' => 'all',
+        ]);
+
+        $this->assertSame([], $detailedSales->getDataBySaleId(999999));
+
+        $detailedReceivings = model(Detailed_receivings::class);
+        $detailedReceivings->create([
+            'start_date'     => '2020-01-01',
+            'end_date'       => '2020-01-02',
+            'receiving_type' => 'receiving',
+            'location_id'    => 'all',
+        ]);
+
+        $this->assertSame([], $detailedReceivings->getDataByReceivingId('999999'));
     }
 }

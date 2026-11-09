@@ -1,7 +1,5 @@
 <?php
-/**
- * @var array $tax_codes
- */
+/** @var array $tax_codes */
 ?>
 
 <?= form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal']) ?>
@@ -19,7 +17,7 @@
                 'name'  => 'submit_tax_codes',
                 'id'    => 'submit_tax_codes',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -29,13 +27,13 @@
 <script type="text/javascript">
     // Validation and Submit Handling
     $(document).ready(function() {
-        let tax_code_count = <?= sizeof($tax_codes) ?>;
+        let tax_code_count = <?= count($tax_codes) ?>;
         if (tax_code_count == 0) {
             tax_code_count = 1;
         }
 
         const hide_show_remove_tax_code = function() {
-            if ($("input[name*='tax_code']:enabled").length > 1) {
+            if ($("input[name='tax_code[]']:enabled").length > 1) {
                 $(".remove_tax_code").show();
             } else {
                 $(".remove_tax_code").hide();
@@ -102,7 +100,7 @@
                         }, {
                             type: response.success ? 'success' : 'danger'
                         });
-                        $("#tax_codes").load('<?= "taxes/ajax_tax_codes" ?>', init_add_remove_tax_codes);
+                        $("#tax_codes").load('<?= 'taxes/ajax_tax_codes' ?>', init_add_remove_tax_codes);
                     },
                     dataType: 'json'
                 });
@@ -110,13 +108,14 @@
             invalidHandler: function(event, validator) {
                 $.notify("<?= lang('Common.correct_errors') ?>");
             },
-            errorLabelContainer: "#tax_code_error_message_box"
+            errorLabelContainer: "#tax_codes_error_message_box"
         }));
 
         <?php
         $i = 0;
-        foreach ($tax_codes as $tax_code => $tax_code_data) {
-        ?>
+
+foreach ($tax_codes as $tax_code => $tax_code_data) {
+    ?>
             $('<?= '#tax_code_' . ++$i ?>').rules("add", {
                 requireTaxCode: true,
                 check4TaxCodeDups: true,
