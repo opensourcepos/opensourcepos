@@ -111,7 +111,7 @@ class CustomerCsvRowProcessor
             return false;
         }
 
-        $this->mailchimpLib->addOrUpdateMember($this->listId, $personData['email'], $personData['first_name'], '', $personData['last_name']);
+        $this->mailchimpLib->addOrUpdateMember($this->listId, $personData['email'], $personData['first_name'], $personData['last_name'], '');
 
         return true;
     }
