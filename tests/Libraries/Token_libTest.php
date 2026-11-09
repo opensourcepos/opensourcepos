@@ -3,6 +3,9 @@
 namespace Tests\Libraries;
 
 use App\Libraries\Token_lib;
+use App\Models\Tokens\Token;
+use App\Models\Tokens\Token_invoice_count;
+use App\Models\Tokens\Token_quote_sequence;
 use CodeIgniter\Test\CIUnitTestCase;
 
 class Token_libTest extends CIUnitTestCase
@@ -310,5 +313,25 @@ class Token_libTest extends CIUnitTestCase
         $this->assertNotEmpty($result);
         $this->assertStringNotContainsString('%h', $result);
         $this->assertMatchesRegularExpression('/Month: [A-Za-z]{3}/', $result);
+    }
+
+    public function testGetValue_ReturnsCustomValueOnTokenInvoiceCount(): void
+    {
+        $token = new Token_invoice_count('POS 42');
+        $this->assertSame('POS 42', $token->get_value());
+    }
+
+    public function testGetTokens_DoesNotDuplicateTokenQuoteSequence(): void
+    {
+        $tokens = Token::get_tokens();
+        $quoteSequenceCount = 0;
+
+        foreach ($tokens as $token) {
+            if ($token instanceof Token_quote_sequence) {
+                $quoteSequenceCount++;
+            }
+        }
+
+        $this->assertSame(1, $quoteSequenceCount);
     }
 }

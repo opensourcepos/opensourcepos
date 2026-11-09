@@ -20,6 +20,7 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Config\OSPOS;
@@ -1046,6 +1047,10 @@ class Sales extends Secure_Controller
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         }
 
+        if (!in_array($type, ['invoice', 'quote', 'work_order', 'tax_invoice'], true)) {
+            throw PageNotFoundException::forPageNotFound();
+        }
+
         $saleData = $this->_load_sale_data($saleId);
 
         $result = false;
@@ -1549,30 +1554,30 @@ class Sales extends Secure_Controller
     }
 
     /**
-     * @param int $sale_id
-     * @param bool $update_inventory
+     * @param int $saleId
+     * @param bool $updateInventory
      * @return ResponseInterface
      */
-    public function restore(int $sale_id = NEW_ENTRY, bool $update_inventory = true): ResponseInterface
+    public function postRestore(int $saleId = NEW_ENTRY, bool $updateInventory = true): ResponseInterface
     {
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-        $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
+        $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+        $hasGrant = $this->employee->has_grant('sales_delete', $employeeId);
 
-        if (!$has_grant) {
+        if (!$hasGrant) {
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
-        } else {
-            $sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
-
-            if ($this->sale->restore_list($sale_ids, $employee_id, $update_inventory)) {
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => lang('Sales.successfully_restored') . ' ' . count($sale_ids) . ' ' . lang('Sales.one_or_multiple'),
-                    'ids'     => $sale_ids
-                ]);
-            } else {
-                return $this->response->setJSON(['success' => false, 'message' => lang('Sales.unsuccessfully_restored')]);
-            }
         }
+
+        $saleIds = $saleId == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$saleId];
+
+        if ($this->sale->restore_list($saleIds, $employeeId, $updateInventory)) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => lang('Sales.successfully_restored') . ' ' . count($saleIds) . ' ' . lang('Sales.one_or_multiple'),
+                'ids'     => $saleIds
+            ]);
+        }
+
+        return $this->response->setJSON(['success' => false, 'message' => lang('Sales.unsuccessfully_restored')]);
     }
 
     /**
@@ -1897,13 +1902,17 @@ class Sales extends Secure_Controller
      */
     public function postChangeItemNumber(): ResponseInterface
     {
-        $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
-        $item_number = $this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $this->item->update_item_number($item_id, $item_number);
+        if (!$this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
+        $itemId = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+        $itemNumber = $this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->item->update_item_number($itemId, $itemNumber);
         $cart = $this->sale_lib->get_cart();
-        $x = $this->search_cart_for_item_id($item_id, $cart);
+        $x = $this->search_cart_for_item_id($itemId, $cart);
         if ($x !== null) {
-            $cart[$x]['item_number'] = $item_number;
+            $cart[$x]['item_number'] = $itemNumber;
         }
         $this->sale_lib->set_cart($cart);
         return $this->response->setJSON(['success' => true]);
@@ -1917,13 +1926,17 @@ class Sales extends Secure_Controller
      */
     public function postChangeItemName(): ResponseInterface
     {
-        $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+        if (!$this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
+        $itemId = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
         $name = $this->request->getPost('item_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $this->item->update_item_name($item_id, $name);
+        $this->item->update_item_name($itemId, $name);
 
         $cart = $this->sale_lib->get_cart();
-        $x = $this->search_cart_for_item_id($item_id, $cart);
+        $x = $this->search_cart_for_item_id($itemId, $cart);
 
         if ($x !== null) {
             $cart[$x]['name'] = $name;
@@ -1941,13 +1954,17 @@ class Sales extends Secure_Controller
      */
     public function postChangeItemDescription(): ResponseInterface
     {
-        $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+        if (!$this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
+        $itemId = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
         $description = $this->request->getPost('item_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $this->item->update_item_description($item_id, $description);
+        $this->item->update_item_description($itemId, $description);
 
         $cart = $this->sale_lib->get_cart();
-        $x = $this->search_cart_for_item_id($item_id, $cart);
+        $x = $this->search_cart_for_item_id($itemId, $cart);
 
         if ($x !== null) {
             $cart[$x]['description'] = $description;

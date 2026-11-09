@@ -6,6 +6,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use App\Models\Employee;
 use Config\Database;
 use Tests\Support\DatabaseBootstrapTrait;
@@ -721,5 +722,78 @@ class SalesControllerTest extends CIUnitTestCase
         $cart = Services::session()->get('sales_cart');
         $this->assertNotEmpty($cart);
         $this->assertNotSame($itemId, array_values($cart)[0]['item_id']);
+    }
+
+    public function testPostChangeItemNumber_RejectsCashierWithoutItemsGrant(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId    = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+
+        $response = $this->post('/sales/changeItemNumber', [
+            'item_id'     => (string) $itemId,
+            'item_number' => 'TAMPERED-NUM',
+        ]);
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostChangeItemName_RejectsCashierWithoutItemsGrant(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId    = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+
+        $response = $this->post('/sales/changeItemName', [
+            'item_id'   => (string) $itemId,
+            'item_name' => 'Tampered Name',
+        ]);
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostChangeItemDescription_RejectsCashierWithoutItemsGrant(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId    = $this->createTestItem(HAS_NO_STOCK);
+        $this->loginAs($cashierId);
+
+        $response = $this->post('/sales/changeItemDescription', [
+            'item_id'          => (string) $itemId,
+            'item_description' => 'Tampered Description',
+        ]);
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testGetSendPdf_RejectsInvalidType(): void
+    {
+        $supervisorId = $this->createReportsSalesEmployee();
+        $saleId       = $this->createSale($supervisorId);
+        $this->loginAs($supervisorId);
+
+        $this->expectException(PageNotFoundException::class);
+        $this->get('/sales/sendPdf/' . $saleId . '/invalid_type');
+    }
+
+    public function testPostRestore_RejectsCashierWithoutSalesDeleteGrant(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $saleId    = $this->createSale($cashierId);
+        $this->loginAs($cashierId);
+
+        $response = $this->post('/sales/restore', [
+            'ids' => [(string) $saleId],
+        ]);
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
     }
 }

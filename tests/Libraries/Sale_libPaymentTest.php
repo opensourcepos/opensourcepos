@@ -197,4 +197,87 @@ class Sale_libPaymentTest extends CIUnitTestCase
         $this->assertArrayNotHasKey('credit', $payments);
         $this->assertArrayHasKey('debit', $payments);
     }
+
+    public function testSetSaleLocation_FallsBackToDefaultWhenLocationDisallowed(): void
+    {
+        $stockLocationMock = $this->getMockBuilder(Stock_location::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stockLocationMock->method('is_allowed_location')
+            ->willReturnCallback(static fn (int $loc, string $mod): bool => $loc === 1 && $mod === 'sales');
+        $stockLocationMock->method('getDefaultLocationId')
+            ->with('sales')
+            ->willReturn(1);
+
+        Factories::injectMock('models', Stock_location::class, $stockLocationMock);
+        $saleLib = new Sale_lib();
+
+        $saleLib->set_sale_location(999);
+        $this->assertSame(1, $saleLib->get_sale_location());
+
+        $saleLib->set_sale_location(1);
+        $this->assertSame(1, $saleLib->get_sale_location());
+    }
+
+    public function testIsCustomerTaxable_ReturnsTrueWhenNoCustomerSelected(): void
+    {
+        $customerMock = $this->getMockBuilder(Customer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $customerMock->method('getInfo')
+            ->willReturn((object) ['taxable' => 0]);
+
+        Factories::injectMock('models', Customer::class, $customerMock);
+        $saleLib = new Sale_lib();
+
+        $this->assertTrue($saleLib->is_customer_taxable());
+
+        $saleLib->set_customer(42);
+        $this->assertFalse($saleLib->is_customer_taxable());
+    }
+
+    public function testGetQuantitySold_ReturnsZeroWhenPriceIsZero(): void
+    {
+        $this->assertSame('0', $this->saleLib->get_quantity_sold('10.00', '0'));
+        $this->assertSame('0', $this->saleLib->get_quantity_sold('10.00', '0.00'));
+    }
+
+    public function testEditItem_ReturnsTrueWhenLineExists(): void
+    {
+        $this->saleLib->set_cart([
+            1 => [
+                'line'             => 1,
+                'description'      => 'Old',
+                'serialnumber'     => '',
+                'quantity'         => '1',
+                'discount'         => '0',
+                'discount_type'    => 0,
+                'price'            => '10.00',
+                'total'            => '10.00',
+                'discounted_total' => '10.00',
+            ],
+        ]);
+
+        $this->assertTrue($this->saleLib->edit_item('1', 'New', 'SN1', '2', '0', '0', '10.00'));
+        $this->assertFalse($this->saleLib->edit_item('999', 'New', 'SN1', '2', '0', '0', '10.00'));
+    }
+
+    public function testGetSaleId_ReturnsNewEntryWhenUnset(): void
+    {
+        $this->assertSame(NEW_ENTRY, $this->saleLib->get_sale_id());
+    }
+
+    public function testGetSuspendedId_ReturnsNewEntryWhenUnset(): void
+    {
+        $this->assertSame(NEW_ENTRY, $this->saleLib->get_suspended_id());
+    }
+
+    public function testSetInvoiceNumber_AcceptsStringAndNull(): void
+    {
+        $this->saleLib->set_invoice_number('INV-2026-01');
+        $this->assertSame('INV-2026-01', $this->saleLib->get_invoice_number());
+
+        $this->saleLib->set_invoice_number(null);
+        $this->assertNull($this->saleLib->get_invoice_number());
+    }
 }

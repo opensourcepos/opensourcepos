@@ -54,21 +54,23 @@ class Dinner_table extends Model
     /**
      * Get empty tables
      */
-    public function get_empty_tables(?int $current_dinner_table_id): array
+    public function get_empty_tables(?int $currentDinnerTableId): array
     {
         $builder = $this->db->table('dinner_tables');
+        $builder->groupStart();
         $builder->where('status', 0);
-        $builder->orWhere('dinner_table_id', $current_dinner_table_id);
+        $builder->orWhere('dinner_table_id', $currentDinnerTableId);
+        $builder->groupEnd();
         $builder->where('deleted', 0);
 
-        $empty_tables = $builder->get()->getResultArray();
+        $emptyTables = $builder->get()->getResultArray();
 
-        $empty_tables_array = [];    // TODO: Variable names should not contain the name of the datatype.
-        foreach ($empty_tables as $empty_table) {
-            $empty_tables_array[$empty_table['dinner_table_id']] = $empty_table['name'];
+        $emptyTablesArray = [];
+        foreach ($emptyTables as $emptyTable) {
+            $emptyTablesArray[$emptyTable['dinner_table_id']] = $emptyTable['name'];
         }
 
-        return $empty_tables_array;
+        return $emptyTablesArray;
     }
 
     /**

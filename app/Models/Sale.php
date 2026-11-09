@@ -580,25 +580,27 @@ class Sale extends Model
             $splitPayment = explode(':', $payment['payment_type'], 2);
             $paymentPrefix = $splitPayment[0];
 
-            if ($paymentPrefix === lang('Sales.giftcard')) {
-                if (! $this->applyGiftcardPayment(
-                    $splitPayment[1] ?? null,
-                    (float) $payment['payment_amount'],
-                    $saleType,
-                    $saleStatus
-                )) {
-                    $this->db->transRollback();
+            if ($saleStatus == COMPLETED) {
+                if ($paymentPrefix === lang('Sales.giftcard')) {
+                    if (! $this->applyGiftcardPayment(
+                        $splitPayment[1] ?? null,
+                        (float) $payment['payment_amount'],
+                        $saleType,
+                        $saleStatus
+                    )) {
+                        $this->db->transRollback();
 
-                    return INSUFFICIENT_GIFTCARD_BALANCE;
+                        return INSUFFICIENT_GIFTCARD_BALANCE;
+                    }
+                } elseif ($paymentPrefix === lang('Sales.rewards')) {
+                    if (! $customer->adjustRewardPoints($customerId, -(float) $payment['payment_amount'])) {
+                        $this->db->transRollback();
+
+                        return INSUFFICIENT_REWARD_POINTS;
+                    }
+
+                    $totalAmountUsed = floatval($totalAmountUsed) + floatval($payment['payment_amount']);
                 }
-            } elseif ($paymentPrefix === lang('Sales.rewards')) {
-                if (! $customer->adjustRewardPoints($customerId, -(float) $payment['payment_amount'])) {
-                    $this->db->transRollback();
-
-                    return INSUFFICIENT_REWARD_POINTS;
-                }
-
-                $totalAmountUsed = floatval($totalAmountUsed) + floatval($payment['payment_amount']);
             }
 
             $salesPaymentsData = [
@@ -617,7 +619,9 @@ class Sale extends Model
             $totalAmount = floatval($totalAmount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
         }
 
-        $this->save_customer_rewards($customerId, $saleId, $totalAmount, $totalAmountUsed);
+        if ($saleStatus == COMPLETED) {
+            $this->save_customer_rewards($customerId, $saleId, $totalAmount, $totalAmountUsed);
+        }
 
         $customer = $customer->getInfo($customerId);
 
@@ -685,7 +689,7 @@ class Sale extends Model
             $this->save_sales_items_taxes($saleId, $salesTaxes[1]);
         }
 
-        if ($config['dinner_table_enable']) {
+        if ($config['dinner_table_enable'] && $dinnerTableId !== null) {
             $dinnerTable = model(Dinner_table::class);
             if ($saleStatus == COMPLETED) {    // TODO: === ?
                 $dinnerTable->release($dinnerTableId);
@@ -1030,12 +1034,12 @@ class Sale extends Model
     /**
      * Checks if work order number exists
      */
-    public function check_work_order_number_exists(string $work_order_number, string $sale_id = ''): bool
+    public function check_work_order_number_exists(string $workOrderNumber, string $saleId = ''): bool
     {
         $builder = $this->db->table('sales');
-        $builder->where('invoice_number', $work_order_number);
-        if (!empty($sale_id)) {
-            $builder->where('sale_id !=', $sale_id);
+        $builder->where('work_order_number', $workOrderNumber);
+        if (!empty($saleId)) {
+            $builder->where('sale_id !=', $saleId);
         }
 
         return ($builder->get()->getNumRows() == 1);    // TODO: ===
@@ -1340,19 +1344,21 @@ class Sale extends Model
      * Removes a selected sale from the sales table.
      * This function should only be called for suspended sales that are being restored to the current cart
      */
-    public function delete_suspended_sale(int $sale_id): bool
+    public function delete_suspended_sale(int $saleId): bool
     {
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
         $config = config(OSPOS::class)->settings;
 
         if ($config['dinner_table_enable']) {
-            $dinner_table = model(Dinner_table::class);
-            $dinner_table_id = $this->get_dinner_table($sale_id);
-            $dinner_table->release($dinner_table_id);
+            $dinnerTable = model(Dinner_table::class);
+            $dinnerTableId = $this->get_dinner_table($saleId);
+            if ($dinnerTableId !== null) {
+                $dinnerTable->release((int) $dinnerTableId);
+            }
         }
 
-        $this->update_sale_status($sale_id, CANCELED);
+        $this->update_sale_status($saleId, CANCELED);
 
         $this->db->transComplete();
 
@@ -1363,28 +1369,30 @@ class Sale extends Model
      * This clears the sales detail for a given sale_id before the detail is re-saved.
      * This allows us to reuse the same sale_id
      */
-    public function clear_suspended_sale_detail(int $sale_id): bool
+    public function clear_suspended_sale_detail(int $saleId): bool
     {
         $this->db->transStart();
         $config = config(OSPOS::class)->settings;
 
         if ($config['dinner_table_enable']) {
-            $dinner_table = model(Dinner_table::class);
-            $dinner_table_id = $this->get_dinner_table($sale_id);
-            $dinner_table->release($dinner_table_id);
+            $dinnerTable = model(Dinner_table::class);
+            $dinnerTableId = $this->get_dinner_table($saleId);
+            if ($dinnerTableId !== null) {
+                $dinnerTable->release((int) $dinnerTableId);
+            }
         }
 
         $builder = $this->db->table('sales_payments');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $builder = $this->db->table('sales_items_taxes');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $builder = $this->db->table('sales_items');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $builder = $this->db->table('sales_taxes');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $this->db->transComplete();
 
@@ -1456,12 +1464,11 @@ class Sale extends Model
         $builder->where($where);
         $builder->groupBy('payments.sale_id');
 
-        $sub_query = $builder->getCompiledSelect();
-        log_message('error', $sub_query);
+        $subQuery = $builder->getCompiledSelect();
 
         $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
             . $this->db->prefixTable('sales_search_payments_temp')
-            . ' (PRIMARY KEY(`sale_id`), INDEX(`sale_id`)) AS (' . $sub_query . ')');
+            . ' (PRIMARY KEY(`sale_id`), INDEX(`sale_id`)) AS (' . $subQuery . ')');
     }
 
     /**

@@ -341,16 +341,16 @@ class Sale_lib
     }
 
     /**
-     * @param int $invoice_number
-     * @param bool $keep_custom
+     * @param int|string|null $invoiceNumber
+     * @param bool $keepCustom
      * @return void
      */
-    public function set_invoice_number(int $invoice_number, bool $keep_custom = false): void
+    public function set_invoice_number(int|string|null $invoiceNumber, bool $keepCustom = false): void
     {
-        $current_invoice_number = $this->session->get('sales_invoice_number');
+        $currentInvoiceNumber = $this->session->get('sales_invoice_number');
 
-        if (!$keep_custom || empty($current_invoice_number)) {
-            $this->session->set('sales_invoice_number', $invoice_number);
+        if (!$keepCustom || empty($currentInvoiceNumber)) {
+            $this->session->set('sales_invoice_number', $invoiceNumber);
         }
     }
 
@@ -442,7 +442,7 @@ class Sale_lib
      */
     public function get_suspended_id(): int
     {
-        return $this->session->get('suspended_id');
+        return (int) ($this->session->get('suspended_id') ?: NEW_ENTRY);
     }
 
     /**
@@ -942,7 +942,14 @@ class Sale_lib
      */
     public function set_sale_location(int $location): void
     {
-        $this->session->set('sales_location', $location);
+        if ($this->stock_location->is_allowed_location($location, 'sales')) {
+            $this->session->set('sales_location', $location);
+        } else {
+            $defaultId = $this->stock_location->getDefaultLocationId('sales');
+            if ($defaultId !== null) {
+                $this->session->set('sales_location', $defaultId);
+            }
+        }
     }
 
     /**
@@ -1036,11 +1043,11 @@ class Sale_lib
      * @param string|null $serialnumber
      * @param int|null $sale_id
      * @param bool $include_deleted
-     * @param bool|null $print_option
+     * @param int|null $print_option
      * @param bool|null $line
      * @return bool
      */
-    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null): bool
+    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?int $print_option = null, ?bool $line = null): bool
     {
         $item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
@@ -1132,7 +1139,7 @@ class Sale_lib
                 $print_option_selected = PRINT_NO;
             }
         } else {    // TODO: Convert this to ternary notation
-            if ($print_option != null) {    // TODO: === ?
+            if ($print_option !== null) {
                 $print_option_selected = $print_option;
             } else {
                 $print_option_selected = PRINT_YES;
@@ -1260,36 +1267,38 @@ class Sale_lib
      * @param string $serialnumber
      * @param string $quantity
      * @param string $discount
-     * @param string|null $discount_type
+     * @param string|null $discountType
      * @param string|null $price
-     * @param string|null $discounted_total
+     * @param string|null $discountedTotal
      * @return bool
      */
-    public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discount_type, ?string $price, ?string $discounted_total = null): bool
+    public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discountType, ?string $price, ?string $discountedTotal = null): bool
     {
         $items = $this->get_cart();
         if (isset($items[$line])) {
-            $line = &$items[$line];
-            if ($discounted_total != null && $discounted_total != $line['discounted_total']) {
+            $lineData = &$items[$line];
+            if ($discountedTotal != null && $discountedTotal != $lineData['discounted_total']) {
                 // Note when entered the "discounted_total" is expected to be entered without a discount
-                $quantity = $this->get_quantity_sold($discounted_total, $price);
+                $quantity = $this->get_quantity_sold($discountedTotal, (string) $price);
             }
-            $line['description'] = $description;
-            $line['serialnumber'] = $serialnumber;
-            $line['quantity'] = $quantity;
-            $line['discount'] = $discount;
+            $lineData['description'] = $description;
+            $lineData['serialnumber'] = $serialnumber;
+            $lineData['quantity'] = $quantity;
+            $lineData['discount'] = $discount;
 
-            if ($discount_type != null) {
-                $line['discount_type'] = $discount_type;
+            if ($discountType != null) {
+                $lineData['discount_type'] = $discountType;
             }
 
-            $line['price'] = $price;
-            $line['total'] = $this->get_item_total($quantity, $price, $discount, $line['discount_type']);
-            $line['discounted_total'] = $this->get_item_total($quantity, $price, $discount, $line['discount_type'], true);
+            $lineData['price'] = $price;
+            $lineData['total'] = $this->get_item_total($quantity, (string) $price, $discount, $lineData['discount_type']);
+            $lineData['discounted_total'] = $this->get_item_total($quantity, (string) $price, $discount, $lineData['discount_type'], true);
             $this->set_cart($items);
+
+            return true;
         }
 
-        return false;    // TODO: This function will always return false.
+        return false;
     }
 
     /**
@@ -1331,32 +1340,31 @@ class Sale_lib
     }
 
     /**
-     * @param string $external_item_kit_id
-     * @param int $item_location
+     * @param string $externalItemKitId
+     * @param int $itemLocation
      * @param float $discount
-     * @param string $discount_type
-     * @param bool $kit_price_option
-     * @param bool $kit_print_option
-     * @param string $stock_warning
+     * @param string $discountType
+     * @param int $kitPriceOption
+     * @param int $kitPrintOption
+     * @param string|null $stockWarning
      * @return bool
      */
-    public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, string $discount_type, bool $kit_price_option, bool $kit_print_option, ?string &$stock_warning): bool
+    public function add_item_kit(string $externalItemKitId, int $itemLocation, float $discount, string $discountType, int $kitPriceOption = PRICE_OPTION_ALL, int $kitPrintOption = PRINT_ALL, ?string &$stockWarning = null): bool
     {
         // KIT #
-        $pieces = explode(' ', $external_item_kit_id);
-        $item_kit_id = (count($pieces) > 1) ? $pieces[1] : $external_item_kit_id;
+        $pieces = explode(' ', $externalItemKitId);
+        $itemKitId = (count($pieces) > 1) ? $pieces[1] : $externalItemKitId;
         $result = true;
-        $applied_discount = $discount;
 
-        foreach ($this->item_kit_items->get_info($item_kit_id) as $item_kit_item) {
-            $result &= $this->add_item($item_kit_item['item_id'], $item_location, $item_kit_item['quantity'], $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option);
+        foreach ($this->item_kit_items->get_info($itemKitId) as $itemKitItem) {
+            $result &= $this->add_item($itemKitItem['item_id'], $itemLocation, $itemKitItem['quantity'], $discount, (int) $discountType, PRICE_MODE_KIT, $kitPriceOption, $kitPrintOption);
 
-            if ($stock_warning == null) {
-                $stock_warning = $this->out_of_stock($item_kit_item['item_id'], $item_location);
+            if ($stockWarning == null) {
+                $stockWarning = $this->out_of_stock($itemKitItem['item_id'], $itemLocation);
             }
         }
 
-        return $result;
+        return (bool) $result;
     }
 
     /**
@@ -1413,7 +1421,7 @@ class Sale_lib
      */
     public function get_sale_id(): int
     {
-        return $this->session->get('sale_id');
+        return (int) ($this->session->get('sale_id') ?: NEW_ENTRY);
     }
 
     /**
@@ -1472,11 +1480,11 @@ class Sale_lib
      */
     public function is_customer_taxable(): bool    // TODO: This function is never called in the code
     {
-        $customer_id = $this->get_customer();
-        $customer = $this->customer->getInfo($customer_id);
+        $customerId = $this->get_customer();
+        $customer = $this->customer->getInfo($customerId);
 
         // Do not charge sales tax if we have a customer that is not taxable
-        return $customer->taxable or $customer_id == -1;    // TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.
+        return (bool) $customer->taxable || $customerId == -1;
     }
 
     /**
@@ -1607,6 +1615,10 @@ class Sale_lib
      */
     public function get_quantity_sold(string $total, string $price): string
     {
+        if (bccomp($price, '0', max(totals_decimals(), quantity_decimals(), 8)) === 0) {
+            return '0';
+        }
+
         return bcdiv($total, $price, quantity_decimals());
     }
 
