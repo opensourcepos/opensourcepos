@@ -358,6 +358,7 @@ class ConfigControllerTest extends CIUnitTestCase
             'include_hsn'                    => '',
             'category_dropdown'              => '',
             'show_office_group'              => '',
+            'table_polling_frequency'        => '0',
         ], $overrides);
     }
 
