@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => 'Emplacement(s) de stock invalide(s) trouvé(s) : {0}. Seuls les emplacements de stock valides sont autorisés.',
     'csv_import_nodata_wrongformat'      => 'Le CSV envoyé ne contient aucune donnée, ou elles sont dans un format erroné.',
     'csv_import_partially_failed'        => 'Il y a eu {0} importation(s) d\'articles échoué(s) au(x) ligne(s) : {1}. Aucune ligne n\'a été importée.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Importation des articles réussie.',
     'current_quantity'                   => 'Quantité actuelle',
     'default_pack_name'                  => 'Chacun',

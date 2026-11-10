@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Importação do CSV falhou',
     'csv_import_nodata_wrongformat' => 'Seu arquivo enviado não contém dados ou formato errado.',
     'csv_import_partially_failed'   => 'A maioria dos clientes importado. Mas alguns não eram, aqui está a lista:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Importação de clientes com sucesso.',
     'customer'                      => 'Cliente',
     'date'                          => 'Data',

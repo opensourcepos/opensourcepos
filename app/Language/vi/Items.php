@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'Tập tin tải lên không có dữ liệu hoặc là nó có định dạng không đúng.',
     'csv_import_partially_failed'        => 'Có {0} mục tin gặp lỗi khi nhập trên dòng: {1}. Không có hàng nào được nhập vào.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Nhập hàng hóa thành công.',
     'current_quantity'                   => 'Số lượng hiện tại',
     'default_pack_name'                  => 'Mỗi',

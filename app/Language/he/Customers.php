@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'ייבוא אקסל נכשל',
     'csv_import_nodata_wrongformat' => 'בקובץ שהועלה אין נתונים או פורמט שגוי.',
     'csv_import_partially_failed'   => 'ייבוא הלקוח הצליח עם מספר שגיאות:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'ייבוא הלקוח בוצע בהצלחה.',
     'customer'                      => 'לקוח',
     'date'                          => 'תאריך',

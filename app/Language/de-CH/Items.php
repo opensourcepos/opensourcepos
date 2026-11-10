@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'Die hochgeladene Datei enthält keine Daten oder ist falsch formatiert.',
     'csv_import_partially_failed'        => 'Bei {0} Artikelimporten sind in den Zeilen {1} Fehler aufgetreten. Es wurden keine Zeilen importiert.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Artikelimport erfolgreich.',
     'current_quantity'                   => 'Aktuelle Menge',
     'default_pack_name'                  => '',

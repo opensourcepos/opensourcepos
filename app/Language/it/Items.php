@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => 'Trovata/e locazione/i di stock non valida/e: {0}. Solo le locazioni di stock valide sono ammesse.',
     'csv_import_nodata_wrongformat'      => 'L\'upload del file non ha dati o non è formattato correttamente.',
     'csv_import_partially_failed'        => 'Si sono verificati {0} errori di importazione degli elementi nelle righe: {1}. Nessuna riga è stata importata.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Importazione CSV dell\'articolo riuscita.',
     'current_quantity'                   => 'Quantità Corrente',
     'default_pack_name'                  => 'Ogni',

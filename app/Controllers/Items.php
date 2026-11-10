@@ -1195,7 +1195,7 @@ class Items extends Secure_Controller
 
             $db->transCommit();
 
-            return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_queued', [count($csvRows)])]);
+            return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_queued', ['count' => count($csvRows)])]);
         } catch (Exception $e) {
             return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }

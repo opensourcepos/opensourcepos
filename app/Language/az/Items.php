@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => 'Yanlış anbar yeri(ləri) tapıldı: {0}. Yalnız düzgün anbar yerlərinə icazə verilir.',
     'csv_import_nodata_wrongformat'      => 'Yüklənmiş CSV faylında məlumat yoxdur və ya format düzgün deyil.',
     'csv_import_partially_failed'        => 'Bu sətir(lər)də {0} mal idxalı uğursuzluğu baş verdi: {1}. Heç bir sətir idxal edilmədi.',
+    'csv_import_queued'                  => '{count} mal(lar) idxal üçün növbəyə alındı. Bu bir neçə dəqiqə çəkə bilər.',
     'csv_import_success'                 => 'Malın CSV idxalı uğurla başa çatdı.',
     'current_quantity'                   => 'Cari Miqdar',
     'default_pack_name'                  => 'Ədəd',

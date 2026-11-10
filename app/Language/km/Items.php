@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'ដាក់បញ្ជុល CSV មិនមានទិន្នន័យ ឬទំរង់មិនត្រឹមត្រូវ។',
     'csv_import_partially_failed'        => "មានទំននិញ {0} បញ្ជូលមិនបានសំរេច នៅជួរ: {1}\u{200b} ។ គ្មានជួរណាមួយត្រូវបានបញ្ជូលនោះទេ។",
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'ទំនិញក្នុង CSV បញ្ចូលបានសំរេច។',
     'current_quantity'                   => 'បរិមាណបច្ចុប្បន្ន',
     'default_pack_name'                  => '',

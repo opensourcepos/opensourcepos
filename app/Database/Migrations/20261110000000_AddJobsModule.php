@@ -123,9 +123,44 @@ class AddJobsModule extends Migration
             ['key' => 'jobs_auto_purge', 'value' => '1'],
             ['key' => 'jobs_retry_limit', 'value' => '3'],
             ['key' => 'jobs_manual_max_seconds', 'value' => '30'],
+            ['key' => 'table_polling_frequency', 'value' => '0'],
         ];
 
         $this->db->table('app_config')->ignore(true)->insertBatch($jobsConfigValues);
+
+        // queue_jobs and queue_jobs_failed were created above with all fields
+        // already present (including priority). Mark the codeigniter4/queue vendor
+        // migrations as already run so the runner does not attempt to re-create or
+        // alter those tables when it discovers them later.
+        $batch = $this->db->table('migrations')->selectMax('batch')->get()->getRowArray()['batch'] ?? 0;
+        $batch = (int)$batch + 1;
+        $now   = time();
+        $this->db->table('migrations')->ignore(true)->insertBatch([
+            [
+                'version'   => '2023-10-12-112040',
+                'class'     => 'CodeIgniter\Queue\Database\Migrations\AddQueueTables',
+                'group'     => 'default',
+                'namespace' => 'CodeIgniter\Queue',
+                'time'      => $now,
+                'batch'     => $batch,
+            ],
+            [
+                'version'   => '2023-11-05-064053',
+                'class'     => 'CodeIgniter\Queue\Database\Migrations\AddPriorityField',
+                'group'     => 'default',
+                'namespace' => 'CodeIgniter\Queue',
+                'time'      => $now,
+                'batch'     => $batch,
+            ],
+            [
+                'version'   => '2024-12-27-110712',
+                'class'     => 'CodeIgniter\Queue\Database\Migrations\ChangePayloadFieldTypeInSqlsrv',
+                'group'     => 'default',
+                'namespace' => 'CodeIgniter\Queue',
+                'time'      => $now,
+                'batch'     => $batch,
+            ],
+        ]);
     }
 
     public function down(): void
@@ -139,9 +174,16 @@ class AddJobsModule extends Migration
             'jobs_auto_purge',
             'jobs_retry_limit',
             'jobs_manual_max_seconds',
+            'table_polling_frequency',
         ];
 
         $this->db->table('app_config')->whereIn('key', $jobsConfigKeys)->delete();
+
+        $this->db->table('migrations')->whereIn('class', [
+            'CodeIgniter\Queue\Database\Migrations\AddQueueTables',
+            'CodeIgniter\Queue\Database\Migrations\AddPriorityField',
+            'CodeIgniter\Queue\Database\Migrations\ChangePayloadFieldTypeInSqlsrv',
+        ])->delete();
 
         $this->forge->dropTable('import_batches', true);
         $this->forge->dropTable('queue_paused_jobs', true);

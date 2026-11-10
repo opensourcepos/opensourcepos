@@ -467,6 +467,6 @@ class Customers extends Persons
 
         $db->transCommit();
 
-        return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_queued', [count($rows)])]);
+        return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_queued', ['count' => count($rows)])]);
     }
 }

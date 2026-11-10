@@ -10,7 +10,7 @@ use stdClass;
 /**
  * Reads queue_jobs (pending/reserved) and queue_jobs_failed (exhausted
  * retries) as one virtual grid for the Jobs "Manage" tab. Both tables come
- * from codeigniter4/queue (see 20260916000000_AddJobsModule.php) and have
+ * from codeigniter4/queue (see 20261110000000_AddJobsModule.php) and have
  * no shared row identity, so rows are tagged here with a synthetic
  * 'source' ('pending'|'reserved'|'failed') and 'uid' ("{source}:{id}")
  * used as the grid's uniqueId.

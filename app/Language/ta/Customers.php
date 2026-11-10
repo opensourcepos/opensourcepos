@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV இறக்குமதி தோல்வியுற்றது',
     'csv_import_nodata_wrongformat' => 'பதிவேற்றிய கோப்பில் தரவு இல்லை அல்லது தவறாக வடிவமைக்கப்பட்டுள்ளது.',
     'csv_import_partially_failed'   => '',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'வாடிக்கையாளரின் இறக்குமதி வெற்றிகரமாக முடிந்தது.',
     'customer'                      => 'வாடிக்கையாளர்',
     'date'                          => 'தேதி',

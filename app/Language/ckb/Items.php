@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'پەڕگەی CSV بارکراو هیچ داتایەکی نییە یان بە هەڵە فۆرمات کراوە.',
     'csv_import_partially_failed'        => '{0} شکستی هاوردەکردنی بابەتی لەسەر هێڵەکان هەبوو: {1}. هیچ ڕیزێک هاوردە نەکرا.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'بابەتی هاوردەکردنی CSV سەرکەوتوو بوو.',
     'current_quantity'                   => 'چەندێتی ئێستە',
     'default_pack_name'                  => 'هەریەک',

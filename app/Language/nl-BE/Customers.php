@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV import mislukt',
     'csv_import_nodata_wrongformat' => 'Je geüploade bestand heeft geen gegevens of een verkeerd formaat.',
     'csv_import_partially_failed'   => 'De meeste klanten zijn geïmporteerd. Maar sommige niet, hier is de lijst:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Klanten met succes geïmporteerd.',
     'customer'                      => 'Klant',
     'date'                          => 'Datum',
