@@ -437,7 +437,9 @@ class Customers extends Persons
         $rows = [];
 
         while (($data = fgetcsv($handle)) !== false) {
-            $rows[] = $data;
+            if ($data !== [null]) {
+                $rows[] = $data;
+            }
         }
 
         fclose($handle);
