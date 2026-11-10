@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @param array $stock_locations
- * @param array $attributes
- * @return string
- */
 function generateImportItemsCsv(array $stockLocations, array $attributes): string
 {
     $csvHeaders = pack('CCC', 0xef, 0xbb, 0xbf);    // Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
@@ -91,9 +86,9 @@ function bomExists(mixed &$fileHandle): bool
  * the same function that builds the downloadable template, so location and
  * attribute columns stay in sync automatically.
  *
- * @param array $csv_rows Rows returned by get_csv_file().
- * @param array $stock_locations Stock locations, as returned by Stock_location::get_allowed_locations().
- * @param array $attribute_names Attribute definition names, as returned by Attribute::get_definition_names().
+ * @param array $csvRows Rows returned by get_csv_file().
+ * @param array $stockLocations Stock locations, as returned by Stock_location::get_allowed_locations().
+ * @param array $attributeNames Attribute definition names, as returned by Attribute::get_definition_names().
  * @return bool True when the required columns are present.
  */
 function csvImportHasRequiredItemHeaders(array $csvRows, array $stockLocations, array $attributeNames): bool
