@@ -98,7 +98,7 @@ class CustomerCsvRowProcessor
 
         if ($accountNumber != '') {
             $customerData['account_number'] = $accountNumber;
-            $invalidated &= $this->customer->check_account_number_exists($accountNumber);
+            $invalidated = $invalidated || $this->customer->check_account_number_exists($accountNumber);
         }
 
         if ($invalidated) {
