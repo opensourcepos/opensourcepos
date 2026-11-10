@@ -1465,7 +1465,8 @@ class ItemsControllerTest extends CIUnitTestCase
 
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
-        $this->assertTrue($result['success']);
+        $this->assertArrayHasKey('total', $result);
+        $this->assertArrayHasKey('rows', $result);
     }
 
     public function testGetSearch_RejectsOmittedLocationWhenNoDefaultLocation(): void
@@ -1485,11 +1486,16 @@ class ItemsControllerTest extends CIUnitTestCase
         );
         $this->loginAsItemsEmployee($personId);
 
-        $itemData = $this->baseItemPostData();
-        $response = $this->post('/items/save', $itemData);
-        $itemResult = json_decode($response->getJSON(), true);
-        $this->assertTrue($itemResult['success']);
-        $itemId = (int) $itemResult['id'];
+        $itemData = [
+            'item_id' => null,
+            'name' => "OmittedLocationItem_{$suffix}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+        $itemId = (int) $itemData['item_id'];
 
         $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
         $this->assertTrue($this->stock_location->delete($locAId));
@@ -1523,11 +1529,16 @@ class ItemsControllerTest extends CIUnitTestCase
         );
         $this->loginAsItemsEmployee($personId);
 
-        $itemData = $this->baseItemPostData();
-        $response = $this->post('/items/save', $itemData);
-        $itemResult = json_decode($response->getJSON(), true);
-        $this->assertTrue($itemResult['success']);
-        $itemId = (int) $itemResult['id'];
+        $itemData = [
+            'item_id' => null,
+            'name' => "CountDetailsItem_{$suffixA}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+        $itemId = (int) $itemData['item_id'];
 
         $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
         $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locBId, 'quantity' => 99], $itemId, $locBId);
