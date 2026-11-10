@@ -8,10 +8,12 @@ on:
 jobs:
   delete_unstable_release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: "Delete the unstable release (matched by name)"
         env:
-          TOKEN: ${{ secrets.TOKEN }}
+          TOKEN: ${{ secrets.TOKEN || secrets.GITHUB_TOKEN }}
           RELEASE_NAME: "Unstable OpenSourcePOS"
           TAG_NAME: "unstable"
         run: |
