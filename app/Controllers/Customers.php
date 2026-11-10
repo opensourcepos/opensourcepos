@@ -12,6 +12,7 @@ use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
 use Config\Services;
+use Exception;
 use stdClass;
 
 class Customers extends Persons
@@ -446,27 +447,36 @@ class Customers extends Persons
 
         $importBatch = service('importBatch');
         $db = db_connect();
-        $db->transBegin();
 
-        $batchId = $importBatch->create('customers', count($rows));
-        $success = true;
+        try {
+            $db->transBegin();
 
-        foreach ($rows as $row) {
-            $success = $success && $importBatch->pushRow('imports', 'customer_import', [
-                'batch_id'    => $batchId,
-                'row'         => $row,
-                'employee_id' => $employeeId,
-            ], $batchId, 'low');
+            $batchId = $importBatch->create('customers', count($rows));
+            $success = true;
+
+            foreach ($rows as $row) {
+                $success = $success && $importBatch->pushRow('imports', 'customer_import', [
+                    'batch_id'    => $batchId,
+                    'row'         => $row,
+                    'employee_id' => $employeeId,
+                ], $batchId, 'low');
+            }
+
+            if (!$success) {
+                $db->transRollback();
+
+                return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_failed')]);
+            }
+
+            $db->transCommit();
+
+            return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_queued', ['count' => count($rows)])]);
+        } catch (Exception $e) {
+            if ($db->inTransaction()) {
+                $db->transRollback();
+            }
+
+            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
-
-        if (!$success) {
-            $db->transRollback();
-
-            return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_failed')]);
-        }
-
-        $db->transCommit();
-
-        return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_queued', ['count' => count($rows)])]);
     }
 }

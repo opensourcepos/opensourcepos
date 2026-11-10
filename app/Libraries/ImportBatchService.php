@@ -63,12 +63,12 @@ class ImportBatchService
             return false;
         }
 
-        db_connect()->table('queue_jobs')->where('id', $result->getJobId())->update([
+        $updated = db_connect()->table('queue_jobs')->where('id', $result->getJobId())->update([
             'batch_id'   => $batchId,
             'context_id' => $this->importBatchContext->getIdForBatch($batchId),
         ]);
 
-        return true;
+        return $updated;
     }
 
     /**
