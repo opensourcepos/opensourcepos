@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use RuntimeException;
 
 /**
  * Tracks progress of a queued CSV import (issue #3833 Phase 3). Each row of
@@ -28,12 +29,16 @@ class ImportBatch extends Model
 
     public function create(string $batchId, string $type, int $total): void
     {
-        $this->insert([
+        $result = $this->insert([
             'id'     => $batchId,
             'type'   => $type,
             'total'  => $total,
             'status' => $total > 0 ? 'processing' : 'completed',
         ]);
+
+        if ($result === false) {
+            throw new RuntimeException('Failed to create import batch: ' . $batchId);
+        }
     }
 
     /**

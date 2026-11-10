@@ -1187,7 +1187,7 @@ class Items extends Secure_Controller
                 ], $batchId, 'low');
             }
 
-            if (!$success) {
+            if (!$success || !$db->transStatus()) {
                 $db->transRollback();
 
                 return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_failed')]);
@@ -1197,7 +1197,7 @@ class Items extends Secure_Controller
 
             return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_queued', ['count' => count($csvRows)])]);
         } catch (Exception $e) {
-            if (isset($db) && $db->inTransaction()) {
+            if (isset($db) && $db->transDepth > 0) {
                 $db->transRollback();
             }
 

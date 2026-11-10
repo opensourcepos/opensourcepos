@@ -3,11 +3,13 @@
 namespace Tests\Controllers;
 
 use App\Jobs\BoundedQueueWorker;
+use App\Libraries\ImportBatchService;
+use App\Models\Customer;
+use App\Models\Employee;
+use CodeIgniter\Config\Services;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Models\Customer;
-use App\Models\Employee;
 use Tests\Support\DatabaseBootstrapTrait;
 
 class CustomersCsvImportTest extends CIUnitTestCase
@@ -311,5 +313,55 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $this->assertEquals('', $importedCustomer['email'], 'Email should be empty string');
 
         unlink($tempFile);
+    }
+
+    public function testPostImportCsvFile_RollsBackOnPushRowFailure(): void
+    {
+        $this->loginAsEmployee();
+
+        // Two-row CSV so the 2nd pushRow call can be the one that fails.
+        $csvContent = [
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone Number', 'Address 1', 'Address2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount_Type', 'Taxable'],
+            ['Rollback',   'One',       '1',      '1',       'rollback1@example.com', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['Rollback',   'Two',       '1',      '1',       'rollback2@example.com', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ];
+
+        $tempFile = $this->createCsvFile($csvContent);
+
+        $_FILES['file_path'] = [
+            'name'     => 'rollback.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile),
+        ];
+
+        // Inject a stub that succeeds the first pushRow then fails the second.
+        $callCount = 0;
+        $real = new ImportBatchService();
+        $stub = $this->createMock(ImportBatchService::class);
+        $stub->method('create')->willReturnCallback(fn(...$args) => $real->create(...$args));
+        $stub->method('pushRow')->willReturnCallback(function () use (&$callCount) {
+            $callCount++;
+            return $callCount < 2;
+        });
+        Services::injectMock('importBatch', $stub);
+
+        $this->db->table('queue_jobs')->truncate();
+        $this->db->table('import_batch_contexts')->where('id >', 0)->delete();
+        $this->db->table('import_batches')->truncate();
+
+        $response = $this->post('/customers/importCsvFile');
+
+        Services::injectMock('importBatch', null);
+        unlink($tempFile);
+
+        $response->assertOK();
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success'], 'Import must report failure when a row enqueue fails');
+
+        $this->assertSame(0, $this->db->table('import_batches')->countAllResults(), 'import_batches must be empty after rollback');
+        $this->assertSame(0, $this->db->table('import_batch_contexts')->countAllResults(), 'import_batch_contexts must be empty after rollback');
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults(), 'queue_jobs must be empty after rollback');
     }
 }

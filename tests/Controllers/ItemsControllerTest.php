@@ -2,17 +2,19 @@
 
 namespace Tests\Controllers;
 
+use App\Libraries\ImportBatchService;
+use App\Models\Attribute;
+use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\Item_quantity;
+use App\Models\Item_taxes;
+use App\Models\Stock_location;
+use App\Models\Supplier;
+use CodeIgniter\Config\Services;
 use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Models\Item;
-use App\Models\Item_quantity;
-use App\Models\Inventory;
-use App\Models\Item_taxes;
-use App\Models\Attribute;
-use App\Models\Stock_location;
-use App\Models\Supplier;
 use Tests\Support\EmployeeFixtureTrait;
 
 class ItemsControllerTest extends CIUnitTestCase
@@ -1393,6 +1395,57 @@ class ItemsControllerTest extends CIUnitTestCase
         $csvLocationName = 'Warehouse';
         $isValid = in_array($csvLocationName, $allowedLocations);
         $this->assertTrue($isValid, 'Valid location name should pass validation');
+    }
+
+    public function testPostImportCsvFile_RollsBackOnPushRowFailure(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        // Two-row CSV so the 2nd pushRow call can be the one that fails.
+        $headers = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN';
+        $row1    = ',ITEM-R1,"Rollback Item 1",Electronics,,10.00,20.00,,,,,5,,0,0,,';
+        $row2    = ',ITEM-R2,"Rollback Item 2",Electronics,,10.00,20.00,,,,,5,,0,0,,';
+        $csv     = $headers . "\n" . $row1 . "\n" . $row2 . "\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_rb_items_');
+        file_put_contents($tempFile, $csv);
+
+        $_FILES['file_path'] = [
+            'name'     => 'rollback.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile),
+        ];
+
+        // Inject a stub that succeeds the first pushRow then fails the second.
+        $callCount = 0;
+        $real = new ImportBatchService();
+        $stub = $this->createMock(ImportBatchService::class);
+        $stub->method('create')->willReturnCallback(fn(...$args) => $real->create(...$args));
+        $stub->method('pushRow')->willReturnCallback(function () use (&$callCount) {
+            $callCount++;
+            return $callCount < 2;
+        });
+        Services::injectMock('importBatch', $stub);
+
+        $this->db->table('queue_jobs')->truncate();
+        $this->db->table('import_batch_contexts')->where('id >', 0)->delete();
+        $this->db->table('import_batches')->truncate();
+
+        $response = $this->post('/items/importCsvFile');
+
+        Services::injectMock('importBatch', null);
+        unlink($tempFile);
+
+        $response->assertOK();
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success'], 'Import must report failure when a row enqueue fails');
+
+        $this->assertSame(0, $this->db->table('import_batches')->countAllResults(), 'import_batches must be empty after rollback');
+        $this->assertSame(0, $this->db->table('import_batch_contexts')->countAllResults(), 'import_batch_contexts must be empty after rollback');
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults(), 'queue_jobs must be empty after rollback');
     }
 }
 

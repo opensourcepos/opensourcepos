@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use RuntimeException;
 
 /**
  * Stores a one-time-per-batch context snapshot (e.g. attribute definitions
@@ -25,11 +26,15 @@ class ImportBatchContext extends Model
 
     public function create(string $batchId, array $context): int
     {
-        $this->insert([
+        $result = $this->insert([
             'batch_id'   => $batchId,
             'context'    => json_encode($context),
             'created_at' => date('Y-m-d H:i:s'),
         ]);
+
+        if ($result === false) {
+            throw new RuntimeException('Failed to create import batch context for batch: ' . $batchId);
+        }
 
         return $this->getInsertID();
     }

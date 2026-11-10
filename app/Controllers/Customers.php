@@ -462,7 +462,7 @@ class Customers extends Persons
                 ], $batchId, 'low');
             }
 
-            if (!$success) {
+            if (!$success || !$db->transStatus()) {
                 $db->transRollback();
 
                 return $this->response->setJSON(['success' => false, 'message' => lang('Customers.csv_import_failed')]);
@@ -472,7 +472,7 @@ class Customers extends Persons
 
             return $this->response->setJSON(['success' => true, 'message' => lang('Customers.csv_import_queued', ['count' => count($rows)])]);
         } catch (Exception $e) {
-            if ($db->inTransaction()) {
+            if ($db->transDepth > 0) {
                 $db->transRollback();
             }
 
