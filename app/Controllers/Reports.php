@@ -135,10 +135,6 @@ class Reports extends Secure_Controller
         if ($submoduleId === null && !in_array($methodName, $helperMethods, true)) {
             throw new RedirectException('no_access/reports/reports');
         }
-        }
-        $reportName = preg_replace('/_(graph|row)$/', '', $reportName);
-
-        $submoduleId = $reportPermissions[$reportName] ?? null;
 
         // Check access to report submodule
         if ($submoduleId !== null && !$this->employee->has_grant($submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
