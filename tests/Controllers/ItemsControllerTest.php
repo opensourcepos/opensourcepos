@@ -2,7 +2,6 @@
 
 namespace Tests\Controllers;
 
-use Tests\Support\ImportBatchFailureTrait;
 use App\Models\Attribute;
 use App\Models\Inventory;
 use App\Models\Item;
@@ -1398,13 +1397,31 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->assertTrue($isValid, 'Valid location name should pass validation');
     }
 
-    private function twoRowItemsCsvFile(): string
+    private function twoRowItemsCsvFile(int $personId): string
     {
-        $headers = 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN';
-        $csv     = $headers . "\n"
-            . ',ITEM-R1,"Rollback Item 1",Electronics,,10.00,20.00,,,,,5,,0,0,,' . "\n"
-            . ',ITEM-R2,"Rollback Item 2",Electronics,,10.00,20.00,,,,,5,,0,0,,' . "\n";
+        helper('importfile');
 
+        $allowedLocations  = $this->stock_location->get_allowed_locations('items', $personId);
+        $allowedAttributes = $this->attribute->getDefinitionNames();
+
+        // generateImportItemsCsv() returns BOM + header CSV (no trailing newline).
+        // We write it verbatim then append two data rows with the correct column
+        // count so that get_csv_file()'s array_combine() never sees a size mismatch.
+        $headerCsv   = generateImportItemsCsv($allowedLocations, $allowedAttributes);
+        $headerLine  = ltrim($headerCsv, "\xEF\xBB\xBF");
+        $headers     = str_getcsv($headerLine);
+        $columnCount = count($headers);
+
+
+        $buildRow = static function (string $barcode, string $name) use ($columnCount): string {
+            $cols    = array_fill(0, $columnCount, '');
+            $cols[1] = $barcode;
+            $cols[2] = $name;
+
+            return implode(',', array_map(static fn ($v) => str_contains($v, ',') ? '"' . $v . '"' : $v, $cols));
+        };
+
+        $csv      = $headerCsv . "\n" . $buildRow('ITEM-R1', 'Rollback Item 1') . "\n" . $buildRow('ITEM-R2', 'Rollback Item 2') . "\n";
         $tempFile = tempnam(sys_get_temp_dir(), 'csv_rb_items_');
         file_put_contents($tempFile, $csv);
 
@@ -1437,7 +1454,7 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $employeeId = $this->createItemsEmployee();
         $this->loginAsItemsEmployee($employeeId);
-        $tempFile = $this->twoRowItemsCsvFile();
+        $tempFile = $this->twoRowItemsCsvFile($employeeId);
         $this->clearImportTables();
         $this->injectPushRowFalseOnCall(2);
 
@@ -1446,8 +1463,10 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->resetImportBatchMock();
         unlink($tempFile);
 
+        $body   = $response->getBody();
         $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success'], 'Import must report failure when a row enqueue fails');
+        $this->assertSame(2, $this->importBatchPushRowCalls, "pushRow must be called twice so the first real enqueue is verified rolled back\nResponse: $body");
+        $this->assertFalse($result['success'] ?? true, "Import must report failure when a row enqueue fails\nResponse: $body");
         $this->assertImportTablesEmpty();
     }
 
@@ -1455,7 +1474,7 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $employeeId = $this->createItemsEmployee();
         $this->loginAsItemsEmployee($employeeId);
-        $tempFile = $this->twoRowItemsCsvFile();
+        $tempFile = $this->twoRowItemsCsvFile($employeeId);
         $this->clearImportTables();
         $this->injectPushRowThrowOnCall(2);
 
@@ -1464,8 +1483,10 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->resetImportBatchMock();
         unlink($tempFile);
 
+        $body   = $response->getBody();
         $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success'], 'Import must report failure when pushRow throws');
+        $this->assertSame(2, $this->importBatchPushRowCalls, "pushRow must be called twice so the first real enqueue is verified rolled back\nResponse: $body");
+        $this->assertFalse($result['success'] ?? true, "Import must report failure when pushRow throws\nResponse: $body");
         $this->assertImportTablesEmpty();
     }
 }

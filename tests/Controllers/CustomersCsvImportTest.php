@@ -360,8 +360,10 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $this->resetImportBatchMock();
         unlink($tempFile);
 
+        $body   = $response->getBody();
         $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success'], 'Import must report failure when a row enqueue fails');
+        $this->assertSame(2, $this->importBatchPushRowCalls, "pushRow must be called twice so the first real enqueue is verified rolled back\nResponse: $body");
+        $this->assertFalse($result['success'] ?? true, "Import must report failure when a row enqueue fails\nResponse: $body");
         $this->assertImportTablesEmpty();
     }
 
@@ -377,8 +379,10 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $this->resetImportBatchMock();
         unlink($tempFile);
 
+        $body   = $response->getBody();
         $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success'], 'Import must report failure when pushRow throws');
+        $this->assertSame(2, $this->importBatchPushRowCalls, "pushRow must be called twice so the first real enqueue is verified rolled back\nResponse: $body");
+        $this->assertFalse($result['success'] ?? true, "Import must report failure when pushRow throws\nResponse: $body");
         $this->assertImportTablesEmpty();
     }
 }

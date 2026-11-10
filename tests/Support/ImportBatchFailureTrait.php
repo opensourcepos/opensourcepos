@@ -3,7 +3,7 @@
 namespace Tests\Support;
 
 use App\Libraries\ImportBatchService;
-use CodeIgniter\Config\Services;
+use Config\Services;
 use RuntimeException;
 
 /**
@@ -12,22 +12,26 @@ use RuntimeException;
  * either returns false or throws on call N, letting the caller verify that the
  * surrounding transaction is rolled back cleanly.
  *
- * Call resetImportBatchMock() in tearDown() — or rely on the auto-reset if
- * Services::reset() is already called there — to clear the injected mock.
+ * After the request completes, $this->importBatchPushRowCalls holds the total
+ * number of pushRow() invocations so tests can assert the failure path was reached.
+ *
+ * Call resetImportBatchMock() after the request to clear the injected mock.
  */
 trait ImportBatchFailureTrait
 {
+    private int $importBatchPushRowCalls = 0;
+
     private function injectPushRowFalseOnCall(int $failOnCall): void
     {
-        $callCount = 0;
-        $real      = new ImportBatchService();
-        $stub      = $this->createMock(ImportBatchService::class);
+        $this->importBatchPushRowCalls = 0;
+        $real                          = new ImportBatchService();
+        $stub                          = $this->createMock(ImportBatchService::class);
 
         $stub->method('create')->willReturnCallback(fn (...$args) => $real->create(...$args));
-        $stub->method('pushRow')->willReturnCallback(function (...$args) use (&$callCount, $real, $failOnCall) {
-            $callCount++;
+        $stub->method('pushRow')->willReturnCallback(function (...$args) use ($real, $failOnCall) {
+            $this->importBatchPushRowCalls++;
 
-            if ($callCount < $failOnCall) {
+            if ($this->importBatchPushRowCalls < $failOnCall) {
                 return $real->pushRow(...$args);
             }
 
@@ -39,15 +43,15 @@ trait ImportBatchFailureTrait
 
     private function injectPushRowThrowOnCall(int $throwOnCall): void
     {
-        $callCount = 0;
-        $real      = new ImportBatchService();
-        $stub      = $this->createMock(ImportBatchService::class);
+        $this->importBatchPushRowCalls = 0;
+        $real                          = new ImportBatchService();
+        $stub                          = $this->createMock(ImportBatchService::class);
 
         $stub->method('create')->willReturnCallback(fn (...$args) => $real->create(...$args));
-        $stub->method('pushRow')->willReturnCallback(function (...$args) use (&$callCount, $real, $throwOnCall) {
-            $callCount++;
+        $stub->method('pushRow')->willReturnCallback(function (...$args) use ($real, $throwOnCall) {
+            $this->importBatchPushRowCalls++;
 
-            if ($callCount < $throwOnCall) {
+            if ($this->importBatchPushRowCalls < $throwOnCall) {
                 return $real->pushRow(...$args);
             }
 
