@@ -175,7 +175,7 @@ function getSalesManagePaymentsSummary(array $payments): string
     foreach ($payments as $key => $payment) {
         $amount = $payment['payment_amount'];
         $total = bcadd($total, $amount);
-        $table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
+        $table .= '<div class="summary_row">' . esc($payment['payment_type']) . ': ' . to_currency($amount) . '</div>';
     }
 
     $table .= '<div class="summary_row">' . lang('Sales.total') . ': ' . to_currency($total) . '</div>';
@@ -639,39 +639,39 @@ function parse_attribute_values(array $columns, array $row): array
 }
 
 /**
- * @param array $definition_names Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
+ * @param array $definitionNames Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
  * @param array $row
  * @return array
  */
-function expand_attribute_values(array $definition_names, array $row): array
+function expand_attribute_values(array $definitionNames, array $row): array
 {
     $values = parse_attribute_values(['attribute_values', 'attribute_dtvalues', 'attribute_dvalues'], $row);
 
-    $indexed_values = [];
-    foreach ($values as $attribute_value) {
-        $exploded_value = explode('_', $attribute_value);
-        if (sizeof($exploded_value) > 1) {
-            $indexed_values[$exploded_value[0]] = $exploded_value[1];
+    $indexedValues = [];
+    foreach ($values as $attributeValue) {
+        $explodedValue = explode('_', $attributeValue, 2);
+        if (sizeof($explodedValue) > 1) {
+            $indexedValues[$explodedValue[0]] = $explodedValue[1];
         }
     }
 
-    $attribute_values = [];
-    foreach ($definition_names as $definition_id => $definitionInfo) {
-        if (isset($indexed_values[$definition_id])) {
-            $raw_value = $indexed_values[$definition_id];
+    $attributeValues = [];
+    foreach ($definitionNames as $definitionId => $definitionInfo) {
+        if (isset($indexedValues[$definitionId])) {
+            $rawValue = $indexedValues[$definitionId];
 
             // Format DECIMAL attributes according to locale
             if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
-                $attribute_values["$definition_id"] = to_decimals($raw_value);
+                $attributeValues["$definitionId"] = to_decimals($rawValue);
             } else {
-                $attribute_values["$definition_id"] = $raw_value;
+                $attributeValues["$definitionId"] = $rawValue;
             }
         } else {
-            $attribute_values["$definition_id"] = "";
+            $attributeValues["$definitionId"] = '';
         }
     }
 
-    return $attribute_values;
+    return $attributeValues;
 }
 
 function attribute_definition_headers(): array
@@ -694,36 +694,35 @@ function get_attribute_definition_manage_table_headers(): string
 }
 
 /**
- * @param object $attribute_row
+ * @param object $attributeRow
  * @return array
  */
-function get_attribute_definition_data_row(object $attribute_row): array
+function get_attribute_definition_data_row(object $attributeRow): array
 {
-
     $attribute = model(Attribute::class);
     $controller = get_controller();
 
     if (count($attribute->getDefinitionFlags()) == 0) {
-        $definition_flags = lang('Common.none_selected_text');
-    } elseif ($attribute->definition_type == GROUP) {
-        $definition_flags = "-";
+        $definitionFlags = lang('Common.none_selected_text');
+    } elseif ($attributeRow->definition_type == GROUP) {
+        $definitionFlags = '-';
     } else {
-        $definition_flags = implode(', ', $attribute_row->definition_flags);
+        $definitionFlags = implode(', ', $attributeRow->definition_flags);
     }
 
     return [
-        'definition_id'    => $attribute_row->definition_id,
-        'definition_name'  => $attribute_row->definition_name,
-        'definition_type'  => $attribute_row->definition_type,
-        'definition_group' => $attribute_row->definition_group,
-        'definition_flags' => $definition_flags,
+        'definition_id'    => $attributeRow->definition_id,
+        'definition_name'  => $attributeRow->definition_name,
+        'definition_type'  => $attributeRow->definition_type,
+        'definition_group' => $attributeRow->definition_group,
+        'definition_flags' => $definitionFlags,
         'edit'             => anchor(
-            "$controller/view/$attribute_row->definition_id",
+            "$controller/view/$attributeRow->definition_id",
             '<span class="glyphicon glyphicon-edit"></span>',
             [
                 'class'           => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
-                'title'           => lang(ucfirst($controller) . ".update")
+                'title'           => lang(ucfirst($controller) . '.update')
             ]
         )
     ];
@@ -854,7 +853,7 @@ function get_expenses_manage_payments_summary(array $payments, ResultInterface $
 
     foreach ($payments as $key => $payment) {
         $amount = $payment['amount'];
-        $table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
+        $table .= '<div class="summary_row">' . esc($payment['payment_type']) . ': ' . to_currency($amount) . '</div>';
     }
 
     $table .= '</div>';

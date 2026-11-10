@@ -337,12 +337,12 @@ class Config extends Secure_Controller
     private function upload_logo(): array
     {
         $file = $this->request->getFile('company_logo');
-        if (!$file) {
+        if (!$file || $file->getError() === UPLOAD_ERR_NO_FILE) {
             return [];
         }
 
         helper(['form']);
-        $validation_rule = [
+        $validationRule = [
             'company_logo' => [
                 'label' => 'Company logo',
                 'rules' => [
@@ -352,28 +352,27 @@ class Config extends Secure_Controller
                     'mime_in[company_logo,image/png,image/jpg,image/jpeg,image/gif]',
                     'ext_in[company_logo,png,jpg,gif]',
                     'max_dims[company_logo,800,680]',
-                ]
-            ]
+                ],
+            ],
         ];
 
-        if (!$this->validate($validation_rule)) {
-            return (['error' => $this->validator->getError('company_logo')]);
+        if (!$this->validate($validationRule)) {
+            return ['error' => $this->validator->getError('company_logo')];
         }
-
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
         helper('security');
 
-        $file_info = [
+        $fileInfo = [
             'orig_name' => $filename,
             'raw_name'  => sanitize_filename($info['filename']),
-            'file_ext'  => $file->guessExtension()
+            'file_ext'  => $file->guessExtension(),
         ];
 
-        $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+        $file->move(FCPATH . 'uploads/', $fileInfo['raw_name'] . '.' . $fileInfo['file_ext'], true);
 
-        return ($file_info);
+        return $fileInfo;
     }
 
     /**
@@ -393,6 +392,11 @@ class Config extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
         }
 
+        $allowedImageTypes = $this->request->getPost('image_allowed_types');
+        $allowedImageTypes = is_array($allowedImageTypes)
+            ? array_intersect($allowedImageTypes, ['gif', 'jpg', 'jpeg', 'png'])
+            : [];
+
         $batchSaveData = [
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),
@@ -408,7 +412,7 @@ class Config extends Secure_Controller
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
             'image_max_height'                  => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
             'image_max_size'                    => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
-            'image_allowed_types'               => implode(',', $this->request->getPost('image_allowed_types')),
+            'image_allowed_types'               => implode(',', $allowedImageTypes),
             'gcaptcha_enable'                   => $this->request->getPost('gcaptcha_enable') != null,
             'gcaptcha_secret_key'               => $this->request->getPost('gcaptcha_secret_key'),
             'gcaptcha_site_key'                 => $this->request->getPost('gcaptcha_site_key'),
@@ -950,27 +954,27 @@ class Config extends Secure_Controller
      */
     public function postSaveTax(): ResponseInterface
     {
-        $default_tax_1_rate = parse_tax(filter_var($this->request->getPost('default_tax_1_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-        $default_tax_2_rate = parse_tax(filter_var($this->request->getPost('default_tax_2_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        $defaultTax1Rate = parse_tax($this->request->getPost('default_tax_1_rate'));
+        $defaultTax2Rate = parse_tax($this->request->getPost('default_tax_2_rate'));
 
-        if ((is_numeric($default_tax_1_rate) && $default_tax_1_rate < 0) || (is_numeric($default_tax_2_rate) && $default_tax_2_rate < 0)) {
+        if ((is_numeric($defaultTax1Rate) && $defaultTax1Rate < 0) || (is_numeric($defaultTax2Rate) && $defaultTax2Rate < 0)) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Config.default_tax_rate_non_negative')]);
         }
 
-        $batch_save_data = [
-            'default_tax_1_rate'        => $default_tax_1_rate,
+        $batchSaveData = [
+            'default_tax_1_rate'        => $defaultTax1Rate,
             'default_tax_1_name'        => $this->request->getPost('default_tax_1_name'),
-            'default_tax_2_rate'        => $default_tax_2_rate,
+            'default_tax_2_rate'        => $defaultTax2Rate,
             'default_tax_2_name'        => $this->request->getPost('default_tax_2_name'),
             'tax_included'              => $this->request->getPost('tax_included') != null,
             'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != null,
             'default_tax_code'          => $this->request->getPost('default_tax_code'),
             'default_tax_category'      => $this->request->getPost('default_tax_category'),
             'default_tax_jurisdiction'  => $this->request->getPost('default_tax_jurisdiction'),
-            'tax_id'                    => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
+            'tax_id'                    => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT),
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 

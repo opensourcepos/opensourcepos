@@ -104,32 +104,31 @@ class Barcode_lib
      * @param array $barcode_config
      * @return string
      */
-    private function generate_barcode(array $item, array $barcode_config): string
+    private function generate_barcode(array $item, array $barcodeConfig): string
     {
         try {
             $generator = new BarcodeGeneratorSVG();
-            $barcode_value = $this->get_barcode_value($item, $barcode_config);
+            $barcodeValue = $this->get_barcode_value($item, $barcodeConfig);
 
-            return $generator->getBarcode($barcode_value, $barcode_config['barcode_type'], 2, $barcode_config['barcode_height']);
+            return $generator->getBarcode($barcodeValue, $barcodeConfig['barcode_type'], 2, $barcodeConfig['barcode_height']);
         } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n";
-            echo 'Stack trace: ', $e->getTraceAsString();
+            log_message('error', 'Caught exception: ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
 
             return '';
         }
     }
 
     /**
-     * @param $barcode_content
+     * @param $barcodeContent
      * @return string
      */
-    public function generate_receipt_barcode($barcode_content): string
+    public function generate_receipt_barcode($barcodeContent): string
     {
         try {
             $generator = new BarcodeGeneratorSVG();
-            return $generator->getBarcode($barcode_content, $generator::TYPE_CODE_128);
+            return $generator->getBarcode($barcodeContent, $generator::TYPE_CODE_128);
         } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n";
+            log_message('error', 'Caught exception: ' . $e->getMessage());
             return '';
         }
     }
@@ -204,9 +203,8 @@ class Barcode_lib
                     $array[$file] = $file;
                 }
             }
+            closedir($handle);
         }
-
-        closedir($handle);
 
         array_unshift($array, lang('Config.none'));
 

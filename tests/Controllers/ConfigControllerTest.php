@@ -668,4 +668,63 @@ class ConfigControllerTest extends CIUnitTestCase
             ->getRow();
         $this->assertSame(0, (int) $removedRow->is_default);
     }
+
+    public function testPostSaveGeneral_FiltersUnsafeImageAllowedTypesAndHandlesEmpty(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+
+        $response = $this->post('/config/saveGeneral', [
+            'theme'                    => 'flatly',
+            'default_sales_discount'   => '0',
+            'default_receivings_discount' => '0',
+            'lines_per_page'           => '25',
+            'image_max_width'          => '800',
+            'image_max_height'         => '600',
+            'image_max_size'           => '1024',
+            'image_allowed_types'      => ['png', 'php', 'svg', 'jpg'],
+            'suggestions_first_column' => 'name',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $row = $this->db->table('app_config')
+            ->where('key', 'image_allowed_types')
+            ->get()
+            ->getRow();
+        $this->assertSame('png,jpg', $row->value);
+    }
+
+    public function testPostSaveTax_ParsesCommaDecimalLocaleTaxRate(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+        $this->db->table('app_config')->where('key', 'number_locale')->update(['value' => 'de_DE']);
+        $this->db->table('app_config')->where('key', 'tax_decimals')->update(['value' => '2']);
+        config(OSPOS::class)->update_settings();
+
+        $response = $this->post('/config/saveTax', [
+            'default_tax_1_rate'       => '19,5',
+            'default_tax_1_name'       => 'VAT',
+            'default_tax_2_rate'       => '0',
+            'default_tax_2_name'       => '',
+            'default_tax_code'         => '0',
+            'default_tax_category'     => '0',
+            'default_tax_jurisdiction' => '0',
+            'tax_id'                   => '0',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $row = $this->db->table('app_config')
+            ->where('key', 'default_tax_1_rate')
+            ->get()
+            ->getRow();
+        $this->assertEqualsWithDelta(19.5, (float) $row->value, 0.001);
+
+        $this->db->table('app_config')->where('key', 'number_locale')->update(['value' => 'en_US']);
+        config(OSPOS::class)->update_settings();
+    }
 }

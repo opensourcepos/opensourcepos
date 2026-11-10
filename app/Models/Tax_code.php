@@ -124,6 +124,28 @@ class Tax_code extends Model
     }
 
     /**
+     * Inserts or updates a row by ID
+     */
+    public function save_value(array &$taxCodeData, int $taxCodeId = NEW_ENTRY): bool
+    {
+        $builder = $this->db->table('tax_codes');
+
+        if ($taxCodeId == NEW_ENTRY || !$this->exists($taxCodeData['tax_code'])) {
+            if ($builder->insert($taxCodeData)) {
+                $taxCodeData['tax_code_id'] = $this->db->insertID();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        $builder->where('tax_code_id', $taxCodeId);
+
+        return $builder->update($taxCodeData);
+    }
+
+    /**
      * Saves changes to the tax codes table
      */
     public function save_tax_codes(array $array_save): bool    // TODO: Need to rename $array_save to probably $tax_codes

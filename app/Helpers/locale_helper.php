@@ -410,7 +410,7 @@ function to_tax_decimals($number): string
     // Taxes that are null, '' or 0 don't need to be displayed
     // NOTE: do not remove this line otherwise the items edit form will show a tax with 0, and it will save it
     if (empty($number)) {
-        return $number;
+        return '';
     }
 
     return to_decimals($number, 'tax_decimals');
@@ -452,60 +452,59 @@ function to_decimals(?string $number, ?string $decimals = null, int $type = Numb
 }
 
 /**
- * @param string $number
+ * @param string|null $number
  * @return false|float|int|mixed|string
  */
-function parse_quantity(string $number): mixed
+function parse_quantity($number): mixed
 {
     return parse_decimals($number, quantity_decimals());
 }
 
 /**
- * @param string $number
+ * @param string|null $number
  * @return false|float|int|mixed|string
  */
-function parse_tax(string $number): mixed
+function parse_tax($number): mixed
 {
     return parse_decimals($number, tax_decimals());
 }
 
 /**
- * @param string $number
+ * @param mixed $number
  * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
-function parse_decimals(string $number, ?int $decimals = null): mixed
+function parse_decimals($number, ?int $decimals = null): mixed
 {
-    if (empty($number)) {
+    if ($number === null || $number === '' || $number === false) {
         return $number;
     }
-
 
     $config = config(OSPOS::class)->settings;
 
     $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
 
-    if (!$decimals) {
-        $decimals = intVal($config['currency_decimals'] ?? 2);
-        $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
+    if ($decimals === null) {
+        $decimals = intval($config['currency_decimals'] ?? 2);
     }
+    $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
 
     if (empty($config['thousands_separator'])) {
         $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
 
     try {
-        $locale_safe_number = $fmt->parse($number);
+        $localeSafeNumber = $fmt->parse((string) $number);
 
         if (
-            $locale_safe_number === false
-            || $locale_safe_number > MAX_PRECISION
-            || $locale_safe_number > 1.e14
+            $localeSafeNumber === false
+            || $localeSafeNumber > MAX_PRECISION
+            || $localeSafeNumber > 1.e14
         ) {
             return false;
         }
 
-        return (float) $locale_safe_number;
+        return (float) $localeSafeNumber;
     } catch (Exception $e) {
         return false;
     }

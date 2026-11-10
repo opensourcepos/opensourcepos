@@ -81,34 +81,34 @@ class Tax_jurisdictions extends Secure_Controller
 
 
     /**
-     * @param int $jurisdiction_id
+     * @param int $jurisdictionId
      * @return ResponseInterface
      */
-    public function postSave(int $jurisdiction_id = NEW_ENTRY): ResponseInterface
+    public function postSave(int $jurisdictionId = NEW_ENTRY): ResponseInterface
     {
-        $tax_jurisdiction_data = [
+        $taxJurisdictionData = [
             'jurisdiction_name'   => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'reporting_authority' => $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        if ($this->tax_jurisdiction->save_value($tax_jurisdiction_data)) {
-            if ($jurisdiction_id == NEW_ENTRY) {
+        if ($this->tax_jurisdiction->save_value($taxJurisdictionData, $jurisdictionId)) {
+            if ($jurisdictionId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_adding'),
-                    'id'      => $tax_jurisdiction_data['jurisdiction_id']
+                    'id'      => $taxJurisdictionData['jurisdiction_id'] ?? $jurisdictionId
                 ]);
             } else {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_updating'),
-                    'id'      => $jurisdiction_id
+                    'id'      => $jurisdictionId
                 ]);
             }
         } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
+                'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $taxJurisdictionData['jurisdiction_name'],
                 'id'      => NEW_ENTRY
             ]);
         }

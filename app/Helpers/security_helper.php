@@ -105,7 +105,7 @@ function writeEnvKey(string $envKey, string $value): bool
 function applyEnvKeyReplacement(string $configFile, string $envKey, string $value): ?string
 {
     $pattern = '/^\s*' . preg_quote($envKey, '/') . '\s*=.*/m';
-    $escapedValue = str_replace(['\\', '$'], ['\\\\', '\\$'], $value);
+    $escapedValue = str_replace(['\\', '$', "'", "\r", "\n"], ['\\\\', '\\$', "\\'", '', ''], $value);
 
     if (preg_match($pattern, $configFile)) {
         return preg_replace_callback($pattern, static fn () => "$envKey='$escapedValue'", $configFile, 1);

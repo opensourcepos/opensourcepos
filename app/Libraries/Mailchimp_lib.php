@@ -36,27 +36,29 @@ class MailchimpConnector
     /**
      * Constructor
      */
-    public function __construct(string $api_key = '')
+    public function __construct(string $apiKey = '')
     {
         $config = config(OSPOS::class)->settings;
 
         $encrypter = Services::encrypter();
 
-        $mailchimp_api_key = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
-            ? $this->config['mailchimp_api_key']
+        $mailchimpApiKey = (isset($config['mailchimp_api_key']) && !empty($config['mailchimp_api_key']))
+            ? $config['mailchimp_api_key']
             : '';
 
-        if (!empty($mailchimp_api_key)) {
-            $this->_api_key = empty($api_key)
-                ? $encrypter->decrypt($mailchimp_api_key)    // TODO: Hungarian notation
-                : $api_key;    // TODO: Hungarian notation
+        if (!empty($apiKey)) {
+            $this->_api_key = $apiKey;    // TODO: Hungarian notation
+        } elseif (!empty($mailchimpApiKey)) {
+            $this->_api_key = $encrypter->decrypt($mailchimpApiKey);    // TODO: Hungarian notation
         }
 
         if (!empty($this->_api_key)) {    // TODO: Hungarian notation
             // Replace <dc> with correct datacenter obtained from the last part of the api key
             $strings = explode('-', $this->_api_key);    // TODO: Hungarian notation
-            if (is_array($strings) && !empty($strings[1])) {
+            if (is_array($strings) && !empty($strings[1]) && preg_match('/^[a-z0-9]+$/i', $strings[1]) === 1) {
                 $this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);    // TODO: Hungarian notation
+            } else {
+                $this->_api_key = '';
             }
         }
     }

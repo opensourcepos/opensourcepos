@@ -21,62 +21,66 @@ function generate_import_items_csv(array $stock_locations, array $attributes): s
  */
 function generate_stock_location_headers(array $locations): string
 {
-    $location_headers = '';
+    $locationHeaders = '';
 
-    foreach ($locations as $location_name) {
-        $location_headers .= ',"location_' . $location_name . '"';
+    foreach ($locations as $locationName) {
+        $locationHeaders .= ',"location_' . str_replace('"', '""', $locationName) . '"';
     }
 
-    return $location_headers;
+    return $locationHeaders;
 }
 
 /**
- * @param array $attribute_names
+ * @param array $attributeNames
  * @return string
  */
-function generate_attribute_headers(array $attribute_names): string
+function generate_attribute_headers(array $attributeNames): string
 {
-    $attribute_headers = '';
-    unset($attribute_names[-1]);
+    $attributeHeaders = '';
+    unset($attributeNames[-1]);
 
-    foreach ($attribute_names as $attribute_name) {
-        $attribute_headers .= ',"attribute_' . $attribute_name . '"';
+    foreach ($attributeNames as $attributeName) {
+        $attributeHeaders .= ',"attribute_' . str_replace('"', '""', $attributeName) . '"';
     }
 
-    return $attribute_headers;
+    return $attributeHeaders;
 }
 
 /**
  * Processes a CSV file and returns it.
- * @param string $file_name
+ * @param string $fileName
  * @return array A multidimensional array of rows found within the file and their associative key/value pairs.
  */
-function get_csv_file(string $file_name): array
+function get_csv_file(string $fileName): array
 {
-    $csv_rows = false;
+    $csvRows = [];
 
-    if (($csv_file = fopen($file_name, 'r')) !== false) {
+    if (($csvFile = fopen($fileName, 'r')) !== false) {
         helper('security');
 
-        $csv_rows = [];
-
         // Skip Byte-Order Mark
-        if (bom_exists($csv_file)) {
-            fseek($csv_file, 3);
+        if (bom_exists($csvFile)) {
+            fseek($csvFile, 3);
         }
 
-        $headers = fgetcsv($csv_file);
+        $headers = fgetcsv($csvFile);
 
-        while (($row = fgetcsv($csv_file)) !== false) {
-            if ($row !== [null]) {
-                $csv_rows[] = array_combine($headers, $row);
+        if (!is_array($headers)) {
+            fclose($csvFile);
+
+            return $csvRows;
+        }
+
+        while (($row = fgetcsv($csvFile)) !== false) {
+            if ($row !== [null] && is_array($row) && count($headers) === count($row)) {
+                $csvRows[] = array_combine($headers, $row);
             }
         }
 
-        fclose($csv_file);
+        fclose($csvFile);
     }
 
-    return $csv_rows;
+    return $csvRows;
 }
 
 /**

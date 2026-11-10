@@ -248,7 +248,7 @@ class Tax extends Model
         $builder->join('tax_jurisdictions', 'rate_jurisdiction_id = jurisdiction_id', 'LEFT');
 
         if (!empty($search)) {
-            $builder->like('rate_tax_code', $search);
+            $builder->like('tax_code', $search);
             $builder->orLike('tax_code_name', $search);
         }
 
@@ -304,14 +304,15 @@ class Tax extends Model
     }
 
     /**
-     * @param string $tax_category
-     * @return int
+     * @param string $taxCategory
+     * @return int|null
      */
-    public function get_tax_category_id(string $tax_category): int    // TODO: $tax_category is not used in this function and get_tax_category_id() is not called in the code.  It may be that this needs to be deprecated and removed.
+    public function get_tax_category_id(string $taxCategory): ?int
     {
         $builder = $this->db->table('tax_categories');
         $builder->select('tax_category_id');
+        $builder->where('tax_category', $taxCategory);
 
-        return $builder->get()->getRow()->tax_category_id;
+        return $builder->get()->getRow()?->tax_category_id;
     }
 }

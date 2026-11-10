@@ -28,19 +28,18 @@ class Email_lib
 
         $encrypter = Services::encrypter();
 
-        $smtp_pass = $this->config['smtp_pass'] ?? '';
-        if (!empty($smtp_pass) && checkEncryption()) {
+        $smtpPass = $this->config['smtp_pass'] ?? '';
+        if (!empty($smtpPass) && checkEncryption()) {
             try {
-                $smtp_pass = $encrypter->decrypt($smtp_pass);
-            } catch (\EncryptionException $e) {
+                $smtpPass = $encrypter->decrypt($smtpPass);
+            } catch (EncryptionException $e) {
                 // Decryption failed, use the original value
                 log_message('error', 'SMTP password decryption failed: ' . $e->getMessage());
-                $smtp_pass = '';
+                $smtpPass = '';
             }
-
         }
 
-        $email_config = [
+        $emailConfig = [
             'mailType'    => 'html',
             'userAgent'   => 'OSPOS',
             'validate'    => true,
@@ -48,12 +47,12 @@ class Email_lib
             'mailPath'    => escapeshellarg($this->config['mailpath'] ?? '/usr/sbin/sendmail'),
             'SMTPHost'    => $this->config['smtp_host'] ?? '',
             'SMTPUser'    => $this->config['smtp_user'] ?? '',
-            'SMTPPass'    => $smtp_pass,
-            'SMTPPort'    => (int)(!empty($this->config['smtp_port']) ? $this->config['smtp_port'] : 465),
-            'SMTPTimeout' => (int)(!empty($this->config['smtp_timeout']) ? $this->config['smtp_timeout'] : 5),
-            'SMTPCrypto'  => $this->config['smtp_crypto'] ?? 'ssl'
+            'SMTPPass'    => $smtpPass,
+            'SMTPPort'    => (int) (!empty($this->config['smtp_port']) ? $this->config['smtp_port'] : 465),
+            'SMTPTimeout' => (int) (!empty($this->config['smtp_timeout']) ? $this->config['smtp_timeout'] : 5),
+            'SMTPCrypto'  => $this->config['smtp_crypto'] ?? 'ssl',
         ];
-        $this->email->initialize($email_config);
+        $this->email->initialize($emailConfig);
     }
 
     /**
@@ -90,10 +89,14 @@ class Email_lib
      */
     public function getLogoMimeType(): string
     {
-        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+        if (empty($this->config['company_logo'])) {
+            return '';
+        }
 
-        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
-            $mimeType = mime_content_type($logo_path);
+        $logoPath = FCPATH . 'uploads/' . basename($this->config['company_logo']);
+
+        if (file_exists($logoPath)) {
+            $mimeType = mime_content_type($logoPath);
             return $mimeType !== false ? $mimeType : '';
         }
 
@@ -113,9 +116,9 @@ class Email_lib
             return '';
         }
 
-        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
-        $logo_data = base64_encode(file_get_contents($logo_path));
+        $logoPath = FCPATH . 'uploads/' . basename($this->config['company_logo']);
+        $logoData = base64_encode(file_get_contents($logoPath));
 
-        return '<img id="image" src="data:' . $mimeType . ';base64,' . $logo_data . '" alt="company_logo">';
+        return '<img id="image" src="data:' . $mimeType . ';base64,' . $logoData . '" alt="company_logo">';
     }
 }

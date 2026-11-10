@@ -57,4 +57,38 @@ class LocaleHelperTest extends CIUnitTestCase
     {
         $this->assertFalse(isValidDate('2024-06'));
     }
+
+    public function testToTaxDecimals_ReturnsEmptyStringWhenNull(): void
+    {
+        $this->injectOsposSettings([
+            'tax_decimals'          => 2,
+            'number_locale'         => 'en_US',
+            'thousands_separator'   => true,
+        ]);
+
+        $this->assertSame('', to_tax_decimals(null));
+    }
+
+    public function testParseDecimals_AcceptsZeroStringAndNull(): void
+    {
+        $this->injectOsposSettings([
+            'currency_decimals' => 2,
+            'number_locale'     => 'en_US',
+        ]);
+
+        $this->assertSame(0.0, parse_decimals('0'));
+        $this->assertNull(parse_decimals(null));
+        $this->assertSame('', parse_decimals(''));
+    }
+
+    public function testParseDecimals_RespectsExplicitDecimals(): void
+    {
+        $this->injectOsposSettings([
+            'currency_decimals' => 2,
+            'number_locale'     => 'en_US',
+        ]);
+
+        $this->assertSame(12.345, parse_decimals('12.345', 3));
+        $this->assertSame(12.0, parse_decimals('12', 0));
+    }
 }
