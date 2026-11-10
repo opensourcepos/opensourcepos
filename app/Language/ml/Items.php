@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => '',
+return [
+    'add_minus'                          => '',
     'allow_alt_description'              => '',
     'amount_entry'                       => '',
     'bulk_edit'                          => '',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => '',
     'none'                               => '',
     'none_selected'                      => '',
     'nonstock'                           => '',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => '',
     'number_required'                    => '',
     'one_or_multiple'                    => '',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => '',
     'unit_price_required'                => '',
     'upc_database'                       => '',
     'update'                             => '',
-    'use_inventory_menu'                 => '',];
+    'use_inventory_menu'                 => '',
+];

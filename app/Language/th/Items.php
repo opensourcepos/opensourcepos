@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'เพิ่ม/ลบ จำนวนสินค้าคงคลัง',
+return [
+    'add_minus'                          => 'เพิ่ม/ลบ จำนวนสินค้าคงคลัง',
     'allow_alt_description'              => 'แสดงข้อมูลเพิ่มเติม',
     'amount_entry'                       => 'จำนวนเงิน',
     'bulk_edit'                          => 'แก้ไขความจุ',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'เพิ่ม/ลบ จ�
     'none'                               => 'ว่างเปล่า',
     'none_selected'                      => 'กรุณาเลือสินค้าที่ต้องการแก้ไข',
     'nonstock'                           => 'ไม่นับสต็อก',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'หมายเลขสินค้า',
     'number_required'                    => 'จำเป็นต้องระบุบาร์โค้ด',
     'one_or_multiple'                    => 'สินค้า(s)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'เพิ่ม/ลบ จ�
     'unit_price_required'                => 'ราคาต่อหน่วยต้องกรอก',
     'upc_database'                       => 'UPC ฐานข้อมูล',
     'update'                             => 'ปรับแต่งสินค้า',
-    'use_inventory_menu'                 => 'ใช้เมนูสินค้าคงเหลือ',];
+    'use_inventory_menu'                 => 'ใช้เมนูสินค้าคงเหลือ',
+];

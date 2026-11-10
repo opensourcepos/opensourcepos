@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Inventário para adicionar/subtrair.',
+return [
+    'add_minus'                          => 'Inventário para adicionar/subtrair.',
     'allow_alt_description'              => 'Permitir atualizar descrição',
     'amount_entry'                       => 'Entrada de montante',
     'bulk_edit'                          => 'Editar Múltiplos Itens',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Inventário para adicionar/
     'none'                               => 'Nenhum',
     'none_selected'                      => 'Não selecionou nenhum produto para editar',
     'nonstock'                           => 'Sem estoque',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Item Número',
     'number_required'                    => 'Cod. Barra é um campo obrigatório.',
     'one_or_multiple'                    => '',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Inventário para adicionar/
     'unit_price_required'                => 'Preço de varejo é um campo obrigatório.',
     'upc_database'                       => 'Base de dados UPC',
     'update'                             => 'Atualizar Item',
-    'use_inventory_menu'                 => 'Usar Menu Inventário',];
+    'use_inventory_menu'                 => 'Usar Menu Inventário',
+];

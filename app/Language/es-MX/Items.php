@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Inventario a agregar o disminuir.',
+return [
+    'add_minus'                          => 'Inventario a agregar o disminuir.',
     'allow_alt_description'              => 'Permitir Descripción Alternativa',
     'amount_entry'                       => 'Ingrese Cantidad',
     'bulk_edit'                          => 'Edición Masiva',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Inventario a agregar o dism
     'none'                               => 'Ninguno',
     'none_selected'                      => 'Debe elegir algún articulo para poder modificarlo',
     'nonstock'                           => 'No inventariable',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Número de artículo/producto',
     'number_required'                    => 'El código de barras es obligatorio.',
     'one_or_multiple'                    => 'Articulos',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Inventario a agregar o dism
     'unit_price_required'                => 'El precio minorista es un campo obligatorio.',
     'upc_database'                       => 'Base de datos de Códigos de barras',
     'update'                             => 'Actualizar artículo/producto',
-    'use_inventory_menu'                 => 'Usar menú de inventario',];
+    'use_inventory_menu'                 => 'Usar menú de inventario',
+];

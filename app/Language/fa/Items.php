@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'موجودی برای اضافه یا تفریق.',
+return [
+    'add_minus'                          => 'موجودی برای اضافه یا تفریق.',
     'allow_alt_description'              => 'اجازه توضیحات جایگزین',
     'amount_entry'                       => 'مقدار ورود',
     'bulk_edit'                          => 'ویرایش فله',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'موجودی برای اض�
     'none'                               => 'هیچ یک',
     'none_selected'                      => 'شما هیچ موردی را برای ویرایش انتخاب نکرده اید',
     'nonstock'                           => 'غیر سهامدار',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'شماره مورد',
     'number_required'                    => 'بارکد یک فیلد مورد نیاز است.',
     'one_or_multiple'                    => 'مورد (ها)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'موجودی برای اض�
     'unit_price_required'                => 'قیمت خرده فروشی یک زمینه ضروری است.',
     'upc_database'                       => 'بانک اطلاعات بارکد',
     'update'                             => 'به روز کردن مورد',
-    'use_inventory_menu'                 => 'استفاده از فهرست موجودی',];
+    'use_inventory_menu'                 => 'استفاده از فهرست موجودی',
+];

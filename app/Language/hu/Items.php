@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Mennyiség hozzáadása/elvétele',
+return [
+    'add_minus'                          => 'Mennyiség hozzáadása/elvétele',
     'allow_alt_description'              => 'Alternativ leirás eng.',
     'amount_entry'                       => '',
     'bulk_edit'                          => 'Tömeges módosítás',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Mennyiség hozzáadása/elv
     'none'                               => 'Egysem',
     'none_selected'                      => 'Nem választott ki terméket a módosításhoz',
     'nonstock'                           => '',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Termék száma',
     'number_required'                    => 'UPC/EAN/ISBN kötelező mező',
     'one_or_multiple'                    => 'termék(ek)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Mennyiség hozzáadása/elv
     'unit_price_required'                => 'Kiskereskedelmi ár kötelező mező',
     'upc_database'                       => 'UPC adatbázis',
     'update'                             => 'Termék módosítás',
-    'use_inventory_menu'                 => 'Készl. menü haszn.',];
+    'use_inventory_menu'                 => 'Készl. menü haszn.',
+];

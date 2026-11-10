@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'الكمية المطلوب خصمها أو اضافتها.',
+return [
+    'add_minus'                          => 'الكمية المطلوب خصمها أو اضافتها.',
     'allow_alt_description'              => 'السماح بوصف بديل',
     'amount_entry'                       => 'إدخال القيمة',
     'bulk_edit'                          => 'تحرير جماعى',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'الكمية المطلوب
     'none'                               => 'لاشىء',
     'none_selected'                      => 'لم تختار أى أصناف لتحريرها',
     'nonstock'                           => 'غير مخزنة',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'رقم الصنف',
     'number_required'                    => 'مطلوب UPC/EAN/ISBN رقم الباركود.',
     'one_or_multiple'                    => 'صنف/أصناف',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'الكمية المطلوب
     'unit_price_required'                => 'السعر مطلوب.',
     'upc_database'                       => 'UPC قاعدة بيانات',
     'update'                             => 'تحديث بيانات صنف',
-    'use_inventory_menu'                 => 'استخدام تحديث المخزن',];
+    'use_inventory_menu'                 => 'استخدام تحديث المخزن',
+];

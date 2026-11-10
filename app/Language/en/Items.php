@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Inventory to add or subtract.',
+return [
+    'add_minus'                          => 'Inventory to add or subtract.',
     'allow_alt_description'              => 'Allow Alternate Description',
     'amount_entry'                       => 'Amount Entry',
     'bulk_edit'                          => 'Bulk Edit',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Inventory to add or subtrac
     'unit_price_required'                => 'Retail Price is a required field.',
     'upc_database'                       => 'Barcode Database',
     'update'                             => 'Update Item',
-    'use_inventory_menu'                 => 'Use Inventory Menu',];
+    'use_inventory_menu'                 => 'Use Inventory Menu',
+];

@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Inventaire à ajouter ou soustraire.',
+return [
+    'add_minus'                          => 'Inventaire à ajouter ou soustraire.',
     'allow_alt_description'              => 'Autoriser description alternative',
     'amount_entry'                       => 'Entrée de quantité',
     'bulk_edit'                          => 'Éditions multiples',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Inventaire à ajouter ou so
     'none'                               => 'Aucun',
     'none_selected'                      => 'Vous n\'avez sélectionné aucun article à modifier',
     'nonstock'                           => 'Non-inventorié',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Numéro d\'article',
     'number_required'                    => 'Code à barres est un champ requis.',
     'one_or_multiple'                    => 'article(s)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Inventaire à ajouter ou so
     'unit_price_required'                => 'Le prix de détail est requis.',
     'upc_database'                       => 'Base de données des codes à barres',
     'update'                             => 'Éditer l\'article',
-    'use_inventory_menu'                 => 'Utiliser le menu inventaire',];
+    'use_inventory_menu'                 => 'Utiliser le menu inventaire',
+];

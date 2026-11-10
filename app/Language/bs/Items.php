@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Zaliha za dodavanje ili oduzimanje.',
+return [
+    'add_minus'                          => 'Zaliha za dodavanje ili oduzimanje.',
     'allow_alt_description'              => 'Dozvoli Alt opis',
     'amount_entry'                       => 'Unos iznosa',
     'bulk_edit'                          => 'Skupno uređivanje',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Zaliha za dodavanje ili odu
     'none'                               => 'Nijedan',
     'none_selected'                      => 'Niste odabrali nijedan artikal za uređivanje',
     'nonstock'                           => 'Bez zaliha',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Redni broj',
     'number_required'                    => 'Barkod je obavezno polje.',
     'one_or_multiple'                    => 'artikal(i)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Zaliha za dodavanje ili odu
     'unit_price_required'                => 'Maloprodajna cijena je obavezno polje.',
     'upc_database'                       => 'Baza podataka bar-kodova',
     'update'                             => 'Ažuriraj artikal',
-    'use_inventory_menu'                 => 'Koristite meni zalihe',];
+    'use_inventory_menu'                 => 'Koristite meni zalihe',
+];

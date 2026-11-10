@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Correctie hoeveelheid.',
+return [
+    'add_minus'                          => 'Correctie hoeveelheid.',
     'allow_alt_description'              => 'Aanpasbare omschrijving',
     'amount_entry'                       => 'Hoeveelheid',
     'bulk_edit'                          => 'Bewerk Selectie',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Correctie hoeveelheid.',
     'none'                               => 'Geen',
     'none_selected'                      => 'U hebt geen producten geselecteerd',
     'nonstock'                           => 'Geen Stock',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Productnummer',
     'number_required'                    => 'Barcode is een verplicht veld.',
     'one_or_multiple'                    => 'product(en) verwijderd',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Correctie hoeveelheid.',
     'unit_price_required'                => 'Verkoopprijs is een verplicht veld.',
     'upc_database'                       => 'UPC Database',
     'update'                             => 'Bewerk Product',
-    'use_inventory_menu'                 => 'Gebruik inventaris menu',];
+    'use_inventory_menu'                 => 'Gebruik inventaris menu',
+];

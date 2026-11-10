@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'زیادکردن یان کەمکردنی جەرد.',
+return [
+    'add_minus'                          => 'زیادکردن یان کەمکردنی جەرد.',
     'allow_alt_description'              => 'ڕێگە بدە بە دەربارەی جێگرەوە',
     'amount_entry'                       => 'داخڵکردنی بڕی پارە',
     'bulk_edit'                          => 'دەستکاریکردنی بە کۆمەڵ',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'زیادکردن یان ک�
     'none'                               => 'هیچیان',
     'none_selected'                      => 'تۆ هیچ ئایتمێکت هەڵنەبژاردووە بۆ دەستکاریکردن',
     'nonstock'                           => 'لە کۆگادانەنراو',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'ژمارەی ئایتم',
     'number_required'                    => 'خانەی باڕکۆد پێویستە.',
     'one_or_multiple'                    => 'ئایتم(ەکان)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'زیادکردن یان ک�
     'unit_price_required'                => 'نرخی تاکفرۆشی خانەیەکی پێویستە.',
     'upc_database'                       => 'داتابەیسی باڕکۆد',
     'update'                             => 'نوێکردنەوەی ئایتم',
-    'use_inventory_menu'                 => 'لیستەی جەرد بەکاربهێنە',];
+    'use_inventory_menu'                 => 'لیستەی جەرد بەکاربهێنە',
+];

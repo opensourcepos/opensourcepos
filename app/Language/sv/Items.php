@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Lager att lägga till eller ta bort.',
+return [
+    'add_minus'                          => 'Lager att lägga till eller ta bort.',
     'allow_alt_description'              => 'Tillåt alternativ beskrivning',
     'amount_entry'                       => 'Belopp',
     'bulk_edit'                          => 'Massändra',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Lager att lägga till eller
     'none'                               => 'inga',
     'none_selected'                      => 'Du har inte valt några artiklar att redigera',
     'nonstock'                           => 'Icke-lager',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Artikelnummer',
     'number_required'                    => 'Streckkod är ett obligatoriskt fält.',
     'one_or_multiple'                    => 'Artikel',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Lager att lägga till eller
     'unit_price_required'                => 'Enhetspriset är ett obligatoriskt fält.',
     'upc_database'                       => 'Streckkod databas',
     'update'                             => 'Uppdatera artikeln',
-    'use_inventory_menu'                 => 'Använd Inventory Menu',];
+    'use_inventory_menu'                 => 'Använd Inventory Menu',
+];

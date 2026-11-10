@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Tambah atau kurangi Inventori.',
+return [
+    'add_minus'                          => 'Tambah atau kurangi Inventori.',
     'allow_alt_description'              => 'Izinkan Deskripsi Alternatif',
     'amount_entry'                       => 'Jumlah entri',
     'bulk_edit'                          => 'Ubah Massal',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Tambah atau kurangi Invento
     'none'                               => 'Tidak Ada',
     'none_selected'                      => 'Anda belum memilih Barang untuk diubah',
     'nonstock'                           => 'Tidak ada stok',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Nomor Barang',
     'number_required'                    => 'Barcode harus diisi.',
     'one_or_multiple'                    => 'Item Barang',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Tambah atau kurangi Invento
     'unit_price_required'                => 'Harga Jual wajib diisi.',
     'upc_database'                       => 'Basis data Barcode',
     'update'                             => 'Ubah',
-    'use_inventory_menu'                 => 'Gunakan Inv. Menu',];
+    'use_inventory_menu'                 => 'Gunakan Inv. Menu',
+];

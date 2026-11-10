@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Inventario a agregar/substraer.',
+return [
+    'add_minus'                          => 'Inventario a agregar/substraer.',
     'allow_alt_description'              => 'Permitir Descripción Alternativa',
     'amount_entry'                       => 'Monto entrada',
     'bulk_edit'                          => 'Edición Múltiple',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Inventario a agregar/substr
     'none'                               => 'Ninguno',
     'none_selected'                      => 'No has seleccionado artículos para editar',
     'nonstock'                           => 'Sin stock',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Número del Artículo',
     'number_required'                    => 'UPC/EAN/ISBN es un campo requerido.',
     'one_or_multiple'                    => 'articulo(s)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Inventario a agregar/substr
     'unit_price_required'                => 'Precio de Venta es requerido.',
     'upc_database'                       => 'Base de datos UPC',
     'update'                             => 'Actualizar Artículo',
-    'use_inventory_menu'                 => 'Usar Menú de Inventario',];
+    'use_inventory_menu'                 => 'Usar Menú de Inventario',
+];

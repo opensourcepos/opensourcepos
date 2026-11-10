@@ -1,6 +1,7 @@
 <?php
 
-return [    'add_minus'                          => 'Voorraad om toe te voegen of af te trekken.',
+return [
+    'add_minus'                          => 'Voorraad om toe te voegen of af te trekken.',
     'allow_alt_description'              => 'Alternatieve beschrijving toestaan',
     'amount_entry'                       => 'Aantal vermelding',
     'bulk_edit'                          => 'Bewerken in bulk',
@@ -75,7 +76,7 @@ return [    'add_minus'                          => 'Voorraad om toe te voegen o
     'none'                               => 'Geen',
     'none_selected'                      => 'Geen artikel(en) geselecteerd om te bewerken',
     'nonstock'                           => 'Niet-voorradig',
-    'not_authorized'                      => 'Not authorized',
+    'not_authorized'                      => '',
     'number_information'                 => 'Artikelnummer',
     'number_required'                    => 'Streepjescode is een vereist veld.',
     'one_or_multiple'                    => 'artikel(en)',
@@ -121,4 +122,5 @@ return [    'add_minus'                          => 'Voorraad om toe te voegen o
     'unit_price_required'                => 'Verkoopprijs is een vereist veld.',
     'upc_database'                       => 'Streepjescode database',
     'update'                             => 'Artikel bijwerken',
-    'use_inventory_menu'                 => 'Voorraadmenu gebruiken',];
+    'use_inventory_menu'                 => 'Voorraadmenu gebruiken',
+];

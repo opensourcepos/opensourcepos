@@ -1014,9 +1014,13 @@ class Items extends Secure_Controller
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $cur_item_info = $this->item->getInfo($item_id);
-        $location_id = $this->request->getPost('stock_location');
+        $raw_location = $this->request->getPost('stock_location');
+        if (!is_string($raw_location) && !is_int($raw_location)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
+        }
 
-        if (!$this->stock_location->is_allowed_location((int)$location_id, 'items')) {
+        $location_id = filter_var($raw_location, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($location_id === false || !$this->stock_location->is_allowed_location($location_id, 'items')) {
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
         }
 
