@@ -89,6 +89,36 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Use CodeIgniter 4 framework patterns and helpers
 - Sanitize user input; escape output using `esc()` helper
 
+### Routing & Controllers (`autoRoutesImproved`)
+
+- **HTTP verb prefixes are mandatory**: With CI4 `autoRoutesImproved` enabled, all routable controller actions must be prefixed with their HTTP verb (`getIndex()`, `getView()`, `postSave()`, `postDelete()`). Unprefixed public methods return 404 unless explicitly mapped in `app/Config/Routes.php`.
+- **Internal controller helpers must not be `public`**: Helper methods on controllers must be `private` or `protected`. Never declare an internal helper as `public function get*()`, as `autoRoutesImproved` will expose it as a direct `GET` endpoint that returns raw values or crashes on missing arguments.
+- **Filter configuration syntax**: In `app/Config/Filters.php`, always specify `except` and `before`/`after` URI patterns as arrays (`'except' => ['login', 'migrate']`), never as pipe-delimited strings (`'login|migrate'`).
+
+### Database Queries, Transactions & Migrations
+
+- **Never hardcode table prefixes**: `$this->db->table('items')` and migration helpers (`dropColumnIfExists()`, `indexExists()`, `$this->forge`) automatically prepend `$this->db->DBPrefix` (`ospos_`). Passing `'ospos_items'` produces `ospos_ospos_items`.
+- **Balanced transactions**: Never mix `$this->db->transStart()` / `$this->db->transComplete()` with manual `$this->db->transRollback()` or early `return` statements before `transComplete()`. Returning before `transComplete()` leaves `transDepth` incremented on the shared DB connection and corrupts subsequent transactions in the request.
+- **MySQL `ONLY_FULL_GROUP_BY` compliance**: When joining detail or payment tables (`sales_items`, `sales_payments`, `receivings_items`), either aggregate in a subquery before joining or include all non-aggregated `SELECT` columns in `GROUP BY` (or wrap functionally dependent columns in `MAX()`).
+- **Guard `getRow()` / `getRowArray()` null returns**: CI4's `getRow()` and `getRowArray()` return `null` (not `false` or `[]`) when no row matches. Always use nullsafe access (`?->`), null coalescing (`?? []`), or explicit `null` checks, and ensure methods returning a dummy default object on empty IDs also return that fallback when an unfound ID is queried.
+
+### Locale-Aware Number Parsing & Financial Logic
+
+- **Never use `FILTER_SANITIZE_NUMBER_FLOAT` before `parse_decimals()` / `parse_quantity()` / `parse_tax()`**: `FILTER_SANITIZE_NUMBER_FLOAT` (without `FILTER_FLAG_ALLOW_FRACTION`) strips commas `,`. In locales where `,` is the decimal separator (`de_DE`, `es_ES`, `fr_FR`, `it_IT`, `nl_NL`), stripping `,` before `NumberFormatter::parse()` multiplies values like `12,34` by 100 (`1234`). Pass the raw string directly to `parse_decimals()` / `parse_quantity()` and validate the parsed float/false result.
+- **Parse once**: Never call `parse_decimals()` or `parse_quantity()` twice on the same value; once parsed to a canonical float/numeric string, re-parsing under a non-US locale can misinterpret `.` as a thousands separator.
+- **Guard division by zero**: In PHP 8+, both `/` and `bcdiv()` throw `DivisionByZeroError` when the divisor is `0` or `'0'`. Always check `if ($denominator != 0)` (or `bccomp($denominator, '0') !== 0`) before dividing in margin, markup, discount, and tax calculations.
+- **Centralized rounding**: Delegate tax and currency rounding to `Rounding_mode::round_number()` rather than ad-hoc `round()` or string-padding math.
+- **Suspended vs. completed sale side effects**: Never apply irreversible financial mutations (deducting giftcard balances, awarding/deducting customer reward points or packages) when saving a `SUSPENDED` / quote / work-order sale — apply them only when `$saleStatus === COMPLETED`.
+
+### PHP 8.2+ Type Safety & Operator Pitfalls
+
+- **Never use word operators `or` / `and` in expressions**: `or` and `and` have lower precedence than `=` and `return`. `return $a or $b;` evaluates as `(return $a) or $b;`, making `$b` dead code. Always use `||` and `&&`.
+- **Beware of `!` precedence in comparisons**: `!$id == NEW_ENTRY` evaluates `(!$id)` as a `bool` before comparing against `-1`. Always write `$id === NEW_ENTRY` or `$id != NEW_ENTRY`.
+- **Match parameter and return types to runtime data**:
+  - Item and receiving quantities can be fractional (`decimal(15,3)`); type-hint quantities as `float|int|string` or `float`, never `int`.
+  - Integer-coded domain constants (`PRICE_ALL`, `PRINT_ALL`, `COMPLETED`, `SUSPENDED`) are `int`, not `bool` or `string`.
+  - Check `date_create_from_format()` for `false` before calling `->format()`, and verify `count($headers) === count($row)` before calling `array_combine()` (which throws `ValueError` in PHP 8+ on mismatched counts).
+
 ## Localization
 
 - **Key Parity**: All catalogs must maintain the exact same keys as `app/Language/en/` (no extra or missing keys). Adding a key requires adding it to `en/` with the English source text, and to all other `app/Language/*/` files (using `''` if untranslated, including `en-GB`).
@@ -126,3 +156,41 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Use parameterized queries to prevent SQL injection
 - Validate and sanitize all user input
 - Never reference security advisory IDs (CVE, GHSA, etc.) in code, comments, commit messages, docblocks, documentation, or URLs — treat them the same as secrets. They act as a roadmap for attackers researching the exact exploit a fix addresses.
+
+### Authentication, Authorization & Access Control
+
+- **Derive identity exclusively from the session**: Never trust client-supplied `person_id`, `employee_id`, or `username` fields in POST/GET data to identify the acting user (e.g., password changes, cashup close/open employee attribution, audit logging). Always read `$this->session->get('person_id')` and load the corresponding employee record from the database.
+- **Enforce sub-permission and cross-module grants**: Inheriting `Secure_Controller` only verifies top-level access to that controller's `$module_id`. Whenever a controller action mutates another module's data (e.g., `Sales::postChangeItem()` modifying item catalog fields) or performs a restricted sub-action (`sales_delete`, `receivings_delete`, discount overrides), explicitly verify `$this->Employee->has_grant(...)` and fail closed if unauthorized.
+- **Stock location authorization (BOLA/IDOR)**: Every controller, library, or report endpoint that accepts a stock location ID (`stock_location`, `sale_location`, `stock_source`, `stock_destination`, `location_id`) must verify that the logged-in employee is permitted to access that location via `$this->Stock_location->is_allowed_location($locationId, $moduleId)` before reading or mutating stock or switching session state.
+- **Normalize URI segments in permission checks**: Any permission check inspecting request URIs or action names must normalize case (`strtolower()`) and URL encoding (`rawurldecode()`) and default-deny when a target action is unrecognized.
+
+### CSRF Protection & HTTP Verbs
+
+- **State-changing actions must be `POST`-only**: Never expose state-changing operations (creating, updating, deleting, restoring, discarding suspended sales, sending emails/SMS, logging out, or mutating session cart state via AJAX) on `get*()` endpoints. Use `post*()` controller methods and `$.post()` / `method="post"` in views so CI4's CSRF filter protects the endpoint automatically.
+
+### SQL Injection Prevention
+
+- **Never interpolate raw variables or arrays into SQL strings**:
+  - Do not concatenate arrays into `IN (' . implode(',', $ids) . ')` inside `join()` or `where(..., null, false)`. Guard with `!empty($ids)`, normalize elements with `array_map('intval', $ids)`, or use `$builder->whereIn()`.
+  - Escape translated strings (`lang(...)`) with `$this->db->escape()` whenever embedding them into raw SQL expressions (`CASE WHEN ...`, `CONCAT(...)`), as translations may contain single quotes (e.g., French `l'article`).
+- **Whitelist `ORDER BY` sort columns and directions**: Before passing `$sort` and `$order` to `$builder->orderBy()`, validate `$sort` against an explicit allowlist of column names (or strict identifier regex) and normalize `$order` to `'ASC'` or `'DESC'`.
+
+### Cross-Site Scripting (XSS) & Output Encoding
+
+- **Always escape dynamic output with the right context**:
+  - Use `esc($value)` (`'html'` context) for element body text and `esc($value, 'attr')` inside HTML attributes.
+  - CI4 helpers `anchor($uri, $title)` and `form_label($text)` do **not** automatically escape `$title` or `$text` — always pass `esc($title)` / `esc($text)`.
+  - `bootstrap-toggle` renders `data-on` and `data-off` attribute values using `.html()` in the browser; ensure any values fed into those attributes are strictly sanitized or escaped.
+- **Escape entity names in JSON `message` responses**: The frontend renders controller JSON `response.message` strings via `$.notify()`, which injects the message as raw HTML. Always wrap user-controlled names, codes, or addresses interpolated into `message` with `esc()`.
+- **Safe PHP-to-JavaScript serialization in `<script>` blocks**:
+  - To embed a PHP array, object, or string as a JS literal inside `<script>`, use `json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)`.
+  - **Never** wrap `json_encode(...)` inside `esc(..., 'js')` — `esc(..., 'js')` is designed for contexts *inside* an already-quoted JS string literal and will backslash-escape the structural quotes of a JSON array/object (`[\"a\"]`), causing a JavaScript `SyntaxError`.
+  - **Never** run `esc($array, 'js')` on chart/series data arrays prior to `json_encode()`, as it converts numeric values into strings and double-escapes labels.
+
+### File Handling, Uploads & Outbound Requests
+
+- **Sanitize filenames and prevent path traversal / `glob()` injection**:
+  - Always strip directory components with `basename()` and remove `glob()` metacharacters (`str_replace(['*', '?', '[', ']'], '', $filename)`) before passing user-supplied filenames to `glob()`, file readers, or database storage (including CSV imports).
+  - Check optional file uploads with `if (!$file || $file->getError() === UPLOAD_ERR_NO_FILE)` before invoking `$this->validate(['file' => 'uploaded[...]'])` or calling `$file->getTempName()`.
+  - Never allow `.svg` / `image/svg+xml` in user-accessible image uploads unless sanitized by a dedicated SVG purifier, as SVG files can execute embedded `<script>` payloads.
+- **Prevent Server-Side Request Forgery (SSRF)**: Validate user-configured API keys, URLs, or host segments (such as Mailchimp datacenter suffixes) against strict allowlists or alphanumeric regexes (`/^[a-z0-9]+$/i`) before interpolating them into outbound cURL/HTTP request URLs.
