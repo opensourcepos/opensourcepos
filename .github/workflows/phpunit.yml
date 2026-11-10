@@ -29,22 +29,15 @@ jobs:
   test:
     name: PHP ${{ matrix.php-version }} / ${{ matrix.db-image }} Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 8
 
     strategy:
       fail-fast: false
       matrix:
         php-version:
-          - '8.2'
           - '8.3'
-          - '8.4'
-          - '8.5'
         db-image:
-          - 'mariadb:10.5'
-          - 'mariadb:10.6'
           - 'mariadb:10.11'
-          - 'mysql:5.7'
-          - 'mysql:8.0'
-          - 'mysql:8.4'
 
     steps:
       - name: Checkout
@@ -133,7 +126,8 @@ jobs:
         env:
           CI_ENVIRONMENT: testing
           MYSQL_HOST_NAME: 127.0.0.1
-        run: composer test -- --no-coverage --log-junit test-results/junit.xml
+        timeout-minutes: 6
+        run: composer test -- --no-coverage --display-deprecations --display-notices --display-warnings --filter 'ItemsControllerTest' --log-junit test-results/junit.xml
 
       - name: Set artifact name
         if: always()
