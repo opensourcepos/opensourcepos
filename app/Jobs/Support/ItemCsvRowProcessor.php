@@ -307,12 +307,16 @@ class ItemCsvRowProcessor
     {
         $itemsTaxesData = [];
 
-        if (is_numeric($row['Tax 1 Percent']) && $row['Tax 1 Name'] !== '') {
+        if (is_numeric($row['Tax 1 Percent']) && (float)$row['Tax 1 Percent'] >= 0 && $row['Tax 1 Name'] !== '') {
             $itemsTaxesData[] = ['name' => $row['Tax 1 Name'], 'percent' => $row['Tax 1 Percent']];
+        } elseif (is_numeric($row['Tax 1 Percent']) && (float)$row['Tax 1 Percent'] < 0) {
+            return false;
         }
 
-        if (is_numeric($row['Tax 2 Percent']) && $row['Tax 2 Name'] !== '') {
+        if (is_numeric($row['Tax 2 Percent']) && (float)$row['Tax 2 Percent'] >= 0 && $row['Tax 2 Name'] !== '') {
             $itemsTaxesData[] = ['name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']];
+        } elseif (is_numeric($row['Tax 2 Percent']) && (float)$row['Tax 2 Percent'] < 0) {
+            return false;
         }
 
         if (!empty($itemsTaxesData)) {
