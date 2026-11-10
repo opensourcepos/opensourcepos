@@ -49,7 +49,8 @@ class Summary_taxes extends Summary_report
         $sale_tax = "IFNULL(" . $db_prefix . "sales_items_taxes.item_tax_amount, 0)";
 
         if ($this->config['tax_included']) {
-            $sale_subtotal = "ROUND($sale_amount - $sale_tax, $decimals)";
+            $line_tax_aggregate = '(SELECT SUM(ROUND(IFNULL(sit.item_tax_amount, 0), ' . $decimals . ')) FROM ' . $db_prefix . 'sales_items_taxes sit WHERE sit.sale_id = ' . $db_prefix . 'sales_items.sale_id AND sit.item_id = ' . $db_prefix . 'sales_items.item_id AND sit.line = ' . $db_prefix . 'sales_items.line)';
+            $sale_subtotal = 'CASE WHEN ' . $db_prefix . 'sales_items_taxes.percent > 0 THEN ROUND(' . $sale_amount . ' - IFNULL(' . $line_tax_aggregate . ", 0), $decimals) ELSE ROUND($sale_amount, $decimals) END";
         } else {
             $sale_subtotal = "ROUND($sale_amount, $decimals)";
         }
