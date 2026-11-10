@@ -1418,8 +1418,6 @@ class ItemsControllerTest extends CIUnitTestCase
 
     public function testGetSearch_RejectsUnauthorizedStockLocation(): void
     {
-        $db = Config::connect($this->DBGroup);
-
         $suffixA = bin2hex(random_bytes(8));
         $suffixB = bin2hex(random_bytes(8));
 
@@ -1468,6 +1466,39 @@ class ItemsControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
+    }
+
+    public function testGetSearch_RejectsOmittedLocationWhenNoDefaultLocation(): void
+    {
+        $suffix = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "NoDefaultWh_{$suffix}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+
+        $locAId = (int) $locationA['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $itemData = $this->baseItemPostData();
+        $response = $this->post('/items/save', $itemData);
+        $itemResult = json_decode($response->getJSON(), true);
+        $this->assertTrue($itemResult['success']);
+        $itemId = (int) $itemResult['id'];
+
+        $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
+        $this->assertTrue($this->stock_location->delete($locAId));
+
+        $response = $this->get('/items/search?search=&limit=10&offset=0&sort=quantity&order=asc');
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
     }
 
     public function testGetCountDetails_ExcludesUnauthorizedLocations(): void
