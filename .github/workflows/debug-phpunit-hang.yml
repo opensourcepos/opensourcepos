@@ -1,0 +1,101 @@
+name: Debug PHPUnit Hang
+
+on:
+  push:
+    paths:
+      - '.github/workflows/debug-phpunit-hang.yml'
+      - '**.php'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    name: PHP 8.3 / mysql:8.0 Debug
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: intl, mbstring, mysqli
+          coverage: none
+
+      - name: Start database
+        run: |
+          docker run -d --name mysql \
+             -e MYSQL_ROOT_PASSWORD=root \
+             -e MYSQL_DATABASE=ospos_test \
+            -e MYSQL_USER=admin \
+            -e MYSQL_PASSWORD=pointofsale \
+            -p 3306:3306 \
+            mysql:8.0
+          retries=0
+          until docker exec mysql mysqladmin ping -h 127.0.0.1 -u root -proot --silent; do
+            retries=$((retries + 1))
+            if [ $retries -ge 60 ]; then
+              exit 1
+            fi
+            sleep 2
+          done
+          docker exec mysql mysql -u root -proot \
+            --execute="GRANT CREATE, DROP ON ospos_test.* TO 'admin'@'%'; FLUSH PRIVILEGES;"
+
+      - name: Get composer cache directory
+        run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.COMPOSER_CACHE_FILES_DIR }}
+          key: ${{ runner.os }}-8.3-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-8.3-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: composer update --ansi --no-interaction
+
+      - name: Create .env file
+        run: cp .env.example .env
+
+      - name: Provision per-run encryption key
+        run: |
+          KEY=$(openssl rand -hex 32)
+          printf 'ENCRYPTION_KEY=%s\n' "$KEY" >> "$GITHUB_ENV"
+
+      - name: Provision per-run throttle key
+        run: |
+          KEY=$(openssl rand -hex 32)
+          sed -i "s/^throttle\.key=''/throttle.key='$KEY'/" .env
+
+      - name: Run debug tests
+        env:
+          CI_ENVIRONMENT: testing
+          MYSQL_HOST_NAME: 127.0.0.1
+        run: |
+          set +e
+          echo '### TEST ORDER AROUND 184'
+          composer test -- --list-tests 2>/dev/null | awk 'NR>=180 && NR<=190'
+          echo '### ITEMS CONTROLLER'
+          timeout --signal=KILL 240 composer test -- --no-coverage --debug --filter 'Tests\Controllers\ItemsControllerTest' 2>&1 | tail -120
+          echo '### RECEIVINGS CONTROLLER'
+          timeout --signal=KILL 120 composer test -- --no-coverage --debug --filter 'Tests\Controllers\ReceivingsControllerTest' 2>&1 | tail -120
+          echo '### CONFIG CONTROLLER'
+          timeout --signal=KILL 120 composer test -- --no-coverage --debug --filter 'Tests\Controllers\ConfigControllerTest' 2>&1 | tail -120
+          echo '### OSPOR RULES'
+          timeout --signal=KILL 60 composer test -- --no-coverage --debug --filter 'Tests\Config\Validation\OSPOSRulesTest' 2>&1 | tail -120
+          echo '### DEBUG COMPLETE'
+
+      - name: Stop database
+        if: always()
+        run: docker stop mysql && docker rm mysql
