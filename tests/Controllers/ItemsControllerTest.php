@@ -1538,5 +1538,91 @@ class ItemsControllerTest extends CIUnitTestCase
         $qtyA = $this->item_quantity->get_item_quantity($itemId, $locAId);
         $this->assertEquals(10, (int) $qtyA->quantity);
     }
+
+    public function testPostSave_AcceptsOmittedStockLocationQuantity(): void
+    {
+        $suffixA = bin2hex(random_bytes(8));
+        $suffixB = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "KeepA_{$suffixA}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+
+        $locationB = ['location_name' => "KeepB_{$suffixB}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationB, NEW_ENTRY));
+
+        $locAId = (int) $locationA['location_id'];
+        $locBId = (int) $locationB['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationB['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $itemData = $this->baseItemPostData();
+        $itemData['quantity_' . $locAId] = '1';
+
+        $response = $this->post('/items/save', $itemData);
+        $response->assertStatus(200);
+        $itemResult = json_decode($response->getJSON(), true);
+        $this->assertTrue($itemResult['success']);
+        $itemId = (int) $itemResult['id'];
+
+        $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locBId, 'quantity' => 10], $itemId, $locBId);
+
+        $updateData = $this->baseItemPostData();
+        $updateData['quantity_' . $locAId] = '2';
+
+        $response = $this->post("/items/save/{$itemId}", $updateData);
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $qtyA = $this->item_quantity->get_item_quantity($itemId, $locAId);
+        $qtyB = $this->item_quantity->get_item_quantity($itemId, $locBId);
+        $this->assertEquals(2, (int) $qtyA->quantity);
+        $this->assertEquals(10, (int) $qtyB->quantity);
+    }
+
+    public function testPostSave_RejectsMalformedStockLocationQuantity(): void
+    {
+        $suffix = bin2hex(random_bytes(8));
+        $locationA = ['location_name' => "InvalidQty_{$suffix}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+        $locAId = (int) $locationA['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $itemData = $this->baseItemPostData();
+        $itemData['quantity_' . $locAId] = '5';
+
+        $response = $this->post('/items/save', $itemData);
+        $response->assertStatus(200);
+        $itemResult = json_decode($response->getJSON(), true);
+        $this->assertTrue($itemResult['success']);
+        $itemId = (int) $itemResult['id'];
+
+        $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
+
+        $updateData = $this->baseItemPostData();
+        $updateData['quantity_' . $locAId] = 'not-a-number';
+
+        $response = $this->post("/items/save/{$itemId}", $updateData);
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+
+        $qtyA = $this->item_quantity->get_item_quantity($itemId, $locAId);
+        $this->assertEquals(10, (int) $qtyA->quantity);
+    }
 }
 

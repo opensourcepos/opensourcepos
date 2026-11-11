@@ -868,16 +868,34 @@ class Items extends Secure_Controller
 
             // Save item quantity
             $stockLocations = $this->stock_location->getUndeletedAll()->getResultArray();
-            foreach ($stockLocations as $location) {
-                $rawQuantity = $this->request->getPost('quantity_' . $location['location_id']);
-                $updatedQuantity = parse_quantity(is_scalar($rawQuantity) ? (string) $rawQuantity : '');
+            $submittedQuantities = $this->request->getPost(null, true) ?? [];
+            $quantityError = null;
 
-                if ($updatedQuantity === false || $updatedQuantity === '' || $updatedQuantity === null) {
-                    $updatedQuantity = 0;
-                }
+            foreach ($stockLocations as $location) {
+                $quantityField = 'quantity_' . $location['location_id'];
 
                 if ($itemData['item_type'] == ITEM_TEMP) {
                     $updatedQuantity = 0;
+                } elseif (!array_key_exists($quantityField, $submittedQuantities)) {
+                    if ($newItem) {
+                        $updatedQuantity = 0;
+                    } else {
+                        continue;
+                    }
+                } else {
+                    $rawQuantity = $submittedQuantities[$quantityField];
+
+                    if (!is_int($rawQuantity) && !is_string($rawQuantity)) {
+                        $quantityError = lang('Items.quantity_number');
+                        break;
+                    }
+
+                    $updatedQuantity = parse_quantity((string) $rawQuantity);
+
+                    if ($updatedQuantity === false || $updatedQuantity === '' || $updatedQuantity === null) {
+                        $quantityError = lang('Items.quantity_number');
+                        break;
+                    }
                 }
 
                 $locationDetail = [
@@ -903,6 +921,13 @@ class Items extends Secure_Controller
                     $success = $success && $this->inventory->insert($invData, false);
                 }
             }
+
+            if ($quantityError !== null) {
+                $db->transRollback();
+
+                return $this->response->setJSON(['success' => false, 'message' => $quantityError, 'id' => $itemId]);
+            }
+
             $success = $success && $this->saveItemAttributes($itemId);
         }
 
