@@ -1586,8 +1586,8 @@ class ItemsControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
 
         $html = $response->getBody();
-        $this->assertStringNotContainsString((string) $locBId, $html);
-        $this->assertStringContainsString((string) $locAId, $html);
+        $this->assertStringNotContainsString($locationB['location_name'], $html);
+        $this->assertStringContainsString($locationA['location_name'], $html);
     }
 }
 
