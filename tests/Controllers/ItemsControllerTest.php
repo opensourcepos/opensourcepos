@@ -1469,14 +1469,19 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->assertArrayHasKey('rows', $result);
     }
 
-    public function testGetSearch_RejectsOmittedLocationWhenNoDefaultLocation(): void
+    public function testGetSearch_AcceptsOmittedLocationWhenFallbackDefaultExists(): void
     {
-        $suffix = bin2hex(random_bytes(8));
+        $suffixA = bin2hex(random_bytes(8));
+        $suffixB = bin2hex(random_bytes(8));
 
-        $locationA = ['location_name' => "NoDefaultWh_{$suffix}", 'deleted' => 0];
+        $locationA = ['location_name' => "FallbackWhA_{$suffixA}", 'deleted' => 0];
         $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
 
+        $locationB = ['location_name' => "FallbackWhB_{$suffixB}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationB, NEW_ENTRY));
+
         $locAId = (int) $locationA['location_id'];
+        $locBId = (int) $locationB['location_id'];
 
         $personId = $this->createEmployee(
             grants: [
@@ -1486,25 +1491,39 @@ class ItemsControllerTest extends CIUnitTestCase
         );
         $this->loginAsItemsEmployee($personId);
 
-        $itemData = [
+        $allowedItemData = [
             'item_id' => null,
-            'name' => "OmittedLocationItem_{$suffix}",
+            'name' => "OmittedFallbackAllowed_{$suffixA}",
             'category' => 'Test',
             'cost_price' => 10.00,
             'unit_price' => 20.00,
             'deleted' => 0,
         ];
-        $this->assertTrue($this->item->save_value($itemData));
-        $itemId = (int) $itemData['item_id'];
+        $this->assertTrue($this->item->save_value($allowedItemData));
+        $allowedItemId = (int) $allowedItemData['item_id'];
 
-        $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
-        $this->assertTrue($this->stock_location->delete($locAId));
+        $deniedItemData = [
+            'item_id' => null,
+            'name' => "OmittedFallbackDenied_{$suffixB}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($deniedItemData));
+        $deniedItemId = (int) $deniedItemData['item_id'];
 
-        $response = $this->get('/items/search?search=&limit=10&offset=0&sort=quantity&order=asc');
+        $this->item_quantity->save_value(['item_id' => $allowedItemId, 'location_id' => $locAId, 'quantity' => 10], $allowedItemId, $locAId);
+        $this->item_quantity->save_value(['item_id' => $deniedItemId, 'location_id' => $locBId, 'quantity' => 10], $deniedItemId, $locBId);
 
-        $response->assertStatus(403);
+        $response = $this->get('/items/search?search=OmittedFallback&limit=10&offset=0&sort=items.name&order=asc');
+
+        $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
-        $this->assertFalse($result['success']);
+
+        $names = array_column($result['rows'], 'name');
+        $this->assertContains("OmittedFallbackAllowed_{$suffixA}", $names);
+        $this->assertNotContains("OmittedFallbackDenied_{$suffixB}", $names);
     }
 
     public function testGetCountDetails_ExcludesUnauthorizedLocations(): void
