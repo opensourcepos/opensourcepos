@@ -84,16 +84,10 @@ jobs:
           MYSQL_HOST_NAME: 127.0.0.1
         run: |
           set +e
-          echo '### TEST ORDER AROUND 184'
-          composer test -- --list-tests 2>/dev/null | awk 'NR>=180 && NR<=190'
-          echo '### ITEMS CONTROLLER'
-          timeout --signal=KILL 240 composer test -- --no-coverage --debug --filter 'Tests\Controllers\ItemsControllerTest' 2>&1 | tail -120
-          echo '### RECEIVINGS CONTROLLER'
-          timeout --signal=KILL 120 composer test -- --no-coverage --debug --filter 'Tests\Controllers\ReceivingsControllerTest' 2>&1 | tail -120
-          echo '### CONFIG CONTROLLER'
-          timeout --signal=KILL 120 composer test -- --no-coverage --debug --filter 'Tests\Controllers\ConfigControllerTest' 2>&1 | tail -120
-          echo '### OSPOR RULES'
-          timeout --signal=KILL 60 composer test -- --no-coverage --debug --filter 'Tests\Config\Validation\OSPOSRulesTest' 2>&1 | tail -120
+          echo '### EXACT SUSPECT TEST'
+          timeout --signal=KILL 180 composer test -- --no-coverage --debug --filter 'ItemsControllerTest::testImportCsvMixedValidAndInvalidLocations' 2>&1 | tail -160
+          echo '### ITEMS CONTROLLER CLASS'
+          timeout --signal=KILL 300 composer test -- --no-coverage --debug --filter 'ItemsControllerTest' 2>&1 | tail -160
           echo '### DEBUG COMPLETE'
 
       - name: Stop database
