@@ -869,7 +869,12 @@ class Items extends Secure_Controller
             // Save item quantity
             $stockLocations = $this->stock_location->getUndeletedAll()->getResultArray();
             foreach ($stockLocations as $location) {
-                $updatedQuantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
+                $rawQuantity = $this->request->getPost('quantity_' . $location['location_id']);
+                $updatedQuantity = parse_quantity(is_scalar($rawQuantity) ? (string) $rawQuantity : '');
+
+                if ($updatedQuantity === false || $updatedQuantity === '' || $updatedQuantity === null) {
+                    $updatedQuantity = 0;
+                }
 
                 if ($itemData['item_type'] == ITEM_TEMP) {
                     $updatedQuantity = 0;
