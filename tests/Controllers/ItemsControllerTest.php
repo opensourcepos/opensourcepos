@@ -1518,6 +1518,24 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->item_quantity->save_value(['item_id' => $allowedItemId, 'location_id' => $locAId, 'quantity' => 10], $allowedItemId, $locAId);
         $this->item_quantity->save_value(['item_id' => $deniedItemId, 'location_id' => $locBId, 'quantity' => 10], $deniedItemId, $locBId);
 
+        $this->inventory->insert([
+            'trans_date'      => date('Y-m-d H:i:s'),
+            'trans_inventory' => 10,
+            'trans_items'     => $allowedItemId,
+            'trans_location'  => $locAId,
+            'trans_comment'   => 'Omitted fallback allowed setup',
+            'trans_user'      => $personId,
+        ]);
+
+        $this->inventory->insert([
+            'trans_date'      => date('Y-m-d H:i:s'),
+            'trans_inventory' => 10,
+            'trans_items'     => $deniedItemId,
+            'trans_location'  => $locBId,
+            'trans_comment'   => 'Omitted fallback denied setup',
+            'trans_user'      => $personId,
+        ]);
+
         $response = $this->get('/items/search?search=OmittedFallback&limit=10&offset=0&sort=items.name&order=asc');
 
         $response->assertStatus(200);

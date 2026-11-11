@@ -114,15 +114,20 @@ class Items extends Secure_Controller
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $stockLocation = $this->request->getGet('stock_location');
-        if (($stockLocation === null || $stockLocation === '') && $this->stock_location->getDefaultLocationId() === null) {
+
+        if ($stockLocation === null || $stockLocation === '') {
+            $defaultLocationId = $this->stock_location->getDefaultLocationId();
+
+            if ($defaultLocationId === null) {
+                return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
+            }
+
+            $stockLocation = (string) $defaultLocationId;
+        } elseif (!is_scalar($stockLocation) || !$this->stock_location->is_allowed_location((int) $stockLocation, 'items')) {
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
         }
-        if ($stockLocation !== null && $stockLocation !== '' && !$this->stock_location->is_allowed_location((int) $stockLocation, 'items')) {
-            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
-        }
-        if ($stockLocation !== null && $stockLocation !== '') {
-            $stockLocation = (string) (int) $stockLocation;
-        }
+
+        $stockLocation = (string) (int) $stockLocation;
         $this->item_lib->set_item_location($stockLocation);
 
         $definitionNamesWithTypes = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
