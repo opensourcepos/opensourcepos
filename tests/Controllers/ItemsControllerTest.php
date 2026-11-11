@@ -1497,6 +1497,7 @@ class ItemsControllerTest extends CIUnitTestCase
             'category' => 'Test',
             'cost_price' => 10.00,
             'unit_price' => 20.00,
+            'item_type' => (string) ITEM,
             'deleted' => 0,
         ];
         $this->assertTrue($this->item->save_value($allowedItemData));
@@ -1508,6 +1509,7 @@ class ItemsControllerTest extends CIUnitTestCase
             'category' => 'Test',
             'cost_price' => 10.00,
             'unit_price' => 20.00,
+            'item_type' => (string) ITEM,
             'deleted' => 0,
         ];
         $this->assertTrue($this->item->save_value($deniedItemData));
