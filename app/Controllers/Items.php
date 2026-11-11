@@ -150,8 +150,24 @@ class Items extends Secure_Controller
         ];
 
         // Check if any filter is set in the multiselect dropdown
-        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-        $filters = array_merge($filters, $requestFilters);
+        $requestFilters = $this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
+        $allowedFilters = [
+            'empty_upc',
+            'low_inventory',
+            'is_serialized',
+            'no_description',
+            'search_custom',
+            'is_deleted',
+            'temporary',
+        ];
+        if (is_array($requestFilters)) {
+            foreach ($requestFilters as $key => $value) {
+                $filterName = is_numeric($key) ? (string) $value : (string) $key;
+                if (in_array($filterName, $allowedFilters, true)) {
+                    $filters[$filterName] = true;
+                }
+            }
+        }
 
         // When search_custom is enabled, include attributes that are searchable but may not be visible in table
         if (!empty($filters['search_custom'])) {
@@ -553,6 +569,7 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
+        $data['item_quantities'] = [];
         $allowedLocations = $this->stock_location->get_allowed_locations('items');
         $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
