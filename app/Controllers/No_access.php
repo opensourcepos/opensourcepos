@@ -24,15 +24,10 @@ class No_access extends BaseController
         $this->module = model(Module::class);
     }
 
-    /**
-     * @param string $module_id
-     * @param string $permission_id
-     * @return string
-     */
-    public function getIndex(string $module_id = '', string $permission_id = ''): string
+    public function getIndex(string $moduleId = '', string $permissionId = ''): string
     {
-        $data['module_name']   = $this->module->get_module_name($module_id);
-        $data['permission_id'] = $permission_id;
+        $data['module_name']   = $this->module->get_module_name($moduleId);
+        $data['permission_id'] = $permissionId;
 
         $userInfo = $this->employee->get_logged_in_employee_info();
         if ($userInfo === false || $this->request->isAJAX()) {

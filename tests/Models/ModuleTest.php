@@ -27,7 +27,7 @@ class ModuleTest extends CIUnitTestCase
         parent::setUp();
     }
 
-    public function testGetNavigationModulesAddsOfficeForOfficeOnlyEmployee(): void
+    public function testGetNavigationModules_AddsOfficeForOfficeOnlyEmployee(): void
     {
         $personId = $this->createEmployee(
             grants: [
@@ -42,7 +42,7 @@ class ModuleTest extends CIUnitTestCase
         $this->assertSame(['office'], array_column($modules, 'module_id'));
     }
 
-    public function testGetNavigationModulesOmitsOfficeWithoutOfficeGrant(): void
+    public function testGetNavigationModules_OmitsOfficeWithoutOfficeGrant(): void
     {
         $personId = $this->createEmployee(
             grants: [
@@ -56,7 +56,7 @@ class ModuleTest extends CIUnitTestCase
         $this->assertSame([], $modules);
     }
 
-    public function testGetNavigationModulesOmitsOfficeWhenOfficeGroupHidden(): void
+    public function testGetNavigationModules_OmitsOfficeWhenOfficeGroupHidden(): void
     {
         $module = model(Module::class);
         $originalSort = $module->get_show_office_group();
@@ -80,7 +80,7 @@ class ModuleTest extends CIUnitTestCase
         }
     }
 
-    public function testGetNavigationModulesReturnsHomeModulesWithoutOfficeFallback(): void
+    public function testGetNavigationModules_ReturnsHomeModulesWithoutOfficeFallback(): void
     {
         $personId = $this->createEmployee(
             grants: [
@@ -97,7 +97,7 @@ class ModuleTest extends CIUnitTestCase
         $this->assertNotContains('office', $moduleIds);
     }
 
-    public function testGetNavigationModulesReturnsEmptyArrayForEmptyOfficeMenu(): void
+    public function testGetNavigationModules_ReturnsEmptyArrayForEmptyOfficeMenu(): void
     {
         $personId = $this->createEmployee(
             grants: [

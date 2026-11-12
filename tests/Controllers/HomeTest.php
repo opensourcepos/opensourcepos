@@ -228,15 +228,6 @@ class HomeTest extends CIUnitTestCase
             'Single character password should be rejected (CVE fix)');
     }
 
-    /**
-     * Regression test for issue #4681.
-     *
-     * An employee with no modules assigned to the home menu group but with
-     * office permissions should be able to access the home page without
-     * triggering an undefined $allowed_modules error.
-     *
-     * @return void
-     */
     public function testGetIndex_ShowsOfficeLinkForOfficeOnlyEmployee(): void
     {
         $employeeId = $this->createNonAdminEmployee([
@@ -255,12 +246,6 @@ class HomeTest extends CIUnitTestCase
         $this->assertStringContainsString('href="' . base_url('office') . '"', $response->getBody());
     }
 
-    /**
-     * Office navigation should not be shown when the employee has
-     * Office-module grants but lacks the main office grant.
-     *
-     * @return void
-     */
     public function testGetIndex_HidesOfficeLinkWithoutOfficeGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
