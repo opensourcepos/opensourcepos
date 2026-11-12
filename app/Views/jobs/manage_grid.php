@@ -152,7 +152,7 @@ use App\Models\Employee;
                 lastQueryParams = params;
                 return params;
             },
-            onLoadSuccess: function(response) {
+            onLoadSuccess: function() {
                 bindRowActions();
             }
         });
@@ -212,14 +212,23 @@ use App\Models\Employee;
                         return;
                     }
 
+                    let hasNewRows = false;
+
                     Object.keys(newByUid).forEach(function(uid) {
-                        if (uid in currentByUid && JSON.stringify(currentByUid[uid]) !== JSON.stringify(newByUid[uid])) {
+                        if (!(uid in currentByUid)) {
+                            hasNewRows = true;
+                        } else if (JSON.stringify(currentByUid[uid]) !== JSON.stringify(newByUid[uid])) {
                             bsTable.updateByUniqueId({id: uid, row: newByUid[uid], replace: true});
                             $('tr[data-uniqueid="' + uid + '"]').find('td')
                                 .animate({backgroundColor: '#e1ffdd'}, 600, 'linear')
                                 .animate({backgroundColor: ''}, 1200, 'linear');
                         }
                     });
+
+                    if (hasNewRows) {
+                        table_support.refresh();
+                        return;
+                    }
 
                     bindRowActions();
                 }, 'json').always(function() {

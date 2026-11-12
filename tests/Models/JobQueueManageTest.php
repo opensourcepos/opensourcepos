@@ -264,4 +264,17 @@ class JobQueueManageTest extends CIUnitTestCase
             $this->assertStringStartsWith($row->source . ':', $row->uid);
         }
     }
+
+    public function testSearch_UidsAreUniqueAcrossMixedSources(): void
+    {
+        $this->insertPending();
+        $this->insertReserved();
+        $this->insertFailed();
+        $this->insertPaused();
+
+        $rows = $this->model->search('', [], 100, 0, 'date', 'desc');
+        $uids = $this->uids($rows);
+
+        $this->assertSame(count($uids), count(array_unique($uids)));
+    }
 }

@@ -360,4 +360,131 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertNotContains('failed', $sources);
         $this->assertSame(1, $result['total']);
     }
+
+    public function testGetSearch_PaginatedResponse_TotalExceedsPageRows(): void
+    {
+        $this->loginAsAdmin();
+
+        $now = time();
+        for ($i = 0; $i < 5; $i++) {
+            $this->db->table('queue_jobs')->insert([
+                'queue'        => 'default',
+                'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
+                'priority'     => 'normal',
+                'status'       => 0,
+                'attempts'     => 0,
+                'available_at' => $now,
+                'created_at'   => $now,
+            ]);
+        }
+
+        $response = $this->get('/jobs/search?limit=2&offset=0');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        $this->assertCount(2, $result['rows']);
+        $this->assertSame(5, $result['total']);
+    }
+
+    public function testGetSearch_EachRowHasUid(): void
+    {
+        $this->loginAsAdmin();
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'default',
+            'payload'    => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => $now,
+        ]);
+
+        $response = $this->get('/jobs/search?limit=25&offset=0');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        foreach ($result['rows'] as $row) {
+            $this->assertArrayHasKey('uid', $row);
+            $this->assertNotEmpty($row['uid']);
+        }
+    }
+
+    public function testGetSearch_UidsAreUniqueAcrossSources(): void
+    {
+        $this->loginAsAdmin();
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 1,
+            'attempts'     => 1,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'default',
+            'payload'    => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => $now,
+        ]);
+
+        $response = $this->get('/jobs/search?limit=25&offset=0');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $uids = array_column($result['rows'], 'uid');
+
+        $this->assertSame(count($uids), count(array_unique($uids)));
+    }
+
+    public function testGetSearch_UidIsStableAcrossPolls(): void
+    {
+        $this->loginAsAdmin();
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        $first  = json_decode($this->get('/jobs/search?limit=25&offset=0')->getJSON(), true);
+        $second = json_decode($this->get('/jobs/search?limit=25&offset=0')->getJSON(), true);
+
+        $this->assertSame(
+            array_column($first['rows'], 'uid'),
+            array_column($second['rows'], 'uid')
+        );
+    }
 }
