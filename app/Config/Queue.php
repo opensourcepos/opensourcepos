@@ -17,6 +17,15 @@ class Queue extends BaseQueue
 {
     public string $defaultHandler = 'database';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        if (ENVIRONMENT === 'testing') {
+            $this->database['skipLocked'] = false;
+        }
+    }
+
     public array $jobHandlers = [
         'item_import'     => ItemImportJob::class,
         'customer_import' => CustomerImportJob::class,
