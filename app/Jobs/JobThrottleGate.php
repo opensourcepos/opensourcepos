@@ -60,4 +60,33 @@ class JobThrottleGate
 
         return $allowed;
     }
+
+    /**
+     * Seconds to sleep before retrying after allows() returned false. Uses
+     * cost=0 so no tokens are consumed — on the failure path the bucket is
+     * already exhausted, and on the passing path only the cache timestamp
+     * is refreshed (harmless). Call only immediately after allows() === false.
+     */
+    public function getSleepSeconds(): int
+    {
+        $throttler = Services::throttler();
+        $max = 1;
+
+        foreach ($this->jobThrottle->getAll()->getResultArray() as $throttle) {
+            $maxCount = (int) $throttle['max_count'];
+
+            if ($maxCount <= 0) {
+                continue;
+            }
+
+            $seconds = self::PERIOD_SECONDS[$throttle['period']] ?? 60;
+            $key = 'job_queue_core_' . $throttle['throttle_id'];
+
+            if (!$throttler->check($key, $maxCount, $seconds, 0)) {
+                $max = max($max, $throttler->getTokenTime());
+            }
+        }
+
+        return $max;
+    }
 }

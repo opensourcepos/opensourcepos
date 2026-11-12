@@ -200,6 +200,36 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->assertSame(1, $this->db->table('queue_jobs')->countAllResults());
     }
 
+    public function testRun_SleepsAndContinuesWhenThrottledWithinDeadline(): void
+    {
+        model(JobThrottle::class)->saveValue(['max_count' => 1, 'period' => 'second'], 1);
+
+        service('queue')->push('default', 'success', []);
+        service('queue')->push('default', 'success', []);
+
+        // 5s deadline: worker should process job 1, sleep 1s for refill, then process job 2.
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(2, $worker->getProcessedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
+    }
+
+    public function testRun_ExitsRatherThanSleepingIfDeadlineWouldExpire(): void
+    {
+        model(JobThrottle::class)->saveValue(['max_count' => 1, 'period' => 'minute'], 1);
+
+        service('queue')->push('default', 'success', []);
+        service('queue')->push('default', 'success', []);
+
+        // 2s deadline: sleeping 60s would blow past it, so worker must exit after 1 job.
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 2);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getProcessedCount());
+        $this->assertSame(1, $this->db->table('queue_jobs')->countAllResults());
+    }
+
     public function testAutoPurgeRemovesOldFailedJobs(): void
     {
         $jobsConfig = config(JobsConfig::class);

@@ -55,7 +55,14 @@ class BoundedQueueWorker
             }
 
             if (!$throttleGate->allows()) {
-                break;
+                $sleepSec = $throttleGate->getSleepSeconds();
+
+                if (microtime(true) + $sleepSec >= $this->deadline) {
+                    break;
+                }
+
+                sleep($sleepSec);
+                continue;
             }
 
             $work = $this->popNext($queue, $config);

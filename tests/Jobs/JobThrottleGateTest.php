@@ -4,33 +4,28 @@ namespace Tests\Jobs;
 
 use App\Jobs\JobThrottleGate;
 use App\Models\JobThrottle;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Services;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class JobThrottleGateTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
+    protected $seedOnce = true;
     protected $refresh = false;
-    protected $namespace = 'App';
-
-    private static bool $doneBootstrap = false;
+    protected $namespace = null;
 
     protected JobThrottle $jobThrottle;
     protected JobThrottleGate $gate;
 
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
 
@@ -106,5 +101,20 @@ class JobThrottleGateTest extends CIUnitTestCase
 
         $this->assertTrue($this->gate->allows());
         $this->assertFalse($this->gate->allows());
+    }
+
+    public function testGetSleepSeconds_ReturnsOneWhenNoThrottlesConfigured(): void
+    {
+        $this->assertSame(1, $this->gate->getSleepSeconds());
+    }
+
+    public function testGetSleepSeconds_ReturnsPositiveSecondsAfterThrottleExhausted(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 1, 'period' => 'minute'], 1);
+
+        $this->gate->allows();
+        $this->gate->allows();
+
+        $this->assertGreaterThanOrEqual(1, $this->gate->getSleepSeconds());
     }
 }
