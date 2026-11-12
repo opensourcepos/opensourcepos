@@ -38,6 +38,8 @@ class JobsControllerTest extends CIUnitTestCase
         $this->db->table('job_throttles')->truncate();
         $this->db->table('queue_jobs_paused')->truncate();
         $this->db->table('queue_jobs')->truncate();
+        $this->db->table('queue_jobs_failed')->truncate();
+        $this->db->table('import_batches')->truncate();
     }
 
     protected function loginAsAdmin(): void
@@ -486,5 +488,360 @@ class JobsControllerTest extends CIUnitTestCase
             array_column($first['rows'], 'uid'),
             array_column($second['rows'], 'uid')
         );
+    }
+
+    // -------------------------------------------------------------------------
+    // getSearchBatches
+    // -------------------------------------------------------------------------
+
+    private function insertBatch(string $id, string $status = 'processing', int $total = 5, int $completed = 0, int $failed = 0): void
+    {
+        $this->db->table('import_batches')->insert([
+            'id'         => $id,
+            'type'       => 'items',
+            'total'      => $total,
+            'completed'  => $completed,
+            'failed'     => $failed,
+            'status'     => $status,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+    }
+
+    public function testGetSearchBatches_ReturnsBatchRows(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-aaa', 'processing', 10, 3);
+        $this->insertBatch('batch-bbb', 'completed', 5, 5);
+
+        $response = $this->get('/jobs/searchBatches?limit=25&offset=0');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        $this->assertSame(2, $result['total']);
+        $this->assertCount(2, $result['rows']);
+
+        $ids = array_column($result['rows'], 'batch_id');
+        $this->assertContains('batch-aaa', $ids);
+        $this->assertContains('batch-bbb', $ids);
+    }
+
+    public function testGetSearchBatches_StatusFilter_ExcludesNonMatchingRows(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-proc', 'processing');
+        $this->insertBatch('batch-done', 'completed');
+
+        $response = $this->get('/jobs/searchBatches?limit=25&offset=0&statuses[]=completed');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        $this->assertSame(1, $result['total']);
+        $this->assertSame('batch-done', $result['rows'][0]['batch_id']);
+    }
+
+    public function testGetSearchBatches_Pagination_TotalExceedsPageRows(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        for ($i = 1; $i <= 4; $i++) {
+            $this->insertBatch("batch-$i");
+        }
+
+        $response = $this->get('/jobs/searchBatches?limit=2&offset=0');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        $this->assertCount(2, $result['rows']);
+        $this->assertSame(4, $result['total']);
+    }
+
+    public function testGetSearchBatches_EachRowHasProgressBar(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-prog', 'processing', 10, 4);
+
+        $response = $this->get('/jobs/searchBatches?limit=25&offset=0');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        $this->assertArrayHasKey('progress', $result['rows'][0]);
+        $this->assertStringContainsString('progress-bar', $result['rows'][0]['progress']);
+    }
+
+    // -------------------------------------------------------------------------
+    // postDeleteBatch
+    // -------------------------------------------------------------------------
+
+    public function testPostDeleteBatch_RejectsEmptyId(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/deleteBatch', ['id' => '']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostDeleteBatch_RejectsUnknownBatch(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/deleteBatch', ['id' => 'no-such-batch']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostDeleteBatch_DeletesBatchAndPendingJobs(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-del');
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-del',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'low',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        $response = $this->post('/jobs/deleteBatch', ['id' => 'batch-del']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('import_batches', ['id' => 'batch-del']);
+        $this->dontSeeInDatabase('queue_jobs', ['batch_id' => 'batch-del']);
+    }
+
+    public function testPostDeleteBatch_LeavesReservedJobsInQueue(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-res');
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-res',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'low',
+            'status'       => 1,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        $response = $this->post('/jobs/deleteBatch', ['id' => 'batch-res']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-res', 'status' => 1]);
+    }
+
+    // -------------------------------------------------------------------------
+    // postPauseBatch
+    // -------------------------------------------------------------------------
+
+    public function testPostPauseBatch_RejectsUnknownBatch(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/pauseBatch', ['id' => 'no-such-batch']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostPauseBatch_MovesPendingJobsToPausedTable(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-pause');
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-pause',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'low',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        $response = $this->post('/jobs/pauseBatch', ['id' => 'batch-pause']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('queue_jobs', ['batch_id' => 'batch-pause', 'status' => 0]);
+        $this->seeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-pause', 'paused_by' => 'manual']);
+    }
+
+    public function testPostPauseBatch_LeavesReservedJobsInQueue(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-pauseres');
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-pauseres',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'low',
+            'status'       => 1,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        $response = $this->post('/jobs/pauseBatch', ['id' => 'batch-pauseres']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-pauseres', 'status' => 1]);
+        $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-pauseres']);
+    }
+
+    // -------------------------------------------------------------------------
+    // postResumeBatch
+    // -------------------------------------------------------------------------
+
+    public function testPostResumeBatch_RejectsUnknownBatch(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/resumeBatch', ['id' => 'no-such-batch']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostResumeBatch_MovesPausedJobsBackToQueue(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-resume');
+
+        $now = time();
+        $this->db->table('queue_jobs_paused')->insert([
+            'id'           => 999,
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-resume',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'low',
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+            'paused_at'    => $now,
+            'paused_by'    => 'manual',
+        ]);
+
+        $response = $this->post('/jobs/resumeBatch', ['id' => 'batch-resume']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-resume']);
+        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-resume', 'status' => 0]);
+    }
+
+    // -------------------------------------------------------------------------
+    // postPurgeBatch
+    // -------------------------------------------------------------------------
+
+    public function testPostPurgeBatch_RejectsUnknownBatch(): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->post('/jobs/purgeBatch', ['id' => 'no-such-batch']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostPurgeBatch_RejectsProcessingBatch(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-proc2', 'processing');
+
+        $response = $this->post('/jobs/purgeBatch', ['id' => 'batch-proc2']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-proc2']);
+    }
+
+    public function testPostPurgeBatch_DeletesCompletedBatchAndFailedJobs(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-purge', 'completed', 5, 5);
+
+        $now = time();
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-purge',
+            'payload'    => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'   => 'low',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: failed',
+            'failed_at'  => $now,
+        ]);
+
+        $response = $this->post('/jobs/purgeBatch', ['id' => 'batch-purge']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('import_batches', ['id' => 'batch-purge']);
+        $this->dontSeeInDatabase('queue_jobs_failed', ['batch_id' => 'batch-purge']);
+    }
+
+    public function testPostPurgeBatch_AcceptsPartialBatch(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-partial', 'partial', 5, 4, 1);
+
+        $response = $this->post('/jobs/purgeBatch', ['id' => 'batch-partial']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('import_batches', ['id' => 'batch-partial']);
     }
 }
