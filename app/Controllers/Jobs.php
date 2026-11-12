@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Jobs\BoundedQueueWorker;
 use App\Models\Appconfig;
+use App\Models\ImportBatch;
 use App\Models\JobQueueManage;
 use App\Models\JobThrottle;
 use CodeIgniter\Database\BaseConnection;
@@ -15,6 +16,7 @@ use CodeIgniter\Queue\Models\QueueJobFailedModel;
 use CodeIgniter\Queue\Models\QueueJobModel;
 use Config\Database;
 use Config\Jobs as JobsConfig;
+use Exception;
 use ReflectionException;
 
 class Jobs extends Secure_Controller
@@ -46,6 +48,7 @@ class Jobs extends Secure_Controller
         $data['throttles'] = $this->jobThrottle->getAll()->getResultArray();
         $data['queues'] = config(JobsConfig::class)->coreQueues;
         $data['table_headers'] = get_jobs_manage_table_headers();
+        $data['batch_table_headers'] = get_batch_table_headers();
 
         return view('jobs/manage', $data);
     }
@@ -164,6 +167,246 @@ class Jobs extends Secure_Controller
     }
 
     /**
+     * Returns batch table data rows for the Batches tab.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function getSearchBatches(): ResponseInterface
+    {
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+        $limit = (int)$this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = (int)$this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(batch_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'date');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'desc';
+        $statuses = $this->request->getGet('statuses', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
+
+        $allowedStatuses = ['pending', 'processing', 'completed', 'partial'];
+        $statuses = array_values(array_intersect((array)$statuses, $allowedStatuses));
+
+        $sortable = ['type', 'total', 'completed', 'failed', 'status', 'date'];
+        $sort = in_array($sort, $sortable, true) ? $sort : 'created_at';
+        $sort = $sort === 'date' ? 'created_at' : $sort;
+        $order = strtolower($order) === 'asc' ? 'ASC' : 'DESC';
+
+        $batchModel = model(ImportBatch::class);
+
+        $query = $batchModel->orderBy($sort, $order);
+
+        if ($search !== '') {
+            $query->groupStart()
+                ->like('id', $search)
+                ->orLike('type', $search)
+                ->orLike('status', $search)
+                ->groupEnd();
+        }
+
+        if ($statuses !== []) {
+            $query->whereIn('status', $statuses);
+        }
+
+        $totalRows = $query->countAllResults(false);
+
+        if ($limit > 0) {
+            $query->limit($limit, $offset);
+        }
+
+        $batches = $query->findAll();
+        $dataRows = array_map('get_batch_data_row', $batches);
+
+        return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
+    }
+
+    /**
+     * Deletes a batch and all its associated jobs (pending and paused only;
+     * reserved jobs are left to complete).
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postDeleteBatch(): ResponseInterface
+    {
+        $batchId = $this->request->getPost('id');
+
+        if (empty($batchId)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
+        }
+
+        $batchModel = model(ImportBatch::class);
+        $batch = $batchModel->find($batchId);
+
+        if ($batch === null) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
+        }
+
+        $this->db->transStart();
+
+        $this->db->table('queue_jobs')
+            ->whereIn('status', [Status::PENDING->value])
+            ->where('batch_id', $batchId)
+            ->delete();
+
+        $this->db->table('queue_jobs_paused')
+            ->where('batch_id', $batchId)
+            ->delete();
+
+        $this->db->table('queue_jobs_failed')
+            ->where('batch_id', $batchId)
+            ->delete();
+
+        $batchModel->delete($batchId);
+
+        $this->db->transComplete();
+
+        $success = $this->db->transStatus();
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.batch_deleted' : 'Jobs.batch_delete_failed'),
+        ]);
+    }
+
+    /**
+     * Pauses all pending jobs for a batch by moving them to queue_jobs_paused.
+     * Reserved jobs are left alone.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postPauseBatch(): ResponseInterface
+    {
+        $batchId = $this->request->getPost('id');
+
+        if (empty($batchId)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
+        }
+
+        $batchModel = model(ImportBatch::class);
+
+        if ($batchModel->find($batchId) === null) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
+        }
+
+        $this->db->transStart();
+
+        $rows = $this->db->table('queue_jobs')
+            ->where('status', Status::PENDING->value)
+            ->where('batch_id', $batchId)
+            ->get()
+            ->getResultArray();
+
+        if ($rows !== []) {
+            $now = Time::now()->timestamp;
+
+            foreach ($rows as &$row) {
+                $row['paused_at'] = $now;
+                $row['paused_by'] = 'manual';
+                unset($row['status']);
+            }
+            unset($row);
+
+            $this->db->table('queue_jobs_paused')->insertBatch($rows);
+            $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
+        }
+
+        $this->db->transComplete();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Jobs.batch_paused', [count($rows)]),
+        ]);
+    }
+
+    /**
+     * Resumes all paused jobs for a batch by moving them back to queue_jobs.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postResumeBatch(): ResponseInterface
+    {
+        $batchId = $this->request->getPost('id');
+
+        if (empty($batchId)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
+        }
+
+        $batchModel = model(ImportBatch::class);
+
+        if ($batchModel->find($batchId) === null) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
+        }
+
+        $this->db->transStart();
+
+        $rows = $this->db->table('queue_jobs_paused')
+            ->where('batch_id', $batchId)
+            ->get()
+            ->getResultArray();
+
+        if ($rows !== []) {
+            $pendingStatus = Status::PENDING->value;
+
+            foreach ($rows as &$row) {
+                $row['status'] = $pendingStatus;
+                unset($row['paused_at'], $row['paused_by']);
+            }
+            unset($row);
+
+            $this->db->table('queue_jobs')->insertBatch($rows);
+            $this->db->table('queue_jobs_paused')->whereIn('id', array_column($rows, 'id'))->delete();
+        }
+
+        $this->db->transComplete();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => lang('Jobs.batch_resumed', [count($rows)]),
+        ]);
+    }
+
+    /**
+     * Purges a completed or partial batch: deletes the batch record and all
+     * associated job records. Only eligible for completed/partial batches.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postPurgeBatch(): ResponseInterface
+    {
+        $batchId = $this->request->getPost('id');
+
+        if (empty($batchId)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
+        }
+
+        $batchModel = model(ImportBatch::class);
+        $batch = $batchModel->find($batchId);
+
+        if ($batch === null) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
+        }
+
+        if (!in_array($batch['status'], ['completed', 'partial'], true)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_purge_not_eligible')]);
+        }
+
+        $this->db->transStart();
+
+        $this->db->table('queue_jobs_failed')->where('batch_id', $batchId)->delete();
+        $batchModel->delete($batchId);
+
+        $this->db->transComplete();
+
+        $success = $this->db->transStatus();
+
+        return $this->response->setJSON([
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.batch_purged' : 'Jobs.batch_purge_failed'),
+        ]);
+    }
+
+    /**
      * Deletes one or more jobs. Reserved (in-progress) jobs cannot be
      * deleted.
      *
@@ -272,6 +515,8 @@ class Jobs extends Secure_Controller
     /**
      * Moves a failed job back into queue_jobs as pending so it can be
      * reprocessed, returning the freshly-inserted QueueJob.
+     * @throws ReflectionException
+     * @throws Exception
      */
     private function requeueFailedJob(int $id): ?QueueJob
     {
@@ -298,7 +543,10 @@ class Jobs extends Secure_Controller
 
         $queueJobFailedModel->delete($id);
 
-        return $queueJobModel->find($newId);
+        /** @var QueueJob|null $job */
+        $job = $queueJobModel->find($newId);
+
+        return $job;
     }
 
     /**

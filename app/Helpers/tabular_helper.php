@@ -1083,6 +1083,79 @@ function get_job_data_row(object $job): array
     ];
 }
 
+function batch_headers(): array
+{
+    return [
+        ['batch_id'   => lang('Jobs.batch_id'), 'sortable' => false],
+        ['type'       => lang('Jobs.batch_type'), 'align' => 'center'],
+        ['total'      => lang('Jobs.batch_total'), 'align' => 'center'],
+        ['completed'  => lang('Jobs.batch_completed'), 'align' => 'center'],
+        ['failed'     => lang('Jobs.batch_failed'), 'align' => 'center'],
+        ['progress'   => lang('Jobs.progress'), 'sortable' => false, 'escape' => false],
+        ['status'     => lang('Jobs.status'), 'align' => 'center'],
+        ['date'       => lang('Common.date'), 'class' => 'text-nowrap'],
+    ];
+}
+
+function get_batch_table_headers(): string
+{
+    $headers = batch_headers();
+    $headers[] = ['actions' => '', 'sortable' => false, 'escape' => false];
+
+    return transform_headers($headers);
+}
+
+function get_batch_data_row(array $batch): array
+{
+    $completed = (int)$batch['completed'];
+    $total = (int)$batch['total'];
+    $pct = $total > 0 ? min(100, (int)round($completed / $total * 100)) : 0;
+
+    $statusKey = 'batch_status_' . ($batch['status'] ?? 'pending');
+    $statusLabel = lang('Jobs.' . $statusKey);
+
+    $batchId = esc($batch['id']);
+
+    $drillDown = '<a href="#" class="batch_drill_down print_hide" data-batch-id="' . $batchId . '" title="' . esc(lang('Jobs.drill_down_jobs')) . '"><span class="glyphicon glyphicon-list"></span></a>';
+
+    $status = $batch['status'] ?? 'pending';
+    $isPauseable = in_array($status, ['pending', 'processing'], true);
+    $isResumeable = $status === 'paused';
+    $isPurgeable = in_array($status, ['completed', 'partial'], true);
+
+    $pauseBtn = $isPauseable
+        ? ' <a href="#" class="batch_pause print_hide" data-batch-id="' . $batchId . '" title="' . esc(lang('Jobs.pause_batch')) . '"><span class="glyphicon glyphicon-pause"></span></a>'
+        : '';
+
+    $resumeBtn = $isResumeable
+        ? ' <a href="#" class="batch_resume print_hide" data-batch-id="' . $batchId . '" title="' . esc(lang('Jobs.resume_batch')) . '"><span class="glyphicon glyphicon-play"></span></a>'
+        : '';
+
+    $deleteBtn = '<a href="#" class="batch_delete print_hide" data-batch-id="' . $batchId . '" title="' . esc(lang('Jobs.delete_batch')) . '"><span class="glyphicon glyphicon-trash"></span></a>';
+
+    $purgeBtn = $isPurgeable
+        ? ' <a href="#" class="batch_purge print_hide" data-batch-id="' . $batchId . '" title="' . esc(lang('Jobs.purge_batch')) . '"><span class="glyphicon glyphicon-remove-circle"></span></a>'
+        : '';
+
+    $progressBar = '<div class="progress" style="margin-bottom:0;min-width:80px">'
+        . '<div class="progress-bar" role="progressbar" style="width:' . $pct . '%">'
+        . $completed . '/' . $total
+        . '</div></div>';
+
+    return [
+        'uid'       => $batch['id'],
+        'batch_id'  => $batch['id'],
+        'type'      => $batch['type'],
+        'total'     => $total,
+        'completed' => $completed,
+        'failed'    => (int)$batch['failed'],
+        'progress'  => $progressBar,
+        'status'    => $statusLabel,
+        'date'      => to_datetime($batch['created_at']),
+        'actions'   => $drillDown . $pauseBtn . $resumeBtn . $deleteBtn . $purgeBtn,
+    ];
+}
+
 /**
  * Restores filter values from the URL query string.
  *
