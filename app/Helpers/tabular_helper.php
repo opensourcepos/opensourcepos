@@ -1059,6 +1059,7 @@ function get_job_data_row(object $job): array
 
     return [
         'uid'       => $job->uid,
+        'source'    => $job->source,
         'status'    => lang('Jobs.status_' . $job->source),
         'queue'     => $job->queue,
         'record_id' => $subject['id'],
@@ -1151,7 +1152,7 @@ function get_batch_data_row(array $batch): array
         'failed'    => (int)$batch['failed'],
         'progress'  => $progressBar,
         'status'    => $statusLabel,
-        'date'      => to_datetime($batch['created_at']),
+        'date'      => to_datetime((int)strtotime($batch['created_at'])),
         'actions'   => $drillDown . $pauseBtn . $resumeBtn . $deleteBtn . $purgeBtn,
     ];
 }
