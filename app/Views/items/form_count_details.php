@@ -65,6 +65,11 @@ use App\Models\Inventory;
             </div>
         </div>
 
+        <?php
+        $formQuantity = $stock_location !== null && isset($item_quantities[$stock_location])
+            ? $item_quantities[$stock_location]
+            : (current($item_quantities) ?: 0);
+        ?>
         <div class="form-group form-group-sm">
             <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
@@ -73,7 +78,7 @@ use App\Models\Inventory;
                     'id'       => 'quantity',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => to_quantity_decimals($item_quantities[$stock_location] ?? current($item_quantities))
+                    'value'    => to_quantity_decimals((string) $formQuantity)
                 ]) ?>
             </div>
         </div>
@@ -99,7 +104,11 @@ use App\Models\Inventory;
         $employee = model(Employee::class);
         $inventory = model(Inventory::class);
 
-        $inventoryArray = $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
+        $allowedLocationIds = array_keys($stock_locations);
+        $inventoryArray = array_values(array_filter(
+            $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray(),
+            fn($row) => in_array($row['trans_location'], array_map('intval', $allowedLocationIds))
+        ));
         $employeeName = [];
 
         foreach ($inventoryArray as $row) {
@@ -117,7 +126,11 @@ use App\Models\Inventory;
 
     function display_stock(location_id) {
         const item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
-        document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?= quantity_decimals() ?>);
+        const quantity = item_quantities[location_id];
+        const formattedQuantity = quantity === undefined || quantity === null || quantity === '' || quantity === false
+            ? 0
+            : parseFloat(quantity);
+        document.getElementById("quantity").value = formattedQuantity.toFixed(<?= quantity_decimals() ?>);
 
         const inventory_data = <?= json_encode(esc($inventoryArray, 'raw')) ?>;
         const employee_data = <?= json_encode(esc($employeeName, 'raw')) ?>;

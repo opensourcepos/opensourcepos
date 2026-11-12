@@ -1415,5 +1415,281 @@ class ItemsControllerTest extends CIUnitTestCase
         $isValid = in_array($csvLocationName, $allowedLocations);
         $this->assertTrue($isValid, 'Valid location name should pass validation');
     }
+
+    public function testGetSearch_RejectsUnauthorizedStockLocation(): void
+    {
+        $suffixA = bin2hex(random_bytes(8));
+        $suffixB = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "AuthWh_{$suffixA}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+
+        $locationB = ['location_name' => "UnauthWh_{$suffixB}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationB, NEW_ENTRY));
+
+        $locBId = (int) $locationB['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $response = $this->get("/items/search?search=&limit=10&offset=0&sort=items.name&order=asc&stock_location={$locBId}");
+
+        $response->assertStatus(403);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testGetSearch_AcceptsAuthorizedStockLocation(): void
+    {
+        $suffix = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "AllowedWh_{$suffix}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+
+        $locAId = (int) $locationA['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $response = $this->get("/items/search?search=&limit=10&offset=0&sort=items.name&order=asc&stock_location={$locAId}");
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertArrayHasKey('total', $result);
+        $this->assertArrayHasKey('rows', $result);
+    }
+
+    public function testGetSearch_AcceptsOmittedLocationWhenFallbackDefaultExists(): void
+    {
+        $suffixA = bin2hex(random_bytes(8));
+        $suffixB = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "FallbackWhA_{$suffixA}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+
+        $locationB = ['location_name' => "FallbackWhB_{$suffixB}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationB, NEW_ENTRY));
+
+        $locAId = (int) $locationA['location_id'];
+        $locBId = (int) $locationB['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $allowedItemData = [
+            'item_id' => null,
+            'name' => "OmittedFallbackAllowed_{$suffixA}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'item_type' => (string) ITEM,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($allowedItemData));
+        $allowedItemId = (int) $allowedItemData['item_id'];
+
+        $deniedItemData = [
+            'item_id' => null,
+            'name' => "OmittedFallbackDenied_{$suffixB}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'item_type' => (string) ITEM,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($deniedItemData));
+        $deniedItemId = (int) $deniedItemData['item_id'];
+
+        $this->item_quantity->save_value(['item_id' => $allowedItemId, 'location_id' => $locAId, 'quantity' => 10], $allowedItemId, $locAId);
+        $this->item_quantity->save_value(['item_id' => $deniedItemId, 'location_id' => $locBId, 'quantity' => 10], $deniedItemId, $locBId);
+
+        $this->inventory->insert([
+            'trans_date'      => date('Y-m-d H:i:s'),
+            'trans_inventory' => 10,
+            'trans_items'     => $allowedItemId,
+            'trans_location'  => $locAId,
+            'trans_comment'   => 'Omitted fallback allowed setup',
+            'trans_user'      => $personId,
+        ]);
+
+        $this->inventory->insert([
+            'trans_date'      => date('Y-m-d H:i:s'),
+            'trans_inventory' => 10,
+            'trans_items'     => $deniedItemId,
+            'trans_location'  => $locBId,
+            'trans_comment'   => 'Omitted fallback denied setup',
+            'trans_user'      => $personId,
+        ]);
+
+        $response = $this->get('/items/search?search=OmittedFallback&limit=10&offset=0&sort=items.name&order=asc');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        $names = array_column($result['rows'], 'name');
+        $this->assertContains("OmittedFallbackAllowed_{$suffixA}", $names);
+        $this->assertNotContains("OmittedFallbackDenied_{$suffixB}", $names);
+    }
+
+    public function testGetSearch_RejectsFilterOverridesOfAuthorizedStockLocation(): void
+    {
+        $suffixA = bin2hex(random_bytes(8));
+        $suffixB = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "FilterOverrideAllowed_{$suffixA}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+
+        $locationB = ['location_name' => "FilterOverrideDenied_{$suffixB}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationB, NEW_ENTRY));
+
+        $locAId = (int) $locationA['location_id'];
+        $locBId = (int) $locationB['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $allowedItemData = [
+            'item_id' => null,
+            'name' => "FilterOverrideAllowed_{$suffixA}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'item_type' => (string) ITEM,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($allowedItemData));
+        $allowedItemId = (int) $allowedItemData['item_id'];
+
+        $deniedItemData = [
+            'item_id' => null,
+            'name' => "FilterOverrideDenied_{$suffixB}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'item_type' => (string) ITEM,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($deniedItemData));
+        $deniedItemId = (int) $deniedItemData['item_id'];
+
+        $this->item_quantity->save_value(['item_id' => $allowedItemId, 'location_id' => $locAId, 'quantity' => 10], $allowedItemId, $locAId);
+        $this->item_quantity->save_value(['item_id' => $deniedItemId, 'location_id' => $locBId, 'quantity' => 99], $deniedItemId, $locBId);
+
+        $this->inventory->insert([
+            'trans_date'      => date('Y-m-d H:i:s'),
+            'trans_inventory' => 10,
+            'trans_items'     => $allowedItemId,
+            'trans_location'  => $locAId,
+            'trans_comment'   => 'Filter override allowed setup',
+            'trans_user'      => $personId,
+        ]);
+
+        $this->inventory->insert([
+            'trans_date'      => date('Y-m-d H:i:s'),
+            'trans_inventory' => 99,
+            'trans_items'     => $deniedItemId,
+            'trans_location'  => $locBId,
+            'trans_comment'   => 'Filter override denied setup',
+            'trans_user'      => $personId,
+        ]);
+
+        $response = $this->get('/items/search?search=FilterOverride&limit=10&offset=0&sort=quantity&order=asc&stock_location=' . $locAId . '&filters%5B%5D=stock_location_id');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+
+        $names = array_column($result['rows'], 'name');
+        $this->assertContains("FilterOverrideAllowed_{$suffixA}", $names);
+        $this->assertNotContains("FilterOverrideDenied_{$suffixB}", $names);
+    }
+
+    public function testGetCountDetails_ExcludesUnauthorizedLocations(): void
+    {
+        $suffixA = bin2hex(random_bytes(8));
+        $suffixB = bin2hex(random_bytes(8));
+
+        $locationA = ['location_name' => "AuthWh2_{$suffixA}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationA, NEW_ENTRY));
+
+        $locationB = ['location_name' => "UnauthWh2_{$suffixB}", 'deleted' => 0];
+        $this->assertTrue($this->stock_location->saveValue($locationB, NEW_ENTRY));
+
+        $locAId = (int) $locationA['location_id'];
+        $locBId = (int) $locationB['location_id'];
+
+        $personId = $this->createEmployee(
+            grants: [
+                ['permission_id' => 'items', 'menu_group' => 'home'],
+                ['permission_id' => 'items_' . $locationA['location_name'], 'menu_group' => 'home'],
+            ]
+        );
+        $this->loginAsItemsEmployee($personId);
+
+        $itemData = [
+            'item_id' => null,
+            'name' => "CountDetailsItem_{$suffixA}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+        $itemId = (int) $itemData['item_id'];
+
+        $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locAId, 'quantity' => 10], $itemId, $locAId);
+        $this->item_quantity->save_value(['item_id' => $itemId, 'location_id' => $locBId, 'quantity' => 99], $itemId, $locBId);
+
+        $response = $this->get("/items/countDetails/{$itemId}");
+        $response->assertStatus(200);
+
+        $html = $response->getBody();
+        $this->assertStringNotContainsString($locationB['location_name'], $html);
+        $this->assertStringContainsString($locationA['location_name'], $html);
+    }
+
+    public function testGetCountDetails_RendersWhenNoAllowedLocations(): void
+    {
+        $suffix = bin2hex(random_bytes(8));
+
+        $personId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($personId);
+
+        $itemData = [
+            'item_id' => null,
+            'name' => "NoLocationsItem_{$suffix}",
+            'category' => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'item_type' => (string) ITEM,
+            'deleted' => 0,
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+        $itemId = (int) $itemData['item_id'];
+
+        $response = $this->get("/items/countDetails/{$itemId}");
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString($itemData['name'], (string) $response->getBody());
+    }
 }
 
