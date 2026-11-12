@@ -30,6 +30,7 @@ class CustomerCsvRowProcessor
     private Customer $customer;
     private Mailchimp_lib $mailchimpLib;
     private string $listId;
+    private string $queueName = 'imports';
 
     public function __construct()
     {
@@ -47,8 +48,10 @@ class CustomerCsvRowProcessor
      * @param int $employeeId Employee id of the user who started the import.
      * @return bool True on success, false if the row failed validation or save.
      */
-    public function process(array $data, int $employeeId): bool
+    public function process(array $data, int $employeeId, string $queueName = 'imports'): bool
     {
+        $this->queueName = $queueName;
+
         if (count($data) < 18) {
             return false;
         }
@@ -62,7 +65,7 @@ class CustomerCsvRowProcessor
         $email = filter_var(strtolower($data[4]), FILTER_SANITIZE_EMAIL);
 
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            job_log('imports', 'error', 'CSV Customer import failed: invalid email format');
+            job_log($this->queueName, 'error','CSV Customer import failed: invalid email format');
 
             return false;
         }
@@ -102,7 +105,7 @@ class CustomerCsvRowProcessor
         }
 
         if ($invalidated) {
-            job_log('imports', 'error', 'CSV Customer import failed: email or account number already exists, or data was invalid.');
+            job_log($this->queueName, 'error','CSV Customer import failed: email or account number already exists, or data was invalid.');
 
             return false;
         }

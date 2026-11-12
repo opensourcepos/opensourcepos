@@ -28,6 +28,7 @@ class ItemCsvRowProcessor
     private Attribute $attribute;
     private Supplier $supplier;
     private Stock_location $stockLocation;
+    private string $queueName = 'imports';
 
     public function __construct()
     {
@@ -47,8 +48,10 @@ class ItemCsvRowProcessor
      * @param array $attributeData Attribute definition lookups (see Attribute::getDefinitionByName()/getDefinitionValues()).
      * @return bool True on success, false if the row failed validation or save.
      */
-    public function process(array $row, int $employeeId, array $definitionNames, array $attributeData): bool
+    public function process(array $row, int $employeeId, array $definitionNames, array $attributeData, string $queueName = 'imports'): bool
     {
+        $this->queueName = $queueName;
+
         $allowedStockLocations = $this->stockLocation->get_allowed_locations('items', $employeeId);
 
         $itemId = (int)$row['Id'];
@@ -93,12 +96,12 @@ class ItemCsvRowProcessor
         $itemData = array_filter($itemData, static fn ($value) => $value !== null && strlen($value));
 
         if ($isFailedRow || !$this->item->save_value($itemData, $itemId)) {
-            job_log('imports', 'error', "Failed to save item. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+            job_log($this->queueName, 'error', "Failed to save item. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
             return false;
         }
 
-        job_log('imports', 'info', "Item Imported. item_id: {$itemData['item_id']}, barcode: '{$row['Barcode']}', name: '{$itemData['name']}'");
+        job_log($this->queueName, 'info', "Item Imported. item_id: {$itemData['item_id']}, barcode: '{$row['Barcode']}', name: '{$itemData['name']}'");
 
         $success = true;
 
@@ -169,7 +172,7 @@ class ItemCsvRowProcessor
 
         foreach ($valuesToCheckForEmpty as $key => $value) {
             if (($value === null || $value === '') && !$isUpdate) {
-                job_log('imports', 'error', "Empty required value in $key. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+                job_log($this->queueName, 'error', "Empty required value in $key. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
                 return true;
             }
@@ -178,7 +181,7 @@ class ItemCsvRowProcessor
         if (!$isUpdate) {
             $itemData['cost_price'] = empty($itemData['cost_price']) ? 0 : $itemData['cost_price'];
         } elseif (!$this->item->exists($itemId)) {
-            job_log('imports', 'error', "non-existent item_id: '$itemId' when either existing item_id or no item_id is required. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+            job_log($this->queueName, 'error', "non-existent item_id: '$itemId' when either existing item_id or no item_id is required. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
             return true;
         }
@@ -198,7 +201,7 @@ class ItemCsvRowProcessor
 
         foreach ($valuesToCheckForNumeric as $key => $value) {
             if (!is_numeric($value) && !empty($value)) {
-                job_log('imports', 'error', "non-numeric: '$value' for '$key' when numeric is required. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+                job_log($this->queueName, 'error', "non-numeric: '$value' for '$key' when numeric is required. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
                 return true;
             }
@@ -208,7 +211,7 @@ class ItemCsvRowProcessor
             $formatRules = new FormatRules();
 
             if (!$formatRules->alpha_numeric_punct($itemData['item_number'])) {
-                job_log('imports', 'error', "invalid item_number: '{$itemData['item_number']}' contains disallowed characters. item_id: '$itemId', name: '{$row['Item Name']}'");
+                job_log($this->queueName, 'error', "invalid item_number: '{$itemData['item_number']}' contains disallowed characters. item_id: '$itemId', name: '{$row['Item Name']}'");
 
                 return true;
             }
@@ -217,7 +220,7 @@ class ItemCsvRowProcessor
         $invalidLocations = $this->validateStockLocations($row, $allowedStockLocations);
 
         if (!empty($invalidLocations)) {
-            job_log('imports', 'error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations) . ". item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+            job_log($this->queueName, 'error', 'CSV import: Invalid stock location(s) found: ' . implode(', ', $invalidLocations) . ". item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
             return true;
         }
@@ -242,21 +245,21 @@ class ItemCsvRowProcessor
                     $dropdownValues[] = '';
 
                     if (!empty($attributeValue) && !in_array($attributeValue, $dropdownValues)) {
-                        job_log('imports', 'error', "Value: '$attributeValue' is not an acceptable DROPDOWN value. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+                        job_log($this->queueName, 'error', "Value: '$attributeValue' is not an acceptable DROPDOWN value. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
                         return true;
                     }
                     break;
                 case DECIMAL:
                     if (!is_numeric($attributeValue) && !empty($attributeValue)) {
-                        job_log('imports', 'error', "'$attributeValue' is not an acceptable DECIMAL value. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+                        job_log($this->queueName, 'error', "'$attributeValue' is not an acceptable DECIMAL value. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
                         return true;
                     }
                     break;
                 case DATE:
                     if (!isValidDate($attributeValue) && !empty($attributeValue)) {
-                        job_log('imports', 'error', "'$attributeValue' is not an acceptable DATE value. The value must match the set locale. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+                        job_log($this->queueName, 'error', "'$attributeValue' is not an acceptable DATE value. The value must match the set locale. item_id: '$itemId', name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
                         return true;
                     }

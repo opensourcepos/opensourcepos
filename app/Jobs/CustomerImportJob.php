@@ -19,7 +19,7 @@ class CustomerImportJob extends BaseOsposJob
         $employeeId = $this->data['employee_id'];
 
         $processor = new CustomerCsvRowProcessor();
-        $success = $processor->process($row, $employeeId);
+        $success = $processor->process($row, $employeeId, $this->data['queue_name'] ?? 'imports');
 
         service('importBatch')->increment($batchId, !$success);
     }

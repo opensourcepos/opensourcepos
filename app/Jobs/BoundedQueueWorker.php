@@ -188,6 +188,7 @@ class BoundedQueueWorker
                 $queue->done($w);
             }
             $this->processed += count($allWorks);
+            job_log($work->queue, 'info', $work->payload['job'] . ' completed (' . count($allWorks) . ' job(s))');
         } catch (Throwable $e) {
             foreach ($allWorks as $w) {
                 $w->attempts++;

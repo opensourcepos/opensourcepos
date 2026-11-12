@@ -23,7 +23,7 @@ class ItemImportJob extends BaseOsposJob
         $attributeData = $context['attribute_data'];
 
         $processor = new ItemCsvRowProcessor();
-        $success = $processor->process($row, $employeeId, $definitionNames, $attributeData);
+        $success = $processor->process($row, $employeeId, $definitionNames, $attributeData, $this->data['queue_name'] ?? 'imports');
 
         service('importBatch')->increment($batchId, !$success);
     }

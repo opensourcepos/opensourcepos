@@ -57,6 +57,7 @@ class ImportBatchService
      */
     public function pushRow(string $queue, string $job, array $data, string $batchId, string $priority): bool
     {
+        $data['queue_name'] = $queue;
         $result = service('queue')->setPriority($priority)->push($queue, $job, $data);
 
         if (!$result->getStatus()) {
