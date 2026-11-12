@@ -7,6 +7,7 @@ use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
+use Config\OSPOS;
 
 class No_accessControllerTest extends CIUnitTestCase
 {
@@ -26,6 +27,8 @@ class No_accessControllerTest extends CIUnitTestCase
         $this->resetDatabaseOnce();
 
         parent::setUp();
+
+        config(OSPOS::class)->update_settings();
     }
 
     public function testGetIndex_ShowsOfficeLinkForOfficeOnlyEmployee(): void
