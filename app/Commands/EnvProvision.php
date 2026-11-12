@@ -41,7 +41,7 @@ class EnvProvision extends BaseCommand
         $throttleEnvKey = getenv('THROTTLE_KEY');
 
         if ($throttleEnvKey !== false && $throttleEnvKey !== '') {
-            CLI::write('throttle.key       : already provided via THROTTLE_KEY', 'green');
+            CLI::write('throttle.key       : THROTTLE_KEY is set; provisioning skipped', 'green');
         } else {
             $throttleKey = provisionThrottleKey();
             CLI::write('throttle.key       : ' . ($throttleKey !== '' ? 'present' : 'MISSING'), 'green');
