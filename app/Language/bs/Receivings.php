@@ -28,6 +28,7 @@ return [
     'item_name'                    => 'Naziv artikla',
     'mode'                         => 'Način prijema',
     'new_supplier'                 => 'Novi dobavljač',
+    'not_authorized'               => '',
     'one_or_multiple'              => 'Ulaz(i)',
     'print_after_sale'             => 'Štampaj poslije prodaje',
     'quantity'                     => 'Količina',

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'שם קטגורית הוצאה נדרש',
     'add_item'                          => 'הוסף קטגוריה',
     'cannot_be_deleted'                 => 'לא ניתן למחוק קטגוריית הוצאה(ות)',
     'category_id'                       => 'מזהה',
+    'category_name_required'            => 'שם קטגורית הוצאה נדרש',
     'confirm_delete'                    => 'האם אתה בטוח שברצונך למחוק את קטגוריית ההוצאה שנבחרה?',
     'confirm_restore'                   => 'האם אתה בטוח שברצונך לשחזר את קטגוריית ההוצאה שנבחרה?',
     'description'                       => 'תיאור קטגוריה',

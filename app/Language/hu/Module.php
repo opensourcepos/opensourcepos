@@ -26,7 +26,7 @@ return [
     'item_kits_desc'             => 'Termék csomagok hozzáadása, módosítása, törlése és keresése',
     'items'                      => 'Termékek',
     'items_desc'                 => 'Termékek hozzáadása, módosítása, törlése és keresése',
-    'messages'                   => 'Messages',
+    'messages'                   => '',
     'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
     'migrate'                    => '',
     'migrate_desc'               => '',

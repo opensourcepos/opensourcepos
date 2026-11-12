@@ -38,7 +38,7 @@ return [
     'february'  => 'Februar',
     'march'     => 'Mars',
     'april'     => 'April',
-    'mayl'      => '',
+    'mayl'      => 'Mai',
     'june'      => 'Juni',
     'july'      => 'Juli',
     'august'    => 'August',

@@ -9,7 +9,7 @@ return [
     'invalid_gcaptcha'              => '',
     'invalid_installation'          => '',
     'invalid_username_and_password' => 'Ungültiger Benutzername/Passwort',
-    'login'                         => 'Login',
+    'login'                         => '',
     'logout'                        => 'Abmelden',
     'migrating_database'            => 'Datenbank wird migriert',
     'migration_auth_message'        => 'Administrator-Anmeldedaten sind erforderlich, um die Datenbank-Migration auf Version {0} zu autorisieren. Bitte melden Sie sich an, um fortzufahren.',

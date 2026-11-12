@@ -27,7 +27,7 @@ return [
     'due_filter'                 => 'Vencimento',
     'employee'                   => 'Criado por',
     'error_adding_updating'      => 'Erro ao adicionar / atualizar a despesa',
-    'expense_id'                 => 'Id',
+    'expense_id'                 => '',
     'expenses_employee'          => 'Funcionário',
     'info'                       => 'Informação da despesa',
     'ip_address'                 => '',

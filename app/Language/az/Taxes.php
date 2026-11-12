@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => 'Standart Vergi Dərəcəsi',
     'error_adding_updating'                  => 'Vergi Kodu əlavə edilmədi və ya yenilənmədi',
     'group_seq'                              => 'Qrup Ardıcıllığı',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => 'Yurisdiksiya Adı',
     'name'                                   => 'Ad',
     'new'                                    => 'Yeni Vergi',

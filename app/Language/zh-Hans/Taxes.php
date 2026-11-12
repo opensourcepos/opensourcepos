@@ -12,6 +12,7 @@ return [
     'default_tax_rate'                       => '预设税率',
     'error_adding_updating'                  => '税码添加或更新失败',
     'group_seq'                              => '',
+    'jurisdiction_id'                        => '',
     'jurisdiction_name'                      => '税收管辖区名称',
     'name'                                   => '税费名称',
     'new'                                    => '新建税',

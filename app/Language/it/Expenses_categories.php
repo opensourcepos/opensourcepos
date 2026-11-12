@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'category_name_required'            => 'E\' richiesto il nome per la Categoria Spesa',
     'add_item'                          => 'Aggiungi categoria',
     'cannot_be_deleted'                 => 'Non puoi eliminare la Categoria Spese',
-    'category_id'                       => 'Id',
+    'category_id'                       => '',
+    'category_name_required'            => 'E\' richiesto il nome per la Categoria Spesa',
     'confirm_delete'                    => 'Sei sicuro di voler eliminare la Categoria Spesa selezionata?',
     'confirm_restore'                   => 'Sei sicuro di voler ripristinare la categoria di spesa selezionata?',
     'description'                       => 'Descrizione Categoria',

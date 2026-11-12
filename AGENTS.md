@@ -91,18 +91,34 @@ This document provides guidance for AI agents working on the Open Source Point o
 
 ## Localization
 
-- When adding new keys to language files, add the key to all `app/Language/*/` variants
-- **New keys must be inserted in alphabetical order** within the language array
-- Non-English files must use an empty string (`''`) as the value when no translation is provided — CodeIgniter automatically falls back to the default (`en`) language. This applies only when a translation genuinely isn't available yet.
-- **When explicitly asked to translate a phrase for a non-English language file, always provide the actual translation** — never leave the value as an empty string, and never leave source English text in a non-English language file
-- Never copy English text from a neighboring key as a value for a non-English language file, even if that neighboring key is already untranslated — evaluate each key independently
-- Only `app/Language/en/` and `app/Language/en-GB/` should contain English strings
-- When translating a string containing placeholders (e.g. `{filePath}`, `{reason}`) or literal filenames/keys (e.g. `throttle.key`, `.env`), keep that placeholder or filename text unchanged and untranslated — move it to whatever position is grammatically correct in the translated sentence
-- Interpolate user-facing strings with `lang()` and **named** placeholders (e.g. `{company}`, `{count}`) rather than string concatenation or positional placeholders (`{0}`, `{1}`) — this lets a translation reorder the placeholder to fit grammar, and named placeholders are self-documenting for translators (see `app/Helpers/security_helper.php:441`). CodeIgniter 4.7+ formats these via ICU `MessageFormatter` (the `intl` extension is a hard dependency), so ICU MessageFormat syntax is also available where a string needs it, e.g. `lang('...', ['count' => $n])` with `'{count, plural, =0 {None} one {# item} other {# items}}'`
-- Because placeholders are formatted by ICU `MessageFormatter`, a **placeholder-bearing** translation must be valid ICU MessageFormat: double any literal braces (`{{`/`}}`) and any apostrophe (`''`) to render them literally, or `MessageFormatter` fails and CodeIgniter appends a formatting warning to the output. Placeholder-free strings are never passed to ICU, so they are unaffected
-- Plugin language files (`app/Plugins/*/Language/`) follow the same localization rules as `app/Language/`
-- Use `'` to encapsulate key and string values. If the value contains `'` then it should be escaped as `\'`
-- Align the `=>` of a newly inserted key with the `=>` column already used by the rest of the file, if that file pads keys to a fixed column (not all do — some files have no padding at all). If the new key is longer than the widest existing key and would push the alignment column further right, reformat the whole file to the new wider column rather than leaving only the new line at a different width
+- **Key Parity**: All catalogs must maintain the exact same keys as `app/Language/en/` (no extra or missing keys). Adding a key requires adding it to `en/` with the English source text, and to all other `app/Language/*/` files (using `''` if untranslated, including `en-GB`).
+- **Alphabetical Ordering**: All catalogs must be sorted alphabetically by key, **except `Calendar.php`** (ordered chronologically by day and month sequences).
+- **Direct Fallback to `en`**: Non-English files use `''` for untranslated strings to trigger dynamic fallback to `en` (`nl-NL > en`, `nl-BE > en`, `hr > en`, `en-GB > en`).
+- **British English (`en-GB`)**: Only include strings differing in UK spelling/vocabulary (*Cheque*, *Centre*, *Post Code*). Keep identical strings as `''` to inherit updates from `en`.
+- **Locale Naming (BCP 47)**:
+  - **General languages**: Use bare ISO language codes (`hr` not `hr-HR`, `fr`, `it`, `da`, `ckb`). Do not add redundant country tags when a language has no regional distinction.
+  - **Regional / dialect variants**: Use `{lang}-{REGION}` when targeting a specific regional dialect (`nl-NL` & `nl-BE`, `de-DE` & `de-CH`, `es-ES` & `es-MX`, `en-GB`, `pt-BR`). Chinese uses script subtags (`zh-Hans`, `zh-Hant`).
+- **Locale Registration**: Register new locales in both `app/Config/App.php` (`$supportedLocales`) and `app/Helpers/locale_helper.php` (`get_languages()`, format: `'code:name' => 'English Name'`).
+- **Calendar Convention (`may` vs `mayl`)**: `may` is the 3-letter abbreviation; `mayl` is the full month name (*May* long). Datepickers and full-month arrays must reference `lang('Calendar.mayl')`, while short-month arrays reference `lang('Calendar.may')`.
+- **Translation Integrity**:
+  - When deprecating or renaming keys, always migrate existing non-English human translations to the new key/module. If a legacy translation references the wrong entity (e.g. 'item' in Attributes), reset it to `''`.
+  - When an English string in `app/Language/en/` is changed or rewritten, reset the corresponding non-English strings in `app/Language/*/` to `''` so they dynamically fall back to the updated English text and signal to translators that a new translation is required.
+- **Placeholders & ICU Formatting**:
+  - Interpolate user-facing strings with `lang()` and **named** placeholders (e.g. `{company}`) rather than string concatenation or positional placeholders (`{0}`).
+  - Translations must preserve all placeholders (`{0}`, `{name}`) and literal keys/filenames untranslated (reordering within the sentence to fit natural grammar is encouraged); never omit them.
+  - Placeholder-bearing translations use ICU `MessageFormatter`: double literal braces (`{{`/`}}`) and apostrophes (`''`) to avoid syntax warnings.
+- **Punctuation & Wrappers**:
+  - No leading or trailing whitespace in strings; never rely on trailing spaces for concatenation.
+  - If an English string is enclosed in brackets `[...]` or parentheses `(...)`, translations must preserve that enclosure (or localized fullwidth equivalents like `【...】` / `（...）`).
+  - Watch for duplicate punctuation typos (e.g. `::` or `..` instead of ellipsis `...`).
+  - Indicator flags (`taxed_ind`, `nontaxed_ind`) and report badges (`Reports.code_*`) must be kept compact (single characters or short abbreviations, never full sentences or punctuation placeholders like `'-'`, `'.'`). Untranslated indicators must remain `''` to inherit from `en`.
+- **Language File Syntax & Formatting**:
+  - Only `app/Language/en/` and `app/Language/en-GB/` may contain English prose. Universal brand names and acronyms (`ID`, `SMS`, `POS`, `Mailchimp`, `CSV`) are acceptable in non-English files, but never copy English sentences or phrases; leave as `''` to inherit from `en`.
+  - `Datepicker.weekstart` is a numeric calendar setting (`0` = Sunday, `1` = Monday, `6` = Saturday), not English text — never wipe it to `''`.
+  - Enclose keys and strings in `'` (escape internal quotes as `\'`). Array keys must be unique.
+  - Align `=>` to match the file's standard column padding (e.g. column 40). Avoid unnecessarily re-padding entire catalogs for a single long key.
+  - Plugin language files (`app/Plugins/*/Language/`) follow the same rules.
+- **Validation**: Run `vendor/bin/phpunit tests/LanguageFilesTest.php` to verify syntax, key parity, sorting, duplicate rejection, and locale registration.
 
 ## Security
 
