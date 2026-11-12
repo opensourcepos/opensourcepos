@@ -10,8 +10,8 @@ $routes->get('login', 'Login::index');
 $routes->post('login', 'Login::index');
 $routes->post('migrate', 'Login::migrate');
 
-$routes->add('no_access/index/(:segment)', 'No_access::index/$1');
-$routes->add('no_access/index/(:segment)/(:segment)', 'No_access::index/$1/$2');
+$routes->add('no_access/index/(:segment)', 'No_access::getIndex/$1');
+$routes->add('no_access/index/(:segment)/(:segment)', 'No_access::getIndex/$1/$2');
 
 $routes->add('reports/summary_(:any)/(:any)/(:any)', 'Reports::Summary_$1/$2/$3/$4');
 $routes->add('reports/summary_expenses_categories', 'Reports::date_input_only');

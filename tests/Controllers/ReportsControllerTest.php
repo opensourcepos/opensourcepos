@@ -105,7 +105,10 @@ class ReportsControllerTest extends CIUnitTestCase
     public function testNonAdminWithoutReportGrantIsDeniedSummaryCustomers(): void
     {
         $nonAdminId = $this->createNonAdminEmployee([
-            'grants' => [
+            'username' => 'summarycustomersdenied',
+            'email'    => 'summarycustomersdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
                 ['permission_id' => 'reports_sales', 'menu_group' => 'home']
             ]
         ]);
@@ -114,7 +117,7 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/summary_customers');
 
         $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $this->assertStringContainsString('no_access/index/reports/reports_customers', $response->getRedirectUrl());
     }
 
     /**
@@ -127,7 +130,10 @@ class ReportsControllerTest extends CIUnitTestCase
     public function testDoubleEncodedUnderscoreCannotBypassSummaryCustomersGrantCheck(): void
     {
         $nonAdminId = $this->createNonAdminEmployee([
-            'grants' => [
+            'username' => 'summarybypassdenied',
+            'email'    => 'summarybypassdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
                 ['permission_id' => 'reports_sales', 'menu_group' => 'home']
             ]
         ]);
@@ -136,7 +142,7 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/summary%255Fcustomers');
 
         $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $this->assertStringContainsString('no_access/index/reports/reports', $response->getRedirectUrl());
     }
 
     /**
@@ -148,7 +154,10 @@ class ReportsControllerTest extends CIUnitTestCase
     public function testDoubleEncodedUnderscoreCannotBypassDetailedSalesGrantCheck(): void
     {
         $nonAdminId = $this->createNonAdminEmployee([
-            'grants' => [
+            'username' => 'detailedbypassdenied',
+            'email'    => 'detailedbypassdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
                 ['permission_id' => 'reports_customers', 'menu_group' => 'home']
             ]
         ]);
@@ -157,7 +166,7 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/detailed%255Fsales');
 
         $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $this->assertStringContainsString('no_access/index/reports/reports', $response->getRedirectUrl());
     }
 
     /**
@@ -202,6 +211,97 @@ class ReportsControllerTest extends CIUnitTestCase
         $this->loginAs($employeeId);
 
         $response = $this->get('/reports');
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * The detailed sales row refresh endpoint must require reports_sales.
+     *
+     * @return void
+     */
+    public function testGetGet_detailed_sales_row_RequiresReportsSalesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'salesrowdenied',
+            'email'    => 'salesrowdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/get_detailed_sales_row/1');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_sales', $response->getRedirectUrl());
+    }
+
+    /**
+     * The detailed receivings row refresh endpoint must require reports_receivings.
+     *
+     * @return void
+     */
+    public function testGetGet_detailed_receivings_row_RequiresReportsReceivingsGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'receivingsrowdenied',
+            'email'    => 'receivingsrowdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/get_detailed_receivings_row/1');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_receivings', $response->getRedirectUrl());
+    }
+
+    /**
+     * The detailed item sales input form must require reports_sales.
+     *
+     * @return void
+     */
+    public function testDateInputItemSales_RequiresReportsSalesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'itemsalesinputdenied',
+            'email'    => 'itemsalesinputdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/detailed_item_sales');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_sales', $response->getRedirectUrl());
+    }
+
+    /**
+     * The detailed item sales input form must accept the reports_sales grant.
+     *
+     * @return void
+     */
+    public function testDateInputItemSales_AcceptsReportsSalesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'itemsalesinputallowed',
+            'email'    => 'itemsalesinputallowed@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/detailed_item_sales');
 
         $response->assertStatus(200);
     }

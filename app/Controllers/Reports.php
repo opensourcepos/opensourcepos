@@ -29,6 +29,7 @@ use App\Models\Reports\Summary_taxes;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\OSPOS;
+use Config\ReportPermissions;
 use Config\Services;
 
 class Reports extends Secure_Controller
@@ -81,29 +82,7 @@ class Reports extends Secure_Controller
         $this->detailed_receivings = model(Detailed_receivings::class);
         $this->inventory_summary = model(Inventory_summary::class);
 
-        // Map report URL names to their required permission
-        $reportPermissions = [
-            'summary_sales'              => 'reports_sales',
-            'summary_expenses_categories'=> 'reports_expenses_categories',
-            'summary_payments'           => 'reports_payments',
-            'summary_discounts'          => 'reports_discounts',
-            'summary_categories'         => 'reports_categories',
-            'summary_customers'          => 'reports_customers',
-            'summary_items'              => 'reports_items',
-            'summary_suppliers'          => 'reports_suppliers',
-            'summary_employees'          => 'reports_employees',
-            'summary_taxes'              => 'reports_taxes',
-            'summary_sales_taxes'        => 'reports_sales_taxes',
-            'detailed_item_sales'        => 'reports_sales',
-            'detailed_sales'             => 'reports_sales',
-            'detailed_receivings'        => 'reports_receivings',
-            'inventory_summary'          => 'reports_inventory',
-            'inventory_low'              => 'reports_inventory',
-            'specific_customers'         => 'reports_customers',
-            'specific_employees'         => 'reports_employees',
-            'specific_discounts'         => 'reports_discounts',
-            'specific_suppliers'         => 'reports_suppliers',
-        ];
+        $reportPermissions = config(ReportPermissions::class);
 
         // Normalize the report name: strip graphical_ prefix and _graph/_row suffixes
         $reportName = $methodName;
@@ -112,11 +91,14 @@ class Reports extends Secure_Controller
         }
         $reportName = preg_replace('/_(graph|row)$/', '', $reportName);
 
-        $submoduleId = $reportPermissions[$reportName] ?? null;
+        $submoduleId = $reportPermissions->routes[$reportName] ?? null;
 
-        // Check access to report submodule
+        if ($submoduleId === null && !in_array($methodName, $reportPermissions->helperRoutes, true)) {
+            throw new RedirectException('no_access/index/reports/reports');
+        }
+
         if ($submoduleId !== null && !$this->employee->has_grant($submoduleId, $this->employee->get_logged_in_employee_info()->person_id)) {
-            throw new RedirectException('no_access/reports/' . $submoduleId);
+            throw new RedirectException('no_access/index/reports/' . $submoduleId);
         }
 
         helper('report');
