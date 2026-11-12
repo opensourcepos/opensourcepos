@@ -146,7 +146,8 @@ use App\Models\Employee;
             uniqueId: 'uid',
             queryParams: function() {
                 const params = $.extend(arguments[0], {
-                    "queues": $("#queues").val()
+                    "queues": $("#queues").val(),
+                    "statuses": $("#statuses").val()
                 });
                 lastQueryParams = params;
                 return params;
@@ -154,6 +155,10 @@ use App\Models\Employee;
             onLoadSuccess: function(response) {
                 bindRowActions();
             }
+        });
+
+        $('#queues, #statuses').on('hidden.bs.select', function() {
+            table_support.refresh();
         });
 
         const pollingFrequencySeconds = <?= (int)($config['table_polling_frequency'] ?? 0) ?>;
@@ -234,6 +239,20 @@ use App\Models\Employee;
             'id'                        => 'queues',
             'class'                     => 'selectpicker show-menu-arrow',
             'data-none-selected-text'   => lang('Jobs.all_queues'),
+            'data-selected-text-format' => 'count > 1',
+            'data-style'                => 'btn-default btn-sm',
+            'data-width'                => 'fit'
+        ]) ?>
+        <?php $statusOptions = [
+            'pending'  => lang('Jobs.status_pending'),
+            'reserved' => lang('Jobs.status_reserved'),
+            'paused'   => lang('Jobs.status_paused'),
+            'failed'   => lang('Jobs.status_failed'),
+        ] ?>
+        <?= form_multiselect('statuses[]', $statusOptions, [], [
+            'id'                        => 'statuses',
+            'class'                     => 'selectpicker show-menu-arrow',
+            'data-none-selected-text'   => lang('Jobs.all_statuses'),
             'data-selected-text-format' => 'count > 1',
             'data-style'                => 'btn-default btn-sm',
             'data-width'                => 'fit'

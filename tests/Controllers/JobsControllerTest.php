@@ -36,7 +36,7 @@ class JobsControllerTest extends CIUnitTestCase
 
         $this->jobThrottle = model(JobThrottle::class);
         $this->db->table('job_throttles')->truncate();
-        $this->db->table('queue_paused_jobs')->truncate();
+        $this->db->table('queue_jobs_paused')->truncate();
         $this->db->table('queue_jobs')->truncate();
     }
 
@@ -253,7 +253,7 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertTrue($result['success']);
 
         $this->dontSeeInDatabase('queue_jobs', ['queue' => 'default']);
-        $this->seeInDatabase('queue_paused_jobs', ['queue' => 'default', 'paused_by' => 'manual']);
+        $this->seeInDatabase('queue_jobs_paused', ['queue' => 'default', 'paused_by' => 'manual']);
     }
 
     public function testPostPauseJobsLeavesReservedJobInQueue(): void
@@ -277,7 +277,7 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertTrue($result['success']);
 
         $this->seeInDatabase('queue_jobs', ['queue' => 'default', 'status' => 1]);
-        $this->dontSeeInDatabase('queue_paused_jobs', ['queue' => 'default']);
+        $this->dontSeeInDatabase('queue_jobs_paused', ['queue' => 'default']);
     }
 
     public function testPostPauseJobsRejectsEmptySelection(): void
@@ -289,5 +289,75 @@ class JobsControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
+    }
+
+    public function testGetSearch_NoStatusFilter_ReturnsAllSources(): void
+    {
+        $this->loginAsAdmin();
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'default',
+            'payload'    => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => $now,
+        ]);
+
+        $response = $this->get('/jobs/search?limit=25&offset=0');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $sources = array_column($result['rows'], 'source');
+
+        $this->assertContains('pending', $sources);
+        $this->assertContains('failed', $sources);
+        $this->assertSame(2, $result['total']);
+    }
+
+    public function testGetSearch_StatusFilterPending_ExcludesFailedRows(): void
+    {
+        $this->loginAsAdmin();
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'default',
+            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'default',
+            'payload'    => json_encode(['job' => 'TestJob', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => $now,
+        ]);
+
+        $response = $this->get('/jobs/search?limit=25&offset=0&statuses[]=pending');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $sources = array_column($result['rows'], 'source');
+
+        $this->assertContains('pending', $sources);
+        $this->assertNotContains('failed', $sources);
+        $this->assertSame(1, $result['total']);
     }
 }

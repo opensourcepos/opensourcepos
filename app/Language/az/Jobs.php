@@ -3,6 +3,7 @@
 return [
     'add_throttle'                      => 'Məhdudlaşdırma əlavə et',
     'all_queues'                        => 'Bütün Növbələr',
+    'all_statuses'                      => 'Bütün Statuslar',
     'auto_purge'                        => 'Avtomatik Təmizlə',
     'available_at'                      => 'Mövcuddur',
     'code'                              => 'Kod',

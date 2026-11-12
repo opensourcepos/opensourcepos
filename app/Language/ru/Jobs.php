@@ -3,6 +3,7 @@
 return [
     'add_throttle'                      => 'Добавить ограничение',
     'all_queues'                        => 'Все очереди',
+    'all_statuses'                      => 'Все статусы',
     'auto_purge'                        => 'Автоочистка',
     'available_at'                      => 'Доступно в',
     'code'                              => 'Код',

@@ -24,15 +24,9 @@ class JobQueueManage
         $this->db = Database::connect();
     }
 
-    /**
-     * @param string[] $queues Queue names to include; empty means all core queues.
-     */
-    /**
-     * @return array|int Array of stdClass rows, or the row count when $countOnly is true.
-     */
-    public function search(string $search, array $queues, int $limit = 0, int $limitFrom = 0, string $sort = 'date', string $order = 'desc', bool $countOnly = false): array|int
+    public function search(string $search, array $queues, int $limit = 0, int $limitFrom = 0, string $sort = 'date', string $order = 'desc', bool $countOnly = false, array $statuses = []): array|int
     {
-        $unionSql = $this->buildUnionSql($search, $queues);
+        $unionSql = $this->buildUnionSql($search, $queues, $statuses);
 
         if ($countOnly) {
             return (int)$this->db->query(
@@ -53,54 +47,88 @@ class JobQueueManage
         return $this->db->query($sql)->getResult();
     }
 
-    public function getFoundRows(string $search, array $queues): int
+    public function getFoundRows(string $search, array $queues, array $statuses = []): int
     {
-        return $this->search($search, $queues, 0, 0, 'date', 'desc', true);
+        return $this->search($search, $queues, 0, 0, 'date', 'desc', true, $statuses);
     }
 
     /**
      * @param string[] $queues
+     * @param string[] $statuses
      */
-    private function buildUnionSql(string $search, array $queues): string
+    private function buildUnionSql(string $search, array $queues, array $statuses = []): string
     {
+        $allowedStatuses = ['pending', 'reserved', 'paused', 'failed'];
+        $statuses = array_values(array_intersect($statuses, $allowedStatuses));
+        $filterStatuses = $statuses !== [];
+
         $coreQueues = config(JobsConfig::class)->coreQueues ?? [];
         $queues = array_values(array_intersect($queues === [] ? $coreQueues : $queues, $coreQueues));
 
-        $pending = $this->db->table('queue_jobs')
-            ->select("CONCAT(IF(status = 1, 'reserved', 'pending'), ':', id) AS uid", false)
-            ->select("IF(status = 1, 'reserved', 'pending') AS source", false)
-            ->select('queue, payload, priority, attempts, NULL AS exception, created_at AS date')
-            ->whereIn('queue', $queues);
+        $parts = [];
 
-        $failed = $this->db->table('queue_jobs_failed')
-            ->select("CONCAT('failed:', id) AS uid", false)
-            ->select("'failed' AS source", false)
-            ->select('queue, payload, priority, attempts, exception, failed_at AS date')
-            ->whereIn('queue', $queues);
+        $wantPending = !$filterStatuses || in_array('pending', $statuses, true);
+        $wantReserved = !$filterStatuses || in_array('reserved', $statuses, true);
 
-        $paused = $this->db->table('queue_paused_jobs')
-            ->select("CONCAT('paused:', id) AS uid", false)
-            ->select("'paused' AS source", false)
-            ->select('queue, payload, priority, attempts, NULL AS exception, paused_at AS date')
-            ->whereIn('queue', $queues);
+        if ($wantPending || $wantReserved) {
+            $queueJobs = $this->db->table('queue_jobs')
+                ->select("CONCAT(IF(status = 1, 'reserved', 'pending'), ':', id) AS uid", false)
+                ->select("IF(status = 1, 'reserved', 'pending') AS source", false)
+                ->select('queue, payload, priority, attempts, NULL AS exception, created_at AS date')
+                ->whereIn('queue', $queues);
 
-        if ($search !== '') {
-            $pending->groupStart()
-                ->like('queue', $search)
-                ->orLike('payload', $search)
-                ->groupEnd();
-            $failed->groupStart()
-                ->like('queue', $search)
-                ->orLike('payload', $search)
-                ->orLike('exception', $search)
-                ->groupEnd();
-            $paused->groupStart()
-                ->like('queue', $search)
-                ->orLike('payload', $search)
-                ->groupEnd();
+            if ($wantPending && !$wantReserved) {
+                $queueJobs->where('status', 0);
+            } elseif ($wantReserved && !$wantPending) {
+                $queueJobs->where('status', 1);
+            }
+
+            if ($search !== '') {
+                $queueJobs->groupStart()
+                    ->like('queue', $search)
+                    ->orLike('payload', $search)
+                    ->groupEnd();
+            }
+
+            $parts[] = $queueJobs->getCompiledSelect();
         }
 
-        return $pending->union($failed)->union($paused)->getCompiledSelect();
+        if (!$filterStatuses || in_array('failed', $statuses, true)) {
+            $failed = $this->db->table('queue_jobs_failed')
+                ->select("CONCAT('failed:', id) AS uid", false)
+                ->select("'failed' AS source", false)
+                ->select('queue, payload, priority, attempts, exception, failed_at AS date')
+                ->whereIn('queue', $queues);
+
+            if ($search !== '') {
+                $failed->groupStart()
+                    ->like('queue', $search)
+                    ->orLike('payload', $search)
+                    ->orLike('exception', $search)
+                    ->groupEnd();
+            }
+
+            $parts[] = $failed->getCompiledSelect();
+        }
+
+        if (!$filterStatuses || in_array('paused', $statuses, true)) {
+            $paused = $this->db->table('queue_jobs_paused')
+                ->select("CONCAT('paused:', id) AS uid", false)
+                ->select("'paused' AS source", false)
+                ->select('queue, payload, priority, attempts, NULL AS exception, paused_at AS date')
+                ->whereIn('queue', $queues);
+
+            if ($search !== '') {
+                $paused->groupStart()
+                    ->like('queue', $search)
+                    ->orLike('payload', $search)
+                    ->groupEnd();
+            }
+
+            $parts[] = $paused->getCompiledSelect();
+        }
+
+        return implode(' UNION ', $parts);
     }
 
     /**

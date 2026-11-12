@@ -148,9 +148,10 @@ class Jobs extends Secure_Controller
         $sort = $this->sanitizeSortColumn(job_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'date');
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'desc';
         $queues = $this->request->getGet('queues', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
+        $statuses = $this->request->getGet('statuses', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
 
-        $jobs = $this->jobQueueManage->search($search, $queues, $limit, $offset, $sort, $order);
-        $total_rows = $this->jobQueueManage->getFoundRows($search, $queues);
+        $jobs = $this->jobQueueManage->search($search, $queues, $limit, $offset, $sort, $order, false, $statuses);
+        $total_rows = $this->jobQueueManage->getFoundRows($search, $queues, $statuses);
 
         $data_rows = [];
 
@@ -365,7 +366,7 @@ class Jobs extends Secure_Controller
     {
         $this->db->transStart();
 
-        $query = $this->db->table('queue_paused_jobs');
+        $query = $this->db->table('queue_jobs_paused');
         $query = $id !== null ? $query->where('id', $id) : $query->whereIn('queue', $queues);
 
         $rows = $query->get()->getResultArray();
@@ -380,7 +381,7 @@ class Jobs extends Secure_Controller
             unset($row);
 
             $this->db->table('queue_jobs')->insertBatch($rows);
-            $this->db->table('queue_paused_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
+            $this->db->table('queue_jobs_paused')->whereIn('id', array_column($rows, 'id'))->delete();
         }
 
         $this->db->transComplete();
@@ -548,7 +549,7 @@ class Jobs extends Secure_Controller
     }
 
     /**
-     * Moves pending jobs out of queue_jobs into queue_paused_jobs for the
+     * Moves pending jobs out of queue_jobs into queue_jobs_paused for the
      * given queues (or all core queues), leaving in-flight ('reserved') jobs
      * alone to finish (issue #3833's pause/resume design). When the scope is
      * 'selected', pauses only the queue names posted from the Utilities tab's
@@ -575,7 +576,7 @@ class Jobs extends Secure_Controller
     }
 
     /**
-     * Moves a single pending job out of queue_jobs into queue_paused_jobs.
+     * Moves a single pending job out of queue_jobs into queue_jobs_paused.
      * Used by the Manage tab's per-row pause icon. Reserved ('in progress')
      * jobs are left alone, same guard as the bulk pause path.
      *
@@ -603,7 +604,7 @@ class Jobs extends Secure_Controller
     }
 
     /**
-     * Moves pending jobs from queue_jobs into queue_paused_jobs, guarded by
+     * Moves pending jobs from queue_jobs into queue_jobs_paused, guarded by
      * status = PENDING so in-flight ('reserved') jobs are never paused out
      * from under a worker (issue #3833's pause/resume design). Pass $id to
      * pause a single job (ignores $queues), or $queues to pause every
@@ -630,7 +631,7 @@ class Jobs extends Secure_Controller
             }
             unset($row);
 
-            $this->db->table('queue_paused_jobs')->insertBatch($rows);
+            $this->db->table('queue_jobs_paused')->insertBatch($rows);
             $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
         }
 

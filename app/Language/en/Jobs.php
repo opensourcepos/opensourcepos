@@ -3,6 +3,7 @@
 return [
     'add_throttle'                      => 'Add throttle',
     'all_queues'                        => 'All Queues',
+    'all_statuses'                      => 'All Statuses',
     'auto_purge'                        => 'Auto Purge',
     'available_at'                      => 'Available At',
     'code'                              => 'Code',
