@@ -96,9 +96,9 @@ class AddJobsModule extends Migration
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addKey('queue');
-        $this->forge->addKey('batch_id', false, false, 'queue_paused_jobs_batch_id');
-        $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_paused_jobs_context_id_fk');
-        $this->forge->createTable('queue_paused_jobs', true);
+        $this->forge->addKey('batch_id', false, false, 'queue_jobs_paused_batch_id');
+        $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_paused_context_id_fk');
+        $this->forge->createTable('queue_jobs_paused', true);
 
         $this->forge->addField([
             'id'         => ['type' => 'VARCHAR', 'constraint' => 36],
@@ -186,7 +186,7 @@ class AddJobsModule extends Migration
         ])->delete();
 
         $this->forge->dropTable('import_batches', true);
-        $this->forge->dropTable('queue_paused_jobs', true);
+        $this->forge->dropTable('queue_jobs_paused', true);
         $this->forge->dropTable('queue_jobs_failed', true);
         $this->forge->dropTable('queue_jobs', true);
         $this->forge->dropTable('import_batch_contexts', true);

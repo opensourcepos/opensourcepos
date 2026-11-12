@@ -9,7 +9,7 @@ use RuntimeException;
  * Stores a one-time-per-batch context snapshot (e.g. attribute definitions
  * for an Items CSV import), so row-level jobs read it once by batch_id
  * instead of carrying a duplicate copy in every row's queued job payload.
- * queue_jobs/queue_jobs_failed/queue_paused_jobs all FK their context_id
+ * queue_jobs/queue_jobs_failed/queue_jobs_paused all FK their context_id
  * (ON DELETE RESTRICT) here, so a row can only be deleted once no job
  * anywhere still references it.
  */
