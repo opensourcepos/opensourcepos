@@ -172,7 +172,7 @@
             <ul id="jobs_throttles_error_message_box" class="error_message_box"></ul>
 
             <div id="throttles_wrapper">
-                <?= view('partial/job_throttles', ['throttles' => $throttles]) ?>
+                <?= view('partial/job_throttles', ['throttles' => $throttles, 'coreQueues' => $coreQueues ?? []]) ?>
             </div>
 
             <?= form_submit([
@@ -251,8 +251,11 @@
             const newId = maxId + 1;
             const newBlockId = 'throttle_count_' + newId;
             const newBlockPeriodId = 'throttle_period_' + newId;
+            const newBlockQueueId = 'throttle_queue_' + newId;
+            const previousQueueId = 'throttle_queue_' + id;
             $(newBlock).find('input[id="' + previousId + '"]').attr('id', newBlockId).removeAttr('disabled').attr('name', newBlockId).attr('class', 'form-control input-sm required digits').val('0');
             $(newBlock).find('select[id="' + previousPeriodId + '"]').attr('id', newBlockPeriodId).removeAttr('disabled').attr('name', newBlockPeriodId);
+            $(newBlock).find('select[id="' + previousQueueId + '"]').attr('id', newBlockQueueId).removeAttr('disabled').attr('name', newBlockQueueId).val('');
             hideShowRemoveThrottle();
         };
 

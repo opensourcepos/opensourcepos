@@ -32,16 +32,18 @@ class JobThrottleGate
     }
 
     /**
-     * Checks every active core throttle row. Consumes a token from each
-     * row's bucket as a side effect, so this must only be called once per
+     * Checks every active throttle row applicable to $queueName. Rows with
+     * queue=null are global (apply to every queue); rows with a specific queue
+     * value only apply when $queueName matches. Consumes a token from each
+     * matching bucket as a side effect, so this must only be called once per
      * job actually popped/attempted.
      */
-    public function allows(): bool
+    public function allows(?string $queueName = null): bool
     {
         $throttler = Services::throttler();
         $allowed = true;
 
-        foreach ($this->jobThrottle->getAll()->getResultArray() as $throttle) {
+        foreach ($this->getApplicableThrottles($queueName) as $throttle) {
             $maxCount = (int) $throttle['max_count'];
 
             if ($maxCount <= 0) {
@@ -67,12 +69,12 @@ class JobThrottleGate
      * already exhausted, and on the passing path only the cache timestamp
      * is refreshed (harmless). Call only immediately after allows() === false.
      */
-    public function getSleepSeconds(): int
+    public function getSleepSeconds(?string $queueName = null): int
     {
         $throttler = Services::throttler();
         $max = 1;
 
-        foreach ($this->jobThrottle->getAll()->getResultArray() as $throttle) {
+        foreach ($this->getApplicableThrottles($queueName) as $throttle) {
             $maxCount = (int) $throttle['max_count'];
 
             if ($maxCount <= 0) {
@@ -88,5 +90,22 @@ class JobThrottleGate
         }
 
         return $max;
+    }
+
+    /**
+     * Returns throttle rows that apply to $queueName: global rows (queue IS
+     * NULL) always apply; queue-specific rows apply only when their queue
+     * matches $queueName.
+     */
+    private function getApplicableThrottles(?string $queueName): array
+    {
+        return array_filter(
+            $this->jobThrottle->getAll()->getResultArray(),
+            static function (array $throttle) use ($queueName): bool {
+                $throttleQueue = $throttle['queue'] ?? null;
+
+                return $throttleQueue === null || $throttleQueue === $queueName;
+            }
+        );
     }
 }

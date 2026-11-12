@@ -28,6 +28,7 @@ class AddJobsModule extends Migration
 
         $this->forge->addField([
             'throttle_id' => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
+            'queue'       => ['type' => 'VARCHAR', 'constraint' => 64, 'null' => true, 'default' => null],
             'max_count'   => ['type' => 'INT', 'unsigned' => true, 'default' => 0],
             'period'      => ['type' => 'ENUM', 'constraint' => ['second', 'minute', 'hour', 'day', 'month']],
             'deleted'     => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],

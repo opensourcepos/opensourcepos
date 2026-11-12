@@ -109,6 +109,8 @@ return [
     'throttle_period_month'             => 'Month',
     'throttle_period_required'          => 'Throttle period is required.',
     'throttle_period_second'            => 'Second',
+    'throttle_queue'                    => 'Queue',
+    'throttle_queue_all'                => 'All Queues',
     'throttles'                         => 'Throttles',
     'update_job'                        => 'Edit Job',
     'utilities'                         => 'Utilities',

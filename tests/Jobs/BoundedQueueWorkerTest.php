@@ -11,6 +11,7 @@ use Config\Jobs as JobsConfig;
 use Config\Queue as QueueConfig;
 use Config\Services;
 use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\Jobs\BatchableTestJob;
 use Tests\Support\Jobs\FailingTestJob;
 use Tests\Support\Jobs\SucceedingTestJob;
 
@@ -35,14 +36,17 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
 
         $queueConfig = new QueueConfig();
         $queueConfig->jobHandlers = [
-            'success' => SucceedingTestJob::class,
-            'failure' => FailingTestJob::class,
+            'success'   => SucceedingTestJob::class,
+            'failure'   => FailingTestJob::class,
+            'batchable' => BatchableTestJob::class,
         ];
         Factories::injectMock('config', 'Queue', $queueConfig);
 
         $this->db->table('queue_jobs')->truncate();
         $this->db->table('queue_jobs_failed')->truncate();
         $this->db->table('job_throttles')->truncate();
+
+        BatchableTestJob::$receivedData = [];
     }
 
     protected function tearDown(): void
@@ -249,5 +253,112 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $worker->run();
 
         $this->assertSame(0, $this->db->table('queue_jobs_failed')->countAllResults());
+    }
+
+    // Batch accumulation tests
+
+    public function testBatchableJob_MergesUpToMaxBatchSizeJobsIntoOneCall(): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 'A']);
+        service('queue')->push('default', 'batchable', ['row' => 'B']);
+        service('queue')->push('default', 'batchable', ['row' => 'C']);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        // BatchableTestJob::maxBatchSize() = 3, so all 3 jobs merge into 1 call.
+        $this->assertSame(3, $worker->getProcessedCount());
+        $this->assertCount(1, BatchableTestJob::$receivedData);
+
+        $batchData = BatchableTestJob::$receivedData[0];
+        $this->assertArrayHasKey('_batch', $batchData);
+        $this->assertCount(3, $batchData['_batch']);
+    }
+
+    public function testBatchableJob_DoesNotMergeDifferentJobClasses(): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 'A']);
+        service('queue')->push('default', 'success', []);
+        service('queue')->push('default', 'batchable', ['row' => 'C']);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        // First batchable pops, then finds 'success' next — different class,
+        // puts it back and closes batch with 1 item. Then success runs. Then
+        // the third batchable runs as single.
+        $this->assertSame(3, $worker->getProcessedCount());
+
+        // Each batchable ran as a single (no _batch key) since they were separated.
+        foreach (BatchableTestJob::$receivedData as $callData) {
+            $this->assertArrayNotHasKey('_batch', $callData);
+        }
+    }
+
+    public function testBatchableJob_SingleJobRunsWithoutBatchWrapper(): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 'only']);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getProcessedCount());
+        $this->assertCount(1, BatchableTestJob::$receivedData);
+
+        // Only one item — no _batch wrapping.
+        $this->assertArrayNotHasKey('_batch', BatchableTestJob::$receivedData[0]);
+    }
+
+    public function testBatchableJob_RespectsBatchSizeCap(): void
+    {
+        // Push 5 jobs, but maxBatchSize() = 3 — expect 2 process() calls.
+        for ($i = 1; $i <= 5; $i++) {
+            service('queue')->push('default', 'batchable', ['row' => $i]);
+        }
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(5, $worker->getProcessedCount());
+
+        $callCount = count(BatchableTestJob::$receivedData);
+        // First call: batch of 3 (has _batch). Second call: batch of 2 (has _batch).
+        $this->assertSame(2, $callCount);
+        $this->assertArrayHasKey('_batch', BatchableTestJob::$receivedData[0]);
+        $this->assertCount(3, BatchableTestJob::$receivedData[0]['_batch']);
+        $this->assertArrayHasKey('_batch', BatchableTestJob::$receivedData[1]);
+        $this->assertCount(2, BatchableTestJob::$receivedData[1]['_batch']);
+    }
+
+    // Queue-scoped throttle tests
+
+    public function testQueueScopedThrottle_OnlyThrottlesMatchingQueue(): void
+    {
+        model(JobThrottle::class)->saveValue(['max_count' => 1, 'period' => 'minute', 'queue' => 'api'], 1);
+
+        service('queue')->push('default', 'success', []);
+        service('queue')->push('default', 'success', []);
+
+        // 'default' queue is not subject to the 'api' throttle — both jobs must run.
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(2, $worker->getProcessedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
+    }
+
+    public function testQueueScopedThrottle_ThrottlesJobsOnMatchingQueue(): void
+    {
+        model(JobThrottle::class)->saveValue(['max_count' => 1, 'period' => 'minute', 'queue' => 'api'], 1);
+
+        service('queue')->push('api', 'success', []);
+        service('queue')->push('api', 'success', []);
+
+        // After 1 job on 'api', the api-scoped throttle trips — 2nd job stays queued.
+        $worker = new BoundedQueueWorker(['api'], microtime(true) + 2);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getProcessedCount());
+        $this->assertSame(1, $this->db->table('queue_jobs')->countAllResults());
     }
 }

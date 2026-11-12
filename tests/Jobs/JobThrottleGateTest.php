@@ -117,4 +117,63 @@ class JobThrottleGateTest extends CIUnitTestCase
 
         $this->assertGreaterThanOrEqual(1, $this->gate->getSleepSeconds());
     }
+
+    // Queue-scoped throttle tests
+
+    public function testAllows_GlobalThrottleAppliesRegardlessOfQueueName(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 1, 'period' => 'minute', 'queue' => null], 1);
+
+        $this->assertTrue($this->gate->allows('api'));
+        $this->assertFalse($this->gate->allows('api'));
+    }
+
+    public function testAllows_QueueSpecificThrottleOnlyAppliesToMatchingQueue(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 1, 'period' => 'minute', 'queue' => 'api'], 1);
+
+        // 'imports' queue is not subject to the 'api' throttle — must allow freely.
+        $this->assertTrue($this->gate->allows('imports'));
+        $this->assertTrue($this->gate->allows('imports'));
+
+        // 'api' queue is subject to the throttle — second call must fail.
+        $this->assertTrue($this->gate->allows('api'));
+        $this->assertFalse($this->gate->allows('api'));
+    }
+
+    public function testAllows_NullQueueNameOnlyMatchesGlobalThrottles(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 1, 'period' => 'minute', 'queue' => 'api'], 1);
+
+        // No queue name passed — the api-scoped throttle must NOT apply.
+        $this->assertTrue($this->gate->allows(null));
+        $this->assertTrue($this->gate->allows(null));
+    }
+
+    public function testAllows_GlobalAndQueueSpecificThrottlesBothApply(): void
+    {
+        // Global cap: 2/minute. Queue-specific cap for 'api': 1/minute.
+        $this->jobThrottle->saveValue(['max_count' => 2, 'period' => 'minute', 'queue' => null], 1);
+        $this->jobThrottle->saveValue(['max_count' => 1, 'period' => 'minute', 'queue' => 'api'], 2);
+
+        // First 'api' call: both global and api-scoped allow.
+        $this->assertTrue($this->gate->allows('api'));
+        // Second 'api' call: global still has capacity, but api-scoped is exhausted.
+        $this->assertFalse($this->gate->allows('api'));
+    }
+
+    public function testGetSleepSeconds_QueueScopedThrottleOnlyCountsMatchingRows(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 1, 'period' => 'minute', 'queue' => 'api'], 1);
+
+        $this->gate->allows('api');
+        $this->gate->allows('api');
+
+        // getSleepSeconds for 'imports' must return the minimum (1) because
+        // the 'api' throttle does not apply to it.
+        $this->assertSame(1, $this->gate->getSleepSeconds('imports'));
+
+        // getSleepSeconds for 'api' must reflect the exhausted bucket.
+        $this->assertGreaterThanOrEqual(1, $this->gate->getSleepSeconds('api'));
+    }
 }

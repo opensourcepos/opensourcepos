@@ -47,6 +47,7 @@ class Jobs extends Secure_Controller
         $data['config'] = $this->config;
         $data['throttles'] = $this->jobThrottle->getAll()->getResultArray();
         $data['queues'] = config(JobsConfig::class)->coreQueues;
+        $data['coreQueues'] = $data['queues'];
         $data['table_headers'] = get_jobs_manage_table_headers();
         $data['batch_table_headers'] = get_batch_table_headers();
 
@@ -703,6 +704,8 @@ class Jobs extends Secure_Controller
         $notToDelete = [];
         $arraySave = [];
 
+        $coreQueues = config(JobsConfig::class)->coreQueues;
+
         foreach ($this->request->getPost() as $key => $value) {
             if (str_starts_with($key, 'throttle_count_') && preg_match('/^throttle_count_(\d+)$/', $key, $matches)) {
                 $throttleId = $matches[1];
@@ -711,11 +714,20 @@ class Jobs extends Secure_Controller
             } elseif (str_starts_with($key, 'throttle_period_') && preg_match('/^throttle_period_(\d+)$/', $key, $matches)) {
                 $throttleId = $matches[1];
                 $arraySave[$throttleId]['period'] = $value;
+            } elseif (str_starts_with($key, 'throttle_queue_') && preg_match('/^throttle_queue_(\d+)$/', $key, $matches)) {
+                $throttleId = $matches[1];
+                $arraySave[$throttleId]['queue'] = $value !== '' ? $value : null;
             }
         }
 
         foreach ($arraySave as $throttleData) {
-            if (!ctype_digit((string)$throttleData['max_count']) || !in_array($throttleData['period'], $allowedPeriods, true)) {
+            $queue = $throttleData['queue'] ?? null;
+
+            if (
+                !ctype_digit((string)$throttleData['max_count'])
+                || !in_array($throttleData['period'], $allowedPeriods, true)
+                || ($queue !== null && !in_array($queue, $coreQueues, true))
+            ) {
                 $this->db->transRollback();
 
                 return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.saved_unsuccessfully')]);
@@ -750,8 +762,9 @@ class Jobs extends Secure_Controller
     public function getThrottles(): string
     {
         $throttles = $this->jobThrottle->getAll()->getResultArray();
+        $coreQueues = config(JobsConfig::class)->coreQueues;
 
-        return view('partial/job_throttles', ['throttles' => $throttles]);
+        return view('partial/job_throttles', ['throttles' => $throttles, 'coreQueues' => $coreQueues]);
     }
 
     /**

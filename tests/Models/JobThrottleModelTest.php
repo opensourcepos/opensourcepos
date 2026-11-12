@@ -89,4 +89,33 @@ class JobThrottleModelTest extends CIUnitTestCase
         $this->seeInDatabase('job_throttles', ['throttle_id' => 1, 'deleted' => 1]);
         $this->assertCount(0, $this->jobThrottle->getAll()->getResultArray());
     }
+
+    public function testSaveValue_PersistsQueueWhenProvided(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 10, 'period' => 'hour', 'queue' => 'api'], 1);
+
+        $this->seeInDatabase('job_throttles', [
+            'throttle_id' => 1,
+            'queue'       => 'api',
+            'max_count'   => 10,
+        ]);
+    }
+
+    public function testSaveValue_StoresNullQueueWhenOmitted(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 5, 'period' => 'minute'], 1);
+
+        $row = $this->db->table('job_throttles')->where('throttle_id', 1)->get()->getRowArray();
+        $this->assertNull($row['queue']);
+    }
+
+    public function testGetAll_ReturnsQueueColumnInResults(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 5, 'period' => 'minute', 'queue' => 'imports'], 1);
+
+        $results = $this->jobThrottle->getAll()->getResultArray();
+
+        $this->assertCount(1, $results);
+        $this->assertSame('imports', $results[0]['queue']);
+    }
 }

@@ -54,8 +54,15 @@ class BoundedQueueWorker
                 break;
             }
 
-            if (!$throttleGate->allows()) {
-                $sleepSec = $throttleGate->getSleepSeconds();
+            $work = $this->popNext($queue, $config);
+
+            if ($work === null) {
+                break;
+            }
+
+            if (!$throttleGate->allows($work->queue)) {
+                $sleepSec = $throttleGate->getSleepSeconds($work->queue);
+                $queue->later($work, $sleepSec);
 
                 if (microtime(true) + $sleepSec >= $this->deadline) {
                     break;
@@ -63,12 +70,6 @@ class BoundedQueueWorker
 
                 sleep($sleepSec);
                 continue;
-            }
-
-            $work = $this->popNext($queue, $config);
-
-            if ($work === null) {
-                break;
             }
 
             $this->handle($queue, $config, $work);
@@ -165,28 +166,86 @@ class BoundedQueueWorker
 
     private function handle(QueueInterface $queue, QueueConfig $config, QueueJob $work): void
     {
+        $class = $config->resolveJobClass($work->payload['job']);
+        $job = new $class($work->payload['data']);
+
+        $peers = $this->popPeers($queue, $config, $work, $job);
+
+        if ($peers !== []) {
+            $batch = array_merge([$work->payload['data']], array_map(
+                static fn (QueueJob $p) => $p->payload['data'],
+                $peers
+            ));
+            $job = new $class(['_batch' => $batch]);
+        }
+
+        $allWorks = [$work, ...$peers];
+
         try {
-            $class = $config->resolveJobClass($work->payload['job']);
-            $job = new $class($work->payload['data']);
             $job->process();
 
-            $queue->done($work);
-            $this->processed++;
+            foreach ($allWorks as $w) {
+                $queue->done($w);
+            }
+            $this->processed += count($allWorks);
         } catch (Throwable $e) {
-            $work->attempts++;
+            foreach ($allWorks as $w) {
+                $w->attempts++;
 
-            if (isset($job) && $work->attempts < $job->getTries()) {
-                $queue->later($work, $job->getRetryAfter());
-            } else {
-                $this->moveToFailed($work, $e, $config->keepFailedJobs);
-                $this->failed++;
+                if ($w->attempts < $job->getTries()) {
+                    $queue->later($w, $job->getRetryAfter());
+                } else {
+                    $this->moveToFailed($w, $e, $config->keepFailedJobs);
+                    $this->failed++;
 
-                if (isset($work->payload['data']['batch_id'])) {
-                    service('importBatch')->increment($work->payload['data']['batch_id'], true);
+                    if (isset($w->payload['data']['batch_id'])) {
+                        service('importBatch')->increment($w->payload['data']['batch_id'], true);
+                    }
                 }
             }
 
             job_log($work->queue, 'error', $work->payload['job'] . ' job failed: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * If the job class implements BatchableJob with maxBatchSize() > 1, peeks
+     * and pops up to maxBatchSize()-1 additional pending jobs of the same
+     * class and queue to merge into a single process() call.
+     *
+     * @return QueueJob[]
+     */
+    private function popPeers(QueueInterface $queue, QueueConfig $config, QueueJob $work, object $job): array
+    {
+        if (!($job instanceof BatchableJob)) {
+            return [];
+        }
+
+        $batchSize = $job->maxBatchSize();
+
+        if ($batchSize <= 1) {
+            return [];
+        }
+
+        $peers = [];
+        $jobClass = $work->payload['job'];
+        $priorities = $config->queuePriorities[$work->queue] ?? ['default'];
+
+        for ($i = 1; $i < $batchSize; $i++) {
+            $candidate = $queue->pop($work->queue, $priorities);
+
+            if ($candidate === null) {
+                break;
+            }
+
+            if ($candidate->payload['job'] !== $jobClass) {
+                $queue->later($candidate, 0);
+                break;
+            }
+
+            $peers[] = $candidate;
+        }
+
+        return $peers;
     }
 }
