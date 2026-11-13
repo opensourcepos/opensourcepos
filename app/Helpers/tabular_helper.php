@@ -141,6 +141,46 @@ function getSaleDataRow(object $sale): array
 }
 
 /**
+ * Column set for exporting sales: same as salesHeaders(), plus invoice_number when
+ * invoice_enable is on, minus the invoice/receipt/edit icon-only anchor columns.
+ */
+function salesExportHeaders(): array
+{
+    $headers = salesHeaders();
+    $config = config(OSPOS::class)->settings;
+
+    if ($config['invoice_enable']) {
+        $headers[] = ['invoice_number' => lang('Sales.invoice_number')];
+    }
+
+    return $headers;
+}
+
+/**
+ * Export row for a sale: raw (unformatted) values, matching salesExportHeaders()'s column set.
+ */
+function getSaleExportRow(object $sale): array
+{
+    $row = [
+        'sale_id'         => $sale->sale_id,
+        'sale_time'       => $sale->sale_time,
+        'customer_name'   => $sale->customer_name,
+        'amount_due'      => $sale->amount_due,
+        'amount_tendered' => $sale->amount_tendered,
+        'change_due'      => $sale->change_due,
+        'payment_type'    => $sale->payment_type
+    ];
+
+    $config = config(OSPOS::class)->settings;
+
+    if ($config['invoice_enable']) {
+        $row['invoice_number'] = $sale->invoice_number;
+    }
+
+    return $row;
+}
+
+/**
  * Get the html data last row for the sales
  */
 function getSaleDataLastRow(ResultInterface $sales): array
@@ -216,6 +256,35 @@ function get_people_manage_table_headers(): string
 /**
  * Get the html data row for the person
  */
+/**
+ * Column set for exporting employees: person_headers() minus the conditional messages column.
+ */
+function employeeExportHeaders(): array
+{
+    return person_headers();
+}
+
+/**
+ * Export row for an employee: raw (unformatted) values, matching employeeExportHeaders()'s column set.
+ */
+function getEmployeeExportRow(object $person): array
+{
+    return [
+        'people.person_id' => $person->person_id,
+        'last_name'        => $person->last_name,
+        'first_name'       => $person->first_name,
+        'email'            => $person->email,
+        'phone_number'     => $person->phone_number,
+        'address_1'        => $person->address_1,
+        'address_2'        => $person->address_2,
+        'city'             => $person->city,
+        'state'            => $person->state,
+        'zip'              => $person->zip,
+        'country'          => $person->country,
+        'comments'         => $person->comments
+    ];
+}
+
 function get_person_data_row(object $person): array
 {
     $controller = get_controller();
@@ -282,6 +351,30 @@ function get_customer_manage_table_headers(): string
 /**
  * Get the html data row for the customer
  */
+/**
+ * Column set for exporting customers: customer_headers() minus the conditional messages column.
+ */
+function customerExportHeaders(): array
+{
+    return customer_headers();
+}
+
+/**
+ * Export row for a customer: raw (unformatted) values, matching customerExportHeaders()'s column set.
+ */
+function getCustomerExportRow(object $person, object $stats): array
+{
+    return [
+        'people.person_id' => $person->person_id,
+        'last_name'        => $person->last_name,
+        'first_name'       => $person->first_name,
+        'email'            => $person->email,
+        'phone_number'     => $person->phone_number,
+        'total'            => $stats->total,
+        'employee_id'      => $person->employee_id
+    ];
+}
+
 function get_customer_data_row(object $person, object $stats): array
 {
     $controller = get_controller();
@@ -350,6 +443,31 @@ function get_suppliers_manage_table_headers(): string
 /**
  * Get the html data row for the supplier
  */
+/**
+ * Column set for exporting suppliers: supplier_headers() minus the conditional messages column.
+ */
+function supplierExportHeaders(): array
+{
+    return supplier_headers();
+}
+
+/**
+ * Export row for a supplier: raw (unformatted) values, matching supplierExportHeaders()'s column set.
+ */
+function getSupplierExportRow(object $supplier): array
+{
+    return [
+        'people.person_id' => $supplier->person_id,
+        'company_name'     => html_entity_decode($supplier->company_name),
+        'agency_name'      => $supplier->agency_name,
+        'category'         => $supplier->category,
+        'last_name'        => $supplier->last_name,
+        'first_name'       => $supplier->first_name,
+        'email'            => $supplier->email,
+        'phone_number'     => $supplier->phone_number
+    ];
+}
+
 function get_supplier_data_row(object $supplier): array
 {
     $controller = get_controller();
@@ -453,6 +571,35 @@ function getItemsManageTableHeaders(): string
 }
 
 /**
+ * Column set for exporting items: same data columns the manage table shows,
+ * minus the icon/action columns (image thumbnail, inventory/stock/edit icons)
+ * that only make sense in the live UI.
+ *
+ * @return array Array of single-key [column_key => label] pairs, see item_headers()
+ */
+function itemExportHeaders(): array
+{
+    $attribute = model(Attribute::class);
+    $config = config(OSPOS::class)->settings;
+    $definitionsWithTypes = $attribute->getDefinitionsByFlags($attribute::SHOW_IN_ITEMS, true);
+
+    $headers = item_headers();
+
+    if ($config['use_destination_based_tax']) {
+        $headers[] = ['tax_percents' => lang('Items.tax_category')];
+    } else {
+        $headers[] = ['tax_percents' => lang('Items.tax_percents')];
+    }
+
+    foreach ($definitionsWithTypes as $definitionInfo) {
+        $label = 'attribute_' . $definitionInfo['name'];
+        $headers[] = [$label => $label, 'type' => $definitionInfo['type']];
+    }
+
+    return $headers;
+}
+
+/**
  * Get the html data row for the item
  *
  * @param object $item
@@ -528,7 +675,51 @@ function getItemDataRow(object $item, array $definitionNames, array $taxPercents
         )
     ];
 
-    return $columns + expand_attribute_values($definitionNames, (array) $item) + $icons;
+    return $columns + expandAttributeValues($definitionNames, (array) $item) + $icons;
+}
+
+/**
+ * Export row for an item: raw (unformatted) values, matching itemExportHeaders()'s
+ * column set - no locale display formatting, no icons/HTML, since consumers (CSV/XLSX/etc
+ * writers) each apply their own number formatting as appropriate for the target format.
+ *
+ * @param object $item
+ * @param array $definitionNames Attribute definitions with types, keyed by definition_id (see Attribute::getDefinitionsByFlags(..., true))
+ * @param array $taxPercentsByItemId Pre-computed tax percent strings, keyed by item_id (see Items::buildTaxPercentsByItem())
+ * @return array
+ */
+function getItemExportRow(object $item, array $definitionNames, array $taxPercentsByItemId): array
+{
+    $config = config(OSPOS::class)->settings;
+
+    $taxPercents = $taxPercentsByItemId[$item->item_id] ?? '';
+
+    $name = $item->name;
+    if ($config['multi_pack_enabled']) {
+        $name .= NAME_SEPARATOR . $item->pack_name;
+    }
+
+    $columns = [
+        'item_id'               => $item->item_id,
+        'item_number'           => $item->item_number,
+        'name'                  => $name,
+        'category'              => $item->category,
+        'company_name'          => $item->company_name,
+        'cost_price'            => $item->cost_price,
+        'unit_price'            => $item->unit_price,
+        'quantity'              => $item->quantity ?? '',
+        'tax_percents'          => $taxPercents,
+        'description'           => $item->description,
+        'allow_alt_description' => $item->allow_alt_description,
+        'is_serialized'         => $item->is_serialized
+    ];
+
+    $attributeValues = [];
+    foreach (expandAttributeValues($definitionNames, (array) $item, raw: true) as $definitionId => $value) {
+        $attributeValues['attribute_' . $definitionNames[$definitionId]['name']] = $value;
+    }
+
+    return $columns + $attributeValues;
 }
 
 function giftcard_headers(): array
@@ -572,6 +763,28 @@ function get_giftcard_data_row(object $giftcard): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting giftcards: giftcard_headers() minus the edit anchor column.
+ */
+function giftcardExportHeaders(): array
+{
+    return giftcard_headers();
+}
+
+/**
+ * Export row for a giftcard: raw (unformatted) values, matching giftcardExportHeaders()'s column set.
+ */
+function getGiftcardExportRow(object $giftcard): array
+{
+    return [
+        'giftcard_id'     => $giftcard->giftcard_id,
+        'last_name'       => $giftcard->last_name,
+        'first_name'      => $giftcard->first_name,
+        'giftcard_number' => $giftcard->giftcard_number,
+        'value'           => $giftcard->value
     ];
 }
 
@@ -622,6 +835,29 @@ function get_item_kit_data_row(object $item_kit): array
 }
 
 /**
+ * Column set for exporting item kits: item_kit_headers() minus the edit anchor column.
+ */
+function itemKitExportHeaders(): array
+{
+    return item_kit_headers();
+}
+
+/**
+ * Export row for an item kit: raw (unformatted) values, matching itemKitExportHeaders()'s column set.
+ */
+function getItemKitExportRow(object $itemKit): array
+{
+    return [
+        'item_kit_id'      => $itemKit->item_kit_id,
+        'item_kit_number'  => $itemKit->item_kit_number,
+        'name'             => $itemKit->name,
+        'description'      => $itemKit->description,
+        'total_cost_price' => $itemKit->total_cost_price,
+        'total_unit_price' => $itemKit->total_unit_price
+    ];
+}
+
+/**
  * @param array $columns
  * @param array $row
  * @return array
@@ -639,39 +875,41 @@ function parse_attribute_values(array $columns, array $row): array
 }
 
 /**
- * @param array $definition_names Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
+ * @param array $definitionNames Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
  * @param array $row
+ * @param bool $raw When true, skip locale formatting of DECIMAL attributes and return the raw value instead
  * @return array
  */
-function expand_attribute_values(array $definition_names, array $row): array
+function expandAttributeValues(array $definitionNames, array $row, bool $raw = false): array
 {
     $values = parse_attribute_values(['attribute_values', 'attribute_dtvalues', 'attribute_dvalues'], $row);
 
-    $indexed_values = [];
-    foreach ($values as $attribute_value) {
-        $exploded_value = explode('_', $attribute_value);
-        if (sizeof($exploded_value) > 1) {
-            $indexed_values[$exploded_value[0]] = $exploded_value[1];
+    $indexedValues = [];
+    foreach ($values as $attributeValue) {
+        $explodedValue = explode('_', $attributeValue);
+        if (sizeof($explodedValue) > 1) {
+            $indexedValues[$explodedValue[0]] = $explodedValue[1];
         }
     }
 
-    $attribute_values = [];
-    foreach ($definition_names as $definition_id => $definitionInfo) {
-        if (isset($indexed_values[$definition_id])) {
-            $raw_value = $indexed_values[$definition_id];
+    $attributeValues = [];
+    foreach ($definitionNames as $definitionId => $definitionInfo) {
+        if (isset($indexedValues[$definitionId])) {
+            $rawValue = $indexedValues[$definitionId];
+            $isDecimal = is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL;
 
-            // Format DECIMAL attributes according to locale
-            if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
-                $attribute_values["$definition_id"] = to_decimals($raw_value);
+            // Format DECIMAL attributes according to locale, unless the raw value was requested
+            if ($isDecimal && !$raw) {
+                $attributeValues["$definitionId"] = to_decimals($rawValue);
             } else {
-                $attribute_values["$definition_id"] = $raw_value;
+                $attributeValues["$definitionId"] = $rawValue;
             }
         } else {
-            $attribute_values["$definition_id"] = "";
+            $attributeValues["$definitionId"] = "";
         }
     }
 
-    return $attribute_values;
+    return $attributeValues;
 }
 
 function attribute_definition_headers(): array
@@ -729,6 +967,45 @@ function get_attribute_definition_data_row(object $attribute_row): array
     ];
 }
 
+/**
+ * Column set for exporting attribute definitions: attribute_definition_headers() minus the edit anchor column.
+ */
+function attributeExportHeaders(): array
+{
+    return attribute_definition_headers();
+}
+
+/**
+ * Export row for an attribute definition: raw values, matching attributeExportHeaders()'s column set.
+ * definition_flags is kept as the resolved human-readable label string (not the raw bitmask),
+ * consistent with how the manage table displays it. The raw bitmask is kept separately under
+ * definition_flags_raw (not in attributeExportHeaders(), so only the SQL writer reads it).
+ *
+ * @param int $rawDefinitionFlags The raw definition_flags bitmask, captured before the caller
+ *                                overwrites $attribute_row->definition_flags with resolved labels.
+ */
+function getAttributeExportRow(object $attributeRow, int $rawDefinitionFlags): array
+{
+    $attribute = model(Attribute::class);
+
+    if (count($attribute->getDefinitionFlags()) == 0) {
+        $definitionFlags = lang('Common.none_selected_text');
+    } elseif ($attribute->definition_type == GROUP) {
+        $definitionFlags = "-";
+    } else {
+        $definitionFlags = implode(', ', $attributeRow->definition_flags);
+    }
+
+    return [
+        'definition_id'        => $attributeRow->definition_id,
+        'definition_name'      => $attributeRow->definition_name,
+        'definition_type'      => $attributeRow->definition_type,
+        'definition_flags'     => $definitionFlags,
+        'definition_flags_raw' => $rawDefinitionFlags,
+        'definition_group'     => $attributeRow->definition_group
+    ];
+}
+
 function expense_category_headers(): array
 {
     return [
@@ -766,6 +1043,26 @@ function get_expense_category_data_row(object $expense_category): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting expense categories: expense_category_headers() minus the edit anchor column.
+ */
+function expenseCategoryExportHeaders(): array
+{
+    return expense_category_headers();
+}
+
+/**
+ * Export row for an expense category: raw values, matching expenseCategoryExportHeaders()'s column set.
+ */
+function getExpenseCategoryExportRow(object $expenseCategory): array
+{
+    return [
+        'expense_category_id'  => $expenseCategory->expense_category_id,
+        'category_name'        => $expenseCategory->category_name,
+        'category_description' => $expenseCategory->category_description
     ];
 }
 
@@ -820,6 +1117,35 @@ function get_expenses_data_row(object $expense): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting expenses: expense_headers() minus the edit anchor column.
+ */
+function expenseExportHeaders(): array
+{
+    return expense_headers();
+}
+
+/**
+ * Export row for an expense: raw (unformatted) values, matching expenseExportHeaders()'s column set.
+ */
+function getExpenseExportRow(object $expense): array
+{
+    return [
+        'expense_id'          => $expense->expense_id,
+        'date'                => $expense->date,
+        'supplier_name'       => $expense->supplier_name,
+        'supplier_tax_code'   => $expense->supplier_tax_code,
+        'amount'              => $expense->amount,
+        'tax_amount'          => $expense->tax_amount,
+        'payment_type'        => $expense->payment_type,
+        'category_name'       => $expense->category_name,
+        'description'         => $expense->description,
+        'created_by'          => $expense->first_name . ' ' . $expense->last_name,
+        'employee_id'         => $expense->employee_id,
+        'expense_category_id' => $expense->expense_category_id
     ];
 }
 
@@ -922,6 +1248,42 @@ function get_cash_up_data_row(object $cash_up): array
                 'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
+    ];
+}
+
+/**
+ * Column set for exporting cashups: cashup_headers() minus the edit anchor column.
+ */
+function cashupExportHeaders(): array
+{
+    return cashup_headers();
+}
+
+/**
+ * Export row for a cashup: raw (unformatted) values, matching cashupExportHeaders()'s column set.
+ * open_employee_id/close_employee_id keep the concatenated first/last name display values since
+ * no raw employee ID is available in the row payload; the raw ids are kept separately under
+ * *_raw keys (not in cashupExportHeaders(), so only the SQL writer reads them).
+ */
+function getCashupExportRow(object $cashUp): array
+{
+    return [
+        'cashup_id'             => $cashUp->cashup_id,
+        'open_date'             => $cashUp->open_date,
+        'open_employee_id'      => $cashUp->open_first_name . ' ' . $cashUp->open_last_name,
+        'open_employee_id_raw'  => $cashUp->open_employee_id,
+        'open_amount_cash'      => $cashUp->open_amount_cash,
+        'transfer_amount_cash'  => $cashUp->transfer_amount_cash,
+        'close_date'            => $cashUp->close_date,
+        'close_employee_id'     => $cashUp->close_first_name . ' ' . $cashUp->close_last_name,
+        'close_employee_id_raw' => $cashUp->close_employee_id,
+        'closed_amount_cash'    => $cashUp->closed_amount_cash,
+        'note'                  => $cashUp->note ? 1 : 0,
+        'description'           => $cashUp->description,
+        'closed_amount_due'     => $cashUp->closed_amount_due,
+        'closed_amount_card'    => $cashUp->closed_amount_card,
+        'closed_amount_check'   => $cashUp->closed_amount_check,
+        'closed_amount_total'   => $cashUp->closed_amount_total
     ];
 }
 

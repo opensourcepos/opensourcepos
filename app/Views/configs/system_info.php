@@ -28,7 +28,8 @@ use Config\OSPOS;
                     echo "&#187; Multibyte String: ", extension_loaded('mbstring') ? '<span class="text-success">&#x2713 Enabled</span>' : '<span class="text-danger">&#x2717 Disabled</span>', '<br>';
                     echo "&#187; cURL: ", extension_loaded('curl') ? '<span class="text-success">&#x2713 Enabled</span>' : '<span class="text-danger">&#x2717 Disabled</span>', '<br>';
                     echo "&#187; JSON: ", extension_loaded('json') ? '<span class="text-success">&#x2713 Enabled</span>' : '<span class="text-danger">&#x2717 Disabled</span>', '<br>';
-                    echo "&#187; XML: ", extension_loaded('xml') ? '<span class="text-success">&#x2713 Enabled</span>' : '<span class="text-danger">&#x2717 Disabled</span>', '<br><br>';
+                    echo "&#187; XML: ", extension_loaded('xml') ? '<span class="text-success">&#x2713 Enabled</span>' : '<span class="text-danger">&#x2717 Disabled</span>', '<br>';
+                    echo "&#187; Zip: ", extension_loaded('zip') ? '<span class="text-success">&#x2713 Enabled</span>' : '<span class="text-danger">&#x2717 Disabled</span>', '<br><br>';
                 ?>
             </div>
         </div>
