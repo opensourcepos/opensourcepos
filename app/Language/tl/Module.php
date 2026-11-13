@@ -26,6 +26,8 @@ return [
     'item_kits_desc'             => '',
     'items'                      => '',
     'items_desc'                 => '',
+    'jobs'                       => 'Pila ng Trabaho',
+    'jobs_desc'                  => 'I-configure at pamahalaan ang pila ng trabaho sa background.',
     'messages'                   => '',
     'messages_desc'              => '',
     'migrate'                    => '',

@@ -26,6 +26,8 @@ return [
     'item_kits_desc'             => '',
     'items'                      => '',
     'items_desc'                 => '',
+    'jobs'                       => 'Опашка на задачи',
+    'jobs_desc'                  => 'Конфигуриране и управление на опашката на фоновите задачи.',
     'messages'                   => '',
     'messages_desc'              => '',
     'migrate'                    => '',

@@ -88,6 +88,95 @@ Then start the containers:
     docker-compose up
 ```
 
+## Background Job Scheduling
+
+OSPOS is scaffolding a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports. This is Phase 1: the scheduler infrastructure and trigger modes exist, but no real job types are wired up yet. Currently the scheduler only runs a `jobs_heartbeat` placeholder task that writes a debug log entry; the "Process All Jobs" / "Process Selected Jobs" endpoints on the Job Queue → Utilities tab are stubs that return `not_yet_implemented`. Actual job processing (e.g. CSV imports) will land in a later phase.
+
+The three trigger modes below control how/when the scheduler runs, not what it processes yet:
+
+- **Web** (default) — no setup required. The scheduler runs via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
+- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers the scheduler on a fixed interval. Recommended for VPS/dedicated servers with cron access.
+- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" button on the Job Queue → Utilities tab is present but not yet functional (Phase 1 stub).
+
+### `auto` mode: Linux/Mac cron
+
+Add the following entry to your crontab (`crontab -e`), adjusting the path to your OSPOS install:
+
+```
+* * * * * cd /path/to/ospos && php spark tasks:run >> /dev/null 2>&1
+```
+
+### `auto` mode: Windows Task Scheduler
+
+The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once-per-minute cadence of the cron example above, use the `tools/Windows/create-windows-task-scheduler-task.ps1` script instead, which registers the task via `New-ScheduledTaskTrigger -RepetitionInterval`. It also sets up "Run whether user is logged on or not" + "Do not store password" and "Run task as soon as possible after a scheduled start is missed" automatically.
+
+1. Open PowerShell **as Administrator** (`Register-ScheduledTask` requires elevation) and `cd` to your OSPOS project root.
+2. Run the script, replacing `-PhpPath` and `-ProjectPath` with your actual PHP and install paths:
+   ```powershell
+   .\tools\Windows\create-windows-task-scheduler-task.ps1 -PhpPath '[PATH TO PHP EXECUTABLE]' -ProjectPath '[PATH TO PROJECT ROOT]'
+   ```
+   - `-PhpPath`: full path to `php.exe`.
+   - `-ProjectPath`: the OSPOS project root — the directory containing the `spark` file.
+   - Optionally pass `-TaskName` to override the default task name of `OSPOS Task Runner`.
+3. Verify the task in Task Scheduler: it should show a 1-minute repeat interval, and the **General** tab should show "Run whether user is logged on or not" with "Do not store password" checked.
+4. Verify the registered task fires correctly:
+   - **Start it now** (PowerShell as Administrator):
+     ```powershell
+     Start-ScheduledTask -TaskName 'OSPOS Task Runner'
+     ```
+   - **Check its last result** — `0x0` means success:
+     ```powershell
+     Get-ScheduledTaskInfo -TaskName 'OSPOS Task Runner' | Select-Object LastRunTime, LastTaskResult
+     ```
+   - **Confirm the heartbeat** — `LastTaskResult: 0x0` above is the primary success signal. A timestamped `Job Queue heartbeat` line also appears in `writable/logs/` **only when debug logging is enabled** (`logger.threshold=8` or `CI_ENVIRONMENT=development` in `.env`); in production the log level filters it out, so a missing log line is expected and does not indicate failure.
+   - If the last result is non-zero, open `cmd.exe`, `cd` to the OSPOS project root, and run `php.exe spark tasks:run` interactively to see the raw output (`Running Tasks...` → `Completed Running Tasks`).
+
+### `manual` mode
+
+No setup is required. Set Mode to Manual on the Job Queue → Settings tab, then use the "Process All Jobs" button on the Utilities tab whenever you need jobs processed.
+
+### Docker considerations
+
+Docker containers are single-process by default, so cron does not run inside the OSPOS container out of the box — this is why **Web mode is the default** and works with zero extra Docker configuration.
+
+If you want `auto` mode under Docker, pick one of the following:
+
+**Option 1: separate worker container (recommended)**
+
+Add a second service to your `docker-compose.yml` pointing at the same database:
+
+```yaml
+worker:
+  image: jekkos/opensourcepos:master
+  command: sh -c "while true; do php spark tasks:run; sleep 60; done"
+  depends_on:
+    - mysql
+  restart: unless-stopped
+  networks:
+    - app_net
+  volumes:
+    - type: bind
+      source: ./.env
+      target: /app/.env
+      bind:
+        create_host_path: false
+  environment:
+    # These values must match the credentials and service names defined for the
+    # mysql and ospos services in your docker-compose.yml.
+    - MYSQL_HOST_NAME=mysql
+    - MYSQL_USERNAME=admin
+    - MYSQL_PASSWORD=pointofsale
+    - MYSQL_DB_NAME=ospos
+```
+
+**Option 2: supervisor inside the container**
+
+Add supervisor to the image and configure it to run both the web server and the scheduler. Works, but goes against the one-process-per-container convention — acceptable for simple single-container setups.
+
+**Option 3: cron sidecar container**
+
+Run a minimal sidecar container that fires `php spark tasks:run` every minute via cron, sharing the same network and database as the main container.
+
 ## Nginx install using Docker
 
 Since OSPOS version `3.3.0` the Docker installation offers a reverse proxy based on Nginx with a Let's Encrypt TLS certificate termination (aka HTTPS connection).

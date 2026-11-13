@@ -26,6 +26,8 @@ return [
     'item_kits_desc'             => '',
     'items'                      => '',
     'items_desc'                 => '',
+    'jobs'                       => 'பணி வரிசை',
+    'jobs_desc'                  => 'பின்னணி பணி வரிசையை உள்ளமைத்து நிர்வகிக்கவும்.',
     'messages'                   => '',
     'messages_desc'              => '',
     'migrate'                    => '',
