@@ -128,8 +128,8 @@ The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once
      ```powershell
      Get-ScheduledTaskInfo -TaskName 'OSPOS Task Runner' | Select-Object LastRunTime, LastTaskResult
      ```
-   - **Confirm the heartbeat** — a new timestamped line should appear in `writable/logs/` within a few seconds of the task finishing.
-   - If the last result is non-zero or no heartbeat appears, open `cmd.exe`, `cd` to the OSPOS project root, and run `php.exe spark tasks:run` interactively to see the raw output (`Running Tasks...` → `Completed Running Tasks`).
+   - **Confirm the heartbeat** — `LastTaskResult: 0x0` above is the primary success signal. A timestamped `Job Queue heartbeat` line also appears in `writable/logs/` **only when debug logging is enabled** (`logger.threshold=8` or `CI_ENVIRONMENT=development` in `.env`); in production the log level filters it out, so a missing log line is expected and does not indicate failure.
+   - If the last result is non-zero, open `cmd.exe`, `cd` to the OSPOS project root, and run `php.exe spark tasks:run` interactively to see the raw output (`Running Tasks...` → `Completed Running Tasks`).
 
 ### `manual` mode
 
@@ -147,11 +147,26 @@ Add a second service to your `docker-compose.yml` pointing at the same database:
 
 ```yaml
 worker:
-  image: opensourcepos
+  image: jekkos/opensourcepos:master
   command: sh -c "while true; do php spark tasks:run; sleep 60; done"
   depends_on:
-    - db
+    - mysql
   restart: unless-stopped
+  networks:
+    - app_net
+  volumes:
+    - type: bind
+      source: ./.env
+      target: /app/.env
+      bind:
+        create_host_path: false
+  environment:
+    # These values must match the credentials and service names defined for the
+    # mysql and ospos services in your docker-compose.yml.
+    - MYSQL_HOST_NAME=mysql
+    - MYSQL_USERNAME=admin
+    - MYSQL_PASSWORD=pointofsale
+    - MYSQL_DB_NAME=ospos
 ```
 
 **Option 2: supervisor inside the container**
