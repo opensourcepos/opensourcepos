@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => '',
     'csv_import_partially_failed'        => '',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => '',
     'current_quantity'                   => '當前數量',
     'default_pack_name'                  => '',

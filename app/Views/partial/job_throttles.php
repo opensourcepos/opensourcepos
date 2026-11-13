@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $throttles
+ * @var string[] $coreQueues
  */
 ?>
 
@@ -8,13 +9,19 @@
 $i = 0;
 
 if (empty($throttles)) {
-    $throttles = [['throttle_id' => 0, 'max_count' => 0, 'period' => 'hour', 'deleted' => 0]];
+    $throttles = [['throttle_id' => 0, 'max_count' => 0, 'period' => 'hour', 'queue' => null, 'deleted' => 0]];
+}
+
+$queueOptions = ['' => lang('Jobs.throttle_queue_all')];
+foreach ($coreQueues ?? [] as $q) {
+    $queueOptions[$q] = $q;
 }
 
 foreach ($throttles as $throttle) {
     $throttleId = $throttle['throttle_id'];
     $maxCount = $throttle['max_count'];
     $period = $throttle['period'];
+    $throttleQueue = $throttle['queue'] ?? null;
     ++$i;
 ?>
 
@@ -41,6 +48,7 @@ foreach ($throttles as $throttle) {
                     echo form_dropdown(
                         'throttle_period_' . $throttleId,
                         [
+                            'second' => lang('Jobs.throttle_period_second'),
                             'minute' => lang('Jobs.throttle_period_minute'),
                             'hour'   => lang('Jobs.throttle_period_hour'),
                             'day'    => lang('Jobs.throttle_period_day'),
@@ -48,6 +56,18 @@ foreach ($throttles as $throttle) {
                         ],
                         $period,
                         $dropdownAttrs
+                    );
+                    ?>
+                </div>
+                <span style="flex: 0 0 auto; padding: 0 0.5em;">—</span>
+                <div style="width: 120px; flex: 0 0 auto;">
+                    <?php $queueAttrs = ['id' => 'throttle_queue_' . $throttleId, 'class' => 'form-control input-sm'];
+                    ($throttle['deleted'] ?? 0) && $queueAttrs['disabled'] = 'disabled';
+                    echo form_dropdown(
+                        'throttle_queue_' . $throttleId,
+                        $queueOptions,
+                        $throttleQueue ?? '',
+                        $queueAttrs
                     );
                     ?>
                 </div>

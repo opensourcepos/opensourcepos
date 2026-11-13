@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Importare CSV esuata',
     'csv_import_nodata_wrongformat' => 'Fisierul incarcat nu contine date sau are format incorect.',
     'csv_import_partially_failed'   => 'Importare client cu succes avand cateva esecuri:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Importare cu succes Client.',
     'customer'                      => 'Client',
     'date'                          => 'Data',

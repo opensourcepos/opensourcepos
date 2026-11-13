@@ -80,7 +80,17 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Install dependencies: `composer install && npm install`
 - Build assets: `npm run build` or `gulp`
 
-## Conventions
+## MVC Layer Responsibilities
+
+**Controllers** (`app/Controllers/`) — handle HTTP: parse request, call model methods, return response. Never call `$this->db->table(...)` or any raw query builder directly. Never contain business logic or SQL. Orchestrate transactions by calling `$model->db->transStart()` / `transComplete()` on a model's connection — never hold a raw `BaseConnection` property.
+
+**Models** (`app/Models/`) — own all database access. Every table must have a model. Add methods to a model when the controller needs a custom query on that table. Use the CI4 Model query builder (`$this->where(...)->findAll()`) or `$this->builder()` for compile-then-run patterns (e.g. `SELECT … FOR UPDATE`). Raw SQL is acceptable only for clauses the builder cannot express (e.g. appending `FOR UPDATE`). Never call another model's internal DB from a sibling model — if two tables must move together, do it in a controller-managed transaction with each model owning its own table's operations.
+
+**Views** (`app/Views/`) — render HTML only. No database calls, no business logic. Receive all data via the `$data` array passed from the controller.
+
+**Libraries** (`app/Libraries/`) — stateless or stateful services that are not HTTP-bound: workers, processors, importers, complex calculations. No direct HTTP input/output. May call models.
+
+**Helpers** (`app/Helpers/`) — pure functions with no side effects (formatting, transformation, string utilities). No database access, no model calls.
 
 - Controllers go in `app/Controllers/`
 - Models go in `app/Models/`

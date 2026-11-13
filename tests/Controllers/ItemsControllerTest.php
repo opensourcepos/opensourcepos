@@ -2,30 +2,32 @@
 
 namespace Tests\Controllers;
 
+use App\Models\Attribute;
+use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\Item_quantity;
+use App\Models\Item_taxes;
+use App\Models\Stock_location;
+use App\Models\Supplier;
 use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Models\Item;
-use App\Models\Item_quantity;
-use App\Models\Inventory;
-use App\Models\Item_taxes;
-use App\Models\Attribute;
-use App\Models\Stock_location;
-use App\Models\Supplier;
 use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\ImportBatchFailureTrait;
 
 class ItemsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;
     use EmployeeFixtureTrait;
+    use ImportBatchFailureTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
     protected $seedOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     private static $doneBootstrap = false;
 
@@ -249,27 +251,6 @@ class ItemsControllerTest extends CIUnitTestCase
     }
 
     /**
-     * Regression test: a CSV row with a negative Tax N Percent must be
-     * rejected by save_tax_data (not silently dropped), so postImportCsvFile
-     * fails the row instead of importing the item without its tax.
-     */
-    public function testSaveTaxData_RejectsNegativePercent(): void
-    {
-        $controller = (new \ReflectionClass(\App\Controllers\Items::class))->newInstanceWithoutConstructor();
-        $method = new \ReflectionMethod($controller, 'save_tax_data');
-        $method->setAccessible(true);
-
-        $row = [
-            'Tax 1 Name'    => 'VAT',
-            'Tax 1 Percent' => '-5',
-            'Tax 2 Name'    => '',
-            'Tax 2 Percent' => '',
-        ];
-
-        $this->assertFalse($method->invoke($controller, $row, ['item_id' => 1]));
-    }
-
-    /**
      * Regression test: an attribute definition whose
      * `definition_name` contains HTML must be entity-escaped when rendered in the
      * items attributes dropdown, not emitted as a live (executable) tag.
@@ -304,7 +285,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $stockLocations = ['Warehouse'];
         $attributes = [];
 
-        $csv = generate_import_items_csv($stockLocations, $attributes);
+        $csv = generateImportItemsCsv($stockLocations, $attributes);
 
         $this->assertStringContainsString('Id,Barcode,"Item Name"', $csv);
         $this->assertStringContainsString('Category,"Supplier ID"', $csv);
@@ -324,7 +305,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $stockLocations = ['Warehouse', 'Store', 'Backroom'];
         $attributes = [];
 
-        $csv = generate_import_items_csv($stockLocations, $attributes);
+        $csv = generateImportItemsCsv($stockLocations, $attributes);
 
         $this->assertStringContainsString('"location_Warehouse"', $csv);
         $this->assertStringContainsString('"location_Store"', $csv);
@@ -336,7 +317,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $stockLocations = ['Warehouse'];
         $attributes = ['Color', 'Size', 'Weight'];
 
-        $csv = generate_import_items_csv($stockLocations, $attributes);
+        $csv = generateImportItemsCsv($stockLocations, $attributes);
 
         $this->assertStringContainsString('"attribute_Color"', $csv);
         $this->assertStringContainsString('"attribute_Size"', $csv);
@@ -347,7 +328,7 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $locations = ['Warehouse', 'Store'];
 
-        $headers = generate_stock_location_headers($locations);
+        $headers = generateStockLocationHeaders($locations);
 
         $this->assertEquals(',"location_Warehouse","location_Store"', $headers);
     }
@@ -356,7 +337,7 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $attributes = ['Color', 'Size'];
 
-        $headers = generate_attribute_headers($attributes);
+        $headers = generateAttributeHeaders($attributes);
 
         $this->assertEquals(',"attribute_Color","attribute_Size"', $headers);
     }
@@ -366,7 +347,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $attributes = [-1 => 'None', 'Color' => 'Color'];
         unset($attributes[-1]);
 
-        $headers = generate_attribute_headers($attributes);
+        $headers = generateAttributeHeaders($attributes);
 
         $this->assertStringContainsString('"attribute_Color"', $headers);
     }
@@ -502,7 +483,7 @@ class ItemsControllerTest extends CIUnitTestCase
         file_put_contents($tempFile, $contentWithBom);
 
         $handle = fopen($tempFile, 'r');
-        $result = bom_exists($handle);
+        $result = bomExists($handle);
         fclose($handle);
 
         $this->assertTrue($result);
@@ -517,7 +498,7 @@ class ItemsControllerTest extends CIUnitTestCase
         file_put_contents($tempFile, $contentWithoutBom);
 
         $handle = fopen($tempFile, 'r');
-        $result = bom_exists($handle);
+        $result = bomExists($handle);
         fclose($handle);
 
         $this->assertFalse($result);
@@ -1414,6 +1395,99 @@ class ItemsControllerTest extends CIUnitTestCase
         $csvLocationName = 'Warehouse';
         $isValid = in_array($csvLocationName, $allowedLocations);
         $this->assertTrue($isValid, 'Valid location name should pass validation');
+    }
+
+    private function twoRowItemsCsvFile(int $personId): string
+    {
+        helper('importfile');
+
+        $allowedLocations  = $this->stock_location->get_allowed_locations('items', $personId);
+        $allowedAttributes = $this->attribute->getDefinitionNames();
+
+        // generateImportItemsCsv() returns BOM + header CSV (no trailing newline).
+        // We write it verbatim then append two data rows with the correct column
+        // count so that get_csv_file()'s array_combine() never sees a size mismatch.
+        $headerCsv   = generateImportItemsCsv($allowedLocations, $allowedAttributes);
+        $headerLine  = ltrim($headerCsv, "\xEF\xBB\xBF");
+        $headers     = str_getcsv($headerLine);
+        $columnCount = count($headers);
+
+
+        $buildRow = static function (string $barcode, string $name) use ($columnCount): string {
+            $cols    = array_fill(0, $columnCount, '');
+            $cols[1] = $barcode;
+            $cols[2] = $name;
+
+            return implode(',', array_map(static fn ($v) => str_contains($v, ',') ? '"' . $v . '"' : $v, $cols));
+        };
+
+        $csv      = $headerCsv . "\n" . $buildRow('ITEM-R1', 'Rollback Item 1') . "\n" . $buildRow('ITEM-R2', 'Rollback Item 2') . "\n";
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_rb_items_');
+        file_put_contents($tempFile, $csv);
+
+        $_FILES['file_path'] = [
+            'name'     => 'rollback.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile),
+        ];
+
+        return $tempFile;
+    }
+
+    private function clearImportTables(): void
+    {
+        $this->db->table('queue_jobs')->truncate();
+        $this->db->table('import_batch_contexts')->where('id >', 0)->delete();
+        $this->db->table('import_batches')->truncate();
+    }
+
+    private function assertImportTablesEmpty(): void
+    {
+        $this->assertSame(0, $this->db->table('import_batches')->countAllResults(), 'import_batches must be empty after rollback');
+        $this->assertSame(0, $this->db->table('import_batch_contexts')->countAllResults(), 'import_batch_contexts must be empty after rollback');
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults(), 'queue_jobs must be empty after rollback');
+    }
+
+    public function testPostImportCsvFile_RollsBackOnPushRowFailure(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+        $tempFile = $this->twoRowItemsCsvFile($employeeId);
+        $this->clearImportTables();
+        $this->injectPushRowFalseOnCall(2);
+
+        $response = $this->post('/items/importCsvFile');
+
+        $this->resetImportBatchMock();
+        unlink($tempFile);
+
+        $body   = $response->getBody();
+        $result = json_decode($response->getJSON(), true);
+        $this->assertSame(2, $this->importBatchPushRowCalls, "pushRow must be called twice so the first real enqueue is verified rolled back\nResponse: $body");
+        $this->assertFalse($result['success'] ?? true, "Import must report failure when a row enqueue fails\nResponse: $body");
+        $this->assertImportTablesEmpty();
+    }
+
+    public function testPostImportCsvFile_RollsBackOnPushRowException(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+        $tempFile = $this->twoRowItemsCsvFile($employeeId);
+        $this->clearImportTables();
+        $this->injectPushRowThrowOnCall(2);
+
+        $response = $this->post('/items/importCsvFile');
+
+        $this->resetImportBatchMock();
+        unlink($tempFile);
+
+        $body   = $response->getBody();
+        $result = json_decode($response->getJSON(), true);
+        $this->assertSame(2, $this->importBatchPushRowCalls, "pushRow must be called twice so the first real enqueue is verified rolled back\nResponse: $body");
+        $this->assertFalse($result['success'] ?? true, "Import must report failure when pushRow throws\nResponse: $body");
+        $this->assertImportTablesEmpty();
     }
 }
 

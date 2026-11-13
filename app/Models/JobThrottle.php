@@ -15,9 +15,10 @@ class JobThrottle extends Model
     protected $useAutoIncrement = true;
     protected $useSoftDeletes = false;
     protected $allowedFields = [
+        'queue',
         'max_count',
         'period',
-        'deleted'
+        'deleted',
     ];
 
     /**
@@ -40,9 +41,10 @@ class JobThrottle extends Model
     public function saveValue(array $throttleData, int $throttleId): int
     {
         $throttleDataToSave = [
+            'queue'     => $throttleData['queue'] ?? null,
             'max_count' => $throttleData['max_count'],
             'period'    => $throttleData['period'],
-            'deleted'   => 0
+            'deleted'   => 0,
         ];
 
         if (!$this->exists($throttleId)) {

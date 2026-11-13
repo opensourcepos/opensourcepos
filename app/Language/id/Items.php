@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'Berkas CSV terunggah tidak berisi data atau formatnya salah.',
     'csv_import_partially_failed'        => 'Terdapat {0} item gagal impor pada baris: {1}. Tidak ada baris yang diimpor.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Impor item CSV berhasil.',
     'current_quantity'                   => 'Jumlah saat ini',
     'default_pack_name'                  => 'Setiap',

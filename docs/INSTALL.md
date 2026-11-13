@@ -1,7 +1,7 @@
 ## Server Requirements
 
 - PHP version `8.2` (>= `8.2.35`), `8.3` (>= `8.3.36`), `8.4` (>= `8.4.27`), and `8.5` (>= `8.5.12`) are supported. PHP version `≤ 8.1` is NOT supported. Please note that PHP needs to have the extensions `php-json`, `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring`, `php-curl` and `php-xml` installed and enabled. An unstable master build can be downloaded in the releases section.
-- MySQL `5.7` is supported, also MariaDB replacement `10.x` is supported and might offer better performance.
+- MySQL `8.0.1`+ is required. MariaDB `10.6`+ is supported and might offer better performance. MySQL 5.7 and MariaDB 10.5 are end-of-life and no longer supported.
 - Apache `2.4` is supported. Nginx should work fine too, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Local-Deployment-using-LEMP).
 - Raspberry PI based installations proved to work, see [wiki page here](<https://github.com/opensourcepos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS)>).
 - For Windows based installations please read [the wiki](https://github.com/opensourcepos/opensourcepos/wiki). There are closed issues about this subject, as this topic has been covered a lot.
@@ -90,13 +90,13 @@ Then start the containers:
 
 ## Background Job Scheduling
 
-OSPOS is scaffolding a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports. This is Phase 1: the scheduler infrastructure and trigger modes exist, but no real job types are wired up yet. Currently the scheduler only runs a `jobs_heartbeat` placeholder task that writes a debug log entry; the "Process All Jobs" / "Process Selected Jobs" endpoints on the Job Queue → Utilities tab are stubs that return `not_yet_implemented`. Actual job processing (e.g. CSV imports) will land in a later phase.
+OSPOS has a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports, built on `codeigniter4/tasks` (scheduling) and `codeigniter4/queue` (job execution). Core queues are `default`, `imports`, and `api`. The "Process All Jobs" / "Process Selected Jobs" buttons on the Job Queue → Utilities tab drain these queues on demand.
 
-The three trigger modes below control how/when the scheduler runs, not what it processes yet:
+The three trigger modes below control how/when queued jobs are processed:
 
-- **Web** (default) — no setup required. The scheduler runs via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
-- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers the scheduler on a fixed interval. Recommended for VPS/dedicated servers with cron access.
-- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" button on the Job Queue → Utilities tab is present but not yet functional (Phase 1 stub).
+- **Web** (default) — no setup required. Due tasks and any pending core-queue jobs are processed via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
+- **Auto** — a single cron entry (Linux/Mac) or Task Scheduler task (Windows) runs `spark tasks:run` on a fixed interval, which drains the core queues itself (see `jobs_queue_worker` in `app/Config/Tasks.php`) as well as running scheduled tasks. Recommended for VPS/dedicated servers with cron access.
+- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" / "Process Selected Jobs" buttons on the Job Queue → Utilities tab drain the core queues synchronously.
 
 ### `auto` mode: Linux/Mac cron
 
@@ -133,7 +133,7 @@ The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once
 
 ### `manual` mode
 
-No setup is required. Set Mode to Manual on the Job Queue → Settings tab, then use the "Process All Jobs" button on the Utilities tab whenever you need jobs processed.
+No setup is required. Set Mode to Manual on the Job Queue → Settings tab, then use the "Process All Jobs" / "Process Selected Jobs" buttons on the Utilities tab whenever you need jobs processed.
 
 ### Docker considerations
 

@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'فشل الإستيراد من اكسل',
     'csv_import_nodata_wrongformat' => 'الملف الذى رفعته إما فارغ أو أنه مختلف البنية.',
     'csv_import_partially_failed'   => 'تم استيراد معظم العملاء. البعض لم يتم استيرادهم ، وهذه هى القائمة:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'تم استيراد العملاء بنجاح.',
     'customer'                      => 'العميل',
     'date'                          => 'التاريخ',

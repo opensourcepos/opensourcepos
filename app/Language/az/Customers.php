@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV idxalı alınmadı',
     'csv_import_nodata_wrongformat' => 'Yüklənmiş faylda məlumat yoxdur və ya düzgün formatda deyil.',
     'csv_import_partially_failed'   => 'Müştəri idxalı bəzi xətalarla uğurla başa çatdı:',
+    'csv_import_queued'             => '{count} müştəri(lər) idxal üçün növbəyə alındı. Bu bir neçə dəqiqə çəkə bilər.',
     'csv_import_success'            => 'Müştəri idxalı uğurla başa çatdı.',
     'customer'                      => 'Müştəri',
     'date'                          => 'Tarix',

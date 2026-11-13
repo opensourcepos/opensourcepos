@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'นำเข้าข้อมูล CSV ล้มเหลว',
     'csv_import_nodata_wrongformat' => '',
     'csv_import_partially_failed'   => 'ลูกค้า {0} ไม่สามารถนำเข้าข้อมูลในบรรทัดที่: {1}',
+    'csv_import_queued'             => '',
     'csv_import_success'            => '',
     'customer'                      => 'ลูกค้า',
     'date'                          => 'วันที่',

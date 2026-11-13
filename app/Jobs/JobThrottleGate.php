@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Models\JobThrottle;
+use Config\Services;
+
+/**
+ * Gates queue draining against the throttle rows configured in
+ * job_throttles (Jobs settings > Throttles). All active rows must pass
+ * (AND) for a pop to be allowed, so e.g. a '10/minute' row and a
+ * '1000/hour' row both act as simultaneous caps. Core throttles are
+ * global across all queues (one shared bucket per row, not per-queue).
+ *
+ * Resolved via Config\Services::jobThrottleGate() rather than instantiated
+ * directly, so a future plugin can override the service binding to layer
+ * its own per-queue throttles on top of (or instead of) these core ones;
+ * core throttles remain the fallback when no plugin override is bound.
+ */
+class JobThrottleGate
+{
+    private const PERIOD_SECONDS = [
+        'second' => 1,
+        'minute' => 60,
+        'hour'   => 3600,
+        'day'    => 86400,
+        'month'  => 2_592_000,
+    ];
+
+    public function __construct(private readonly JobThrottle $jobThrottle)
+    {
+    }
+
+    /**
+     * Checks every active throttle row applicable to $queueName. Rows with
+     * queue=null are global (apply to every queue); rows with a specific queue
+     * value only apply when $queueName matches. Consumes a token from each
+     * matching bucket as a side effect, so this must only be called once per
+     * job actually popped/attempted.
+     */
+    public function allows(?string $queueName = null): bool
+    {
+        $throttler = Services::throttler();
+        $allowed = true;
+
+        foreach ($this->getApplicableThrottles($queueName) as $throttle) {
+            $maxCount = (int) $throttle['max_count'];
+
+            if ($maxCount <= 0) {
+                continue;
+            }
+
+            $seconds = self::PERIOD_SECONDS[$throttle['period']] ?? 60;
+            $key = 'job_queue_core_' . $throttle['throttle_id'];
+
+            // Check every row even after one fails, so each bucket's
+            // refill timing stays accurate regardless of which row tripped.
+            if (!$throttler->check($key, $maxCount, $seconds)) {
+                $allowed = false;
+            }
+        }
+
+        return $allowed;
+    }
+
+    /**
+     * Seconds to sleep before retrying after allows() returned false. Uses
+     * cost=0 so no tokens are consumed — on the failure path the bucket is
+     * already exhausted, and on the passing path only the cache timestamp
+     * is refreshed (harmless). Call only immediately after allows() === false.
+     */
+    public function getSleepSeconds(?string $queueName = null): int
+    {
+        $throttler = Services::throttler();
+        $max = 1;
+
+        foreach ($this->getApplicableThrottles($queueName) as $throttle) {
+            $maxCount = (int) $throttle['max_count'];
+
+            if ($maxCount <= 0) {
+                continue;
+            }
+
+            $seconds = self::PERIOD_SECONDS[$throttle['period']] ?? 60;
+            $key = 'job_queue_core_' . $throttle['throttle_id'];
+
+            if (!$throttler->check($key, $maxCount, $seconds, 0)) {
+                $max = max($max, $throttler->getTokenTime());
+            }
+        }
+
+        return $max;
+    }
+
+    /**
+     * Returns throttle rows that apply to $queueName: global rows (queue IS
+     * NULL) always apply; queue-specific rows apply only when their queue
+     * matches $queueName.
+     */
+    private function getApplicableThrottles(?string $queueName): array
+    {
+        return array_filter(
+            $this->jobThrottle->getAll()->getResultArray(),
+            static function (array $throttle) use ($queueName): bool {
+                $throttleQueue = $throttle['queue'] ?? null;
+
+                return $throttleQueue === null || $throttleQueue === $queueName;
+            }
+        );
+    }
+}

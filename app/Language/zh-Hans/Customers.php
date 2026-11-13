@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV导入失败',
     'csv_import_nodata_wrongformat' => '上传文件没有数据或者格式不正确',
     'csv_import_partially_failed'   => '',
+    'csv_import_queued'             => '',
     'csv_import_success'            => '成功导入客户',
     'customer'                      => '客戶',
     'date'                          => '日期',

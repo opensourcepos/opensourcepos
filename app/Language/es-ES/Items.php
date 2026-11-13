@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => 'Se encontraron ubicaciones de stock no válidas: {0}. Solo se permiten ubicaciones de stock válidas.',
     'csv_import_nodata_wrongformat'      => 'El archivo subido no tiene datos o el formato es incorrecto.',
     'csv_import_partially_failed'        => 'Hubo {0} falla(s) en la importación de producto(s) en la(s) línea(s): {1}. Ninguna fila ha sido importada.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Se importaron los articulos exitosamente.',
     'current_quantity'                   => 'Cantidad Actual',
     'default_pack_name'                  => 'Cada',

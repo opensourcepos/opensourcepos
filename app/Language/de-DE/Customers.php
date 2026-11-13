@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV Import fehlerhaft',
     'csv_import_nodata_wrongformat' => 'Die hochgeladene Datei ist leer oder hat ein falsches Format.',
     'csv_import_partially_failed'   => 'Kundenimport mit Fehlern abgeschlossen:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Kundenimport erfolgreich.',
     'customer'                      => 'Kunde',
     'date'                          => 'Datum',

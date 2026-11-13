@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Chyba při importu CSV',
     'csv_import_nodata_wrongformat' => 'Nahraný soubor neobsahuje žádná data nebo je chybně formátován.',
     'csv_import_partially_failed'   => 'Import zákazníků byl úspěšný s chybami:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Import zákazníků úspěšný.',
     'customer'                      => 'Zákazník',
     'date'                          => 'Datum',
