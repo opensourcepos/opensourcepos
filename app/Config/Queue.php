@@ -20,10 +20,6 @@ class Queue extends BaseQueue
     public function __construct()
     {
         parent::__construct();
-
-        if (ENVIRONMENT === 'testing') {
-            $this->database['skipLocked'] = false;
-        }
     }
 
     public array $jobHandlers = [
