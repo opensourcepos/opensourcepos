@@ -228,6 +228,45 @@ class HomeTest extends CIUnitTestCase
             'Single character password should be rejected (CVE fix)');
     }
 
+    public function testGetIndex_ShowsOfficeLinkForOfficeOnlyEmployee(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'home', 'menu_group' => 'office'],
+                ['permission_id' => 'office', 'menu_group' => 'office'],
+                ['permission_id' => 'config', 'menu_group' => 'office']
+            ]
+        ]);
+
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/home');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('href="' . base_url('office') . '"', $response->getBody());
+    }
+
+    public function testGetIndex_HidesOfficeLinkWithoutOfficeGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'home', 'menu_group' => 'office'],
+                ['permission_id' => 'config', 'menu_group' => 'office'],
+            ]
+        ]);
+
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/home');
+
+        $response->assertStatus(200);
+
+        $this->assertStringNotContainsString(
+            'href="' . base_url('office') . '"',
+            $response->getBody()
+        );
+    }
+
     /**
      * Helper method to reset session
      *
