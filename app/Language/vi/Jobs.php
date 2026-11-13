@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Chế độ',
     'mode_auto'                         => 'Tự động (Cron / Trình lập lịch tác vụ)',
     'mode_invalid'                      => 'Chế độ phải là một trong các giá trị: Tự động, Web, hoặc Thủ công.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Chưa được triển khai — sẽ có trong phiên bản tương lai.',
     'process_all_jobs'                  => 'Xử lý tất cả công việc',
     'process_selected_jobs'             => 'Xử lý các công việc đã chọn',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Đã lưu cài đặt Hàng đợi công việc thành công.',
     'saved_unsuccessfully'              => 'Không thể lưu cài đặt Hàng đợi công việc.',
     'select_jobs'                       => 'Chọn công việc',
     'settings'                          => 'Cài đặt',
     'settings_configuration'            => 'Cài đặt Hàng đợi công việc',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Số lượng',
     'throttle_count_required'           => 'Số lượng giới hạn là bắt buộc và phải là số nguyên không âm.',
     'throttle_period'                   => 'Chu kỳ',

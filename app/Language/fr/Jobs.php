@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Mode',
     'mode_auto'                         => 'Auto (Cron / Planificateur de tâches)',
     'mode_invalid'                      => 'Le mode doit être Auto, Web ou Manuel.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Pas encore implémenté — disponible dans une future version.',
     'process_all_jobs'                  => 'Traiter toutes les tâches',
     'process_selected_jobs'             => 'Traiter les tâches sélectionnées',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Les paramètres de la file d\'attente des tâches ont été enregistrés avec succès.',
     'saved_unsuccessfully'              => 'Les paramètres de la file d\'attente des tâches n\'ont pas pu être enregistrés.',
     'select_jobs'                       => 'Sélectionner les tâches',
     'settings'                          => 'Paramètres',
     'settings_configuration'            => 'Paramètres de la file d\'attente des tâches',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Nombre',
     'throttle_count_required'           => 'Le nombre de limitation est requis et doit être un entier non négatif.',
     'throttle_period'                   => 'Période',

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Tilstand',
     'mode_auto'                         => 'Auto (Cron / Jobplanlægger)',
     'mode_invalid'                      => 'Tilstand skal være enten Auto, Web eller Manuel.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Endnu ikke implementeret — tilgængelig i en fremtidig udgivelse.',
     'process_all_jobs'                  => 'Behandl alle job',
     'process_selected_jobs'             => 'Behandl valgte job',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Indstillinger for jobkø blev gemt.',
     'saved_unsuccessfully'              => 'Indstillinger for jobkø kunne ikke gemmes.',
     'select_jobs'                       => 'Vælg job',
     'settings'                          => 'Indstillinger',
     'settings_configuration'            => 'Indstillinger for jobkø',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Antal',
     'throttle_count_required'           => 'Antal er påkrævet og skal være et ikke-negativt heltal.',
     'throttle_period'                   => 'Periode',

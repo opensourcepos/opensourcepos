@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => '模式',
     'mode_auto'                         => '自動（排程 / 工作排程器）',
     'mode_invalid'                      => '模式必須為自動、網頁或手動其中之一。',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => '尚未實作——將於未來版本提供。',
     'process_all_jobs'                  => '處理所有工作',
     'process_selected_jobs'             => '處理選取的工作',
+    'remove_throttle'                   => '',
     'saved_successfully'                => '工作佇列設定已成功儲存。',
     'saved_unsuccessfully'              => '無法儲存工作佇列設定。',
     'select_jobs'                       => '選取工作',
     'settings'                          => '設定',
     'settings_configuration'            => '工作佇列設定',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => '數量',
     'throttle_count_required'           => '限流數量為必填項目，且必須為非負整數。',
     'throttle_period'                   => '週期',

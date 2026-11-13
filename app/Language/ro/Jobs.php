@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Mod',
     'mode_auto'                         => 'Automat (Cron / Planificator de Sarcini)',
     'mode_invalid'                      => 'Modul trebuie să fie Automat, Web sau Manual.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Neimplementat încă — disponibil într-o versiune viitoare.',
     'process_all_jobs'                  => 'Procesează Toate Sarcinile',
     'process_selected_jobs'             => 'Procesează Sarcinile Selectate',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Setările Cozii de Sarcini au fost salvate cu succes.',
     'saved_unsuccessfully'              => 'Setările Cozii de Sarcini nu au putut fi salvate.',
     'select_jobs'                       => 'Selectează Sarcini',
     'settings'                          => 'Setări',
     'settings_configuration'            => 'Setările Cozii de Sarcini',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Număr',
     'throttle_count_required'           => 'Numărul de limitare este obligatoriu și trebuie să fie un număr întreg nenegativ.',
     'throttle_period'                   => 'Perioadă',

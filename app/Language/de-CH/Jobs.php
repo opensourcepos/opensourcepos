@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Modus',
     'mode_auto'                         => 'Auto (Cron / Aufgabenplanung)',
     'mode_invalid'                      => 'Modus muss Auto, Web oder Manuell sein.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Noch nicht implementiert — verfügbar in einer zukünftigen Version.',
     'process_all_jobs'                  => 'Alle Aufträge verarbeiten',
     'process_selected_jobs'             => 'Ausgewählte Aufträge verarbeiten',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Einstellungen der Auftragswarteschlange wurden erfolgreich gespeichert.',
     'saved_unsuccessfully'              => 'Einstellungen der Auftragswarteschlange konnten nicht gespeichert werden.',
     'select_jobs'                       => 'Aufträge auswählen',
     'settings'                          => 'Einstellungen',
     'settings_configuration'            => 'Einstellungen der Auftragswarteschlange',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Anzahl',
     'throttle_count_required'           => 'Anzahl ist erforderlich und muss eine nicht negative Ganzzahl sein.',
     'throttle_period'                   => 'Zeitraum',

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Hali',
     'mode_auto'                         => 'Kiotomatiki (Cron / Ratiba ya Kazi)',
     'mode_invalid'                      => 'Hali lazima iwe Kiotomatiki, Wavuti, au Kwa Mkono.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Haijatekelezwa bado — itapatikana kwenye toleo lijalo.',
     'process_all_jobs'                  => 'Chakata Kazi Zote',
     'process_selected_jobs'             => 'Chakata Kazi Zilizochaguliwa',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Mipangilio ya Foleni ya Kazi imehifadhiwa kwa ufanisi.',
     'saved_unsuccessfully'              => 'Mipangilio ya Foleni ya Kazi imeshindwa kuhifadhiwa.',
     'select_jobs'                       => 'Chagua Kazi',
     'settings'                          => 'Mipangilio',
     'settings_configuration'            => 'Mipangilio ya Foleni ya Kazi',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Idadi',
     'throttle_count_required'           => 'Idadi ya kizuizi inahitajika na lazima iwe namba kamili isiyo hasi.',
     'throttle_period'                   => 'Muda',

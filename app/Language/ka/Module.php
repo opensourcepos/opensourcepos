@@ -26,6 +26,8 @@ return [
     'item_kits_desc'             => '',
     'items'                      => '',
     'items_desc'                 => '',
+    'jobs'                       => '',
+    'jobs_desc'                  => '',
     'messages'                   => '',
     'messages_desc'              => '',
     'migrate'                    => '',

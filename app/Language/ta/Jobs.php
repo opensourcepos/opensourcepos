@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'பயன்முறை',
     'mode_auto'                         => 'தானியங்கி (க்ரான் / பணி திட்டமிடுபவர்)',
     'mode_invalid'                      => 'பயன்முறை தானியங்கி, வலை அல்லது கைமுறை என ஒன்றாக இருக்க வேண்டும்.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'இன்னும் செயல்படுத்தப்படவில்லை — எதிர்கால பதிப்பில் கிடைக்கும்.',
     'process_all_jobs'                  => 'அனைத்து பணிகளையும் செயலாக்கு',
     'process_selected_jobs'             => 'தேர்ந்தெடுக்கப்பட்ட பணிகளை செயலாக்கு',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'பணி வரிசை அமைப்புகள் வெற்றிகரமாக சேமிக்கப்பட்டன.',
     'saved_unsuccessfully'              => 'பணி வரிசை அமைப்புகளை சேமிக்க முடியவில்லை.',
     'select_jobs'                       => 'பணிகளைத் தேர்ந்தெடு',
     'settings'                          => 'அமைப்புகள்',
     'settings_configuration'            => 'பணி வரிசை அமைப்புகள்',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'எண்ணிக்கை',
     'throttle_count_required'           => 'கட்டுப்பாடு எண்ணிக்கை தேவை மற்றும் எதிர்மறையற்ற முழு எண்ணாக இருக்க வேண்டும்.',
     'throttle_period'                   => 'காலம்',

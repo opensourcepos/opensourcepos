@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Läge',
     'mode_auto'                         => 'Auto (Cron / Aktivitetsschemaläggare)',
     'mode_invalid'                      => 'Läge måste vara antingen Auto, Webb eller Manuell.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Ännu inte implementerat — tillgängligt i en framtida version.',
     'process_all_jobs'                  => 'Bearbeta Alla Jobb',
     'process_selected_jobs'             => 'Bearbeta Valda Jobb',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Jobbköns inställningar sparades framgångsrikt.',
     'saved_unsuccessfully'              => 'Jobbköns inställningar kunde inte sparas.',
     'select_jobs'                       => 'Välj Jobb',
     'settings'                          => 'Inställningar',
     'settings_configuration'            => 'Jobbköns Inställningar',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Antal',
     'throttle_count_required'           => 'Begränsningsantal krävs och måste vara ett icke-negativt heltal.',
     'throttle_period'                   => 'Period',

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'دۆخ',
     'mode_auto'                        => 'خۆکار (کڕۆن / خشتەبەندی ئەرک)',
     'mode_invalid'                     => 'دەبێت دۆخ یەکێک بێت لە خۆکار، وێب، یان دەستی.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'هێشتا جێبەجێ نەکراوە — لە وەشانێکی داهاتوودا بەردەست دەبێت.',
     'process_all_jobs'                 => 'پرۆسەکردنی هەموو ئەرکەکان',
     'process_selected_jobs'            => 'پرۆسەکردنی ئەرکە هەڵبژێردراوەکان',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'ڕێکخستنەکانی ڕیزی ئەرک بە سەرکەوتوویی پاشەکەوت کرا.',
     'saved_unsuccessfully'             => 'ڕێکخستنەکانی ڕیزی ئەرک پاشەکەوت نەکرا.',
     'select_jobs'                      => 'هەڵبژاردنی ئەرکەکان',
     'settings'                         => 'ڕێکخستنەکان',
     'settings_configuration'           => 'ڕێکخستنەکانی ڕیزی ئەرک',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'ژمارە',
     'throttle_count_required'          => 'ژمارەی سنووردارکردن پێویستە و دەبێت ژمارەیەکی تەواوی نەرێنی نەبێت.',
     'throttle_period'                  => 'ماوە',

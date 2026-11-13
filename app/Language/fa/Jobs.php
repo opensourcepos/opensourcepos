@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'حالت',
     'mode_auto'                         => 'خودکار (کرون / زمان‌بند وظایف)',
     'mode_invalid'                      => 'حالت باید یکی از خودکار، وب یا دستی باشد.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'هنوز پیاده‌سازی نشده است — در نسخه‌ای آینده در دسترس خواهد بود.',
     'process_all_jobs'                  => 'پردازش همه کارها',
     'process_selected_jobs'             => 'پردازش کارهای انتخاب‌شده',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'تنظیمات صف کارها با موفقیت ذخیره شد.',
     'saved_unsuccessfully'              => 'تنظیمات صف کارها ذخیره نشد.',
     'select_jobs'                       => 'انتخاب کارها',
     'settings'                          => 'تنظیمات',
     'settings_configuration'            => 'تنظیمات صف کارها',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'تعداد',
     'throttle_count_required'           => 'تعداد محدودیت الزامی است و باید یک عدد صحیح غیرمنفی باشد.',
     'throttle_period'                   => 'دوره زمانی',

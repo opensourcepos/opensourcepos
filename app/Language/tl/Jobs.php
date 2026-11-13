@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Mode',
     'mode_auto'                         => 'Awtomatiko (Cron / Task Scheduler)',
     'mode_invalid'                      => 'Ang mode ay dapat Awtomatiko, Web, o Manwal.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Hindi pa naipapatupad — magagamit sa susunod na bersyon.',
     'process_all_jobs'                  => 'Iproseso ang Lahat ng Trabaho',
     'process_selected_jobs'             => 'Iproseso ang Napiling mga Trabaho',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Matagumpay na na-save ang mga setting ng Pila ng Trabaho.',
     'saved_unsuccessfully'              => 'Hindi ma-save ang mga setting ng Pila ng Trabaho.',
     'select_jobs'                       => 'Pumili ng mga Trabaho',
     'settings'                          => 'Mga Setting',
     'settings_configuration'            => 'Mga Setting ng Pila ng Trabaho',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Bilang',
     'throttle_count_required'           => 'Kailangan ang bilang ng throttle at dapat itong non-negative na integer.',
     'throttle_period'                   => 'Panahon',

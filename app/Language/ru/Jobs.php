@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Режим',
     'mode_auto'                         => 'Авто (Cron / Планировщик задач)',
     'mode_invalid'                      => 'Режим должен быть Авто, Веб или Ручной.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Еще не реализовано — будет доступно в будущей версии.',
     'process_all_jobs'                  => 'Обработать все задачи',
     'process_selected_jobs'             => 'Обработать выбранные задачи',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Настройки очереди задач успешно сохранены.',
     'saved_unsuccessfully'              => 'Не удалось сохранить настройки очереди задач.',
     'select_jobs'                       => 'Выбрать задачи',
     'settings'                          => 'Настройки',
     'settings_configuration'            => 'Настройки очереди задач',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Количество',
     'throttle_count_required'           => 'Количество ограничения обязательно и должно быть неотрицательным целым числом.',
     'throttle_period'                   => 'Период',

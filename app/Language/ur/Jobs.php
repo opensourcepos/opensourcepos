@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'موڈ',
     'mode_auto'                         => 'خودکار (کرون / ٹاسک شیڈیولر)',
     'mode_invalid'                      => 'موڈ لازمی طور پر خودکار، ویب، یا دستی میں سے کوئی ایک ہونا چاہیے۔',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'ابھی تک نافذ نہیں کیا گیا — مستقبل کے ورژن میں دستیاب ہوگا۔',
     'process_all_jobs'                  => 'تمام ملازمتوں پر کارروائی کریں',
     'process_selected_jobs'             => 'منتخب ملازمتوں پر کارروائی کریں',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'قطارِ ملازمت کی ترتیبات کامیابی سے محفوظ ہو گئیں۔',
     'saved_unsuccessfully'              => 'قطارِ ملازمت کی ترتیبات محفوظ نہیں ہو سکیں۔',
     'select_jobs'                       => 'ملازمتیں منتخب کریں',
     'settings'                          => 'ترتیبات',
     'settings_configuration'            => 'قطارِ ملازمت کی ترتیبات',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'تعداد',
     'throttle_count_required'           => 'تھروٹل کی تعداد لازمی ہے اور یہ ایک غیر منفی عدد صحیح ہونی چاہیے۔',
     'throttle_period'                   => 'مدت',

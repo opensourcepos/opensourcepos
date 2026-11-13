@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Λειτουργία',
     'mode_auto'                         => 'Αυτόματη (Cron / Χρονοπρογραμματιστής)',
     'mode_invalid'                      => 'Η λειτουργία πρέπει να είναι Αυτόματη, Web ή Χειροκίνητη.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Δεν έχει υλοποιηθεί ακόμα — διαθέσιμο σε μελλοντική έκδοση.',
     'process_all_jobs'                  => 'Επεξεργασία Όλων των Εργασιών',
     'process_selected_jobs'             => 'Επεξεργασία Επιλεγμένων Εργασιών',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Οι ρυθμίσεις της ουράς εργασιών αποθηκεύτηκαν με επιτυχία.',
     'saved_unsuccessfully'              => 'Δεν ήταν δυνατή η αποθήκευση των ρυθμίσεων της ουράς εργασιών.',
     'select_jobs'                       => 'Επιλογή Εργασιών',
     'settings'                          => 'Ρυθμίσεις',
     'settings_configuration'            => 'Ρυθμίσεις Ουράς Εργασιών',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Πλήθος',
     'throttle_count_required'           => 'Το πλήθος περιορισμού είναι υποχρεωτικό και πρέπει να είναι μη αρνητικός ακέραιος.',
     'throttle_period'                   => 'Περίοδος',

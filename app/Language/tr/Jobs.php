@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Mod',
     'mode_auto'                         => 'Otomatik (Cron / Görev Zamanlayıcı)',
     'mode_invalid'                      => 'Mod, Otomatik, Web veya Manuel değerlerinden biri olmalıdır.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Henüz uygulanmadı — gelecek bir sürümde kullanılabilir olacak.',
     'process_all_jobs'                  => 'Tüm İşleri İşle',
     'process_selected_jobs'             => 'Seçili İşleri İşle',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'İş Kuyruğu ayarları başarıyla kaydedildi.',
     'saved_unsuccessfully'              => 'İş Kuyruğu ayarları kaydedilemedi.',
     'select_jobs'                       => 'İşleri Seç',
     'settings'                          => 'Ayarlar',
     'settings_configuration'            => 'İş Kuyruğu Ayarları',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Sayı',
     'throttle_count_required'           => 'Kısıtlama sayısı gereklidir ve negatif olmayan bir tam sayı olmalıdır.',
     'throttle_period'                   => 'Periyot',

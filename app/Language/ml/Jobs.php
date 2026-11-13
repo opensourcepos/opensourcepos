@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'മോഡ്',
     'mode_auto'                        => 'ഓട്ടോ (ക്രോൺ / ടാസ്ക് ഷെഡ്യൂളർ)',
     'mode_invalid'                     => 'മോഡ് ഓട്ടോ, വെബ്, അല്ലെങ്കിൽ മാനുവൽ എന്നിവയിൽ ഒന്നായിരിക്കണം.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'ഇതുവരെ നടപ്പിലാക്കിയിട്ടില്ല — ഭാവി പതിപ്പിൽ ലഭ്യമാകും.',
     'process_all_jobs'                 => 'എല്ലാ ജോലികളും പ്രോസസ് ചെയ്യുക',
     'process_selected_jobs'            => 'തിരഞ്ഞെടുത്ത ജോലികൾ പ്രോസസ് ചെയ്യുക',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'ജോലി ക്യൂ ക്രമീകരണങ്ങൾ വിജയകരമായി സംരക്ഷിച്ചു.',
     'saved_unsuccessfully'             => 'ജോലി ക്യൂ ക്രമീകരണങ്ങൾ സംരക്ഷിക്കാൻ കഴിഞ്ഞില്ല.',
     'select_jobs'                      => 'ജോലികൾ തിരഞ്ഞെടുക്കുക',
     'settings'                         => 'ക്രമീകരണങ്ങൾ',
     'settings_configuration'           => 'ജോലി ക്യൂ ക്രമീകരണങ്ങൾ',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'എണ്ണം',
     'throttle_count_required'          => 'ത്രോട്ടിൽ എണ്ണം ആവശ്യമാണ്, അത് ഋണാത്മകമല്ലാത്ത പൂർണ്ണസംഖ്യ ആയിരിക്കണം.',
     'throttle_period'                  => 'കാലയളവ്',

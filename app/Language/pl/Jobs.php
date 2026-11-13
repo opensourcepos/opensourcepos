@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'Tryb',
     'mode_auto'                        => 'Automatyczny (Cron / Harmonogram zadań)',
     'mode_invalid'                     => 'Tryb musi być jednym z: Automatyczny, Web lub Ręczny.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'Jeszcze niezaimplementowane — dostępne w przyszłej wersji.',
     'process_all_jobs'                 => 'Przetwórz wszystkie zadania',
     'process_selected_jobs'            => 'Przetwórz wybrane zadania',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'Ustawienia kolejki zadań zostały pomyślnie zapisane.',
     'saved_unsuccessfully'             => 'Nie udało się zapisać ustawień kolejki zadań.',
     'select_jobs'                      => 'Wybierz zadania',
     'settings'                         => 'Ustawienia',
     'settings_configuration'           => 'Ustawienia kolejki zadań',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'Liczba',
     'throttle_count_required'          => 'Liczba ograniczenia jest wymagana i musi być liczbą całkowitą nieujemną.',
     'throttle_period'                  => 'Okres',

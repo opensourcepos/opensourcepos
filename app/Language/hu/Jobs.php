@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Mód',
     'mode_auto'                         => 'Automatikus (Cron / Feladatütemező)',
     'mode_invalid'                      => 'A módnak Automatikus, Web vagy Kézi értékek egyikének kell lennie.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Még nincs megvalósítva — egy jövőbeli kiadásban lesz elérhető.',
     'process_all_jobs'                  => 'Összes feladat feldolgozása',
     'process_selected_jobs'             => 'Kiválasztott feladatok feldolgozása',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'A feladatsor beállításai sikeresen mentve.',
     'saved_unsuccessfully'              => 'A feladatsor beállításait nem sikerült menteni.',
     'select_jobs'                       => 'Feladatok kiválasztása',
     'settings'                          => 'Beállítások',
     'settings_configuration'            => 'Feladatsor beállításai',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Darabszám',
     'throttle_count_required'           => 'A korlátozás darabszáma kötelező, és nem negatív egész számnak kell lennie.',
     'throttle_period'                   => 'Időszak',

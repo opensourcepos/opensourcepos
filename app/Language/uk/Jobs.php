@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Режим',
     'mode_auto'                         => 'Автоматично (Cron / Планувальник завдань)',
     'mode_invalid'                      => 'Режим має бути одним із: Автоматично, Веб або Вручну.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Ще не реалізовано — буде доступно в майбутньому випуску.',
     'process_all_jobs'                  => 'Обробити всі завдання',
     'process_selected_jobs'             => 'Обробити вибрані завдання',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Налаштування черги завдань успішно збережено.',
     'saved_unsuccessfully'              => 'Не вдалося зберегти налаштування черги завдань.',
     'select_jobs'                       => 'Вибрати завдання',
     'settings'                          => 'Налаштування',
     'settings_configuration'            => 'Налаштування черги завдань',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Кількість',
     'throttle_count_required'           => 'Кількість обмеження обов\'язкова і має бути невід\'ємним цілим числом.',
     'throttle_period'                   => 'Період',

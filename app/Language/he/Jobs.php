@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'מצב',
     'mode_auto'                         => 'אוטומטי (Cron / מתזמן משימות)',
     'mode_invalid'                      => 'המצב חייב להיות אוטומטי, אינטרנט או ידני.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'טרם מומש — יהיה זמין בגרסה עתידית.',
     'process_all_jobs'                  => 'עבד את כל העבודות',
     'process_selected_jobs'             => 'עבד את העבודות שנבחרו',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'הגדרות תור העבודות נשמרו בהצלחה.',
     'saved_unsuccessfully'              => 'לא ניתן היה לשמור את הגדרות תור העבודות.',
     'select_jobs'                       => 'בחר עבודות',
     'settings'                          => 'הגדרות',
     'settings_configuration'            => 'הגדרות תור העבודות',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'כמות',
     'throttle_count_required'           => 'כמות ההגבלה נדרשת וחייבת להיות מספר שלם לא שלילי.',
     'throttle_period'                   => 'תקופה',

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'Rejim',
     'mode_auto'                        => 'Avtomatik (Cron / Tapşırıq Planlayıcısı)',
     'mode_invalid'                     => 'Rejim Avtomatik, Veb və ya Manual olmalıdır.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'Hələ tətbiq edilməyib — gələcək versiyada mövcud olacaq.',
     'process_all_jobs'                 => 'Bütün Tapşırıqları İşlə',
     'process_selected_jobs'            => 'Seçilmiş Tapşırıqları İşlə',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'Tapşırıq Növbəsi ayarları uğurla saxlanıldı.',
     'saved_unsuccessfully'             => 'Tapşırıq Növbəsi ayarları saxlanıla bilmədi.',
     'select_jobs'                      => 'Tapşırıqları Seç',
     'settings'                         => 'Ayarlar',
     'settings_configuration'           => 'Tapşırıq Növbəsi Ayarları',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'Say',
     'throttle_count_required'          => 'Məhdudlaşdırma sayı tələb olunur və mənfi olmayan tam ədəd olmalıdır.',
     'throttle_period'                  => 'Dövr',

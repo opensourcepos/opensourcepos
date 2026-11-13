@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'Režim',
     'mode_auto'                        => 'Automaticky (Cron / Plánovač úloh)',
     'mode_invalid'                     => 'Režim musí být buď Automatický, Webový, nebo Ruční.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'Zatím neimplementováno — bude dostupné v budoucí verzi.',
     'process_all_jobs'                 => 'Zpracovat všechny úlohy',
     'process_selected_jobs'            => 'Zpracovat vybrané úlohy',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'Nastavení fronty úloh bylo úspěšně uloženo.',
     'saved_unsuccessfully'             => 'Nastavení fronty úloh se nepodařilo uložit.',
     'select_jobs'                      => 'Vybrat úlohy',
     'settings'                         => 'Nastavení',
     'settings_configuration'           => 'Nastavení fronty úloh',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'Počet',
     'throttle_count_required'          => 'Počet pro omezení je povinný a musí být nezáporné celé číslo.',
     'throttle_period'                  => 'Perioda',

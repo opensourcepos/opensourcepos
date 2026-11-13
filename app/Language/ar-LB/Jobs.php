@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'الوضع',
     'mode_auto'                        => 'تلقائي (Cron / جدولة المهام)',
     'mode_invalid'                     => 'يجب أن يكون الوضع أحد: تلقائي، ويب، أو يدوي.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'لم يُنفَّذ بعد — سيتوفر في إصدار لاحق.',
     'process_all_jobs'                 => 'معالجة جميع المهام',
     'process_selected_jobs'            => 'معالجة المهام المختارة',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'تم حفظ إعدادات قائمة انتظار المهام بنجاح.',
     'saved_unsuccessfully'             => 'تعذّر حفظ إعدادات قائمة انتظار المهام.',
     'select_jobs'                      => 'اختيار المهام',
     'settings'                         => 'الإعدادات',
     'settings_configuration'           => 'إعدادات قائمة انتظار المهام',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'العدد',
     'throttle_count_required'          => 'عدد التقييد مطلوب ويجب أن يكون رقمًا صحيحًا غير سالب.',
     'throttle_period'                  => 'الفترة',

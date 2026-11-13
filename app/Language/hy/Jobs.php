@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Ռեժիմ',
     'mode_auto'                         => 'Ինքնաշխատ (Cron / Առաջադրանքների պլանավորիչ)',
     'mode_invalid'                      => 'Ռեժիմը պետք է լինի Ինքնաշխատ, Վեբ կամ Ձեռքով։',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Դեռևս չի իրականացվել — հասանելի կլինի հետագա թողարկումներում։',
     'process_all_jobs'                  => 'Մշակել բոլոր առաջադրանքները',
     'process_selected_jobs'             => 'Մշակել ընտրված առաջադրանքները',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Առաջադրանքների հերթի կարգավորումները հաջողությամբ պահպանվեցին։',
     'saved_unsuccessfully'              => 'Առաջադրանքների հերթի կարգավորումները հնարավոր չեղավ պահպանել։',
     'select_jobs'                       => 'Ընտրել առաջադրանքներ',
     'settings'                          => 'Կարգավորումներ',
     'settings_configuration'            => 'Առաջադրանքների հերթի կարգավորումներ',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Քանակ',
     'throttle_count_required'           => 'Սահմանափակման քանակը պարտադիր է և պետք է լինի ոչ բացասական ամբողջ թիվ։',
     'throttle_period'                   => 'Ժամանակահատված',

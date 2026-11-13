@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'ໂໝດ',
     'mode_auto'                        => 'ອັດຕະໂນມັດ (Cron / ຕົວກຳນົດເວລາໜ້າວຽກ)',
     'mode_invalid'                     => 'ໂໝດຕ້ອງເປັນອັດຕະໂນມັດ, ເວັບ, ຫຼືດ້ວຍຕົນເອງ.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'ຍັງບໍ່ໄດ້ນຳໃຊ້ — ຈະມີໃນລຸ້ນຕໍ່ໄປ.',
     'process_all_jobs'                 => 'ດຳເນີນການວຽກທັງໝົດ',
     'process_selected_jobs'            => 'ດຳເນີນການວຽກທີ່ເລືອກ',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'ບັນທຶກການຕັ້ງຄ່າຄິວວຽກສຳເລັດແລ້ວ.',
     'saved_unsuccessfully'             => 'ບໍ່ສາມາດບັນທຶກການຕັ້ງຄ່າຄິວວຽກໄດ້.',
     'select_jobs'                      => 'ເລືອກວຽກ',
     'settings'                         => 'ການຕັ້ງຄ່າ',
     'settings_configuration'           => 'ການຕັ້ງຄ່າຄິວວຽກ',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'ຈຳນວນ',
     'throttle_count_required'          => 'ຈຳນວນຈຳກັດແມ່ນຈຳເປັນ ແລະ ຕ້ອງເປັນຈຳນວນເຕັມທີ່ບໍ່ຕິດລົບ.',
     'throttle_period'                  => 'ໄລຍະເວລາ',

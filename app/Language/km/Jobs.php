@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'របៀប',
     'mode_auto'                        => 'ស្វ័យប្រវត្តិ (Cron / កម្មវិធីកំណត់ពេលភារកិច្ច)',
     'mode_invalid'                     => 'របៀបត្រូវតែជា ស្វ័យប្រវត្តិ, វេប, រឺដោយដៃ។',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'មិនទាន់អនុវត្តនៅឡើយទេ — នឹងមាននៅជំនាន់ក្រោយ។',
     'process_all_jobs'                 => 'ដំណើរការការងារទាំងអស់',
     'process_selected_jobs'            => 'ដំណើរការការងារដែលបានជ្រើសរើស',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'ការកំណត់ជួរការងារត្រូវបានរក្សាទុកដោយជោគជ័យ។',
     'saved_unsuccessfully'             => 'ការកំណត់ជួរការងារមិនអាចរក្សាទុកបានទេ។',
     'select_jobs'                      => 'ជ្រើសរើសការងារ',
     'settings'                         => 'ការកំណត់',
     'settings_configuration'           => 'ការកំណត់ជួរការងារ',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'ចំនួន',
     'throttle_count_required'          => 'ត្រូវការចំនួនកំណត់កម្រិត ហើយត្រូវតែជាចំនួនគត់មិនអវិជ្ជមាន។',
     'throttle_period'                  => 'រយៈពេល',

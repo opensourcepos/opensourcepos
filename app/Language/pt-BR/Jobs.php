@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Modo',
     'mode_auto'                         => 'Automático (Cron / Agendador de Tarefas)',
     'mode_invalid'                      => 'O modo deve ser Automático, Web ou Manual.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Ainda não implementado — disponível em uma versão futura.',
     'process_all_jobs'                  => 'Processar Todas as Tarefas',
     'process_selected_jobs'             => 'Processar Tarefas Selecionadas',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Configurações da Fila de Tarefas salvas com sucesso.',
     'saved_unsuccessfully'              => 'Não foi possível salvar as configurações da Fila de Tarefas.',
     'select_jobs'                       => 'Selecionar Tarefas',
     'settings'                          => 'Configurações',
     'settings_configuration'            => 'Configurações da Fila de Tarefas',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Contagem',
     'throttle_count_required'           => 'A contagem de limitação é obrigatória e deve ser um número inteiro não negativo.',
     'throttle_period'                   => 'Período',

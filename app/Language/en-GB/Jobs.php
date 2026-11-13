@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Mode',
     'mode_auto'                         => 'Auto (Cron / Task Scheduler)',
     'mode_invalid'                      => 'Mode must be one of Auto, Web, or Manual.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Not yet implemented — available in a future release.',
     'process_all_jobs'                  => 'Process All Jobs',
     'process_selected_jobs'             => 'Process Selected Jobs',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Job Queue settings saved successfully.',
     'saved_unsuccessfully'              => 'Job Queue settings could not be saved.',
     'select_jobs'                       => 'Select Jobs',
     'settings'                          => 'Settings',
     'settings_configuration'            => 'Job Queue Settings',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Count',
     'throttle_count_required'           => 'Throttle count is required and must be a non-negative integer.',
     'throttle_period'                   => 'Period',

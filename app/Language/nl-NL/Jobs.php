@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'Modus',
     'mode_auto'                        => 'Automatisch (Cron / Taakplanner)',
     'mode_invalid'                     => 'Modus moet Automatisch, Web of Handmatig zijn.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'Nog niet geïmplementeerd — beschikbaar in een toekomstige release.',
     'process_all_jobs'                 => 'Alle taken verwerken',
     'process_selected_jobs'            => 'Geselecteerde taken verwerken',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'Instellingen van de taakwachtrij zijn succesvol opgeslagen.',
     'saved_unsuccessfully'             => 'Instellingen van de taakwachtrij konden niet worden opgeslagen.',
     'select_jobs'                      => 'Taken selecteren',
     'settings'                         => 'Instellingen',
     'settings_configuration'           => 'Instellingen taakwachtrij',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'Aantal',
     'throttle_count_required'          => 'Het aantal voor de beperking is verplicht en moet een niet-negatief geheel getal zijn.',
     'throttle_period'                  => 'Periode',

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'โหมด',
     'mode_auto'                         => 'อัตโนมัติ (Cron / ตัวจัดกำหนดการงาน)',
     'mode_invalid'                      => 'โหมดต้องเป็นหนึ่งใน อัตโนมัติ, เว็บ หรือ กำหนดเอง',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'ยังไม่ได้ใช้งาน — จะพร้อมใช้งานในเวอร์ชันถัดไป',
     'process_all_jobs'                  => 'ประมวลผลงานทั้งหมด',
     'process_selected_jobs'             => 'ประมวลผลงานที่เลือก',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'บันทึกการตั้งค่าคิวงานสำเร็จแล้ว',
     'saved_unsuccessfully'              => 'ไม่สามารถบันทึกการตั้งค่าคิวงานได้',
     'select_jobs'                       => 'เลือกงาน',
     'settings'                          => 'การตั้งค่า',
     'settings_configuration'            => 'การตั้งค่าคิวงาน',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'จำนวน',
     'throttle_count_required'           => 'ต้องระบุจำนวนจำกัด และต้องเป็นจำนวนเต็มที่ไม่ติดลบ',
     'throttle_period'                   => 'ช่วงเวลา',

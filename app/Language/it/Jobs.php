@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Modalità',
     'mode_auto'                         => 'Automatica (Cron / Utilità di Pianificazione)',
     'mode_invalid'                      => 'La modalità deve essere Automatica, Web o Manuale.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Non ancora implementato — disponibile in una versione futura.',
     'process_all_jobs'                  => 'Elabora Tutti i Lavori',
     'process_selected_jobs'             => 'Elabora i Lavori Selezionati',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Le impostazioni della Coda dei Lavori sono state salvate correttamente.',
     'saved_unsuccessfully'              => 'Impossibile salvare le impostazioni della Coda dei Lavori.',
     'select_jobs'                       => 'Seleziona Lavori',
     'settings'                          => 'Impostazioni',
     'settings_configuration'            => 'Impostazioni della Coda dei Lavori',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Numero',
     'throttle_count_required'           => 'Il numero di limitazione è obbligatorio e deve essere un intero non negativo.',
     'throttle_period'                   => 'Periodo',

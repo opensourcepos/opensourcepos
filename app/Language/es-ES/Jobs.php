@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Modo',
     'mode_auto'                         => 'Automático (Cron / Programador de Tareas)',
     'mode_invalid'                      => 'El modo debe ser Automático, Web o Manual.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Todavía no implementado — disponible en una futura versión.',
     'process_all_jobs'                  => 'Procesar Todos los Trabajos',
     'process_selected_jobs'             => 'Procesar Trabajos Seleccionados',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'La configuración de la cola de trabajos se guardó correctamente.',
     'saved_unsuccessfully'              => 'No se pudo guardar la configuración de la cola de trabajos.',
     'select_jobs'                       => 'Seleccionar Trabajos',
     'settings'                          => 'Configuración',
     'settings_configuration'            => 'Configuración de la Cola de Trabajos',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Cantidad',
     'throttle_count_required'           => 'La cantidad de limitación es obligatoria y debe ser un entero no negativo.',
     'throttle_period'                   => 'Periodo',

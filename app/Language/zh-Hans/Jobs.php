@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => '模式',
     'mode_auto'                         => '自动（定时任务 / 任务计划程序）',
     'mode_invalid'                      => '模式必须为自动、网页或手动之一。',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => '尚未实现——将在未来版本中提供。',
     'process_all_jobs'                  => '处理所有任务',
     'process_selected_jobs'             => '处理选定任务',
+    'remove_throttle'                   => '',
     'saved_successfully'                => '任务队列设置已成功保存。',
     'saved_unsuccessfully'              => '无法保存任务队列设置。',
     'select_jobs'                       => '选择任务',
     'settings'                          => '设置',
     'settings_configuration'            => '任务队列设置',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => '数量',
     'throttle_count_required'           => '限流数量为必填项，且必须为非负整数。',
     'throttle_period'                   => '周期',

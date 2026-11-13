@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                             => 'Режим',
     'mode_auto'                        => 'Автоматично (Cron / Планировчик на задачи)',
     'mode_invalid'                     => 'Режимът трябва да бъде Автоматичен, Уеб или Ръчен.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'              => 'Все още не е реализирано — ще бъде налично в бъдеща версия.',
     'process_all_jobs'                 => 'Обработи всички задачи',
     'process_selected_jobs'            => 'Обработи избраните задачи',
+    'remove_throttle'                   => '',
     'saved_successfully'               => 'Настройките на опашката на задачите бяха запазени успешно.',
     'saved_unsuccessfully'             => 'Настройките на опашката на задачите не можаха да бъдат запазени.',
     'select_jobs'                      => 'Избери задачи',
     'settings'                         => 'Настройки',
     'settings_configuration'           => 'Настройки на опашката на задачите',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                   => 'Брой',
     'throttle_count_required'          => 'Броят за ограничение е задължителен и трябва да бъде неотрицателно цяло число.',
     'throttle_period'                  => 'Период',

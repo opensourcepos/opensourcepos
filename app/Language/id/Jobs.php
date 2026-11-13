@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Mode',
     'mode_auto'                         => 'Otomatis (Cron / Penjadwal Tugas)',
     'mode_invalid'                      => 'Mode harus salah satu dari Otomatis, Web, atau Manual.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Belum diterapkan — akan tersedia pada rilis mendatang.',
     'process_all_jobs'                  => 'Proses Semua Tugas',
     'process_selected_jobs'             => 'Proses Tugas Terpilih',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Pengaturan Antrean Tugas berhasil disimpan.',
     'saved_unsuccessfully'              => 'Pengaturan Antrean Tugas tidak dapat disimpan.',
     'select_jobs'                       => 'Pilih Tugas',
     'settings'                          => 'Pengaturan',
     'settings_configuration'            => 'Pengaturan Antrean Tugas',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Jumlah',
     'throttle_count_required'           => 'Jumlah pembatasan wajib diisi dan harus berupa bilangan bulat non-negatif.',
     'throttle_period'                   => 'Periode',
