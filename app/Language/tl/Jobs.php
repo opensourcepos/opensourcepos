@@ -42,6 +42,8 @@ return [
     'failed_retention_days_invalid'              => '',
     'failed_retention_days_tooltip'              => '',
     'invalid_job'                                => '',
+    'invalid_payload_data'                       => '',
+    'invalid_payload_job'                        => '',
     'invalid_payload_json'                       => '',
     'invalid_priority'                           => '',
     'job_failed'                                 => '',

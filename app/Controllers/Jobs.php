@@ -115,6 +115,16 @@ class Jobs extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_payload_json')]);
         }
 
+        $jobKey = $payload['job'] ?? null;
+
+        if (!is_string($jobKey) || !array_key_exists($jobKey, config('Queue')->jobHandlers)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_payload_job')]);
+        }
+
+        if (!isset($payload['data']) || !is_array($payload['data'])) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_payload_data')]);
+        }
+
         $priority = $this->request->getPost('priority');
         $allowedPriorities = config('Queue')->queuePriorities[$job->queue] ?? ['high', 'normal', 'low'];
 

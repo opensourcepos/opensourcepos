@@ -42,6 +42,8 @@ return [
     'failed_retention_days_invalid'              => 'Хранение неудачных задач обязательно и должно быть неотрицательным целым числом.',
     'failed_retention_days_tooltip'              => 'Количество дней хранения неудачных задач перед удалением.',
     'invalid_job'                                => 'Задача не найдена.',
+    'invalid_payload_data'                       => '',
+    'invalid_payload_job'                        => '',
     'invalid_payload_json'                       => 'Полезная нагрузка должна быть допустимым JSON.',
     'invalid_priority'                           => 'Приоритет недопустим для этой очереди.',
     'job_failed'                                 => 'Обработка задачи завершилась ошибкой.',

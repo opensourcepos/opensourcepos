@@ -42,6 +42,8 @@ return [
     'failed_retention_days_invalid'              => 'Uğursuz Tapşırıq Saxlaması tələb olunur və mənfi olmayan tam ədəd olmalıdır.',
     'failed_retention_days_tooltip'              => 'Uğursuz tapşırıqların silinmədən əvvəl saxlanacağı gün sayı.',
     'invalid_job'                                => 'Həmin tapşırıq tapılmadı.',
+    'invalid_payload_data'                       => '',
+    'invalid_payload_job'                        => '',
     'invalid_payload_json'                       => 'Yük etibarlı JSON olmalıdır.',
     'invalid_priority'                           => 'Prioritet bu növbə üçün etibarlı deyil.',
     'job_failed'                                 => 'Tapşırıq emalı uğursuz oldu.',

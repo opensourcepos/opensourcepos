@@ -42,6 +42,8 @@ return [
     'failed_retention_days_invalid'              => 'Failed Job Retention is required and must be a non-negative integer.',
     'failed_retention_days_tooltip'              => 'Number of days to keep failed jobs before they are purged.',
     'invalid_job'                                => 'That job could not be found.',
+    'invalid_payload_data'                       => '',
+    'invalid_payload_job'                        => '',
     'invalid_payload_json'                       => 'Payload must be valid JSON.',
     'invalid_priority'                           => 'Priority is not valid for this queue.',
     'job_failed'                                 => 'Job processing failed.',
