@@ -147,10 +147,10 @@ Add a second service to your `docker-compose.yml` pointing at the same database:
 
 ```yaml
 worker:
-  image: opensourcepos
+  image: jekkos/opensourcepos:master
   command: sh -c "while true; do php spark tasks:run; sleep 60; done"
   depends_on:
-    - db
+    - mysql
   restart: unless-stopped
   networks:
     - app_net
