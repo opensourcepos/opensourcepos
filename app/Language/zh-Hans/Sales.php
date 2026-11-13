@@ -33,7 +33,6 @@ return [
     'customer_discount'                 => '折扣',
     'customer_email'                    => '',
     'customer_location'                 => '',
-    'customer_mailchimp_status'         => '',
     'customer_optional'                 => '',
     'customer_required'                 => '',
     'customer_total'                    => '',

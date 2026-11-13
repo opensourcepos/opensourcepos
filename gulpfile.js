@@ -42,6 +42,7 @@ const MENUBAR_ICONS = [
     { source: 'shop.svg', renamed: 'items.svg' },
     { source: 'smartphone.svg', renamed: 'messages.svg' },
     { source: 'tools.svg', renamed: 'migrate.svg' },
+    { source: 'plugin.svg', renamed: 'plugins.svg' },
     { source: 'dolly.svg', renamed: 'receivings.svg' },
     { source: 'bar-chart.svg', renamed: 'reports.svg' },
     { source: 'cart.svg', renamed: 'sales.svg' },
@@ -274,7 +275,8 @@ gulp.task('debug-js', function() {
         './node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
-        './public/js/nominatim.autocomplete.js'
+        './public/js/nominatim.autocomplete.js',
+        './public/js/plugin_data_helper.js'
     ]).pipe(rev()).pipe(gulp.dest('public/resources/js'));
 
     return pipeline(
@@ -324,7 +326,8 @@ gulp.task('prod-js', function() {
         './node_modules/bootstrap-daterangepicker/daterangepicker.js',
         './public/js/imgpreview.full.jquery.js',
         './public/js/manage_tables.js',
-        './public/js/nominatim.autocomplete.js'
+        './public/js/nominatim.autocomplete.js',
+        './public/js/plugin_data_helper.js'
     ]).pipe(uglify());
 
     const coreBundleStream = streamSeries(preminifiedVendorJs, uglifiedAppJs)

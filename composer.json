@@ -50,7 +50,8 @@
             "CodeIgniter\\": "vendor/codeigniter4/framework/system/"
         },
         "exclude-from-classmap": [
-            "**/Database/Migrations/**"
+            "**/Database/Migrations/**",
+            "**/Plugins/*/Migrations/**"
         ]
     },
     "autoload-dev": {
