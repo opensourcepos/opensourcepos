@@ -161,6 +161,8 @@ worker:
       bind:
         create_host_path: false
   environment:
+    # These values must match the credentials and service names defined for the
+    # mysql and ospos services in your docker-compose.yml.
     - MYSQL_HOST_NAME=mysql
     - MYSQL_USERNAME=admin
     - MYSQL_PASSWORD=pointofsale
