@@ -949,4 +949,93 @@ class JobsControllerTest extends CIUnitTestCase
         $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-concurrent', 'status' => 1]);
         $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-concurrent']);
     }
+
+    // -------------------------------------------------------------------------
+    // pause → resume → processJob interleaving
+    // -------------------------------------------------------------------------
+
+    public function testPauseResumeProcessJob_JobExecutedExactlyOnce(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->insertQueueJob();
+
+        $this->post('/jobs/pauseJobs', ['scope' => 'all']);
+
+        $this->dontSeeInDatabase('queue_jobs', ['id' => $jobId]);
+        $this->seeInDatabase('queue_jobs_paused', ['queue' => 'default']);
+
+        $this->post('/jobs/resumeJobs', ['scope' => 'all']);
+
+        $this->seeInDatabase('queue_jobs', ['id' => $jobId, 'status' => 0]);
+        $this->dontSeeInDatabase('queue_jobs_paused', ['queue' => 'default']);
+
+        $claimed = model(\App\Models\QueueJobModel::class)->claimJob($jobId);
+        $this->assertTrue($claimed);
+
+        $this->seeInDatabase('queue_jobs', ['id' => $jobId, 'status' => 1]);
+
+        $claimedAgain = model(\App\Models\QueueJobModel::class)->claimJob($jobId);
+        $this->assertFalse($claimedAgain);
+    }
+
+    public function testPauseResume_SecondProcessJobClaimRejected(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->insertQueueJob();
+
+        $this->post('/jobs/pauseJobs', ['scope' => 'all']);
+        $this->post('/jobs/resumeJobs', ['scope' => 'all']);
+
+        $this->seeInDatabase('queue_jobs', ['id' => $jobId, 'status' => 0]);
+
+        model(\App\Models\QueueJobModel::class)->claimJob($jobId);
+
+        $response = $this->post('/jobs/processJob', ['id' => "pending:$jobId"]);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPauseBatchResumeProcessJob_JobNotDuplicated(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-prp');
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-prp',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        $this->post('/jobs/pauseBatch', ['id' => 'batch-prp']);
+
+        $this->dontSeeInDatabase('queue_jobs', ['batch_id' => 'batch-prp', 'status' => 0]);
+        $this->seeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-prp']);
+
+        $this->post('/jobs/resumeBatch', ['id' => 'batch-prp']);
+
+        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-prp', 'status' => 0]);
+        $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-prp']);
+
+        $resumedJob = $this->db->table('queue_jobs')->where('batch_id', 'batch-prp')->get()->getRowArray();
+        $this->assertNotNull($resumedJob);
+
+        $firstClaim  = model(\App\Models\QueueJobModel::class)->claimJob((int)$resumedJob['id']);
+        $secondClaim = model(\App\Models\QueueJobModel::class)->claimJob((int)$resumedJob['id']);
+
+        $this->assertTrue($firstClaim);
+        $this->assertFalse($secondClaim);
+
+        $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-prp']);
+    }
 }
