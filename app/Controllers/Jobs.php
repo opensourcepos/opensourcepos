@@ -469,6 +469,17 @@ class Jobs extends Secure_Controller
             }
         }
 
+        $claimed = $this->db->table('queue_jobs')
+            ->where('id', $work->id)
+            ->where('status', Status::PENDING->value)
+            ->update(['status' => Status::RESERVED->value]);
+
+        if (!$claimed || $this->db->affectedRows() === 0) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.job_in_progress')]);
+        }
+
+        $work->status = Status::RESERVED->value;
+
         $maxSeconds = (int)($this->config['jobs_manual_max_seconds'] ?? config(JobsConfig::class)->manualMaxSeconds);
         $worker = new BoundedQueueWorker([$work->queue], microtime(true) + $maxSeconds);
         $worker->runOne($work);
