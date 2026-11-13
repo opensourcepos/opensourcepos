@@ -38,8 +38,14 @@ class EnvProvision extends BaseCommand
     {
         helper('security');
 
-        $throttleKey = provisionThrottleKey();
-        CLI::write('throttle.key       : ' . ($throttleKey !== '' ? 'present' : 'MISSING'), 'green');
+        $throttleEnvKey = getenv('THROTTLE_KEY');
+
+        if ($throttleEnvKey !== false && $throttleEnvKey !== '') {
+            CLI::write('throttle.key       : THROTTLE_KEY is set; provisioning skipped', 'green');
+        } else {
+            $throttleKey = provisionThrottleKey();
+            CLI::write('throttle.key       : ' . ($throttleKey !== '' ? 'present' : 'MISSING'), 'green');
+        }
 
         $encryptionConfig = config('Encryption');
         $key = (string) ($encryptionConfig->key ?? '');
