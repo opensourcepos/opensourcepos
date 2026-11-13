@@ -237,17 +237,10 @@ class Jobs extends Secure_Controller
      */
     public function postDeleteBatch(): ResponseInterface
     {
-        $batchId = $this->request->getPost('id');
+        [$batchId, $batchModel, $errorResponse] = $this->requireBatch();
 
-        if (empty($batchId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
-        }
-
-        $batchModel = model(ImportBatch::class);
-        $batch = $batchModel->find($batchId);
-
-        if ($batch === null) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
+        if ($errorResponse !== null) {
+            return $errorResponse;
         }
 
         $this->db->transStart();
@@ -286,39 +279,21 @@ class Jobs extends Secure_Controller
      */
     public function postPauseBatch(): ResponseInterface
     {
-        $batchId = $this->request->getPost('id');
+        [$batchId, , $errorResponse] = $this->requireBatch();
 
-        if (empty($batchId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
-        }
-
-        $batchModel = model(ImportBatch::class);
-
-        if ($batchModel->find($batchId) === null) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
+        if ($errorResponse !== null) {
+            return $errorResponse;
         }
 
         $this->db->transStart();
 
-        $rows = $this->db->table('queue_jobs')
+        $sql  = $this->db->table('queue_jobs')
             ->where('status', Status::PENDING->value)
             ->where('batch_id', $batchId)
-            ->get()
-            ->getResultArray();
+            ->getCompiledSelect();
+        $rows = $this->db->query($sql . ' FOR UPDATE')->getResultArray();
 
-        if ($rows !== []) {
-            $now = Time::now()->timestamp;
-
-            foreach ($rows as &$row) {
-                $row['paused_at'] = $now;
-                $row['paused_by'] = 'manual';
-                unset($row['status']);
-            }
-            unset($row);
-
-            $this->db->table('queue_jobs_paused')->insertBatch($rows);
-            $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
-        }
+        $this->moveToPaused($rows);
 
         $this->db->transComplete();
 
@@ -336,16 +311,10 @@ class Jobs extends Secure_Controller
      */
     public function postResumeBatch(): ResponseInterface
     {
-        $batchId = $this->request->getPost('id');
+        [$batchId, , $errorResponse] = $this->requireBatch();
 
-        if (empty($batchId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
-        }
-
-        $batchModel = model(ImportBatch::class);
-
-        if ($batchModel->find($batchId) === null) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
+        if ($errorResponse !== null) {
+            return $errorResponse;
         }
 
         $this->db->transStart();
@@ -355,18 +324,7 @@ class Jobs extends Secure_Controller
             ->get()
             ->getResultArray();
 
-        if ($rows !== []) {
-            $pendingStatus = Status::PENDING->value;
-
-            foreach ($rows as &$row) {
-                $row['status'] = $pendingStatus;
-                unset($row['paused_at'], $row['paused_by']);
-            }
-            unset($row);
-
-            $this->db->table('queue_jobs')->insertBatch($rows);
-            $this->db->table('queue_jobs_paused')->whereIn('id', array_column($rows, 'id'))->delete();
-        }
+        $this->moveToPending($rows);
 
         $this->db->transComplete();
 
@@ -385,18 +343,13 @@ class Jobs extends Secure_Controller
      */
     public function postPurgeBatch(): ResponseInterface
     {
-        $batchId = $this->request->getPost('id');
+        [$batchId, $batchModel, $errorResponse] = $this->requireBatch();
 
-        if (empty($batchId)) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')]);
+        if ($errorResponse !== null) {
+            return $errorResponse;
         }
 
-        $batchModel = model(ImportBatch::class);
         $batch = $batchModel->find($batchId);
-
-        if ($batch === null) {
-            return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')]);
-        }
 
         if (!in_array($batch['status'], ['completed', 'partial'], true)) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_purge_not_eligible')]);
@@ -481,6 +434,7 @@ class Jobs extends Secure_Controller
      *
      * @return ResponseInterface
      * @noinspection PhpUnused
+     * @throws ReflectionException
      */
     public function postProcessJob(): ResponseInterface
     {
@@ -588,16 +542,16 @@ class Jobs extends Secure_Controller
         $coreQueues = config(JobsConfig::class)->coreQueues;
 
         if ($this->request->getPost('scope') !== 'selected') {
-            return $this->resumeQueues($coreQueues);
+            return $this->resumeJobs(null, $coreQueues);
         }
 
-        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+        $selectedQueues = $this->resolveSelectedQueues($coreQueues);
 
         if ($selectedQueues === []) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
         }
 
-        return $this->resumeQueues(array_values($selectedQueues));
+        return $this->resumeJobs(null, $selectedQueues);
     }
 
     /**
@@ -616,11 +570,6 @@ class Jobs extends Secure_Controller
         return $this->resumeJobs($id);
     }
 
-    private function resumeQueues(array $queues): ResponseInterface
-    {
-        return $this->resumeJobs(null, $queues);
-    }
-
     private function resumeJobs(?int $id, ?array $queues = null): ResponseInterface
     {
         $this->db->transStart();
@@ -630,18 +579,7 @@ class Jobs extends Secure_Controller
 
         $rows = $query->get()->getResultArray();
 
-        if ($rows !== []) {
-            $pendingStatus = Status::PENDING->value;
-
-            foreach ($rows as &$row) {
-                $row['status'] = $pendingStatus;
-                unset($row['paused_at'], $row['paused_by']);
-            }
-            unset($row);
-
-            $this->db->table('queue_jobs')->insertBatch($rows);
-            $this->db->table('queue_jobs_paused')->whereIn('id', array_column($rows, 'id'))->delete();
-        }
+        $this->moveToPending($rows);
 
         $this->db->transComplete();
 
@@ -794,18 +732,15 @@ class Jobs extends Secure_Controller
             return $this->runWorker($coreQueues);
         }
 
-        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+        $selectedQueues = $this->resolveSelectedQueues($coreQueues);
 
         if ($selectedQueues === []) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
         }
 
-        return $this->runWorker(array_values($selectedQueues));
+        return $this->runWorker($selectedQueues);
     }
 
-    /**
-     * @param string[] $queues
-     */
     private function runWorker(array $queues): ResponseInterface
     {
         $maxSeconds = (int)($this->config['jobs_manual_max_seconds'] ?? config(JobsConfig::class)->manualMaxSeconds);
@@ -834,23 +769,19 @@ class Jobs extends Secure_Controller
         $coreQueues = config(JobsConfig::class)->coreQueues;
 
         if ($this->request->getPost('scope') !== 'selected') {
-            return $this->pauseQueues($coreQueues);
+            return $this->pauseJobs(null, $coreQueues);
         }
 
-        $selectedQueues = array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues);
+        $selectedQueues = $this->resolveSelectedQueues($coreQueues);
 
         if ($selectedQueues === []) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.no_queues_selected')]);
         }
 
-        return $this->pauseQueues(array_values($selectedQueues));
+        return $this->pauseJobs(null, $selectedQueues);
     }
 
     /**
-     * Moves a single pending job out of queue_jobs into queue_jobs_paused.
-     * Used by the Manage tab's per-row pause icon. Reserved ('in progress')
-     * jobs are left alone, same guard as the bulk pause path.
-     *
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
@@ -866,45 +797,16 @@ class Jobs extends Secure_Controller
         return $this->pauseJobs($id);
     }
 
-    /**
-     * @param string[] $queues
-     */
-    private function pauseQueues(array $queues): ResponseInterface
-    {
-        return $this->pauseJobs(null, $queues);
-    }
-
-    /**
-     * Moves pending jobs from queue_jobs into queue_jobs_paused, guarded by
-     * status = PENDING so in-flight ('reserved') jobs are never paused out
-     * from under a worker (issue #3833's pause/resume design). Pass $id to
-     * pause a single job (ignores $queues), or $queues to pause every
-     * pending job in those queues.
-     *
-     * @param string[]|null $queues
-     */
     private function pauseJobs(?int $id, ?array $queues = null): ResponseInterface
     {
         $this->db->transStart();
 
-        $query = $this->db->table('queue_jobs')->where('status', Status::PENDING->value);
-        $query = $id !== null ? $query->where('id', $id) : $query->whereIn('queue', $queues);
+        $builder = $this->db->table('queue_jobs')->where('status', Status::PENDING->value);
+        $builder = $id !== null ? $builder->where('id', $id) : $builder->whereIn('queue', $queues);
 
-        $rows = $query->get()->getResultArray();
+        $rows = $this->db->query($builder->getCompiledSelect() . ' FOR UPDATE')->getResultArray();
 
-        if ($rows !== []) {
-            $now = Time::now()->timestamp;
-
-            foreach ($rows as &$row) {
-                $row['paused_at'] = $now;
-                $row['paused_by'] = 'manual';
-                unset($row['status']);
-            }
-            unset($row);
-
-            $this->db->table('queue_jobs_paused')->insertBatch($rows);
-            $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
-        }
+        $this->moveToPaused($rows);
 
         $this->db->transComplete();
 
@@ -912,5 +814,63 @@ class Jobs extends Secure_Controller
             'success' => true,
             'message' => lang('Jobs.paused_jobs_result', [count($rows)]),
         ]);
+    }
+
+    private function moveToPaused(array $rows): void
+    {
+        if ($rows === []) {
+            return;
+        }
+
+        $now = Time::now()->timestamp;
+
+        foreach ($rows as &$row) {
+            $row['paused_at'] = $now;
+            $row['paused_by'] = 'manual';
+            unset($row['status']);
+        }
+        unset($row);
+
+        $this->db->table('queue_jobs_paused')->insertBatch($rows);
+        $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
+    }
+
+    private function moveToPending(array $rows): void
+    {
+        if ($rows === []) {
+            return;
+        }
+
+        $pendingStatus = Status::PENDING->value;
+
+        foreach ($rows as &$row) {
+            $row['status'] = $pendingStatus;
+            unset($row['paused_at'], $row['paused_by']);
+        }
+        unset($row);
+
+        $this->db->table('queue_jobs')->insertBatch($rows);
+        $this->db->table('queue_jobs_paused')->whereIn('id', array_column($rows, 'id'))->delete();
+    }
+
+    private function resolveSelectedQueues(array $coreQueues): array
+    {
+        return array_values(array_intersect($this->request->getPost('selected_jobs') ?? [], $coreQueues));
+    }
+
+    private function requireBatch(): array
+    {
+        $batchId    = $this->request->getPost('id');
+        $batchModel = model(ImportBatch::class);
+
+        if (empty($batchId)) {
+            return [null, $batchModel, $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_invalid')])];
+        }
+
+        if ($batchModel->find($batchId) === null) {
+            return [null, $batchModel, $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_not_found')])];
+        }
+
+        return [$batchId, $batchModel, null];
     }
 }
