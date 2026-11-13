@@ -76,6 +76,7 @@ return [
     'none'                               => '',
     'none_selected'                      => '',
     'nonstock'                           => '',
+    'not_authorized'                      => '',
     'number_information'                 => '',
     'number_required'                    => '',
     'one_or_multiple'                    => '',

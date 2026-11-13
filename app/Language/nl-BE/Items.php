@@ -76,6 +76,7 @@ return [
     'none'                               => 'Geen',
     'none_selected'                      => 'U hebt geen producten geselecteerd',
     'nonstock'                           => 'Geen Stock',
+    'not_authorized'                      => '',
     'number_information'                 => 'Productnummer',
     'number_required'                    => 'Barcode is een verplicht veld.',
     'one_or_multiple'                    => 'product(en) verwijderd',

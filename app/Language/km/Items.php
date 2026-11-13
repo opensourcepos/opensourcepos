@@ -76,6 +76,7 @@ return [
     'none'                               => 'គ្មាន',
     'none_selected'                      => 'អ្នកមិនបានជ្រើសរើសទំនិញណាមួយសំរាប់កែប្រែនោះទេ',
     'nonstock'                           => 'មិនមានស្ដុក',
+    'not_authorized'                      => '',
     'number_information'                 => 'លេខរបស់ទំនិញ',
     'number_required'                    => 'ត្រូវការលេខកូតចាំបាច់។',
     'one_or_multiple'                    => 'ទំនិញ',

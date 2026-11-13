@@ -76,6 +76,7 @@ return [
     'none'                               => 'Heç biri',
     'none_selected'                      => 'Redaktə etmək üçün heç bir Mal seçməmisiniz',
     'nonstock'                           => 'Ehtiyatsız',
+    'not_authorized'                      => '',
     'number_information'                 => 'Malın Nömrəsi',
     'number_required'                    => 'Barkod tələb olunan sahədir.',
     'one_or_multiple'                    => 'mal(lar)',

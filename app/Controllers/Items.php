@@ -868,11 +868,34 @@ class Items extends Secure_Controller
 
             // Save item quantity
             $stockLocations = $this->stock_location->getUndeletedAll()->getResultArray();
+            $submittedQuantities = $this->request->getPost(null, true) ?? [];
+            $quantityError = null;
+
             foreach ($stockLocations as $location) {
-                $updatedQuantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
+                $quantityField = 'quantity_' . $location['location_id'];
 
                 if ($itemData['item_type'] == ITEM_TEMP) {
                     $updatedQuantity = 0;
+                } elseif (!array_key_exists($quantityField, $submittedQuantities)) {
+                    if ($newItem) {
+                        $updatedQuantity = 0;
+                    } else {
+                        continue;
+                    }
+                } else {
+                    $rawQuantity = $submittedQuantities[$quantityField];
+
+                    if (!is_int($rawQuantity) && !is_string($rawQuantity)) {
+                        $quantityError = lang('Items.quantity_number');
+                        break;
+                    }
+
+                    $updatedQuantity = parse_quantity((string) $rawQuantity);
+
+                    if ($updatedQuantity === false || $updatedQuantity === '' || $updatedQuantity === null) {
+                        $quantityError = lang('Items.quantity_number');
+                        break;
+                    }
                 }
 
                 $locationDetail = [
@@ -898,6 +921,13 @@ class Items extends Secure_Controller
                     $success = $success && $this->inventory->insert($invData, false);
                 }
             }
+
+            if ($quantityError !== null) {
+                $db->transRollback();
+
+                return $this->response->setJSON(['success' => false, 'message' => $quantityError, 'id' => $itemId]);
+            }
+
             $success = $success && $this->saveItemAttributes($itemId);
         }
 
@@ -1014,7 +1044,16 @@ class Items extends Secure_Controller
     {
         $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         $cur_item_info = $this->item->getInfo($item_id);
-        $location_id = $this->request->getPost('stock_location');
+        $raw_location = $this->request->getPost('stock_location');
+        if (!is_string($raw_location) && !is_int($raw_location)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
+        }
+
+        $location_id = filter_var($raw_location, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($location_id === false || !$this->stock_location->is_allowed_location($location_id, 'items')) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
+        }
+
         $new_quantity = $this->request->getPost('newquantity');
         $inv_data = [
             'trans_date'      => date('Y-m-d H:i:s'),

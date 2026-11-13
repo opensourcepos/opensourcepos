@@ -76,6 +76,7 @@ return [
     'none'                               => 'Hiçbiri',
     'none_selected'                      => 'Düzenlemek için ürün seçmediniz',
     'nonstock'                           => 'Stokta Olmayan',
+    'not_authorized'                      => '',
     'number_information'                 => 'Ürün No',
     'number_required'                    => 'Barkod alanı zorunludur.',
     'one_or_multiple'                    => 'ürün',

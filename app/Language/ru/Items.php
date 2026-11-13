@@ -76,6 +76,7 @@ return [
     'none'                               => 'Нет',
     'none_selected'                      => 'Вы не выбрали ни одного товара для редактирования',
     'nonstock'                           => 'Не учитывается на складе',
+    'not_authorized'                      => '',
     'number_information'                 => 'Номер товара',
     'number_required'                    => 'Штрих-код - обязательное поле.',
     'one_or_multiple'                    => 'товар(ов)',

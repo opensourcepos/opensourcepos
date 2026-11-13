@@ -76,6 +76,7 @@ return [
     'none'                               => 'ว่างเปล่า',
     'none_selected'                      => 'กรุณาเลือสินค้าที่ต้องการแก้ไข',
     'nonstock'                           => 'ไม่นับสต็อก',
+    'not_authorized'                      => '',
     'number_information'                 => 'หมายเลขสินค้า',
     'number_required'                    => 'จำเป็นต้องระบุบาร์โค้ด',
     'one_or_multiple'                    => 'สินค้า(s)',

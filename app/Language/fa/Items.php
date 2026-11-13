@@ -76,6 +76,7 @@ return [
     'none'                               => 'هیچ یک',
     'none_selected'                      => 'شما هیچ موردی را برای ویرایش انتخاب نکرده اید',
     'nonstock'                           => 'غیر سهامدار',
+    'not_authorized'                      => '',
     'number_information'                 => 'شماره مورد',
     'number_required'                    => 'بارکد یک فیلد مورد نیاز است.',
     'one_or_multiple'                    => 'مورد (ها)',

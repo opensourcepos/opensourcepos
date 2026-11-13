@@ -76,6 +76,7 @@ return [
     'none'                               => 'Geen',
     'none_selected'                      => 'Geen artikel(en) geselecteerd om te bewerken',
     'nonstock'                           => 'Niet-voorradig',
+    'not_authorized'                      => '',
     'number_information'                 => 'Artikelnummer',
     'number_required'                    => 'Streepjescode is een vereist veld.',
     'one_or_multiple'                    => 'artikel(en)',

@@ -76,6 +76,7 @@ return [
     'none'                               => 'Egysem',
     'none_selected'                      => 'Nem választott ki terméket a módosításhoz',
     'nonstock'                           => '',
+    'not_authorized'                      => '',
     'number_information'                 => 'Termék száma',
     'number_required'                    => 'UPC/EAN/ISBN kötelező mező',
     'one_or_multiple'                    => 'termék(ek)',

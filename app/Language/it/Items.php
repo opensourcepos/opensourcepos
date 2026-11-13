@@ -76,6 +76,7 @@ return [
     'none'                               => 'Nessuno',
     'none_selected'                      => 'Non hai selezionato alcun articolo da modificare',
     'nonstock'                           => 'Non-stockato',
+    'not_authorized'                      => '',
     'number_information'                 => 'Numero Articolo',
     'number_required'                    => 'Il Codice a barre è un campo obbligatorio.',
     'one_or_multiple'                    => 'articolo/i',
