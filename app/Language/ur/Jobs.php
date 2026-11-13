@@ -83,6 +83,7 @@ return [
     'resume_all_jobs'                            => '',
     'resume_batch'                               => '',
     'resume_job'                                 => '',
+    'resume_jobs_failed'                         => '',
     'resume_selected_jobs'                       => '',
     'resumed_jobs_result'                        => '',
     'retention_days'                             => '',

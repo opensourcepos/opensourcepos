@@ -18,6 +18,7 @@ return [
     'batch_id'                                   => 'Toplu ID',
     'batch_invalid'                              => 'Bu toplu tapılmadı.',
     'batch_not_found'                            => 'Toplu tapılmadı.',
+    'batch_pause_failed'                         => '',
     'batch_paused'                               => 'Toplu üçün {0} tapşırıq(lar) dayandırıldı.',
     'batch_purge_confirm'                        => 'Bu tamamlanmış toplu və onun bütün qeydlərini təmizləmək istədiyinizə əminsinizmi?',
     'batch_purge_failed'                         => 'Toplu təmizlənə bilmədi.',
