@@ -128,7 +128,7 @@ The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once
      ```powershell
      Get-ScheduledTaskInfo -TaskName 'OSPOS Task Runner' | Select-Object LastRunTime, LastTaskResult
      ```
-   - **Confirm the heartbeat** — `LastTaskResult: 0x0` above is the primary success signal. A timestamped `Job Queue heartbeat` line also appears in `writable/logs/` **only when debug logging is enabled** (`LOG_THRESHOLD=7` or `CI_ENVIRONMENT=development` in `.env`); in production the log level filters it out, so a missing log line is expected and does not indicate failure.
+   - **Confirm the heartbeat** — `LastTaskResult: 0x0` above is the primary success signal. A timestamped `Job Queue heartbeat` line also appears in `writable/logs/` **only when debug logging is enabled** (`logger.threshold=8` or `CI_ENVIRONMENT=development` in `.env`); in production the log level filters it out, so a missing log line is expected and does not indicate failure.
    - If the last result is non-zero, open `cmd.exe`, `cd` to the OSPOS project root, and run `php.exe spark tasks:run` interactively to see the raw output (`Running Tasks...` → `Completed Running Tasks`).
 
 ### `manual` mode
