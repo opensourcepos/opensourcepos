@@ -7,34 +7,37 @@ use App\Models\Appconfig;
 use App\Models\ImportBatch;
 use App\Models\JobQueueManage;
 use App\Models\JobThrottle;
-use CodeIgniter\Database\BaseConnection;
+use App\Models\QueueJobFailedModel;
+use App\Models\QueueJobModel;
+use App\Models\QueueJobPausedModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Queue\Entities\QueueJob;
 use CodeIgniter\Queue\Enums\Status;
-use CodeIgniter\Queue\Models\QueueJobFailedModel;
-use CodeIgniter\Queue\Models\QueueJobModel;
-use Config\Database;
 use Config\Jobs as JobsConfig;
 use Exception;
 use ReflectionException;
 
 class Jobs extends Secure_Controller
 {
-    private BaseConnection $db;
     private Appconfig $appconfig;
     private JobThrottle $jobThrottle;
     private JobQueueManage $jobQueueManage;
+    private QueueJobModel $queueJobModel;
+    private QueueJobPausedModel $queueJobPaused;
+    private QueueJobFailedModel $queueJobFailedModel;
     private array $config;
 
     public function __construct()
     {
         parent::__construct('jobs');
 
-        $this->db = Database::connect();
         $this->appconfig = model(Appconfig::class);
         $this->jobThrottle = model(JobThrottle::class);
         $this->jobQueueManage = model(JobQueueManage::class);
+        $this->queueJobModel = model(QueueJobModel::class);
+        $this->queueJobPaused = model(QueueJobPausedModel::class);
+        $this->queueJobFailedModel = model(QueueJobFailedModel::class);
         $this->config = $this->global_view_data['config'];
     }
 
@@ -69,7 +72,7 @@ class Jobs extends Secure_Controller
             return $this->response->setStatusCode(404);
         }
 
-        $job = model(QueueJobModel::class)->find($id);
+        $job = $this->queueJobModel->find($id);
 
         if ($job === null) {
             return $this->response->setStatusCode(404);
@@ -101,8 +104,7 @@ class Jobs extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
         }
 
-        $queueJobModel = model(QueueJobModel::class);
-        $job = $queueJobModel->find($id);
+        $job = $this->queueJobModel->find($id);
 
         if ($job === null) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
@@ -139,7 +141,7 @@ class Jobs extends Secure_Controller
         $job->priority = $priority;
         $job->available_at = $availableAtTime;
 
-        $success = $queueJobModel->save($job);
+        $success = $this->queueJobModel->save($job);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -243,26 +245,16 @@ class Jobs extends Secure_Controller
             return $errorResponse;
         }
 
-        $this->db->transStart();
+        $this->queueJobModel->db->transStart();
 
-        $this->db->table('queue_jobs')
-            ->whereIn('status', [Status::PENDING->value])
-            ->where('batch_id', $batchId)
-            ->delete();
-
-        $this->db->table('queue_jobs_paused')
-            ->where('batch_id', $batchId)
-            ->delete();
-
-        $this->db->table('queue_jobs_failed')
-            ->where('batch_id', $batchId)
-            ->delete();
-
+        $this->queueJobModel->deletePendingByBatchId($batchId);
+        $this->queueJobPaused->deleteByBatchId($batchId);
+        $this->queueJobFailedModel->deleteByBatchId($batchId);
         $batchModel->delete($batchId);
 
-        $this->db->transComplete();
+        $this->queueJobModel->db->transComplete();
 
-        $success = $this->db->transStatus();
+        $success = $this->queueJobModel->db->transStatus();
 
         return $this->response->setJSON([
             'success' => $success,
@@ -285,19 +277,14 @@ class Jobs extends Secure_Controller
             return $errorResponse;
         }
 
-        $this->db->transStart();
+        $this->queueJobModel->db->transStart();
 
-        $sql  = $this->db->table('queue_jobs')
-            ->where('status', Status::PENDING->value)
-            ->where('batch_id', $batchId)
-            ->getCompiledSelect();
-        $rows = $this->db->query($sql . ' FOR UPDATE')->getResultArray();
-
+        $rows = $this->queueJobModel->getPendingForUpdateByBatchId($batchId);
         $this->moveToPaused($rows);
 
-        $this->db->transComplete();
+        $this->queueJobModel->db->transComplete();
 
-        $success = $this->db->transStatus();
+        $success = $this->queueJobModel->db->transStatus();
 
         return $this->response->setJSON([
             'success' => $success,
@@ -319,18 +306,14 @@ class Jobs extends Secure_Controller
             return $errorResponse;
         }
 
-        $this->db->transStart();
+        $this->queueJobModel->db->transStart();
 
-        $rows = $this->db->table('queue_jobs_paused')
-            ->where('batch_id', $batchId)
-            ->get()
-            ->getResultArray();
-
+        $rows = $this->queueJobPaused->getByBatchId($batchId);
         $this->moveToPending($rows);
 
-        $this->db->transComplete();
+        $this->queueJobModel->db->transComplete();
 
-        $success = $this->db->transStatus();
+        $success = $this->queueJobModel->db->transStatus();
 
         return $this->response->setJSON([
             'success' => $success,
@@ -359,14 +342,14 @@ class Jobs extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.batch_purge_not_eligible')]);
         }
 
-        $this->db->transStart();
+        $this->queueJobModel->db->transStart();
 
-        $this->db->table('queue_jobs_failed')->where('batch_id', $batchId)->delete();
+        $this->queueJobFailedModel->deleteByBatchId($batchId);
         $batchModel->delete($batchId);
 
-        $this->db->transComplete();
+        $this->queueJobModel->db->transComplete();
 
-        $success = $this->db->transStatus();
+        $success = $this->queueJobModel->db->transStatus();
 
         return $this->response->setJSON([
             'success' => $success,
@@ -385,9 +368,6 @@ class Jobs extends Secure_Controller
     {
         $uids = $this->request->getPost('ids') ?? [];
 
-        $queueJobModel = model(QueueJobModel::class);
-        $queueJobFailedModel = model(QueueJobFailedModel::class);
-
         $deleted = 0;
         $blocked = 0;
 
@@ -399,12 +379,18 @@ class Jobs extends Secure_Controller
             }
 
             if ($source === 'failed') {
-                $deleted += $queueJobFailedModel->delete($id) ? 1 : 0;
+                $deleted += $this->queueJobFailedModel->delete($id) ? 1 : 0;
 
                 continue;
             }
 
-            $job = $queueJobModel->find($id);
+            if ($source === 'paused') {
+                $deleted += $this->queueJobPaused->delete($id) ? 1 : 0;
+
+                continue;
+            }
+
+            $job = $this->queueJobModel->find($id);
 
             if ($job === null) {
                 continue;
@@ -416,7 +402,7 @@ class Jobs extends Secure_Controller
                 continue;
             }
 
-            $deleted += $queueJobModel->delete($id) ? 1 : 0;
+            $deleted += $this->queueJobModel->delete($id) ? 1 : 0;
         }
 
         if ($blocked > 0 && $deleted === 0) {
@@ -453,8 +439,6 @@ class Jobs extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.job_in_progress')]);
         }
 
-        $queueJobModel = model(QueueJobModel::class);
-
         if ($source === 'failed') {
             $work = $this->requeueFailedJob($id);
 
@@ -462,19 +446,14 @@ class Jobs extends Secure_Controller
                 return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
             }
         } else {
-            $work = $queueJobModel->find($id);
+            $work = $this->queueJobModel->find($id);
 
             if ($work === null) {
                 return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.invalid_job')]);
             }
         }
 
-        $claimed = $this->db->table('queue_jobs')
-            ->where('id', $work->id)
-            ->where('status', Status::PENDING->value)
-            ->update(['status' => Status::RESERVED->value]);
-
-        if (!$claimed || $this->db->affectedRows() === 0) {
+        if (!$this->queueJobModel->claimJob($work->id)) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.job_in_progress')]);
         }
 
@@ -500,15 +479,13 @@ class Jobs extends Secure_Controller
      */
     private function requeueFailedJob(int $id): ?QueueJob
     {
-        $queueJobFailedModel = model(QueueJobFailedModel::class);
-        $failedJob = $queueJobFailedModel->find($id);
+        $failedJob = $this->queueJobFailedModel->find($id);
 
         if ($failedJob === null) {
             return null;
         }
 
-        $queueJobModel = model(QueueJobModel::class);
-        $newId = $queueJobModel->insert(new QueueJob([
+        $newId = $this->queueJobModel->insert(new QueueJob([
             'queue'        => $failedJob->queue,
             'payload'      => $failedJob->payload,
             'priority'     => $failedJob->priority,
@@ -521,10 +498,10 @@ class Jobs extends Secure_Controller
             return null;
         }
 
-        $queueJobFailedModel->delete($id);
+        $this->queueJobFailedModel->delete($id);
 
         /** @var QueueJob|null $job */
-        $job = $queueJobModel->find($newId);
+        $job = $this->queueJobModel->find($newId);
 
         return $job;
     }
@@ -587,18 +564,14 @@ class Jobs extends Secure_Controller
 
     private function resumeJobs(?int $id, ?array $queues = null): ResponseInterface
     {
-        $this->db->transStart();
+        $this->queueJobModel->db->transStart();
 
-        $query = $this->db->table('queue_jobs_paused');
-        $query = $id !== null ? $query->where('id', $id) : $query->whereIn('queue', $queues);
-
-        $rows = $query->get()->getResultArray();
-
+        $rows = $this->queueJobPaused->getByIdOrQueues($id, $queues);
         $this->moveToPending($rows);
 
-        $this->db->transComplete();
+        $this->queueJobModel->db->transComplete();
 
-        $success = $this->db->transStatus();
+        $success = $this->queueJobModel->db->transStatus();
 
         return $this->response->setJSON([
             'success' => $success,
@@ -664,7 +637,7 @@ class Jobs extends Secure_Controller
     {
         $allowedPeriods = ['second', 'minute', 'hour', 'day', 'month'];
 
-        $this->db->transStart();
+        $this->jobThrottle->db->transStart();
 
         $notToDelete = [];
         $arraySave = [];
@@ -693,7 +666,7 @@ class Jobs extends Secure_Controller
                 || !in_array($throttleData['period'], $allowedPeriods, true)
                 || ($queue !== null && !in_array($queue, $coreQueues, true))
             ) {
-                $this->db->transRollback();
+                $this->jobThrottle->db->transRollback();
 
                 return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.saved_unsuccessfully')]);
             }
@@ -713,9 +686,9 @@ class Jobs extends Secure_Controller
             }
         }
 
-        $this->db->transComplete();
+        $this->jobThrottle->db->transComplete();
 
-        $success = $this->db->transStatus();
+        $success = $this->jobThrottle->db->transStatus();
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Jobs.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -816,18 +789,14 @@ class Jobs extends Secure_Controller
 
     private function pauseJobs(?int $id, ?array $queues = null): ResponseInterface
     {
-        $this->db->transStart();
+        $this->queueJobModel->db->transStart();
 
-        $builder = $this->db->table('queue_jobs')->where('status', Status::PENDING->value);
-        $builder = $id !== null ? $builder->where('id', $id) : $builder->whereIn('queue', $queues);
-
-        $rows = $this->db->query($builder->getCompiledSelect() . ' FOR UPDATE')->getResultArray();
-
+        $rows = $this->queueJobModel->getPendingForUpdateByIdOrQueues($id, $queues);
         $this->moveToPaused($rows);
 
-        $this->db->transComplete();
+        $this->queueJobModel->db->transComplete();
 
-        $success = $this->db->transStatus();
+        $success = $this->queueJobModel->db->transStatus();
 
         return $this->response->setJSON([
             'success' => $success,
@@ -850,8 +819,8 @@ class Jobs extends Secure_Controller
         }
         unset($row);
 
-        $this->db->table('queue_jobs_paused')->insertBatch($rows);
-        $this->db->table('queue_jobs')->whereIn('id', array_column($rows, 'id'))->delete();
+        $this->queueJobPaused->insertRows($rows);
+        $this->queueJobModel->deleteWhereInIds(array_column($rows, 'id'));
     }
 
     private function moveToPending(array $rows): void
@@ -868,8 +837,8 @@ class Jobs extends Secure_Controller
         }
         unset($row);
 
-        $this->db->table('queue_jobs')->insertBatch($rows);
-        $this->db->table('queue_jobs_paused')->whereIn('id', array_column($rows, 'id'))->delete();
+        $this->queueJobModel->insertRows($rows);
+        $this->queueJobPaused->deleteWhereInIds(array_column($rows, 'id'));
     }
 
     private function resolveSelectedQueues(array $coreQueues): array
