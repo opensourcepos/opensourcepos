@@ -152,6 +152,19 @@ worker:
   depends_on:
     - db
   restart: unless-stopped
+  networks:
+    - app_net
+  volumes:
+    - type: bind
+      source: ./.env
+      target: /app/.env
+      bind:
+        create_host_path: false
+  environment:
+    - MYSQL_HOST_NAME=mysql
+    - MYSQL_USERNAME=admin
+    - MYSQL_PASSWORD=pointofsale
+    - MYSQL_DB_NAME=ospos
 ```
 
 **Option 2: supervisor inside the container**
