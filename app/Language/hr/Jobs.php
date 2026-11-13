@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_throttle'                      => '',
     'mode'                              => 'Način rada',
     'mode_auto'                         => 'Automatski (Cron / Planer zadataka)',
     'mode_invalid'                      => 'Način rada mora biti Automatski, Web ili Ručni.',
@@ -9,11 +10,16 @@ return [
     'not_yet_implemented'               => 'Još nije implementirano — dostupno u budućem izdanju.',
     'process_all_jobs'                  => 'Obradi sve zadatke',
     'process_selected_jobs'             => 'Obradi odabrane zadatke',
+    'remove_throttle'                   => '',
     'saved_successfully'                => 'Postavke reda čekanja zadataka uspješno su spremljene.',
     'saved_unsuccessfully'              => 'Postavke reda čekanja zadataka nije moguće spremiti.',
     'select_jobs'                       => 'Odaberi zadatke',
     'settings'                          => 'Postavke',
     'settings_configuration'            => 'Postavke reda čekanja zadataka',
+    'task_max_seconds'                  => '',
+    'task_max_seconds_invalid'          => '',
+    'task_max_seconds_tooltip'          => '',
+    'task_max_seconds_tooltip_disabled' => '',
     'throttle_count'                    => 'Broj',
     'throttle_count_required'           => 'Broj ograničenja je obavezan i mora biti nenegativan cijeli broj.',
     'throttle_period'                   => 'Razdoblje',
