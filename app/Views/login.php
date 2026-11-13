@@ -1,15 +1,16 @@
 <?php
 /**
- * @var bool $hasErrors
- * @var bool $isLatest
- * @var bool $isNewInstall
- * @var string $latestVersion
- * @var bool $gcaptchaEnabled
- * @var CodeIgniter\HTTP\IncomingRequest $request
- * @var array $config
+ * @var bool            $hasErrors
+ * @var bool            $isLatest
+ * @var bool            $isNewInstall
+ * @var string          $latestVersion
+ * @var bool            $gcaptchaEnabled
+ * @var IncomingRequest $request
+ * @var array           $config
  * @var $validation
  */
 
+use CodeIgniter\HTTP\IncomingRequest;
 use Config\Services;
 
 $request = Services::request();
@@ -27,11 +28,11 @@ $request = Services::request();
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <?php
     $theme = (empty($config['theme'])
-        || 'paper' == $config['theme']
-        || 'readable' == $config['theme']
+        || 'paper' === $config['theme']
+        || 'readable' === $config['theme']
         ? 'flatly'
         : $config['theme']);
-    ?>
+?>
     <link rel="stylesheet" href="resources/bootswatch5/<?= esc($theme, 'attr') ?>/bootstrap.min.css">
     <link rel="stylesheet" href="css/login.css">
     <meta name="theme-color" content="#2c3e50">
@@ -41,7 +42,7 @@ $request = Services::request();
     <main class="d-flex justify-content-around align-items-center flex-grow-1">
         <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
             <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end border-secondary-subtle px-4 pb-3 p-md-4">
-                <?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
+                <?php if (isset($config['company_logo']) && ! empty($config['company_logo'])): ?>
                     <img class="logo w-100" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
                 <?php else: ?>
                     <svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
@@ -57,14 +58,14 @@ $request = Services::request();
                 <h3 id="form-heading" class="text-center m-0">
                     <?php if ($isNewInstall): ?>
                         <?= lang('Login.initialization_required') ?>
-                    <?php elseif (!$isLatest): ?>
+                    <?php elseif (! $isLatest): ?>
                         <?= lang('Login.migration_required') ?>
                     <?php else: ?>
                         <?= lang('Login.welcome', ['OSPOS']) ?>
                     <?php endif; ?>
                 </h3>
 
-                <div id="migration-warning" class="alert alert-warning mt-3<?= ($isNewInstall || !$isLatest) ? '' : ' d-none' ?>">
+                <div id="migration-warning" class="alert alert-warning mt-3<?= ($isNewInstall || ! $isLatest) ? '' : ' d-none' ?>">
                     <strong>
                         <?php if ($isNewInstall): ?>
                             <?= lang('Login.initialization_message') ?>
@@ -77,7 +78,7 @@ $request = Services::request();
                 <?php if ($hasErrors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
                         <div class="alert alert-danger mt-3">
-                            <?= $error ?>
+                            <?= esc($error) ?>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -104,33 +105,41 @@ $request = Services::request();
                 </div>
 
                 <div id="login-fields" class="w-100<?= $isNewInstall ? ' d-none' : '' ?>">
-                    <?php if (empty($config['login_form']) || 'floating_labels' == ($config['login_form'])): ?>
+                    <?php if (empty($config['login_form']) || 'floating_labels' === ($config['login_form'])): ?>
                         <div class="form-floating mt-3">
-                            <input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
+                            <input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>" <?php if (ENVIRONMENT === 'testing') {
+                                echo 'value="admin"';
+                            } ?>>
                             <label for="input-username"><?= lang('Login.username') ?></label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
+                            <input class="form-control" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>" <?php if (ENVIRONMENT === 'testing') {
+                                echo 'value="pointofsale"';
+                            } ?>>
                             <label for="input-password"><?= lang('Login.password') ?></label>
                         </div>
-                    <?php elseif ('input_groups' == ($config['login_form'])): ?>
+                    <?php elseif ('input_groups' === ($config['login_form'])): ?>
                         <div class="input-group mt-3">
-                            <span class="input-group-text" id="input-username">
+                            <span class="input-group-text" id="addon-username">
                                 <svg class="bi bi-person-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                     <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.username') ?></title>
                                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                                 </svg>
                             </span>
-                            <input class="form-control" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
+                            <input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="addon-username" <?php if (ENVIRONMENT === 'testing') {
+                                echo 'value="admin"';
+                            } ?>>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" id="input-password">
+                            <span class="input-group-text" id="addon-password">
                                 <svg class="bi bi-key-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                     <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.password') ?></title>
                                     <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                                 </svg>
                             </span>
-                            <input class="form-control" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
+                            <input class="form-control" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="addon-password" <?php if (ENVIRONMENT === 'testing') {
+                                echo 'value="pointofsale"';
+                            } ?>>
                         </div>
                     <?php endif; ?>
 
@@ -144,7 +153,7 @@ $request = Services::request();
                     <button id="submit-button" class="btn btn-lg btn-primary" name="login-button" type="submit">
                         <?php if ($isNewInstall): ?>
                             <?= lang('Login.initialize') ?>
-                        <?php elseif (!$isLatest): ?>
+                        <?php elseif (! $isLatest): ?>
                             <?= lang('Module.migrate') ?>
                         <?php else: ?>
                             <?= lang('Login.go') ?>
@@ -169,7 +178,7 @@ $request = Services::request();
         </div>
     </footer>
 
-    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+    <?php if (ENVIRONMENT === 'development' || get_cookie('debug') === 'true' || $request->getGet('debug') === 'true') : ?>
         <!-- inject:login:debug:js -->
         <!-- endinject -->
     <?php else : ?>
