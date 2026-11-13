@@ -297,9 +297,11 @@ class Jobs extends Secure_Controller
 
         $this->db->transComplete();
 
+        $success = $this->db->transStatus();
+
         return $this->response->setJSON([
-            'success' => true,
-            'message' => lang('Jobs.batch_paused', [count($rows)]),
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.batch_paused' : 'Jobs.batch_pause_failed', [count($rows)]),
         ]);
     }
 
@@ -328,9 +330,11 @@ class Jobs extends Secure_Controller
 
         $this->db->transComplete();
 
+        $success = $this->db->transStatus();
+
         return $this->response->setJSON([
-            'success' => true,
-            'message' => lang('Jobs.batch_resumed', [count($rows)]),
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.batch_resumed' : 'Jobs.batch_resume_failed', [count($rows)]),
         ]);
     }
 
@@ -583,9 +587,11 @@ class Jobs extends Secure_Controller
 
         $this->db->transComplete();
 
+        $success = $this->db->transStatus();
+
         return $this->response->setJSON([
-            'success' => true,
-            'message' => lang('Jobs.resumed_jobs_result', ['count' => count($rows)]),
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.resumed_jobs_result' : 'Jobs.resume_jobs_failed', ['count' => count($rows)]),
         ]);
     }
 
@@ -810,9 +816,11 @@ class Jobs extends Secure_Controller
 
         $this->db->transComplete();
 
+        $success = $this->db->transStatus();
+
         return $this->response->setJSON([
-            'success' => true,
-            'message' => lang('Jobs.paused_jobs_result', [count($rows)]),
+            'success' => $success,
+            'message' => lang($success ? 'Jobs.paused_jobs_result' : 'Jobs.pause_jobs_failed', [count($rows)]),
         ]);
     }
 
