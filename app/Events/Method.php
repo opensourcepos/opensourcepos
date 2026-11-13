@@ -6,9 +6,10 @@ class Method
 {
     public static function validate_method(): void
     {
-        $url = rawurldecode($_SERVER['REQUEST_URI'] ?? '');
+        [$requestPath] = explode('?', $_SERVER['REQUEST_URI'] ?? '', 2);
+        $path          = rawurldecode($requestPath);
 
-        $postRequired = preg_match('/\/(save|delete|remove|logout)(\/|$|\?)/i', $url);
+        $postRequired = preg_match('/\/(save|delete|remove|logout)(\/|$)/i', $path);
 
         if ($postRequired && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' && empty($_POST)) {
             echo 'Method not allowed';

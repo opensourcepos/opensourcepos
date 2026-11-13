@@ -96,7 +96,14 @@ final class MethodTest extends CIUnitTestCase
 
     public function testValidateMethod_AcceptsGetRequestsToNonMatchingPaths(): void
     {
-        foreach (['/items/deletion/1', '/items/removed_items', '/items/view/1'] as $uri) {
+        foreach ([
+            '/items/deletion/1',
+            '/items/removed_items',
+            '/items/view/1',
+            '/items/search?search=/delete',
+            '/items/search?search=%2Fsave%2F1',
+            '/home?redirect=/home/logout',
+        ] as $uri) {
             $_SERVER['REQUEST_URI']    = $uri;
             $_SERVER['REQUEST_METHOD'] = 'GET';
             $_POST                     = [];
