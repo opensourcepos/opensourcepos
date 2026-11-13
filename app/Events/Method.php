@@ -4,18 +4,16 @@ namespace App\Events;
 
 class Method
 {
-    /**
-     * @return void
-     */
     public static function validate_method(): void
     {
-        $url = $_SERVER['REQUEST_URI'];
+        $url = rawurldecode($_SERVER['REQUEST_URI'] ?? '');
 
-        $post_required = preg_match('/\/(save|delete*|remove*)\/?\d*?/', $url);
+        $postRequired = preg_match('/\/(save|delete|remove|logout)(\/|$|\?)/i', $url);
 
-        if ($post_required && $_SERVER["REQUEST_METHOD"] != "POST" && empty($_POST)) {
-            echo "Method not allowed";
-            die;
+        if ($postRequired && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' && empty($_POST)) {
+            echo 'Method not allowed';
+
+            exit;
         }
     }
 }

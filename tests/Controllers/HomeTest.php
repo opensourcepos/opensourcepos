@@ -2,10 +2,11 @@
 
 namespace Tests\Controllers;
 
+use App\Models\Employee;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Models\Employee;
 use RuntimeException;
 use Tests\Support\DatabaseBootstrapTrait;
 
@@ -408,9 +409,9 @@ class HomeTest extends CIUnitTestCase
         $this->resetSession(); // Login as admin
 
         $response = $this->post('/home/save/' . $nonAdminId, [
-            'username' => 'nonadminadminchange',
-            'current_password' => 'password123',
-            'password' => 'adminset123'
+            'username'         => 'nonadminadminchange',
+            'current_password' => 'pointofsale',
+            'password'         => 'adminset123',
         ]);
 
         $response->assertStatus(200);
@@ -419,8 +420,55 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $user = $employee->getInfo($nonAdminId);
+        $user     = $employee->getInfo($nonAdminId);
         $this->assertTrue(password_verify('adminset123', $user->password));
+    }
+
+    public function testPostSave_VerifiesCurrentUsersOwnPassword(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'boundcheckuser',
+            'password' => 'ownpass123',
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->post('/home/save/' . $nonAdminId, [
+            'username'         => 'admin',
+            'current_password' => 'pointofsale',
+            'password'         => 'newpass12345',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+
+        $employee = model(Employee::class);
+        $user     = $employee->getInfo($nonAdminId);
+        $this->assertTrue(password_verify('ownpass123', $user->password));
+    }
+
+    public function testPostSave_PreservesUsernameWhenPostUsernameTampered(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'originalusername',
+            'password' => 'password123',
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->post('/home/save/' . $nonAdminId, [
+            'username'         => 'tamperedusername',
+            'current_password' => 'password123',
+            'password'         => 'updatedpass123',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $employee = model(Employee::class);
+        $user     = $employee->getInfo($nonAdminId);
+        $this->assertSame('originalusername', $user->username);
+        $this->assertTrue(password_verify('updatedpass123', $user->password));
     }
 
     /**
@@ -515,9 +563,36 @@ class HomeTest extends CIUnitTestCase
         ]);
         $this->loginAs($nonAdminId);
 
-        $response = $this->get('/home/logout');
+        $response = $this->post('/home/logout');
 
         $response->assertRedirectTo('login');
+    }
+
+    public function testPostLogout_AcceptsMixedCaseSegmentWithoutHomeGrant(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'logoutmixedcaseuser',
+            'email'    => 'logoutmixedcaseuser@test.com',
+            'grants'   => [],
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->post('/home/Logout');
+
+        $response->assertRedirectTo('login');
+    }
+
+    public function testPostLogout_RejectsGetRequest(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'logoutgetuser',
+            'email'    => 'logoutgetuser@test.com',
+            'grants'   => [],
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $this->expectException(PageNotFoundException::class);
+        $this->get('/home/logout');
     }
 
     /**
