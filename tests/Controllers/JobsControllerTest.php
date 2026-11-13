@@ -844,4 +844,109 @@ class JobsControllerTest extends CIUnitTestCase
 
         $this->dontSeeInDatabase('import_batches', ['id' => 'batch-partial']);
     }
+
+    // -------------------------------------------------------------------------
+    // postProcessJob — pause/process concurrency guard
+    // -------------------------------------------------------------------------
+
+    private function insertQueueJob(string $queue = 'default', int $status = 0): int
+    {
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => $queue,
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => $status,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        return (int)$this->db->insertID();
+    }
+
+    public function testPostProcessJob_RejectsJobGoneFromQueue(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->insertQueueJob();
+
+        $this->db->table('queue_jobs')->where('id', $jobId)->delete();
+
+        $response = $this->post('/jobs/processJob', ['id' => "pending:$jobId"]);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostProcessJob_RejectsJobClaimedByWorkerBeforeReservation(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->insertQueueJob();
+
+        $this->db->table('queue_jobs')
+            ->where('id', $jobId)
+            ->update(['status' => 1]);
+
+        $response = $this->post('/jobs/processJob', ['id' => "pending:$jobId"]);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostProcessJob_RejectsAlreadyReservedJob(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->insertQueueJob(status: 1);
+
+        $response = $this->post('/jobs/processJob', ['id' => "reserved:$jobId"]);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testPostPauseJobs_SkipsJobReservedByWorker(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->insertQueueJob(status: 1);
+
+        $response = $this->post('/jobs/pauseJobs', ['scope' => 'all']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->seeInDatabase('queue_jobs', ['queue' => 'default', 'status' => 1]);
+        $this->dontSeeInDatabase('queue_jobs_paused', ['queue' => 'default']);
+    }
+
+    public function testPostPauseBatch_SkipsJobReservedByWorker(): void
+    {
+        $this->loginAsAdmin();
+        $this->db->table('import_batches')->truncate();
+
+        $this->insertBatch('batch-concurrent');
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-concurrent',
+            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'     => 'normal',
+            'status'       => 1,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        $response = $this->post('/jobs/pauseBatch', ['id' => 'batch-concurrent']);
+
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-concurrent', 'status' => 1]);
+        $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-concurrent']);
+    }
 }

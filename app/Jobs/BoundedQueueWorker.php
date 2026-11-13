@@ -5,6 +5,7 @@ namespace App\Jobs;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Queue\Config\Queue as QueueConfig;
 use CodeIgniter\Queue\Entities\QueueJob;
+use CodeIgniter\Queue\Enums\Status;
 use CodeIgniter\Queue\Interfaces\QueueInterface;
 use Config\Database;
 use Config\Jobs as JobsConfig;
@@ -58,6 +59,10 @@ class BoundedQueueWorker
 
             if ($work === null) {
                 break;
+            }
+
+            if (!$this->isReserved($work->id)) {
+                continue;
             }
 
             if (!$throttleGate->allows($work->queue)) {
@@ -148,6 +153,18 @@ class BoundedQueueWorker
         }
 
         Database::connect()->table('queue_jobs')->where('id', $work->id)->delete();
+    }
+
+    private function isReserved(int $id): bool
+    {
+        $row = Database::connect()
+            ->table('queue_jobs')
+            ->select('status')
+            ->where('id', $id)
+            ->get()
+            ->getRowArray();
+
+        return $row !== null && (int)$row['status'] === Status::RESERVED->value;
     }
 
     private function popNext(QueueInterface $queue, QueueConfig $config): ?QueueJob
