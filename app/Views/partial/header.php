@@ -28,15 +28,14 @@ $request = Services::request();
         <!-- endinject -->
         <!-- inject:debug:js -->
         <!-- endinject -->
-    <?php else : ?>
-        <!--inject:prod:css -->
+        <!-- inject:debug:deferred:js -->
         <!-- endinject -->
-
-        <!-- Tweaks to the UI for a particular theme should drop here  -->
-        <?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
-            <link rel="stylesheet" href="<?= 'css/' . esc($config['theme']) . '.css' ?>">
-        <?php } ?>
+    <?php else : ?>
+        <!-- inject:prod:css -->
+        <!-- endinject -->
         <!-- inject:prod:js -->
+        <!-- endinject -->
+        <!-- inject:prod:deferred:js -->
         <!-- endinject -->
     <?php endif; ?>
 
