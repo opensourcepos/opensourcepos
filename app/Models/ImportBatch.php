@@ -82,6 +82,40 @@ class ImportBatch extends Model
         return $isComplete;
     }
 
+    public function adjustTotal(string $batchId, int $delta): void
+    {
+        $this->db->transStart();
+
+        $sql = $this->db->table($this->table)
+            ->where('id', $batchId)
+            ->getCompiledSelect();
+
+        $batch = $this->db->query($sql . ' FOR UPDATE')->getRowArray();
+
+        if ($batch === null) {
+            $this->db->transRollback();
+
+            return;
+        }
+
+        $newTotal = max(0, ($batch['total'] ?? 0) + $delta);
+
+        $this->db->table($this->table)
+            ->where('id', $batchId)
+            ->update(['total' => $newTotal]);
+
+        $completed = $batch['completed'] ?? 0;
+        $failed    = $batch['failed'] ?? 0;
+
+        if ($newTotal > 0 && ($completed + $failed) >= $newTotal && $batch['status'] === 'processing') {
+            $this->db->table($this->table)
+                ->where('id', $batchId)
+                ->update(['status' => $failed > 0 ? 'partial' : 'completed']);
+        }
+
+        $this->db->transComplete();
+    }
+
     /**
      * Deletes batches finished more than $retentionDays ago, but only once no
      * row referencing their batch_id remains in queue_jobs or

@@ -378,31 +378,9 @@ class Jobs extends Secure_Controller
                 continue;
             }
 
-            if ($source === 'failed') {
-                $deleted += $this->queueJobFailedModel->delete($id) ? 1 : 0;
-
-                continue;
-            }
-
-            if ($source === 'paused') {
-                $deleted += $this->queueJobPaused->delete($id) ? 1 : 0;
-
-                continue;
-            }
-
-            $job = $this->queueJobModel->find($id);
-
-            if ($job === null) {
-                continue;
-            }
-
-            if ($job->status === Status::RESERVED->value) {
-                $blocked++;
-
-                continue;
-            }
-
-            $deleted += $this->queueJobModel->delete($id) ? 1 : 0;
+            [$didDelete, $didBlock] = $this->deleteOneJob($source, $id);
+            $deleted += $didDelete;
+            $blocked += $didBlock;
         }
 
         if ($blocked > 0 && $deleted === 0) {
@@ -416,6 +394,47 @@ class Jobs extends Secure_Controller
         }
 
         return $this->response->setJSON(['success' => true, 'message' => $message]);
+    }
+
+    private function deleteOneJob(string $source, int $id): array
+    {
+        if ($source === 'failed') {
+            return [$this->queueJobFailedModel->delete($id) ? 1 : 0, 0];
+        }
+
+        if ($source === 'paused') {
+            $pausedJob = $this->queueJobPaused->find($id);
+
+            if ($pausedJob === null) {
+                return [0, 0];
+            }
+
+            if ($this->queueJobPaused->delete($id)) {
+                $this->accountBatchCancellation($pausedJob['batch_id'] ?? null);
+
+                return [1, 0];
+            }
+
+            return [0, 0];
+        }
+
+        $job = $this->queueJobModel->find($id);
+
+        if ($job === null) {
+            return [0, 0];
+        }
+
+        if ($job->status === Status::RESERVED->value) {
+            return [0, 1];
+        }
+
+        if ($this->queueJobModel->delete($id)) {
+            $this->accountBatchCancellation($job->batch_id ?? null);
+
+            return [1, 0];
+        }
+
+        return [0, 0];
     }
 
     /**
@@ -811,6 +830,7 @@ class Jobs extends Secure_Controller
         }
 
         $now = Time::now()->timestamp;
+        $batchModel = model(ImportBatch::class);
 
         foreach ($rows as &$row) {
             $row['paused_at'] = $now;
@@ -821,6 +841,12 @@ class Jobs extends Secure_Controller
 
         $this->queueJobPaused->insertRows($rows);
         $this->queueJobModel->deleteWhereInIds(array_column($rows, 'id'));
+
+        foreach (array_column($rows, 'batch_id') as $batchId) {
+            if ($batchId !== null) {
+                $batchModel->adjustTotal($batchId, -1);
+            }
+        }
     }
 
     private function moveToPending(array $rows): void
@@ -833,12 +859,21 @@ class Jobs extends Secure_Controller
 
         foreach ($rows as &$row) {
             $row['status'] = $pendingStatus;
-            unset($row['paused_at'], $row['paused_by']);
+            unset($row['paused_at'], $row['paused_by'], $row['batch_id']);
         }
         unset($row);
 
         $this->queueJobModel->insertRows($rows);
         $this->queueJobPaused->deleteWhereInIds(array_column($rows, 'id'));
+    }
+
+    private function accountBatchCancellation(?string $batchId): void
+    {
+        if ($batchId === null) {
+            return;
+        }
+
+        model(ImportBatch::class)->adjustTotal($batchId, -1);
     }
 
     private function resolveSelectedQueues(array $coreQueues): array
