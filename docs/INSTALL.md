@@ -125,7 +125,7 @@ This is the most robust option: the application never has to write to `.env`, so
        - THROTTLE_KEY=${THROTTLE_KEY}
    ```
 
-With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required — **except** when the `.env` file already holds a short CI3 `encryption.key`: that value takes precedence over `ENCRYPTION_KEY`, so `env:provision` rotates it in place and that write still requires `.env` to be atomically replaceable (see the CI3 note below and the warning in the alternative option).
+With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required — **except** when the effective `encryption.key` is a short CI3 key, whether it comes from `.env` or from `ENCRYPTION_KEY`. In that case `env:provision` rotates the key: it writes the new CI4 key to `.env`, and (when `.env` already contains an `encryption.key=` line) the old key as a commented line. That rotation still requires `.env` to be atomically replaceable (see the CI3 note below and the warning in the alternative option). Protect `.env`, and delete the commented old key once the upgrade is complete.
 
 > [!NOTE]
 > The container does **not** inherit your shell's environment variables. A `THROTTLE_KEY` or `ENCRYPTION_KEY` that exists only in your shell will not reach the app — it must be declared in the Compose `environment` list **or** a service `env_file`, not both. Compose `environment` overrides `env_file`, and an unresolved `${...}` entry becomes an empty string that would win over the file's value — so if you supply these keys via `env_file`, remove them from the `environment` list.
