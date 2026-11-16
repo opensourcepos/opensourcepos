@@ -491,13 +491,16 @@ class Jobs extends Secure_Controller
             return null;
         }
 
+        $now = Time::now()->timestamp;
+
         $inserted = $this->queueJobModel->insertRows([[
             'queue'        => $failedJob->queue,
             'payload'      => json_encode($failedJob->payload),
             'priority'     => $failedJob->priority,
             'status'       => Status::PENDING->value,
             'attempts'     => 0,
-            'available_at' => Time::now()->timestamp,
+            'available_at' => $now,
+            'created_at'   => $now,
             'batch_id'     => $failedJob->batch_id ?? null,
             'context_id'   => $failedJob->context_id ?? null,
         ]]);
