@@ -918,6 +918,22 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertSame($totalBefore, (int)$this->getBatchRow('batch-del-paused')['total']);
     }
 
+    public function testPostDelete_JobReservedAfterListing_BlocksDeletionAndLeavesBatchTotal(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-del-race', 'processing', 2, 0);
+        $jobId = $this->createReservedJob('imports', 'batch-del-race');
+
+        $result = json_decode($this->post('/jobs/delete', ['ids' => ["pending:$jobId"]])->getJSON(), true);
+
+        $this->assertFalse($result['success']);
+        $this->seeInDatabase('queue_jobs', ['id' => $jobId]);
+        $batch = $this->getBatchRow('batch-del-race');
+        $this->assertSame(2, (int)$batch['total']);
+        $this->assertSame('processing', $batch['status']);
+    }
+
     public function testPostDelete_ReservedJob_BlocksDeletion(): void
     {
         $this->loginAsAdmin();

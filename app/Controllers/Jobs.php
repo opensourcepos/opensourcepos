@@ -406,20 +406,20 @@ class Jobs extends Secure_Controller
             return [$this->queueJobPaused->delete($id) ? 1 : 0, 0];
         }
 
-        $job = $this->queueJobModel->find($id);
-
-        if ($job === null) {
-            return [0, 0];
-        }
-
-        if ($job->status === Status::RESERVED->value) {
-            return [0, 1];
-        }
-
         $this->queueJobModel->db->transStart();
-        $this->queueJobModel->delete($id);
-        $this->accountBatchCancellation($job->batch_id ?? null);
+
+        $rows = $this->queueJobModel->getPendingForUpdateByIdOrQueues($id, null);
+
+        if ($rows !== []) {
+            $this->queueJobModel->delete($id);
+            $this->accountBatchCancellation($rows[0]['batch_id'] ?? null);
+        }
+
         $this->queueJobModel->db->transComplete();
+
+        if ($rows === []) {
+            return [0, $this->queueJobModel->find($id) !== null ? 1 : 0];
+        }
 
         return [$this->queueJobModel->db->transStatus() ? 1 : 0, 0];
     }
