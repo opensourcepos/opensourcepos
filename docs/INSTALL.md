@@ -88,6 +88,83 @@ Then start the containers:
     docker-compose up
 ```
 
+### Throttle and encryption keys
+
+OpenSourcePOS runs on two runtime secrets:
+
+- `encryption.key` — the AES key that protects stored configuration secrets at rest (the `smtp_pass`, `mailchimp_api_key`, `mailchimp_list_id`, `clcdesq_api_key` and `clcdesq_api_url` values in the `ospos_app_config` table).
+- `throttle.key` — an HMAC secret used to hash the login rate-limit cache keys.
+
+By default both are generated on first start and written into the `.env` file. Under Docker/Compose there are two supported ways to provide them — pick the one that fits your deployment.
+
+#### Key precedence
+
+The value in the `.env` file is always used first. `ENCRYPTION_KEY` and `THROTTLE_KEY` are only consulted as a **fallback** when the matching `.env` value (`encryption.key` / `throttle.key`) is empty. Do not set the pair to different values — the `.env` value wins.
+
+#### Option A — persist the keys in the bind-mounted `.env` (bundled default)
+
+The bundled `docker-compose.yml` bind-mounts a single host file `./.env` to `/app/.env`:
+
+```yaml
+volumes:
+    - type: bind
+      source: ./.env
+      target: /app/.env
+      bind:
+          create_host_path: false
+```
+
+`create_host_path: false` means a missing host file fails startup instead of being auto-created as a directory (a directory would break the app's atomic `.env` rename — see the caveats below).
+
+1. Create the host `.env` file from the example:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Start the stack:
+
+   ```bash
+   docker-compose up
+   ```
+
+On first start the service runs `php spark env:provision` before Apache, which generates both keys (32 random bytes each) and writes them into that `.env` file. Because the keys live in the host file, they survive `docker-compose` recreation and image upgrades.
+
+#### Option B — supply the keys via Compose `environment` (no `.env` write)
+
+If you would rather not have the app write to `.env`, generate the two keys on the host and pass them into the container:
+
+```bash
+# Generate two strong, unique 256-bit keys (64 hex characters each)
+export THROTTLE_KEY="$(openssl rand -hex 32)"
+export ENCRYPTION_KEY="$(openssl rand -hex 32)"
+```
+
+Then declare them on the service — inline, or via a Compose-side `.env` file / Docker secret so the same value is retained across container recreation:
+
+```yaml
+environment:
+    - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    - THROTTLE_KEY=${THROTTLE_KEY}
+```
+
+With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required.
+
+> [!NOTE]
+> The container does **not** inherit your shell's environment variables. A `THROTTLE_KEY` or `ENCRYPTION_KEY` that exists only in your shell will not reach the app — it must be declared in the Compose `environment` list (or provided as a secret).
+
+#### Persistence, rotation, and caveats
+
+- **Keep the value stable across restarts.** Whatever store you use (the bind-mounted `.env`, a Compose-side `.env`, or a Docker secret), make sure the same value is present every time the container is created, or the throttle/encryption state will be reset.
+- **The `.env` must be atomically replaceable for Option A.** When a key is generated, `env:provision` writes a temp file in the `.env`'s directory and renames it over `.env`. A single-file bind mount that cannot be renamed over, a read-only mount, or a non-writable directory blocks this, `env:provision` fails, and the container will not start. If your mount cannot guarantee the rename, use Option B.
+- **Changing `throttle.key` resets active login rate limits.** The key is the HMAC input for the throttle cache keys, so a new key makes the existing throttle buckets unrecognisable — a currently-throttled login is effectively un-throttled.
+- **Back up `encryption.key`.** It is a hard secret: any stored secret encrypted with it is unrecoverable if the key is lost. Keep an out-of-band backup and never commit it to the repository.
+- **Do not put real keys in this file or in commits.** The `openssl rand -hex 32` placeholders above are for illustration only — always use a freshly generated value.
+
+#### Upgrading from CI3
+
+Do **not** supply a brand-new `ENCRYPTION_KEY` before upgrading a CI3 installation. The existing short `encryption.key` is required to decrypt the stored CI3 secrets; `env:provision` then rotates it to a new CI4 key in place and re-encrypts the data.
+
 ## Nginx install using Docker
 
 Since OSPOS version `3.3.0` the Docker installation offers a reverse proxy based on Nginx with a Let's Encrypt TLS certificate termination (aka HTTPS connection).
