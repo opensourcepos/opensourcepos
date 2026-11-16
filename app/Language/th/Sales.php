@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'ค้นหา หรือ แสกนรายการ หรือ ใบเสร็จ',
     'giftcard'                          => 'บัตรของขวัญ',
     'giftcard_balance'                  => 'ยอดคงเหลือบัตรของขวัญ',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'เลขที่บัตรของขวัญ',
     'group_by_category'                 => 'กลุ่มตามหมวดหมู่',
     'group_by_type'                     => 'กลุ่มตามประเภท',

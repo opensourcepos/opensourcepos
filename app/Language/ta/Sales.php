@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'தேடு அல்லது பொருளை வருடு அல்லது ரசீது',
     'giftcard'                          => 'பரிசு அட்டை',
     'giftcard_balance'                  => 'பரிசு அட்டை இருப்பு',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'பரிசு அட்டை எண்',
     'group_by_category'                 => 'வகை வாரியாக',
     'group_by_type'                     => 'வகை வாரியாக',

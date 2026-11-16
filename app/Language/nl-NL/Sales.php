@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Artikel of kassabon vinden of scannen',
     'giftcard'                          => 'Cadeaubon',
     'giftcard_balance'                  => 'Cadeaubon saldo',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Cadeaubonnummer',
     'group_by_category'                 => 'Groeperen op categorie',
     'group_by_type'                     => 'Groeperen op soort',

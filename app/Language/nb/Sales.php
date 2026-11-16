@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => '',
     'giftcard'                          => '',
     'giftcard_balance'                  => '',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => '',
     'group_by_category'                 => '',
     'group_by_type'                     => '',

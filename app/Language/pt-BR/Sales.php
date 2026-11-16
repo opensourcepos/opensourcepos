@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Produto',
     'giftcard'                          => 'Cupom',
     'giftcard_balance'                  => 'Balanço de Cartões presente',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Número cartão presente',
     'group_by_category'                 => 'Agrupar por Categoria',
     'group_by_type'                     => 'Agrupar por Tipo',

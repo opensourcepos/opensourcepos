@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Hitta eller skanna artikel eller kvitto',
     'giftcard'                          => 'Presentkort',
     'giftcard_balance'                  => 'Presentkortsbalans',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Presentkortsnummer',
     'group_by_category'                 => 'Gruppera per kategori',
     'group_by_type'                     => 'Gruppera per typ',

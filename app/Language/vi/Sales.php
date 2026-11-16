@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Tìm hay quét Hàng hóa hay Biên lai',
     'giftcard'                          => 'Thẻ quà tặng',
     'giftcard_balance'                  => 'Số thẻ quà tặng còn lại',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Số Thẻ quà tặng',
     'group_by_category'                 => 'Gộp theo Danh mục',
     'group_by_type'                     => 'Gộp theo kiểu',

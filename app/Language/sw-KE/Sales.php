@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Tafuta au Changanua Bidhaa au Risiti',
     'giftcard'                          => 'Kadi ya Zawadi',
     'giftcard_balance'                  => 'Salio la Kadi ya Zawadi',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Namba ya Kadi ya Zawadi',
     'group_by_category'                 => 'Panga kwa Kategoria',
     'group_by_type'                     => 'Panga kwa Aina',

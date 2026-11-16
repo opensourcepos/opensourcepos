@@ -832,6 +832,22 @@ class Sales extends Secure_Controller
             return $this->reload($data);
         }
 
+        if ($this->sale_lib->get_mode() === 'return') {
+            $giftcardCredit = '0';
+            foreach ($data['payments'] as $payment) {
+                $splitPayment = explode(':', $payment['payment_type'], 2);
+                if ($splitPayment[0] === lang('Sales.giftcard') && bccomp($payment['payment_amount'], '0') < 0) {
+                    $giftcardCredit = bcsub($giftcardCredit, $payment['payment_amount']);
+                }
+            }
+
+            $returnTotal = bccomp($totals['total'], '0') < 0 ? bcmul($totals['total'], '-1') : $totals['total'];
+            if (bccomp($giftcardCredit, $returnTotal) > 0) {
+                $data['error'] = lang('Sales.giftcard_credit_exceeds_return');
+                return $this->reload($data);
+            }
+        }
+
         if ($data['cash_mode']) {    // TODO: Convert this to ternary notation
             $data['amount_due'] = $totals['cash_amount_due'];
         } else {

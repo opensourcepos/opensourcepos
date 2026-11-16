@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Ürün yada Fiş Bul/Oku',
     'giftcard'                          => 'Hediye Çeki',
     'giftcard_balance'                  => 'Hediye Çeki Bakiyesi',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Hediye Çeki No',
     'group_by_category'                 => 'Kategoriye göre gurupla',
     'group_by_type'                     => 'Tipe göre gurupla',
