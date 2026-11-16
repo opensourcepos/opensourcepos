@@ -76,10 +76,11 @@ Docker runs natively on Mac and Linux. Windows requires WSL2 to be installed. Pl
 
 First create a **regular `.env` file** in the project root (a missing one is not
 auto-created as a file — see the compose `create_host_path: false` setting). Copy
-the shipped example:
+the shipped example **only if `.env` does not already exist**, so a re-run never
+overwrites keys that `env:provision` has already written:
 
 ```
-    cp .env.example .env
+    [ -f .env ] || cp .env.example .env
 ```
 
 Then start the containers:
@@ -95,15 +96,41 @@ OpenSourcePOS runs on two runtime secrets:
 - `encryption.key` — the AES key that protects stored configuration secrets at rest (the `smtp_pass`, `mailchimp_api_key`, `mailchimp_list_id`, `clcdesq_api_key` and `clcdesq_api_url` values in the `ospos_app_config` table).
 - `throttle.key` — an HMAC secret used to hash the login rate-limit cache keys.
 
-By default both are generated on first start and written into the `.env` file. Under Docker/Compose there are two supported ways to provide them — pick the one that fits your deployment.
+Both are required for a working installation. You can either supply them yourself, or let the application generate and persist them into `.env` on first start.
 
 #### Key precedence
 
 The value in the `.env` file is always used first. `ENCRYPTION_KEY` and `THROTTLE_KEY` are only consulted as a **fallback** when the matching `.env` value (`encryption.key` / `throttle.key`) is empty. Do not set the pair to different values — the `.env` value wins.
 
-#### Option A — persist the keys in the bind-mounted `.env` (bundled default)
+#### Recommended — supply the keys via the environment
 
-The bundled `docker-compose.yml` bind-mounts a single host file `./.env` to `/app/.env`:
+This is the most robust option: the application never has to write to `.env`, so it works on every platform (including the single-file bind mount in the bundled `docker-compose.yml`) and you control the value across container recreation.
+
+1. Generate two strong, unique 256-bit keys (64 hex characters each) on the host:
+
+   ```bash
+   export THROTTLE_KEY="$(openssl rand -hex 32)"
+   export ENCRYPTION_KEY="$(openssl rand -hex 32)"
+   ```
+
+2. Persist them so the same value is present every time the container is created (a host file, or a Compose-side `.env` file used for variable substitution).
+
+3. Declare them on the service so the container actually receives them:
+
+   ```yaml
+   environment:
+       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+       - THROTTLE_KEY=${THROTTLE_KEY}
+   ```
+
+With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required.
+
+> [!NOTE]
+> The container does **not** inherit your shell's environment variables. A `THROTTLE_KEY` or `ENCRYPTION_KEY` that exists only in your shell will not reach the app — it must be declared in the Compose `environment` list (or via an `env_file`).
+
+#### Alternative — let the application generate them into `.env`
+
+The simplest path for a quick local start. The bundled `docker-compose.yml` bind-mounts a single host file `./.env` to `/app/.env`:
 
 ```yaml
 volumes:
@@ -114,12 +141,12 @@ volumes:
           create_host_path: false
 ```
 
-`create_host_path: false` means a missing host file fails startup instead of being auto-created as a directory (a directory would break the app's atomic `.env` rename — see the caveats below).
+`create_host_path: false` means a missing host file fails startup instead of being auto-created as a directory (a directory would break the app's atomic `.env` write).
 
-1. Create the host `.env` file from the example:
+1. Create the host `.env` file from the example **only if it does not already exist** (re-running a plain copy would overwrite the keys `env:provision` has already written):
 
    ```bash
-   cp .env.example .env
+   [ -f .env ] || cp .env.example .env
    ```
 
 2. Start the stack:
@@ -128,35 +155,14 @@ volumes:
    docker-compose up
    ```
 
-On first start the service runs `php spark env:provision` before Apache, which generates both keys (32 random bytes each) and writes them into that `.env` file. Because the keys live in the host file, they survive `docker-compose` recreation and image upgrades.
+On start the service runs `php spark env:provision` before Apache, which generates both keys (32 random bytes each) and persists them into that `.env` file. Because the keys live in the host file, they survive container recreation and image upgrades.
 
-#### Option B — supply the keys via Compose `environment` (no `.env` write)
+> [!WARNING]
+> `env:provision` persists keys by writing a temp file in the `.env`'s directory and then `rename()`-ing it over `.env`. On Linux, `rename()` **cannot replace a mount point**, and a single-file bind mount (like the one above) makes `.env` a mount point — so this write can fail, `env:provision` exits non-zero, and Apache never starts (the `&&` in the compose `command`). The throttle key is re-written on **every** start, not just the first, so the failure recurs. Use this option only when `.env` is a regular file in an atomically-replaceable location (a directory-backed mount or the container's own filesystem); otherwise use the recommended environment approach above.
 
-If you would rather not have the app write to `.env`, generate the two keys on the host and pass them into the container:
+#### Key-change and backup caveats
 
-```bash
-# Generate two strong, unique 256-bit keys (64 hex characters each)
-export THROTTLE_KEY="$(openssl rand -hex 32)"
-export ENCRYPTION_KEY="$(openssl rand -hex 32)"
-```
-
-Then declare them on the service — inline, or via a Compose-side `.env` file / Docker secret so the same value is retained across container recreation:
-
-```yaml
-environment:
-    - ENCRYPTION_KEY=${ENCRYPTION_KEY}
-    - THROTTLE_KEY=${THROTTLE_KEY}
-```
-
-With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required.
-
-> [!NOTE]
-> The container does **not** inherit your shell's environment variables. A `THROTTLE_KEY` or `ENCRYPTION_KEY` that exists only in your shell will not reach the app — it must be declared in the Compose `environment` list (or provided as a secret).
-
-#### Persistence, rotation, and caveats
-
-- **Keep the value stable across restarts.** Whatever store you use (the bind-mounted `.env`, a Compose-side `.env`, or a Docker secret), make sure the same value is present every time the container is created, or the throttle/encryption state will be reset.
-- **The `.env` must be atomically replaceable for Option A.** When a key is generated, `env:provision` writes a temp file in the `.env`'s directory and renames it over `.env`. A single-file bind mount that cannot be renamed over, a read-only mount, or a non-writable directory blocks this, `env:provision` fails, and the container will not start. If your mount cannot guarantee the rename, use Option B.
+- **Keep the value stable across restarts.** Whatever store you use (the bind-mounted `.env`, a Compose-side `.env`, or an `env_file`), make sure the same value is present every time the container is created, or the throttle/encryption state will be reset.
 - **Changing `throttle.key` resets active login rate limits.** The key is the HMAC input for the throttle cache keys, so a new key makes the existing throttle buckets unrecognisable — a currently-throttled login is effectively un-throttled.
 - **Back up `encryption.key`.** It is a hard secret: any stored secret encrypted with it is unrecoverable if the key is lost. Keep an out-of-band backup and never commit it to the repository.
 - **Do not put real keys in this file or in commits.** The `openssl rand -hex 32` placeholders above are for illustration only — always use a freshly generated value.
