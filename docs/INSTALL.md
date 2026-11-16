@@ -106,12 +106,14 @@ The value in the `.env` file is always used first. `ENCRYPTION_KEY` and `THROTTL
 
 This is the most robust option: the application never has to write to `.env`, so it works on every platform (including the single-file bind mount in the bundled `docker-compose.yml`) and you control the value across container recreation.
 
-1. Generate two strong, unique 256-bit keys (64 hex characters each) on the host:
+1. For a **fresh install**, generate two strong, unique 256-bit keys (64 hex characters each) on the host:
 
    ```bash
    export THROTTLE_KEY="$(openssl rand -hex 32)"
    export ENCRYPTION_KEY="$(openssl rand -hex 32)"
    ```
+
+   If you are **upgrading** an existing installation, do **not** generate a new `ENCRYPTION_KEY` — retain the key your data is already encrypted under, or those stored secrets become unreadable. Generate one only if you have no existing key to preserve.
 
 2. Persist them so the same value is present every time the container is created (a host file, or a Compose-side `.env` file used for variable substitution).
 
@@ -123,10 +125,10 @@ This is the most robust option: the application never has to write to `.env`, so
        - THROTTLE_KEY=${THROTTLE_KEY}
    ```
 
-With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required.
+With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required — **except** when the `.env` file already holds a short CI3 `encryption.key`: that value takes precedence over `ENCRYPTION_KEY`, so `env:provision` rotates it in place and that write still requires `.env` to be atomically replaceable (see the CI3 note below and the warning in the alternative option).
 
 > [!NOTE]
-> The container does **not** inherit your shell's environment variables. A `THROTTLE_KEY` or `ENCRYPTION_KEY` that exists only in your shell will not reach the app — it must be declared in the Compose `environment` list (or via an `env_file`).
+> The container does **not** inherit your shell's environment variables. A `THROTTLE_KEY` or `ENCRYPTION_KEY` that exists only in your shell will not reach the app — it must be declared in the Compose `environment` list **or** a service `env_file`, not both. Compose `environment` overrides `env_file`, and an unresolved `${...}` entry becomes an empty string that would win over the file's value — so if you supply these keys via `env_file`, remove them from the `environment` list.
 
 #### Alternative — let the application generate them into `.env`
 
