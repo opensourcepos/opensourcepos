@@ -76,6 +76,30 @@ class ImportBatchTest extends CIUnitTestCase
         $this->seeInDatabase('import_batches', ['id' => 'batch-3', 'completed' => 1, 'failed' => 1, 'status' => 'partial']);
     }
 
+    public function testAdjustTotal_CompletesBatchWhenTotalReachesZero(): void
+    {
+        $this->importBatch->create('batch-adj-zero', 'items', 1);
+
+        $this->assertTrue($this->importBatch->adjustTotal('batch-adj-zero', -1));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-adj-zero', 'total' => 0, 'status' => 'completed']);
+    }
+
+    public function testAdjustTotal_MarksBatchPartialWhenRemainingRowsAlreadyFinishedWithFailure(): void
+    {
+        $this->importBatch->create('batch-adj-partial', 'items', 2);
+        $this->importBatch->increment('batch-adj-partial', true);
+
+        $this->importBatch->adjustTotal('batch-adj-partial', -1);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-adj-partial', 'total' => 1, 'failed' => 1, 'status' => 'partial']);
+    }
+
+    public function testAdjustTotal_ReturnsFalseForUnknownBatch(): void
+    {
+        $this->assertFalse($this->importBatch->adjustTotal('batch-missing', -1));
+    }
+
     public function testPurgeFinishedDeletesOldCompletedBatchWithNoRemainingJobs(): void
     {
         $this->importBatch->create('batch-old', 'items', 1);

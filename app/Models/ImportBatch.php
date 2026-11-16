@@ -82,7 +82,10 @@ class ImportBatch extends Model
         return $isComplete;
     }
 
-    public function adjustTotal(string $batchId, int $delta): void
+    /**
+     * @return bool False if the batch does not exist.
+     */
+    public function adjustTotal(string $batchId, int $delta): bool
     {
         $this->db->transStart();
 
@@ -92,28 +95,26 @@ class ImportBatch extends Model
 
         $batch = $this->db->query($sql . ' FOR UPDATE')->getRowArray();
 
-        if ($batch === null) {
-            $this->db->transRollback();
+        if ($batch !== null) {
+            $newTotal = max(0, ($batch['total'] ?? 0) + $delta);
 
-            return;
-        }
-
-        $newTotal = max(0, ($batch['total'] ?? 0) + $delta);
-
-        $this->db->table($this->table)
-            ->where('id', $batchId)
-            ->update(['total' => $newTotal]);
-
-        $completed = $batch['completed'] ?? 0;
-        $failed    = $batch['failed'] ?? 0;
-
-        if ($newTotal > 0 && ($completed + $failed) >= $newTotal && $batch['status'] === 'processing') {
             $this->db->table($this->table)
                 ->where('id', $batchId)
-                ->update(['status' => $failed > 0 ? 'partial' : 'completed']);
+                ->update(['total' => $newTotal]);
+
+            $completed = $batch['completed'] ?? 0;
+            $failed    = $batch['failed'] ?? 0;
+
+            if (($completed + $failed) >= $newTotal && $batch['status'] === 'processing') {
+                $this->db->table($this->table)
+                    ->where('id', $batchId)
+                    ->update(['status' => $failed > 0 ? 'partial' : 'completed']);
+            }
         }
 
         $this->db->transComplete();
+
+        return $batch !== null;
     }
 
     /**

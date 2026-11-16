@@ -2,13 +2,16 @@
 
 namespace Tests\Controllers;
 
+use App\Models\ImportBatch;
 use App\Models\JobThrottle;
 use App\Models\QueueJobModel;
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\QueueJobFixtureTrait;
+use Throwable;
 
 class JobsControllerTest extends CIUnitTestCase
 {
@@ -817,6 +820,50 @@ class JobsControllerTest extends CIUnitTestCase
         $this->post('/jobs/delete', ['ids' => ["pending:$jobId"]]);
 
         $this->assertSame('completed', $this->getBatchRow('batch-del-complete')['status']);
+    }
+
+    public function testPostDelete_OnlyPendingJobInBatch_CompletesBatch(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-del-only', 'processing', 1, 0);
+        $jobId = $this->createPendingJob('imports', 'batch-del-only');
+
+        $this->post('/jobs/delete', ['ids' => ["pending:$jobId"]]);
+
+        $batch = $this->getBatchRow('batch-del-only');
+        $this->assertSame(0, (int)$batch['total']);
+        $this->assertSame('completed', $batch['status']);
+    }
+
+    public function testPostDelete_AccountingFailure_RollsBackJobDeletion(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-del-rollback', 'processing', 2, 0);
+        $jobId = $this->createPendingJob('imports', 'batch-del-rollback');
+
+        $failingBatch = new class () extends ImportBatch {
+            public function adjustTotal(string $batchId, int $delta): bool
+            {
+                try {
+                    $this->db->query('SELECT * FROM table_that_does_not_exist');
+                } catch (Throwable $e) {
+                }
+
+                return false;
+            }
+        };
+        Factories::injectMock('models', ImportBatch::class, $failingBatch);
+
+        try {
+            $this->post('/jobs/delete', ['ids' => ["pending:$jobId"]]);
+        } finally {
+            Factories::reset('models');
+        }
+
+        $this->seeInDatabase('queue_jobs', ['id' => $jobId]);
+        $this->assertSame(2, (int)$this->getBatchRow('batch-del-rollback')['total']);
     }
 
     public function testPostDelete_PausedJobWithBatch_DoesNotDoubleDecrementTotal(): void
