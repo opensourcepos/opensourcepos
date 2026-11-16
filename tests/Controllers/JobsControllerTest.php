@@ -7,6 +7,7 @@ use App\Models\JobThrottle;
 use App\Models\QueueJobModel;
 use Closure;
 use CodeIgniter\Config\Factories;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -27,6 +28,8 @@ class JobsControllerTest extends CIUnitTestCase
     protected $seedOnce    = true;
     protected $refresh     = false;
     protected $namespace   = 'App';
+
+    private const MYSQL_ER_LOCK_WAIT_TIMEOUT = 1205;
 
     protected JobThrottle $jobThrottle;
 
@@ -944,7 +947,7 @@ class JobsControllerTest extends CIUnitTestCase
         $jobId = $this->createPendingJob('imports', 'batch-del-lock');
 
         $workerConnection = Database::connect($this->DBGroup, false);
-        $workerClaimed = null;
+        $workerErrorCode = null;
 
         $lockingModel = new class () extends QueueJobModel {
             public ?Closure $afterLock = null;
@@ -960,7 +963,7 @@ class JobsControllerTest extends CIUnitTestCase
                 return $rows;
             }
         };
-        $lockingModel->afterLock = static function () use ($workerConnection, $jobId, &$workerClaimed): void {
+        $lockingModel->afterLock = static function () use ($workerConnection, $jobId, &$workerErrorCode): void {
             $workerConnection->query('SET SESSION innodb_lock_wait_timeout = 1');
 
             try {
@@ -968,9 +971,8 @@ class JobsControllerTest extends CIUnitTestCase
                     ->where('id', $jobId)
                     ->where('status', 0)
                     ->update(['status' => 1]);
-                $workerClaimed = $workerConnection->affectedRows() > 0;
-            } catch (Throwable $e) {
-                $workerClaimed = false;
+            } catch (DatabaseException $e) {
+                $workerErrorCode = $e->getCode();
             }
         };
         Factories::injectMock('models', QueueJobModel::class, $lockingModel);
@@ -982,7 +984,7 @@ class JobsControllerTest extends CIUnitTestCase
             $workerConnection->close();
         }
 
-        $this->assertFalse($workerClaimed);
+        $this->assertSame(self::MYSQL_ER_LOCK_WAIT_TIMEOUT, $workerErrorCode);
         $this->assertTrue($result['success']);
         $this->dontSeeInDatabase('queue_jobs', ['id' => $jobId]);
         $this->assertSame(1, (int)$this->getBatchRow('batch-del-lock')['total']);
