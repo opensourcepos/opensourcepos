@@ -2,10 +2,12 @@
 
 namespace Tests\Controllers;
 
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Config\Services;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use Tests\Support\OsposConfigFixtureTrait;
 
 /**
  * Test suite for the Login controller, including the CI Throttler
@@ -15,6 +17,7 @@ class LoginTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use FeatureTestTrait;
+    use OsposConfigFixtureTrait;
 
     protected $migrate     = true;
     protected $migrateOnce = true;
@@ -34,6 +37,7 @@ class LoginTest extends CIUnitTestCase
     protected function tearDown(): void
     {
         $this->clearThrottleState();
+        Factories::reset('config');
 
         parent::tearDown();
     }
@@ -154,5 +158,54 @@ class LoginTest extends CIUnitTestCase
             $this->skipIfMigrationRequired($response);
             $response->assertStatus(200);
         }
+    }
+
+    public function testIndex_EscapesHostileMarkupInValidationErrors(): void
+    {
+        $config = [
+            'company'    => 'OSPOS',
+            'theme'      => 'flatly',
+            'login_form' => 'floating_labels',
+        ];
+        $this->injectOsposSettings($config);
+
+        $validation = Services::validation();
+        $validation->reset();
+        $validation->setError('username', '<script>alert("xss")</script>');
+
+        $rendered = view('login', [
+            'hasErrors'       => true,
+            'isLatest'        => true,
+            'isNewInstall'    => false,
+            'latestVersion'   => '20250101000000',
+            'gcaptchaEnabled' => false,
+            'config'          => $config,
+            'validation'      => $validation,
+        ]);
+
+        $this->assertStringContainsString('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;', $rendered);
+        $this->assertStringNotContainsString('<script>alert("xss")</script>', $rendered);
+    }
+
+    public function testIndex_RendersUniqueInputIdsAndMatchingAriaDescribedbyInInputGroupsMode(): void
+    {
+        $this->injectOsposSettings([
+            'company'    => 'OSPOS',
+            'theme'      => 'flatly',
+            'login_form' => 'input_groups',
+        ]);
+
+        $response = $this->get('/login');
+        $this->skipIfMigrationRequired($response);
+        $response->assertStatus(200);
+
+        $html = (string) $response->response()->getBody();
+
+        $this->assertSame(1, substr_count($html, 'id="input-username"'));
+        $this->assertSame(1, substr_count($html, 'id="input-password"'));
+        $this->assertSame(1, substr_count($html, 'id="addon-username"'));
+        $this->assertSame(1, substr_count($html, 'id="addon-password"'));
+        $this->assertMatchesRegularExpression('/<input\b[^>]*\bid="input-username"[^>]*\baria-describedby="addon-username"/', $html);
+        $this->assertMatchesRegularExpression('/<input\b[^>]*\bid="input-password"[^>]*\baria-describedby="addon-password"/', $html);
     }
 }

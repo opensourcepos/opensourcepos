@@ -9,6 +9,18 @@
 
 <?= view('partial/header') ?>
 
+<?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || request()->getGet('debug') == 'true') : ?>
+    <!-- inject:reportsgraphical:debug:css -->
+    <!-- endinject -->
+    <!-- inject:reportsgraphical:debug:js -->
+    <!-- endinject -->
+<?php else : ?>
+    <!-- inject:reportsgraphical:prod:css -->
+    <!-- endinject -->
+    <!-- inject:reportsgraphical:prod:js -->
+    <!-- endinject -->
+<?php endif; ?>
+
 <script type="text/javascript">
     dialog_support.init("a.modal-dlg");
 </script>
@@ -35,7 +47,5 @@
         <div class="summary_row"><?= lang("Reports.$name") . ': ' . esc(to_currency($value)) ?></div>
     <?php } ?>
 </div>
-
-<script src="<?= base_url('js/hide_cost_profit.js') ?>"></script>
 
 <?= view('partial/footer') ?>
