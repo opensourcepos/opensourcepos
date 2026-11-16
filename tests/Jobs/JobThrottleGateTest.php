@@ -18,7 +18,7 @@ class JobThrottleGateTest extends CIUnitTestCase
     protected $migrateOnce = true;
     protected $seedOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     protected JobThrottle $jobThrottle;
     protected JobThrottleGate $gate;

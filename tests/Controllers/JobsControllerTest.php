@@ -3,34 +3,31 @@
 namespace Tests\Controllers;
 
 use App\Models\JobThrottle;
-use CodeIgniter\Database\Config;
+use App\Models\QueueJobModel;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\QueueJobFixtureTrait;
 
 class JobsControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
     use FeatureTestTrait;
+    use QueueJobFixtureTrait;
 
-    protected $migrate = true;
+    protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $seedOnce = true;
-    protected $refresh = false;
-    protected $namespace = 'App';
-
-    private static bool $doneBootstrap = false;
+    protected $seedOnce    = true;
+    protected $refresh     = false;
+    protected $namespace   = 'App';
 
     protected JobThrottle $jobThrottle;
 
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
 
@@ -46,7 +43,7 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->withSession([
             'person_id'  => 1,
-            'menu_group' => 'office'
+            'menu_group' => 'office',
         ]);
     }
 
@@ -123,7 +120,6 @@ class JobsControllerTest extends CIUnitTestCase
         $this->jobThrottle->saveValue(['max_count' => 5, 'period' => 'minute'], 1);
         $this->jobThrottle->saveValue(['max_count' => 20, 'period' => 'day'], 2);
 
-        // Throttle 2 is omitted from the post payload, so it should be soft-deleted.
         $response = $this->post('/jobs/saveThrottles', [
             'throttle_count_1'  => 15,
             'throttle_period_1' => 'hour',
@@ -173,7 +169,6 @@ class JobsControllerTest extends CIUnitTestCase
         $this->jobThrottle->saveValue(['max_count' => 5, 'period' => 'minute'], 1);
         $this->jobThrottle->saveValue(['max_count' => 20, 'period' => 'day'], 2);
 
-        // Throttle 2 is invalid and throttle 1 is omitted; neither should be touched.
         $response = $this->post('/jobs/saveThrottles', [
             'throttle_count_2'  => 15,
             'throttle_period_2' => 'fortnight',
@@ -237,16 +232,7 @@ class JobsControllerTest extends CIUnitTestCase
     public function testPostPauseJobsMovesPendingJobToPausedTable(): void
     {
         $this->loginAsAdmin();
-
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'low',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => time(),
-            'created_at'   => time(),
-        ]);
+        $this->createPendingJob('default');
 
         $response = $this->post('/jobs/pauseJobs', ['scope' => 'all']);
 
@@ -261,16 +247,7 @@ class JobsControllerTest extends CIUnitTestCase
     public function testPostPauseJobsLeavesReservedJobInQueue(): void
     {
         $this->loginAsAdmin();
-
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'low',
-            'status'       => 1,
-            'attempts'     => 0,
-            'available_at' => time(),
-            'created_at'   => time(),
-        ]);
+        $this->createReservedJob('default');
 
         $response = $this->post('/jobs/pauseJobs', ['scope' => 'all']);
 
@@ -293,20 +270,15 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
     }
 
+    // -------------------------------------------------------------------------
+    // getSearch
+    // -------------------------------------------------------------------------
+
     public function testGetSearch_NoStatusFilter_ReturnsAllSources(): void
     {
         $this->loginAsAdmin();
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
+        $this->createPendingJob('default');
         $this->db->table('queue_jobs_failed')->insert([
             'connection' => 'database',
             'queue'      => 'default',
@@ -314,7 +286,7 @@ class JobsControllerTest extends CIUnitTestCase
             'priority'   => 'normal',
             'attempts'   => 3,
             'exception'  => 'RuntimeException: test',
-            'failed_at'  => $now,
+            'failed_at'  => time(),
         ]);
 
         $response = $this->get('/jobs/search?limit=25&offset=0');
@@ -332,16 +304,7 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
+        $this->createPendingJob('default');
         $this->db->table('queue_jobs_failed')->insert([
             'connection' => 'database',
             'queue'      => 'default',
@@ -349,7 +312,7 @@ class JobsControllerTest extends CIUnitTestCase
             'priority'   => 'normal',
             'attempts'   => 3,
             'exception'  => 'RuntimeException: test',
-            'failed_at'  => $now,
+            'failed_at'  => time(),
         ]);
 
         $response = $this->get('/jobs/search?limit=25&offset=0&statuses[]=pending');
@@ -367,17 +330,8 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $now = time();
         for ($i = 0; $i < 5; $i++) {
-            $this->db->table('queue_jobs')->insert([
-                'queue'        => 'default',
-                'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
-                'priority'     => 'normal',
-                'status'       => 0,
-                'attempts'     => 0,
-                'available_at' => $now,
-                'created_at'   => $now,
-            ]);
+            $this->createPendingJob('default');
         }
 
         $response = $this->get('/jobs/search?limit=2&offset=0');
@@ -393,16 +347,7 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
+        $this->createPendingJob('default');
         $this->db->table('queue_jobs_failed')->insert([
             'connection' => 'database',
             'queue'      => 'default',
@@ -410,7 +355,7 @@ class JobsControllerTest extends CIUnitTestCase
             'priority'   => 'normal',
             'attempts'   => 3,
             'exception'  => 'RuntimeException: test',
-            'failed_at'  => $now,
+            'failed_at'  => time(),
         ]);
 
         $response = $this->get('/jobs/search?limit=25&offset=0');
@@ -428,25 +373,8 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 1,
-            'attempts'     => 1,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
+        $this->createPendingJob('default');
+        $this->createReservedJob('default');
         $this->db->table('queue_jobs_failed')->insert([
             'connection' => 'database',
             'queue'      => 'default',
@@ -454,7 +382,7 @@ class JobsControllerTest extends CIUnitTestCase
             'priority'   => 'normal',
             'attempts'   => 3,
             'exception'  => 'RuntimeException: test',
-            'failed_at'  => $now,
+            'failed_at'  => time(),
         ]);
 
         $response = $this->get('/jobs/search?limit=25&offset=0');
@@ -470,16 +398,7 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'default',
-            'payload'      => json_encode(['job' => 'TestJob', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
+        $this->createPendingJob('default');
 
         $first  = json_decode($this->get('/jobs/search?limit=25&offset=0')->getJSON(), true);
         $second = json_decode($this->get('/jobs/search?limit=25&offset=0')->getJSON(), true);
@@ -494,27 +413,12 @@ class JobsControllerTest extends CIUnitTestCase
     // getSearchBatches
     // -------------------------------------------------------------------------
 
-    private function insertBatch(string $id, string $status = 'processing', int $total = 5, int $completed = 0, int $failed = 0): void
-    {
-        $this->db->table('import_batches')->insert([
-            'id'         => $id,
-            'type'       => 'items',
-            'total'      => $total,
-            'completed'  => $completed,
-            'failed'     => $failed,
-            'status'     => $status,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-    }
-
     public function testGetSearchBatches_ReturnsBatchRows(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-aaa', 'processing', 10, 3);
-        $this->insertBatch('batch-bbb', 'completed', 5, 5);
+        $this->createBatchAt('batch-aaa', 'processing', 10, 3);
+        $this->createBatchAt('batch-bbb', 'completed', 5, 5);
 
         $response = $this->get('/jobs/searchBatches?limit=25&offset=0');
 
@@ -532,10 +436,9 @@ class JobsControllerTest extends CIUnitTestCase
     public function testGetSearchBatches_StatusFilter_ExcludesNonMatchingRows(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-proc', 'processing');
-        $this->insertBatch('batch-done', 'completed');
+        $this->createBatch('batch-proc');
+        $this->createBatchAt('batch-done', 'completed', 5, 5);
 
         $response = $this->get('/jobs/searchBatches?limit=25&offset=0&statuses[]=completed');
 
@@ -549,10 +452,9 @@ class JobsControllerTest extends CIUnitTestCase
     public function testGetSearchBatches_Pagination_TotalExceedsPageRows(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
         for ($i = 1; $i <= 4; $i++) {
-            $this->insertBatch("batch-$i");
+            $this->createBatch("batch-$i");
         }
 
         $response = $this->get('/jobs/searchBatches?limit=2&offset=0');
@@ -567,9 +469,8 @@ class JobsControllerTest extends CIUnitTestCase
     public function testGetSearchBatches_EachRowHasProgressBar(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-prog', 'processing', 10, 4);
+        $this->createBatchAt('batch-prog', 'processing', 10, 4);
 
         $response = $this->get('/jobs/searchBatches?limit=25&offset=0');
 
@@ -588,9 +489,7 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $response = $this->post('/jobs/deleteBatch', ['id' => '']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/deleteBatch', ['id' => ''])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
@@ -598,34 +497,18 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $response = $this->post('/jobs/deleteBatch', ['id' => 'no-such-batch']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/deleteBatch', ['id' => 'no-such-batch'])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
     public function testPostDeleteBatch_DeletesBatchAndPendingJobs(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-del');
+        $this->createBatch('batch-del');
+        $this->createPendingJob('imports', 'batch-del');
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'imports',
-            'batch_id'     => 'batch-del',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'low',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
-
-        $response = $this->post('/jobs/deleteBatch', ['id' => 'batch-del']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/deleteBatch', ['id' => 'batch-del'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->dontSeeInDatabase('import_batches', ['id' => 'batch-del']);
@@ -635,25 +518,11 @@ class JobsControllerTest extends CIUnitTestCase
     public function testPostDeleteBatch_LeavesReservedJobsInQueue(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-res');
+        $this->createBatch('batch-res');
+        $this->createReservedJob('imports', 'batch-res');
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'imports',
-            'batch_id'     => 'batch-res',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'low',
-            'status'       => 1,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
-
-        $response = $this->post('/jobs/deleteBatch', ['id' => 'batch-res']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/deleteBatch', ['id' => 'batch-res'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-res', 'status' => 1]);
@@ -667,34 +536,18 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $response = $this->post('/jobs/pauseBatch', ['id' => 'no-such-batch']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/pauseBatch', ['id' => 'no-such-batch'])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
     public function testPostPauseBatch_MovesPendingJobsToPausedTable(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-pause');
+        $this->createBatch('batch-pause');
+        $this->createPendingJob('imports', 'batch-pause');
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'imports',
-            'batch_id'     => 'batch-pause',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'low',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
-
-        $response = $this->post('/jobs/pauseBatch', ['id' => 'batch-pause']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/pauseBatch', ['id' => 'batch-pause'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->dontSeeInDatabase('queue_jobs', ['batch_id' => 'batch-pause', 'status' => 0]);
@@ -704,25 +557,11 @@ class JobsControllerTest extends CIUnitTestCase
     public function testPostPauseBatch_LeavesReservedJobsInQueue(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-pauseres');
+        $this->createBatch('batch-pauseres');
+        $this->createReservedJob('imports', 'batch-pauseres');
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'imports',
-            'batch_id'     => 'batch-pauseres',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'low',
-            'status'       => 1,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
-
-        $response = $this->post('/jobs/pauseBatch', ['id' => 'batch-pauseres']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/pauseBatch', ['id' => 'batch-pauseres'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-pauseres', 'status' => 1]);
@@ -737,40 +576,24 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $response = $this->post('/jobs/resumeBatch', ['id' => 'no-such-batch']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/resumeBatch', ['id' => 'no-such-batch'])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
     public function testPostResumeBatch_MovesPausedJobsBackToQueue(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-resume');
+        $this->createBatch('batch-resume');
+        $this->createPausedJob('imports', 'batch-resume');
 
-        $now = time();
-        $this->db->table('queue_jobs_paused')->insert([
-            'id'           => 999,
-            'queue'        => 'imports',
-            'batch_id'     => 'batch-resume',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'low',
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-            'paused_at'    => $now,
-            'paused_by'    => 'manual',
-        ]);
-
-        $response = $this->post('/jobs/resumeBatch', ['id' => 'batch-resume']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/resumeBatch', ['id' => 'batch-resume'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-resume']);
-        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-resume', 'status' => 0]);
+        $resumed = $this->db->table('queue_jobs')->where('queue', 'imports')->where('status', 0)->get()->getRowArray();
+        $this->assertNotNull($resumed);
+        $this->assertNull($resumed['batch_id']);
     }
 
     // -------------------------------------------------------------------------
@@ -781,22 +604,17 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $response = $this->post('/jobs/purgeBatch', ['id' => 'no-such-batch']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/purgeBatch', ['id' => 'no-such-batch'])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
     public function testPostPurgeBatch_RejectsProcessingBatch(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-proc2', 'processing');
+        $this->createBatch('batch-proc2');
 
-        $response = $this->post('/jobs/purgeBatch', ['id' => 'batch-proc2']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/purgeBatch', ['id' => 'batch-proc2'])->getJSON(), true);
         $this->assertFalse($result['success']);
 
         $this->seeInDatabase('import_batches', ['id' => 'batch-proc2']);
@@ -805,11 +623,8 @@ class JobsControllerTest extends CIUnitTestCase
     public function testPostPurgeBatch_DeletesCompletedBatchAndFailedJobs(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-purge', 'completed', 5, 5);
-
-        $now = time();
+        $this->createBatchAt('batch-purge', 'completed', 5, 5);
         $this->db->table('queue_jobs_failed')->insert([
             'connection' => 'database',
             'queue'      => 'imports',
@@ -818,12 +633,10 @@ class JobsControllerTest extends CIUnitTestCase
             'priority'   => 'low',
             'attempts'   => 3,
             'exception'  => 'RuntimeException: failed',
-            'failed_at'  => $now,
+            'failed_at'  => time(),
         ]);
 
-        $response = $this->post('/jobs/purgeBatch', ['id' => 'batch-purge']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/purgeBatch', ['id' => 'batch-purge'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->dontSeeInDatabase('import_batches', ['id' => 'batch-purge']);
@@ -833,13 +646,10 @@ class JobsControllerTest extends CIUnitTestCase
     public function testPostPurgeBatch_AcceptsPartialBatch(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-partial', 'partial', 5, 4, 1);
+        $this->createBatchAt('batch-partial', 'partial', 5, 4, 1);
 
-        $response = $this->post('/jobs/purgeBatch', ['id' => 'batch-partial']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/purgeBatch', ['id' => 'batch-partial'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->dontSeeInDatabase('import_batches', ['id' => 'batch-partial']);
@@ -849,33 +659,14 @@ class JobsControllerTest extends CIUnitTestCase
     // postProcessJob — pause/process concurrency guard
     // -------------------------------------------------------------------------
 
-    private function insertQueueJob(string $queue = 'default', int $status = 0): int
-    {
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => $queue,
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => $status,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
-
-        return (int)$this->db->insertID();
-    }
-
     public function testPostProcessJob_RejectsJobGoneFromQueue(): void
     {
         $this->loginAsAdmin();
 
-        $jobId = $this->insertQueueJob();
-
+        $jobId = $this->createPendingJob();
         $this->db->table('queue_jobs')->where('id', $jobId)->delete();
 
-        $response = $this->post('/jobs/processJob', ['id' => "pending:$jobId"]);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/processJob', ['id' => "pending:$jobId"])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
@@ -883,15 +674,10 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $jobId = $this->insertQueueJob();
+        $jobId = $this->createPendingJob();
+        $this->db->table('queue_jobs')->where('id', $jobId)->update(['status' => 1]);
 
-        $this->db->table('queue_jobs')
-            ->where('id', $jobId)
-            ->update(['status' => 1]);
-
-        $response = $this->post('/jobs/processJob', ['id' => "pending:$jobId"]);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/processJob', ['id' => "pending:$jobId"])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
@@ -899,11 +685,9 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $jobId = $this->insertQueueJob(status: 1);
+        $jobId = $this->createReservedJob();
 
-        $response = $this->post('/jobs/processJob', ['id' => "reserved:$jobId"]);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/processJob', ['id' => "reserved:$jobId"])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
@@ -911,11 +695,9 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $this->insertQueueJob(status: 1);
+        $this->createReservedJob('default');
 
-        $response = $this->post('/jobs/pauseJobs', ['scope' => 'all']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/pauseJobs', ['scope' => 'all'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->seeInDatabase('queue_jobs', ['queue' => 'default', 'status' => 1]);
@@ -925,25 +707,11 @@ class JobsControllerTest extends CIUnitTestCase
     public function testPostPauseBatch_SkipsJobReservedByWorker(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-concurrent');
+        $this->createBatch('batch-concurrent');
+        $this->createReservedJob('imports', 'batch-concurrent');
 
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'imports',
-            'batch_id'     => 'batch-concurrent',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 1,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
-
-        $response = $this->post('/jobs/pauseBatch', ['id' => 'batch-concurrent']);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/pauseBatch', ['id' => 'batch-concurrent'])->getJSON(), true);
         $this->assertTrue($result['success']);
 
         $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-concurrent', 'status' => 1]);
@@ -958,7 +726,7 @@ class JobsControllerTest extends CIUnitTestCase
     {
         $this->loginAsAdmin();
 
-        $jobId = $this->insertQueueJob();
+        $jobId = $this->createPendingJob();
 
         $this->post('/jobs/pauseJobs', ['scope' => 'all']);
 
@@ -970,52 +738,36 @@ class JobsControllerTest extends CIUnitTestCase
         $this->seeInDatabase('queue_jobs', ['id' => $jobId, 'status' => 0]);
         $this->dontSeeInDatabase('queue_jobs_paused', ['queue' => 'default']);
 
-        $claimed = model(\App\Models\QueueJobModel::class)->claimJob($jobId);
-        $this->assertTrue($claimed);
+        $queueJobModel = model(QueueJobModel::class);
 
+        $this->assertTrue($queueJobModel->claimJob($jobId));
         $this->seeInDatabase('queue_jobs', ['id' => $jobId, 'status' => 1]);
-
-        $claimedAgain = model(\App\Models\QueueJobModel::class)->claimJob($jobId);
-        $this->assertFalse($claimedAgain);
+        $this->assertFalse($queueJobModel->claimJob($jobId));
     }
 
     public function testPauseResume_SecondProcessJobClaimRejected(): void
     {
         $this->loginAsAdmin();
 
-        $jobId = $this->insertQueueJob();
+        $jobId = $this->createPendingJob();
 
         $this->post('/jobs/pauseJobs', ['scope' => 'all']);
         $this->post('/jobs/resumeJobs', ['scope' => 'all']);
 
         $this->seeInDatabase('queue_jobs', ['id' => $jobId, 'status' => 0]);
 
-        model(\App\Models\QueueJobModel::class)->claimJob($jobId);
+        model(QueueJobModel::class)->claimJob($jobId);
 
-        $response = $this->post('/jobs/processJob', ['id' => "pending:$jobId"]);
-
-        $result = json_decode($response->getJSON(), true);
+        $result = json_decode($this->post('/jobs/processJob', ['id' => "pending:$jobId"])->getJSON(), true);
         $this->assertFalse($result['success']);
     }
 
     public function testPauseBatchResumeProcessJob_JobNotDuplicated(): void
     {
         $this->loginAsAdmin();
-        $this->db->table('import_batches')->truncate();
 
-        $this->insertBatch('batch-prp');
-
-        $now = time();
-        $this->db->table('queue_jobs')->insert([
-            'queue'        => 'imports',
-            'batch_id'     => 'batch-prp',
-            'payload'      => json_encode(['job' => 'item_import', 'data' => []]),
-            'priority'     => 'normal',
-            'status'       => 0,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-        ]);
+        $this->createBatch('batch-prp');
+        $this->createPendingJob('imports', 'batch-prp');
 
         $this->post('/jobs/pauseBatch', ['id' => 'batch-prp']);
 
@@ -1024,18 +776,84 @@ class JobsControllerTest extends CIUnitTestCase
 
         $this->post('/jobs/resumeBatch', ['id' => 'batch-prp']);
 
-        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-prp', 'status' => 0]);
         $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-prp']);
 
-        $resumedJob = $this->db->table('queue_jobs')->where('batch_id', 'batch-prp')->get()->getRowArray();
+        $resumedJob = $this->db->table('queue_jobs')->where('queue', 'imports')->where('status', 0)->get()->getRowArray();
         $this->assertNotNull($resumedJob);
+        $this->assertNull($resumedJob['batch_id']);
 
-        $firstClaim  = model(\App\Models\QueueJobModel::class)->claimJob((int)$resumedJob['id']);
-        $secondClaim = model(\App\Models\QueueJobModel::class)->claimJob((int)$resumedJob['id']);
-
-        $this->assertTrue($firstClaim);
-        $this->assertFalse($secondClaim);
+        $queueJobModel = model(QueueJobModel::class);
+        $this->assertTrue($queueJobModel->claimJob((int)$resumedJob['id']));
+        $this->assertFalse($queueJobModel->claimJob((int)$resumedJob['id']));
 
         $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-prp']);
+    }
+
+    // -------------------------------------------------------------------------
+    // postDelete — batch accounting
+    // -------------------------------------------------------------------------
+
+    public function testPostDelete_PendingJobWithBatch_DecrementsBatchTotal(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-del-pending', 'processing', 3, 1);
+        $jobId = $this->createPendingJob('imports', 'batch-del-pending');
+
+        $result = json_decode($this->post('/jobs/delete', ['ids' => ["pending:$jobId"]])->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('queue_jobs', ['id' => $jobId]);
+        $this->assertSame(2, (int)$this->getBatchRow('batch-del-pending')['total']);
+    }
+
+    public function testPostDelete_PendingJobWithBatch_CompletesWhenTotalMet(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-del-complete', 'processing', 2, 1);
+        $jobId = $this->createPendingJob('imports', 'batch-del-complete');
+
+        $this->post('/jobs/delete', ['ids' => ["pending:$jobId"]]);
+
+        $this->assertSame('completed', $this->getBatchRow('batch-del-complete')['status']);
+    }
+
+    public function testPostDelete_PausedJobWithBatch_DoesNotDoubleDecrementTotal(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatch('batch-del-paused', total: 2);
+        $pausedId = $this->createPausedJob('imports', 'batch-del-paused');
+
+        $totalBefore = (int)$this->getBatchRow('batch-del-paused')['total'];
+
+        $result = json_decode($this->post('/jobs/delete', ['ids' => ["paused:$pausedId"]])->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $this->dontSeeInDatabase('queue_jobs_paused', ['id' => $pausedId]);
+        $this->assertSame($totalBefore, (int)$this->getBatchRow('batch-del-paused')['total']);
+    }
+
+    public function testPostDelete_ReservedJob_BlocksDeletion(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->createReservedJob('imports');
+
+        $result = json_decode($this->post('/jobs/delete', ['ids' => ["reserved:$jobId"]])->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->seeInDatabase('queue_jobs', ['id' => $jobId]);
+    }
+
+    public function testPostDelete_PendingJobWithoutBatch_DeletesWithoutError(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->createPendingJob();
+
+        $result = json_decode($this->post('/jobs/delete', ['ids' => ["pending:$jobId"]])->getJSON(), true);
+        $this->assertTrue($result['success']);
+        $this->dontSeeInDatabase('queue_jobs', ['id' => $jobId]);
     }
 }

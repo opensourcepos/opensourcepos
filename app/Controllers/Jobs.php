@@ -403,19 +403,7 @@ class Jobs extends Secure_Controller
         }
 
         if ($source === 'paused') {
-            $pausedJob = $this->queueJobPaused->find($id);
-
-            if ($pausedJob === null) {
-                return [0, 0];
-            }
-
-            if ($this->queueJobPaused->delete($id)) {
-                $this->accountBatchCancellation($pausedJob['batch_id'] ?? null);
-
-                return [1, 0];
-            }
-
-            return [0, 0];
+            return [$this->queueJobPaused->delete($id) ? 1 : 0, 0];
         }
 
         $job = $this->queueJobModel->find($id);
@@ -428,13 +416,12 @@ class Jobs extends Secure_Controller
             return [0, 1];
         }
 
-        if ($this->queueJobModel->delete($id)) {
-            $this->accountBatchCancellation($job->batch_id ?? null);
+        $this->queueJobModel->db->transStart();
+        $this->queueJobModel->delete($id);
+        $this->accountBatchCancellation($job->batch_id ?? null);
+        $this->queueJobModel->db->transComplete();
 
-            return [1, 0];
-        }
-
-        return [0, 0];
+        return [$this->queueJobModel->db->transStatus() ? 1 : 0, 0];
     }
 
     /**
