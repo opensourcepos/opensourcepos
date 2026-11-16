@@ -504,18 +504,22 @@ class Jobs extends Secure_Controller
             return null;
         }
 
-        $newId = $this->queueJobModel->insert(new QueueJob([
+        $inserted = $this->queueJobModel->insertRows([[
             'queue'        => $failedJob->queue,
-            'payload'      => $failedJob->payload,
+            'payload'      => json_encode($failedJob->payload),
             'priority'     => $failedJob->priority,
             'status'       => Status::PENDING->value,
             'attempts'     => 0,
-            'available_at' => Time::now(),
-        ]));
+            'available_at' => Time::now()->timestamp,
+            'batch_id'     => $failedJob->batch_id ?? null,
+            'context_id'   => $failedJob->context_id ?? null,
+        ]]);
 
-        if (!$newId) {
+        if (!$inserted) {
             return null;
         }
+
+        $newId = $this->queueJobModel->db->insertID();
 
         $this->queueJobFailedModel->delete($id);
 
