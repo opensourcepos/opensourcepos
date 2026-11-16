@@ -65,6 +65,13 @@ class OSPOS extends BaseConfig
             'barcode_type'      => 'Code39',
             'invoice_enable'    => '1',
             'work_order_enable' => '0',
+            // Nano (XNO) payments are off by default and change nothing until an
+            // operator sets these. See app/Libraries/Nano/README.md.
+            'nano_enabled'                => '0',
+            'nano_account'                => '',
+            'nano_node_url'               => '',
+            'nano_xno_price'              => '',
+            'nano_replay_window_seconds'  => '86400',
         ];
     }
 

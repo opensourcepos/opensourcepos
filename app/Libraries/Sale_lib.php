@@ -1020,6 +1020,38 @@ class Sale_lib
         $this->session->remove('sales_rewards_remainder');
     }
 
+    /**
+     * The Nano (XNO) payment quote held with the in-progress sale: the random
+     * per-sale order reference and the exact raw amount the payer was quoted.
+     * Storing it means the amount checked against the block is the amount the
+     * payer was shown, and the representative binds the block to this one sale.
+     *
+     * @return array{order_ref: string, price_raw: string}|null
+     */
+    public function get_nano_quote(): ?array
+    {
+        $quote = $this->session->get('sales_nano_quote');
+
+        return is_array($quote) ? $quote : null;
+    }
+
+    /**
+     * @param array{order_ref: string, price_raw: string} $quote
+     * @return void
+     */
+    public function set_nano_quote(array $quote): void
+    {
+        $this->session->set('sales_nano_quote', $quote);
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_nano_quote(): void
+    {
+        $this->session->remove('sales_nano_quote');
+    }
+
     // TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.
 
     /**
@@ -1432,6 +1464,7 @@ class Sale_lib
         $this->clear_work_order_number();
         $this->clear_sale_type();
         $this->clear_giftcard_remainder();
+        $this->clear_nano_quote();
         $this->empty_payments();
         $this->remove_customer();
         $this->clear_cash_flags();
