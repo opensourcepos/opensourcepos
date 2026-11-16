@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json,sys; content=open('C:/Users/objec/PhpstormProjects/opensourcepos/AGENTS.md',encoding='utf-8').read(); print(json.dumps({'hookSpecificOutput':{'hookEventName':'SessionStart','additionalContext':'AGENTS.md:\\n'+content}}))\"",
+            "statusMessage": "Loading AGENTS.md..."
+          }
+        ]
+      }
+    ]
+  }
+}

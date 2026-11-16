@@ -2,7 +2,10 @@
 
 namespace Tests\Controllers;
 
+use App\Controllers\Items;
 use CodeIgniter\Database\Config;
+use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -13,6 +16,9 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionProperty;
 use Tests\Support\EmployeeFixtureTrait;
 
 class ItemsControllerTest extends CIUnitTestCase
@@ -84,6 +90,24 @@ class ItemsControllerTest extends CIUnitTestCase
             'person_id'  => $personId,
             'menu_group' => 'home',
         ]);
+    }
+
+    // Headers (Content-Disposition etc.) are only built in DownloadResponse::send(),
+    // which the test harness never calls; force it so header assertions work.
+    // getBody() is also empty for DownloadResponse - its content lives in the
+    // private $binary property.
+    protected function downloadResponseBody(ResponseInterface $response): string
+    {
+        if ($response instanceof DownloadResponse) {
+            $response->buildHeaders();
+
+            $reflection = new ReflectionProperty($response, 'binary');
+            $reflection->setAccessible(true);
+
+            return (string) $reflection->getValue($response);
+        }
+
+        return (string) $response->getBody();
     }
 
     protected function baseItemPostData(): array
@@ -255,8 +279,8 @@ class ItemsControllerTest extends CIUnitTestCase
      */
     public function testSaveTaxData_RejectsNegativePercent(): void
     {
-        $controller = (new \ReflectionClass(\App\Controllers\Items::class))->newInstanceWithoutConstructor();
-        $method = new \ReflectionMethod($controller, 'save_tax_data');
+        $controller = (new ReflectionClass(Items::class))->newInstanceWithoutConstructor();
+        $method = new ReflectionMethod($controller, 'save_tax_data');
         $method->setAccessible(true);
 
         $row = [
@@ -1414,6 +1438,92 @@ class ItemsControllerTest extends CIUnitTestCase
         $csvLocationName = 'Warehouse';
         $isValid = in_array($csvLocationName, $allowedLocations);
         $this->assertTrue($isValid, 'Valid location name should pass validation');
+    }
+
+    private function seedExportableItem(string $itemName): array
+    {
+        $itemData = [
+            'item_id'    => null,
+            'name'       => $itemName,
+            'category'   => 'Test Category',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted'    => 0
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+
+        $locationId = 1;
+        $quantityData = [
+            'item_id'     => $itemData['item_id'],
+            'location_id' => $locationId,
+            'quantity'    => 10
+        ];
+        $this->item_quantity->save_value($quantityData, $itemData['item_id'], $locationId);
+
+        $inventoryData = [
+            'trans_inventory' => 10,
+            'trans_items'     => $itemData['item_id'],
+            'trans_location'  => $locationId,
+            'trans_comment'   => 'Export test seed',
+            'trans_user'      => 1
+        ];
+        $this->inventory->insert($inventoryData);
+
+        return $itemData;
+    }
+
+    public function testGetExportAll_StreamsCsvDownload(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $itemData = $this->seedExportableItem('Export All Csv Item ' . uniqid());
+
+        $response = $this->get('/items/exportAll/csv?search=');
+
+        $response->assertStatus(200);
+        $body = $this->downloadResponseBody($response->response());
+
+        $contentDisposition = $response->response()->getHeaderLine('Content-Disposition');
+        $this->assertStringContainsString('attachment', $contentDisposition);
+        $this->assertStringContainsString('items_', $contentDisposition);
+        $this->assertStringContainsString($itemData['name'], $body);
+    }
+
+    public function testGetExportAll_StreamsPdfDownload(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $this->seedExportableItem('Export All Pdf Item ' . uniqid());
+
+        $response = $this->get('/items/exportAll/pdf?search=');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $response->response()->getHeaderLine('Content-Type'));
+
+        $body = (string) $response->response()->getBody();
+        $this->assertNotEmpty($body);
+        $this->assertStringStartsWith('%PDF-', $body);
+    }
+
+    public function testGetExportAll_FiltersResultsBySearchTerm(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $matchingName = 'Zebra Widget ' . uniqid();
+        $otherName = 'Gadget Thing ' . uniqid();
+
+        $this->seedExportableItem($matchingName);
+        $this->seedExportableItem($otherName);
+
+        $response = $this->get('/items/exportAll/csv?search=' . urlencode('Zebra'));
+
+        $response->assertStatus(200);
+        $body = $this->downloadResponseBody($response->response());
+        $this->assertStringContainsString($matchingName, $body);
+        $this->assertStringNotContainsString($otherName, $body);
     }
 }
 

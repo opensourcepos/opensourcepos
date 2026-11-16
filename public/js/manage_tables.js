@@ -226,9 +226,11 @@
             search: options.resource || false,
             showColumns: true,
             clickToSelect: true,
+            // showExport/exportTypes only render the button+dropdown; init_export_all_intercept()
+            // always wins the click and routes every format to the server, bypassing this plugin's own export.
             showExport: true,
             exportDataType: 'basic',
-            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf'],
             exportOptions: {
                 fileName: options.resource.replace(/.*\/(.*?)$/g, '$1') + "_" + export_suffix
             },
@@ -269,7 +271,119 @@
         init_delete();
         init_restore();
         toggle_column_visibility();
+        init_export_all_toggle();
+        init_export_all_intercept();
+        init_xlsx_export_gate();
         dialog_support.init("button.modal-dlg");
+    };
+
+    const init_xlsx_export_gate = function () {
+        if (window.ospos_ext_zip_enabled) {
+            return;
+        }
+
+        const $xlsxItem = $('.export [data-type="xlsx"], .export[data-type="xlsx"]');
+
+        $xlsxItem
+            .addClass('disabled')
+            .attr('aria-disabled', 'true')
+            .attr('title', lang.line('common_export_xlsx_disabled_tooltip'))
+            .off('click')
+            .on('click', function(event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            })
+            .tooltip({ container: 'body' });
+    };
+
+    let export_all_enabled = false;
+
+    const init_export_all_intercept = function () {
+        document.addEventListener('click', function(event) {
+            const $exportItem = $(event.target).closest('.export [data-type], .export[data-type]');
+            if (!$exportItem.length) {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            if ($exportItem.hasClass('disabled') || $exportItem.attr('aria-disabled') === 'true') {
+                return;
+            }
+
+            const format = $exportItem.attr('data-type') || $exportItem.closest('.export').data('type');
+
+            $exportItem.closest('.dropdown-menu').prev('[data-toggle="dropdown"]').dropdown('toggle');
+
+            const queryString = export_all_enabled ? export_all_query_string() : export_page_query_string();
+            window.location = options.resource + '/exportAll/' + format + '?' + queryString;
+        }, true);
+    };
+
+    const init_export_all_toggle = function () {
+        const $toggleInput = $('<input>', {
+            type: 'checkbox',
+            id: 'export_all_rows',
+            'data-toggle': 'toggle',
+            'data-size': 'small',
+            'data-onstyle': 'info',
+            'data-offstyle': 'default',
+            'data-on': lang.line('common_export_all'),
+            'data-off': lang.line('common_export_page')
+        }).prependTo('#title_bar');
+
+        $toggleInput.bootstrapToggle();
+
+        const $toggleWrapper = $toggleInput.closest('.toggle');
+        $toggleWrapper.addClass('pull-right print_hide').find('.btn').css('float', 'none');
+        $toggleWrapper.attr({
+            role: 'switch',
+            tabindex: '0',
+            'aria-label': lang.line('common_export_scope_toggle'),
+            'aria-checked': $toggleInput.prop('checked')
+        });
+
+        $toggleWrapper.on('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                $toggleWrapper.trigger('click');
+            }
+        });
+
+        $toggleInput.on('change', function() {
+            $toggleWrapper.attr('aria-checked', this.checked);
+            export_all_enabled = this.checked;
+        });
+    };
+
+    const current_query_params = function(tableOptions) {
+        return {
+            search: tableOptions.searchText,
+            sort: tableOptions.sortName,
+            order: tableOptions.sortOrder
+        };
+    };
+
+    const export_all_query_string = function() {
+        const tableOptions = $('#table').bootstrapTable('getOptions');
+        const queryParamsFn = tableOptions.queryParams;
+        const params = queryParamsFn ? queryParamsFn(current_query_params(tableOptions)) : {};
+        delete params.limit;
+        delete params.offset;
+
+        return $.param(params);
+    };
+
+    const export_page_query_string = function() {
+        const tableOptions = $('#table').bootstrapTable('getOptions');
+        const queryParamsFn = tableOptions.queryParams;
+        const params = queryParamsFn ? queryParamsFn($.extend(current_query_params(tableOptions), {
+            limit: tableOptions.pageSize,
+            offset: (tableOptions.pageNumber - 1) * tableOptions.pageSize
+        })) : {};
+
+        return $.param(params);
     };
 
     const init_delete = function (confirmMessage) {

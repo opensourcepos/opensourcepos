@@ -279,6 +279,10 @@ class Mimes
         ],
         'txt'  => 'text/plain',
         'text' => 'text/plain',
+        'sql'  => [
+            'application/sql',
+            'text/plain',
+        ],
         'log'  => [
             'text/plain',
             'text/x-log',

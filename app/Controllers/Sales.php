@@ -20,8 +20,10 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
+use Config\Database;
 use Config\OSPOS;
 use ReflectionException;
 use stdClass;
@@ -29,6 +31,7 @@ use stdClass;
 class Sales extends Secure_Controller
 {
     protected $helpers = ['file'];
+    private BaseConnection $db;
     private Barcode_lib $barcode_lib;
     private Email_lib $email_lib;
     private Sale_lib $sale_lib;
@@ -48,6 +51,7 @@ class Sales extends Secure_Controller
     {
         parent::__construct('sales');
 
+        $this->db = Database::connect();
         $this->session = session();
         $this->barcode_lib = new Barcode_lib();
         $this->email_lib = new Email_lib();
@@ -195,6 +199,63 @@ class Sales extends Secure_Controller
         }
 
         return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows, 'payment_summary' => $paymentSummary]);
+    }
+
+    /**
+     * Streams sales matching the current search/filters as a downloadable file.
+     * The synthetic totals footer row that getSearch() appends is intentionally excluded here.
+     * @noinspection PhpUnused
+     */
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $personId = $this->session->get('person_id');
+
+        if (!$this->employee->has_grant('reports_sales', $personId)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
+        }
+
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(salesHeaders(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'sale_id');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $filters = [
+            'sale_type'         => 'all',
+            'location_id'       => 'all',
+            'start_date'        => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date'          => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'only_cash'         => false,
+            'only_due'          => false,
+            'only_check'        => false,
+            'selected_customer' => false,
+            'only_creditcard'   => false,
+            'only_debit'        => false,
+            'only_bank_transfer'=> false,
+            'only_wallet'       => false,
+            'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
+            'is_valid_receipt'  => $this->sale->isValidReceipt($search)
+        ];
+
+        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $requestFilters);
+
+        $sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($sales->getResult() as $sale) {
+            $exportRows[] = getSaleExportRow($sale);
+        }
+
+        $file = generateExportFile($format, salesExportHeaders(), $exportRows, 'sales_' . date('Ymd_His'), $this->db->prefixTable('sales'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**

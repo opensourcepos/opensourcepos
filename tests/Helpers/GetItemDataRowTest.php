@@ -2,16 +2,27 @@
 
 namespace Tests\Helpers;
 
+use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
 use stdClass;
-use Tests\Support\OsposConfigFixtureTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class GetItemDataRowTest extends CIUnitTestCase
 {
-    use OsposConfigFixtureTrait;
+    use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
+
+    protected $migrate     = true;
+    protected $migrateOnce = true;
+    protected $seedOnce    = true;
+    protected $refresh     = false;
+    protected $namespace   = null;
 
     protected function setUp(): void
     {
+        $this->resetDatabaseOnce();
+
         parent::setUp();
 
         helper('tabular');
@@ -21,7 +32,7 @@ class GetItemDataRowTest extends CIUnitTestCase
 
     protected function injectSettings(array $overrides = []): void
     {
-        $this->injectOsposSettings(array_merge([
+        model(Appconfig::class)->batch_save(array_merge([
             'multi_pack_enabled'        => 0,
             'use_destination_based_tax' => 0,
             'number_locale'             => 'en_US',

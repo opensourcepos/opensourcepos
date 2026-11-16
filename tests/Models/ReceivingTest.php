@@ -22,7 +22,7 @@ class ReceivingTest extends CIUnitTestCase
 
     protected $migrate     = true;
     protected $migrateOnce = true;
-    protected $refresh     = true;
+    protected $refresh     = false;
     protected $namespace   = null;
 
     private const LOCATION_ID = 1;

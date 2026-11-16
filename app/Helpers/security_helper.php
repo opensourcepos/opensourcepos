@@ -618,6 +618,11 @@ function abortEncryptionConversion(): void
         throw new RuntimeException(lang('Error.unable_to_persist_encryption_key', ['filePath' => $configPath]));
     }
 
+    // restore the in-memory key too so it matches the just-restored .env file.
+    if (preg_match('/^encryption\.key\s*=\s*[\'"]?([^\'"\r\n]*)/m', $configFile, $matches)) {
+        config('Encryption')->key = $matches[1];
+    }
+
     log_message('info', "Restored $configPath from backup");
 }
 

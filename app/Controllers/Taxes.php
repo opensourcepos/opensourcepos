@@ -8,12 +8,15 @@ use App\Models\Tax;
 use App\Models\Tax_category;
 use App\Models\Tax_code;
 use App\Models\Tax_jurisdiction;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Config\OSPOS;
 use Config\Services;
 
 class Taxes extends Secure_Controller
 {
+    private BaseConnection $db;
     private array $config;
     private Tax_lib $tax_lib;
     private Tax $tax;
@@ -24,6 +27,8 @@ class Taxes extends Secure_Controller
     public function __construct()
     {
         parent::__construct('taxes');
+
+        $this->db = Database::connect();
 
         $this->tax = model(Tax::class);
         $this->tax_category = model(Tax_category::class);
@@ -94,6 +99,36 @@ class Taxes extends Secure_Controller
         }
 
         return $this->response->setJSON(['total' => $total_rows, 'rows' => $data_rows]);
+    }
+
+    /**
+     * Streams tax rates matching the current search as a downloadable file.
+     * @noinspection PhpUnused
+     **/
+    public function getExportAll(string $format): ResponseInterface
+    {
+        $search = $this->request->getGet('search');
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(get_tax_rates_manage_table_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'tax_rate_id');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $taxRates = $this->tax->search($search, $limit, $offset, $sort, $order);
+
+        $exportRows = [];
+        foreach ($taxRates->getResult() as $taxRateRow) {
+            $exportRows[] = getTaxRateExportRow($taxRateRow);
+        }
+
+        $file = generateExportFile($format, taxRateExportHeaders(), $exportRows, 'tax_rates_' . date('Ymd_His'), $this->db->prefixTable('tax_rates'));
+
+        if ($format === 'pdf') {
+            return $this->response->setContentType('application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $file['filename'] . '"')
+                ->setBody($file['body']);
+        }
+
+        return $this->response->download($file['filename'], $file['body'], true);
     }
 
     /**
