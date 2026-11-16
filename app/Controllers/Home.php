@@ -11,7 +11,7 @@ class Home extends Secure_Controller
 {
     public function __construct()
     {
-        $methodName = urldecode(service('request')->getUri()->getSegment(2));
+        $methodName = strtolower(rawurldecode(service('request')->getUri()->getSegment(2)));
 
         if ($methodName === 'logout') {
             $this->employee = model(Employee::class);
@@ -30,13 +30,7 @@ class Home extends Secure_Controller
         return view('home/home');
     }
 
-    /**
-     * Logs the currently logged in employee out of the system.  Used in app/Views/partial/header.php
-     *
-     * @return RedirectResponse
-     * @noinspection PhpUnused
-     */
-    public function getLogout(): RedirectResponse
+    public function postLogout(): RedirectResponse
     {
         $this->employee->logout();
         return redirect()->to('login');
@@ -87,12 +81,14 @@ class Home extends Secure_Controller
             ]);
         }
 
-        if (!empty($this->request->getPost('current_password')) && $employeeId != NEW_ENTRY) {
-            if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
-                // Validate password length BEFORE hashing
-                $new_password = $this->request->getPost('password');
+        if (!empty($this->request->getPost('current_password')) && $employeeId !== NEW_ENTRY) {
+            $currentEmployee = $this->employee->getInfo($currentPersonId);
 
-                if (strlen($new_password) < 8) {
+            if ($this->employee->check_password($currentEmployee->username, $this->request->getPost('current_password'))) {
+                // Validate password length BEFORE hashing
+                $newPassword = $this->request->getPost('password');
+
+                if (strlen($newPassword) < 8) {
                     return $this->response->setJSON([
                         'success' => false,
                         'message' => lang('Employees.password_minlength'),
@@ -100,13 +96,12 @@ class Home extends Secure_Controller
                     ]);
                 }
 
-                $employee_data = [
-                    'username'     => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                    'password'     => password_hash($new_password, PASSWORD_DEFAULT),
+                $employeeData = [
+                    'password'     => password_hash($newPassword, PASSWORD_DEFAULT),
                     'hash_version' => 2
                 ];
 
-                if ($this->employee->change_password($employee_data, $employeeId)) {
+                if ($this->employee->change_password($employeeData, $employeeId)) {
                     return $this->response->setJSON([
                         'success' => true,
                         'message' => lang('Employees.successful_change_password'),
