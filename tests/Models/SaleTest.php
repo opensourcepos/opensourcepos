@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Sale;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\FailedQueryConnectionTrait;
@@ -127,6 +128,142 @@ class SaleTest extends CIUnitTestCase
             ->getRow();
 
         return (int) $row->points;
+    }
+
+    public function testSaveValueRejectsCompletingSaleThatIsNoLongerSuspended(): void
+    {
+        $employeeId = $this->createEmployee();
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items = $this->buildCartLine($itemId, 1, 30.00);
+        $salesTaxes = [[], []];
+        $payments = [
+            [
+                'payment_type' => lang('Sales.giftcard') . ':' . $giftcardNumber,
+                'payment_amount' => 30.00,
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ],
+        ];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test suspended sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            [],
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+
+        $saleStatus = COMPLETED;
+        $result = $saleModel->save_value(
+            $saleId,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test completed sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertSame($saleId, $result);
+        $balanceAfterCompletion = $this->getGiftcardValue($giftcardNumber);
+        $this->assertEqualsWithDelta(70.00, $balanceAfterCompletion, 0.001);
+
+        $db = Database::connect();
+        $paymentsAfterCompletion = $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults();
+        $itemsAfterCompletion = $db->table('sales_items')->where('sale_id', $saleId)->countAllResults();
+        $statusAfterCompletion = (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status;
+        $this->assertSame(1, $paymentsAfterCompletion);
+        $this->assertSame(1, $itemsAfterCompletion);
+        $this->assertSame(COMPLETED, $statusAfterCompletion);
+
+        $result = $saleModel->save_value(
+            $saleId,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test completed sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertSame(-1, $result);
+        $this->assertEqualsWithDelta($balanceAfterCompletion, $this->getGiftcardValue($giftcardNumber), 0.001);
+        $this->assertSame($paymentsAfterCompletion, $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults());
+        $this->assertSame($itemsAfterCompletion, $db->table('sales_items')->where('sale_id', $saleId)->countAllResults());
+        $this->assertSame($statusAfterCompletion, (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status);
+    }
+
+    public function testSaveValueAllowsResuspendingSuspendedSale(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items = $this->buildCartLine($itemId, 1, 30.00);
+        $salesTaxes = [[], []];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test suspended sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            [],
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+
+        $result = $saleModel->save_value(
+            $saleId,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test suspended sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            [],
+            null,
+            $salesTaxes
+        );
+
+        $this->assertSame($saleId, $result);
     }
 
     public function testSaveValueSucceedsWithSufficientGiftcardBalance(): void

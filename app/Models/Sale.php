@@ -561,6 +561,18 @@ class Sale extends Model
         $this->db->transStart();
 
         if ($saleId != NEW_ENTRY) {
+            // Lock before clearing details so concurrent requests cannot complete the same sale twice.
+            $sale = $this->db->query(
+                'SELECT sale_status FROM ' . $this->db->prefixTable('sales') . ' WHERE sale_id = ? FOR UPDATE',
+                [$saleId]
+            )->getRow();
+
+            if ($sale === null || (int) $sale->sale_status !== SUSPENDED) {
+                $this->db->transRollback();
+
+                return -1;
+            }
+
             $this->clear_suspended_sale_detail($saleId);
         }
 
