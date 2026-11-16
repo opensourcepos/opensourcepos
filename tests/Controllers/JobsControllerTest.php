@@ -694,6 +694,42 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
     }
 
+    public function testPostProcessJob_RequeuesFailedJobPreservingBatchAndContext(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatch('batch-requeue');
+        $this->db->table('import_batch_contexts')->where('batch_id', 'batch-requeue')->delete();
+        $this->db->table('import_batch_contexts')->insert([
+            'batch_id'   => 'batch-requeue',
+            'context'    => '{}',
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+        $contextId = (int)$this->db->insertID();
+
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-requeue',
+            'context_id' => $contextId,
+            'payload'    => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => time(),
+        ]);
+        $failedId = (int)$this->db->insertID();
+
+        $this->post('/jobs/processJob', ['id' => "failed:$failedId"]);
+
+        $this->dontSeeInDatabase('queue_jobs_failed', ['id' => $failedId, 'attempts' => 3]);
+
+        $requeued = $this->db->table('queue_jobs')->where('batch_id', 'batch-requeue')->get()->getRowArray();
+        $this->assertNotNull($requeued);
+        $this->assertSame($contextId, (int)$requeued['context_id']);
+        $this->assertGreaterThan(0, (int)$requeued['created_at']);
+    }
+
     public function testPostPauseJobs_SkipsJobReservedByWorker(): void
     {
         $this->loginAsAdmin();
