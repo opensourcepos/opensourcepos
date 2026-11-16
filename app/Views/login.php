@@ -77,7 +77,7 @@ $request = Services::request();
                 <?php if ($hasErrors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
                         <div class="alert alert-danger mt-3">
-                            <?= $error ?>
+                            <?= esc($error) ?>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -115,22 +115,22 @@ $request = Services::request();
                         </div>
                     <?php elseif ('input_groups' == ($config['login_form'])): ?>
                         <div class="input-group mt-3">
-                            <span class="input-group-text" id="input-username">
+                            <span class="input-group-text" id="addon-username">
                                 <svg class="bi bi-person-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                     <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.username') ?></title>
                                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                                 </svg>
                             </span>
-                            <input class="form-control" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
+                            <input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="addon-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" id="input-password">
+                            <span class="input-group-text" id="addon-password">
                                 <svg class="bi bi-key-fill" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                     <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.password') ?></title>
                                     <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                                 </svg>
                             </span>
-                            <input class="form-control" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
+                            <input class="form-control" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="addon-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                         </div>
                     <?php endif; ?>
 
