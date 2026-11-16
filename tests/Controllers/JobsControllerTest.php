@@ -5,10 +5,12 @@ namespace Tests\Controllers;
 use App\Models\ImportBatch;
 use App\Models\JobThrottle;
 use App\Models\QueueJobModel;
+use Closure;
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use Config\Database;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\QueueJobFixtureTrait;
 use Throwable;
@@ -932,6 +934,58 @@ class JobsControllerTest extends CIUnitTestCase
         $batch = $this->getBatchRow('batch-del-race');
         $this->assertSame(2, (int)$batch['total']);
         $this->assertSame('processing', $batch['status']);
+    }
+
+    public function testPostDelete_WorkerCannotReserveJobWhileDeletionHoldsLock(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-del-lock', 'processing', 2, 0);
+        $jobId = $this->createPendingJob('imports', 'batch-del-lock');
+
+        $workerConnection = Database::connect($this->DBGroup, false);
+        $workerClaimed = null;
+
+        $lockingModel = new class () extends QueueJobModel {
+            public ?Closure $afterLock = null;
+
+            public function getPendingForUpdateByIdOrQueues(?int $id, ?array $queues): array
+            {
+                $rows = parent::getPendingForUpdateByIdOrQueues($id, $queues);
+
+                if ($this->afterLock !== null) {
+                    ($this->afterLock)();
+                }
+
+                return $rows;
+            }
+        };
+        $lockingModel->afterLock = static function () use ($workerConnection, $jobId, &$workerClaimed): void {
+            $workerConnection->query('SET SESSION innodb_lock_wait_timeout = 1');
+
+            try {
+                $workerConnection->table('queue_jobs')
+                    ->where('id', $jobId)
+                    ->where('status', 0)
+                    ->update(['status' => 1]);
+                $workerClaimed = $workerConnection->affectedRows() > 0;
+            } catch (Throwable $e) {
+                $workerClaimed = false;
+            }
+        };
+        Factories::injectMock('models', QueueJobModel::class, $lockingModel);
+
+        try {
+            $result = json_decode($this->post('/jobs/delete', ['ids' => ["pending:$jobId"]])->getJSON(), true);
+        } finally {
+            Factories::reset('models');
+            $workerConnection->close();
+        }
+
+        $this->assertFalse($workerClaimed);
+        $this->assertTrue($result['success']);
+        $this->dontSeeInDatabase('queue_jobs', ['id' => $jobId]);
+        $this->assertSame(1, (int)$this->getBatchRow('batch-del-lock')['total']);
     }
 
     public function testPostDelete_ReservedJob_BlocksDeletion(): void
