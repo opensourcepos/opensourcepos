@@ -629,6 +629,88 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertSame($salesCountBefore, $salesCountAfter);
     }
 
+    public function testPostComplete_RejectsGiftcardCreditExceedingReturnTotal(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '100.00', $itemId);
+        $cart = $this->session['sales_cart'];
+        $cart[1]['quantity'] = '-1';
+        $cart[1]['total'] = '-100.00';
+        $cart[1]['discounted_total'] = '-100.00';
+        $this->withSession(array_merge($this->session, [
+            'sale_id' => NEW_ENTRY,
+            'sales_mode' => 'return',
+            'sales_cart' => $cart,
+        ]));
+
+        $this->post('/sales/addPayment', [
+            'payment_type' => lang('Sales.cash', [], 'en'),
+            'amount_tendered' => '100',
+        ])->assertStatus(200);
+        $this->withSession();
+
+        $this->post('/sales/addPayment', [
+            'payment_type' => lang('Sales.giftcard', [], 'en'),
+            'amount_tendered' => (string) $giftcardNumber,
+        ])->assertStatus(200);
+
+        $payments = Services::session()->get('sales_payments');
+        $giftcardPaymentType = lang('Sales.giftcard', [], 'en') . ':' . $giftcardNumber;
+        $this->assertArrayHasKey($giftcardPaymentType, $payments);
+        $this->assertEquals(-200, $payments[$giftcardPaymentType]['payment_amount']);
+        $this->withSession();
+
+        $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+        $response = $this->post('/sales/complete');
+
+        $response->assertStatus(200);
+        $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+        $this->assertSame($salesCountBefore, $salesCountAfter);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testPostComplete_AllowsGiftcardCreditWithinReturnTotal(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $this->loginAs($cashierId);
+        $this->seedCartLine(1, '100.00', $itemId);
+        $cart = $this->session['sales_cart'];
+        $cart[1]['quantity'] = '-1';
+        $cart[1]['total'] = '-100.00';
+        $cart[1]['discounted_total'] = '-100.00';
+        $this->withSession(array_merge($this->session, [
+            'sale_id' => NEW_ENTRY,
+            'sales_mode' => 'return',
+            'sales_cart' => $cart,
+        ]));
+
+        $this->post('/sales/addPayment', [
+            'payment_type' => lang('Sales.giftcard', [], 'en'),
+            'amount_tendered' => (string) $giftcardNumber,
+        ])->assertStatus(200);
+
+        $payments = Services::session()->get('sales_payments');
+        $giftcardPaymentType = lang('Sales.giftcard', [], 'en') . ':' . $giftcardNumber;
+        $this->assertArrayHasKey($giftcardPaymentType, $payments);
+        $this->assertEquals(-100, $payments[$giftcardPaymentType]['payment_amount']);
+        $this->withSession();
+
+        $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+        $response = $this->post('/sales/complete');
+
+        $response->assertStatus(200);
+        $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+        $this->assertSame($salesCountBefore + 1, $salesCountAfter);
+        $this->assertEqualsWithDelta(200.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
     public function testPostCompleteAllowsZeroPaymentQuoteCompletion(): void
     {
         $cashierId = $this->createCashierEmployee();
