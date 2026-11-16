@@ -4,10 +4,10 @@
  * @var array $stock_locations
  * @var int|null $stock_location
  * @var array $item_quantities
+ * @var int|float|string $initial_quantity
+ * @var array $inventory_data
+ * @var array $employee_names
  */
-
-use App\Models\Employee;
-use App\Models\Inventory;
 ?>
 
 <?= form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
@@ -65,11 +65,6 @@ use App\Models\Inventory;
             </div>
         </div>
 
-        <?php
-        $formQuantity = $stock_location !== null && isset($item_quantities[$stock_location])
-            ? $item_quantities[$stock_location]
-            : (current($item_quantities) ?: 0);
-        ?>
         <div class="form-group form-group-sm">
             <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
@@ -78,7 +73,7 @@ use App\Models\Inventory;
                     'id'       => 'quantity',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => to_quantity_decimals((string) $formQuantity)
+                    'value'    => to_quantity_decimals((string) $initial_quantity)
                 ]) ?>
             </div>
         </div>
@@ -98,25 +93,7 @@ use App\Models\Inventory;
             <th style="width: 30%;"><?= lang('Items.inventory_remarks') ?></th>
         </tr>
     </thead>
-    <tbody id="inventory_result">
-        <?php
-        // The tbody content of the table will be filled in by the javascript (see bottom of page)
-        $employee = model(Employee::class);
-        $inventory = model(Inventory::class);
-
-        $allowedLocationIds = array_keys($stock_locations);
-        $inventoryArray = array_values(array_filter(
-            $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray(),
-            fn($row) => in_array($row['trans_location'], array_map('intval', $allowedLocationIds))
-        ));
-        $employeeName = [];
-
-        foreach ($inventoryArray as $row) {
-            $employeeData = $employee->getInfo($row['trans_user']);
-            $employeeName[] = $employeeData->first_name . ' ' . $employeeData->last_name;
-        }
-        ?>
-    </tbody>
+    <tbody id="inventory_result"></tbody>
 </table>
 
 <script type="text/javascript">
@@ -132,8 +109,8 @@ use App\Models\Inventory;
             : parseFloat(quantity);
         document.getElementById("quantity").value = formattedQuantity.toFixed(<?= quantity_decimals() ?>);
 
-        const inventory_data = <?= json_encode(esc($inventoryArray, 'raw')) ?>;
-        const employee_data = <?= json_encode(esc($employeeName, 'raw')) ?>;
+        const inventory_data = <?= json_encode(esc($inventory_data, 'raw')) ?>;
+        const employee_data = <?= json_encode(esc($employee_names, 'raw')) ?>;
 
         const table = document.getElementById("inventory_result");
 
