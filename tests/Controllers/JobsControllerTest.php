@@ -4,6 +4,7 @@ namespace Tests\Controllers;
 
 use App\Models\ImportBatch;
 use App\Models\JobThrottle;
+use App\Models\QueueJobFailedModel;
 use App\Models\QueueJobModel;
 use Closure;
 use CodeIgniter\Config\Factories;
@@ -785,6 +786,70 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertFalse($second['success']);
         $this->assertSame(1, (int)$this->getBatchRow('batch-requeue-twice')['failed']);
         $this->assertSame(1, $this->db->table('queue_jobs')->where('batch_id', 'batch-requeue-twice')->countAllResults());
+    }
+
+    public function testPostProcessJob_ConcurrentRequeueBlockedWhileFailedRowLocked(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-requeue-lock', 'partial', 5, 3, 2);
+
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-requeue-lock',
+            'payload'    => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => time(),
+        ]);
+        $failedId = (int)$this->db->insertID();
+
+        $rivalConnection = Database::connect($this->DBGroup, false);
+        $rivalLockErrorCode = null;
+        $rivalRows = null;
+
+        $lockingModel = new class () extends QueueJobFailedModel {
+            public ?Closure $afterLock = null;
+
+            public function getForUpdateById(int $id): ?array
+            {
+                $row = parent::getForUpdateById($id);
+
+                if ($this->afterLock !== null) {
+                    ($this->afterLock)();
+                }
+
+                return $row;
+            }
+        };
+        $lockingModel->afterLock = static function () use ($rivalConnection, $failedId, &$rivalLockErrorCode): void {
+            $rivalConnection->query('SET SESSION innodb_lock_wait_timeout = 1');
+
+            try {
+                $sql = $rivalConnection->table('queue_jobs_failed')->where('id', $failedId)->getCompiledSelect();
+                $rivalConnection->query($sql . ' FOR UPDATE')->getRowArray();
+            } catch (DatabaseException $e) {
+                $rivalLockErrorCode = $e->getCode();
+            }
+        };
+        Factories::injectMock('models', QueueJobFailedModel::class, $lockingModel);
+
+        try {
+            $first = json_decode($this->post('/jobs/processJob', ['id' => "failed:$failedId"])->getJSON(), true);
+        } finally {
+            Factories::reset('models');
+        }
+
+        $rivalRows = $rivalConnection->table('queue_jobs_failed')->where('id', $failedId)->countAllResults();
+        $rivalConnection->close();
+
+        $this->assertSame(self::MYSQL_ER_LOCK_WAIT_TIMEOUT, $rivalLockErrorCode);
+        $this->assertNotNull($first);
+        $this->assertSame(0, $rivalRows);
+        $this->assertSame(1, $this->db->table('queue_jobs')->where('batch_id', 'batch-requeue-lock')->countAllResults());
+        $this->assertSame(1, (int)$this->getBatchRow('batch-requeue-lock')['failed']);
     }
 
     public function testPostPauseJobs_SkipsJobReservedByWorker(): void
