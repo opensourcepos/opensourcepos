@@ -226,6 +226,25 @@ final class NanoPaymentTest extends TestCase
         $this->assertFalse($reloaded->claim($hash, 'sale-1'));
     }
 
+    public function testAnInterruptedAppendIsNeverReadAsAClaimAndIsRepaired(): void
+    {
+        $path = $this->tempPath();
+        $first = str_repeat('A', 64);
+        $torn = str_repeat('B', 64);
+        $next = str_repeat('C', 64);
+        (new ClaimsFile($path))->claim($first, 'sale-1');
+        // A crash mid-append leaves a line with no newline.
+        file_put_contents($path, $torn . "\tsale-", FILE_APPEND);
+
+        $ledger = new ClaimsFile($path);
+        $this->assertFalse($ledger->isClaimed($torn));
+        $this->assertTrue($ledger->claim($next, 'sale-2'));
+
+        // The torn tail was cut off, so the new claim is its own line.
+        $this->assertSame($first . "\tsale-1\n" . $next . "\tsale-2\n", file_get_contents($path));
+        $this->assertTrue($ledger->claim($torn, 'sale-3'));
+    }
+
     public function testGatewayIsOffUntilConfigured(): void
     {
         $this->assertFalse(PaymentGateway::isEnabled([]));

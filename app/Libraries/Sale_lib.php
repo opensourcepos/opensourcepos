@@ -1026,7 +1026,7 @@ class Sale_lib
      * Storing it means the amount checked against the block is the amount the
      * payer was shown, and the representative binds the block to this one sale.
      *
-     * @return array{order_ref: string, price_raw: string}|null
+     * @return array{order_ref: string, price_raw: string, amount_due: string}|null
      */
     public function get_nano_quote(): ?array
     {
@@ -1036,7 +1036,7 @@ class Sale_lib
     }
 
     /**
-     * @param array{order_ref: string, price_raw: string} $quote
+     * @param array{order_ref: string, price_raw: string, amount_due: string} $quote
      * @return void
      */
     public function set_nano_quote(array $quote): void
@@ -1050,6 +1050,61 @@ class Sale_lib
     public function clear_nano_quote(): void
     {
         $this->session->remove('sales_nano_quote');
+    }
+
+    /**
+     * Keep an outstanding Nano quote with a suspended sale. The payer may already
+     * have sent a block whose representative commits to this quote's order
+     * reference and amount, so the quote must come back unchanged when the sale
+     * is unsuspended or that block could never be verified.
+     *
+     * @return bool false only when a quote was outstanding and could not be saved
+     */
+    public function suspend_nano_quote(int $sale_id): bool
+    {
+        $quote = $this->get_nano_quote();
+        if ($quote === null || $sale_id <= 0) {
+            return true;
+        }
+
+        $path = $this->suspended_nano_quote_path($sale_id);
+        $dir = dirname($path);
+        if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
+            return false;
+        }
+
+        $json = json_encode($quote);
+
+        return $json !== false && file_put_contents($path, $json, LOCK_EX) === strlen($json);
+    }
+
+    /**
+     * Bring back the Nano quote saved with a suspended sale, if there is one.
+     *
+     * @return void
+     */
+    public function restore_nano_quote(int $sale_id): void
+    {
+        $path = $this->suspended_nano_quote_path($sale_id);
+        if ($sale_id <= 0 || !is_file($path)) {
+            return;
+        }
+
+        $quote = json_decode((string)file_get_contents($path), true);
+        if (is_array($quote) && isset($quote['order_ref'], $quote['price_raw'], $quote['amount_due'])) {
+            $this->set_nano_quote([
+                'order_ref'  => (string)$quote['order_ref'],
+                'price_raw'  => (string)$quote['price_raw'],
+                'amount_due' => (string)$quote['amount_due'],
+            ]);
+        }
+
+        unlink($path);
+    }
+
+    private function suspended_nano_quote_path(int $sale_id): string
+    {
+        return WRITEPATH . 'nano/suspended/' . $sale_id . '.json';
     }
 
     // TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.

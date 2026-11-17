@@ -276,11 +276,9 @@ function get_payment_options(): array
     $payments[lang('Sales.bank_transfer')] = lang('Sales.bank_transfer');
     $payments[lang('Sales.wallet')]        = lang('Sales.wallet');
 
-    // Nano (XNO) is offered only when the operator has turned it on and set an
-    // account, a node URL and a price. When it is off, nothing is added here.
-    if (App\Libraries\Nano\PaymentGateway::isEnabled($config)) {
-        $payments[lang('Sales.nano')] = lang('Sales.nano');
-    }
+    // Nano (XNO) is deliberately not in this shared list (used by sale edit,
+    // receivings and expenses): it is added only by the sales register, the one
+    // place a Nano payment is verified against the node.
 
     return $payments;
 }

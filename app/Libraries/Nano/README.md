@@ -45,7 +45,12 @@ Set these OSPOS settings (keys in `app_config`; defaults in
    block can never be replayed.
 
 The payment is recorded in your own sale currency, exactly like any other
-non-cash payment; the Nano block hash is its reference.
+non-cash payment; the Nano block hash is its reference. The amount credited is
+the sale amount the quote was made for, kept on the server, never the amount
+typed in the register; if the sale changes after the quote, the payment is
+refused until Nano is selected again. Nano is offered only in the register
+(not in sale edit, receivings or expenses), and an outstanding quote is kept
+with a suspended sale and restored when it is unsuspended.
 
 ## Design
 
