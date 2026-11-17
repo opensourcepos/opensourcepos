@@ -493,6 +493,8 @@ class Jobs extends Secure_Controller
 
         $now = Time::now()->timestamp;
 
+        $this->queueJobModel->db->transStart();
+
         $inserted = $this->queueJobModel->insertRows([[
             'queue'        => $failedJob->queue,
             'payload'      => json_encode($failedJob->payload),
@@ -505,13 +507,21 @@ class Jobs extends Secure_Controller
             'context_id'   => $failedJob->context_id ?? null,
         ]]);
 
-        if (!$inserted) {
-            return null;
+        $newId = $inserted ? $this->queueJobModel->db->insertID() : 0;
+
+        if ($inserted) {
+            $this->queueJobFailedModel->delete($id);
+
+            if (!empty($failedJob->batch_id)) {
+                model(ImportBatch::class)->releaseFailed($failedJob->batch_id);
+            }
         }
 
-        $newId = $this->queueJobModel->db->insertID();
+        $this->queueJobModel->db->transComplete();
 
-        $this->queueJobFailedModel->delete($id);
+        if (!$inserted || !$this->queueJobModel->db->transStatus()) {
+            return null;
+        }
 
         /** @var QueueJob|null $job */
         $job = $this->queueJobModel->find($newId);

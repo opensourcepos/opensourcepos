@@ -735,6 +735,31 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertGreaterThan(0, (int)$requeued['created_at']);
     }
 
+    public function testPostProcessJob_RequeueReleasesPriorFailedCountSoRetryIsNotDoubleCounted(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-requeue-count', 'partial', 5, 4, 1);
+
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-requeue-count',
+            'payload'    => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => time(),
+        ]);
+        $failedId = (int)$this->db->insertID();
+
+        $this->post('/jobs/processJob', ['id' => "failed:$failedId"]);
+
+        $batch = $this->getBatchRow('batch-requeue-count');
+        $this->assertSame(5, (int)$batch['completed'] + (int)$batch['failed']);
+        $this->assertContains($batch['status'], ['completed', 'partial']);
+    }
+
     public function testPostPauseJobs_SkipsJobReservedByWorker(): void
     {
         $this->loginAsAdmin();

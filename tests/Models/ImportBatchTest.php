@@ -100,6 +100,42 @@ class ImportBatchTest extends CIUnitTestCase
         $this->assertFalse($this->importBatch->adjustTotal('batch-missing', -1));
     }
 
+    public function testReleaseFailed_DecrementsFailedAndReopensPartialBatch(): void
+    {
+        $this->importBatch->create('batch-release', 'items', 2);
+        $this->importBatch->increment('batch-release', true);
+        $this->importBatch->increment('batch-release', false);
+
+        $this->assertTrue($this->importBatch->releaseFailed('batch-release'));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-release', 'completed' => 1, 'failed' => 0, 'status' => 'processing']);
+    }
+
+    public function testReleaseFailed_CountsRetrySuccessOnlyOnce(): void
+    {
+        $this->importBatch->create('batch-release-once', 'items', 1);
+        $this->importBatch->increment('batch-release-once', true);
+
+        $this->importBatch->releaseFailed('batch-release-once');
+        $this->assertTrue($this->importBatch->increment('batch-release-once', false));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-release-once', 'completed' => 1, 'failed' => 0, 'status' => 'completed']);
+    }
+
+    public function testReleaseFailed_DoesNotGoBelowZero(): void
+    {
+        $this->importBatch->create('batch-release-floor', 'items', 2);
+
+        $this->importBatch->releaseFailed('batch-release-floor');
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-release-floor', 'failed' => 0]);
+    }
+
+    public function testReleaseFailed_ReturnsFalseForUnknownBatch(): void
+    {
+        $this->assertFalse($this->importBatch->releaseFailed('batch-missing'));
+    }
+
     public function testPurgeFinishedDeletesOldCompletedBatchWithNoRemainingJobs(): void
     {
         $this->importBatch->create('batch-old', 'items', 1);

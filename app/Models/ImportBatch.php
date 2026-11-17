@@ -83,6 +83,42 @@ class ImportBatch extends Model
     }
 
     /**
+     * Reverses one prior failure when a failed row is requeued, and reopens
+     * the batch so the retry's outcome is counted exactly once.
+     *
+     * @return bool False if the batch does not exist.
+     */
+    public function releaseFailed(string $batchId): bool
+    {
+        $this->db->transStart();
+
+        $sql = $this->db->table($this->table)
+            ->where('id', $batchId)
+            ->getCompiledSelect();
+
+        $batch = $this->db->query($sql . ' FOR UPDATE')->getRowArray();
+
+        if ($batch !== null) {
+            $failed = max(0, (int)$batch['failed'] - 1);
+            $isOpen = ((int)$batch['completed'] + $failed) < (int)$batch['total'];
+
+            $update = ['failed' => $failed];
+
+            if ($isOpen) {
+                $update['status'] = 'processing';
+            }
+
+            $this->db->table($this->table)
+                ->where('id', $batchId)
+                ->update($update);
+        }
+
+        $this->db->transComplete();
+
+        return $batch !== null;
+    }
+
+    /**
      * @return bool False if the batch does not exist.
      */
     public function adjustTotal(string $batchId, int $delta): bool
