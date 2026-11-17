@@ -205,4 +205,72 @@ class ReportsControllerTest extends CIUnitTestCase
 
         $response->assertStatus(200);
     }
+
+    /**
+     * Seed a customer whose company_name holds an attacker-controlled XSS payload.
+     * company_name is stored raw on save (not nameize()'d), mirroring what an
+     * attacker with customer-management permission can persist.
+     *
+     * @param string $companyName
+     * @return int
+     */
+    protected function createCustomerWithCompanyName(string $companyName): int
+    {
+        $db = \Config\Database::connect();
+
+        $db->table('people')->insert([
+            'first_name'   => 'Mallory',
+            'last_name'    => 'Attacker',
+            'phone_number' => '555-0100',
+            'email'        => 'mallory-' . uniqid() . '@test.com',
+            'address_1'    => '',
+            'address_2'    => '',
+            'city'         => '',
+            'state'        => '',
+            'zip'          => '',
+            'country'      => '',
+            'comments'     => '',
+        ]);
+        $personId = (int) $db->insertID();
+
+        $db->table('customers')->insert([
+            'person_id'    => $personId,
+            'employee_id'  => 1,
+            'company_name' => $companyName,
+            'points'       => 0,
+        ]);
+
+        return $personId;
+    }
+
+    /**
+     * A customer's company_name may hold an attacker-controlled XSS payload.
+     * The Specific Customer report input page must render it as escaped text in
+     * the dropdown label, never as live HTML (form_dropdown() does not escape).
+     *
+     * @return void
+     */
+    public function testSpecificCustomerReportEscapesCustomerCompanyName(): void
+    {
+        $payload = '<img src=x onerror=alert(1)>';
+        $this->createCustomerWithCompanyName($payload);
+
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificreportviewer',
+            'email'    => 'specificreportviewer@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_customers');
+
+        $response->assertStatus(200);
+        $body = (string) $response->getBody();
+
+        $this->assertStringContainsString('Mallory', $body, 'Seeded customer missing from the Specific Customer report dropdown.');
+        $this->assertStringNotContainsString($payload, $body, 'Raw XSS payload leaked into the Specific Customer report dropdown.');
+    }
 }

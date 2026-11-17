@@ -1273,9 +1273,9 @@ class Reports extends Secure_Controller
         $customers = [];
         foreach ($this->customer->get_all()->getResult() as $customer) {
             if (isset($customer->company_name)) {
-                $customers[$customer->person_id] = $customer->first_name . ' ' . $customer->last_name . ' ' . ' [ ' . $customer->company_name . ' ] ';
+                $customers[$customer->person_id] = esc($customer->first_name) . ' ' . esc($customer->last_name) . ' ' . ' [ ' . esc($customer->company_name) . ' ] ';
             } else {
-                $customers[$customer->person_id] = $customer->first_name . ' ' . $customer->last_name;
+                $customers[$customer->person_id] = esc($customer->first_name) . ' ' . esc($customer->last_name);
             }
         }
         $data['specific_input_data'] = $customers;
