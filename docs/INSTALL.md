@@ -2,9 +2,9 @@
 
 - PHP version `8.2` (>= `8.2.35`), `8.3` (>= `8.3.36`), `8.4` (>= `8.4.27`), and `8.5` (>= `8.5.12`) are supported. PHP version `≤ 8.1` is NOT supported. Please note that PHP needs to have the extensions `php-json`, `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring`, `php-curl` and `php-xml` installed and enabled. An unstable master build can be downloaded in the releases section.
 - MySQL `5.7` is supported, also MariaDB replacement `10.x` is supported and might offer better performance.
-- Apache `2.4` is supported. Nginx should work fine too, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Local-Deployment-using-LEMP).
-- Raspberry PI based installations proved to work, see [wiki page here](<https://github.com/opensourcepos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS)>).
-- For Windows based installations please read [the wiki](https://github.com/opensourcepos/opensourcepos/wiki). There are closed issues about this subject, as this topic has been covered a lot.
+- Apache `2.4` is supported. Nginx should work fine too, see [the Nginx (LEMP) guide](install/nginx.md).
+- Raspberry PI based installations proved to work, see [the Raspberry Pi guide](install/raspberry-pi.md).
+- For Windows based installations see [the XAMPP guide (local testing)](install/xampp.md) and [the IIS guide](install/iis.md). These are community guides and there are many closed issues about this subject, so check the issues first.
 
 ## Security Configuration
 
@@ -61,7 +61,7 @@ First of all, if you're seeing the message `system folder missing` after launchi
    - Password: pointofsale
 9. If everything works, then set the `CI_ENVIRONMENT` variable to `production` in the .env file
 10. Enjoy!
-11. Oops, an issue? Please make sure you read the FAQ, wiki page, and you checked open and closed issues on GitHub. PHP `display_errors` is disabled by default. Create an` app/Config/.env` file from the `.env.example` to enable it in a development environment.
+11. Oops, an issue? Please make sure you read the [README](../README.md) and the [FAQ](../README.md#-faq) and you checked open and closed issues on GitHub. PHP `display_errors` is disabled by default. Create an `app/Config/.env` file from the `.env.example` to enable it in a development environment.
 
 ## Local install using Docker
 
@@ -183,6 +183,6 @@ curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/t
 
 > **Testing:** This installer is tested with each commit via our CI workflow. A fresh Ubuntu container is spawned, the script runs to completion, and basic sanity checks verify the installation. For production deployments, we recommend testing on a staging server first. If you encounter issues, please [open an issue](https://github.com/opensourcepos/opensourcepos/issues/new?template=bug_report.yml) with your server version and error output.
 
-For other cloud providers or manual installation, see the [detailed installation guide](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) in the wiki.
+For other cloud providers or manual installation, follow the [Local install](#local-install) steps above with your provider's LAMP stack, or see the community guides in [`install/`](install/) (Nginx, Raspberry Pi, XAMPP, IIS).
 
 **Important:** Change the default password after first login!

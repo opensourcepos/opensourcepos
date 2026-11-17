@@ -79,6 +79,22 @@ changes. A few things that can require action when upgrading:
   app.allowedHostnames='yourdomain.com,www.yourdomain.com'
   ```
 
+## Upgrading your MySQL/MariaDB version
+
+This is independent of the OSPOS version upgrade above and only applies if you
+want to move your database server to a newer MySQL/MariaDB major version
+(for example 5.7 → 8.0). OSPOS 3.4 and later support MySQL 8.x.
+
+> **Important:** if you are also upgrading OSPOS, do that **first** on your
+> current MySQL version, then move the database server.
+
+1. Back up your database (a full `mysqldump`).
+2. If you are upgrading in place, follow the
+   [MySQL in-place upgrade guide](https://dev.mysql.com/blog-archive/inplace-upgrade-from-mysql-5-7-to-mysql-8-0/).
+3. If you are moving to a fresh server instead, import your dump into the new
+   database server and point `.env` at it.
+4. Log in and let OSPOS run its migrations if needed.
+
 ## Rolling back
 
 To roll back, restore your backed-up code directory. Because the upgrade applies
