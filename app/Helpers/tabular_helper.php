@@ -954,12 +954,12 @@ function job_headers(): array
     return [
         ['status'    => lang('Jobs.status'), 'align' => 'center'],
         ['queue'     => lang('Jobs.queue'), 'align' => 'center'],
-        ['record_id' => lang('Common.id'), 'align' => 'center'],
-        ['name'      => lang('Jobs.name')],
-        ['code'      => lang('Jobs.code')],
+        ['record_id' => lang('Common.id'), 'align' => 'center', 'sortable' => false],
+        ['name'      => lang('Jobs.name'), 'sortable' => false],
+        ['code'      => lang('Jobs.code'), 'sortable' => false],
         ['priority'  => lang('Jobs.priority'), 'align' => 'center'],
         ['attempts'  => lang('Jobs.error_count'), 'align' => 'center'],
-        ['error'     => lang('Jobs.last_error')],
+        ['error'     => lang('Jobs.last_error'), 'sortable' => false],
         ['date'      => lang('Common.date'), 'class' => 'text-nowrap']
     ];
 }
