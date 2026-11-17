@@ -1110,7 +1110,8 @@ function get_batch_data_row(array $batch): array
 {
     $completed = (int)$batch['completed'];
     $total = (int)$batch['total'];
-    $pct = $total > 0 ? min(100, (int)round($completed / $total * 100)) : 0;
+    $processed = $completed + (int)$batch['failed'];
+    $pct = $total > 0 ? min(100, (int)round($processed / $total * 100)) : 0;
 
     $statusKey = 'batch_status_' . ($batch['status'] ?? 'pending');
     $statusLabel = lang('Jobs.' . $statusKey);
