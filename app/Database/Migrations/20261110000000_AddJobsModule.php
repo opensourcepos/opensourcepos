@@ -46,41 +46,67 @@ class AddJobsModule extends Migration
         $this->forge->addUniqueKey('batch_id');
         $this->forge->createTable('import_batch_contexts');
 
-        $this->forge->addField([
-            'id'           => ['type' => 'bigint', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'queue'        => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
-            'batch_id'     => ['type' => 'varchar', 'constraint' => 36, 'null' => true],
-            'context_id'   => ['type' => 'int', 'unsigned' => true, 'null' => true],
-            'payload'      => ['type' => 'text', 'null' => false],
-            'priority'     => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default'],
-            'status'       => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
-            'attempts'     => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
-            'available_at' => ['type' => 'int', 'unsigned' => true, 'null' => false],
-            'created_at'   => ['type' => 'int', 'unsigned' => true, 'null' => false],
-        ]);
-        $this->forge->addPrimaryKey('id');
-        $this->forge->addKey(['queue', 'priority', 'status', 'available_at'], false, false, 'queue_priority_status_available_at');
-        $this->forge->addKey('batch_id', false, false, 'queue_jobs_batch_id');
-        $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_context_id_fk');
-        $this->forge->createTable('queue_jobs', true);
-
-        $this->forge->addField([
-            'id'         => ['type' => 'bigint', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'connection' => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
-            'queue'      => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
+        $queueJobsColumns = [
+            'priority'   => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default', 'after' => 'payload'],
             'batch_id'   => ['type' => 'varchar', 'constraint' => 36, 'null' => true],
             'context_id' => ['type' => 'int', 'unsigned' => true, 'null' => true],
-            'payload'    => ['type' => 'text', 'null' => false],
-            'priority'   => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default'],
-            'attempts'   => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
-            'exception'  => ['type' => 'text', 'null' => false],
-            'failed_at'  => ['type' => 'int', 'unsigned' => true, 'null' => false],
-        ]);
-        $this->forge->addPrimaryKey('id');
-        $this->forge->addKey('queue');
-        $this->forge->addKey('batch_id', false, false, 'queue_jobs_failed_batch_id');
-        $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_failed_context_id_fk');
-        $this->forge->createTable('queue_jobs_failed', true);
+        ];
+        $queueJobsFailedColumns = [
+            'priority'   => $queueJobsColumns['priority'],
+            'attempts'   => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0, 'after' => 'priority'],
+            'batch_id'   => $queueJobsColumns['batch_id'],
+            'context_id' => $queueJobsColumns['context_id'],
+        ];
+
+        if ($this->db->tableExists('queue_jobs')) {
+            $this->upgradeQueueTable('queue_jobs', $queueJobsColumns, [
+                'queue_priority_status_available_at' => ['queue', 'priority', 'status', 'available_at'],
+                'queue_jobs_batch_id'                => 'batch_id',
+            ], 'queue_jobs_context_id_fk');
+        } else {
+            $this->forge->addField([
+                'id'           => ['type' => 'bigint', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+                'queue'        => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
+                'batch_id'     => ['type' => 'varchar', 'constraint' => 36, 'null' => true],
+                'context_id'   => ['type' => 'int', 'unsigned' => true, 'null' => true],
+                'payload'      => ['type' => 'text', 'null' => false],
+                'priority'     => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default'],
+                'status'       => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
+                'attempts'     => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
+                'available_at' => ['type' => 'int', 'unsigned' => true, 'null' => false],
+                'created_at'   => ['type' => 'int', 'unsigned' => true, 'null' => false],
+            ]);
+            $this->forge->addPrimaryKey('id');
+            $this->forge->addKey(['queue', 'priority', 'status', 'available_at'], false, false, 'queue_priority_status_available_at');
+            $this->forge->addKey('batch_id', false, false, 'queue_jobs_batch_id');
+            $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_context_id_fk');
+            $this->forge->createTable('queue_jobs');
+        }
+
+        if ($this->db->tableExists('queue_jobs_failed')) {
+            $this->upgradeQueueTable('queue_jobs_failed', $queueJobsFailedColumns, [
+                'queue'                      => 'queue',
+                'queue_jobs_failed_batch_id' => 'batch_id',
+            ], 'queue_jobs_failed_context_id_fk');
+        } else {
+            $this->forge->addField([
+                'id'         => ['type' => 'bigint', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+                'connection' => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
+                'queue'      => ['type' => 'varchar', 'constraint' => 64, 'null' => false],
+                'batch_id'   => ['type' => 'varchar', 'constraint' => 36, 'null' => true],
+                'context_id' => ['type' => 'int', 'unsigned' => true, 'null' => true],
+                'payload'    => ['type' => 'text', 'null' => false],
+                'priority'   => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default'],
+                'attempts'   => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
+                'exception'  => ['type' => 'text', 'null' => false],
+                'failed_at'  => ['type' => 'int', 'unsigned' => true, 'null' => false],
+            ]);
+            $this->forge->addPrimaryKey('id');
+            $this->forge->addKey('queue');
+            $this->forge->addKey('batch_id', false, false, 'queue_jobs_failed_batch_id');
+            $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_failed_context_id_fk');
+            $this->forge->createTable('queue_jobs_failed');
+        }
 
         $this->forge->addField([
             'id'           => ['type' => 'BIGINT', 'constraint' => 11, 'unsigned' => true],
@@ -129,10 +155,9 @@ class AddJobsModule extends Migration
 
         $this->db->table('app_config')->ignore(true)->insertBatch($jobsConfigValues);
 
-        // queue_jobs and queue_jobs_failed were created above with all fields
-        // already present (including priority). Mark the codeigniter4/queue vendor
-        // migrations as already run so the runner does not attempt to re-create or
-        // alter those tables when it discovers them later.
+        // queue_jobs and queue_jobs_failed are created or upgraded above, so the
+        // codeigniter4/queue vendor migrations must never run. Mark them as already
+        // run so `spark migrate --all` skips them.
         $batch = $this->db->table('migrations')->selectMax('batch')->get()->getRowArray()['batch'] ?? 0;
         $batch = (int)$batch + 1;
         $now   = time();
@@ -162,6 +187,33 @@ class AddJobsModule extends Migration
                 'batch'     => $batch,
             ],
         ]);
+    }
+
+    private function upgradeQueueTable(string $table, array $columns, array $indexes, string $foreignKeyName): void
+    {
+        helper('migration');
+
+        $missingColumns = array_filter($columns, fn(string $column): bool => !$this->db->fieldExists($column, $table), ARRAY_FILTER_USE_KEY);
+        if ($missingColumns !== []) {
+            $this->forge->addColumn($table, $missingColumns);
+        }
+
+        $hasPendingChanges = false;
+        foreach ($indexes as $indexName => $fields) {
+            if (!indexExists($table, $indexName, $this->db)) {
+                $this->forge->addKey($fields, false, false, $indexName);
+                $hasPendingChanges = true;
+            }
+        }
+
+        if (!foreignKeyExists($foreignKeyName, $table)) {
+            $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', $foreignKeyName);
+            $hasPendingChanges = true;
+        }
+
+        if ($hasPendingChanges) {
+            $this->forge->processIndexes($table);
+        }
     }
 
     public function down(): void
