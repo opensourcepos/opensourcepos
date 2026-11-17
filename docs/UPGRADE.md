@@ -83,17 +83,31 @@ changes. A few things that can require action when upgrading:
 
 This is independent of the OSPOS version upgrade above and only applies if you
 want to move your database server to a newer MySQL/MariaDB major version
-(for example 5.7 → 8.0). OSPOS 3.4 and later support MySQL 8.x.
+(for example 5.7 → 8.0). MySQL 8.4 support was added in OSPOS 3.4.3 (see the
+[CHANGELOG](../CHANGELOG.md)); earlier 3.4 releases do not record MySQL 8
+support, so make sure your OSPOS release supports the target version first.
 
 > **Important:** if you are also upgrading OSPOS, do that **first** on your
 > current MySQL version, then move the database server.
 
-1. Back up your database (a full `mysqldump`).
-2. If you are upgrading in place, follow the
-   [MySQL in-place upgrade guide](https://dev.mysql.com/blog-archive/inplace-upgrade-from-mysql-5-7-to-mysql-8-0/).
-3. If you are moving to a fresh server instead, import your dump into the new
-   database server and point `.env` at it.
-4. Log in and let OSPOS run its migrations if needed.
+1. Stop application writes (take the POS offline or put the site in
+   maintenance mode). They must stay stopped until the new server is active,
+   otherwise transactions recorded after the final dump will be missing from
+   the import.
+2. Take the final backup of your database (a full `mysqldump`).
+3. If you are upgrading in place:
+   - **MySQL:** see the
+     [MySQL in-place upgrade guide (5.7 → 8.0)](https://dev.mysql.com/blog-archive/inplace-upgrade-from-mysql-5-7-to-mysql-8-0/)
+     or your distro's equivalent for your target version.
+   - **MariaDB:** see the
+     [MariaDB upgrade documentation](https://mariadb.com/kb/en/upgrading-mariadb/).
+4. If you are moving to a fresh server instead:
+   - Create the OSPOS database account on the new server and grant it access
+     to the application database (the same credentials your `.env` uses).
+   - Import your dump into the new database server.
+   - Point `.env` at the new server.
+5. Resume application writes, log in, and let OSPOS run its migrations if
+   needed.
 
 ## Rolling back
 

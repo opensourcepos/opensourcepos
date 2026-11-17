@@ -20,7 +20,7 @@ steps below follows [INSTALL.md](../INSTALL.md).
                         <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
                         <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
                     </conditions>
-                    <action type="Rewrite" url="index.php?/{R:1}" appendQueryString="false" />
+                    <action type="Rewrite" url="index.php?/{R:1}" appendQueryString="true" />
                 </rule>
             </rules>
         </rewrite>

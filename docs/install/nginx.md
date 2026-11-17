@@ -15,13 +15,15 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y nginx mariadb-server
 ```
 
-Install PHP-FPM with the required extensions (use the version installed by
-your distribution or the [ondrej/php PPA](https://launchpad.net/~ondrej/+archive/ubuntu/php)
-for the latest supported versions):
+Install PHP-FPM with the required extensions. Ubuntu 22.04 ships PHP 8.1,
+which is **not supported** — use the [ondrej/php PPA](https://launchpad.net/~ondrej/+archive/ubuntu/php)
+to get a supported version (Ubuntu 24.04 already ships PHP 8.3):
 
 ```bash
-sudo apt install -y php-fpm php-cli php-mbstring php-xml php-mysql php-gd \
-    php-intl php-bcmath php-curl
+sudo add-apt-repository -y ppa:ondrej/php
+sudo apt update
+sudo apt install -y php8.3-fpm php8.3-cli php8.3-mbstring php8.3-xml \
+    php8.3-mysql php8.3-gd php8.3-intl php8.3-bcmath php8.3-curl
 ```
 
 Enable and start the services:
@@ -55,15 +57,14 @@ server {
 
     location ~ \.php$ {
         include fastcgi_params;
-        fastcgi_pass unix:/run/php/php8.2-fpm.sock;   # adjust for your PHP version
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;   # adjust for your PHP version
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 }
 ```
 
-If you instead keep the app inside a shared web root (e.g.
-`/var/www/html/opensourcepos`), set `root /var/www/html/opensourcepos/public;`
-and access the app at `http://localhost/opensourcepos`.
+This configuration serves the application at the virtual host root
+(`http://localhost/`); set `server_name` to your domain for production use.
 
 ```bash
 sudo ln -s /etc/nginx/sites-available/ospos /etc/nginx/sites-enabled/ospos

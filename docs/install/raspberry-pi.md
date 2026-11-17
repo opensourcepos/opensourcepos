@@ -16,7 +16,8 @@ images are available.
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
-# Add your user to the docker group (optional)
+# Add your user to the docker group (optional — log out and back in afterwards
+# so the new group membership applies to your session)
 sudo usermod -aG docker $USER
 ```
 
@@ -27,39 +28,76 @@ git clone https://github.com/opensourcepos/opensourcepos.git
 cd opensourcepos
 cp .env.example .env
 # edit .env with your database credentials
-docker-compose up
+docker compose up   # Compose plugin, installed by the Docker script above
 ```
 
-Access at `http://<your-pi-ip>:8080` with the default credentials
-`admin` / `pointofsale`.
+Access at `http://<your-pi-ip>/` (the compose file publishes port 80) with the
+default credentials `admin` / `pointofsale`.
+
+> **Note:** the compose file sets `ALLOWED_HOSTNAMES=localhost`. If you access
+> the app through the Pi's IP address, add that address to `ALLOWED_HOSTNAMES`
+> in `docker-compose.yml`, otherwise generated links will point at `localhost`
+> on your own machine.
 
 > **Note:** the default Docker setup is not suited for production. Change the
 > default passwords before exposing it publicly.
 
 ## Standard LAMP installation
 
-Raspberry Pi OS is based on Debian, so installation is similar to Ubuntu:
+Raspberry Pi OS is based on Debian, so installation is similar to Ubuntu.
+Install the stack first:
 
 ```bash
 # Update system
 sudo apt update && sudo apt upgrade -y
 
-# Install LAMP stack (PHP 8.2+ required)
+# Install LAMP stack (Raspberry Pi OS bookworm ships PHP 8.2, which is supported)
 sudo apt install apache2 mariadb-server php php-curl php-mysql php-gd \
-    php-intl php-bcmath php-mbstring php-xml php-mysqli libapache2-mod-php
-
-# Enable the rewrite module
-sudo a2enmod rewrite
-sudo systemctl restart apache2
-
-# Set ownership
-sudo chown -R www-data:www-data /var/www/html
+    php-intl php-bcmath php-xml php-mysqli libapache2-mod-php
 ```
 
 Download the latest release from
 [GitHub Releases](https://github.com/opensourcepos/opensourcepos/releases) and
-extract it to `/var/www/html/`, then follow the remaining steps in
-[INSTALL.md](../INSTALL.md).
+extract it into its own directory **outside the default web root**, so that
+`.env` and the rest of the application are not served by Apache:
+
+```bash
+sudo mkdir -p /var/www/ospos
+# extract the release archive into /var/www/ospos
+sudo chown -R www-data:www-data /var/www/ospos
+```
+
+Point a virtual host at the `public` directory only, and allow the
+`.htaccess` front-controller rules for that directory (Debian's default
+`AllowOverride None` would silently disable them):
+
+```bash
+sudo nano /etc/apache2/sites-available/ospos.conf
+```
+
+```apache
+<VirtualHost *:80>
+    ServerName localhost
+    DocumentRoot /var/www/ospos/public
+
+    <Directory /var/www/ospos/public>
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+    </Directory>
+</VirtualHost>
+```
+
+```bash
+sudo a2enmod rewrite
+sudo a2dissite 000-default.conf
+sudo a2ensite ospos.conf
+sudo systemctl restart apache2
+```
+
+Then follow the remaining steps in [INSTALL.md](../INSTALL.md)
+(`.env` configuration — including `app.allowedHostnames`, log in,
+`CI_ENVIRONMENT = production`). If you access the app through the Pi's IP
+address, include that address in `app.allowedHostnames` as well.
 
 > **Note:** for current releases the database is created automatically on
 > first run. You do not need to import a schema file manually.

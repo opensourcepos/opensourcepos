@@ -27,13 +27,16 @@ Community guide — for **local testing only**, not for production. See
 6. Place the extracted folder into the `htdocs` directory.
 7. Open phpMyAdmin (XAMPP Control Panel → MySQL → Admin) and create a database
    named `ospos` (or your preferred name).
-8. Copy `.env.example` to `.env` and configure the database connection:
+8. Copy `.env.example` to `.env` and configure the database connection.
+   `app.allowedHostnames` must also be set, otherwise the application fails
+   to start (Host Header Injection protection):
 
    ```ini
    database.default.hostname = 'localhost'
    database.default.database = 'ospos'
    database.default.username = 'root'
    database.default.password = ''    # default XAMPP has no password
+   app.allowedHostnames = 'localhost'
    ```
 
 9. Browse to `http://localhost/<folder-name>/public` and log in with
