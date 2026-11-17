@@ -102,12 +102,19 @@ support, so make sure your OSPOS release supports the target version first.
    - **MariaDB:** see the
      [MariaDB upgrade documentation](https://mariadb.com/kb/en/upgrading-mariadb/).
 4. If you are moving to a fresh server instead:
-   - Create the OSPOS database account on the new server and grant it access
-     to the application database (the same credentials your `.env` uses).
-   - Import your dump into the new database server.
-   - Point `.env` at the new server.
-5. Resume application writes, log in, and let OSPOS run its migrations if
-   needed.
+    - Create the application database and the OSPOS database account on the
+      new server and grant it access to that database (the same credentials
+      your `.env` uses). A plain `mysqldump ospos` does not create the
+      database, so it must exist before you import.
+    - Import your dump into that database on the new server.
+    - Point `.env` at the new server. Note that the `MYSQL_HOST_NAME`,
+      `MYSQL_USERNAME`, `MYSQL_PASSWORD`, and `MYSQL_DB_NAME` environment
+      variables, if set, override the corresponding `.env` values (see
+      `app/Config/Database.php`), so make sure they are unset or updated to
+      the new server.
+5. Still with application writes stopped, log in and let OSPOS run its
+   migrations if needed. Only resume writes once the migrations have completed
+   and you have verified the app works against the new database.
 
 ## Rolling back
 

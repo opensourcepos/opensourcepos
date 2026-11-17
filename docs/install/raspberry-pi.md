@@ -53,7 +53,7 @@ sudo apt update && sudo apt upgrade -y
 
 # Install LAMP stack (Raspberry Pi OS bookworm ships PHP 8.2, which is supported)
 sudo apt install apache2 mariadb-server php php-curl php-mysql php-gd \
-    php-intl php-bcmath php-xml php-mysqli libapache2-mod-php
+    php-intl php-bcmath php-mbstring php-xml php-mysqli libapache2-mod-php
 ```
 
 Download the latest release from
