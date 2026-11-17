@@ -176,4 +176,19 @@ class JobThrottleGateTest extends CIUnitTestCase
         // getSleepSeconds for 'api' must reflect the exhausted bucket.
         $this->assertGreaterThanOrEqual(1, $this->gate->getSleepSeconds('api'));
     }
+
+    public function testAllows_DoesNotConsumeTokensFromOtherBucketsWhenDenied(): void
+    {
+        $this->jobThrottle->saveValue(['max_count' => 1, 'period' => 'minute'], 1);
+        $this->jobThrottle->saveValue(['max_count' => 2, 'period' => 'hour'], 2);
+
+        $this->assertTrue($this->gate->allows());
+        $this->assertFalse($this->gate->allows());
+        $this->assertFalse($this->gate->allows());
+
+        $this->jobThrottle->delete(1);
+
+        $this->assertTrue($this->gate->allows());
+        $this->assertFalse($this->gate->allows());
+    }
 }

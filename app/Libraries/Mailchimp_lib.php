@@ -324,13 +324,16 @@ class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file p
     {
         $parameters += [
             'email_address' => $email,
-            'status'        => $status,
             'status_if_new' => 'subscribed',
             'merge_fields'  => [
                 'FNAME' => $first_name,
                 'LNAME' => $last_name
             ]
         ];
+
+        if ($status !== '') {
+            $parameters['status'] = $status;
+        }
 
         return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'PUT', $parameters);    // TODO: Hungarian notation
     }

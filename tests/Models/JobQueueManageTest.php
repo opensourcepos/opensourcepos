@@ -3,31 +3,25 @@
 namespace Tests\Models;
 
 use App\Models\JobQueueManage;
-use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
 
 class JobQueueManageTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
 
     protected $migrate = true;
     protected $migrateOnce = true;
     protected $refresh = false;
     protected $namespace = 'App';
 
-    private static bool $doneBootstrap = false;
-
     protected JobQueueManage $model;
 
     protected function setUp(): void
     {
-        if (self::$doneBootstrap === false) {
-            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
-            Config::connect($this->DBGroup)->close();
-
-            self::$doneBootstrap = true;
-        }
+        $this->resetDatabaseOnce();
 
         parent::setUp();
 

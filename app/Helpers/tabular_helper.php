@@ -1106,7 +1106,7 @@ function get_batch_table_headers(): string
     return transform_headers($headers);
 }
 
-function get_batch_data_row(array $batch): array
+function get_batch_data_row(array $batch, bool $hasPausedJobs = false): array
 {
     $completed = (int)$batch['completed'];
     $total = (int)$batch['total'];
@@ -1122,7 +1122,7 @@ function get_batch_data_row(array $batch): array
 
     $status = $batch['status'] ?? 'pending';
     $isPauseable = in_array($status, ['pending', 'processing'], true);
-    $isResumeable = $status === 'paused';
+    $isResumeable = $hasPausedJobs;
     $isPurgeable = in_array($status, ['completed', 'partial'], true);
 
     $pauseBtn = $isPauseable

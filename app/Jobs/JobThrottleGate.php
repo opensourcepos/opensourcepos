@@ -34,14 +34,15 @@ class JobThrottleGate
     /**
      * Checks every active throttle row applicable to $queueName. Rows with
      * queue=null are global (apply to every queue); rows with a specific queue
-     * value only apply when $queueName matches. Consumes a token from each
-     * matching bucket as a side effect, so this must only be called once per
-     * job actually popped/attempted.
+     * value only apply when $queueName matches. Tokens are consumed from every
+     * matching bucket only when all of them have capacity, so a denied job
+     * does not drain the buckets that would have allowed it. Must only be
+     * called once per job actually popped/attempted.
      */
     public function allows(?string $queueName = null): bool
     {
         $throttler = Services::throttler();
-        $allowed = true;
+        $buckets = [];
 
         foreach ($this->getApplicableThrottles($queueName) as $throttle) {
             $maxCount = (int) $throttle['max_count'];
@@ -50,17 +51,24 @@ class JobThrottleGate
                 continue;
             }
 
-            $seconds = self::PERIOD_SECONDS[$throttle['period']] ?? 60;
-            $key = 'job_queue_core_' . $throttle['throttle_id'];
+            $buckets[] = [
+                'key'      => 'job_queue_core_' . $throttle['throttle_id'],
+                'maxCount' => $maxCount,
+                'seconds'  => self::PERIOD_SECONDS[$throttle['period']] ?? 60,
+            ];
+        }
 
-            // Check every row even after one fails, so each bucket's
-            // refill timing stays accurate regardless of which row tripped.
-            if (!$throttler->check($key, $maxCount, $seconds)) {
-                $allowed = false;
+        foreach ($buckets as $bucket) {
+            if (!$throttler->check($bucket['key'], $bucket['maxCount'], $bucket['seconds'], 0)) {
+                return false;
             }
         }
 
-        return $allowed;
+        foreach ($buckets as $bucket) {
+            $throttler->check($bucket['key'], $bucket['maxCount'], $bucket['seconds']);
+        }
+
+        return true;
     }
 
     /**

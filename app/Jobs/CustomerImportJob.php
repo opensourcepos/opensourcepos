@@ -12,7 +12,7 @@ use App\Jobs\Support\CustomerCsvRowProcessor;
  */
 class CustomerImportJob extends BaseOsposJob
 {
-    public function process()
+    public function process(): bool
     {
         $batchId = $this->data['batch_id'];
         $row = $this->data['row'];
@@ -21,6 +21,12 @@ class CustomerImportJob extends BaseOsposJob
         $processor = new CustomerCsvRowProcessor();
         $success = $processor->process($row, $employeeId, $this->data['queue_name'] ?? 'imports');
 
-        service('importBatch')->increment($batchId, !$success);
+        if (!$success) {
+            return false;
+        }
+
+        service('importBatch')->increment($batchId, false);
+
+        return true;
     }
 }

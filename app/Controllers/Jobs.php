@@ -225,7 +225,11 @@ class Jobs extends Secure_Controller
         }
 
         $batches = $query->findAll();
-        $dataRows = array_map('get_batch_data_row', $batches);
+        $pausedBatchIds = array_flip($this->queueJobPaused->getBatchIdsWithPausedJobs(array_column($batches, 'id')));
+        $dataRows = array_map(
+            static fn (array $batch) => get_batch_data_row($batch, isset($pausedBatchIds[$batch['id']])),
+            $batches
+        );
 
         return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
     }
@@ -288,7 +292,7 @@ class Jobs extends Secure_Controller
 
         return $this->response->setJSON([
             'success' => $success,
-            'message' => lang($success ? 'Jobs.batch_paused' : 'Jobs.batch_pause_failed', [count($rows)]),
+            'message' => lang($success ? 'Jobs.batch_paused' : 'Jobs.batch_pause_failed', ['count' => count($rows)]),
         ]);
     }
 
@@ -317,7 +321,7 @@ class Jobs extends Secure_Controller
 
         return $this->response->setJSON([
             'success' => $success,
-            'message' => lang($success ? 'Jobs.batch_resumed' : 'Jobs.batch_resume_failed', [count($rows)]),
+            'message' => lang($success ? 'Jobs.batch_resumed' : 'Jobs.batch_resume_failed', ['count' => count($rows)]),
         ]);
     }
 
@@ -387,7 +391,7 @@ class Jobs extends Secure_Controller
             return $this->response->setJSON(['success' => false, 'message' => lang('Jobs.delete_blocked_in_progress')]);
         }
 
-        $message = lang('Jobs.successful_deleted', [$deleted]);
+        $message = lang('Jobs.successful_deleted', ['count' => $deleted]);
 
         if ($blocked > 0) {
             $message .= ' ' . lang('Jobs.delete_blocked_in_progress');
@@ -615,7 +619,7 @@ class Jobs extends Secure_Controller
             'mode'                  => 'required|in_list[auto,web,manual]',
             'web_max_seconds'       => 'required|is_natural',
             'task_max_seconds'      => 'required|is_natural',
-            'retry_limit'           => 'required|is_natural_no_zero',
+            'retry_limit'           => 'required|is_natural_no_zero|less_than_equal_to[255]',
             'auto_purge'            => 'permit_empty|in_list[0,1]',
             'retention_days'        => 'required|is_natural',
             'failed_retention_days' => 'required|is_natural',
@@ -625,7 +629,10 @@ class Jobs extends Secure_Controller
             'mode'                  => ['in_list' => lang('Jobs.mode_invalid')],
             'web_max_seconds'       => ['is_natural' => lang('Jobs.web_max_seconds_invalid')],
             'task_max_seconds'      => ['is_natural' => lang('Jobs.task_max_seconds_invalid')],
-            'retry_limit'           => ['is_natural_no_zero' => lang('Jobs.retry_limit_invalid')],
+            'retry_limit'           => [
+                'is_natural_no_zero'  => lang('Jobs.retry_limit_invalid'),
+                'less_than_equal_to' => lang('Jobs.retry_limit_invalid'),
+            ],
             'retention_days'        => ['is_natural' => lang('Jobs.retention_days_invalid')],
             'failed_retention_days' => ['is_natural' => lang('Jobs.failed_retention_days_invalid')],
         ];
@@ -763,7 +770,7 @@ class Jobs extends Secure_Controller
 
         return $this->response->setJSON([
             'success' => true,
-            'message' => lang('Jobs.processed_jobs_result', [$worker->getProcessedCount(), $worker->getFailedCount()]),
+            'message' => lang('Jobs.processed_jobs_result', ['processed' => $worker->getProcessedCount(), 'failed' => $worker->getFailedCount()]),
         ]);
     }
 
@@ -823,7 +830,7 @@ class Jobs extends Secure_Controller
 
         return $this->response->setJSON([
             'success' => $success,
-            'message' => lang($success ? 'Jobs.paused_jobs_result' : 'Jobs.pause_jobs_failed', [count($rows)]),
+            'message' => lang($success ? 'Jobs.paused_jobs_result' : 'Jobs.pause_jobs_failed', ['count' => count($rows)]),
         ]);
     }
 

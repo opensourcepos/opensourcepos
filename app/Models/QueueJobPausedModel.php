@@ -42,6 +42,21 @@ class QueueJobPausedModel extends Model
         return $this->where('batch_id', $batchId)->asArray()->findAll();
     }
 
+    /**
+     * @param string[] $batchIds
+     * @return string[] Subset of $batchIds that still have at least one paused job.
+     */
+    public function getBatchIdsWithPausedJobs(array $batchIds): array
+    {
+        if ($batchIds === []) {
+            return [];
+        }
+
+        $rows = $this->select('batch_id')->distinct()->whereIn('batch_id', $batchIds)->asArray()->findAll();
+
+        return array_column($rows, 'batch_id');
+    }
+
     public function getByIdOrQueues(?int $id, ?array $queues): array
     {
         $query = $id !== null ? $this->where('id', $id) : $this->whereIn('queue', $queues);

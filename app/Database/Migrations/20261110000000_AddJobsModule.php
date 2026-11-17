@@ -6,6 +6,12 @@ use CodeIgniter\Database\Migration;
 
 class AddJobsModule extends Migration
 {
+    private const VENDOR_MIGRATIONS = [
+        'CodeIgniter\Queue\Database\Migrations\AddQueueTables',
+        'CodeIgniter\Queue\Database\Migrations\AddPriorityField',
+        'CodeIgniter\Queue\Database\Migrations\ChangePayloadFieldTypeInSqlsrv',
+    ];
+
     public function up(): void
     {
         $this->db->table('modules')->insert([
@@ -239,21 +245,65 @@ class AddJobsModule extends Migration
 
         $this->db->table('app_config')->whereIn('key', $jobsConfigKeys)->delete();
 
-        $this->db->table('migrations')->whereIn('class', [
-            'CodeIgniter\Queue\Database\Migrations\AddQueueTables',
-            'CodeIgniter\Queue\Database\Migrations\AddPriorityField',
-            'CodeIgniter\Queue\Database\Migrations\ChangePayloadFieldTypeInSqlsrv',
-        ])->delete();
+        $vendorDownsFollow = $this->vendorMigrationsShareBatch();
 
         $this->forge->dropTable('import_batches', true);
         $this->forge->dropTable('queue_jobs_paused', true);
-        $this->forge->dropTable('queue_jobs_failed', true);
-        $this->forge->dropTable('queue_jobs', true);
+
+        if ($vendorDownsFollow) {
+            $this->detachFromQueueTable('queue_jobs', 'queue_jobs_context_id_fk', ['batch_id', 'context_id']);
+            $this->detachFromQueueTable('queue_jobs_failed', 'queue_jobs_failed_context_id_fk', ['batch_id', 'context_id', 'attempts']);
+        } else {
+            $this->db->table('migrations')->whereIn('class', self::VENDOR_MIGRATIONS)->delete();
+
+            $this->forge->dropTable('queue_jobs_failed', true);
+            $this->forge->dropTable('queue_jobs', true);
+        }
+
         $this->forge->dropTable('import_batch_contexts', true);
         $this->forge->dropTable('job_throttles', true);
 
         $this->db->table('grants')->where('permission_id', 'jobs')->delete();
         $this->db->table('permissions')->where('permission_id', 'jobs')->delete();
         $this->db->table('modules')->where('module_id', 'jobs')->delete();
+    }
+
+    /**
+     * The migration runner rolls a batch back newest-first and has already
+     * loaded the batch's rows, so the vendor queue migrations recorded in the
+     * same batch run their down() methods after this one and still expect the
+     * queue tables to exist.
+     */
+    private function vendorMigrationsShareBatch(): bool
+    {
+        $ownBatch = $this->db->table('migrations')
+            ->select('batch')
+            ->where('class', static::class)
+            ->get()
+            ->getRowArray();
+
+        if ($ownBatch === null) {
+            return false;
+        }
+
+        return $this->db->table('migrations')
+            ->where('batch', (int)$ownBatch['batch'])
+            ->whereIn('class', self::VENDOR_MIGRATIONS)
+            ->countAllResults() > 0;
+    }
+
+    private function detachFromQueueTable(string $table, string $foreignKeyName, array $columns): void
+    {
+        helper('migration');
+
+        if (foreignKeyExists($foreignKeyName, $table)) {
+            $this->db->query('ALTER TABLE ' . $this->db->prefixTable($table) . ' DROP FOREIGN KEY ' . $this->db->escapeIdentifiers($foreignKeyName));
+        }
+
+        foreach ($columns as $column) {
+            if ($this->db->fieldExists($column, $table)) {
+                $this->forge->dropColumn($table, $column);
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use CodeIgniter\Validation\FormatRules;
+use Throwable;
 
 /**
  * Per-row Items CSV import logic (issue #3833 Phase 3), extracted from
@@ -52,7 +53,10 @@ class ItemCsvRowProcessor
     {
         $this->queueName = $queueName;
 
-        $allowedStockLocations = $this->stockLocation->get_allowed_locations('items', $employeeId);
+        $allowedStockLocations = array_filter(
+            $this->stockLocation->get_allowed_locations('items', $employeeId),
+            static fn ($locationName) => array_key_exists("location_$locationName", $row)
+        );
 
         $itemId = (int)$row['Id'];
         $isUpdate = ($itemId > 0);
@@ -81,6 +85,10 @@ class ItemCsvRowProcessor
             $itemData['is_serialized'] = $row['Item has Serial Number'] === '' ? '0' : '1';
         }
 
+        if (!$isUpdate && empty($itemData['cost_price'])) {
+            $itemData['cost_price'] = 0;
+        }
+
         $isFailedRow = false;
 
         if (!empty($row['Barcode'])) {
@@ -95,7 +103,35 @@ class ItemCsvRowProcessor
         // Remove false, null, '' and empty strings but keep 0
         $itemData = array_filter($itemData, static fn ($value) => $value !== null && strlen($value));
 
-        if ($isFailedRow || !$this->item->save_value($itemData, $itemId)) {
+        if ($isFailedRow) {
+            job_log($this->queueName, 'error', "Failed to save item. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+
+            return false;
+        }
+
+        $db = $this->item->db;
+        $db->transBegin();
+
+        try {
+            $success = $this->persistRow($row, $itemData, $itemId, $allowedStockLocations, $attributeData, $employeeId);
+        } catch (Throwable $e) {
+            $db->transRollback();
+
+            throw $e;
+        }
+
+        if ($success) {
+            $db->transCommit();
+        } else {
+            $db->transRollback();
+        }
+
+        return $success;
+    }
+
+    private function persistRow(array $row, array $itemData, int $itemId, array $allowedStockLocations, array $attributeData, int $employeeId): bool
+    {
+        if (!$this->item->save_value($itemData, $itemId)) {
             job_log($this->queueName, 'error', "Failed to save item. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
             return false;
@@ -103,23 +139,9 @@ class ItemCsvRowProcessor
 
         job_log($this->queueName, 'info', "Item Imported. item_id: {$itemData['item_id']}, barcode: '{$row['Barcode']}', name: '{$itemData['name']}'");
 
-        $success = true;
-
-        if (!$this->saveTaxData($row, $itemData)) {
-            $success = false;
-        }
-
-        if (!$this->saveInventoryQuantities($row, $itemData, $allowedStockLocations, $employeeId)) {
-            $success = false;
-        }
-
-        $csvAttributeValues = $this->extractAttributeData($row);
-
-        if (!$this->attribute->saveCSVRowAttributeData($csvAttributeValues, $itemData, $attributeData)) {
-            $success = false;
-        }
-
-        return $success;
+        return $this->saveTaxData($row, $itemData)
+            && $this->saveInventoryQuantities($row, $itemData, $allowedStockLocations, $employeeId)
+            && $this->attribute->saveCSVRowAttributeData($this->extractAttributeData($row), $itemData, $attributeData);
     }
 
     private function extractAttributeData(array $row): array

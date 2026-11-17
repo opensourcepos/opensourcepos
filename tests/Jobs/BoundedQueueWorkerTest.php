@@ -8,11 +8,13 @@ use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Jobs as JobsConfig;
+use Config\OSPOS;
 use Config\Queue as QueueConfig;
 use Config\Services;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\Jobs\BatchableTestJob;
 use Tests\Support\Jobs\FailingTestJob;
+use Tests\Support\Jobs\ReportingFailureTestJob;
 use Tests\Support\Jobs\SucceedingTestJob;
 
 class BoundedQueueWorkerTest extends CIUnitTestCase
@@ -32,6 +34,8 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
 
         parent::setUp();
 
+        config(OSPOS::class)->update_settings();
+
         Services::reset();
 
         $queueConfig = new QueueConfig();
@@ -39,6 +43,7 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
             'success'   => SucceedingTestJob::class,
             'failure'   => FailingTestJob::class,
             'batchable' => BatchableTestJob::class,
+            'reports_failure' => ReportingFailureTestJob::class,
         ];
         Factories::injectMock('config', 'Queue', $queueConfig);
 
@@ -360,5 +365,31 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
 
         $this->assertSame(1, $worker->getProcessedCount());
         $this->assertSame(1, $this->db->table('queue_jobs')->countAllResults());
+    }
+
+    public function testRun_MovesJobStraightToFailedWhenProcessReturnsFalse(): void
+    {
+        service('queue')->push('default', 'reports_failure', ['x' => 1]);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(0, $worker->getProcessedCount());
+        $this->assertSame(1, $worker->getFailedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
+        $this->seeInDatabase('queue_jobs_failed', ['queue' => 'default', 'attempts' => 1]);
+    }
+
+    public function testRun_MovesJobWithUnregisteredHandlerToFailed(): void
+    {
+        service('queue')->push('default', 'success', []);
+        $this->db->table('queue_jobs')->update(['payload' => json_encode(['job' => 'not_registered', 'data' => []])]);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getFailedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
+        $this->assertSame(1, $this->db->table('queue_jobs_failed')->countAllResults());
     }
 }

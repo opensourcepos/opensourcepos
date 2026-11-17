@@ -235,4 +235,37 @@ class ImportBatchTest extends CIUnitTestCase
         $this->dontSeeInDatabase('import_batches', ['id' => 'batch-clean']);
         $this->dontSeeInDatabase('import_batch_contexts', ['id' => $contextId]);
     }
+
+    public function testPurgeFinished_KeepsBatchWhilePausedJobStillReferencesIt(): void
+    {
+        $this->importBatch->create('batch-still-paused', 'items', 1);
+        $this->importBatch->increment('batch-still-paused', false);
+        $this->db->table('import_batches')->where('id', 'batch-still-paused')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-10 days'))]);
+
+        $this->db->table('queue_jobs_paused')->insert([
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-still-paused',
+            'payload'    => '{}',
+            'priority'   => 'low',
+            'attempts'   => 0,
+            'created_at' => time(),
+            'paused_at'  => time(),
+            'paused_by'  => 'manual',
+        ]);
+
+        $this->importBatch->purgeFinished(7);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-still-paused']);
+    }
+
+    public function testIncrement_StampsUpdatedAtWhenBatchFinishes(): void
+    {
+        $this->importBatch->create('batch-stamp', 'items', 1);
+        $this->db->table('import_batches')->where('id', 'batch-stamp')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-30 days'))]);
+
+        $this->importBatch->increment('batch-stamp', false);
+
+        $row = $this->db->table('import_batches')->where('id', 'batch-stamp')->get()->getRowArray();
+        $this->assertGreaterThan(strtotime('-1 day'), strtotime($row['updated_at']));
+    }
 }

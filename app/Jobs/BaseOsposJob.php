@@ -17,11 +17,13 @@ use Config\OSPOS;
  */
 abstract class BaseOsposJob extends BaseJob implements BatchableJob
 {
+    private const MAX_TRIES = 255;
+
     public function getTries(): int
     {
         $appConfig = config(OSPOS::class)->settings;
 
-        return (int)($appConfig['jobs_retry_limit'] ?? config(JobsConfig::class)->retryLimit);
+        return max(1, min(self::MAX_TRIES, (int)($appConfig['jobs_retry_limit'] ?? config(JobsConfig::class)->retryLimit)));
     }
 
     public function maxBatchSize(): int

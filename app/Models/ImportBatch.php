@@ -47,7 +47,8 @@ class ImportBatch extends Model
      * transaction so concurrent workers incrementing the same batch can't
      * both observe completion.
      *
-     * @return bool True if this call completed the batch (completed + failed = total).
+     * @return bool True if this call completed the batch (completed + failed = total); false if it did not or the batch no longer exists.
+     * @throws RuntimeException If the progress update could not be saved.
      */
     public function increment(string $batchId, bool $rowFailed): bool
     {
@@ -59,6 +60,12 @@ class ImportBatch extends Model
 
         $batch = $this->db->query($sql . ' FOR UPDATE')->getRowArray();
 
+        if ($batch === null) {
+            $this->db->transComplete();
+
+            return false;
+        }
+
         $column = $rowFailed ? 'failed' : 'completed';
 
         $this->db->table($this->table)
@@ -66,18 +73,24 @@ class ImportBatch extends Model
             ->set($column, $column . ' + 1', false)
             ->update();
 
-        $completed = ($batch['completed'] ?? 0) + ($rowFailed ? 0 : 1);
-        $failed = ($batch['failed'] ?? 0) + ($rowFailed ? 1 : 0);
-        $total = $batch['total'] ?? 0;
-        $isComplete = ($completed + $failed) >= $total;
+        $completed = (int)$batch['completed'] + ($rowFailed ? 0 : 1);
+        $failed = (int)$batch['failed'] + ($rowFailed ? 1 : 0);
+        $isComplete = ($completed + $failed) >= (int)$batch['total'];
 
         if ($isComplete) {
             $this->db->table($this->table)
                 ->where('id', $batchId)
-                ->update(['status' => $failed > 0 ? 'partial' : 'completed']);
+                ->update([
+                    'status'     => $failed > 0 ? 'partial' : 'completed',
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
         }
 
         $this->db->transComplete();
+
+        if ($this->db->transStatus() === false) {
+            throw new RuntimeException('Failed to update progress for import batch: ' . $batchId);
+        }
 
         return $isComplete;
     }
@@ -144,7 +157,10 @@ class ImportBatch extends Model
             if (($completed + $failed) >= $newTotal && $batch['status'] === 'processing') {
                 $this->db->table($this->table)
                     ->where('id', $batchId)
-                    ->update(['status' => $failed > 0 ? 'partial' : 'completed']);
+                    ->update([
+                        'status'     => $failed > 0 ? 'partial' : 'completed',
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
             }
         }
 
@@ -155,8 +171,8 @@ class ImportBatch extends Model
 
     /**
      * Deletes batches finished more than $retentionDays ago, but only once no
-     * row referencing their batch_id remains in queue_jobs or
-     * queue_jobs_failed (e.g. a failed row kept alive by a longer failed-job
+     * row referencing their batch_id remains in queue_jobs,
+     * queue_jobs_failed, or queue_jobs_paused (e.g. a failed row kept alive by a longer failed-job
      * retention window). 0 means keep until manual purge.
      */
     public function purgeFinished(int $retentionDays): void
@@ -178,7 +194,8 @@ class ImportBatch extends Model
             $batchId = $batch['id'];
 
             $stillReferenced = $this->db->table('queue_jobs')->where('batch_id', $batchId)->countAllResults() > 0
-                || $this->db->table('queue_jobs_failed')->where('batch_id', $batchId)->countAllResults() > 0;
+                || $this->db->table('queue_jobs_failed')->where('batch_id', $batchId)->countAllResults() > 0
+                || $this->db->table('queue_jobs_paused')->where('batch_id', $batchId)->countAllResults() > 0;
 
             if (!$stillReferenced) {
                 $this->db->table($this->table)->where('id', $batchId)->delete();
