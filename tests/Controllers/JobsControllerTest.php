@@ -761,6 +761,32 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertSame('processing', $batch['status']);
     }
 
+    public function testPostProcessJob_RejectsSecondRequeueOfSameFailedJob(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-requeue-twice', 'partial', 5, 3, 2);
+
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-requeue-twice',
+            'payload'    => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => time(),
+        ]);
+        $failedId = (int)$this->db->insertID();
+
+        $this->post('/jobs/processJob', ['id' => "failed:$failedId"]);
+        $second = json_decode($this->post('/jobs/processJob', ['id' => "failed:$failedId"])->getJSON(), true);
+
+        $this->assertFalse($second['success']);
+        $this->assertSame(1, (int)$this->getBatchRow('batch-requeue-twice')['failed']);
+        $this->assertSame(1, $this->db->table('queue_jobs')->where('batch_id', 'batch-requeue-twice')->countAllResults());
+    }
+
     public function testPostPauseJobs_SkipsJobReservedByWorker(): void
     {
         $this->loginAsAdmin();

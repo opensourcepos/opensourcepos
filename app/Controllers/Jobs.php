@@ -485,35 +485,35 @@ class Jobs extends Secure_Controller
      */
     private function requeueFailedJob(int $id): ?QueueJob
     {
-        $failedJob = $this->queueJobFailedModel->find($id);
-
-        if ($failedJob === null) {
-            return null;
-        }
-
         $now = Time::now()->timestamp;
+        $inserted = false;
+        $newId = 0;
 
         $this->queueJobModel->db->transStart();
 
-        $inserted = $this->queueJobModel->insertRows([[
-            'queue'        => $failedJob->queue,
-            'payload'      => json_encode($failedJob->payload),
-            'priority'     => $failedJob->priority,
-            'status'       => Status::PENDING->value,
-            'attempts'     => 0,
-            'available_at' => $now,
-            'created_at'   => $now,
-            'batch_id'     => $failedJob->batch_id ?? null,
-            'context_id'   => $failedJob->context_id ?? null,
-        ]]);
+        $failedJob = $this->queueJobFailedModel->getForUpdateById($id);
 
-        $newId = $inserted ? $this->queueJobModel->db->insertID() : 0;
+        if ($failedJob !== null) {
+            $inserted = $this->queueJobModel->insertRows([[
+                'queue'        => $failedJob['queue'],
+                'payload'      => $failedJob['payload'],
+                'priority'     => $failedJob['priority'],
+                'status'       => Status::PENDING->value,
+                'attempts'     => 0,
+                'available_at' => $now,
+                'created_at'   => $now,
+                'batch_id'     => $failedJob['batch_id'] ?? null,
+                'context_id'   => $failedJob['context_id'] ?? null,
+            ]]);
+
+            $newId = $inserted ? $this->queueJobModel->db->insertID() : 0;
+        }
 
         if ($inserted) {
             $this->queueJobFailedModel->delete($id);
 
-            if (!empty($failedJob->batch_id)) {
-                model(ImportBatch::class)->releaseFailed($failedJob->batch_id);
+            if (!empty($failedJob['batch_id'])) {
+                model(ImportBatch::class)->releaseFailed($failedJob['batch_id']);
             }
         }
 
