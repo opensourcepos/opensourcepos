@@ -504,6 +504,19 @@ helper('url');
                                     ?>
                                 </td>
                             </tr>
+                            <tr class="nano-payment-request" style="display: none;">
+                                <td colspan="2" style="padding-top: 8px;">
+                                    <div id="nano_payment_request_error" class="text-danger"></div>
+                                    <dl id="nano_payment_request_details" style="margin-bottom: 0; word-break: break-all;">
+                                        <dt><?= lang('Sales.nano_amount') ?></dt>
+                                        <dd><span id="nano_amount_xno"></span> XNO (<span id="nano_amount_raw"></span> raw)</dd>
+                                        <dt><?= lang('Sales.nano_account') ?></dt>
+                                        <dd id="nano_account"></dd>
+                                        <dt><?= lang('Sales.nano_representative') ?></dt>
+                                        <dd id="nano_representative"></dd>
+                                    </dl>
+                                </td>
+                            </tr>
                         </table>
                     <?= form_close() ?>
 
@@ -912,6 +925,34 @@ helper('url');
                 $(".reference-code-input input").attr('disabled', true);
             }
         }
+
+        if (paymentType == "<?= lang('Sales.nano') ?>" && $(".nano-payment-request").length) {
+            request_nano_payment();
+        } else {
+            $(".nano-payment-request").hide();
+        }
+    }
+
+    // Ask the server for the exact Nano amount, account and representative for
+    // this sale. The server stores the quote with the sale; the cashier shows it
+    // to the payer and then enters the resulting block hash as the reference code.
+    function request_nano_payment() {
+        $("#nano_payment_request_error").text('');
+        $("#nano_payment_request_details").hide();
+        $(".nano-payment-request").show();
+
+        $.get("<?= site_url('sales/nanoPaymentRequest') ?>")
+            .done(function(response) {
+                $("#nano_amount_xno").text(response.amount_xno);
+                $("#nano_amount_raw").text(response.amount_raw);
+                $("#nano_account").text(response.account);
+                $("#nano_representative").text(response.representative);
+                $("#nano_payment_request_details").show();
+            })
+            .fail(function(xhr) {
+                const message = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : "<?= lang('Sales.nano_not_initiated') ?>";
+                $("#nano_payment_request_error").text(message);
+            });
     }
 
     // Add Keyboard Shortcuts/Hotkeys to Sale Register
