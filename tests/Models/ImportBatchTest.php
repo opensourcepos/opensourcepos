@@ -7,6 +7,8 @@ use App\Models\ImportBatchContext;
 use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use RuntimeException;
+use Tests\Support\FailingCommitConnection;
 use Throwable;
 
 class ImportBatchTest extends CIUnitTestCase
@@ -294,5 +296,26 @@ class ImportBatchTest extends CIUnitTestCase
 
         $this->importBatch->create('batch-after-failure', 'items', 1);
         $this->assertTrue($this->importBatch->increment('batch-after-failure', false));
+    }
+
+    public function testIncrement_RollsBackAndRecoversWhenCommitFails(): void
+    {
+        $this->importBatch->create('batch-commit-fail', 'items', 2);
+
+        $connection = FailingCommitConnection::create();
+        $failingBatch = new ImportBatch($connection);
+
+        try {
+            $failingBatch->increment('batch-commit-fail', false);
+            $this->fail('Expected the failed commit to be reported');
+        } catch (RuntimeException) {
+        }
+
+        $this->assertSame(0, $connection->transDepth);
+        $this->seeInDatabase('import_batches', ['id' => 'batch-commit-fail', 'completed' => 0]);
+
+        $connection->failCommit = false;
+        $this->assertFalse($failingBatch->increment('batch-commit-fail', false));
+        $this->seeInDatabase('import_batches', ['id' => 'batch-commit-fail', 'completed' => 1]);
     }
 }

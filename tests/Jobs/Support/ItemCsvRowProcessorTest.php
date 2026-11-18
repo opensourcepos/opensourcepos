@@ -70,14 +70,15 @@ class ItemCsvRowProcessorTest extends CIUnitTestCase
         $this->assertFalse($this->invokeRunInTransaction($db, static fn (): bool => false));
     }
 
-    public function testRunInTransaction_RollsBackWhenTransactionStatusFailed(): void
+    public function testRunInTransaction_RollsBackAndRejectsWhenTransactionStatusFailed(): void
     {
         $db = $this->createMock(BaseConnection::class);
         $db->method('transStatus')->willReturn(false);
         $db->expects($this->never())->method('transCommit');
         $db->expects($this->once())->method('transRollback');
 
-        $this->assertFalse($this->invokeRunInTransaction($db, static fn (): bool => true));
+        $this->expectException(RuntimeException::class);
+        $this->invokeRunInTransaction($db, static fn (): bool => true);
     }
 
     public function testRunInTransaction_RejectsFailedCommit(): void
@@ -85,6 +86,7 @@ class ItemCsvRowProcessorTest extends CIUnitTestCase
         $db = $this->createMock(BaseConnection::class);
         $db->method('transStatus')->willReturn(true);
         $db->method('transCommit')->willReturn(false);
+        $db->expects($this->once())->method('transRollback');
 
         $this->expectException(RuntimeException::class);
         $this->invokeRunInTransaction($db, static fn (): bool => true);

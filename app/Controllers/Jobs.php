@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Jobs\BoundedQueueWorker;
+use App\Libraries\Transaction;
 use App\Models\Appconfig;
 use App\Models\ImportBatch;
 use App\Models\JobQueueManage;
@@ -256,9 +257,7 @@ class Jobs extends Secure_Controller
         $this->queueJobFailedModel->deleteByBatchId($batchId);
         $batchModel->delete($batchId);
 
-        $this->queueJobModel->db->transComplete();
-
-        $success = $this->queueJobModel->db->transStatus();
+                $success = Transaction::complete($this->queueJobModel->db);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -286,9 +285,7 @@ class Jobs extends Secure_Controller
         $rows = $this->queueJobModel->getPendingForUpdateByBatchId($batchId);
         $this->moveToPaused($rows, true);
 
-        $this->queueJobModel->db->transComplete();
-
-        $success = $this->queueJobModel->db->transStatus();
+                $success = Transaction::complete($this->queueJobModel->db);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -315,9 +312,7 @@ class Jobs extends Secure_Controller
         $rows = $this->queueJobPaused->getByBatchId($batchId);
         $this->moveToPending($rows);
 
-        $this->queueJobModel->db->transComplete();
-
-        $success = $this->queueJobModel->db->transStatus();
+                $success = Transaction::complete($this->queueJobModel->db);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -351,9 +346,7 @@ class Jobs extends Secure_Controller
         $this->queueJobFailedModel->deleteByBatchId($batchId);
         $batchModel->delete($batchId);
 
-        $this->queueJobModel->db->transComplete();
-
-        $success = $this->queueJobModel->db->transStatus();
+                $success = Transaction::complete($this->queueJobModel->db);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -416,9 +409,9 @@ class Jobs extends Secure_Controller
                 $this->accountBatchCancellation($pausedRow['batch_id'] ?? null);
             }
 
-            $this->queueJobModel->db->transComplete();
+            $completed = Transaction::complete($this->queueJobModel->db);
 
-            return [$deleted && $this->queueJobModel->db->transStatus() ? 1 : 0, 0];
+            return [$deleted && $completed ? 1 : 0, 0];
         }
 
         $this->queueJobModel->db->transStart();
@@ -430,13 +423,13 @@ class Jobs extends Secure_Controller
             $this->accountBatchCancellation($rows[0]['batch_id'] ?? null);
         }
 
-        $this->queueJobModel->db->transComplete();
+        $completed = Transaction::complete($this->queueJobModel->db);
 
         if ($rows === []) {
             return [0, $this->queueJobModel->find($id) !== null ? 1 : 0];
         }
 
-        return [$this->queueJobModel->db->transStatus() ? 1 : 0, 0];
+        return [$completed ? 1 : 0, 0];
     }
 
     /**
@@ -532,9 +525,9 @@ class Jobs extends Secure_Controller
             }
         }
 
-        $this->queueJobModel->db->transComplete();
+        $completed = Transaction::complete($this->queueJobModel->db);
 
-        if (!$inserted || !$this->queueJobModel->db->transStatus()) {
+        if (!$inserted || !$completed) {
             return null;
         }
 
@@ -607,9 +600,7 @@ class Jobs extends Secure_Controller
         $rows = $this->queueJobPaused->getByIdOrQueues($id, $queues);
         $this->moveToPending($rows);
 
-        $this->queueJobModel->db->transComplete();
-
-        $success = $this->queueJobModel->db->transStatus();
+                $success = Transaction::complete($this->queueJobModel->db);
 
         return $this->response->setJSON([
             'success' => $success,
@@ -727,9 +718,7 @@ class Jobs extends Secure_Controller
             }
         }
 
-        $this->jobThrottle->db->transComplete();
-
-        $success = $this->jobThrottle->db->transStatus();
+                $success = Transaction::complete($this->jobThrottle->db);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Jobs.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -835,9 +824,7 @@ class Jobs extends Secure_Controller
         $rows = $this->queueJobModel->getPendingForUpdateByIdOrQueues($id, $queues);
         $this->moveToPaused($rows);
 
-        $this->queueJobModel->db->transComplete();
-
-        $success = $this->queueJobModel->db->transStatus();
+                $success = Transaction::complete($this->queueJobModel->db);
 
         return $this->response->setJSON([
             'success' => $success,

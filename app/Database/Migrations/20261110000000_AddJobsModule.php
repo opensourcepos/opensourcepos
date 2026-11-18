@@ -255,17 +255,13 @@ class AddJobsModule extends Migration
 
         $this->db->table('app_config')->whereIn('key', $jobsConfigKeys)->delete();
 
-        $vendorDownsFollow = $this->vendorMigrationsShareBatch();
-
         $this->forge->dropTable('import_batches', true);
         $this->forge->dropTable('queue_jobs_paused', true);
 
-        if ($vendorDownsFollow) {
+        if ($this->vendorMigrationsRecorded()) {
             $this->detachFromQueueTable('queue_jobs', 'queue_jobs_context_id_fk', ['batch_id', 'context_id']);
             $this->detachFromQueueTable('queue_jobs_failed', 'queue_jobs_failed_context_id_fk', ['batch_id', 'context_id', 'attempts']);
         } else {
-            $this->db->table('migrations')->whereIn('class', self::VENDOR_MIGRATIONS)->delete();
-
             $this->forge->dropTable('queue_jobs_failed', true);
             $this->forge->dropTable('queue_jobs', true);
         }
@@ -279,25 +275,15 @@ class AddJobsModule extends Migration
     }
 
     /**
-     * The migration runner rolls a batch back newest-first and has already
-     * loaded the batch's rows, so the vendor queue migrations recorded in the
-     * same batch run their down() methods after this one and still expect the
-     * queue tables to exist.
+     * The vendor queue migrations own the queue tables. Whether they sit in
+     * this migration's batch (their down() methods then run right after this
+     * one, still expecting the tables) or in an earlier batch (they must stay
+     * applied), this migration only removes what it added to those tables and
+     * leaves the tables and the vendor history alone.
      */
-    private function vendorMigrationsShareBatch(): bool
+    private function vendorMigrationsRecorded(): bool
     {
-        $ownBatch = $this->db->table('migrations')
-            ->select('batch')
-            ->where('class', static::class)
-            ->get()
-            ->getRowArray();
-
-        if ($ownBatch === null) {
-            return false;
-        }
-
         return $this->db->table('migrations')
-            ->where('batch', (int)$ownBatch['batch'])
             ->whereIn('class', self::VENDOR_MIGRATIONS)
             ->countAllResults() > 0;
     }

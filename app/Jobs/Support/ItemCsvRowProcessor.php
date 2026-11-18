@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Support;
 
+use App\Libraries\Transaction;
 use App\Models\Attribute;
 use App\Models\Inventory;
 use App\Models\Item;
@@ -129,13 +130,13 @@ class ItemCsvRowProcessor
             throw $e;
         }
 
-        if (!$success || $db->transStatus() === false) {
+        if (!$success) {
             $db->transRollback();
 
             return false;
         }
 
-        if (!$db->transCommit()) {
+        if (!Transaction::commit($db)) {
             throw new RuntimeException('Failed to commit item import row.');
         }
 

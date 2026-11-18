@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Libraries\Transaction;
 use App\Models\ImportBatch;
 use RuntimeException;
 use Throwable;
@@ -38,14 +39,14 @@ abstract class ImportRowJob extends BaseOsposJob
             throw $e;
         }
 
-        if (!$success || $db->transStatus() === false) {
+        if (!$success) {
             $db->transRollback();
             $db->resetTransStatus();
 
             return false;
         }
 
-        if (!$db->transCommit()) {
+        if (!Transaction::commit($db)) {
             throw new RuntimeException('Failed to commit import row.');
         }
 

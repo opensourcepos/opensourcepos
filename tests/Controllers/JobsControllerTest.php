@@ -7,6 +7,7 @@ use App\Models\ImportBatch;
 use App\Models\JobThrottle;
 use App\Models\QueueJobFailedModel;
 use App\Models\QueueJobModel;
+use App\Models\QueueJobPausedModel;
 use Closure;
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Database\Exceptions\DatabaseException;
@@ -16,6 +17,7 @@ use CodeIgniter\Test\FeatureTestTrait;
 use Config\Database;
 use Config\Queue as QueueConfig;
 use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\FailingCommitConnection;
 use Tests\Support\Jobs\BatchProgressTestJob;
 use Tests\Support\QueueJobFixtureTrait;
 use Throwable;
@@ -1059,6 +1061,71 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertSame('completed', $batch['status']);
 
         Factories::reset('config');
+    }
+
+
+    private function failingCommitModels(): FailingCommitConnection
+    {
+        $connection = FailingCommitConnection::create();
+        Factories::injectMock('models', QueueJobModel::class, new QueueJobModel($connection));
+        Factories::injectMock('models', QueueJobPausedModel::class, new QueueJobPausedModel($connection));
+        Factories::injectMock('models', QueueJobFailedModel::class, new QueueJobFailedModel($connection));
+        Factories::injectMock('models', ImportBatch::class, new ImportBatch($connection));
+
+        return $connection;
+    }
+
+    public function testPostPauseBatch_RollsBackAndReportsFailureWhenCommitFails(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-commit-fail', 'processing', 1);
+        $this->createBatchJob('batch-commit-fail');
+
+        $connection = $this->failingCommitModels();
+
+        try {
+            $result = json_decode($this->post('/jobs/pauseBatch', ['id' => 'batch-commit-fail'])->getJSON(), true);
+        } finally {
+            Factories::reset('models');
+        }
+
+        $this->assertFalse($result['success']);
+        $this->assertSame(0, $connection->transDepth);
+        $this->seeInDatabase('queue_jobs', ['batch_id' => 'batch-commit-fail', 'status' => 0]);
+        $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-commit-fail']);
+    }
+
+    public function testPostProcessJob_FailedJobReplayRollsBackWhenCommitFails(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-replay-fail', 'partial', 1, 0, 1);
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-replay-fail',
+            'payload'    => json_encode(['job' => 'item_import', 'data' => []]),
+            'priority'   => 'normal',
+            'attempts'   => 3,
+            'exception'  => 'RuntimeException: test',
+            'failed_at'  => time(),
+        ]);
+        $failedId = (int)$this->db->insertID();
+
+        $connection = $this->failingCommitModels();
+
+        try {
+            $result = json_decode($this->post('/jobs/processJob', ['id' => "failed:$failedId"])->getJSON(), true);
+        } finally {
+            Factories::reset('models');
+        }
+
+        $this->assertFalse($result['success']);
+        $this->assertSame(0, $connection->transDepth);
+        $this->seeInDatabase('queue_jobs_failed', ['id' => $failedId]);
+        $this->assertSame(0, $this->db->table('queue_jobs')->where('batch_id', 'batch-replay-fail')->countAllResults());
+        $this->assertSame(1, (int)$this->getBatchRow('batch-replay-fail')['failed']);
     }
 
     // -------------------------------------------------------------------------

@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Libraries\Transaction;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Queue\Config\Queue as QueueConfig;
 use CodeIgniter\Queue\Entities\QueueJob;
@@ -129,7 +131,7 @@ class BoundedQueueWorker
      */
     private function moveToFailed(QueueJob $work, string $exception, bool $keepJob, ?string $batchId): bool
     {
-        $db = Database::connect();
+        $db = $this->connection();
 
         $db->transBegin();
 
@@ -173,14 +175,12 @@ class BoundedQueueWorker
             return false;
         }
 
-        if ($db->transStatus() === false) {
-            $db->transRollback();
-            $db->resetTransStatus();
+        return Transaction::commit($db);
+    }
 
-            return false;
-        }
-
-        return $db->transCommit();
+    protected function connection(): BaseConnection
+    {
+        return Database::connect();
     }
 
     private function describeThrowable(Throwable $err): string
@@ -233,13 +233,14 @@ class BoundedQueueWorker
     private function handle(QueueInterface $queue, QueueConfig $config, QueueJob $work): void
     {
         $peers = [];
+        $held = [];
         $job = null;
 
         try {
             $class = $config->resolveJobClass($work->payload['job']);
             $job = new $class($work->payload['data']);
 
-            $this->popPeers($queue, $config, $work, $job, $peers);
+            $this->popPeers($queue, $config, $work, $job, $peers, $held);
 
             if ($peers !== []) {
                 $batch = array_merge([$work->payload['data']], array_map(
@@ -267,7 +268,7 @@ class BoundedQueueWorker
             $this->processed += 1 + count($peers);
             job_log($work->queue, 'info', $work->payload['job'] . ' completed (' . (1 + count($peers)) . ' job(s))');
         } catch (Throwable $e) {
-            foreach ([$work, ...$peers] as $w) {
+            foreach ([$work, ...$peers, ...$held] as $w) {
                 $this->failWork(
                     $queue,
                     $config,
@@ -290,9 +291,13 @@ class BoundedQueueWorker
      * peer is appended to $peers as soon as it is popped, so the caller can
      * still release it if a later pop throws.
      *
+     * A popped job of a different class is added to $held until it has been
+     * released, so the caller can still handle it if releasing it fails.
+     *
      * @param QueueJob[] $peers
+     * @param QueueJob[] $held
      */
-    private function popPeers(QueueInterface $queue, QueueConfig $config, QueueJob $work, object $job, array &$peers): void
+    private function popPeers(QueueInterface $queue, QueueConfig $config, QueueJob $work, object $job, array &$peers, array &$held): void
     {
         if (!($job instanceof BatchableJob)) {
             return;
@@ -315,7 +320,13 @@ class BoundedQueueWorker
             }
 
             if ($candidate->payload['job'] !== $jobClass) {
-                $queue->later($candidate, 0);
+                $held[] = $candidate;
+
+                if (!$queue->later($candidate, 0)) {
+                    throw new RuntimeException('Failed to release job ' . $candidate->id . ' of a different class');
+                }
+
+                $held = [];
                 break;
             }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Libraries\Transaction;
 use CodeIgniter\Model;
 use RuntimeException;
 use Throwable;
@@ -63,13 +64,7 @@ class ImportBatch extends Model
             throw $e;
         }
 
-        if ($this->db->transStatus() === false) {
-            $this->rollbackProgress();
-
-            throw new RuntimeException('Failed to update progress for import batch: ' . $batchId);
-        }
-
-        if (!$this->db->transCommit()) {
+        if (!Transaction::commit($this->db)) {
             throw new RuntimeException('Failed to commit progress for import batch: ' . $batchId);
         }
 

@@ -3,11 +3,14 @@
 namespace Tests\Jobs;
 
 use App\Libraries\ImportBatchService;
+use App\Models\ImportBatch;
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Services;
 use RuntimeException;
 use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\FailingCommitConnection;
 use Tests\Support\Jobs\BatchProgressTestJob;
 
 class ImportRowJobTest extends CIUnitTestCase
@@ -30,6 +33,7 @@ class ImportRowJobTest extends CIUnitTestCase
         Services::reset();
 
         BatchProgressTestJob::$rowSucceeds = true;
+        BatchProgressTestJob::$onRow = null;
         $this->db->table('import_batches')->truncate();
     }
 
@@ -81,5 +85,54 @@ class ImportRowJobTest extends CIUnitTestCase
 
         $this->expectException(RuntimeException::class);
         $job->process();
+    }
+
+    public function testProcessBatchRow_RollsBackRowAndProgressWhenCommitFails(): void
+    {
+        $this->db->table('import_batches')->insert([
+            'id'         => 'row-commit-fail',
+            'type'       => 'items',
+            'total'      => 1,
+            'completed'  => 0,
+            'failed'     => 0,
+            'status'     => 'processing',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $connection = FailingCommitConnection::create();
+        Factories::injectMock('models', ImportBatch::class, new ImportBatch($connection));
+        Services::reset();
+
+        BatchProgressTestJob::$onRow = static function () use ($connection): void {
+            $connection->table('import_batch_contexts')->insert([
+                'batch_id'   => 'row-write',
+                'context'    => '{}',
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+        };
+
+        $job = new BatchProgressTestJob(['batch_id' => 'row-commit-fail']);
+
+        try {
+            $job->process();
+            $this->fail('Expected the failed commit to be reported');
+        } catch (RuntimeException) {
+        } finally {
+            Factories::reset('models');
+        }
+
+        $this->assertSame(0, $connection->transDepth);
+        $this->dontSeeInDatabase('import_batch_contexts', ['batch_id' => 'row-write']);
+        $this->seeInDatabase('import_batches', ['id' => 'row-commit-fail', 'completed' => 0]);
+
+        $connection->failCommit = false;
+        BatchProgressTestJob::$onRow = null;
+        Factories::injectMock('models', ImportBatch::class, new ImportBatch($connection));
+        Services::reset();
+
+        $this->assertTrue((new BatchProgressTestJob(['batch_id' => 'row-commit-fail']))->process());
+        $this->seeInDatabase('import_batches', ['id' => 'row-commit-fail', 'completed' => 1, 'status' => 'completed']);
+        Factories::reset('models');
     }
 }

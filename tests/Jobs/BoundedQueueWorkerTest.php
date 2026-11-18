@@ -14,8 +14,11 @@ use Config\Jobs as JobsConfig;
 use Config\OSPOS;
 use Config\Queue as QueueConfig;
 use Config\Services;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\FailingCommitConnection;
+use Tests\Support\Jobs\ConnectionOverridingWorker;
 use Tests\Support\Jobs\BatchableTestJob;
 use Tests\Support\Jobs\FailingTestJob;
 use Tests\Support\Jobs\ReportingFailureTestJob;
@@ -442,5 +445,66 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
 
         $this->assertSame(2, $worker->getFailedCount());
         $this->dontSeeInDatabase('queue_jobs', ['status' => 1]);
+    }
+
+    public function testRun_RollsBackAndReleasesJobWhenFailedMoveCommitFails(): void
+    {
+        service('queue')->push('default', 'reports_failure', []);
+
+        $connection = FailingCommitConnection::create();
+        $worker = new ConnectionOverridingWorker(['default'], microtime(true) + 5, 1, $connection);
+        $worker->run();
+
+        $this->assertSame(0, $worker->getFailedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs_failed')->countAllResults());
+        $this->assertSame(1, $this->db->table('queue_jobs')->countAllResults());
+        $this->dontSeeInDatabase('queue_jobs', ['status' => 1]);
+        $this->assertSame(0, $connection->transDepth);
+    }
+
+    #[DataProvider('releaseFailureProvider')]
+    public function testRun_HandlesDifferentClassJobWhenReleasingItFails(bool $throws): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 1]);
+        service('queue')->push('default', 'success', []);
+
+        $handler = new class (config('Queue'), $throws) extends DatabaseHandler {
+            private bool $failed = false;
+
+            public function __construct(QueueConfig $config, private readonly bool $throws)
+            {
+                parent::__construct($config);
+            }
+
+            public function later(QueueJob $queueJob, int $seconds): bool
+            {
+                if (!$this->failed) {
+                    $this->failed = true;
+
+                    if ($this->throws) {
+                        throw new RuntimeException('release failed');
+                    }
+
+                    return false;
+                }
+
+                return parent::later($queueJob, $seconds);
+            }
+        };
+        Services::injectMock('queue', $handler);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5, maxJobs: 2);
+        $worker->run();
+
+        $this->dontSeeInDatabase('queue_jobs', ['status' => 1]);
+        $this->assertSame(2, $worker->getFailedCount());
+    }
+
+    public static function releaseFailureProvider(): array
+    {
+        return [
+            'later() returns false' => [false],
+            'later() throws'        => [true],
+        ];
     }
 }
