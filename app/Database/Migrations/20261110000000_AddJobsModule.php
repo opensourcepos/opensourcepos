@@ -162,17 +162,14 @@ class AddJobsModule extends Migration
         $this->db->table('app_config')->ignore(true)->insertBatch($jobsConfigValues);
 
         // queue_jobs and queue_jobs_failed are created or upgraded above, so the
-        // codeigniter4/queue vendor migrations must never run. Mark them as already
-        // run so `spark migrate --all` skips them. The runner assigns this migration
-        // lastBatch + 1 before up() runs, but earlier migrations in the same run have
-        // already written that batch, so reuse it when present. Otherwise a rollback
-        // would leave the vendor rows behind in a separate batch.
+        // codeigniter4/queue vendor migrations must never run. Record them as
+        // already applied so `spark migrate --all` skips them. They go into the
+        // newest existing batch, which is either this migration's own batch (when
+        // earlier migrations of the same run already wrote it) or an earlier one.
+        // down() only detaches what this migration added to the queue tables, so
+        // a rollback of this batch leaves a consistent vendor state either way.
         $lastBatch = (int)($this->db->table('migrations')->selectMax('batch')->get()->getRowArray()['batch'] ?? 0);
-        $batchStarted = $lastBatch > 0 && $this->db->table('migrations')
-            ->where('batch', $lastBatch)
-            ->where('time >=', (int)$_SERVER['REQUEST_TIME'])
-            ->countAllResults() > 0;
-        $batch = $batchStarted ? $lastBatch : $lastBatch + 1;
+        $batch = max(1, $lastBatch);
         $now   = time();
         $vendorRows = [
             [

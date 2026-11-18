@@ -268,7 +268,7 @@ class BoundedQueueWorker
             $this->processed += 1 + count($peers);
             job_log($work->queue, 'info', $work->payload['job'] . ' completed (' . (1 + count($peers)) . ' job(s))');
         } catch (Throwable $e) {
-            foreach ([$work, ...$peers, ...$held] as $w) {
+            foreach ([$work, ...$peers] as $w) {
                 $this->failWork(
                     $queue,
                     $config,
@@ -281,6 +281,35 @@ class BoundedQueueWorker
             }
 
             job_log($work->queue, 'error', $work->payload['job'] . ' job failed: ' . $e->getMessage());
+        } finally {
+            $this->releaseHeld($queue, $held, $work->queue);
+        }
+    }
+
+    /**
+     * Retries releasing jobs of a different class that were popped while collecting
+     * peers and could not be put back. They never ran, so they are not failed and
+     * keep their attempt count.
+     *
+     * @param QueueJob[] $held
+     */
+    private function releaseHeld(QueueInterface $queue, array $held, string $queueName): void
+    {
+        foreach ($held as $candidate) {
+            if ($this->tryRelease($queue, $candidate)) {
+                continue;
+            }
+
+            job_log($queueName, 'error', 'Could not release job ' . $candidate->id . ' after peer collection; it stays reserved until it is released manually');
+        }
+    }
+
+    private function tryRelease(QueueInterface $queue, QueueJob $candidate): bool
+    {
+        try {
+            return $queue->later($candidate, 0);
+        } catch (Throwable) {
+            return false;
         }
     }
 
@@ -291,8 +320,8 @@ class BoundedQueueWorker
      * peer is appended to $peers as soon as it is popped, so the caller can
      * still release it if a later pop throws.
      *
-     * A popped job of a different class is added to $held until it has been
-     * released, so the caller can still handle it if releasing it fails.
+     * A popped job of a different class is put back; if that fails it stays in
+     * $held so the caller can retry releasing it without failing the job.
      *
      * @param QueueJob[] $peers
      * @param QueueJob[] $held
@@ -322,11 +351,10 @@ class BoundedQueueWorker
             if ($candidate->payload['job'] !== $jobClass) {
                 $held[] = $candidate;
 
-                if (!$queue->later($candidate, 0)) {
-                    throw new RuntimeException('Failed to release job ' . $candidate->id . ' of a different class');
+                if ($this->tryRelease($queue, $candidate)) {
+                    $held = [];
                 }
 
-                $held = [];
                 break;
             }
 

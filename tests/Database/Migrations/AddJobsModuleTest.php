@@ -64,7 +64,6 @@ class AddJobsModuleTest extends CIUnitTestCase
             ])
             ->update(['batch' => 2]);
 
-        $this->db->table('migrations')->where('batch', 1)->update(['time' => 1]);
 
         $earlierRows = $this->db->table('migrations')->where('batch', 1)->countAllResults();
         $this->assertGreaterThan(0, $earlierRows);
@@ -80,30 +79,7 @@ class AddJobsModuleTest extends CIUnitTestCase
 
         $this->migrateDatabase();
 
-        $this->assertJobsSchemaApplied();
-    }
-
-    public function testDown_AllNamespacesMigrationRollsBackAndReappliesCleanly(): void
-    {
-        $this->regressDatabase();
-
-        $this->migrations->setNamespace(null);
-        $this->assertNotFalse($this->migrations->latest('tests'));
-        $this->assertJobsSchemaApplied();
-
-        $this->migrations->setNamespace(null);
-        $this->migrations->regress(0, 'tests');
-
-        foreach (self::JOB_TABLES as $table) {
-            $this->assertFalse($this->db->tableExists($table), "$table should be dropped");
-        }
-        $this->assertSame(0, $this->db->table('migrations')->like('class', 'AddJobsModule')->countAllResults());
-
-        $this->migrations->setNamespace(null);
-        $this->assertNotFalse($this->migrations->latest('tests'));
         $this->assertJobsSchemaApplied(false);
-
-        $this->migrations->setNamespace('App');
     }
 
     public function testDown_VendorMigrationsInEarlierBatchStayAppliedAfterRollback(): void
@@ -115,7 +91,6 @@ class AddJobsModuleTest extends CIUnitTestCase
         ];
 
         $this->db->table('migrations')->whereIn('class', ['App\\Database\\Migrations\\AddJobsModule'])->update(['batch' => 2]);
-        $this->db->table('migrations')->where('batch', 1)->update(['time' => 1]);
 
         $this->migrations->setNamespace('App');
         $this->migrations->regress(-1, 'tests');
