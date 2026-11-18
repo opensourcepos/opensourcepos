@@ -49,6 +49,36 @@ class ImportBatchService
     }
 
     /**
+     * Detaches a queue row from its batch so it can later run as a standalone
+     * job: clears the batch_id/context_id columns and removes batch_id from
+     * the payload, embedding a copy of the batch context so the job does not
+     * depend on the batch (or its context row) still existing.
+     */
+    public function detachRow(array $row): array
+    {
+        if (($row['batch_id'] ?? null) === null) {
+            return $row;
+        }
+
+        $payload = json_decode($row['payload'], true);
+        $data = $payload['data'] ?? [];
+        $context = $this->getContext($row['batch_id']);
+
+        if ($context !== null) {
+            $data['context'] = $context;
+        }
+
+        unset($data['batch_id']);
+        $payload['data'] = $data;
+
+        $row['payload'] = json_encode($payload);
+        $row['batch_id'] = null;
+        $row['context_id'] = null;
+
+        return $row;
+    }
+
+    /**
      * Pushes one row's job onto the queue and stamps the job with its
      * batch_id and context_id as real columns (the vendor handler only knows
      * about the JSON payload), so ImportBatch::purgeFinished() can cheaply

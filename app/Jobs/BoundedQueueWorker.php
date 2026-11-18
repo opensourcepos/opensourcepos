@@ -10,6 +10,7 @@ use Config\Database;
 use Config\Jobs as JobsConfig;
 use Config\OSPOS;
 use Config\Services;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -120,42 +121,64 @@ class BoundedQueueWorker
      * queue_jobs, same as CodeIgniter\Queue\Handlers\DatabaseHandler::failed()
      * / logFailed(), but also records $work->attempts, which the vendor
      * handler has no field for (QueueJobFailedModel's allowedFields doesn't
-     * include it) and would otherwise drop. Both writes share one transaction
-     * so a failed-row insert never leaves the live job deleted.
+     * include it) and would otherwise drop. The failed-row insert, the live-row
+     * delete and the batch failure count share one transaction, so a partial
+     * failure leaves the live job in place to be retried.
      *
-     * @return bool False if the job could not be moved and is still in queue_jobs.
+     * @return bool False if nothing was committed and the job is still in queue_jobs.
      */
-    private function moveToFailed(QueueJob $work, string $exception, bool $keepJob): bool
+    private function moveToFailed(QueueJob $work, string $exception, bool $keepJob, ?string $batchId): bool
     {
         $db = Database::connect();
 
-        $db->transStart();
+        $db->transBegin();
 
-        if ($keepJob) {
-            $sourceRow = $db->table('queue_jobs')
-                ->select('batch_id, context_id')
-                ->where('id', $work->id)
-                ->get()
-                ->getRowArray();
+        try {
+            if ($keepJob) {
+                $sourceRow = $db->table('queue_jobs')
+                    ->select('batch_id, context_id')
+                    ->where('id', $work->id)
+                    ->get()
+                    ->getRowArray();
 
-            $db->table('queue_jobs_failed')->insert([
-                'connection' => 'database',
-                'queue'      => $work->queue,
-                'batch_id'   => $sourceRow['batch_id'] ?? null,
-                'context_id' => $sourceRow['context_id'] ?? null,
-                'payload'    => json_encode($work->payload),
-                'priority'   => $work->priority,
-                'attempts'   => $work->attempts,
-                'exception'  => $exception,
-                'failed_at'  => Time::now()->timestamp,
-            ]);
+                $inserted = $db->table('queue_jobs_failed')->insert([
+                    'connection' => 'database',
+                    'queue'      => $work->queue,
+                    'batch_id'   => $sourceRow['batch_id'] ?? null,
+                    'context_id' => $sourceRow['context_id'] ?? null,
+                    'payload'    => json_encode($work->payload),
+                    'priority'   => $work->priority,
+                    'attempts'   => $work->attempts,
+                    'exception'  => $exception,
+                    'failed_at'  => Time::now()->timestamp,
+                ]);
+
+                if ($inserted === false) {
+                    throw new RuntimeException('Failed to insert queue_jobs_failed row for job ' . $work->id);
+                }
+            }
+
+            if ($db->table('queue_jobs')->where('id', $work->id)->delete() === false) {
+                throw new RuntimeException('Failed to delete queue_jobs row ' . $work->id);
+            }
+
+            if ($batchId !== null) {
+                service('importBatch')->increment($batchId, true);
+            }
+        } catch (Throwable $e) {
+            $db->transRollback();
+            job_log($work->queue, 'error', 'Could not move job ' . $work->id . ' to failed: ' . $e->getMessage());
+
+            return false;
         }
 
-        $db->table('queue_jobs')->where('id', $work->id)->delete();
+        if ($db->transStatus() === false) {
+            $db->transRollback();
 
-        $db->transComplete();
+            return false;
+        }
 
-        return $db->transStatus() !== false;
+        return $db->transCommit();
     }
 
     private function describeThrowable(Throwable $err): string
@@ -180,25 +203,15 @@ class BoundedQueueWorker
             return;
         }
 
-        if (!$this->moveToFailed($work, $exception, $config->keepFailedJobs)) {
+        $batchId = $work->payload['data']['batch_id'] ?? null;
+
+        if (!$this->moveToFailed($work, $exception, $config->keepFailedJobs, $batchId)) {
             $queue->later($work, $retryAfter);
 
             return;
         }
 
         $this->failed++;
-
-        $batchId = $work->payload['data']['batch_id'] ?? null;
-
-        if ($batchId === null) {
-            return;
-        }
-
-        try {
-            service('importBatch')->increment($batchId, true);
-        } catch (Throwable $e) {
-            job_log($work->queue, 'error', "Failed to record batch failure for batch $batchId: " . $e->getMessage());
-        }
     }
 
     private function popNext(QueueInterface $queue, QueueConfig $config): ?QueueJob
@@ -217,15 +230,14 @@ class BoundedQueueWorker
 
     private function handle(QueueInterface $queue, QueueConfig $config, QueueJob $work): void
     {
-        $allWorks = [$work];
+        $peers = [];
         $job = null;
 
         try {
             $class = $config->resolveJobClass($work->payload['job']);
             $job = new $class($work->payload['data']);
 
-            $peers = $this->popPeers($queue, $config, $work, $job);
-            $allWorks = [$work, ...$peers];
+            $this->popPeers($queue, $config, $work, $job, $peers);
 
             if ($peers !== []) {
                 $batch = array_merge([$work->payload['data']], array_map(
@@ -238,7 +250,7 @@ class BoundedQueueWorker
             $result = $job->process();
 
             if ($result === false) {
-                foreach ($allWorks as $w) {
+                foreach ([$work, ...$peers] as $w) {
                     $this->failWork($queue, $config, $w, 'Job reported failure; see the job log for details.', false, $job->getTries(), $job->getRetryAfter());
                 }
 
@@ -247,13 +259,13 @@ class BoundedQueueWorker
                 return;
             }
 
-            foreach ($allWorks as $w) {
+            foreach ([$work, ...$peers] as $w) {
                 $queue->done($w);
             }
-            $this->processed += count($allWorks);
-            job_log($work->queue, 'info', $work->payload['job'] . ' completed (' . count($allWorks) . ' job(s))');
+            $this->processed += 1 + count($peers);
+            job_log($work->queue, 'info', $work->payload['job'] . ' completed (' . (1 + count($peers)) . ' job(s))');
         } catch (Throwable $e) {
-            foreach ($allWorks as $w) {
+            foreach ([$work, ...$peers] as $w) {
                 $this->failWork(
                     $queue,
                     $config,
@@ -272,23 +284,24 @@ class BoundedQueueWorker
     /**
      * If the job class implements BatchableJob with maxBatchSize() > 1, peeks
      * and pops up to maxBatchSize()-1 additional pending jobs of the same
-     * class and queue to merge into a single process() call.
+     * class and queue to merge into a single process() call. Each reserved
+     * peer is appended to $peers as soon as it is popped, so the caller can
+     * still release it if a later pop throws.
      *
-     * @return QueueJob[]
+     * @param QueueJob[] $peers
      */
-    private function popPeers(QueueInterface $queue, QueueConfig $config, QueueJob $work, object $job): array
+    private function popPeers(QueueInterface $queue, QueueConfig $config, QueueJob $work, object $job, array &$peers): void
     {
         if (!($job instanceof BatchableJob)) {
-            return [];
+            return;
         }
 
         $batchSize = $job->maxBatchSize();
 
         if ($batchSize <= 1) {
-            return [];
+            return;
         }
 
-        $peers = [];
         $jobClass = $work->payload['job'];
         $priorities = $config->queuePriorities[$work->queue] ?? ['default'];
 
@@ -306,7 +319,5 @@ class BoundedQueueWorker
 
             $peers[] = $candidate;
         }
-
-        return $peers;
     }
 }

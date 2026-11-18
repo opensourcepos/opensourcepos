@@ -268,4 +268,12 @@ class ImportBatchTest extends CIUnitTestCase
         $row = $this->db->table('import_batches')->where('id', 'batch-stamp')->get()->getRowArray();
         $this->assertGreaterThan(strtotime('-1 day'), strtotime($row['updated_at']));
     }
+
+    public function testIncrement_ReportsCompletionOnlyOnTransition(): void
+    {
+        $this->importBatch->create('batch-transition', 'items', 1);
+
+        $this->assertTrue($this->importBatch->increment('batch-transition', false));
+        $this->assertFalse($this->importBatch->increment('batch-transition', false));
+    }
 }

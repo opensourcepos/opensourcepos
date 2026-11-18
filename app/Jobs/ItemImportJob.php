@@ -10,27 +10,20 @@ use App\Jobs\Support\ItemCsvRowProcessor;
  * Items::postImportCsvFile(). Row-level failures do not affect other rows'
  * jobs — each row commits independently.
  */
-class ItemImportJob extends BaseOsposJob
+class ItemImportJob extends ImportRowJob
 {
     public function process(): bool
     {
-        $batchId = $this->data['batch_id'];
         $row = $this->data['row'];
         $employeeId = $this->data['employee_id'];
+        $queueName = $this->data['queue_name'] ?? 'imports';
 
-        $context = service('importBatch')->getContext($batchId);
+        $context = $this->data['context'] ?? service('importBatch')->getContext($this->data['batch_id']);
         $definitionNames = $context['definition_names'];
         $attributeData = $context['attribute_data'];
 
-        $processor = new ItemCsvRowProcessor();
-        $success = $processor->process($row, $employeeId, $definitionNames, $attributeData, $this->data['queue_name'] ?? 'imports');
-
-        if (!$success) {
-            return false;
-        }
-
-        service('importBatch')->increment($batchId, false);
-
-        return true;
+        return $this->processBatchRow(
+            static fn (): bool => (new ItemCsvRowProcessor())->process($row, $employeeId, $definitionNames, $attributeData, $queueName)
+        );
     }
 }

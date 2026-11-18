@@ -47,7 +47,7 @@ class ImportBatch extends Model
      * transaction so concurrent workers incrementing the same batch can't
      * both observe completion.
      *
-     * @return bool True if this call completed the batch (completed + failed = total); false if it did not or the batch no longer exists.
+     * @return bool True only if this call moved the batch from unfinished to finished (completed + failed = total); false if it was already finished, is still open, or no longer exists.
      * @throws RuntimeException If the progress update could not be saved.
      */
     public function increment(string $batchId, bool $rowFailed): bool
@@ -75,7 +75,9 @@ class ImportBatch extends Model
 
         $completed = (int)$batch['completed'] + ($rowFailed ? 0 : 1);
         $failed = (int)$batch['failed'] + ($rowFailed ? 1 : 0);
-        $isComplete = ($completed + $failed) >= (int)$batch['total'];
+        $total = (int)$batch['total'];
+        $wasComplete = ((int)$batch['completed'] + (int)$batch['failed']) >= $total;
+        $isComplete = !$wasComplete && ($completed + $failed) >= $total;
 
         if ($isComplete) {
             $this->db->table($this->table)
@@ -86,9 +88,7 @@ class ImportBatch extends Model
                 ]);
         }
 
-        $this->db->transComplete();
-
-        if ($this->db->transStatus() === false) {
+        if (!$this->db->transComplete()) {
             throw new RuntimeException('Failed to update progress for import batch: ' . $batchId);
         }
 

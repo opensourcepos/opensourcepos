@@ -284,7 +284,7 @@ class Jobs extends Secure_Controller
         $this->queueJobModel->db->transStart();
 
         $rows = $this->queueJobModel->getPendingForUpdateByBatchId($batchId);
-        $this->moveToPaused($rows);
+        $this->moveToPaused($rows, true);
 
         $this->queueJobModel->db->transComplete();
 
@@ -407,7 +407,18 @@ class Jobs extends Secure_Controller
         }
 
         if ($source === 'paused') {
-            return [$this->queueJobPaused->delete($id) ? 1 : 0, 0];
+            $this->queueJobModel->db->transStart();
+
+            $pausedRow = $this->queueJobPaused->find($id);
+            $deleted = $pausedRow !== null && $this->queueJobPaused->delete($id);
+
+            if ($deleted) {
+                $this->accountBatchCancellation($pausedRow['batch_id'] ?? null);
+            }
+
+            $this->queueJobModel->db->transComplete();
+
+            return [$deleted && $this->queueJobModel->db->transStatus() ? 1 : 0, 0];
         }
 
         $this->queueJobModel->db->transStart();
@@ -834,30 +845,35 @@ class Jobs extends Secure_Controller
         ]);
     }
 
-    private function moveToPaused(array $rows): void
+    /**
+     * @param bool $keepBatch True when pausing a whole batch: the rows stay attached to it and its total is
+     *                        left alone, so resuming continues the same batch. Otherwise each row is detached
+     *                        from its batch (total reduced by one) and resumes as a standalone job.
+     */
+    private function moveToPaused(array $rows, bool $keepBatch = false): void
     {
         if ($rows === []) {
             return;
         }
 
         $now = Time::now()->timestamp;
+        $importBatchService = service('importBatch');
         $batchModel = model(ImportBatch::class);
 
         foreach ($rows as &$row) {
             $row['paused_at'] = $now;
             $row['paused_by'] = 'manual';
             unset($row['status']);
+
+            if (!$keepBatch && ($row['batch_id'] ?? null) !== null) {
+                $batchModel->adjustTotal($row['batch_id'], -1);
+                $row = $importBatchService->detachRow($row);
+            }
         }
         unset($row);
 
         $this->queueJobPaused->insertRows($rows);
         $this->queueJobModel->deleteWhereInIds(array_column($rows, 'id'));
-
-        foreach (array_column($rows, 'batch_id') as $batchId) {
-            if ($batchId !== null) {
-                $batchModel->adjustTotal($batchId, -1);
-            }
-        }
     }
 
     private function moveToPending(array $rows): void
@@ -870,7 +886,7 @@ class Jobs extends Secure_Controller
 
         foreach ($rows as &$row) {
             $row['status'] = $pendingStatus;
-            unset($row['paused_at'], $row['paused_by'], $row['batch_id']);
+            unset($row['paused_at'], $row['paused_by']);
         }
         unset($row);
 

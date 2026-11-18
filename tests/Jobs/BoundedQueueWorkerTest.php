@@ -4,13 +4,17 @@ namespace Tests\Jobs;
 
 use App\Jobs\BoundedQueueWorker;
 use App\Models\JobThrottle;
+use App\Libraries\ImportBatchService;
 use CodeIgniter\Config\Factories;
+use CodeIgniter\Queue\Entities\QueueJob;
+use CodeIgniter\Queue\Handlers\DatabaseHandler;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Jobs as JobsConfig;
 use Config\OSPOS;
 use Config\Queue as QueueConfig;
 use Config\Services;
+use RuntimeException;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\Jobs\BatchableTestJob;
 use Tests\Support\Jobs\FailingTestJob;
@@ -391,5 +395,52 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->assertSame(1, $worker->getFailedCount());
         $this->assertSame(0, $this->db->table('queue_jobs')->countAllResults());
         $this->assertSame(1, $this->db->table('queue_jobs_failed')->countAllResults());
+    }
+
+    public function testRun_ReleasesJobWhenBatchFailureCannotBeRecorded(): void
+    {
+        service('queue')->push('default', 'reports_failure', ['batch_id' => 'missing-batch']);
+
+        Services::injectMock('importBatch', new class () extends ImportBatchService {
+            public function increment(string $batchId, bool $rowFailed): bool
+            {
+                throw new RuntimeException('progress update failed');
+            }
+        });
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5, maxJobs: 1);
+        $worker->run();
+
+        $this->assertSame(0, $worker->getFailedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs_failed')->countAllResults());
+        $this->assertSame(1, $this->db->table('queue_jobs')->countAllResults());
+        $this->dontSeeInDatabase('queue_jobs', ['status' => 1]);
+    }
+
+    public function testRun_ReleasesReservedPeerWhenLaterPeerPopThrows(): void
+    {
+        for ($i = 1; $i <= 3; $i++) {
+            service('queue')->push('default', 'batchable', ['row' => $i]);
+        }
+
+        $handler = new class (config('Queue')) extends DatabaseHandler {
+            private int $pops = 0;
+
+            public function pop(string $queue, array $priorities): ?QueueJob
+            {
+                if (++$this->pops === 3) {
+                    throw new RuntimeException('pop failed');
+                }
+
+                return parent::pop($queue, $priorities);
+            }
+        };
+        Services::injectMock('queue', $handler);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5, maxJobs: 2);
+        $worker->run();
+
+        $this->assertSame(2, $worker->getFailedCount());
+        $this->dontSeeInDatabase('queue_jobs', ['status' => 1]);
     }
 }

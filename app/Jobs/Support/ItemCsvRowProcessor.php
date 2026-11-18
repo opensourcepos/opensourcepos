@@ -10,6 +10,7 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use CodeIgniter\Validation\FormatRules;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -120,13 +121,24 @@ class ItemCsvRowProcessor
             throw $e;
         }
 
-        if ($success) {
-            $db->transCommit();
-        } else {
+        if (!$success) {
             $db->transRollback();
+
+            return false;
         }
 
-        return $success;
+        if ($db->transStatus() === false) {
+            $db->transRollback();
+            job_log($this->queueName, 'error', "Failed to save item. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+
+            return false;
+        }
+
+        if (!$db->transCommit()) {
+            throw new RuntimeException("Failed to commit item import row. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+        }
+
+        return true;
     }
 
     private function persistRow(array $row, array $itemData, int $itemId, array $allowedStockLocations, array $attributeData, int $employeeId): bool

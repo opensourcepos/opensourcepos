@@ -1121,7 +1121,7 @@ function get_batch_data_row(array $batch, bool $hasPausedJobs = false): array
     $drillDown = '<a href="#" class="batch_drill_down print_hide" data-batch-id="' . $batchId . '" title="' . esc(lang('Jobs.drill_down_jobs')) . '"><span class="glyphicon glyphicon-list"></span></a>';
 
     $status = $batch['status'] ?? 'pending';
-    $isPauseable = in_array($status, ['pending', 'processing'], true);
+    $isPauseable = in_array($status, ['pending', 'processing'], true) && !$hasPausedJobs;
     $isResumeable = $hasPausedJobs;
     $isPurgeable = in_array($status, ['completed', 'partial'], true);
 
@@ -1141,7 +1141,7 @@ function get_batch_data_row(array $batch, bool $hasPausedJobs = false): array
 
     $progressBar = '<div class="progress" style="margin-bottom:0;min-width:80px">'
         . '<div class="progress-bar" role="progressbar" style="width:' . $pct . '%">'
-        . $completed . '/' . $total
+        . $processed . '/' . $total
         . '</div></div>';
 
     return [

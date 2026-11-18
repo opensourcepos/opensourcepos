@@ -10,23 +10,16 @@ use App\Jobs\Support\CustomerCsvRowProcessor;
  * Customers::postImportCsvFile(). Row-level failures do not affect other
  * rows' jobs — each row commits independently.
  */
-class CustomerImportJob extends BaseOsposJob
+class CustomerImportJob extends ImportRowJob
 {
     public function process(): bool
     {
-        $batchId = $this->data['batch_id'];
         $row = $this->data['row'];
         $employeeId = $this->data['employee_id'];
+        $queueName = $this->data['queue_name'] ?? 'imports';
 
-        $processor = new CustomerCsvRowProcessor();
-        $success = $processor->process($row, $employeeId, $this->data['queue_name'] ?? 'imports');
-
-        if (!$success) {
-            return false;
-        }
-
-        service('importBatch')->increment($batchId, false);
-
-        return true;
+        return $this->processBatchRow(
+            static fn (): bool => (new CustomerCsvRowProcessor())->process($row, $employeeId, $queueName)
+        );
     }
 }

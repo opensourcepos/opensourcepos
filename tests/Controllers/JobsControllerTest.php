@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use App\Jobs\BoundedQueueWorker;
 use App\Models\ImportBatch;
 use App\Models\JobThrottle;
 use App\Models\QueueJobFailedModel;
@@ -13,7 +14,9 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use Config\Database;
+use Config\Queue as QueueConfig;
 use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\Jobs\BatchProgressTestJob;
 use Tests\Support\QueueJobFixtureTrait;
 use Throwable;
 
@@ -602,7 +605,7 @@ class JobsControllerTest extends CIUnitTestCase
         $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-resume']);
         $resumed = $this->db->table('queue_jobs')->where('queue', 'imports')->where('status', 0)->get()->getRowArray();
         $this->assertNotNull($resumed);
-        $this->assertNull($resumed['batch_id']);
+        $this->assertSame('batch-resume', $resumed['batch_id']);
     }
 
     // -------------------------------------------------------------------------
@@ -941,13 +944,121 @@ class JobsControllerTest extends CIUnitTestCase
 
         $resumedJob = $this->db->table('queue_jobs')->where('queue', 'imports')->where('status', 0)->get()->getRowArray();
         $this->assertNotNull($resumedJob);
-        $this->assertNull($resumedJob['batch_id']);
+        $this->assertSame('batch-prp', $resumedJob['batch_id']);
 
         $queueJobModel = model(QueueJobModel::class);
         $this->assertTrue($queueJobModel->claimJob((int)$resumedJob['id']));
         $this->assertFalse($queueJobModel->claimJob((int)$resumedJob['id']));
 
         $this->dontSeeInDatabase('queue_jobs_paused', ['batch_id' => 'batch-prp']);
+    }
+
+    // -------------------------------------------------------------------------
+    // pause scope: batch pause keeps the batch, job pause detaches from it
+    // -------------------------------------------------------------------------
+
+    private function createBatchJob(string $batchId, int $status = 0): int
+    {
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => $batchId,
+            'payload'      => json_encode(['job' => 'batch_progress', 'data' => ['batch_id' => $batchId, 'row' => []]]),
+            'priority'     => 'normal',
+            'status'       => $status,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+
+        return (int)$this->db->insertID();
+    }
+
+    public function testPostPauseBatch_KeepsBatchTotalAndPayloadBatchId(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-keep', 'processing', 2);
+        $this->createBatchJob('batch-keep');
+
+        $this->post('/jobs/pauseBatch', ['id' => 'batch-keep']);
+
+        $this->assertSame(2, (int)$this->getBatchRow('batch-keep')['total']);
+        $paused = $this->db->table('queue_jobs_paused')->get()->getRowArray();
+        $this->assertSame('batch-keep', $paused['batch_id']);
+        $this->assertSame('batch-keep', json_decode($paused['payload'], true)['data']['batch_id']);
+    }
+
+    public function testPostPauseJob_DetachesJobFromBatch(): void
+    {
+        $this->loginAsAdmin();
+
+        $this->createBatchAt('batch-detach', 'processing', 2);
+        $jobId = $this->createBatchJob('batch-detach');
+
+        $this->post('/jobs/pauseJob', ['id' => "pending:$jobId"]);
+
+        $this->assertSame(1, (int)$this->getBatchRow('batch-detach')['total']);
+        $paused = $this->db->table('queue_jobs_paused')->get()->getRowArray();
+        $this->assertNull($paused['batch_id']);
+        $this->assertNull($paused['context_id']);
+        $this->assertArrayNotHasKey('batch_id', json_decode($paused['payload'], true)['data']);
+    }
+
+    public function testPostResumeJob_DetachedJobLeavesBatchUntouched(): void
+    {
+        $this->loginAsAdmin();
+        $queueConfig = new QueueConfig();
+        $queueConfig->jobHandlers = ['batch_progress' => BatchProgressTestJob::class];
+        Factories::injectMock('config', 'Queue', $queueConfig);
+
+        $this->createBatchAt('batch-solo', 'processing', 2, 1);
+        $jobId = $this->createBatchJob('batch-solo');
+
+        $this->post('/jobs/pauseJob', ['id' => "pending:$jobId"]);
+        $pausedId = (int)$this->db->table('queue_jobs_paused')->get()->getRowArray()['id'];
+        $this->post('/jobs/resumeJob', ['id' => "paused:$pausedId"]);
+
+        $worker = new BoundedQueueWorker(['imports'], microtime(true) + 5);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getProcessedCount());
+        $batch = $this->getBatchRow('batch-solo');
+        $this->assertSame(1, (int)$batch['total']);
+        $this->assertSame(1, (int)$batch['completed']);
+        $this->assertSame('completed', $batch['status']);
+
+        Factories::reset('config');
+    }
+
+    public function testPauseBatchResume_BatchCompletesOnlyAfterResumedJobFinishes(): void
+    {
+        $this->loginAsAdmin();
+        $queueConfig = new QueueConfig();
+        $queueConfig->jobHandlers = ['batch_progress' => BatchProgressTestJob::class];
+        Factories::injectMock('config', 'Queue', $queueConfig);
+
+        $this->createBatchAt('batch-cycle', 'processing', 1);
+        $this->createBatchJob('batch-cycle');
+
+        $this->post('/jobs/pauseBatch', ['id' => 'batch-cycle']);
+
+        $worker = new BoundedQueueWorker(['imports'], microtime(true) + 5);
+        $worker->run();
+        $this->assertSame('processing', $this->getBatchRow('batch-cycle')['status']);
+
+        $this->post('/jobs/resumeBatch', ['id' => 'batch-cycle']);
+
+        $worker = new BoundedQueueWorker(['imports'], microtime(true) + 5);
+        $worker->run();
+
+        $batch = $this->getBatchRow('batch-cycle');
+        $this->assertSame(1, $worker->getProcessedCount());
+        $this->assertSame(1, (int)$batch['completed']);
+        $this->assertSame(1, (int)$batch['total']);
+        $this->assertSame('completed', $batch['status']);
+
+        Factories::reset('config');
     }
 
     // -------------------------------------------------------------------------
@@ -1024,7 +1135,7 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertSame(2, (int)$this->getBatchRow('batch-del-rollback')['total']);
     }
 
-    public function testPostDelete_PausedJobWithBatch_DoesNotDoubleDecrementTotal(): void
+    public function testPostDelete_PausedJobWithBatch_DecrementsTotalOnce(): void
     {
         $this->loginAsAdmin();
 
@@ -1037,7 +1148,7 @@ class JobsControllerTest extends CIUnitTestCase
         $this->assertTrue($result['success']);
 
         $this->dontSeeInDatabase('queue_jobs_paused', ['id' => $pausedId]);
-        $this->assertSame($totalBefore, (int)$this->getBatchRow('batch-del-paused')['total']);
+        $this->assertSame($totalBefore - 1, (int)$this->getBatchRow('batch-del-paused')['total']);
     }
 
     public function testPostDelete_JobReservedAfterListing_BlocksDeletionAndLeavesBatchTotal(): void
