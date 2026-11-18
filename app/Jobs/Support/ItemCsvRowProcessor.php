@@ -9,6 +9,7 @@ use App\Models\Item_quantity;
 use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Validation\FormatRules;
 use RuntimeException;
 use Throwable;
@@ -110,32 +111,32 @@ class ItemCsvRowProcessor
             return false;
         }
 
-        $db = $this->item->db;
+        return $this->runInTransaction(
+            $this->item->db,
+            fn (): bool => $this->persistRow($row, $itemData, $itemId, $allowedStockLocations, $attributeData, $employeeId)
+        );
+    }
+
+    private function runInTransaction(BaseConnection $db, callable $writeRow): bool
+    {
         $db->transBegin();
 
         try {
-            $success = $this->persistRow($row, $itemData, $itemId, $allowedStockLocations, $attributeData, $employeeId);
+            $success = $writeRow();
         } catch (Throwable $e) {
             $db->transRollback();
 
             throw $e;
         }
 
-        if (!$success) {
+        if (!$success || $db->transStatus() === false) {
             $db->transRollback();
-
-            return false;
-        }
-
-        if ($db->transStatus() === false) {
-            $db->transRollback();
-            job_log($this->queueName, 'error', "Failed to save item. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
 
             return false;
         }
 
         if (!$db->transCommit()) {
-            throw new RuntimeException("Failed to commit item import row. name: '{$row['Item Name']}', barcode: '{$row['Barcode']}'");
+            throw new RuntimeException('Failed to commit item import row.');
         }
 
         return true;

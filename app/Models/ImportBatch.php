@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 use RuntimeException;
+use Throwable;
 
 /**
  * Tracks progress of a queued CSV import (issue #3833 Phase 3). Each row of
@@ -52,17 +53,53 @@ class ImportBatch extends Model
      */
     public function increment(string $batchId, bool $rowFailed): bool
     {
-        $this->db->transStart();
+        $this->db->transBegin();
 
+        try {
+            $isComplete = $this->applyIncrement($batchId, $rowFailed);
+        } catch (Throwable $e) {
+            $this->rollbackProgress();
+
+            throw $e;
+        }
+
+        if ($this->db->transStatus() === false) {
+            $this->rollbackProgress();
+
+            throw new RuntimeException('Failed to update progress for import batch: ' . $batchId);
+        }
+
+        if (!$this->db->transCommit()) {
+            throw new RuntimeException('Failed to commit progress for import batch: ' . $batchId);
+        }
+
+        return $isComplete;
+    }
+
+    private function rollbackProgress(): void
+    {
+        $this->db->transRollback();
+
+        if ($this->db->transDepth === 0) {
+            $this->db->resetTransStatus();
+        }
+    }
+
+    private function applyIncrement(string $batchId, bool $rowFailed): bool
+    {
         $sql = $this->db->table($this->table)
             ->where('id', $batchId)
             ->getCompiledSelect();
 
-        $batch = $this->db->query($sql . ' FOR UPDATE')->getRowArray();
+        $result = $this->db->query($sql . ' FOR UPDATE');
+
+        if ($result === false) {
+            throw new RuntimeException('Failed to lock import batch: ' . $batchId);
+        }
+
+        $batch = $result->getRowArray();
 
         if ($batch === null) {
-            $this->db->transComplete();
-
             return false;
         }
 
@@ -86,10 +123,6 @@ class ImportBatch extends Model
                     'status'     => $failed > 0 ? 'partial' : 'completed',
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
-        }
-
-        if (!$this->db->transComplete()) {
-            throw new RuntimeException('Failed to update progress for import batch: ' . $batchId);
         }
 
         return $isComplete;

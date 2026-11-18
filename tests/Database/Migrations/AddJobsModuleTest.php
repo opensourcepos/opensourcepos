@@ -50,4 +50,53 @@ class AddJobsModuleTest extends CIUnitTestCase
 
         $this->assertJobsSchemaApplied();
     }
+
+    public function testDown_RollbackOfLaterBatchKeepsEarlierBatchesAndReapplies(): void
+    {
+        $this->db->table('migrations')
+            ->whereIn('class', [
+                'App\Database\Migrations\AddJobsModule',
+                'CodeIgniter\Queue\Database\Migrations\AddQueueTables',
+                'CodeIgniter\Queue\Database\Migrations\AddPriorityField',
+                'CodeIgniter\Queue\Database\Migrations\ChangePayloadFieldTypeInSqlsrv',
+            ])
+            ->update(['batch' => 2]);
+
+        $this->db->table('migrations')->where('batch', 1)->update(['time' => 1]);
+
+        $earlierRows = $this->db->table('migrations')->where('batch', 1)->countAllResults();
+        $this->assertGreaterThan(0, $earlierRows);
+
+        $this->migrations->setNamespace('App');
+        $this->migrations->regress(-1, 'tests');
+
+        foreach (self::JOB_TABLES as $table) {
+            $this->assertFalse($this->db->tableExists($table), "$table should be dropped");
+        }
+        $this->assertSame($earlierRows, $this->db->table('migrations')->countAllResults());
+        $this->assertTrue($this->db->tableExists('items'));
+
+        $this->migrateDatabase();
+
+        $this->assertJobsSchemaApplied();
+    }
+
+    public function testDown_AllNamespacesMigrationRollsBackAndReappliesCleanly(): void
+    {
+        $this->regressDatabase();
+
+        $this->migrations->setNamespace(null);
+        $this->assertNotFalse($this->migrations->latest('tests'));
+        $this->assertJobsSchemaApplied();
+
+        $this->migrations->setNamespace(null);
+        $this->migrations->regress(0, 'tests');
+
+        foreach (self::JOB_TABLES as $table) {
+            $this->assertFalse($this->db->tableExists($table), "$table should be dropped");
+        }
+        $this->assertSame(0, $this->db->table('migrations')->like('class', 'AddJobsModule')->countAllResults());
+
+        $this->migrations->setNamespace('App');
+    }
 }

@@ -167,6 +167,7 @@ class BoundedQueueWorker
             }
         } catch (Throwable $e) {
             $db->transRollback();
+            $db->resetTransStatus();
             job_log($work->queue, 'error', 'Could not move job ' . $work->id . ' to failed: ' . $e->getMessage());
 
             return false;
@@ -174,6 +175,7 @@ class BoundedQueueWorker
 
         if ($db->transStatus() === false) {
             $db->transRollback();
+            $db->resetTransStatus();
 
             return false;
         }

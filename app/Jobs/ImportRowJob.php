@@ -33,12 +33,14 @@ abstract class ImportRowJob extends BaseOsposJob
             }
         } catch (Throwable $e) {
             $db->transRollback();
+            $db->resetTransStatus();
 
             throw $e;
         }
 
         if (!$success || $db->transStatus() === false) {
             $db->transRollback();
+            $db->resetTransStatus();
 
             return false;
         }

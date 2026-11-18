@@ -174,7 +174,7 @@ class AddJobsModule extends Migration
             ->countAllResults() > 0;
         $batch = $batchStarted ? $lastBatch : $lastBatch + 1;
         $now   = time();
-        $this->db->table('migrations')->ignore(true)->insertBatch([
+        $vendorRows = [
             [
                 'version'   => '2023-10-12-112040',
                 'class'     => 'CodeIgniter\Queue\Database\Migrations\AddQueueTables',
@@ -199,7 +199,17 @@ class AddJobsModule extends Migration
                 'time'      => $now,
                 'batch'     => $batch,
             ],
-        ]);
+        ];
+
+        $recordedClasses = array_column(
+            $this->db->table('migrations')->select('class')->whereIn('class', self::VENDOR_MIGRATIONS)->get()->getResultArray(),
+            'class'
+        );
+        $missingRows = array_filter($vendorRows, static fn (array $row): bool => !in_array($row['class'], $recordedClasses, true));
+
+        if ($missingRows !== []) {
+            $this->db->table('migrations')->insertBatch(array_values($missingRows));
+        }
     }
 
     private function upgradeQueueTable(string $table, array $columns, array $indexes, string $foreignKeyName): void

@@ -7,6 +7,7 @@ use App\Models\ImportBatchContext;
 use CodeIgniter\Database\Config;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Throwable;
 
 class ImportBatchTest extends CIUnitTestCase
 {
@@ -275,5 +276,23 @@ class ImportBatchTest extends CIUnitTestCase
 
         $this->assertTrue($this->importBatch->increment('batch-transition', false));
         $this->assertFalse($this->importBatch->increment('batch-transition', false));
+    }
+
+    public function testIncrement_LeavesNoOpenTransactionWhenQueryThrows(): void
+    {
+        $brokenBatch = new class () extends ImportBatch {
+            protected $table = 'table_that_does_not_exist';
+        };
+
+        try {
+            $brokenBatch->increment('any-batch', false);
+            $this->fail('Expected a database exception');
+        } catch (Throwable) {
+        }
+
+        $this->assertSame(0, $this->db->transDepth);
+
+        $this->importBatch->create('batch-after-failure', 'items', 1);
+        $this->assertTrue($this->importBatch->increment('batch-after-failure', false));
     }
 }
