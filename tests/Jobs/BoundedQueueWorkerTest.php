@@ -60,10 +60,12 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->db->table('job_throttles')->truncate();
 
         BatchableTestJob::$receivedData = [];
+        service('cache')->delete('job_queue_unreleased_ids');
     }
 
     protected function tearDown(): void
     {
+        service('cache')->delete('job_queue_unreleased_ids');
         Services::throttler()->remove('job_queue_core_1');
 
         Factories::reset('config');
@@ -555,5 +557,48 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->seeInDatabase('import_batches', ['id' => 'batch-move-fail', 'failed' => 1, 'status' => 'partial']);
 
         Factories::reset('models');
+    }
+
+    public function testRun_ReleasesStrandedJobAtNextRunWhenBothReleaseAttemptsFail(): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 1]);
+        service('queue')->push('default', 'success', []);
+
+        $now = time();
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'other',
+            'payload'      => json_encode(['job' => 'success', 'data' => []]),
+            'priority'     => 'default',
+            'status'       => 1,
+            'attempts'     => 0,
+            'available_at' => $now,
+            'created_at'   => $now,
+        ]);
+        $runningId = (int)$this->db->insertID();
+
+        $handler = new class (config('Queue')) extends DatabaseHandler {
+            public function later(QueueJob $queueJob, int $seconds): bool
+            {
+                return false;
+            }
+        };
+        Services::injectMock('queue', $handler);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5, maxJobs: 1);
+        $worker->run();
+
+        $this->assertSame(1, $worker->getProcessedCount());
+        $this->assertSame(0, $worker->getFailedCount());
+        $this->seeInDatabase('queue_jobs', ['queue' => 'default', 'status' => 1, 'attempts' => 0]);
+
+        Services::reset();
+
+        $recovery = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $recovery->run();
+
+        $this->assertSame(1, $recovery->getProcessedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->where('queue', 'default')->countAllResults());
+        $this->seeInDatabase('queue_jobs', ['id' => $runningId, 'status' => 1]);
+        $this->assertSame(0, $this->db->table('queue_jobs_failed')->countAllResults());
     }
 }

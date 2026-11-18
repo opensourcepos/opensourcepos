@@ -48,6 +48,26 @@ class QueueJobModel extends BaseQueueJobModel
         return $this->db->affectedRows() > 0;
     }
 
+    /**
+     * Puts reserved jobs back to pending without touching their attempts or
+     * availability. Only rows that are still reserved are changed.
+     *
+     * @param int[] $ids
+     */
+    public function releaseReservedByIds(array $ids): int
+    {
+        if ($ids === []) {
+            return 0;
+        }
+
+        $this->builder()
+            ->whereIn('id', $ids)
+            ->where('status', Status::RESERVED->value)
+            ->update(['status' => Status::PENDING->value]);
+
+        return $this->db->affectedRows();
+    }
+
     public function insertRows(array $rows): bool
     {
         return $this->db->table($this->table)->insertBatch($rows);

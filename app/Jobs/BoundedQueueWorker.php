@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Libraries\Transaction;
+use App\Models\QueueJobModel;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Queue\Config\Queue as QueueConfig;
@@ -30,6 +31,9 @@ use Throwable;
  */
 class BoundedQueueWorker
 {
+    private const UNRELEASED_CACHE_KEY = 'job_queue_unreleased_ids';
+    private const UNRELEASED_CACHE_TTL = 86400;
+
     private int $processed = 0;
     private int $failed = 0;
 
@@ -49,6 +53,8 @@ class BoundedQueueWorker
         $queue = service('queue');
         /** @var QueueConfig $config */
         $config = config('Queue');
+
+        $this->recoverUnreleased();
 
         $throttleGate = Services::jobThrottleGate();
 
@@ -295,13 +301,56 @@ class BoundedQueueWorker
      */
     private function releaseHeld(QueueInterface $queue, array $held, string $queueName): void
     {
-        foreach ($held as $candidate) {
-            if ($this->tryRelease($queue, $candidate)) {
-                continue;
-            }
+        $stranded = [];
 
-            job_log($queueName, 'error', 'Could not release job ' . $candidate->id . ' after peer collection; it stays reserved until it is released manually');
+        foreach ($held as $candidate) {
+            if (!$this->tryRelease($queue, $candidate)) {
+                $stranded[] = (int)$candidate->id;
+            }
         }
+
+        if ($stranded === []) {
+            return;
+        }
+
+        $this->rememberUnreleased($stranded);
+        job_log($queueName, 'error', 'Could not release job(s) ' . implode(', ', $stranded) . ' after peer collection; they will be released at the start of the next worker run');
+    }
+
+    /**
+     * @param int[] $ids
+     */
+    private function rememberUnreleased(array $ids): void
+    {
+        $cache = service('cache');
+        $known = $cache->get(self::UNRELEASED_CACHE_KEY);
+
+        $cache->save(self::UNRELEASED_CACHE_KEY, array_values(array_unique(array_merge(is_array($known) ? $known : [], $ids))), self::UNRELEASED_CACHE_TTL);
+    }
+
+    /**
+     * Releases jobs an earlier run popped but could not put back. They were
+     * never processed, so they keep their attempts. Only rows still reserved
+     * are touched, so a job that has since been handled elsewhere is left alone.
+     */
+    private function recoverUnreleased(): void
+    {
+        $cache = service('cache');
+        $ids = $cache->get(self::UNRELEASED_CACHE_KEY);
+
+        if (!is_array($ids) || $ids === []) {
+            return;
+        }
+
+        try {
+            model(QueueJobModel::class)->releaseReservedByIds(array_map('intval', $ids));
+        } catch (Throwable $e) {
+            job_log('default', 'error', 'Could not release previously stranded job(s): ' . $e->getMessage());
+
+            return;
+        }
+
+        $cache->delete(self::UNRELEASED_CACHE_KEY);
     }
 
     private function tryRelease(QueueInterface $queue, QueueJob $candidate): bool
