@@ -31,9 +31,6 @@ use Throwable;
  */
 class BoundedQueueWorker
 {
-    private const UNRELEASED_CACHE_KEY = 'job_queue_unreleased_ids';
-    private const UNRELEASED_CACHE_TTL = 86400;
-
     private int $processed = 0;
     private int $failed = 0;
 
@@ -322,35 +319,45 @@ class BoundedQueueWorker
      */
     private function rememberUnreleased(array $ids): void
     {
-        $cache = service('cache');
-        $known = $cache->get(self::UNRELEASED_CACHE_KEY);
-
-        $cache->save(self::UNRELEASED_CACHE_KEY, array_values(array_unique(array_merge(is_array($known) ? $known : [], $ids))), self::UNRELEASED_CACHE_TTL);
+        try {
+            $this->unreleasedRegistry()->record($ids);
+        } catch (Throwable $e) {
+            job_log('default', 'error', 'Could not record stranded job(s) ' . implode(', ', $ids) . ': ' . $e->getMessage());
+        }
     }
 
     /**
-     * Releases jobs an earlier run popped but could not put back. They were
-     * never processed, so they keep their attempts. Only rows still reserved
-     * are touched, so a job that has since been handled elsewhere is left alone.
+     * Releases jobs an earlier run popped but could not put back. The ids are
+     * claimed from the registry first, so no other worker can receive them, and
+     * they are never processed by this worker's own claim, so they keep their
+     * attempts. If the database is still failing the claimed ids are recorded
+     * again for the next run.
      */
     private function recoverUnreleased(): void
     {
-        $cache = service('cache');
-        $ids = $cache->get(self::UNRELEASED_CACHE_KEY);
+        try {
+            $ids = $this->unreleasedRegistry()->claim();
+        } catch (Throwable $e) {
+            job_log('default', 'error', 'Could not read stranded jobs: ' . $e->getMessage());
 
-        if (!is_array($ids) || $ids === []) {
+            return;
+        }
+
+        if ($ids === []) {
             return;
         }
 
         try {
-            model(QueueJobModel::class)->releaseReservedByIds(array_map('intval', $ids));
+            model(QueueJobModel::class)->releaseReservedByIds($ids);
         } catch (Throwable $e) {
             job_log('default', 'error', 'Could not release previously stranded job(s): ' . $e->getMessage());
-
-            return;
+            $this->rememberUnreleased($ids);
         }
+    }
 
-        $cache->delete(self::UNRELEASED_CACHE_KEY);
+    protected function unreleasedRegistry(): UnreleasedJobRegistry
+    {
+        return new UnreleasedJobRegistry(WRITEPATH . 'cache/job_queue_unreleased.json');
     }
 
     private function tryRelease(QueueInterface $queue, QueueJob $candidate): bool

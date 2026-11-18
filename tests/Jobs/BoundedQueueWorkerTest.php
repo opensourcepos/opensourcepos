@@ -60,12 +60,12 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->db->table('job_throttles')->truncate();
 
         BatchableTestJob::$receivedData = [];
-        service('cache')->delete('job_queue_unreleased_ids');
+        @unlink(WRITEPATH . 'cache/job_queue_unreleased.json');
     }
 
     protected function tearDown(): void
     {
-        service('cache')->delete('job_queue_unreleased_ids');
+        @unlink(WRITEPATH . 'cache/job_queue_unreleased.json');
         Services::throttler()->remove('job_queue_core_1');
 
         Factories::reset('config');
