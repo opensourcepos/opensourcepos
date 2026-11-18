@@ -113,13 +113,45 @@ class Items extends Secure_Controller
         $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $this->item_lib->set_item_location($this->request->getGet('stock_location'));
+        $stockLocation = $this->resolveSearchStockLocation($this->request->getGet('stock_location'));
+
+        if ($stockLocation === null) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Items.not_authorized')]);
+        }
+
+        $this->item_lib->set_item_location($stockLocation);
 
         $definitionNamesWithTypes = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS, true);
         $definitionIds = array_keys($definitionNamesWithTypes);
 
         $sort = $this->sanitizeSortColumn(itemSortColumns($definitionIds), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'items.item_id');
 
+        $filters = $this->buildSearchFilters($definitionIds);
+
+        $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
+        $itemResults = $items->getResult();
+        $totalRows = $this->item->get_found_rows($search, $filters);
+
+        return $this->response->setJSON(['total' => $totalRows, 'rows' => $this->buildSearchRows($itemResults, $definitionNamesWithTypes)]);
+    }
+
+    private function resolveSearchStockLocation(mixed $requestedLocation): ?string
+    {
+        if ($requestedLocation === null || $requestedLocation === '') {
+            $defaultLocationId = $this->stock_location->getDefaultLocationId();
+
+            return $defaultLocationId === null ? null : (string) (int) $defaultLocationId;
+        }
+
+        if (!is_scalar($requestedLocation) || !$this->stock_location->is_allowed_location((int) $requestedLocation, 'items')) {
+            return null;
+        }
+
+        return (string) (int) $requestedLocation;
+    }
+
+    private function buildSearchFilters(array $definitionIds): array
+    {
         $filters = [
             'start_date'        => $this->request->getGet('start_date'),
             'end_date'          => $this->request->getGet('end_date'),
@@ -131,24 +163,41 @@ class Items extends Secure_Controller
             'search_custom'     => false,
             'is_deleted'        => false,
             'temporary'         => false,
-            'definition_ids'    => $definitionIds
+            'definition_ids'    => $definitionIds,
         ];
 
-        // Check if any filter is set in the multiselect dropdown
-        $requestFilters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-        $filters = array_merge($filters, $requestFilters);
+        $allowedFilters = [
+            'empty_upc',
+            'low_inventory',
+            'is_serialized',
+            'no_description',
+            'search_custom',
+            'is_deleted',
+            'temporary',
+        ];
 
-        // When search_custom is enabled, include attributes that are searchable but may not be visible in table
+        $requestFilters = $this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [];
+        if (is_array($requestFilters)) {
+            foreach ($requestFilters as $key => $value) {
+                $filterName = is_numeric($key) ? (string) $value : (string) $key;
+                if (in_array($filterName, $allowedFilters, true)) {
+                    $filters[$filterName] = true;
+                }
+            }
+        }
+
+        // search_custom also surfaces attributes that are searchable but hidden from the table
         if (!empty($filters['search_custom'])) {
             $searchableDefinitions = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_SEARCH);
             $filters['definition_ids'] = array_keys($searchableDefinitions);
         }
 
-        $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
-        $itemResults = $items->getResult();
-        $totalRows = $this->item->get_found_rows($search, $filters);
-        $taxPercentsByItemId = $this->buildTaxPercentsByItem($itemResults);
+        return $filters;
+    }
 
+    private function buildSearchRows(array $itemResults, array $definitionNamesWithTypes): array
+    {
+        $taxPercentsByItemId = $this->buildTaxPercentsByItem($itemResults);
         $dataRows = [];
 
         foreach ($itemResults as $item) {
@@ -159,7 +208,7 @@ class Items extends Secure_Controller
             }
         }
 
-        return $this->response->setJSON(['total' => $totalRows, 'rows' => $dataRows]);
+        return $dataRows;
     }
 
     /**
@@ -538,18 +587,67 @@ class Items extends Secure_Controller
 
         $data['item_info'] = $item_info;
         $data['stock_locations'] = [];
+        $data['item_quantities'] = [];
+        $allowedLocations = $this->stock_location->get_allowed_locations('items');
         $stock_locations = $this->stock_location->getUndeletedAll()->getResultArray();
 
         foreach ($stock_locations as $location) {
+            if (!array_key_exists($location['location_id'], $allowedLocations)) {
+                continue;
+            }
             $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 
             $data['stock_locations'][$location['location_id']] = $location['location_name'];
             $data['item_quantities'][$location['location_id']] = $quantity;
         }
 
-        $data['stock_location'] = $this->stock_location->getDefaultLocationId();
+        $defaultLocation = $this->stock_location->getDefaultLocationId();
+        if ($defaultLocation !== null && array_key_exists($defaultLocation, $allowedLocations)) {
+            $data['stock_location'] = $defaultLocation;
+        } elseif (count($allowedLocations) > 0) {
+            $data['stock_location'] = array_key_first($allowedLocations);
+        } else {
+            $data['stock_location'] = null;
+        }
+
+        $data['initial_quantity'] = $this->resolveInitialQuantity($data['stock_location'], $data['item_quantities']);
+
+        $inventoryData = $this->buildInventoryData($item_id, array_keys($data['stock_locations']));
+        $data['inventory_data'] = $inventoryData['inventory_data'];
+        $data['employee_names'] = $inventoryData['employee_names'];
 
         return view('items/form_count_details', $data);
+    }
+
+    private function resolveInitialQuantity($stockLocation, array $itemQuantities)
+    {
+        if ($stockLocation !== null && isset($itemQuantities[$stockLocation])) {
+            return $itemQuantities[$stockLocation];
+        }
+
+        return current($itemQuantities) ?: 0;
+    }
+
+    private function buildInventoryData(int $itemId, array $allowedLocationIds): array
+    {
+        if (empty($allowedLocationIds)) {
+            return ['inventory_data' => [], 'employee_names' => []];
+        }
+
+        $allowedLocationIds = array_map('intval', $allowedLocationIds);
+
+        $inventoryData = array_values(array_filter(
+            $this->inventory->get_inventory_data_for_item($itemId)->getResultArray(),
+            fn ($row) => in_array((int) $row['trans_location'], $allowedLocationIds, true)
+        ));
+
+        $employeeNames = [];
+        foreach ($inventoryData as $row) {
+            $employee = $this->employee->getInfo($row['trans_user']);
+            $employeeNames[] = $employee->first_name . ' ' . $employee->last_name;
+        }
+
+        return ['inventory_data' => $inventoryData, 'employee_names' => $employeeNames];
     }
 
     /**
