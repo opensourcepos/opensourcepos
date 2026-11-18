@@ -28,45 +28,41 @@ class Secure_Controller extends BaseController
     protected Module $module;
     protected Session $session;
 
-    /**
-     * @param string $module_id
-     * @param string|null $submodule_id
-     * @param string|null $menu_group
-     */
-    public function __construct(string $module_id = '', ?string $submodule_id = null, ?string $menu_group = null)
+    public function __construct(string $module_id = '', ?string $submodule_id = null, ?string $menuGroup = null)
     {
         $this->employee = model(Employee::class);
         $this->module = model(Module::class);
         $config = config(OSPOS::class)->settings;
         $validation = Services::validation();
 
-        $logged_in_employee_info = $this->employee->get_logged_in_employee_info();
+        $loggedInEmployeeInfo = $this->employee->get_logged_in_employee_info();
         if (
-            !$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
-            || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
+            !$this->employee->has_module_grant($module_id, $loggedInEmployeeInfo->person_id)
+            || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $loggedInEmployeeInfo->person_id))
         ) {
             throw new RedirectException("no_access/$module_id/$submodule_id");
         }
 
         // Load up global global_view_data visible to all the loaded views
         $this->session = session();
-        if ($menu_group == null) {
-            $menu_group = $this->session->get('menu_group');
+        if ($menuGroup == null) {
+            $menuGroup = $this->session->get('menu_group');
         } else {
-            $this->session->set('menu_group', $menu_group);
+            $this->session->set('menu_group', $menuGroup);
         }
 
-        $allowed_modules = $menu_group == 'home'
-            ? $this->module->get_allowed_home_modules($logged_in_employee_info->person_id)
-            : $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
+        $allowedModules = $this->module->getNavigationModules(
+            $loggedInEmployeeInfo->person_id,
+            $menuGroup,
+            $this->employee->has_module_grant('office', $loggedInEmployeeInfo->person_id)
+        );
 
-        $this->global_view_data = [];
-        foreach ($allowed_modules->getResult() as $module) {
-            $this->global_view_data['allowed_modules'][] = $module;
-        }
+        $this->global_view_data = [
+            'allowed_modules' => $allowedModules
+        ];
 
         $this->global_view_data += [
-            'user_info'       => $logged_in_employee_info,
+            'user_info'       => $loggedInEmployeeInfo,
             'controller_name' => $module_id,
             'config'          => $config
         ];
