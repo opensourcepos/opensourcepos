@@ -1311,7 +1311,12 @@ class Sales extends Secure_Controller
 
     private function validateGiftcardCreditForReturn(array $payments, string $total): ?string
     {
-        $precision = totals_decimals();
+        $precision = 0;
+        foreach (array_merge([$total], array_column($payments, 'payment_amount')) as $amount) {
+            $fraction = explode('.', (string) $amount, 2)[1] ?? '';
+            $precision = max($precision, strlen($fraction));
+        }
+
         $giftcardCredit = '0';
         foreach ($payments as $payment) {
             $splitPayment = explode(':', $payment['payment_type'], 2);

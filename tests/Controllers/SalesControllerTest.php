@@ -8,6 +8,7 @@ use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use Config\Database;
+use Config\OSPOS;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\ItemFixtureTrait;
 use Tests\Support\EmployeeFixtureTrait;
@@ -45,6 +46,8 @@ class SalesControllerTest extends CIUnitTestCase
         $this->resetDatabaseOnce();
 
         parent::setUp();
+
+        config(OSPOS::class)->update_settings();
     }
 
     protected function tearDown(): void
@@ -753,6 +756,167 @@ class SalesControllerTest extends CIUnitTestCase
         $salesCountAfter = Database::connect()->table('sales')->countAllResults();
         $this->assertSame($salesCountBefore + 1, $salesCountAfter);
         $this->assertEqualsWithDelta(200.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testPostComplete_RejectsFractionalGiftcardCreditWithZeroCurrencyDecimals(): void
+    {
+        $config = config(OSPOS::class);
+        $originalDecimals = $config->settings['currency_decimals'];
+        $config->settings['currency_decimals'] = 0;
+
+        try {
+            $cashierId = $this->createCashierEmployee();
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $giftcardNumber = $this->createGiftcard(100.00);
+            $this->loginAs($cashierId);
+            $this->seedCartLine(1, '100.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['quantity'] = '-1';
+            $cart[1]['total'] = '-100.00';
+            $cart[1]['discounted_total'] = '-100.00';
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY,
+                'sales_mode' => 'return',
+                'sales_cart' => $cart,
+            ]));
+
+            $this->post('/sales/addPayment', [
+                'payment_type' => lang('Sales.cash', [], 'en'),
+                'amount_tendered' => '0.99',
+            ])->assertStatus(200);
+            $this->withSession();
+
+            $this->post('/sales/addPayment', [
+                'payment_type' => lang('Sales.giftcard', [], 'en'),
+                'amount_tendered' => (string) $giftcardNumber,
+            ])->assertStatus(200);
+
+            $payments = Services::session()->get('sales_payments');
+            $giftcardPaymentType = lang('Sales.giftcard', [], 'en') . ':' . $giftcardNumber;
+            $this->assertArrayHasKey($giftcardPaymentType, $payments);
+            $this->assertEqualsWithDelta(-100.99, $payments[$giftcardPaymentType]['payment_amount'], 0.001);
+            $this->withSession();
+
+            $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+            $response = $this->post('/sales/complete');
+
+            $response->assertStatus(200);
+            $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+            $this->assertSame($salesCountBefore, $salesCountAfter);
+            $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+        } finally {
+            $config->settings['currency_decimals'] = $originalDecimals;
+        }
+    }
+
+    public function testPostComplete_RejectsSubunitGiftcardCreditWithZeroCurrencyDecimals(): void
+    {
+        $config = config(OSPOS::class);
+        $originalDecimals = $config->settings['currency_decimals'];
+        $config->settings['currency_decimals'] = 0;
+
+        try {
+            $cashierId = $this->createCashierEmployee();
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $firstGiftcardNumber = $this->createGiftcard(100.00);
+            $secondGiftcardNumber = $this->createGiftcard(100.00);
+            $this->loginAs($cashierId);
+            $this->seedCartLine(1, '100.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['quantity'] = '-1';
+            $cart[1]['total'] = '-100.00';
+            $cart[1]['discounted_total'] = '-100.00';
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY,
+                'sales_mode' => 'return',
+                'sales_cart' => $cart,
+            ]));
+
+            $this->post('/sales/addPayment', [
+                'payment_type' => lang('Sales.giftcard', [], 'en'),
+                'amount_tendered' => (string) $firstGiftcardNumber,
+            ])->assertStatus(200);
+            $this->withSession();
+
+            $this->post('/sales/addPayment', [
+                'payment_type' => lang('Sales.cash', [], 'en'),
+                'amount_tendered' => '0.50',
+            ])->assertStatus(200);
+            $this->withSession();
+
+            $this->post('/sales/addPayment', [
+                'payment_type' => lang('Sales.giftcard', [], 'en'),
+                'amount_tendered' => (string) $secondGiftcardNumber,
+            ])->assertStatus(200);
+
+            $payments = Services::session()->get('sales_payments');
+            $firstGiftcardPaymentType = lang('Sales.giftcard', [], 'en') . ':' . $firstGiftcardNumber;
+            $secondGiftcardPaymentType = lang('Sales.giftcard', [], 'en') . ':' . $secondGiftcardNumber;
+            $this->assertArrayHasKey($firstGiftcardPaymentType, $payments);
+            $this->assertArrayHasKey($secondGiftcardPaymentType, $payments);
+            $this->assertEquals(-100, $payments[$firstGiftcardPaymentType]['payment_amount']);
+            $this->assertEqualsWithDelta(-0.50, $payments[$secondGiftcardPaymentType]['payment_amount'], 0.001);
+            $this->withSession();
+
+            $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+            $response = $this->post('/sales/complete');
+
+            $response->assertStatus(200);
+            $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+            $this->assertSame($salesCountBefore, $salesCountAfter);
+            $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($firstGiftcardNumber), 0.001);
+            $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($secondGiftcardNumber), 0.001);
+        } finally {
+            $config->settings['currency_decimals'] = $originalDecimals;
+        }
+    }
+
+    public function testPostComplete_AcceptsExactGiftcardCreditWithZeroCurrencyDecimals(): void
+    {
+        $config = config(OSPOS::class);
+        $originalDecimals = $config->settings['currency_decimals'];
+        $config->settings['currency_decimals'] = 0;
+
+        try {
+            $cashierId = $this->createCashierEmployee();
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $giftcardNumber = $this->createGiftcard(100.00);
+            $this->loginAs($cashierId);
+            $this->seedCartLine(1, '100.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['quantity'] = '-1';
+            $cart[1]['total'] = '-100.00';
+            $cart[1]['discounted_total'] = '-100.00';
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY,
+                'sales_mode' => 'return',
+                'sales_cart' => $cart,
+            ]));
+
+            $this->post('/sales/addPayment', [
+                'payment_type' => lang('Sales.giftcard', [], 'en'),
+                'amount_tendered' => (string) $giftcardNumber,
+            ])->assertStatus(200);
+
+            $payments = Services::session()->get('sales_payments');
+            $giftcardPaymentType = lang('Sales.giftcard', [], 'en') . ':' . $giftcardNumber;
+            $this->assertArrayHasKey($giftcardPaymentType, $payments);
+            $this->assertEquals(-100, $payments[$giftcardPaymentType]['payment_amount']);
+            $this->withSession();
+
+            $salesCountBefore = Database::connect()->table('sales')->countAllResults();
+
+            $response = $this->post('/sales/complete');
+
+            $response->assertStatus(200);
+            $salesCountAfter = Database::connect()->table('sales')->countAllResults();
+            $this->assertSame($salesCountBefore + 1, $salesCountAfter);
+            $this->assertEqualsWithDelta(200.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+        } finally {
+            $config->settings['currency_decimals'] = $originalDecimals;
+        }
     }
 
     public function testPostCompleteAllowsZeroPaymentQuoteCompletion(): void
