@@ -833,17 +833,9 @@ class Sales extends Secure_Controller
         }
 
         if ($this->sale_lib->get_mode() === 'return') {
-            $giftcardCredit = '0';
-            foreach ($data['payments'] as $payment) {
-                $splitPayment = explode(':', $payment['payment_type'], 2);
-                if ($splitPayment[0] === lang('Sales.giftcard') && bccomp($payment['payment_amount'], '0') < 0) {
-                    $giftcardCredit = bcsub($giftcardCredit, $payment['payment_amount']);
-                }
-            }
-
-            $returnTotal = bccomp($totals['total'], '0') < 0 ? bcmul($totals['total'], '-1') : $totals['total'];
-            if (bccomp($giftcardCredit, $returnTotal) > 0) {
-                $data['error'] = lang('Sales.giftcard_credit_exceeds_return');
+            $error = $this->validateGiftcardCreditForReturn($data['payments'], $totals['total']);
+            if ($error !== null) {
+                $data['error'] = $error;
                 return $this->reload($data);
             }
         }
@@ -1315,6 +1307,23 @@ class Sales extends Secure_Controller
         $data['receipt_template_view'] = $receipt_template;
 
         return $data;
+    }
+
+    private function validateGiftcardCreditForReturn(array $payments, string $total): ?string
+    {
+        $precision = totals_decimals();
+        $giftcardCredit = '0';
+        foreach ($payments as $payment) {
+            $splitPayment = explode(':', $payment['payment_type'], 2);
+            if ($splitPayment[0] === lang('Sales.giftcard') && bccomp((string) $payment['payment_amount'], '0', $precision) < 0) {
+                $giftcardCredit = bcsub($giftcardCredit, (string) $payment['payment_amount'], $precision);
+            }
+        }
+
+        $returnTotal = bccomp($total, '0', $precision) < 0 ? bcmul($total, '-1', $precision) : $total;
+        return bccomp($giftcardCredit, $returnTotal, $precision) > 0
+            ? lang('Sales.giftcard_credit_exceeds_return')
+            : null;
     }
 
     /**
