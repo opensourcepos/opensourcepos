@@ -28,7 +28,7 @@ class ItemsControllerTest extends CIUnitTestCase
     protected $migrateOnce = true;
     protected $seedOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     protected $item;
     protected $item_quantity;
