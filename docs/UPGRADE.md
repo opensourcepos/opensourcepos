@@ -66,6 +66,91 @@ long as you protect your user-specific files first.** Two things to watch:
 > Do **not** delete your database or `public/uploads/` folder during an upgrade —
 > they are separate from the code and hold everything you care about.
 
+## Docker-specific upgrade instructions
+
+The bundled Docker setup runs `php spark env:provision` at container startup
+(`docker-compose.yml` command), which ensures the encryption and throttle keys
+are present and handles automatic migration of legacy secrets. See
+[INSTALL.md#local-install-using-docker](INSTALL.md#local-install-using-docker)
+for the full setup guide, including key configuration.
+
+### Upgrading a Docker container
+
+1. **Back up** your `.env` file (it holds your `encryption.key` and database
+   password).
+2. **Pull** the new image: `docker compose pull` (or edit the image tag and run
+   `docker compose up`).
+3. **Preserve** your existing `.env` file — do **not** overwrite it with
+   `.env.example` or delete it.
+4. **Restart** the stack: `docker compose up -d`.
+5. **Verify** the migration output: run
+   `docker compose logs | grep env:provision` and look for the green messages:
+   ```
+   encryption.key     : CI4 key already present
+   ```
+   or (if upgrading from a pre-CI4 version):
+   ```
+   encryption.key     : rotated CI3 -> CI4 key
+   legacy secrets     : converted and verified to CI4 cipher
+   ```
+
+### Encryption key migration (pre-CI4 → CI4)
+
+If your installation predates the CI4 migration (OSPOS 3.3 and earlier), the
+encryption key handling in Docker was different from bare-metal setups. In the
+pre-CI4 Docker image the application read the key from the `ENCRYPTION_KEY`
+environment variable; since the old compose file did not set it, the key was
+`''` on every start. The first time a user configured SMTP or SMS credentials,
+the application auto-generated a random 32-byte key and wrote it into
+`config.php` at runtime — this key was **ephemeral**, lost whenever the
+container was recreated.
+
+The `ospos_app_config` table stores the encrypted secrets
+(`smtp_pass`, `mailchimp_api_key`, `mailchimp_list_id`, `clcdesq_api_key`,
+`clcdesq_api_url`) but **never** the encryption key itself.
+
+When upgrading to CI4, the `env:provision` command at container startup handles
+the key as follows:
+
+- **If `.env` (or the `ENCRYPTION_KEY` environment variable) contains a short
+  key** (< 64 characters, the CI3 format): `env:provision` decrypts the legacy
+  secrets, generates a new 64-character CI4 key (256-bit, `AES-256-CTR`),
+  backs up `.env`, writes the new key, re-encrypts the secrets with the CI4
+  cipher, verifies the round-trip, and persists the result.
+- **If `.env` is empty or contains a new key** and there are legacy secrets in
+  the database: `env:provision` generates a fresh CI4 key and outputs a warning
+  that the old secrets cannot be recovered.
+
+This means **the old CI3 key must be present in `.env` (or the `ENCRYPTION_KEY`
+environment variable) before the upgrade for the migration to succeed**. If you
+had previously set an `ENCRYPTION_KEY` in your old `docker-compose.yml` or
+saved the short key somewhere, include it in your new `.env` or `docker-compose.yml`
+before restarting. If you do not have the old key and your database contains
+encrypted secrets (SMTP password, Mailchimp API key, etc.), those secrets will
+be lost — you will need to re-enter them after the upgrade.
+
+### After migration
+
+Once the key has been rotated, your `.env` will contain a 64-character hex key
+(e.g., `encryption.key='a1b2c3d4...'`). For Docker deployments, the recommended
+approach going forward is to supply the key via the `ENCRYPTION_KEY` environment
+variable (see [INSTALL.md#local-install-using-docker](INSTALL.md#local-install-using-docker))
+instead of editing `.env` directly, which avoids the atomic write issue on bind
+mounts.
+
+If you supplied the key via `ENCRYPTION_KEY` in your `docker-compose.yml`
+`environment` list, no further action is needed — the key stays in your shell
+profile, Compose's `.env` file, or `env_file`, and the container receives it
+on every start.
+
+### Cannot access the UI after upgrading?
+
+If the containers start but the web interface is blank or shows an error, set
+`CI_ENVIRONMENT=development` in your `.env` (or in the `environment` section of
+`docker-compose.yml`) and restart. This reveals the PHP error message, which you
+can then search for in the GitHub issues. After upgrading, you should set it
+back to `production`.
+
 ## Version-specific notes
 
 Check the [CHANGELOG](../CHANGELOG.md) for your target version for the full list of
