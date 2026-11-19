@@ -21,7 +21,7 @@ class EmployeesControllerTest extends CIUnitTestCase
     protected $migrate     = true;
     protected $migrateOnce = true;
     protected $refresh     = false;
-    protected $namespace   = null;
+    protected $namespace   = 'App';
 
     protected $priorDisallowGrantChange;
 
