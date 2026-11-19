@@ -66,6 +66,8 @@ Please **refrain from creating issues** about installation problems before havin
 
 This application can be set up in _many_ different ways and we only support the ones described in [the INSTALL.md file](docs/INSTALL.md). See also [BUILD.md](docs/BUILD.md) for building from source and [UPGRADE.md](docs/UPGRADE.md) for upgrading existing installations.
 
+Community guides for other setups (Raspberry Pi, Nginx/LEMP, XAMPP for local testing, IIS) live in [`docs/install/`](docs/install/).
+
 For more information and recommendations on support hardware, like receipt printers and barcode scanners, read [this page](https://github.com/opensourcepos/opensourcepos/wiki/Supported-hardware-datasheet) on our wiki.
 
 ## ✨ Contributing
