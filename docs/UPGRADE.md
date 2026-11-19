@@ -79,6 +79,43 @@ changes. A few things that can require action when upgrading:
   app.allowedHostnames='yourdomain.com,www.yourdomain.com'
   ```
 
+## Upgrading your MySQL/MariaDB version
+
+This is independent of the OSPOS version upgrade above and only applies if you
+want to move your database server to a newer MySQL/MariaDB major version
+(for example 5.7 → 8.0). MySQL 8.4 support was added in OSPOS 3.4.3 (see the
+[CHANGELOG](../CHANGELOG.md)); earlier 3.4 releases do not record MySQL 8
+support, so make sure your OSPOS release supports the target version first.
+
+> **Important:** if you are also upgrading OSPOS, do that **first** on your
+> current MySQL version, then move the database server.
+
+1. Stop application writes (take the POS offline or put the site in
+   maintenance mode). They must stay stopped until the new server is active,
+   otherwise transactions recorded after the final dump will be missing from
+   the import.
+2. Take the final backup of your database (a full `mysqldump`).
+3. If you are upgrading in place:
+   - **MySQL:** see the
+     [MySQL in-place upgrade guide (5.7 → 8.0)](https://dev.mysql.com/blog-archive/inplace-upgrade-from-mysql-5-7-to-mysql-8-0/)
+     or your distro's equivalent for your target version.
+   - **MariaDB:** see the
+     [MariaDB upgrade documentation](https://mariadb.com/kb/en/upgrading-mariadb/).
+4. If you are moving to a fresh server instead:
+    - Create the application database and the OSPOS database account on the
+      new server and grant it access to that database (the same credentials
+      your `.env` uses). A plain `mysqldump ospos` does not create the
+      database, so it must exist before you import.
+    - Import your dump into that database on the new server.
+    - Point `.env` at the new server. Note that the `MYSQL_HOST_NAME`,
+      `MYSQL_USERNAME`, `MYSQL_PASSWORD`, and `MYSQL_DB_NAME` environment
+      variables, if set, override the corresponding `.env` values (see
+      `app/Config/Database.php`), so make sure they are unset or updated to
+      the new server.
+5. Still with application writes stopped, log in and let OSPOS run its
+   migrations if needed. Only resume writes once the migrations have completed
+   and you have verified the app works against the new database.
+
 ## Rolling back
 
 To roll back, restore your backed-up code directory. Because the upgrade applies
