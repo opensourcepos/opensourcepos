@@ -76,10 +76,11 @@ Docker runs natively on Mac and Linux. Windows requires WSL2 to be installed. Pl
 
 First create a **regular `.env` file** in the project root (a missing one is not
 auto-created as a file — see the compose `create_host_path: false` setting). Copy
-the shipped example:
+the shipped example **only if `.env` does not already exist**, so a re-run never
+overwrites keys that `env:provision` has already written:
 
 ```
-    cp .env.example .env
+    [ -f .env ] || cp .env.example .env
 ```
 
 Then start the containers:
@@ -88,54 +89,91 @@ Then start the containers:
     docker-compose up
 ```
 
-## Background Job Scheduling
+### Throttle and encryption keys
 
-OSPOS is scaffolding a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports. This is Phase 1: the scheduler infrastructure and trigger modes exist, but no real job types are wired up yet. Currently the scheduler only runs a `jobs_heartbeat` placeholder task that writes a debug log entry; the "Process All Jobs" / "Process Selected Jobs" endpoints on the Job Queue → Utilities tab are stubs that return `not_yet_implemented`. Actual job processing (e.g. CSV imports) will land in a later phase.
+OpenSourcePOS runs on two runtime secrets:
 
-The three trigger modes below control how/when the scheduler runs, not what it processes yet:
+- `encryption.key` — the AES key that protects stored configuration secrets at rest (the `smtp_pass`, `mailchimp_api_key`, `mailchimp_list_id`, `clcdesq_api_key` and `clcdesq_api_url` values in the `ospos_app_config` table).
+- `throttle.key` — an HMAC secret used to hash the login rate-limit cache keys.
 
-- **Web** (default) — no setup required. The scheduler runs via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
-- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers the scheduler on a fixed interval. Recommended for VPS/dedicated servers with cron access.
-- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" button on the Job Queue → Utilities tab is present but not yet functional (Phase 1 stub).
+Both are required for a working installation. You can either supply them yourself, or let the application generate and persist them into `.env` on first start.
 
-### `auto` mode: Linux/Mac cron
+#### Key precedence
 
-Add the following entry to your crontab (`crontab -e`), adjusting the path to your OSPOS install:
+The value in the `.env` file is always used first. `ENCRYPTION_KEY` and `THROTTLE_KEY` are only consulted as a **fallback** when the matching `.env` value (`encryption.key` / `throttle.key`) is empty. Do not set the pair to different values — the `.env` value wins.
 
-```
-* * * * * cd /path/to/ospos && php spark tasks:run >> /dev/null 2>&1
-```
+#### Recommended — supply the keys via the environment
 
-### `auto` mode: Windows Task Scheduler
+This is the most robust option: the application never has to write to `.env`, so it works on every platform (including the single-file bind mount in the bundled `docker-compose.yml`) and you control the value across container recreation.
 
-The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once-per-minute cadence of the cron example above, use the `tools/Windows/create-windows-task-scheduler-task.ps1` script instead, which registers the task via `New-ScheduledTaskTrigger -RepetitionInterval`. It also sets up "Run whether user is logged on or not" + "Do not store password" and "Run task as soon as possible after a scheduled start is missed" automatically.
+1. For a **fresh install**, generate two strong, unique 256-bit keys (64 hex characters each) on the host:
 
-1. Open PowerShell **as Administrator** (`Register-ScheduledTask` requires elevation) and `cd` to your OSPOS project root.
-2. Run the script, replacing `-PhpPath` and `-ProjectPath` with your actual PHP and install paths:
-   ```powershell
-   .\tools\Windows\create-windows-task-scheduler-task.ps1 -PhpPath '[PATH TO PHP EXECUTABLE]' -ProjectPath '[PATH TO PROJECT ROOT]'
+   ```bash
+   export THROTTLE_KEY="$(openssl rand -hex 32)"
+   export ENCRYPTION_KEY="$(openssl rand -hex 32)"
    ```
-   - `-PhpPath`: full path to `php.exe`.
-   - `-ProjectPath`: the OSPOS project root — the directory containing the `spark` file.
-   - Optionally pass `-TaskName` to override the default task name of `OSPOS Task Runner`.
-3. Verify the task in Task Scheduler: it should show a 1-minute repeat interval, and the **General** tab should show "Run whether user is logged on or not" with "Do not store password" checked.
-4. Verify the registered task fires correctly:
-   - **Start it now** (PowerShell as Administrator):
-     ```powershell
-     Start-ScheduledTask -TaskName 'OSPOS Task Runner'
-     ```
-   - **Check its last result** — `0x0` means success:
-     ```powershell
-     Get-ScheduledTaskInfo -TaskName 'OSPOS Task Runner' | Select-Object LastRunTime, LastTaskResult
-     ```
-   - **Confirm the heartbeat** — `LastTaskResult: 0x0` above is the primary success signal. A timestamped `Job Queue heartbeat` line also appears in `writable/logs/` **only when debug logging is enabled** (`logger.threshold=8` or `CI_ENVIRONMENT=development` in `.env`); in production the log level filters it out, so a missing log line is expected and does not indicate failure.
-   - If the last result is non-zero, open `cmd.exe`, `cd` to the OSPOS project root, and run `php.exe spark tasks:run` interactively to see the raw output (`Running Tasks...` → `Completed Running Tasks`).
 
-### `manual` mode
+   If you are **upgrading** an existing installation, do **not** generate a new `ENCRYPTION_KEY` — retain the key your data is already encrypted under, or those stored secrets become unreadable. Generate one only if you have no existing key to preserve.
 
-No setup is required. Set Mode to Manual on the Job Queue → Settings tab, then use the "Process All Jobs" button on the Utilities tab whenever you need jobs processed.
+2. Persist them so the same value is present every time the container is created (a host file, or a Compose-side `.env` file used for variable substitution).
 
-### Docker considerations
+3. Declare them on the service so the container actually receives them:
+
+   ```yaml
+   environment:
+       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+       - THROTTLE_KEY=${THROTTLE_KEY}
+   ```
+
+With both set, `env:provision` skips generating and writing both keys, so no `.env` rename is required — **except** when the effective `encryption.key` is a short CI3 key, whether it comes from `.env` or from `ENCRYPTION_KEY`. In that case `env:provision` rotates the key: it writes the new CI4 key to `.env`, and (when `.env` already contains an `encryption.key=` line) the old key as a commented line. That rotation still requires `.env` to be atomically replaceable (see the CI3 note below and the warning in the alternative option). Protect `.env`, and delete the commented old key once the upgrade is complete.
+
+> [!NOTE]
+> The container does **not** inherit your shell's environment variables. A `THROTTLE_KEY` or `ENCRYPTION_KEY` that exists only in your shell will not reach the app — it must be declared in the Compose `environment` list **or** a service `env_file`, not both. Compose `environment` overrides `env_file`, and an unresolved `${...}` entry becomes an empty string that would win over the file's value — so if you supply these keys via `env_file`, remove them from the `environment` list.
+
+#### Alternative — let the application generate them into `.env`
+
+The simplest path for a quick local start. The bundled `docker-compose.yml` bind-mounts a single host file `./.env` to `/app/.env`:
+
+```yaml
+volumes:
+    - type: bind
+      source: ./.env
+      target: /app/.env
+      bind:
+          create_host_path: false
+```
+
+`create_host_path: false` means a missing host file fails startup instead of being auto-created as a directory (a directory would break the app's atomic `.env` write).
+
+1. Create the host `.env` file from the example **only if it does not already exist** (re-running a plain copy would overwrite the keys `env:provision` has already written):
+
+   ```bash
+   [ -f .env ] || cp .env.example .env
+   ```
+
+2. Start the stack:
+
+   ```bash
+   docker-compose up
+   ```
+
+On start the service runs `php spark env:provision` before Apache, which generates both keys (32 random bytes each) and persists them into that `.env` file. Because the keys live in the host file, they survive container recreation and image upgrades.
+
+> [!WARNING]
+> `env:provision` persists keys by writing a temp file in the `.env`'s directory and then `rename()`-ing it over `.env`. On Linux, `rename()` **cannot replace a mount point**, and a single-file bind mount (like the one above) makes `.env` a mount point — so this write can fail, `env:provision` exits non-zero, and Apache never starts (the `&&` in the compose `command`). The throttle key is re-written on **every** start, not just the first, so the failure recurs. Use this option only when `.env` is a regular file in an atomically-replaceable location (a directory-backed mount or the container's own filesystem); otherwise use the recommended environment approach above.
+
+#### Key-change and backup caveats
+
+- **Keep the value stable across restarts.** Whatever store you use (the bind-mounted `.env`, a Compose-side `.env`, or an `env_file`), make sure the same value is present every time the container is created, or the throttle/encryption state will be reset.
+- **Changing `throttle.key` resets active login rate limits.** The key is the HMAC input for the throttle cache keys, so a new key makes the existing throttle buckets unrecognisable — a currently-throttled login is effectively un-throttled.
+- **Back up `encryption.key`.** It is a hard secret: any stored secret encrypted with it is unrecoverable if the key is lost. Keep an out-of-band backup and never commit it to the repository.
+- **Do not put real keys in this file or in commits.** The `openssl rand -hex 32` placeholders above are for illustration only — always use a freshly generated value.
+
+#### Upgrading from CI3
+
+Do **not** supply a brand-new `ENCRYPTION_KEY` before upgrading a CI3 installation. The existing short `encryption.key` is required to decrypt the stored CI3 secrets; `env:provision` then rotates it to a new CI4 key in place and re-encrypts the data.
+
+### Background job scheduling under Docker
 
 Docker containers are single-process by default, so cron does not run inside the OSPOS container out of the box — this is why **Web mode is the default** and works with zero extra Docker configuration.
 
@@ -168,6 +206,8 @@ worker:
     - MYSQL_PASSWORD=pointofsale
     - MYSQL_DB_NAME=ospos
 ```
+
+The worker reads `encryption.key` and `throttle.key` from the bind-mounted `.env`, the same file the main service uses. If you supplied `ENCRYPTION_KEY` / `THROTTLE_KEY` through the Compose `environment` list instead (see [Throttle and encryption keys](#throttle-and-encryption-keys)), declare the same entries on the `worker` service, because the container does not inherit your shell's environment.
 
 **Option 2: supervisor inside the container**
 
@@ -275,3 +315,52 @@ curl -sSL https://raw.githubusercontent.com/opensourcepos/opensourcepos/master/t
 For other cloud providers or manual installation, see the [detailed installation guide](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) in the wiki.
 
 **Important:** Change the default password after first login!
+
+## Background Job Scheduling
+
+OSPOS is scaffolding a background job queue (Office → Job Queue) for long-running tasks such as large CSV imports. This is Phase 1: the scheduler infrastructure and trigger modes exist, but no real job types are wired up yet. Currently the scheduler only runs a `jobs_heartbeat` placeholder task that writes a debug log entry; the "Process All Jobs" / "Process Selected Jobs" endpoints on the Job Queue → Utilities tab are stubs that return `not_yet_implemented`. Actual job processing (e.g. CSV imports) will land in a later phase.
+
+The three trigger modes below control how/when the scheduler runs, not what it processes yet:
+
+- **Web** (default) — no setup required. The scheduler runs via a request hook after page loads, using `fastcgi_finish_request()` where available. Works out of the box on shared hosting, VPS, and Docker.
+- **Auto** — a cron entry (Linux/Mac) or Task Scheduler task (Windows) triggers the scheduler on a fixed interval. Recommended for VPS/dedicated servers with cron access.
+- **Manual** — `php spark tasks:run` can be invoked by hand to run the scheduler once. The "Process All Jobs" button on the Job Queue → Utilities tab is present but not yet functional (Phase 1 stub).
+
+### `auto` mode: Linux/Mac cron
+
+Add the following entry to your crontab (`crontab -e`), adjusting the path to your OSPOS install:
+
+```
+* * * * * cd /path/to/ospos && php spark tasks:run >> /dev/null 2>&1
+```
+
+### `auto` mode: Windows Task Scheduler
+
+The Task Scheduler GUI's fastest repeat interval is 5 minutes. To match the once-per-minute cadence of the cron example above, use the `tools/Windows/create-windows-task-scheduler-task.ps1` script instead, which registers the task via `New-ScheduledTaskTrigger -RepetitionInterval`. It also sets up "Run whether user is logged on or not" + "Do not store password" and "Run task as soon as possible after a scheduled start is missed" automatically.
+
+1. Open PowerShell **as Administrator** (`Register-ScheduledTask` requires elevation) and `cd` to your OSPOS project root.
+2. Run the script, replacing `-PhpPath` and `-ProjectPath` with your actual PHP and install paths:
+   ```powershell
+   .\tools\Windows\create-windows-task-scheduler-task.ps1 -PhpPath '[PATH TO PHP EXECUTABLE]' -ProjectPath '[PATH TO PROJECT ROOT]'
+   ```
+   - `-PhpPath`: full path to `php.exe`.
+   - `-ProjectPath`: the OSPOS project root — the directory containing the `spark` file.
+   - Optionally pass `-TaskName` to override the default task name of `OSPOS Task Runner`.
+3. Verify the task in Task Scheduler: it should show a 1-minute repeat interval, and the **General** tab should show "Run whether user is logged on or not" with "Do not store password" checked.
+4. Verify the registered task fires correctly:
+   - **Start it now** (PowerShell as Administrator):
+     ```powershell
+     Start-ScheduledTask -TaskName 'OSPOS Task Runner'
+     ```
+   - **Check its last result** — `0x0` means success:
+     ```powershell
+     Get-ScheduledTaskInfo -TaskName 'OSPOS Task Runner' | Select-Object LastRunTime, LastTaskResult
+     ```
+   - **Confirm the heartbeat** — `LastTaskResult: 0x0` above is the primary success signal. A timestamped `Job Queue heartbeat` line also appears in `writable/logs/` **only when debug logging is enabled** (`logger.threshold=8` or `CI_ENVIRONMENT=development` in `.env`); in production the log level filters it out, so a missing log line is expected and does not indicate failure.
+   - If the last result is non-zero, open `cmd.exe`, `cd` to the OSPOS project root, and run `php.exe spark tasks:run` interactively to see the raw output (`Running Tasks...` → `Completed Running Tasks`).
+
+### `manual` mode
+
+No setup is required. Set Mode to Manual on the Job Queue → Settings tab, then use the "Process All Jobs" button on the Utilities tab whenever you need jobs processed.
+
+For Docker installs, see [Background job scheduling under Docker](#background-job-scheduling-under-docker).
