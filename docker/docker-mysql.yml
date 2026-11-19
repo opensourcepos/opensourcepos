@@ -26,3 +26,4 @@ services:
           - MYSQL_DATABASE=ospos
           - MYSQL_USER=admin
           - MYSQL_PASSWORD=pointofsale
+          - MARIADB_AUTO_UPGRADE=1
