@@ -27,7 +27,7 @@ return [
     'items'                      => 'Artikel',
     'items_desc'                 => 'Hinzufügen, Ändern, Löschen und Suchen',
     'messages'                   => '',
-    'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
+    'messages_desc'              => '',
     'migrate'                    => '',
     'migrate_desc'               => '',
     'office'                     => '',
