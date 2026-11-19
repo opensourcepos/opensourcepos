@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Queue\Enums\Status;
 use CodeIgniter\Queue\Models\QueueJobModel as BaseQueueJobModel;
+use RuntimeException;
 
 class QueueJobModel extends BaseQueueJobModel
 {
@@ -50,9 +51,11 @@ class QueueJobModel extends BaseQueueJobModel
 
     /**
      * Puts reserved jobs back to pending without touching their attempts or
-     * availability. Only rows that are still reserved are changed.
+     * availability. Only rows that are still reserved are changed, so zero
+     * affected rows is a success: the row was already released or finished.
      *
      * @param int[] $ids
+     * @throws RuntimeException If the update itself fails.
      */
     public function releaseReservedByIds(array $ids): int
     {
@@ -60,10 +63,14 @@ class QueueJobModel extends BaseQueueJobModel
             return 0;
         }
 
-        $this->builder()
+        $updated = $this->builder()
             ->whereIn('id', $ids)
             ->where('status', Status::RESERVED->value)
             ->update(['status' => Status::PENDING->value]);
+
+        if ($updated === false) {
+            throw new RuntimeException('Failed to release reserved jobs');
+        }
 
         return $this->db->affectedRows();
     }

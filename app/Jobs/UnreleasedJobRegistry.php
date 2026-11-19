@@ -6,14 +6,21 @@ use RuntimeException;
 
 /**
  * File-backed list of reserved job ids that a worker popped but could not put
- * back. Every read-modify-write holds an exclusive file lock, and claim()
- * empties the list in the same locked step, so two workers can never receive
- * the same id and ids recorded concurrently are never lost.
+ * back. Every change holds an exclusive file lock.
+ *
+ * claim() does not delete the ids: it moves them to a lease held by the
+ * claiming owner, so no other worker receives them while the owner releases
+ * them. complete() drops the lease once the release succeeded and abandon()
+ * returns the ids to the list if it did not. A lease that is never completed
+ * (the owner stopped) expires and its ids are handed to the next claimer, so
+ * an id is never lost and never held by two live owners at once.
  */
 final class UnreleasedJobRegistry
 {
-    public function __construct(private readonly string $path)
-    {
+    public function __construct(
+        private readonly string $path,
+        private readonly int $leaseSeconds = 300,
+    ) {
     }
 
     /**
@@ -21,25 +28,65 @@ final class UnreleasedJobRegistry
      */
     public function record(array $ids): void
     {
-        $this->update(static fn (array $current): array => array_values(array_unique(array_merge($current, array_map('intval', $ids)))));
+        $this->update(static function (array $state) use ($ids): array {
+            $state['pending'] = array_values(array_unique(array_merge($state['pending'], array_map('intval', $ids))));
+
+            return $state;
+        });
     }
 
     /**
-     * Removes and returns every recorded id; the caller now owns them.
+     * Leases every pending id, plus the ids of expired leases, to $owner.
      *
      * @return int[]
      */
-    public function claim(): array
+    public function claim(string $owner, ?int $now = null): array
     {
+        $now ??= time();
         $claimed = [];
 
-        $this->update(static function (array $current) use (&$claimed): array {
-            $claimed = $current;
+        $this->update(function (array $state) use ($owner, $now, &$claimed): array {
+            $ids = $state['pending'];
 
-            return [];
+            foreach ($state['claims'] as $claimOwner => $claim) {
+                if ($claim['at'] + $this->leaseSeconds <= $now) {
+                    $ids = array_merge($ids, $claim['ids']);
+                    unset($state['claims'][$claimOwner]);
+                }
+            }
+
+            $claimed = array_values(array_unique($ids));
+            $state['pending'] = [];
+
+            if ($claimed !== []) {
+                $state['claims'][$owner] = ['ids' => $claimed, 'at' => $now];
+            }
+
+            return $state;
         });
 
         return $claimed;
+    }
+
+    public function complete(string $owner): void
+    {
+        $this->update(static function (array $state) use ($owner): array {
+            unset($state['claims'][$owner]);
+
+            return $state;
+        });
+    }
+
+    public function abandon(string $owner): void
+    {
+        $this->update(static function (array $state) use ($owner): array {
+            if (isset($state['claims'][$owner])) {
+                $state['pending'] = array_values(array_unique(array_merge($state['pending'], $state['claims'][$owner]['ids'])));
+                unset($state['claims'][$owner]);
+            }
+
+            return $state;
+        });
     }
 
     private function update(callable $change): void
@@ -61,8 +108,7 @@ final class UnreleasedJobRegistry
                 throw new RuntimeException('Cannot lock unreleased job registry: ' . $this->path);
             }
 
-            $decoded = json_decode((string)stream_get_contents($handle), true);
-            $next = $change(is_array($decoded) ? array_map('intval', $decoded) : []);
+            $next = $change($this->normalize(json_decode((string)stream_get_contents($handle), true)));
 
             ftruncate($handle, 0);
             rewind($handle);
@@ -72,5 +118,24 @@ final class UnreleasedJobRegistry
         } finally {
             fclose($handle);
         }
+    }
+
+    private function normalize(mixed $decoded): array
+    {
+        $state = ['pending' => [], 'claims' => []];
+
+        if (!is_array($decoded)) {
+            return $state;
+        }
+
+        $state['pending'] = array_map('intval', (array)($decoded['pending'] ?? []));
+
+        foreach ((array)($decoded['claims'] ?? []) as $owner => $claim) {
+            if (is_array($claim) && isset($claim['at'], $claim['ids'])) {
+                $state['claims'][(string)$owner] = ['ids' => array_map('intval', (array)$claim['ids']), 'at' => (int)$claim['at']];
+            }
+        }
+
+        return $state;
     }
 }

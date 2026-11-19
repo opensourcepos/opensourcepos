@@ -328,15 +328,18 @@ class BoundedQueueWorker
 
     /**
      * Releases jobs an earlier run popped but could not put back. The ids are
-     * claimed from the registry first, so no other worker can receive them, and
-     * they are never processed by this worker's own claim, so they keep their
-     * attempts. If the database is still failing the claimed ids are recorded
-     * again for the next run.
+     * leased to this run, so no other worker receives them, and they keep
+     * their attempts. The lease is completed only after the database update
+     * succeeds; otherwise the ids go back to the registry, and if this run
+     * stops in between, the lease expires and the next run takes them over.
      */
     private function recoverUnreleased(): void
     {
+        $registry = $this->unreleasedRegistry();
+        $owner = bin2hex(random_bytes(8));
+
         try {
-            $ids = $this->unreleasedRegistry()->claim();
+            $ids = $registry->claim($owner);
         } catch (Throwable $e) {
             job_log('default', 'error', 'Could not read stranded jobs: ' . $e->getMessage());
 
@@ -351,7 +354,20 @@ class BoundedQueueWorker
             model(QueueJobModel::class)->releaseReservedByIds($ids);
         } catch (Throwable $e) {
             job_log('default', 'error', 'Could not release previously stranded job(s): ' . $e->getMessage());
-            $this->rememberUnreleased($ids);
+            $this->settleClaim($registry, $owner, false);
+
+            return;
+        }
+
+        $this->settleClaim($registry, $owner, true);
+    }
+
+    private function settleClaim(UnreleasedJobRegistry $registry, string $owner, bool $released): void
+    {
+        try {
+            $released ? $registry->complete($owner) : $registry->abandon($owner);
+        } catch (Throwable $e) {
+            job_log('default', 'error', 'Could not update stranded job registry: ' . $e->getMessage());
         }
     }
 

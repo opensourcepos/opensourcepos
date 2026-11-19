@@ -19,6 +19,13 @@ class FailingCommitConnection extends Connection
         return new self((array)config(Database::class)->tests);
     }
 
+    public function silenceQueryErrors(): static
+    {
+        $this->DBDebug = false;
+
+        return $this;
+    }
+
     public function transCommit(): bool
     {
         if ($this->failCommit && $this->transDepth === 1) {

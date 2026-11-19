@@ -6,6 +6,7 @@ use App\Jobs\BoundedQueueWorker;
 use App\Models\JobThrottle;
 use App\Libraries\ImportBatchService;
 use App\Models\ImportBatch;
+use App\Models\QueueJobModel;
 use CodeIgniter\Config\Factories;
 use CodeIgniter\Queue\Entities\QueueJob;
 use CodeIgniter\Queue\Handlers\DatabaseHandler;
@@ -600,5 +601,48 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->assertSame(0, $this->db->table('queue_jobs')->where('queue', 'default')->countAllResults());
         $this->seeInDatabase('queue_jobs', ['id' => $runningId, 'status' => 1]);
         $this->assertSame(0, $this->db->table('queue_jobs_failed')->countAllResults());
+    }
+
+    public function testRun_KeepsStrandedJobRecoverableWhenReleaseUpdateFailsThenRecoversIt(): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 1]);
+        service('queue')->push('default', 'success', []);
+
+        $handler = new class (config('Queue')) extends DatabaseHandler {
+            public function later(QueueJob $queueJob, int $seconds): bool
+            {
+                return false;
+            }
+        };
+        Services::injectMock('queue', $handler);
+
+        $worker = new BoundedQueueWorker(['default'], microtime(true) + 5, maxJobs: 1);
+        $worker->run();
+
+        $this->seeInDatabase('queue_jobs', ['queue' => 'default', 'status' => 1]);
+
+        Services::reset();
+
+        $failingUpdate = new class () extends QueueJobModel {
+            public function releaseReservedByIds(array $ids): int
+            {
+                throw new RuntimeException('Failed to release reserved jobs');
+            }
+        };
+        Factories::injectMock('models', QueueJobModel::class, $failingUpdate);
+
+        $firstRecovery = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $firstRecovery->run();
+
+        Factories::reset('models');
+
+        $this->assertSame(0, $firstRecovery->getProcessedCount());
+        $this->seeInDatabase('queue_jobs', ['queue' => 'default', 'status' => 1]);
+
+        $secondRecovery = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $secondRecovery->run();
+
+        $this->assertSame(1, $secondRecovery->getProcessedCount());
+        $this->assertSame(0, $this->db->table('queue_jobs')->where('queue', 'default')->countAllResults());
     }
 }

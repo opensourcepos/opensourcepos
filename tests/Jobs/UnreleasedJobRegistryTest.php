@@ -56,18 +56,52 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
         return $outputs;
     }
 
-    public function testRecord_ClaimReturnsEveryRecordedIdOnceAndEmptiesTheList(): void
+    public function testClaim_ReturnsEveryRecordedIdOnceAndLeavesNothingPending(): void
     {
         $registry = new UnreleasedJobRegistry($this->path);
 
         $registry->record([3, 1]);
         $registry->record([1, 2]);
 
-        $claimed = $registry->claim();
+        $claimed = $registry->claim('owner-a');
         sort($claimed);
 
         $this->assertSame([1, 2, 3], $claimed);
-        $this->assertSame([], $registry->claim());
+        $this->assertSame([], $registry->claim('owner-b'));
+    }
+
+    public function testClaim_InterruptedClaimIsNotTakenWhileLeaseIsActiveAndExpiresAfterwards(): void
+    {
+        $registry = new UnreleasedJobRegistry($this->path, 300);
+        $registry->record([7, 8]);
+
+        $this->assertSame([7, 8], $registry->claim('stopped-worker', 1000));
+
+        $this->assertSame([], $registry->claim('other-worker', 1299));
+
+        $this->assertSame([7, 8], $registry->claim('other-worker', 1300));
+    }
+
+    public function testComplete_DropsTheLeaseSoTheIdsAreNeverHandedOutAgain(): void
+    {
+        $registry = new UnreleasedJobRegistry($this->path, 300);
+        $registry->record([5]);
+        $registry->claim('worker', 1000);
+
+        $registry->complete('worker');
+
+        $this->assertSame([], $registry->claim('later-worker', 99999));
+    }
+
+    public function testAbandon_ReturnsLeasedIdsToTheRegistryForTheNextClaim(): void
+    {
+        $registry = new UnreleasedJobRegistry($this->path, 300);
+        $registry->record([5, 6]);
+        $registry->claim('worker', 1000);
+
+        $registry->abandon('worker');
+
+        $this->assertSame([5, 6], $registry->claim('next-worker', 1001));
     }
 
     public function testRecord_ConcurrentWorkersLoseNoIds(): void
@@ -78,7 +112,7 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
 
         $this->runInParallel($code, array_map(static fn (int $worker): array => [$worker], range(1, self::WORKERS)));
 
-        $claimed = (new UnreleasedJobRegistry($this->path))->claim();
+        $claimed = (new UnreleasedJobRegistry($this->path))->claim('collector');
 
         $this->assertCount(self::WORKERS * 40, $claimed);
         $this->assertCount(self::WORKERS * 40, array_unique($claimed));
@@ -89,7 +123,13 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
         $code = 'require "app/Jobs/UnreleasedJobRegistry.php";'
             . '$registry = new App\Jobs\UnreleasedJobRegistry($argv[1]);'
             . '$claimed = [];'
-            . 'for ($i = 0; $i < 40; $i++) { $registry->record([(int)$argv[2] * 1000 + $i]); $claimed = array_merge($claimed, $registry->claim()); }'
+            . 'for ($i = 0; $i < 40; $i++) {'
+            . ' $registry->record([(int)$argv[2] * 1000 + $i]);'
+            . ' $owner = $argv[2] . "-" . $i;'
+            . ' $ids = $registry->claim($owner);'
+            . ' $claimed = array_merge($claimed, $ids);'
+            . ' $registry->complete($owner);'
+            . '}'
             . 'echo implode(",", $claimed);';
 
         $outputs = $this->runInParallel($code, array_map(static fn (int $worker): array => [$worker], range(1, self::WORKERS)));
@@ -102,7 +142,7 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
             }
         }
 
-        $claimed = array_merge($claimed, (new UnreleasedJobRegistry($this->path))->claim());
+        $claimed = array_merge($claimed, (new UnreleasedJobRegistry($this->path))->claim('collector'));
 
         $this->assertCount(self::WORKERS * 40, $claimed);
         $this->assertCount(self::WORKERS * 40, array_unique($claimed));
