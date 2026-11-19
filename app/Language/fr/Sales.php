@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Trouver/Scanner Article OU Reçu',
     'giftcard'                          => 'Carte Cadeau',
     'giftcard_balance'                  => 'Solde de la Carte-Cadeau',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Numéro de Carte cadeau',
     'group_by_category'                 => 'Grouper par catégorie',
     'group_by_type'                     => 'Regrouper par type',

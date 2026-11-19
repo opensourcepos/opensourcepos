@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Gaseste sau scaneaza Articol sau Chitanta',
     'giftcard'                          => 'Card Cadou',
     'giftcard_balance'                  => 'Sold Card Cadou',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Numar Card Cadou',
     'group_by_category'                 => 'Grupare dupa Categorie',
     'group_by_type'                     => 'Grupare dupa Tip',

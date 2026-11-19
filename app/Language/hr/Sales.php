@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Pronađi/Skaniraj artikal ili račun',
     'giftcard'                          => 'Poklon bon',
     'giftcard_balance'                  => 'Saldo poklon bona',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Poklon bon br.',
     'group_by_category'                 => '',
     'group_by_type'                     => '',

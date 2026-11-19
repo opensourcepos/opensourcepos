@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Najít nebo skenovat položku či účtenku',
     'giftcard'                          => 'Dárkový poukaz',
     'giftcard_balance'                  => '',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Číslo dárkového poukazu',
     'group_by_category'                 => 'Seskupit podle kategorií',
     'group_by_type'                     => 'Seskupit podle typu',

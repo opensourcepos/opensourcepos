@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => "ស្វែងរក ឬ\u{200b}ស្កេនទំនិញ ឬ វិក័យបត្រ",
     'giftcard'                          => 'កាតអំណោយ',
     'giftcard_balance'                  => 'សមតុល្យលើកាតអំណោយ',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'លេខកាតអំណោយ',
     'group_by_category'                 => '',
     'group_by_type'                     => '',

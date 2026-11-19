@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => '查找/掃描產品或收貨單',
     'giftcard'                          => '禮金券',
     'giftcard_balance'                  => '䄠金劵餘額',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => '禮金券編號',
     'group_by_category'                 => '以類別分類',
     'group_by_type'                     => '以類型分類',

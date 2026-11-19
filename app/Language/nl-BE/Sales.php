@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Zoek/Scan Product of Ticket',
     'giftcard'                          => 'Cadeaubon',
     'giftcard_balance'                  => 'Cadeaubon Resterend',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Cadeaubon nummer',
     'group_by_category'                 => 'Per Categorie',
     'group_by_type'                     => 'Per Type',

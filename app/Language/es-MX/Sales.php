@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Buscar o escanear artículo o recibo',
     'giftcard'                          => 'Tarjeta de regalo',
     'giftcard_balance'                  => 'Balance de Tarjeta de Regalo',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Número de tarjeta de regalo',
     'group_by_category'                 => 'Grupo por Categoría',
     'group_by_type'                     => 'Grupo por Tipo',

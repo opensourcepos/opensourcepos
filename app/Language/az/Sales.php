@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Malı və ya Çeki Tap və ya Skan Et',
     'giftcard'                          => 'Hədiyyə Kartı',
     'giftcard_balance'                  => 'Hədiyyə Kartı Balansı',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Hədiyyə Kartının Nömrəsi',
     'group_by_category'                 => 'Kateqoriyaya görə Qrupla',
     'group_by_type'                     => 'Növə görə Qrupla',

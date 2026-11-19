@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'بحث/مسح باركود المادة أو الايصال',
     'giftcard'                          => 'بطاقة هدية',
     'giftcard_balance'                  => 'رصيد بطاقة الهدية',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'رقم بطاقة الهدية',
     'group_by_category'                 => 'ترتيب حسب الفئة',
     'group_by_type'                     => 'ترتيب حسب النوع',

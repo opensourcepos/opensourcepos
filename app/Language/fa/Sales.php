@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'یافتن یا اسکن کردن مورد یا رسید',
     'giftcard'                          => 'کارت هدیه',
     'giftcard_balance'                  => 'مانده کارت هدیه',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'شماره کارت هدیه',
     'group_by_category'                 => 'گروه بر اساس طبقه بندی',
     'group_by_type'                     => 'گروه براساس نوع',

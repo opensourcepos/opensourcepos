@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Find or Scan Item or Receipt',
     'giftcard'                          => 'Gift Card',
     'giftcard_balance'                  => 'Gift Card Balance',
+    'giftcard_credit_exceeds_return'    => 'Gift card credit cannot exceed the return total.',
     'giftcard_number'                   => 'Gift Card Number',
     'group_by_category'                 => 'Group by Category',
     'group_by_type'                     => 'Group by Type',
