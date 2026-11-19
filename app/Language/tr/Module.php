@@ -27,7 +27,7 @@ return [
     'items'                      => 'Ürünler',
     'items_desc'                 => 'Ekleme, değiştirme, silme ve arama.',
     'messages'                   => '',
-    'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
+    'messages_desc'              => '',
     'migrate'                    => 'Göç',
     'migrate_desc'               => 'Database güncelleme.',
     'office'                     => 'Yönetim',
