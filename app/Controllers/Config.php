@@ -386,9 +386,19 @@ class Config extends Secure_Controller
     public function postSaveGeneral(): ResponseInterface
     {
         $rules = [
-            'theme' => 'permit_empty|themeExists',
+            'theme'                    => 'permit_empty|themeExists',
+            'table_polling_frequency' => 'required|is_natural|less_than_equal_to[60]',
         ];
-        if (!$this->validate($rules)) {
+
+        $messages = [
+            'table_polling_frequency' => [
+                'required'           => lang('Config.table_polling_frequency_required'),
+                'is_natural'         => lang('Config.table_polling_frequency_number'),
+                'less_than_equal_to' => lang('Config.table_polling_frequency_range'),
+            ],
+        ];
+
+        if (!$this->validate($rules, $messages)) {
             $errors = $this->validator->getErrors();
             return $this->response->setJSON(['success' => false, 'message' => reset($errors)]);
         }
@@ -403,6 +413,7 @@ class Config extends Secure_Controller
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
+            'table_polling_frequency'           => $this->request->getPost('table_polling_frequency', FILTER_SANITIZE_NUMBER_INT),
             'notify_horizontal_position'        => $this->request->getPost('notify_horizontal_position'),
             'notify_vertical_position'          => $this->request->getPost('notify_vertical_position'),
             'image_max_width'                   => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),

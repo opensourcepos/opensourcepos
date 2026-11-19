@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'A feltöltött fájlban nincs adat, vagy rossz formátum.',
     'csv_import_partially_failed'        => '',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => '',
     'current_quantity'                   => 'Jelenlegi mennyiség',
     'default_pack_name'                  => '',

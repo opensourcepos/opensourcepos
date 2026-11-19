@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Uingizaji wa CSV umeshindikana',
     'csv_import_nodata_wrongformat' => 'Faili iliyopakiwa haina data au imepangwa vibaya.',
     'csv_import_partially_failed'   => 'Uingizaji wa wateja umefanikiwa na baadhi ya makosa:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Uingizaji wa wateja umefanikiwa.',
     'customer'                      => 'Mteja',
     'date'                          => 'Tarehe',

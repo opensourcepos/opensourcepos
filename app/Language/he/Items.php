@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'בקובץ שהועלה אין נתונים או פורמט שגוי.',
     'csv_import_partially_failed'        => 'ייבוא פריט הצליח עם מספר שגיאות:',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'ייבוא הפריט הצליח.',
     'current_quantity'                   => 'כמות נוכחית',
     'default_pack_name'                  => 'כל',

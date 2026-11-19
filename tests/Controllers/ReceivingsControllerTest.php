@@ -22,7 +22,7 @@ class ReceivingsControllerTest extends CIUnitTestCase
     protected $migrateOnce = true;
     protected $seedOnce    = true;
     protected $refresh     = false;
-    protected $namespace   = null;
+    protected $namespace   = 'App';
 
     private Stock_location $stock_location;
 

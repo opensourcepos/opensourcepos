@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Falló la importación de Hoja de Cálculo',
     'csv_import_nodata_wrongformat' => 'El archivo subido no tiene informacion o el formato es incorrecto.',
     'csv_import_partially_failed'   => 'La mayoria de los clientes se importaron pero algunos no:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Importacion de Clientes exitosa.',
     'customer'                      => 'Cliente',
     'date'                          => 'Fecha',

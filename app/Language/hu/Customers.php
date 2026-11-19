@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV import sikertelen',
     'csv_import_nodata_wrongformat' => 'A feltöltött fájlban nincs adat, vagy rossz formátum.',
     'csv_import_partially_failed'   => 'A legtöbb vásárló importálva. alább a lista a kimaradottakról',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Vásárlók importálása sikeres',
     'customer'                      => 'Vevő',
     'date'                          => '',

@@ -20,7 +20,7 @@ class ItemSearchTest extends CIUnitTestCase
     protected $seed = '';
     protected $seedOnce = true;
     protected $refresh = false;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     protected $item;
 

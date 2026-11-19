@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta.',
     'csv_import_partially_failed'        => 'Bazı ürünler aktarılamadı. Aktarılamayanlar listesi.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Ürün aktarımı başarılı.',
     'current_quantity'                   => 'Var Olan Adet',
     'default_pack_name'                  => 'Her biri',

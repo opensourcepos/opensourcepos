@@ -20,7 +20,7 @@ class Inventory_lowTest extends CIUnitTestCase
     protected $migrate     = true;
     protected $migrateOnce = true;
     protected $refresh     = false;
-    protected $namespace   = null;
+    protected $namespace   = 'App';
 
     /**
      * Inventory_low::getData() must return an empty array, not throw, when the query fails.

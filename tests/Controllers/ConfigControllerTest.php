@@ -24,7 +24,7 @@ class ConfigControllerTest extends CIUnitTestCase
     protected $migrate     = true;
     protected $migrateOnce = true;
     protected $refresh     = false;
-    protected $namespace   = null;
+    protected $namespace   = 'App';
 
     protected Stock_location $stock_location;
 
@@ -358,6 +358,7 @@ class ConfigControllerTest extends CIUnitTestCase
             'include_hsn'                    => '',
             'category_dropdown'              => '',
             'show_office_group'              => '',
+            'table_polling_frequency'        => '0',
         ], $overrides);
     }
 

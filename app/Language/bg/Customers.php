@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Вносът от CSV не бе успешен',
     'csv_import_nodata_wrongformat' => 'Каченият файл няма данни или е неправилно форматиран.',
     'csv_import_partially_failed'   => 'Вносът на клиента е успешен с няколко грешки:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Вносът на клиенти е успешен.',
     'customer'                      => 'Клиент',
     'date'                          => 'Дата',

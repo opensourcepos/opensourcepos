@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Greška kod uvoza iz CSV-a',
     'csv_import_nodata_wrongformat' => 'Učitana datoteka nema podataka ili je pogrešno formatirana.',
     'csv_import_partially_failed'   => 'Uvoz klijenata je uspio sa nekim greškama:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Uvoz korisnika je uspješan.',
     'customer'                      => 'Kupac',
     'date'                          => 'Datum',

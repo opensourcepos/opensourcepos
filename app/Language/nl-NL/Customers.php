@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV importeren mislukt',
     'csv_import_nodata_wrongformat' => 'Het geüploade bestand bevat geen gegevens or heeft de verkeerde indeling.',
     'csv_import_partially_failed'   => 'Klanten importeren is gelukt, met enkele fouten:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Klanten geïmporteerd.',
     'customer'                      => 'Klant',
     'date'                          => 'Datum',

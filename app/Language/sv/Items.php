@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'Den uppladdade filen har ingen data eller är formaterad felaktigt.',
     'csv_import_partially_failed'        => 'Det fanns{0} importfel (er) på rad (er):{1}. Inga rader importerades.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Artikelimporten lyckades.',
     'current_quantity'                   => 'Nuvarande antal',
     'default_pack_name'                  => 'Varje',

@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Помилка імпорту CSV',
     'csv_import_nodata_wrongformat' => 'Завантажений файл не містить даних або неправильно відформатований.',
     'csv_import_partially_failed'   => 'Імпорт клієнта пройшов успішно, але з деякими збоями:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Імпорт клієнта вдалий.',
     'customer'                      => 'Клієнт',
     'date'                          => 'Дата',

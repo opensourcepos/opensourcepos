@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV Import fehlerhaft',
     'csv_import_nodata_wrongformat' => '',
     'csv_import_partially_failed'   => '',
+    'csv_import_queued'             => '',
     'csv_import_success'            => '',
     'customer'                      => 'Kunde',
     'date'                          => '',

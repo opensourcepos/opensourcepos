@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'پرونده سی‌اس‌وی آپلود شده داده ای ندارد یا به طور نادرست قالب بندی شده است.',
     'csv_import_partially_failed'        => 'در خط (ها){0} شکست واردات کالا وجود دارد:{1}. هیچ سطر وارد نشده است.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'وارد کردن سی‌اس‌وی مورد موفقیت آمیز است.',
     'current_quantity'                   => 'مقدار فعلی',
     'default_pack_name'                  => 'هر یک',

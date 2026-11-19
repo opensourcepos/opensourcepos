@@ -4,6 +4,7 @@ use Config\OSPOS;
 
 ?>
 
+                </div>
             </div>
         </div>
 

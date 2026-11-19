@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'ការនាំចូល CSV បរាជ័យ',
     'csv_import_nodata_wrongformat' => 'ឯកសារដែលដាក់ទៅប្រព័ន្ធ មិនមានទិន្នន័យ ឬ ខុសទម្រង់',
     'csv_import_partially_failed'   => 'ការនាំចូលរបស់អតិថិជនទទួលបានជោគជ័យជាមួយនឹងការបរាជ័យមួយចំនួន:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'ការនាំចូលរបស់អតិថិជនទទួលបានជោគជ័យ',
     'customer'                      => 'អតិថិជន',
     'date'                          => 'កាលបរិច្ឆេទ',

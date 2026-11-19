@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => 'คลังสินค้าไม่ถูกต้องหรือไม่พบ: {0} อนุญาตเฉพาะคลังสินค้าที่มีเท่านั้น',
     'csv_import_nodata_wrongformat'      => '',
     'csv_import_partially_failed'        => 'มีรายการ {0} รายการที่นำเข้าล้มเหลว: {1} รายการที่ยังไม่ได้นำเข้า',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => '',
     'current_quantity'                   => 'ปริมาณสินค้าคงคลัง',
     'default_pack_name'                  => 'ชิ้นละ',

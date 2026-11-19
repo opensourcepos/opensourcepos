@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Gặp lỗi khi nhập từ CSV',
     'csv_import_nodata_wrongformat' => 'Tập tin tải lên không có dữ liệu hoặc là nó có định dạng không đúng.',
     'csv_import_partially_failed'   => 'Nhập khách hàng thành công với một số lỗi:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Nhập khách hàng thành công.',
     'customer'                      => 'Khách hàng',
     'date'                          => 'Ngày',

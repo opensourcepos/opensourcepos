@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'Het geüploade CSV-bestand bevat geen gegevens of is onjuist geformatteerd.',
     'csv_import_partially_failed'        => 'Er waren {0} artikel import fout(en) op regel(s): {1}. Er werden geen rijen geïmporteerd.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Artikel CSV import geslaagd.',
     'current_quantity'                   => 'Huidige hoeveelheid',
     'default_pack_name'                  => 'Enkel',

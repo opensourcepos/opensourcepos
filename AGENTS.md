@@ -43,7 +43,7 @@ This document provides guidance for AI agents working on the Open Source Point o
       protected $migrateOnce = true;
       protected $seedOnce    = true;
       protected $refresh     = false;
-      protected $namespace   = null;
+      protected $namespace   = 'App';
 
       protected function setUp(): void
       {
@@ -54,6 +54,8 @@ This document provides guidance for AI agents working on the Open Source Point o
       }
   }
   ```
+  **Always set `$namespace = 'App'`** — never `null`. `null` causes CI4 to run migrations from every registered namespace including vendor packages (e.g. `CodeIgniter\Queue`), which creates tables without the app's extra columns and breaks tests. Only app-namespace migrations may ever touch the test database.
+
   `DatabaseBootstrapTrait` (`tests/Support/DatabaseBootstrapTrait.php`) wraps `TestDatabaseBootstrapSeeder::reset()` with a per-class static guard so it only runs once per test class. Do **not** reinvent this with a local `private static bool $doneBootstrap` flag, `setUpBeforeClass()`, or `Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder')` followed by a manual `Config::connect($this->DBGroup)->close()`/`resetDataCache()` in the test file — those are the old patterns the trait replaces, and the manual version reintroduces the exact stale-connection bug `TestDatabaseBootstrapSeeder::reset()` already fixes internally. Only add this trait to test classes that actually touch the real test database (`DatabaseTestTrait` users) — pure unit tests that mock everything don't need it.
   If a test class reads `config(OSPOS::class)->settings` for real (not mocking it out), also call `config(OSPOS::class)->update_settings();` right after `parent::setUp();` to force a fresh settings read post-reset. See `tests/Controllers/ReportsControllerTest.php` for that shape.
 - **Mocking OSPOS config settings.** When a test needs `config(OSPOS::class)->settings` to return fixed values instead of reading from the database, `use Tests\Support\OsposConfigFixtureTrait;` and call `$this->injectOsposSettings([...])` instead of manually constructing `new OSPOS()` + `Factories::injectMock('config', OSPOS::class, $ospos)`:
@@ -82,7 +84,17 @@ This document provides guidance for AI agents working on the Open Source Point o
 - Install dependencies: `composer install && npm install`
 - Build assets: `npm run build` or `gulp`
 
-## Conventions
+## MVC Layer Responsibilities
+
+**Controllers** (`app/Controllers/`) — handle HTTP: parse request, call model methods, return response. Never call `$this->db->table(...)` or any raw query builder directly. Never contain business logic or SQL. Orchestrate transactions by calling `$model->db->transStart()` / `transComplete()` on a model's connection — never hold a raw `BaseConnection` property.
+
+**Models** (`app/Models/`) — own all database access. Every table must have a model. Add methods to a model when the controller needs a custom query on that table. Use the CI4 Model query builder (`$this->where(...)->findAll()`) or `$this->builder()` for compile-then-run patterns (e.g. `SELECT … FOR UPDATE`). Raw SQL is acceptable only for clauses the builder cannot express (e.g. appending `FOR UPDATE`). Never call another model's internal DB from a sibling model — if two tables must move together, do it in a controller-managed transaction with each model owning its own table's operations.
+
+**Views** (`app/Views/`) — render HTML only. No database calls, no business logic. Receive all data via the `$data` array passed from the controller.
+
+**Libraries** (`app/Libraries/`) — stateless or stateful services that are not HTTP-bound: workers, processors, importers, complex calculations. No direct HTTP input/output. May call models.
+
+**Helpers** (`app/Helpers/`) — pure functions with no side effects (formatting, transformation, string utilities). No database access, no model calls.
 
 - Controllers go in `app/Controllers/`
 - Models go in `app/Models/`

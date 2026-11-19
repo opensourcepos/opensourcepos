@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'هاوردەکردنی CSV سەرکەوتوو نەبوو',
     'csv_import_nodata_wrongformat' => 'پەڕگەی بارکراو هیچ داتایەکی نیە یان فۆرماتی هەڵەی بۆ کراوە.',
     'csv_import_partially_failed'   => 'هاوردەکردنی کڕیار سەرکەوتوو بوو لەگەڵ هەندێک شکست:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'هاوردەکردنی کڕیار سەرکەوتوو بوو.',
     'customer'                      => 'کڕیار',
     'date'                          => 'ڕێکەوت',

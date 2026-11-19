@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => '',
     'csv_import_nodata_wrongformat'      => 'Nahraný soubor neobsahuje žádná data nebo má špatný formát.',
     'csv_import_partially_failed'        => 'Při importu položek došlo k několika chybám:',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Import položek proběhl bez chyby.',
     'current_quantity'                   => 'Množství skladem',
     'default_pack_name'                  => '',

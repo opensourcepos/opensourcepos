@@ -29,6 +29,7 @@ return [
     'csv_import_invalid_location'        => 'Ungültige Lagerorte gefunden: {0}. Nur gültige Lagerorte sind erlaubt.',
     'csv_import_nodata_wrongformat'      => 'Die hochgeladene Datei enthält keine Daten oder ist falsch formatiert.',
     'csv_import_partially_failed'        => '{0} Artikel-Import Fehler in Zeile: {1}. Keine Reihen wurden importiert.',
+    'csv_import_queued'                  => '',
     'csv_import_success'                 => 'Artikelimport erfolgreich.',
     'current_quantity'                   => 'Aktuelle Menge',
     'default_pack_name'                  => 'Jedes',

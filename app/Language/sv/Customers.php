@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV-import misslyckades',
     'csv_import_nodata_wrongformat' => 'Den uppladdade filen har ingen data eller är formaterad felaktigt.',
     'csv_import_partially_failed'   => 'Kundimporten lyckades med några misslyckanden:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Kundimporten lyckades.',
     'customer'                      => 'Kund',
     'date'                          => 'Datum',

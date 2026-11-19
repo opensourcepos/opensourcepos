@@ -1,0 +1,321 @@
+<?php
+
+namespace Tests\Models;
+
+use App\Models\ImportBatch;
+use App\Models\ImportBatchContext;
+use CodeIgniter\Database\Config;
+use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
+use RuntimeException;
+use Tests\Support\FailingCommitConnection;
+use Throwable;
+
+class ImportBatchTest extends CIUnitTestCase
+{
+    use DatabaseTestTrait;
+
+    protected $migrate = true;
+    protected $migrateOnce = true;
+    protected $refresh = false;
+    protected $namespace = 'App';
+
+    private static bool $doneBootstrap = false;
+
+    protected ImportBatch $importBatch;
+    protected ImportBatchContext $importBatchContext;
+
+    protected function setUp(): void
+    {
+        if (self::$doneBootstrap === false) {
+            Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder');
+            Config::connect($this->DBGroup)->close();
+
+            self::$doneBootstrap = true;
+        }
+
+        parent::setUp();
+
+        $this->importBatch = model(ImportBatch::class);
+        $this->importBatchContext = model(ImportBatchContext::class);
+
+        $this->db->table('queue_jobs')->truncate();
+        $this->db->table('queue_jobs_failed')->truncate();
+        $this->db->table('import_batch_contexts')->where('id >', 0)->delete();
+        $this->db->table('import_batches')->truncate();
+    }
+
+    public function testCreateInsertsProcessingBatch(): void
+    {
+        $this->importBatch->create('batch-1', 'items', 3);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-1', 'type' => 'items', 'total' => 3, 'status' => 'processing']);
+    }
+
+    public function testCreateWithZeroTotalIsImmediatelyCompleted(): void
+    {
+        $this->importBatch->create('batch-empty', 'items', 0);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-empty', 'status' => 'completed']);
+    }
+
+    public function testIncrementMarksBatchCompletedWhenAllRowsSucceed(): void
+    {
+        $this->importBatch->create('batch-2', 'items', 2);
+
+        $this->assertFalse($this->importBatch->increment('batch-2', false));
+        $this->assertTrue($this->importBatch->increment('batch-2', false));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-2', 'completed' => 2, 'status' => 'completed']);
+    }
+
+    public function testIncrementMarksBatchPartialWhenARowFails(): void
+    {
+        $this->importBatch->create('batch-3', 'items', 2);
+
+        $this->assertFalse($this->importBatch->increment('batch-3', true));
+        $this->assertTrue($this->importBatch->increment('batch-3', false));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-3', 'completed' => 1, 'failed' => 1, 'status' => 'partial']);
+    }
+
+    public function testAdjustTotal_CompletesBatchWhenTotalReachesZero(): void
+    {
+        $this->importBatch->create('batch-adj-zero', 'items', 1);
+
+        $this->assertTrue($this->importBatch->adjustTotal('batch-adj-zero', -1));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-adj-zero', 'total' => 0, 'status' => 'completed']);
+    }
+
+    public function testAdjustTotal_MarksBatchPartialWhenRemainingRowsAlreadyFinishedWithFailure(): void
+    {
+        $this->importBatch->create('batch-adj-partial', 'items', 2);
+        $this->importBatch->increment('batch-adj-partial', true);
+
+        $this->importBatch->adjustTotal('batch-adj-partial', -1);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-adj-partial', 'total' => 1, 'failed' => 1, 'status' => 'partial']);
+    }
+
+    public function testAdjustTotal_ReturnsFalseForUnknownBatch(): void
+    {
+        $this->assertFalse($this->importBatch->adjustTotal('batch-missing', -1));
+    }
+
+    public function testReleaseFailed_DecrementsFailedAndReopensPartialBatch(): void
+    {
+        $this->importBatch->create('batch-release', 'items', 2);
+        $this->importBatch->increment('batch-release', true);
+        $this->importBatch->increment('batch-release', false);
+
+        $this->assertTrue($this->importBatch->releaseFailed('batch-release'));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-release', 'completed' => 1, 'failed' => 0, 'status' => 'processing']);
+    }
+
+    public function testReleaseFailed_CountsRetrySuccessOnlyOnce(): void
+    {
+        $this->importBatch->create('batch-release-once', 'items', 1);
+        $this->importBatch->increment('batch-release-once', true);
+
+        $this->importBatch->releaseFailed('batch-release-once');
+        $this->assertTrue($this->importBatch->increment('batch-release-once', false));
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-release-once', 'completed' => 1, 'failed' => 0, 'status' => 'completed']);
+    }
+
+    public function testReleaseFailed_DoesNotGoBelowZero(): void
+    {
+        $this->importBatch->create('batch-release-floor', 'items', 2);
+
+        $this->importBatch->releaseFailed('batch-release-floor');
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-release-floor', 'failed' => 0]);
+    }
+
+    public function testReleaseFailed_ReturnsFalseForUnknownBatch(): void
+    {
+        $this->assertFalse($this->importBatch->releaseFailed('batch-missing'));
+    }
+
+    public function testPurgeFinishedDeletesOldCompletedBatchWithNoRemainingJobs(): void
+    {
+        $this->importBatch->create('batch-old', 'items', 1);
+        $this->importBatch->increment('batch-old', false);
+        $this->db->table('import_batches')->where('id', 'batch-old')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-10 days'))]);
+
+        $this->importBatch->purgeFinished(7);
+
+        $this->dontSeeInDatabase('import_batches', ['id' => 'batch-old']);
+    }
+
+    public function testPurgeFinishedKeepsRecentCompletedBatch(): void
+    {
+        $this->importBatch->create('batch-recent', 'items', 1);
+        $this->importBatch->increment('batch-recent', false);
+
+        $this->importBatch->purgeFinished(7);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-recent']);
+    }
+
+    public function testPurgeFinishedDoesNothingWhenRetentionIsZero(): void
+    {
+        $this->importBatch->create('batch-keep-forever', 'items', 1);
+        $this->importBatch->increment('batch-keep-forever', false);
+        $this->db->table('import_batches')->where('id', 'batch-keep-forever')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-100 days'))]);
+
+        $this->importBatch->purgeFinished(0);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-keep-forever']);
+    }
+
+    /**
+     * The anti-fragile guard: a batch past its retention window must not be
+     * purged (and its import_batch_contexts row must survive) while a failed
+     * job still references it in queue_jobs_failed — e.g. kept alive by a
+     * longer failed-job retention window than the batch retention window.
+     */
+    public function testPurgeFinishedKeepsBatchAndContextWhileFailedJobStillReferencesIt(): void
+    {
+        $this->importBatch->create('batch-still-failed', 'items', 1);
+        $this->importBatch->increment('batch-still-failed', true);
+        $this->db->table('import_batches')->where('id', 'batch-still-failed')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-10 days'))]);
+
+        $contextId = $this->importBatchContext->create('batch-still-failed', ['definition_names' => []]);
+
+        $this->db->table('queue_jobs_failed')->insert([
+            'connection' => 'database',
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-still-failed',
+            'context_id' => $contextId,
+            'payload'    => '{}',
+            'priority'   => 'low',
+            'attempts'   => 3,
+            'exception'  => 'boom',
+            'failed_at'  => time(),
+        ]);
+
+        $this->importBatch->purgeFinished(7);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-still-failed']);
+        $this->seeInDatabase('import_batch_contexts', ['id' => $contextId]);
+    }
+
+    public function testPurgeFinishedKeepsBatchWhilePendingJobStillReferencesIt(): void
+    {
+        $this->importBatch->create('batch-still-pending', 'items', 1);
+        $this->importBatch->increment('batch-still-pending', false);
+        $this->db->table('import_batches')->where('id', 'batch-still-pending')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-10 days'))]);
+
+        $this->db->table('queue_jobs')->insert([
+            'queue'        => 'imports',
+            'batch_id'     => 'batch-still-pending',
+            'payload'      => '{}',
+            'priority'     => 'low',
+            'status'       => 0,
+            'attempts'     => 0,
+            'available_at' => time(),
+            'created_at'   => time(),
+        ]);
+
+        $this->importBatch->purgeFinished(7);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-still-pending']);
+    }
+
+    public function testPurgeFinishedDeletesContextOnceAllReferencingJobsAreGone(): void
+    {
+        $this->importBatch->create('batch-clean', 'items', 1);
+        $this->importBatch->increment('batch-clean', false);
+        $this->db->table('import_batches')->where('id', 'batch-clean')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-10 days'))]);
+
+        $contextId = $this->importBatchContext->create('batch-clean', ['definition_names' => []]);
+
+        $this->importBatch->purgeFinished(7);
+
+        $this->dontSeeInDatabase('import_batches', ['id' => 'batch-clean']);
+        $this->dontSeeInDatabase('import_batch_contexts', ['id' => $contextId]);
+    }
+
+    public function testPurgeFinished_KeepsBatchWhilePausedJobStillReferencesIt(): void
+    {
+        $this->importBatch->create('batch-still-paused', 'items', 1);
+        $this->importBatch->increment('batch-still-paused', false);
+        $this->db->table('import_batches')->where('id', 'batch-still-paused')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-10 days'))]);
+
+        $this->db->table('queue_jobs_paused')->insert([
+            'queue'      => 'imports',
+            'batch_id'   => 'batch-still-paused',
+            'payload'    => '{}',
+            'priority'   => 'low',
+            'attempts'   => 0,
+            'created_at' => time(),
+            'paused_at'  => time(),
+            'paused_by'  => 'manual',
+        ]);
+
+        $this->importBatch->purgeFinished(7);
+
+        $this->seeInDatabase('import_batches', ['id' => 'batch-still-paused']);
+    }
+
+    public function testIncrement_StampsUpdatedAtWhenBatchFinishes(): void
+    {
+        $this->importBatch->create('batch-stamp', 'items', 1);
+        $this->db->table('import_batches')->where('id', 'batch-stamp')->update(['updated_at' => date('Y-m-d H:i:s', strtotime('-30 days'))]);
+
+        $this->importBatch->increment('batch-stamp', false);
+
+        $row = $this->db->table('import_batches')->where('id', 'batch-stamp')->get()->getRowArray();
+        $this->assertGreaterThan(strtotime('-1 day'), strtotime($row['updated_at']));
+    }
+
+    public function testIncrement_ReportsCompletionOnlyOnTransition(): void
+    {
+        $this->importBatch->create('batch-transition', 'items', 1);
+
+        $this->assertTrue($this->importBatch->increment('batch-transition', false));
+        $this->assertFalse($this->importBatch->increment('batch-transition', false));
+    }
+
+    public function testIncrement_LeavesNoOpenTransactionWhenQueryThrows(): void
+    {
+        $brokenBatch = new class () extends ImportBatch {
+            protected $table = 'table_that_does_not_exist';
+        };
+
+        try {
+            $brokenBatch->increment('any-batch', false);
+            $this->fail('Expected a database exception');
+        } catch (Throwable) {
+        }
+
+        $this->assertSame(0, $this->db->transDepth);
+
+        $this->importBatch->create('batch-after-failure', 'items', 1);
+        $this->assertTrue($this->importBatch->increment('batch-after-failure', false));
+    }
+
+    public function testIncrement_RollsBackAndRecoversWhenCommitFails(): void
+    {
+        $this->importBatch->create('batch-commit-fail', 'items', 2);
+
+        $connection = FailingCommitConnection::create();
+        $failingBatch = new ImportBatch($connection);
+
+        try {
+            $failingBatch->increment('batch-commit-fail', false);
+            $this->fail('Expected the failed commit to be reported');
+        } catch (RuntimeException) {
+        }
+
+        $this->assertSame(0, $connection->transDepth);
+        $this->seeInDatabase('import_batches', ['id' => 'batch-commit-fail', 'completed' => 0]);
+
+        $connection->failCommit = false;
+        $this->assertFalse($failingBatch->increment('batch-commit-fail', false));
+        $this->seeInDatabase('import_batches', ['id' => 'batch-commit-fail', 'completed' => 1]);
+    }
+}

@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'CSV aktarım hatası',
     'csv_import_nodata_wrongformat' => 'Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta.',
     'csv_import_partially_failed'   => 'Birçok Müşteri içe aktarıldı. Ama bazıları değil, listesi burada:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Müşteri aktarımı başarılı.',
     'customer'                      => 'Müşteri',
     'date'                          => 'Tarih',

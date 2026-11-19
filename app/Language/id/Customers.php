@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'Gagal impor CSV',
     'csv_import_nodata_wrongformat' => 'Berkas yang Anda unggah tidak berisi data atau salah format.',
     'csv_import_partially_failed'   => 'Impor pelanggan berhasil dengan beberapa kesalahan:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'Impor pelanggan berhasil.',
     'customer'                      => 'Pelanggan',
     'date'                          => 'Tanggal',

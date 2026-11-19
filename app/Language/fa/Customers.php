@@ -17,6 +17,7 @@ return [
     'csv_import_failed'             => 'واردات سی‌اس‌وی انجام نشد',
     'csv_import_nodata_wrongformat' => 'پرونده بارگذاری شده داده ای ندارد یا به طور نادرست قالب بندی شده است.',
     'csv_import_partially_failed'   => 'واردات مشتری با برخی نارسایی ها موفقیت آمیز بود:',
+    'csv_import_queued'             => '',
     'csv_import_success'            => 'واردات مشتری موفق شد.',
     'customer'                      => 'مشتری',
     'date'                          => 'تاریخ',
