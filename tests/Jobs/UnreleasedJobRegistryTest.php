@@ -60,32 +60,32 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
     {
         $registry = new UnreleasedJobRegistry($this->path);
 
-        $registry->record([3, 1]);
-        $registry->record([1, 2]);
+        $registry->record([3 => 10, 1 => 20]);
+        $registry->record([1 => 30, 2 => 40]);
 
         $claimed = $registry->claim('owner-a');
-        sort($claimed);
+        ksort($claimed);
 
-        $this->assertSame([1, 2, 3], $claimed);
+        $this->assertSame([1 => 30, 2 => 40, 3 => 10], $claimed);
         $this->assertSame([], $registry->claim('owner-b'));
     }
 
     public function testClaim_InterruptedClaimIsNotTakenWhileLeaseIsActiveAndExpiresAfterwards(): void
     {
         $registry = new UnreleasedJobRegistry($this->path, 300);
-        $registry->record([7, 8]);
+        $registry->record([7 => 100, 8 => 200]);
 
-        $this->assertSame([7, 8], $registry->claim('stopped-worker', 1000));
+        $this->assertSame([7 => 100, 8 => 200], $registry->claim('stopped-worker', 1000));
 
         $this->assertSame([], $registry->claim('other-worker', 1299));
 
-        $this->assertSame([7, 8], $registry->claim('other-worker', 1300));
+        $this->assertSame([7 => 100, 8 => 200], $registry->claim('other-worker', 1300));
     }
 
     public function testComplete_DropsTheLeaseSoTheIdsAreNeverHandedOutAgain(): void
     {
         $registry = new UnreleasedJobRegistry($this->path, 300);
-        $registry->record([5]);
+        $registry->record([5 => 100]);
         $registry->claim('worker', 1000);
 
         $registry->complete('worker');
@@ -96,26 +96,26 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
     public function testAbandon_ReturnsLeasedIdsToTheRegistryForTheNextClaim(): void
     {
         $registry = new UnreleasedJobRegistry($this->path, 300);
-        $registry->record([5, 6]);
+        $registry->record([5 => 100, 6 => 200]);
         $registry->claim('worker', 1000);
 
         $registry->abandon('worker');
 
-        $this->assertSame([5, 6], $registry->claim('next-worker', 1001));
+        $this->assertSame([5 => 100, 6 => 200], $registry->claim('next-worker', 1001));
     }
 
     public function testRecord_ConcurrentWorkersLoseNoIds(): void
     {
         $code = 'require "app/Jobs/UnreleasedJobRegistry.php";'
             . '$registry = new App\Jobs\UnreleasedJobRegistry($argv[1]);'
-            . 'for ($i = 0; $i < 40; $i++) { $registry->record([(int)$argv[2] * 1000 + $i]); }';
+            . 'for ($i = 0; $i < 40; $i++) { $id = (int)$argv[2] * 1000 + $i; $registry->record([$id => $id]); }';
 
         $this->runInParallel($code, array_map(static fn (int $worker): array => [$worker], range(1, self::WORKERS)));
 
         $claimed = (new UnreleasedJobRegistry($this->path))->claim('collector');
 
         $this->assertCount(self::WORKERS * 40, $claimed);
-        $this->assertCount(self::WORKERS * 40, array_unique($claimed));
+        $this->assertSame(array_keys($claimed), array_values($claimed));
     }
 
     public function testClaim_ConcurrentWorkersNeverReceiveTheSameId(): void
@@ -124,10 +124,11 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
             . '$registry = new App\Jobs\UnreleasedJobRegistry($argv[1]);'
             . '$claimed = [];'
             . 'for ($i = 0; $i < 40; $i++) {'
-            . ' $registry->record([(int)$argv[2] * 1000 + $i]);'
+            . ' $id = (int)$argv[2] * 1000 + $i;'
+            . ' $registry->record([$id => $id]);'
             . ' $owner = $argv[2] . "-" . $i;'
             . ' $ids = $registry->claim($owner);'
-            . ' $claimed = array_merge($claimed, $ids);'
+            . ' $claimed = array_merge($claimed, array_keys($ids));'
             . ' $registry->complete($owner);'
             . '}'
             . 'echo implode(",", $claimed);';
@@ -142,7 +143,7 @@ class UnreleasedJobRegistryTest extends CIUnitTestCase
             }
         }
 
-        $claimed = array_merge($claimed, (new UnreleasedJobRegistry($this->path))->claim('collector'));
+        $claimed = array_merge($claimed, array_keys((new UnreleasedJobRegistry($this->path))->claim('collector')));
 
         $this->assertCount(self::WORKERS * 40, $claimed);
         $this->assertCount(self::WORKERS * 40, array_unique($claimed));

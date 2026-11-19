@@ -34,6 +34,9 @@ class BoundedQueueWorker
     private int $processed = 0;
     private int $failed = 0;
 
+    /** @var array<int, int> */
+    private array $fences = [];
+
     /**
      * @param string[] $queues
      */
@@ -302,7 +305,7 @@ class BoundedQueueWorker
 
         foreach ($held as $candidate) {
             if (!$this->tryRelease($queue, $candidate)) {
-                $stranded[] = (int)$candidate->id;
+                $stranded[(int)$candidate->id] = $this->fences[(int)$candidate->id];
             }
         }
 
@@ -311,26 +314,29 @@ class BoundedQueueWorker
         }
 
         $this->rememberUnreleased($stranded);
-        job_log($queueName, 'error', 'Could not release job(s) ' . implode(', ', $stranded) . ' after peer collection; they will be released at the start of the next worker run');
+        $this->fences = array_diff_key($this->fences, $stranded);
+        job_log($queueName, 'error', 'Could not release job(s) ' . implode(', ', array_keys($stranded)) . ' after peer collection; they will be released at the start of the next worker run');
     }
 
     /**
-     * @param int[] $ids
+     * @param array<int, int> $fences Job id => available_at when stranded.
      */
-    private function rememberUnreleased(array $ids): void
+    private function rememberUnreleased(array $fences): void
     {
         try {
-            $this->unreleasedRegistry()->record($ids);
+            $this->unreleasedRegistry()->record($fences);
         } catch (Throwable $e) {
-            job_log('default', 'error', 'Could not record stranded job(s) ' . implode(', ', $ids) . ': ' . $e->getMessage());
+            job_log('default', 'error', 'Could not record stranded job(s) ' . implode(', ', array_keys($fences)) . ': ' . $e->getMessage());
         }
     }
 
     /**
      * Releases jobs an earlier run popped but could not put back. The ids are
      * leased to this run, so no other worker receives them, and they keep
-     * their attempts. The lease is completed only after the database update
-     * succeeds; otherwise the ids go back to the registry, and if this run
+     * their attempts. Each release is fenced on the available_at the row had
+     * when it was stranded, so a row another worker has reserved since is left
+     * alone, even if this lease expired and was taken over. The lease is
+     * completed only after the database update succeeds; otherwise the ids go back to the registry, and if this run
      * stops in between, the lease expires and the next run takes them over.
      */
     private function recoverUnreleased(): void
@@ -339,19 +345,19 @@ class BoundedQueueWorker
         $owner = bin2hex(random_bytes(8));
 
         try {
-            $ids = $registry->claim($owner);
+            $fences = $registry->claim($owner);
         } catch (Throwable $e) {
             job_log('default', 'error', 'Could not read stranded jobs: ' . $e->getMessage());
 
             return;
         }
 
-        if ($ids === []) {
+        if ($fences === []) {
             return;
         }
 
         try {
-            model(QueueJobModel::class)->releaseReservedByIds($ids);
+            model(QueueJobModel::class)->releaseStrandedJobs($fences);
         } catch (Throwable $e) {
             job_log('default', 'error', 'Could not release previously stranded job(s): ' . $e->getMessage());
             $this->settleClaim($registry, $owner, false);
@@ -378,11 +384,19 @@ class BoundedQueueWorker
 
     private function tryRelease(QueueInterface $queue, QueueJob $candidate): bool
     {
+        $this->fences[(int)$candidate->id] ??= $candidate->available_at->getTimestamp();
+
         try {
-            return $queue->later($candidate, 0);
+            $released = $queue->later($candidate, 0);
         } catch (Throwable) {
             return false;
         }
+
+        if ($released) {
+            unset($this->fences[(int)$candidate->id]);
+        }
+
+        return $released;
     }
 
     /**

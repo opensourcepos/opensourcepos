@@ -5,8 +5,10 @@ namespace App\Jobs;
 use RuntimeException;
 
 /**
- * File-backed list of reserved job ids that a worker popped but could not put
- * back. Every change holds an exclusive file lock.
+ * File-backed map of reserved job ids that a worker popped but could not put
+ * back, each with the fence (the row's available_at when it was stranded) that
+ * proves the reservation is still the stranded one. Every change holds an
+ * exclusive file lock.
  *
  * claim() does not delete the ids: it moves them to a lease held by the
  * claiming owner, so no other worker receives them while the owner releases
@@ -24,12 +26,12 @@ final class UnreleasedJobRegistry
     }
 
     /**
-     * @param int[] $ids
+     * @param array<int, int> $fences Job id => fence.
      */
-    public function record(array $ids): void
+    public function record(array $fences): void
     {
-        $this->update(static function (array $state) use ($ids): array {
-            $state['pending'] = array_values(array_unique(array_merge($state['pending'], array_map('intval', $ids))));
+        $this->update(static function (array $state) use ($fences): array {
+            $state['pending'] = array_replace($state['pending'], self::intMap($fences));
 
             return $state;
         });
@@ -38,7 +40,7 @@ final class UnreleasedJobRegistry
     /**
      * Leases every pending id, plus the ids of expired leases, to $owner.
      *
-     * @return int[]
+     * @return array<int, int> Job id => fence.
      */
     public function claim(string $owner, ?int $now = null): array
     {
@@ -50,12 +52,12 @@ final class UnreleasedJobRegistry
 
             foreach ($state['claims'] as $claimOwner => $claim) {
                 if ($claim['at'] + $this->leaseSeconds <= $now) {
-                    $ids = array_merge($ids, $claim['ids']);
+                    $ids += $claim['ids'];
                     unset($state['claims'][$claimOwner]);
                 }
             }
 
-            $claimed = array_values(array_unique($ids));
+            $claimed = $ids;
             $state['pending'] = [];
 
             if ($claimed !== []) {
@@ -81,7 +83,7 @@ final class UnreleasedJobRegistry
     {
         $this->update(static function (array $state) use ($owner): array {
             if (isset($state['claims'][$owner])) {
-                $state['pending'] = array_values(array_unique(array_merge($state['pending'], $state['claims'][$owner]['ids'])));
+                $state['pending'] = array_replace($state['claims'][$owner]['ids'], $state['pending']);
                 unset($state['claims'][$owner]);
             }
 
@@ -128,14 +130,27 @@ final class UnreleasedJobRegistry
             return $state;
         }
 
-        $state['pending'] = array_map('intval', (array)($decoded['pending'] ?? []));
+        $state['pending'] = self::intMap((array)($decoded['pending'] ?? []));
 
         foreach ((array)($decoded['claims'] ?? []) as $owner => $claim) {
             if (is_array($claim) && isset($claim['at'], $claim['ids'])) {
-                $state['claims'][(string)$owner] = ['ids' => array_map('intval', (array)$claim['ids']), 'at' => (int)$claim['at']];
+                $state['claims'][(string)$owner] = ['ids' => self::intMap((array)$claim['ids']), 'at' => (int)$claim['at']];
             }
         }
 
         return $state;
+    }
+    /**
+     * Entries from the earlier list-of-ids format carry no fence and are dropped.
+     *
+     * @return array<int, int>
+     */
+    private static function intMap(array $map): array
+    {
+        if (array_is_list($map)) {
+            return [];
+        }
+
+        return array_map('intval', array_combine(array_map('intval', array_keys($map)), $map));
     }
 }

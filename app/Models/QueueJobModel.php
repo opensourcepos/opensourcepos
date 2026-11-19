@@ -50,29 +50,36 @@ class QueueJobModel extends BaseQueueJobModel
     }
 
     /**
-     * Puts reserved jobs back to pending without touching their attempts or
-     * availability. Only rows that are still reserved are changed, so zero
-     * affected rows is a success: the row was already released or finished.
+     * Puts stranded reservations back to pending without touching their
+     * attempts. A row is released only while it is still reserved with the
+     * available_at it had when it was stranded; releasing moves available_at
+     * one second back, so the job stays due and a later reservation of the
+     * same row never matches the fence again. Zero affected rows is a
+     * success: the row was already released, finished or reserved again by
+     * another worker.
      *
-     * @param int[] $ids
-     * @throws RuntimeException If the update itself fails.
+     * @param array<int, int> $fences Job id => available_at when stranded.
+     * @throws RuntimeException If an update itself fails.
      */
-    public function releaseReservedByIds(array $ids): int
+    public function releaseStrandedJobs(array $fences): int
     {
-        if ($ids === []) {
-            return 0;
+        $released = 0;
+
+        foreach ($fences as $id => $fence) {
+            $updated = $this->builder()
+                ->where('id', (int)$id)
+                ->where('status', Status::RESERVED->value)
+                ->where('available_at', (int)$fence)
+                ->update(['status' => Status::PENDING->value, 'available_at' => (int)$fence - 1]);
+
+            if ($updated === false) {
+                throw new RuntimeException('Failed to release reserved jobs');
+            }
+
+            $released += $this->db->affectedRows();
         }
 
-        $updated = $this->builder()
-            ->whereIn('id', $ids)
-            ->where('status', Status::RESERVED->value)
-            ->update(['status' => Status::PENDING->value]);
-
-        if ($updated === false) {
-            throw new RuntimeException('Failed to release reserved jobs');
-        }
-
-        return $this->db->affectedRows();
+        return $released;
     }
 
     public function insertRows(array $rows): bool

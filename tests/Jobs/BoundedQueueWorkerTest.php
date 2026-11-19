@@ -3,6 +3,7 @@
 namespace Tests\Jobs;
 
 use App\Jobs\BoundedQueueWorker;
+use App\Jobs\UnreleasedJobRegistry;
 use App\Models\JobThrottle;
 use App\Libraries\ImportBatchService;
 use App\Models\ImportBatch;
@@ -624,7 +625,7 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         Services::reset();
 
         $failingUpdate = new class () extends QueueJobModel {
-            public function releaseReservedByIds(array $ids): int
+            public function releaseStrandedJobs(array $fences): int
             {
                 throw new RuntimeException('Failed to release reserved jobs');
             }
@@ -644,5 +645,38 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
 
         $this->assertSame(1, $secondRecovery->getProcessedCount());
         $this->assertSame(0, $this->db->table('queue_jobs')->where('queue', 'default')->countAllResults());
+    }
+
+    public function testRun_DoesNotReleaseReservationTakenAfterAnInterruptedClaimExpired(): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 1]);
+        service('queue')->push('default', 'success', []);
+
+        $handler = new class (config('Queue')) extends DatabaseHandler {
+            public function later(QueueJob $queueJob, int $seconds): bool
+            {
+                return false;
+            }
+        };
+        Services::injectMock('queue', $handler);
+
+        (new BoundedQueueWorker(['default'], microtime(true) + 5, maxJobs: 1))->run();
+
+        Services::reset();
+
+        $strandedId = (int)$this->db->table('queue_jobs')->where('status', 1)->get()->getRow()->id;
+
+        $interruptedClaim = (new UnreleasedJobRegistry(WRITEPATH . 'cache/job_queue_unreleased.json'))->claim('interrupted-worker', time() - 301);
+        $this->assertArrayHasKey($strandedId, $interruptedClaim);
+        $this->assertSame(1, model(QueueJobModel::class)->releaseStrandedJobs($interruptedClaim));
+
+        $reservation = service('queue')->pop('default', ['normal']);
+        $this->assertSame($strandedId, (int)$reservation->id);
+
+        $recovery = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $recovery->run();
+
+        $this->assertSame(0, $recovery->getProcessedCount());
+        $this->seeInDatabase('queue_jobs', ['id' => $strandedId, 'status' => 1]);
     }
 }

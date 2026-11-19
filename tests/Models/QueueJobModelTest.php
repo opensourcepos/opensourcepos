@@ -2,6 +2,7 @@
 
 namespace Tests\Models;
 
+use App\Jobs\UnreleasedJobRegistry;
 use App\Models\QueueJobModel;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
@@ -29,7 +30,7 @@ class QueueJobModelTest extends CIUnitTestCase
         $this->db->table('queue_jobs')->truncate();
     }
 
-    private function insertJob(int $status): int
+    private function insertJob(int $status, int $availableAt = 1000): int
     {
         $now = time();
         $this->db->table('queue_jobs')->insert([
@@ -38,32 +39,32 @@ class QueueJobModelTest extends CIUnitTestCase
             'priority'     => 'default',
             'status'       => $status,
             'attempts'     => 2,
-            'available_at' => $now,
+            'available_at' => $availableAt,
             'created_at'   => $now,
         ]);
 
         return (int)$this->db->insertID();
     }
 
-    public function testReleaseReservedByIds_ReleasesOnlyReservedRowsAndKeepsAttempts(): void
+    public function testReleaseStrandedJobs_ReleasesOnlyMatchingReservedRowsAndKeepsAttempts(): void
     {
         $reservedId = $this->insertJob(1);
         $pendingId = $this->insertJob(0);
 
-        $released = model(QueueJobModel::class)->releaseReservedByIds([$reservedId, $pendingId]);
+        $released = model(QueueJobModel::class)->releaseStrandedJobs([$reservedId => 1000, $pendingId => 1000]);
 
         $this->assertSame(1, $released);
-        $this->seeInDatabase('queue_jobs', ['id' => $reservedId, 'status' => 0, 'attempts' => 2]);
+        $this->seeInDatabase('queue_jobs', ['id' => $reservedId, 'status' => 0, 'attempts' => 2, 'available_at' => 999]);
     }
 
-    public function testReleaseReservedByIds_TreatsZeroAffectedRowsAsSuccess(): void
+    public function testReleaseStrandedJobs_TreatsZeroAffectedRowsAsSuccess(): void
     {
         $pendingId = $this->insertJob(0);
 
-        $this->assertSame(0, model(QueueJobModel::class)->releaseReservedByIds([$pendingId]));
+        $this->assertSame(0, model(QueueJobModel::class)->releaseStrandedJobs([$pendingId => 1000]));
     }
 
-    public function testReleaseReservedByIds_RejectsAFalseUpdateResult(): void
+    public function testReleaseStrandedJobs_RejectsAFalseUpdateResult(): void
     {
         $connection = FailingCommitConnection::create()->silenceQueryErrors();
 
@@ -72,6 +73,40 @@ class QueueJobModelTest extends CIUnitTestCase
         };
 
         $this->expectException(RuntimeException::class);
-        $brokenModel->releaseReservedByIds([1]);
+        $brokenModel->releaseStrandedJobs([1 => 1000]);
+    }
+
+    public function testReleaseStrandedJobs_LeavesAReservationTakenAfterTheRelease(): void
+    {
+        $model = model(QueueJobModel::class);
+        $id = $this->insertJob(1);
+
+        $this->assertSame(1, $model->releaseStrandedJobs([$id => 1000]));
+        $this->assertTrue($model->claimJob($id));
+
+        $this->assertSame(0, $model->releaseStrandedJobs([$id => 1000]));
+        $this->seeInDatabase('queue_jobs', ['id' => $id, 'status' => 1, 'available_at' => 999]);
+    }
+
+    public function testReleaseStrandedJobs_IgnoresAClaimantResumingAfterItsLeaseExpired(): void
+    {
+        $model = model(QueueJobModel::class);
+        $registryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ospos_unreleased_' . uniqid('', true) . '.json';
+        $registry = new UnreleasedJobRegistry($registryPath, 300);
+        $id = $this->insertJob(1);
+        $registry->record([$id => 1000]);
+
+        $stalledClaim = $registry->claim('stalled-worker', 5000);
+        $takeoverClaim = $registry->claim('takeover-worker', 5300);
+
+        $this->assertSame([$id => 1000], $takeoverClaim);
+        $this->assertSame(1, $model->releaseStrandedJobs($takeoverClaim));
+        $registry->complete('takeover-worker');
+        $this->assertTrue($model->claimJob($id));
+
+        $this->assertSame(0, $model->releaseStrandedJobs($stalledClaim));
+        $this->seeInDatabase('queue_jobs', ['id' => $id, 'status' => 1]);
+
+        @unlink($registryPath);
     }
 }
