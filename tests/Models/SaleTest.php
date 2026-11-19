@@ -3,9 +3,12 @@
 namespace Tests\Models;
 
 use App\Models\Sale;
+use CodeIgniter\BaseModel;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Database;
+use ReflectionProperty;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\FailedQueryConnectionTrait;
@@ -264,6 +267,98 @@ class SaleTest extends CIUnitTestCase
         );
 
         $this->assertSame($saleId, $result);
+    }
+
+    public function testSaveValue_ReturnsFailureWhenSuspendedSaleLockQueryFails(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items = $this->buildCartLine($itemId, 1, 30.00);
+        $salesTaxes = [[], []];
+        $payments = [
+            [
+                'payment_type' => lang('Sales.cash'),
+                'payment_amount' => 30.00,
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ],
+        ];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test suspended sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+
+        $db = Database::connect($this->DBGroup);
+        $itemsBeforeFailure = $db->table('sales_items')->where('sale_id', $saleId)->countAllResults();
+        $paymentsBeforeFailure = $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults();
+        $this->assertSame(1, $itemsBeforeFailure);
+        $this->assertSame(1, $paymentsBeforeFailure);
+
+        $connection = $this->getMockBuilder($db::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['query'])
+            ->getMock();
+        $connection->connID = $db->connID;
+        $connection->setPrefix($db->getPrefix());
+        $connection->method('query')->willReturnCallback(
+            static function (string $sql, mixed $binds = null, bool $setEscapeFlags = true, string $queryClass = '') use ($db, $connection): mixed {
+                if (str_contains($sql, 'FOR UPDATE')) {
+                    self::assertSame(1, $connection->transDepth);
+                    (new ReflectionProperty(BaseConnection::class, 'transStatus'))->setValue($connection, false);
+
+                    return false;
+                }
+
+                return $db->query($sql, $binds, $setEscapeFlags, $queryClass);
+            }
+        );
+
+        $saleModel = new Sale();
+        (new ReflectionProperty(BaseModel::class, 'db'))->setValue($saleModel, $connection);
+        $saleStatus = COMPLETED;
+
+        try {
+            $result = $saleModel->save_value(
+                $saleId,
+                $saleStatus,
+                $items,
+                NEW_ENTRY,
+                $employeeId,
+                'test completed sale',
+                null,
+                null,
+                null,
+                SALE_TYPE_POS,
+                $payments,
+                null,
+                $salesTaxes
+            );
+
+            $this->assertSame(-1, $result);
+            $this->assertSame(0, $connection->transDepth);
+            $this->assertSame(SUSPENDED, (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status);
+            $this->assertSame($itemsBeforeFailure, $db->table('sales_items')->where('sale_id', $saleId)->countAllResults());
+            $this->assertSame($paymentsBeforeFailure, $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults());
+        } finally {
+            $connection->transRollback();
+        }
     }
 
     public function testSaveValueSucceedsWithSufficientGiftcardBalance(): void

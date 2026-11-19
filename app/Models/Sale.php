@@ -562,7 +562,7 @@ class Sale extends Model
 
         if ($saleId != NEW_ENTRY) {
             if (!$this->lockSuspendedSale($saleId)) {
-                $this->db->transRollback();
+                $this->db->transComplete();
 
                 return -1;
             }
@@ -710,10 +710,16 @@ class Sale extends Model
      */
     private function lockSuspendedSale(int $saleId): bool
     {
-        $sale = $this->db->query(
+        $query = $this->db->query(
             'SELECT sale_status FROM ' . $this->db->prefixTable('sales') . ' WHERE sale_id = ? FOR UPDATE',
             [$saleId]
-        )->getRow();
+        );
+
+        if ($query === false) {
+            return false;
+        }
+
+        $sale = $query->getRow();
 
         return $sale !== null && (int) $sale->sale_status === SUSPENDED;
     }
