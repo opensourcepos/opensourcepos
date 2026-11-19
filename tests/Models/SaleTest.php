@@ -130,7 +130,7 @@ class SaleTest extends CIUnitTestCase
         return (int) $row->points;
     }
 
-    public function testSaveValueRejectsCompletingSaleThatIsNoLongerSuspended(): void
+    public function testSaveValue_RejectsCompletingSaleThatIsNoLongerSuspended(): void
     {
         $employeeId = $this->createEmployee();
         $giftcardNumber = $this->createGiftcard(100.00);
@@ -220,7 +220,7 @@ class SaleTest extends CIUnitTestCase
         $this->assertSame($statusAfterCompletion, (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status);
     }
 
-    public function testSaveValueAllowsResuspendingSuspendedSale(): void
+    public function testSaveValue_AcceptsResuspendingSuspendedSale(): void
     {
         $employeeId = $this->createEmployee();
         $itemId = $this->createTestItem(HAS_NO_STOCK);
