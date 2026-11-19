@@ -56,6 +56,7 @@ class AddJobsModule extends Migration
             'priority'   => ['type' => 'varchar', 'constraint' => 64, 'null' => false, 'default' => 'default', 'after' => 'payload'],
             'batch_id'   => ['type' => 'varchar', 'constraint' => 36, 'null' => true],
             'context_id' => ['type' => 'int', 'unsigned' => true, 'null' => true],
+            'release_epoch' => ['type' => 'int', 'unsigned' => true, 'null' => false, 'default' => 0],
         ];
         $queueJobsFailedColumns = [
             'priority'   => $queueJobsColumns['priority'],
@@ -81,6 +82,7 @@ class AddJobsModule extends Migration
                 'attempts'     => ['type' => 'tinyint', 'unsigned' => true, 'null' => false, 'default' => 0],
                 'available_at' => ['type' => 'int', 'unsigned' => true, 'null' => false],
                 'created_at'   => ['type' => 'int', 'unsigned' => true, 'null' => false],
+                'release_epoch' => ['type' => 'int', 'unsigned' => true, 'null' => false, 'default' => 0],
             ]);
             $this->forge->addPrimaryKey('id');
             $this->forge->addKey(['queue', 'priority', 'status', 'available_at'], false, false, 'queue_priority_status_available_at');
@@ -126,12 +128,17 @@ class AddJobsModule extends Migration
             'created_at'   => ['type' => 'INT', 'unsigned' => true, 'null' => false],
             'paused_at'    => ['type' => 'INT', 'unsigned' => true, 'null' => false],
             'paused_by'    => ['type' => 'VARCHAR', 'constraint' => 32, 'null' => false],
+            'release_epoch' => ['type' => 'INT', 'unsigned' => true, 'null' => false, 'default' => 0],
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addKey('queue');
         $this->forge->addKey('batch_id', false, false, 'queue_jobs_paused_batch_id');
         $this->forge->addForeignKey('context_id', 'import_batch_contexts', 'id', '', 'RESTRICT', 'queue_jobs_paused_context_id_fk');
         $this->forge->createTable('queue_jobs_paused', true);
+
+        if (!$this->db->fieldExists('release_epoch', 'queue_jobs_paused')) {
+            $this->forge->addColumn('queue_jobs_paused', ['release_epoch' => $queueJobsColumns['release_epoch']]);
+        }
 
         $this->forge->addField([
             'id'         => ['type' => 'VARCHAR', 'constraint' => 36],

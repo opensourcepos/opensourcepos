@@ -679,4 +679,41 @@ class BoundedQueueWorkerTest extends CIUnitTestCase
         $this->assertSame(0, $recovery->getProcessedCount());
         $this->seeInDatabase('queue_jobs', ['id' => $strandedId, 'status' => 1]);
     }
+
+    public function testRun_DoesNotReleaseReservationWhenLaterRestoresTheStrandedAvailableAt(): void
+    {
+        service('queue')->push('default', 'batchable', ['row' => 1]);
+        service('queue')->push('default', 'success', []);
+
+        $handler = new class (config('Queue')) extends DatabaseHandler {
+            public function later(QueueJob $queueJob, int $seconds): bool
+            {
+                return false;
+            }
+        };
+        Services::injectMock('queue', $handler);
+
+        (new BoundedQueueWorker(['default'], microtime(true) + 5, maxJobs: 1))->run();
+
+        Services::reset();
+
+        $strandedId = (int)$this->db->table('queue_jobs')->where('status', 1)->get()->getRow()->id;
+        $strandedAvailableAt = (int)$this->db->table('queue_jobs')->where('id', $strandedId)->get()->getRow()->available_at;
+
+        $interruptedClaim = (new UnreleasedJobRegistry(WRITEPATH . 'cache/job_queue_unreleased.json'))->claim('interrupted-worker', time() - 301);
+        $this->assertSame(1, model(QueueJobModel::class)->releaseStrandedJobs($interruptedClaim));
+
+        $queue = service('queue');
+        $popped = $queue->pop('default', ['normal']);
+        $this->assertSame($strandedId, (int)$popped->id);
+        $this->assertTrue($queue->later($popped, 0));
+        $this->db->table('queue_jobs')->where('id', $strandedId)->update(['available_at' => $strandedAvailableAt]);
+        $this->assertSame($strandedId, (int)$queue->pop('default', ['normal'])->id);
+
+        $recovery = new BoundedQueueWorker(['default'], microtime(true) + 5);
+        $recovery->run();
+
+        $this->assertSame(0, $recovery->getProcessedCount());
+        $this->seeInDatabase('queue_jobs', ['id' => $strandedId, 'status' => 1]);
+    }
 }

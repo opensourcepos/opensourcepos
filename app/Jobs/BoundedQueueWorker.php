@@ -34,9 +34,6 @@ class BoundedQueueWorker
     private int $processed = 0;
     private int $failed = 0;
 
-    /** @var array<int, int> */
-    private array $fences = [];
-
     /**
      * @param string[] $queues
      */
@@ -305,7 +302,7 @@ class BoundedQueueWorker
 
         foreach ($held as $candidate) {
             if (!$this->tryRelease($queue, $candidate)) {
-                $stranded[(int)$candidate->id] = $this->fences[(int)$candidate->id];
+                $stranded[(int)$candidate->id] = (int)($candidate->release_epoch ?? 0);
             }
         }
 
@@ -314,12 +311,11 @@ class BoundedQueueWorker
         }
 
         $this->rememberUnreleased($stranded);
-        $this->fences = array_diff_key($this->fences, $stranded);
         job_log($queueName, 'error', 'Could not release job(s) ' . implode(', ', array_keys($stranded)) . ' after peer collection; they will be released at the start of the next worker run');
     }
 
     /**
-     * @param array<int, int> $fences Job id => available_at when stranded.
+     * @param array<int, int> $fences Job id => release_epoch when stranded.
      */
     private function rememberUnreleased(array $fences): void
     {
@@ -333,7 +329,7 @@ class BoundedQueueWorker
     /**
      * Releases jobs an earlier run popped but could not put back. The ids are
      * leased to this run, so no other worker receives them, and they keep
-     * their attempts. Each release is fenced on the available_at the row had
+     * their attempts. Each release is fenced on the release_epoch the row had
      * when it was stranded, so a row another worker has reserved since is left
      * alone, even if this lease expired and was taken over. The lease is
      * completed only after the database update succeeds; otherwise the ids go back to the registry, and if this run
@@ -384,19 +380,11 @@ class BoundedQueueWorker
 
     private function tryRelease(QueueInterface $queue, QueueJob $candidate): bool
     {
-        $this->fences[(int)$candidate->id] ??= $candidate->available_at->getTimestamp();
-
         try {
-            $released = $queue->later($candidate, 0);
+            return $queue->later($candidate, 0);
         } catch (Throwable) {
             return false;
         }
-
-        if ($released) {
-            unset($this->fences[(int)$candidate->id]);
-        }
-
-        return $released;
     }
 
     /**

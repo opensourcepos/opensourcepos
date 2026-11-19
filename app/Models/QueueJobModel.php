@@ -51,14 +51,14 @@ class QueueJobModel extends BaseQueueJobModel
 
     /**
      * Puts stranded reservations back to pending without touching their
-     * attempts. A row is released only while it is still reserved with the
-     * available_at it had when it was stranded; releasing moves available_at
-     * one second back, so the job stays due and a later reservation of the
-     * same row never matches the fence again. Zero affected rows is a
-     * success: the row was already released, finished or reserved again by
-     * another worker.
+     * attempts or availability. A row is released only while it is still
+     * reserved with the release_epoch it had when it was stranded, and
+     * releasing increments that epoch. Nothing else writes it, so a later
+     * reservation of the same row, however it came about, never matches a
+     * stale fence. Zero affected rows is a success: the row was already
+     * released, finished or reserved again by another worker.
      *
-     * @param array<int, int> $fences Job id => available_at when stranded.
+     * @param array<int, int> $fences Job id => release_epoch when stranded.
      * @throws RuntimeException If an update itself fails.
      */
     public function releaseStrandedJobs(array $fences): int
@@ -69,8 +69,10 @@ class QueueJobModel extends BaseQueueJobModel
             $updated = $this->builder()
                 ->where('id', (int)$id)
                 ->where('status', Status::RESERVED->value)
-                ->where('available_at', (int)$fence)
-                ->update(['status' => Status::PENDING->value, 'available_at' => (int)$fence - 1]);
+                ->where('release_epoch', (int)$fence)
+                ->set('status', Status::PENDING->value)
+                ->set('release_epoch', 'release_epoch + 1', false)
+                ->update();
 
             if ($updated === false) {
                 throw new RuntimeException('Failed to release reserved jobs');

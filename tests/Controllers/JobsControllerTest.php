@@ -888,6 +888,20 @@ class JobsControllerTest extends CIUnitTestCase
     // pause → resume → processJob interleaving
     // -------------------------------------------------------------------------
 
+    public function testPauseResume_KeepsReleaseEpoch(): void
+    {
+        $this->loginAsAdmin();
+
+        $jobId = $this->createPendingJob();
+        $this->db->table('queue_jobs')->where('id', $jobId)->update(['release_epoch' => 3]);
+
+        $this->post('/jobs/pauseJobs', ['scope' => 'all']);
+        $this->seeInDatabase('queue_jobs_paused', ['id' => $jobId, 'release_epoch' => 3]);
+
+        $this->post('/jobs/resumeJobs', ['scope' => 'all']);
+        $this->seeInDatabase('queue_jobs', ['id' => $jobId, 'release_epoch' => 3]);
+    }
+
     public function testPauseResumeProcessJob_JobExecutedExactlyOnce(): void
     {
         $this->loginAsAdmin();
