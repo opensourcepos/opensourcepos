@@ -561,13 +561,7 @@ class Sale extends Model
         $this->db->transStart();
 
         if ($saleId != NEW_ENTRY) {
-            // Lock before clearing details so concurrent requests cannot complete the same sale twice.
-            $sale = $this->db->query(
-                'SELECT sale_status FROM ' . $this->db->prefixTable('sales') . ' WHERE sale_id = ? FOR UPDATE',
-                [$saleId]
-            )->getRow();
-
-            if ($sale === null || (int) $sale->sale_status !== SUSPENDED) {
+            if (!$this->lockSuspendedSale($saleId)) {
                 $this->db->transRollback();
 
                 return -1;
@@ -709,6 +703,19 @@ class Sale extends Model
         $this->db->transComplete();
 
         return $this->db->transStatus() ? $saleId : -1;
+    }
+
+    /**
+     * Lock the sale until the current transaction ends.
+     */
+    private function lockSuspendedSale(int $saleId): bool
+    {
+        $sale = $this->db->query(
+            'SELECT sale_status FROM ' . $this->db->prefixTable('sales') . ' WHERE sale_id = ? FOR UPDATE',
+            [$saleId]
+        )->getRow();
+
+        return $sale !== null && (int) $sale->sale_status === SUSPENDED;
     }
 
     private function applyGiftcardPayment(?string $giftcardNumber, float $amount, int $saleType, string $saleStatus): bool
