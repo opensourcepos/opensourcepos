@@ -75,21 +75,21 @@ are present and handles automatic migration of legacy secrets. See
 for the full setup guide, including key configuration.
 
 > [!CAUTION]
-> **Save your legacy encryption key before restarting.** If your pre-CI4
-> installation had the key auto-generated into `config.php` at runtime, backing
-> up `.env` does **not** save it. Extract the key from the running container
-> before pulling or restarting by reading the container's `config.php` directly:
-> ```bash
-> docker compose exec app grep -oP '(?<=encryption_key = )\'[^\']+\'' /var/www/html/application/config/config.php
-> ```
-> Save the output securely — it is the only recoverable copy of the CI3 key.
-> You will need to supply it in the next section to migrate the encrypted
-> secrets.
+> **Preserve your legacy `ENCRYPTION_KEY` before restarting.** If your old
+> pre-CI4 compose file (or a Compose-side `.env` file) set `ENCRYPTION_KEY`,
+> that value is required to decrypt any CI3-encrypted secrets. The old compose
+> file did not set this variable by default, so if you never configured it,
+> no encryption was performed and **no migration is needed**. If you did set it,
+> ensure the same value is supplied during migration — the key is not stored
+> in the database and cannot be recovered from the container.
 
 ### Upgrading a Docker container
 
-1. **Save the legacy key** (see the caution above) if you are upgrading from
-   a pre-CI4 version where the key was auto-generated at runtime.
+1. **Preserve the legacy `ENCRYPTION_KEY`** if you manually set one in your old
+   compose file or Compose-side `.env`. It is required to decrypt stored CI3
+   secrets; without it, those secrets are unrecoverable. If you never set
+   `ENCRYPTION_KEY`, no encryption was performed and you can skip the migration
+   steps below.
 2. **Back up** your `.env` file (it holds your `encryption.key` and database
    password).
 3. **Pull** the new image: `docker compose pull` (or edit the image tag and run
@@ -124,18 +124,21 @@ If your installation predates the CI4 migration (OSPOS 3.3 and earlier), the
 encryption key handling in Docker was different from bare-metal setups. In the
 pre-CI4 Docker image the application read the key from the `ENCRYPTION_KEY`
 environment variable; since the old compose file did not set it, the key was
-`''` on every start. The first time a user configured SMTP or SMS credentials,
-the application auto-generated a random 32-byte key and wrote it into
-`config.php` at runtime — this key was **ephemeral**, lost whenever the
-container was recreated.
+`''` on every start. **If `ENCRYPTION_KEY` was never set, no encryption was
+performed and stored secrets are unencrypted** — no migration is needed.
+
+If you manually set `ENCRYPTION_KEY` in your old compose file (or in a
+Compose-side `.env` file), that same value must be available during the
+migration, or the encrypted secrets will be unrecoverable.
 
 The `ospos_app_config` table stores the encrypted secrets
 (`smtp_pass`, `mailchimp_api_key`, `mailchimp_list_id`, `clcdesq_api_key`,
 `clcdesq_api_url`) but **never** the encryption key itself.
 
-**Before the upgrade**, the legacy key you saved above must be present in
-`.env` (as `encryption.key=`) or in the `ENCRYPTION_KEY` environment variable
-in your new `docker-compose.yml`. Without it, the old encrypted secrets
+**Before the upgrade**, your legacy `ENCRYPTION_KEY` value (the one from your
+old compose file or Compose-side `.env`) must be present either in `.env` (as
+`encryption.key=`) or as the `ENCRYPTION_KEY` environment variable in your new
+`docker-compose.yml`. Without it, the old encrypted secrets
 (SMTP password, Mailchimp API key, etc.) cannot be decrypted and will be lost.
 
 The `env:provision` command at container startup handles the key as follows:
@@ -165,13 +168,16 @@ The `env:provision` command at container startup handles the key as follows:
 > key via the `ENCRYPTION_KEY` environment variable** instead of `.env`:
 > ```yaml
 > environment:
->     - ENCRYPTION_KEY=<your-saved-short-key>
+>     - ENCRYPTION_KEY=<your-ci3-short-key>
 > ```
 > Note that `env:provision` still rewrites `.env` for a short key, so the single‑file
 > mount risk remains. If the rotation write fails, `env:provision` exits non-zero
-> and Apache does not start. In that case, stop the container, remove the
-> `ENCRYPTION_KEY` line from compose, and try again — or switch to a mountable
-> `.env` directory. After the initial key migration, keep the rotated key
+> and Apache does not start. In that case, stop the container and switch to a
+> mountable `.env` directory (a volume or bind mount pointing at a directory
+> containing the `.env` file) instead of retrying with the single‑file mount —
+> removing the `ENCRYPTION_KEY` variable and keeping the single‑file mount loses
+> the legacy key, and provisioning will generate a new key without the old secrets.
+> After the initial key migration, keep the rotated key
 > unchanged; generating a different key without re-encrypting the secrets makes
 > them unreadable.
 
