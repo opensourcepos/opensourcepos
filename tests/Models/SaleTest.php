@@ -8,6 +8,7 @@ use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Config\Database;
+use Config\OSPOS;
 use ReflectionProperty;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
@@ -40,6 +41,8 @@ class SaleTest extends CIUnitTestCase
         $this->resetDatabaseOnce();
 
         parent::setUp();
+
+        config(OSPOS::class)->update_settings();
     }
 
     protected function tearDown(): void
@@ -193,11 +196,12 @@ class SaleTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(70.00, $balanceAfterCompletion, 0.001);
 
         $db = Database::connect();
-        $paymentsAfterCompletion = $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults();
-        $itemsAfterCompletion = $db->table('sales_items')->where('sale_id', $saleId)->countAllResults();
+        $paymentColumns = 'sale_id, payment_type, payment_amount, cash_refund, cash_adjustment, employee_id, reference_code';
+        $paymentsAfterCompletion = $db->table('sales_payments')->select($paymentColumns)->where('sale_id', $saleId)->orderBy('payment_id', 'ASC')->get()->getResultArray();
+        $itemsAfterCompletion = $db->table('sales_items')->where('sale_id', $saleId)->orderBy('line', 'ASC')->get()->getResultArray();
         $statusAfterCompletion = (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status;
-        $this->assertSame(1, $paymentsAfterCompletion);
-        $this->assertSame(1, $itemsAfterCompletion);
+        $this->assertCount(1, $paymentsAfterCompletion);
+        $this->assertCount(1, $itemsAfterCompletion);
         $this->assertSame(COMPLETED, $statusAfterCompletion);
 
         $result = $saleModel->save_value(
@@ -218,8 +222,8 @@ class SaleTest extends CIUnitTestCase
 
         $this->assertSame(-1, $result);
         $this->assertEqualsWithDelta($balanceAfterCompletion, $this->getGiftcardValue($giftcardNumber), 0.001);
-        $this->assertSame($paymentsAfterCompletion, $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults());
-        $this->assertSame($itemsAfterCompletion, $db->table('sales_items')->where('sale_id', $saleId)->countAllResults());
+        $this->assertSame($paymentsAfterCompletion, $db->table('sales_payments')->select($paymentColumns)->where('sale_id', $saleId)->orderBy('payment_id', 'ASC')->get()->getResultArray());
+        $this->assertSame($itemsAfterCompletion, $db->table('sales_items')->where('sale_id', $saleId)->orderBy('line', 'ASC')->get()->getResultArray());
         $this->assertSame($statusAfterCompletion, (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status);
     }
 
@@ -250,6 +254,17 @@ class SaleTest extends CIUnitTestCase
 
         $this->assertGreaterThan(0, $saleId);
 
+        $items = $this->buildCartLine($itemId, 2.5, 12.00);
+        $payments = [
+            [
+                'payment_type' => lang('Sales.cash'),
+                'payment_amount' => 30.00,
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ],
+        ];
+
         $result = $saleModel->save_value(
             $saleId,
             $saleStatus,
@@ -261,12 +276,24 @@ class SaleTest extends CIUnitTestCase
             null,
             null,
             SALE_TYPE_POS,
-            [],
+            $payments,
             null,
             $salesTaxes
         );
 
         $this->assertSame($saleId, $result);
+
+        $db = Database::connect($this->DBGroup);
+        $this->assertSame(SUSPENDED, (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status);
+        $savedItems = $db->table('sales_items')->where('sale_id', $saleId)->get()->getResultArray();
+        $savedPayments = $db->table('sales_payments')->where('sale_id', $saleId)->get()->getResultArray();
+        $this->assertCount(1, $savedItems);
+        $this->assertCount(1, $savedPayments);
+        $this->assertSame($items[0]['item_id'], (int) $savedItems[0]['item_id']);
+        $this->assertSame($items[0]['quantity'], (float) $savedItems[0]['quantity_purchased']);
+        $this->assertSame($items[0]['price'], (float) $savedItems[0]['item_unit_price']);
+        $this->assertSame($payments[0]['payment_type'], $savedPayments[0]['payment_type']);
+        $this->assertSame($payments[0]['payment_amount'], (float) $savedPayments[0]['payment_amount']);
     }
 
     public function testSaveValue_ReturnsFailureWhenSuspendedSaleLockQueryFails(): void
@@ -358,6 +385,314 @@ class SaleTest extends CIUnitTestCase
             $this->assertSame($paymentsBeforeFailure, $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults());
         } finally {
             $connection->transRollback();
+        }
+    }
+
+    public function testSaveValue_RejectsUnknownSaleId(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items = $this->buildCartLine($itemId, 1, 30.00);
+        $salesTaxes = [[], []];
+        $payments = [
+            [
+                'payment_type' => lang('Sales.cash'),
+                'payment_amount' => 30.00,
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ],
+        ];
+        $db = Database::connect($this->DBGroup);
+        $unknownSaleId = (int) $db->table('sales')->selectMax('sale_id')->get()->getRow()->sale_id + 1;
+        $salesBefore = $this->countSalesRows();
+        $itemsBefore = $db->table('sales_items')->countAllResults();
+        $paymentsBefore = $db->table('sales_payments')->countAllResults();
+
+        $result = $saleModel->save_value(
+            $unknownSaleId,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test unknown sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertSame(-1, $result);
+        $this->assertSame($salesBefore, $this->countSalesRows());
+        $this->assertSame($itemsBefore, $db->table('sales_items')->countAllResults());
+        $this->assertSame($paymentsBefore, $db->table('sales_payments')->countAllResults());
+        $this->assertSame(0, $db->transDepth);
+    }
+
+    public function testSaveValue_CreditsGiftcardOnceWhenSuspendedReturnIsCompletedFromTwoConnections(): void
+    {
+        $employeeId = $this->createEmployee();
+        $giftcardNumber = $this->createGiftcard(50.00);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items = $this->buildCartLine($itemId, -1, 30.00);
+        $salesTaxes = [[], []];
+        $payments = [
+            [
+                'payment_type' => lang('Sales.giftcard') . ':' . $giftcardNumber,
+                'payment_amount' => -30.00,
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ],
+        ];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test suspended return',
+            null,
+            null,
+            null,
+            SALE_TYPE_RETURN,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+        $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+
+        $db = Database::connect($this->DBGroup);
+        $otherConnection = Database::connect($this->DBGroup, false);
+
+        try {
+            $otherSaleModel = new Sale();
+            (new ReflectionProperty(BaseModel::class, 'db'))->setValue($otherSaleModel, $otherConnection);
+            $saleStatus = COMPLETED;
+
+            $result = $otherSaleModel->save_value(
+                $saleId,
+                $saleStatus,
+                $items,
+                NEW_ENTRY,
+                $employeeId,
+                'test completed return',
+                null,
+                null,
+                null,
+                SALE_TYPE_RETURN,
+                $payments,
+                null,
+                $salesTaxes
+            );
+
+            $this->assertSame($saleId, $result);
+            $this->assertSame(0, $otherConnection->transDepth);
+
+            $result = $saleModel->save_value(
+                $saleId,
+                $saleStatus,
+                $items,
+                NEW_ENTRY,
+                $employeeId,
+                'test duplicate completed return',
+                null,
+                null,
+                null,
+                SALE_TYPE_RETURN,
+                $payments,
+                null,
+                $salesTaxes
+            );
+
+            $this->assertSame(-1, $result);
+            $this->assertSame(0, $db->transDepth);
+            $this->assertEqualsWithDelta(80.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+            $this->assertSame(COMPLETED, (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status);
+            $this->assertSame(1, $db->table('sales_payments')->where('sale_id', $saleId)->countAllResults());
+        } finally {
+            $otherConnection->transRollback();
+            $otherConnection->close();
+        }
+    }
+
+    public function testSaveValue_RejectsCompletionWhileAnotherConnectionHoldsSaleLock(): void
+    {
+        $employeeId = $this->createEmployee();
+        $giftcardNumber = $this->createGiftcard(50.00);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items = $this->buildCartLine($itemId, -1, 30.00);
+        $salesTaxes = [[], []];
+        $payments = [
+            [
+                'payment_type' => lang('Sales.giftcard') . ':' . $giftcardNumber,
+                'payment_amount' => -30.00,
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ],
+        ];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test suspended return',
+            null,
+            null,
+            null,
+            SALE_TYPE_RETURN,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+
+        $db = Database::connect($this->DBGroup);
+        $lockWaitTimeout = (int) $db->query('SELECT @@SESSION.innodb_lock_wait_timeout AS lock_wait_timeout')->getRow()->lock_wait_timeout;
+        $otherConnection = Database::connect($this->DBGroup, false);
+
+        try {
+            $this->assertTrue($otherConnection->transBegin());
+            $lockedSale = $otherConnection->query(
+                'SELECT sale_status FROM ' . $otherConnection->prefixTable('sales') . ' WHERE sale_id = ? FOR UPDATE',
+                [$saleId]
+            )->getRow();
+            $this->assertSame(SUSPENDED, (int) $lockedSale->sale_status);
+            $db->query('SET SESSION innodb_lock_wait_timeout = 1');
+            $saleStatus = COMPLETED;
+
+            $result = $saleModel->save_value(
+                $saleId,
+                $saleStatus,
+                $items,
+                NEW_ENTRY,
+                $employeeId,
+                'test locked return',
+                null,
+                null,
+                null,
+                SALE_TYPE_RETURN,
+                $payments,
+                null,
+                $salesTaxes
+            );
+
+            $this->assertSame(-1, $result);
+            $this->assertStringContainsString('FOR UPDATE', (string) $db->getLastQuery());
+            $this->assertSame(0, $db->transDepth);
+            $this->assertTrue($otherConnection->transRollback());
+            $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+            $this->assertSame(SUSPENDED, (int) $db->table('sales')->where('sale_id', $saleId)->get()->getRow()->sale_status);
+        } finally {
+            $otherConnection->transRollback();
+            $otherConnection->close();
+            $db->transRollback();
+            $db->resetTransStatus();
+            $db->query('SET SESSION innodb_lock_wait_timeout = ?', [$lockWaitTimeout]);
+        }
+    }
+
+    public function testSaveValue_CommitsValidSaleOnSameConnectionAfterRejectedSave(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items = $this->buildCartLine($itemId, 1, 30.00);
+        $salesTaxes = [[], []];
+        $payments = [
+            [
+                'payment_type' => lang('Sales.cash'),
+                'payment_amount' => 30.00,
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ],
+        ];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test completed sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+
+        $result = $saleModel->save_value(
+            $saleId,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test rejected sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertSame(-1, $result);
+
+        $db = Database::connect($this->DBGroup);
+        $this->assertSame(0, $db->transDepth);
+        $newSaleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'test sale after rejected save',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $newSaleId);
+        $this->assertNotSame($saleId, $newSaleId);
+        $this->assertSame(0, $db->transDepth);
+        $otherConnection = Database::connect($this->DBGroup, false);
+
+        try {
+            $committedSale = $otherConnection->table('sales')->where('sale_id', $newSaleId)->get()->getRowArray();
+            $this->assertNotNull($committedSale);
+            $this->assertSame($newSaleId, (int) $committedSale['sale_id']);
+            $this->assertSame(COMPLETED, (int) $committedSale['sale_status']);
+        } finally {
+            $otherConnection->transRollback();
+            $otherConnection->close();
         }
     }
 
