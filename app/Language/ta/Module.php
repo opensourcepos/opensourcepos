@@ -32,6 +32,7 @@ return [
     'migrate_desc'               => '',
     'office'                     => '',
     'office_desc'                => '',
+    'plugins'                    => 'செருகுநிரல்கள்',
     'receivings'                 => '',
     'receivings_desc'            => '',
     'reports'                    => '',

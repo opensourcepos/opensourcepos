@@ -20,6 +20,7 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Config\OSPOS;
@@ -210,9 +211,15 @@ class Sales extends Secure_Controller
             ? $this->request->getGet('term')
             : null;
 
-        if ($this->sale_lib->get_mode() == 'return' && $this->sale->isValidReceipt($receipt)) {
-            // If a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
-            $suggestions[] = $receipt;
+        if ($this->sale_lib->get_mode() == 'return') {
+            if (ctype_digit(trim($receipt))) {
+                $receipt = 'POS ' . trim($receipt);
+            }
+
+            if ($this->sale->isValidReceipt($receipt)) {
+                // If a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
+                $suggestions[] = $receipt;
+            }
         }
         $suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true));
         $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
@@ -581,6 +588,10 @@ class Sales extends Secure_Controller
         $mode = $this->sale_lib->get_mode();
         $quantity = ($mode == 'return') ? -$quantity : $quantity;
         $item_location = $this->sale_lib->get_sale_location();
+
+        if ($mode == 'return' && ctype_digit(trim($item_id_or_number_or_item_kit_or_receipt))) {
+            $item_id_or_number_or_item_kit_or_receipt = 'POS ' . trim($item_id_or_number_or_item_kit_or_receipt);
+        }
 
         if ($mode == 'return' && $this->sale->isValidReceipt($item_id_or_number_or_item_kit_or_receipt)) {
             $this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
@@ -1023,6 +1034,14 @@ class Sales extends Secure_Controller
                     $receiptTemplate = 'receipt_default';
                 }
                 $data['receipt_template_view'] = $receiptTemplate;
+
+                $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                if ($this->sale_lib->is_return_mode()) {
+                    $originalSaleId = $this->sale_lib->getReturnOriginalSaleId();
+                    Events::trigger('return_completed', $data['sale_id_num'], $originalSaleId, $pluginData);
+                } else {
+                    Events::trigger('sale_completed', $data['sale_id_num'], $saleType, $pluginData);
+                }
 
                 $this->sale_lib->clear_all();
                 return view('sales/receipt', $data);

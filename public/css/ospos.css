@@ -54,6 +54,12 @@ a.none {
     width: 24px;
 }
 
+#home_module_list img,
+#office_module_list img {
+    height: 64px;
+    max-width: 64px;
+}
+
 .wrapper {
     font-size: 13px;
 }
@@ -106,7 +112,7 @@ a.none {
     width: 30%;
 }
 
-#integrations_header {
+#plugins_header {
     margin: 10px 0;
     text-align: center;
     font-size: 1.4em;

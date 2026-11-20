@@ -13,6 +13,7 @@ use App\Models\Item_taxes;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
+use CodeIgniter\Events\Events;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Images\Handlers\BaseHandler;
@@ -886,7 +887,7 @@ class Items extends Secure_Controller
         $costPrice = parse_decimals($this->request->getPost('cost_price'));
         $unitPrice = parse_decimals($this->request->getPost('unit_price'));
         $reorderLevel = parse_quantity($this->request->getPost('reorder_level'));
-        $qtyPerPack = parse_quantity($this->request->getPost('qty_per_pack') ?? '');
+        $quantityPerPack = parse_quantity($this->request->getPost('qty_per_pack') ?? '');
 
         // Save item data
         $itemData = [
@@ -903,7 +904,7 @@ class Items extends Secure_Controller
             'receiving_quantity'    => $receivingQuantity,
             'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
             'is_serialized'         => $this->request->getPost('is_serialized') != null,
-            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($qtyPerPack),
+            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($quantityPerPack),
             'pack_name'             => $this->request->getPost('pack_name') == null ? $defaultPackName : $this->request->getPost('pack_name'),
             'low_sell_item_id'      => $this->request->getPost('low_sell_item_id') === null ? $itemId : intval($this->request->getPost('low_sell_item_id')),
             'deleted'               => $this->request->getPost('is_deleted') != null,
@@ -1002,16 +1003,22 @@ class Items extends Secure_Controller
         // Check all success conditions before committing
         if ($success && $uploadSuccess) {
             $db->transCommit();
+
+            $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+            Events::trigger('item_saved', [$itemId], $pluginData);
+
             $message = lang('Items.successful_' . ($newItem ? 'adding' : 'updating')) . ' ' . $itemData['name'];
 
             return $this->response->setJSON(['success' => true, 'message' => $message, 'id' => $itemId]);
+        } else {
+            $message = lang('Items.error_adding_updating') . ' ' . $itemData['name'];
+
+            // Rollback on failure
+            $db->transRollback();
+            $message = $uploadSuccess ? lang('Items.error_adding_updating') . ' ' . $itemData['name'] : strip_tags($uploadData['error']);
+
+            return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $itemId ?? NEW_ENTRY]);
         }
-
-        // Rollback on failure
-        $db->transRollback();
-        $message = $uploadSuccess ? lang('Items.error_adding_updating') . ' ' . $itemData['name'] : strip_tags($uploadData['error']);
-
-        return $this->response->setJSON(['success' => false, 'message' => $message, 'id' => $itemId]);
     }
 
     /**
@@ -1191,6 +1198,8 @@ class Items extends Secure_Controller
         $items_to_delete = $this->request->getPost('ids');
 
         if ($this->item->delete_list($items_to_delete)) {
+            $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+            Events::trigger('item_deleted', $items_to_delete, $pluginData);
             $message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
             return $this->response->setJSON(['success' => true, 'message' => $message]);
         } else {
@@ -1225,7 +1234,7 @@ class Items extends Secure_Controller
     }
 
     /**
-     * Imports items from a CSV formatted file.
+     * Imports items from a CSV-formatted file.
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
@@ -1256,7 +1265,7 @@ class Items extends Secure_Controller
 
 
                     foreach ($attributeDefinitionNames as $definitionName) {
-                        $attributeData[$definitionName] = $this->attribute->getDefinitionByName($definitionName);
+                        $attributeData[$definitionName] = $this->attribute->getDefinitionByName($definitionName)[0];
 
                         if ($attributeData[$definitionName]['definition_type'] === DROPDOWN) {
                             $attributeData[$definitionName]['dropdown_values'] = $this->attribute->getDefinitionValues($attributeData[$definitionName]['definition_id']);
@@ -1265,6 +1274,7 @@ class Items extends Secure_Controller
                     $db = db_connect();
                     $db->transBegin();    // TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
 
+                    $itemIds = [];
                     foreach ($csvRows as $key => $row) {
                         $isFailedRow = false;
                         $itemId = (int)$row['Id'];
@@ -1334,6 +1344,8 @@ class Items extends Secure_Controller
                             if ($isUpdate) {
                                 $itemData = array_merge($itemData, get_object_vars($this->item->get_info_by_id_or_number($itemId)));
                             }
+
+                            $itemIds[] = $itemData['item_id'];
                         } else {
                             $failedRow = $key + 2;
                             $failCodes[] = $failedRow;
@@ -1352,6 +1364,9 @@ class Items extends Secure_Controller
                     } else {
                         $db->transCommit();
                         $this->attribute->deleteOrphanedValues();
+
+                        $pluginData = json_decode($this->request->getPost('plugin_data') ?? '{}', true) ?: [];
+                        Events::trigger('item_saved', $itemIds, $pluginData);
 
                         return $this->response->setJSON(['success' => true, 'message' => lang('Items.csv_import_success')]);
                     }
