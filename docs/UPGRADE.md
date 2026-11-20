@@ -74,17 +74,32 @@ are present and handles automatic migration of legacy secrets. See
 [INSTALL.md#local-install-using-docker](INSTALL.md#local-install-using-docker)
 for the full setup guide, including key configuration.
 
+> [!CAUTION]
+> **Save your legacy encryption key before restarting.** If your pre-CI4
+> installation had the key auto-generated into `config.php` at runtime, backing
+> up `.env` does **not** save it. Extract the key from the running container
+> before pulling or restarting:
+> ```bash
+> docker compose exec app php -r "echo config('Encryption')->key;"
+> ```
+> Save the output securely — it is the only recoverable copy of the CI3 key.
+> You will need to supply it in the next section to migrate the encrypted
+> secrets.
+
 ### Upgrading a Docker container
 
-1. **Back up** your `.env` file (it holds your `encryption.key` and database
+1. **Save the legacy key** (see the caution above) if you are upgrading from
+   a pre-CI4 version where the key was auto-generated at runtime.
+2. **Back up** your `.env` file (it holds your `encryption.key` and database
    password).
-2. **Pull** the new image: `docker compose pull` (or edit the image tag and run
+3. **Pull** the new image: `docker compose pull` (or edit the image tag and run
    `docker compose up`).
-3. **Preserve** your existing `.env` file — do **not** overwrite it with
+4. **Preserve** your existing `.env` file — do **not** overwrite it with
    `.env.example` or delete it.
-4. **Restart** the stack: `docker compose up -d`.
-5. **Verify** the migration output: run
-   `docker compose logs | grep env:provision` and look for the green messages:
+5. **Restart** the stack: `docker compose up -d`.
+6. **Verify** the migration: show the full service logs and look for the green
+   messages. If your compose file includes the `env:provision` command, check
+   for:
    ```
    encryption.key     : CI4 key already present
    ```
@@ -93,6 +108,10 @@ for the full setup guide, including key configuration.
    encryption.key     : rotated CI3 -> CI4 key
    legacy secrets     : converted and verified to CI4 cipher
    ```
+   If your compose file does not run `env:provision`, the migration falls back
+   to the web migration path (the `ConvertToCI4` database migration on first
+   login), so you will not see these messages in the logs — the conversion
+   still runs automatically.
 
 ### Encryption key migration (pre-CI4 → CI4)
 
@@ -109,25 +128,42 @@ The `ospos_app_config` table stores the encrypted secrets
 (`smtp_pass`, `mailchimp_api_key`, `mailchimp_list_id`, `clcdesq_api_key`,
 `clcdesq_api_url`) but **never** the encryption key itself.
 
-When upgrading to CI4, the `env:provision` command at container startup handles
-the key as follows:
+**Before the upgrade**, the legacy key you saved above must be present in
+`.env` (as `encryption.key=`) or in the `ENCRYPTION_KEY` environment variable
+in your new `docker-compose.yml`. Without it, the old encrypted secrets
+(SMTP password, Mailchimp API key, etc.) cannot be decrypted and will be lost.
 
-- **If `.env` (or the `ENCRYPTION_KEY` environment variable) contains a short
-  key** (< 64 characters, the CI3 format): `env:provision` decrypts the legacy
-  secrets, generates a new 64-character CI4 key (256-bit, `AES-256-CTR`),
-  backs up `.env`, writes the new key, re-encrypts the secrets with the CI4
-  cipher, verifies the round-trip, and persists the result.
+The `env:provision` command at container startup handles the key as follows:
+
+- **If `.env` (or `ENCRYPTION_KEY`) contains a short key** (< 64 characters,
+  the CI3 format): `env:provision` decrypts the legacy secrets, generates a new
+  64-character CI4 key (256-bit, `AES-256-CTR`), backs up `.env`, writes the
+  new key, re-encrypts the secrets, verifies the round-trip, and persists.
+- **If `.env` (or `ENCRYPTION_KEY`) already contains a 64-character key** (a
+  valid CI4 key): `env:provision` prints `encryption.key: CI4 key already
+  present` and exits. It does not generate a key or check for legacy secrets.
+  If your database still contains CI3-encrypted secrets but your key is already
+  a CI4 key, the secrets were likely already migrated in a previous upgrade.
 - **If `.env` is empty or contains a new key** and there are legacy secrets in
   the database: `env:provision` generates a fresh CI4 key and outputs a warning
   that the old secrets cannot be recovered.
 
-This means **the old CI3 key must be present in `.env` (or the `ENCRYPTION_KEY`
-environment variable) before the upgrade for the migration to succeed**. If you
-had previously set an `ENCRYPTION_KEY` in your old `docker-compose.yml` or
-saved the short key somewhere, include it in your new `.env` or `docker-compose.yml`
-before restarting. If you do not have the old key and your database contains
-encrypted secrets (SMTP password, Mailchimp API key, etc.), those secrets will
-be lost — you will need to re-enter them after the upgrade.
+> [!WARNING]
+> **Rotation requires `.env` to be replaceable by rename.** The bundled
+> `docker-compose.yml` mounts `./.env` as a single file (`create_host_path:
+> false`). On Linux, `rename()` cannot replace a mount point, so rotating a
+> pre-CI4 key via `.env` will **fail**, `env:provision` exits non-zero, and
+> Apache does not start (the `&&` in the compose `command`).
+>
+> **To upgrade from pre-CI4 with the bundled compose file, supply the legacy
+> key via the `ENCRYPTION_KEY` environment variable** instead of `.env`:
+> ```yaml
+> environment:
+>     - ENCRYPTION_KEY=<your-saved-short-key>
+> ```
+> This avoids the `.env` write entirely. After the initial key migration, you
+> can generate a new 64-character key (see [INSTALL.md#local-install-using-docker])
+> and switch to the recommended long-key approach.
 
 ### After migration
 
@@ -138,18 +174,20 @@ variable (see [INSTALL.md#local-install-using-docker](INSTALL.md#local-install-u
 instead of editing `.env` directly, which avoids the atomic write issue on bind
 mounts.
 
-If you supplied the key via `ENCRYPTION_KEY` in your `docker-compose.yml`
-`environment` list, no further action is needed — the key stays in your shell
-profile, Compose's `.env` file, or `env_file`, and the container receives it
-on every start.
+If you used `ENCRYPTION_KEY` to supply the old short key and `env:provision`
+rotated it, the new 64-character key is written to `.env` but the Compose
+environment variable still holds the old key. **Securely copy the rotated key
+from `.env` into your external configuration** (shell profile, Compose-side
+`.env`, or `env_file`) and update `ENCRYPTION_KEY` to the new value.
 
 ### Cannot access the UI after upgrading?
 
-If the containers start but the web interface is blank or shows an error, set
-`CI_ENVIRONMENT=development` in your `.env` (or in the `environment` section of
-`docker-compose.yml`) and restart. This reveals the PHP error message, which you
-can then search for in the GitHub issues. After upgrading, you should set it
-back to `production`.
+If the containers start but the web interface is blank or shows an error, **restrict
+access to the installation first** (e.g. firewall rules or a maintenance page),
+then set `CI_ENVIRONMENT=development` in your `.env` (or in the `environment`
+section of `docker-compose.yml`) and restart. This reveals the PHP error message,
+which you can then search for in the GitHub issues. After upgrading, set it back
+to `production` and restore access.
 
 ## Version-specific notes
 
