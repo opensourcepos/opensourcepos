@@ -78,9 +78,9 @@ for the full setup guide, including key configuration.
 > **Save your legacy encryption key before restarting.** If your pre-CI4
 > installation had the key auto-generated into `config.php` at runtime, backing
 > up `.env` does **not** save it. Extract the key from the running container
-> before pulling or restarting:
+> before pulling or restarting by reading the container's `config.php` directly:
 > ```bash
-> docker compose exec app php -r "echo config('Encryption')->key;"
+> docker compose exec app grep -oP '(?<=encryption_key = )\'[^\']+\'' /var/www/html/application/config/config.php
 > ```
 > Save the output securely — it is the only recoverable copy of the CI3 key.
 > You will need to supply it in the next section to migrate the encrypted
@@ -108,10 +108,15 @@ for the full setup guide, including key configuration.
    encryption.key     : rotated CI3 -> CI4 key
    legacy secrets     : converted and verified to CI4 cipher
    ```
-   If your compose file does not run `env:provision`, the migration falls back
-   to the web migration path (the `ConvertToCI4` database migration on first
-   login), so you will not see these messages in the logs — the conversion
-   still runs automatically.
+    If your compose file does not run `env:provision`, the migration falls back
+    to the web migration path (the `ConvertToCI4` database migration on first
+    login). However, that path rotates the key by writing `.env` atomically.
+    With a single-file `.env` bind mount (the default in the bundled compose
+    file), `rename()` cannot replace the mount point, so the write fails, the
+    migration errors out, and the login request returns an error. **Do not
+    rely on the automatic fallback with a single-file bind mount** — use the
+    `ENCRYPTION_KEY` workaround described below if your compose file omits
+    `env:provision`.
 
 ### Encryption key migration (pre-CI4 → CI4)
 
@@ -141,9 +146,10 @@ The `env:provision` command at container startup handles the key as follows:
   new key, re-encrypts the secrets, verifies the round-trip, and persists.
 - **If `.env` (or `ENCRYPTION_KEY`) already contains a 64-character key** (a
   valid CI4 key): `env:provision` prints `encryption.key: CI4 key already
-  present` and exits. It does not generate a key or check for legacy secrets.
-  If your database still contains CI3-encrypted secrets but your key is already
-  a CI4 key, the secrets were likely already migrated in a previous upgrade.
+  present` and exits. It does **not** check for or migrate remaining CI3 secrets.
+  If your database still contains CI3-encrypted secrets, preserve the legacy key
+  and verify that the conversion was performed (e.g. check your old `.env` backup
+  or container config); provisioning cannot retroactively convert them.
 - **If `.env` is empty or contains a new key** and there are legacy secrets in
   the database: `env:provision` generates a fresh CI4 key and outputs a warning
   that the old secrets cannot be recovered.
@@ -161,9 +167,13 @@ The `env:provision` command at container startup handles the key as follows:
 > environment:
 >     - ENCRYPTION_KEY=<your-saved-short-key>
 > ```
-> This avoids the `.env` write entirely. After the initial key migration, you
-> can generate a new 64-character key (see [INSTALL.md#local-install-using-docker])
-> and switch to the recommended long-key approach.
+> Note that `env:provision` still rewrites `.env` for a short key, so the single‑file
+> mount risk remains. If the rotation write fails, `env:provision` exits non-zero
+> and Apache does not start. In that case, stop the container, remove the
+> `ENCRYPTION_KEY` line from compose, and try again — or switch to a mountable
+> `.env` directory. After the initial key migration, keep the rotated key
+> unchanged; generating a different key without re-encrypting the secrets makes
+> them unreadable.
 
 ### After migration
 
