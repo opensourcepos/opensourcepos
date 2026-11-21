@@ -29,12 +29,14 @@ jobs:
           fi
           curl -fsSL -X DELETE -H "Authorization: Bearer ${TOKEN}" "${api}/releases/${id}" >/dev/null
           echo "Deleted release '${RELEASE_NAME}' (id=${id})"
-          tag_status=$(curl -sSL -o /dev/null -w "%{http_code}" -X DELETE -H "Authorization: Bearer ${TOKEN}" "${api}/git/refs/tags/${TAG_NAME}")
+          tag_resp=$(curl -sSL -w "\n%{http_code}" -X DELETE -H "Authorization: Bearer ${TOKEN}" "${api}/git/refs/tags/${TAG_NAME}")
+          tag_status=$(echo "${tag_resp}" | tail -n1)
+          tag_body=$(echo "${tag_resp}" | sed '$d')
           if [ "${tag_status}" = "204" ] || [ "${tag_status}" = "200" ]; then
             echo "Deleted tag '${TAG_NAME}'"
-          elif [ "${tag_status}" = "404" ]; then
+          elif [ "${tag_status}" = "422" ] && echo "${tag_body}" | grep -q "Reference does not exist"; then
             echo "Tag '${TAG_NAME}' already gone; skipping."
           else
-            echo "Failed to delete tag '${TAG_NAME}'; HTTP status ${tag_status}"
+            echo "Failed to delete tag '${TAG_NAME}'; HTTP status ${tag_status}: ${tag_body}"
             exit 1
           fi

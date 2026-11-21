@@ -823,6 +823,7 @@ class SalesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
+        $this->assertSame('INV-2026-01', $result['invoice_number']);
         $this->assertSame('INV-2026-01', Services::session()->get('sales_invoice_number'));
     }
 }

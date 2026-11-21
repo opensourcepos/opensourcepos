@@ -306,12 +306,16 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertTrue($this->stockLocation->saveValue($locationData, NEW_ENTRY));
         $locationId = (int) $locationData['location_id'];
 
+        $db = Database::connect();
+        $origPermissions = $db->table('permissions')->where('location_id', $locationId)->get()->getResultArray();
+        $origPermissionIds = array_column($origPermissions, 'permission_id');
+        $origGrants = $db->table('grants')->whereIn('permission_id', $origPermissionIds)->orderBy('permission_id, person_id')->get()->getResultArray();
+
         $updatedData = ['location_name' => "NewLoc_{$suffix}"];
         $this->assertTrue($this->stockLocation->saveValue($updatedData, $locationId));
 
         $this->assertSame("NewLoc_{$suffix}", $this->stockLocation->getLocationName($locationId));
 
-        $db = Database::connect();
         $newPermissions = $db->table('permissions')->where('location_id', $locationId)->get()->getResultArray();
         $this->assertCount(3, $newPermissions);
 
@@ -320,8 +324,15 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertContains("sales_NewLoc_{$suffix}", $permissionIds);
         $this->assertContains("receivings_NewLoc_{$suffix}", $permissionIds);
 
-        $newGrants = $db->table('grants')->whereIn('permission_id', $permissionIds)->get()->getResultArray();
+        $newGrants = $db->table('grants')->whereIn('permission_id', $permissionIds)->orderBy('permission_id, person_id')->get()->getResultArray();
         $this->assertNotEmpty($newGrants);
+
+        $expectedGrants = array_map(static function (array $grant) use ($suffix): array {
+            $grant['permission_id'] = str_replace("OldLoc_{$suffix}", "NewLoc_{$suffix}", $grant['permission_id']);
+
+            return $grant;
+        }, $origGrants);
+        $this->assertSame($expectedGrants, $newGrants);
 
         $oldPermissions = $db->table('permissions')->like('permission_id', "OldLoc_{$suffix}")->get()->getResultArray();
         $this->assertEmpty($oldPermissions);

@@ -220,7 +220,7 @@ use Config\OSPOS;
         ?>
         const decimalSeparator = <?= json_encode($decimal_separator) ?>;
         const groupingSeparator = <?= json_encode($grouping_separator) ?>;
-        const numberLocale = <?= json_encode($config['number_locale']) ?>;
+        const numberLocale = <?= json_encode(str_replace('_', '-', $config['number_locale'])) ?>;
         const qtyDecimals = <?= quantity_decimals() ?>;
         const useGrouping = <?= !empty($config['thousands_separator']) ? 'true' : 'false' ?>;
         const qtyFormatter = new Intl.NumberFormat(numberLocale, {

@@ -1071,7 +1071,7 @@ class Item extends Model
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 
-                if (!array_filter($suggestions, static fn (array $s): bool => (int) $s['value'] === (int) $entry['value'])) {
+                if (!array_filter($suggestions, static fn (array $s): bool => isset($s['value']) && (int) $s['value'] === (int) $entry['value'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1179,7 +1179,7 @@ class Item extends Model
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
-                if (!array_filter($suggestions, static fn (array $s): bool => (int) $s['value'] === (int) $entry['value'])) {
+                if (!array_filter($suggestions, static fn (array $s): bool => isset($s['value']) && (int) $s['value'] === (int) $entry['value'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1283,7 +1283,7 @@ class Item extends Model
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $row->name];
-                if (!array_filter($suggestions, static fn (array $s): bool => (int) $s['value'] === (int) $entry['value'])) {
+                if (!array_filter($suggestions, static fn (array $s): bool => isset($s['value']) && (int) $s['value'] === (int) $entry['value'])) {
                     $suggestions[] = $entry;
                 }
             }

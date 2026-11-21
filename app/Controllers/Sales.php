@@ -351,7 +351,7 @@ class Sales extends Secure_Controller
         $invoiceNumber = $rawInvoiceNumber !== null ? preg_replace('/[^a-zA-Z0-9_\-\/\. ]/', '', trim((string)$rawInvoiceNumber)) : null;
         $this->sale_lib->set_invoice_number($invoiceNumber);
 
-        return $this->response->setJSON(['success' => true]);
+        return $this->response->setJSON(['success' => true, 'invoice_number' => $invoiceNumber]);
     }
 
     /**

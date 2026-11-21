@@ -765,7 +765,11 @@ helper('url');
             $('#sales_invoice_number').keyup(function() {
                 $.post("<?= esc(site_url("$controller_name/setInvoiceNumber")) ?>", {
                     sales_invoice_number: $('#sales_invoice_number').val()
-                });
+                }, function(response) {
+                    if (response.invoice_number !== undefined && response.invoice_number !== $('#sales_invoice_number').val()) {
+                        $('#sales_invoice_number').val(response.invoice_number);
+                    }
+                }, 'json');
             });
 
         <?php } ?>

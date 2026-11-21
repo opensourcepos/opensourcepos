@@ -3,12 +3,10 @@
 namespace Tests\Models;
 
 use App\Models\Rewards;
-use App\Models\Sale;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
-use Tests\Support\ItemFixtureTrait;
 use Tests\Support\SaleFixtureTrait;
 
 class RewardsTest extends CIUnitTestCase
@@ -16,7 +14,6 @@ class RewardsTest extends CIUnitTestCase
     use DatabaseTestTrait;
     use DatabaseBootstrapTrait;
     use EmployeeFixtureTrait;
-    use ItemFixtureTrait;
     use SaleFixtureTrait;
 
     protected $migrate     = true;
@@ -35,27 +32,7 @@ class RewardsTest extends CIUnitTestCase
     public function testSaveValue_InsertsAndUpdatesRewardsRow(): void
     {
         $employeeId = $this->createEmployee();
-        $itemId     = $this->createTestItem(HAS_NO_STOCK);
-        $saleModel  = model(Sale::class);
-        $saleStatus = COMPLETED;
-        $items      = $this->buildCartLine($itemId, 1, 10.00);
-        $salesTaxes = [[], []];
-
-        $saleId = $saleModel->save_value(
-            NEW_ENTRY,
-            $saleStatus,
-            $items,
-            NEW_ENTRY,
-            $employeeId,
-            'rewards test',
-            null,
-            null,
-            null,
-            SALE_TYPE_POS,
-            [],
-            null,
-            $salesTaxes
-        );
+        $saleId     = $this->createSale($employeeId);
 
         $rewardsModel = model(Rewards::class);
         $rewardsData  = [
