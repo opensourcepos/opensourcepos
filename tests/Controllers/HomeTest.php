@@ -2,12 +2,22 @@
 
 namespace Tests\Controllers;
 
+use App\Models\Employee;
+use CodeIgniter\Config\Factories;
+use CodeIgniter\Config\Services;
+use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\Security\Exceptions\SecurityException;
+use CodeIgniter\Session\Handlers\ArrayHandler;
+use CodeIgniter\Session\Session;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Models\Employee;
-use RuntimeException;
+use Config\Filters;
+use Config\OSPOS;
+use Config\Session as SessionConfig;
+use ReflectionClass;
 use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\EmployeeFixtureTrait;
 
 /**
  * Test suite for Home controller password validation
@@ -20,6 +30,7 @@ class HomeTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use DatabaseBootstrapTrait;
+    use EmployeeFixtureTrait;
     use FeatureTestTrait;
 
     protected $migrate     = true;
@@ -32,6 +43,37 @@ class HomeTest extends CIUnitTestCase
         $this->resetDatabaseOnce();
 
         parent::setUp();
+
+        config(OSPOS::class)->update_settings();
+    }
+
+    protected function tearDown(): void
+    {
+        Factories::reset('config');
+        Services::resetSingle('filters');
+        Services::resetSingle('security');
+        Services::resetSingle('session');
+
+        parent::tearDown();
+    }
+
+    private function injectDestroyTrackingSession(): Session
+    {
+        $sessionConfig = config(SessionConfig::class);
+        $handler = new ArrayHandler($sessionConfig, '127.0.0.1');
+        $sessionSpy = new class ($handler, $sessionConfig) extends Session {
+            public bool $destroyed = false;
+
+            public function destroy(): void
+            {
+                $this->destroyed = true;
+                $_SESSION = [];
+            }
+        };
+        $sessionSpy->setLogger(Services::logger());
+        Services::injectMock('session', $sessionSpy);
+
+        return $sessionSpy;
     }
 
     /**
@@ -228,6 +270,45 @@ class HomeTest extends CIUnitTestCase
             'Single character password should be rejected (CVE fix)');
     }
 
+    public function testGetIndex_ShowsOfficeLinkForOfficeOnlyEmployee(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'home', 'menu_group' => 'office'],
+                ['permission_id' => 'office', 'menu_group' => 'office'],
+                ['permission_id' => 'config', 'menu_group' => 'office']
+            ]
+        ]);
+
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/home');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('href="' . base_url('office') . '"', $response->getBody());
+    }
+
+    public function testGetIndex_HidesOfficeLinkWithoutOfficeGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'grants' => [
+                ['permission_id' => 'home', 'menu_group' => 'office'],
+                ['permission_id' => 'config', 'menu_group' => 'office'],
+            ]
+        ]);
+
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/home');
+
+        $response->assertStatus(200);
+
+        $this->assertStringNotContainsString(
+            'href="' . base_url('office') . '"',
+            $response->getBody()
+        );
+    }
+
     /**
      * Helper method to reset session
      *
@@ -248,35 +329,26 @@ class HomeTest extends CIUnitTestCase
     {
         $uniqueSuffix = uniqid();
 
-        $personData = [
-            'first_name'   => $overrides['first_name'] ?? 'NonAdmin',
-            'last_name'    => $overrides['last_name'] ?? 'User',
-            'email'        => $overrides['email'] ?? "nonadmin{$uniqueSuffix}@test.com",
-            'phone_number' => $overrides['phone_number'] ?? '555-1234'
-        ];
-
-        $employeeData = [
-            'username'      => $overrides['username'] ?? "nonadmin{$uniqueSuffix}",
-            'password'      => password_hash($overrides['password'] ?? 'password123', PASSWORD_DEFAULT),
-            'hash_version'  => 2,
-            'language_code' => 'en',
-            'language'      => 'english'
-        ];
-
         $grantsData = $overrides['grants'] ?? [
             ['permission_id' => 'home', 'menu_group' => 'home'],
             ['permission_id' => 'customers', 'menu_group' => 'home'],
-            ['permission_id' => 'sales', 'menu_group' => 'home']
+            ['permission_id' => 'sales', 'menu_group' => 'home'],
         ];
 
-        $employeeModel = model(Employee::class);
-        $saved = $employeeModel->save_employee($personData, $employeeData, $grantsData, NEW_ENTRY);
-
-        if (!$saved || empty($personData['person_id'])) {
-            throw new RuntimeException('Failed to create non-admin employee for testing');
+        $employeeOverrides = [];
+        if (array_key_exists('password', $overrides)) {
+            $employeeOverrides['password'] = password_hash($overrides['password'], PASSWORD_DEFAULT);
         }
 
-        return (int) $personData['person_id'];
+        return $this->createEmployee(
+            first_name: $overrides['first_name'] ?? 'NonAdmin',
+            last_name: $overrides['last_name'] ?? 'User',
+            email: $overrides['email'] ?? "nonadmin{$uniqueSuffix}@test.com",
+            username: $overrides['username'] ?? "nonadmin{$uniqueSuffix}",
+            phone_number: $overrides['phone_number'] ?? '555-1234',
+            grants: $grantsData,
+            employee: $employeeOverrides,
+        );
     }
 
     /**
@@ -408,9 +480,9 @@ class HomeTest extends CIUnitTestCase
         $this->resetSession(); // Login as admin
 
         $response = $this->post('/home/save/' . $nonAdminId, [
-            'username' => 'nonadminadminchange',
-            'current_password' => 'password123',
-            'password' => 'adminset123'
+            'username'         => 'nonadminadminchange',
+            'current_password' => 'pointofsale',
+            'password'         => 'adminset123',
         ]);
 
         $response->assertStatus(200);
@@ -419,8 +491,55 @@ class HomeTest extends CIUnitTestCase
 
         // Verify password was changed
         $employee = model(Employee::class);
-        $user = $employee->getInfo($nonAdminId);
+        $user     = $employee->getInfo($nonAdminId);
         $this->assertTrue(password_verify('adminset123', $user->password));
+    }
+
+    public function testPostSave_VerifiesCurrentUsersOwnPassword(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'boundcheckuser',
+            'password' => 'ownpass123',
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->post('/home/save/' . $nonAdminId, [
+            'username'         => 'admin',
+            'current_password' => 'pointofsale',
+            'password'         => 'newpass12345',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+
+        $employee = model(Employee::class);
+        $user     = $employee->getInfo($nonAdminId);
+        $this->assertTrue(password_verify('ownpass123', $user->password));
+    }
+
+    public function testPostSave_PreservesUsernameWhenPostUsernameTampered(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'originalusername',
+            'password' => 'password123',
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->post('/home/save/' . $nonAdminId, [
+            'username'         => 'tamperedusername',
+            'current_password' => 'password123',
+            'password'         => 'updatedpass123',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $employee = model(Employee::class);
+        $user     = $employee->getInfo($nonAdminId);
+        $this->assertSame('originalusername', $user->username);
+        $this->assertTrue(password_verify('updatedpass123', $user->password));
     }
 
     /**
@@ -508,6 +627,7 @@ class HomeTest extends CIUnitTestCase
      */
     public function testLogoutStillBypassesGrantCheckAfterFix(): void
     {
+        $sessionSpy = $this->injectDestroyTrackingSession();
         $nonAdminId = $this->createNonAdminEmployee([
             'username' => 'logoutnograntuser',
             'email' => 'logoutnograntuser@test.com',
@@ -515,9 +635,158 @@ class HomeTest extends CIUnitTestCase
         ]);
         $this->loginAs($nonAdminId);
 
-        $response = $this->get('/home/logout');
+        $response = $this->post('/home/logout');
 
         $response->assertRedirectTo('login');
+        $this->assertTrue($sessionSpy->destroyed);
+        $this->assertNull(session('person_id'));
+        $this->assertFalse(model(Employee::class)->is_logged_in());
+    }
+
+    public function testPostLogout_AcceptsMixedCaseSegmentWithoutHomeGrant(): void
+    {
+        $sessionSpy = $this->injectDestroyTrackingSession();
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'logoutmixedcaseuser',
+            'email' => 'logoutmixedcaseuser@test.com',
+            'grants' => [],
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $response = $this->post('/home/Logout');
+
+        $response->assertRedirectTo('login');
+        $this->assertTrue($sessionSpy->destroyed);
+        $this->assertNull(session('person_id'));
+    }
+
+    public function testPostLogout_AcceptsUrlEncodedSegmentWithoutHomeGrant(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'logoutencodeduser',
+            'email' => 'logoutencodeduser@test.com',
+            'grants' => [],
+        ]);
+
+        foreach (['/home/%6Cogout', '/home/%4Cogout'] as $encodedUri) {
+            $sessionSpy = $this->injectDestroyTrackingSession();
+            $this->loginAs($nonAdminId);
+
+            $response = $this->post($encodedUri);
+
+            $response->assertRedirectTo('login');
+            $this->assertTrue($sessionSpy->destroyed);
+            $this->assertNull(session('person_id'));
+        }
+    }
+
+    public function testPostLogout_RejectsGetRequest(): void
+    {
+        $nonAdminId = $this->createNonAdminEmployee([
+            'username' => 'logoutgetuser',
+            'email' => 'logoutgetuser@test.com',
+            'grants' => [],
+        ]);
+        $this->loginAs($nonAdminId);
+
+        $this->expectException(PageNotFoundException::class);
+        $this->get('/home/logout');
+    }
+
+    public function testPostLogout_RejectsTokenlessRequestWhenCsrfEnabled(): void
+    {
+        $defaultProperties = (new ReflectionClass(Filters::class))->getDefaultProperties();
+        $filtersConfig = config(Filters::class);
+        $filtersConfig->globals['before']['csrf'] = $defaultProperties['globals']['before']['csrf'];
+        Services::resetSingle('filters');
+        Services::resetSingle('security');
+
+        $this->loginAs(1);
+
+        $this->expectException(SecurityException::class);
+        $this->post('/home/logout');
+    }
+
+    public function testGetIndex_RendersPostLogoutFormWithCsrfTokenWhenCsrfEnabled(): void
+    {
+        $defaultProperties = (new ReflectionClass(Filters::class))->getDefaultProperties();
+        $filtersConfig = config(Filters::class);
+        $filtersConfig->globals['before']['csrf'] = $defaultProperties['globals']['before']['csrf'];
+        Services::resetSingle('filters');
+        Services::resetSingle('security');
+
+        $this->loginAs(1);
+
+        $response = $this->get('/home');
+        $response->assertStatus(200);
+
+        $html = (string) $response->response()->getBody();
+        $this->assertMatchesRegularExpression('/<form\b[^>]*action="[^"]*home\/logout"[^>]*id="logout_form"[^>]*method="post"/i', $html);
+        $this->assertStringContainsString('name="' . csrf_token() . '"', $html);
+        $this->assertDoesNotMatchRegularExpression('/<a\b[^>]*href="[^"]*home\/logout"/i', $html);
+    }
+
+    public function testGetIndex_RendersAmpersandAndApostropheInHeaderWithoutDoubleEscaping(): void
+    {
+        $encodedEmployeeId = $this->createNonAdminEmployee([
+            'first_name' => filter_var('Smith & Wesson', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'last_name'  => filter_var("O'Connor", FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+        ]);
+        $this->loginAs($encodedEmployeeId);
+
+        $encodedResponse = $this->get('/home');
+        $encodedResponse->assertStatus(200);
+        $encodedHtml = (string) $encodedResponse->response()->getBody();
+
+        $this->assertStringContainsString('Smith &amp; Wesson', $encodedHtml);
+        $this->assertStringNotContainsString('&amp;amp;', $encodedHtml);
+        $this->assertStringNotContainsString('&amp;#', $encodedHtml);
+        $this->assertMatchesRegularExpression('/O(?:&#0?39;|&apos;)Connor/', $encodedHtml);
+
+        $rawEmployeeId = $this->createNonAdminEmployee([
+            'first_name' => 'Ben & Jerry',
+            'last_name'  => "D'Angelo",
+        ]);
+        $this->loginAs($rawEmployeeId);
+
+        $rawResponse = $this->get('/home');
+        $rawResponse->assertStatus(200);
+        $rawHtml = (string) $rawResponse->response()->getBody();
+
+        $this->assertStringContainsString('Ben &amp; Jerry', $rawHtml);
+        $this->assertStringNotContainsString('&amp;amp;', $rawHtml);
+        $this->assertMatchesRegularExpression('/D(?:&#0?39;|&apos;)Angelo/', $rawHtml);
+    }
+
+    public function testGetIndex_EscapesHostileMarkupInHeaderEmployeeName(): void
+    {
+        $rawHostileId = $this->createNonAdminEmployee([
+            'first_name' => '<script>alert(1)</script>',
+            'last_name'  => '<img src=x onerror=alert(1)>',
+        ]);
+        $this->loginAs($rawHostileId);
+
+        $rawResponse = $this->get('/home');
+        $rawResponse->assertStatus(200);
+        $rawHtml = (string) $rawResponse->response()->getBody();
+
+        $this->assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $rawHtml);
+        $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $rawHtml);
+        $this->assertStringNotContainsString('<script>alert(1)</script>', $rawHtml);
+        $this->assertStringNotContainsString('<img src=x onerror=alert(1)>', $rawHtml);
+
+        $sanitizedHostileId = $this->createNonAdminEmployee([
+            'first_name' => filter_var('<script>alert(2)</script>', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'last_name'  => 'Tester',
+        ]);
+        $this->loginAs($sanitizedHostileId);
+
+        $sanitizedResponse = $this->get('/home');
+        $sanitizedResponse->assertStatus(200);
+        $sanitizedHtml = (string) $sanitizedResponse->response()->getBody();
+
+        $this->assertStringContainsString('&lt;script&gt;alert(2)&lt;/script&gt;', $sanitizedHtml);
+        $this->assertStringNotContainsString('<script>alert(2)</script>', $sanitizedHtml);
     }
 
     /**

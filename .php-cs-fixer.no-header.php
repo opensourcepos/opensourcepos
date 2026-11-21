@@ -30,7 +30,8 @@ $finder = Finder::create()
 
 $overrides = [
     // For updating to coding-standard
-    'modernize_strpos'    => true,
+    'modernize_strpos'                  => true,
+    'not_operator_with_successor_space' => false,
 ];
 
 $options = [
