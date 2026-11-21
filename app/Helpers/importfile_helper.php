@@ -110,20 +110,20 @@ function bom_exists(&$file_handle): bool
  * attribute columns stay in sync automatically.
  *
  * @param array $csvRows Rows returned by get_csv_file().
- * @param array $stock_locations Stock locations, as returned by Stock_location::get_allowed_locations().
+ * @param array $stockLocations Stock locations, as returned by Stock_location::get_allowed_locations().
  * @param array $attributeNames Attribute definition names, as returned by Attribute::get_definition_names().
  * @return bool True when the required columns are present.
  */
-function csvImportHasRequiredItemHeaders(array $csvRows, array $stock_locations, array $attributeNames): bool
+function csvImportHasRequiredItemHeaders(array $csvRows, array $stockLocations, array $attributeNames): bool
 {
     if (empty($csvRows)) {
         return false;
     }
 
-    $template_header_line = substr(generate_import_items_csv($stock_locations, $attributeNames), 3);
-    $required_headers = str_getcsv($template_header_line);
+    $templateHeaderLine = substr(generate_import_items_csv($stockLocations, $attributeNames), 3);
+    $requiredHeaders = str_getcsv($templateHeaderLine);
 
-    $present_headers = array_keys(reset($csvRows));
+    $presentHeaders = array_keys(reset($csvRows));
 
-    return empty(array_diff($required_headers, $present_headers));
+    return empty(array_diff($requiredHeaders, $presentHeaders));
 }

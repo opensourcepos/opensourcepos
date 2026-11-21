@@ -37,7 +37,7 @@ class Tax_lib
         $this->sale_lib = new Sale_lib();
 
         $this->customer = model(Customer::class);
-        $this->item_taxes = model(Item_taxes::class);
+        $this->itemTaxes = model(Item_taxes::class);
         $this->sale = model(Sale::class);
         $this->tax = model(Tax::class);
         $this->tax_category = model(Tax_category::class);
@@ -101,7 +101,7 @@ class Tax_lib
                     // Start of current Base System tax calculations
 
                     if ($saleId == -1) {    // TODO: Replace -1 with constant. Also, replace with ternary notation.
-                        $taxInfo = $this->item_taxes->get_info($item['item_id']);
+                        $taxInfo = $this->itemTaxes->get_info($item['item_id']);
                     } else {
                         $taxInfo = $this->sale->get_sales_item_taxes($saleId, $item['item_id']);
                     }
