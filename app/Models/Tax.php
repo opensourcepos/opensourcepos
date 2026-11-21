@@ -304,10 +304,10 @@ class Tax extends Model
     }
 
     /**
-     * @param string $tax_category
+     * @param string $taxCategory
      * @return int
      */
-    public function get_tax_category_id(string $tax_category): int    // TODO: $tax_category is not used in this function and get_tax_category_id() is not called in the code.  It may be that this needs to be deprecated and removed.
+    public function get_tax_category_id(string $taxCategory): int    // TODO: $taxCategory is not used in this function and get_tax_category_id() is not called in the code.  It may be that this needs to be deprecated and removed.
     {
         $builder = $this->db->table('tax_categories');
         $builder->select('tax_category_id');

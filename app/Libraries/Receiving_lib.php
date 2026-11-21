@@ -212,12 +212,12 @@ class Receiving_lib
     }
 
     /**
-     * @param int $stock_source
+     * @param int $stockSource
      * @return void
      */
-    public function set_stock_source(int $stock_source): void
+    public function set_stock_source(int $stockSource): void
     {
-        $this->session->set('recv_stock_source', $stock_source);
+        $this->session->set('recv_stock_source', $stockSource);
     }
 
     /**
@@ -244,12 +244,12 @@ class Receiving_lib
     }
 
     /**
-     * @param string $stock_destination
+     * @param string $stockDestination
      * @return void
      */
-    public function set_stock_destination(?string $stock_destination): void
+    public function set_stock_destination(?string $stockDestination): void
     {
-        $this->session->set('recv_stock_destination', $stock_destination);
+        $this->session->set('recv_stock_destination', $stockDestination);
     }
 
     /**
@@ -369,12 +369,12 @@ class Receiving_lib
      * @param string $serialnumber
      * @param float $quantity
      * @param float $discount
-     * @param int|null $discount_type
+     * @param int|null $discountType
      * @param float $price
-     * @param float $receiving_quantity
+     * @param float $receivingQuantity
      * @return bool
      */
-    public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, ?int $discount_type, float $price, float $receiving_quantity): bool
+    public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, ?int $discountType, float $price, float $receivingQuantity): bool
     {
         $items = $this->get_cart();
         if (isset($items[$line])) {
@@ -382,15 +382,15 @@ class Receiving_lib
             $line['description'] = $description;
             $line['serialnumber'] = $serialnumber;
             $line['quantity'] = $quantity;
-            $line['receiving_quantity'] = $receiving_quantity;
+            $line['receiving_quantity'] = $receivingQuantity;
             $line['discount'] = $discount;
 
-            if (!is_null($discount_type)) {
-                $line['discount_type'] = $discount_type;
+            if (!is_null($discountType)) {
+                $line['discount_type'] = $discountType;
             }
 
             $line['price'] = $price;
-            $line['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity);
+            $line['total'] = $this->get_item_total($quantity, $price, $discount, $discountType, $receivingQuantity);
             $this->set_cart($items);
         }
 
@@ -408,64 +408,64 @@ class Receiving_lib
     }
 
     /**
-     * @param int $receipt_receiving_id
+     * @param int $receiptReceivingId
      * @return void
      */
-    public function return_entire_receiving(int $receipt_receiving_id): void
+    public function return_entire_receiving(int $receiptReceivingId): void
     {
         // RECV #
-        $pieces = explode(' ', $receipt_receiving_id);
+        $pieces = explode(' ', $receiptReceivingId);
 
         if (preg_match("/(RECV|KIT)/", $pieces[0])) {    // TODO: this needs to be converted to ternary notation.
-            $receiving_id = $pieces[1];
+            $receivingId = $pieces[1];
         } else {
-            $receiving_id = $this->receiving->get_receiving_by_reference($receipt_receiving_id)->getRow()->receiving_id;
+            $receivingId = $this->receiving->get_receiving_by_reference($receiptReceivingId)->getRow()->receiving_id;
         }
 
         $this->empty_cart();
         $this->remove_supplier();
         $this->clear_comment();
 
-        foreach ($this->receiving->get_receiving_items($receiving_id)->getResult() as $row) {
-            $this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
+        foreach ($this->receiving->get_receiving_items($receivingId)->getResult() as $row) {
+            $this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receivingId, true);
         }
 
-        $this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
+        $this->set_supplier($this->receiving->get_supplier($receivingId)->person_id);
     }
 
     /**
      * @param string $external_item_kit_id
      * @param int $item_location
      * @param float $discount
-     * @param int $discount_type
+     * @param int $discountType
      * @return void
      */
-    public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, int $discount_type): void
+    public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, int $discountType): void
     {
         // KIT #
         $pieces = explode(' ', $external_item_kit_id);
         $item_kit_id = count($pieces) > 1 ? $pieces[1] : $external_item_kit_id;
 
         foreach ($this->item_kit_items->get_info($item_kit_id) as $item_kit_item) {
-            $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type);
+            $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discountType);
         }
     }
 
     /**
-     * @param int $receiving_id
+     * @param int $receivingId
      * @return void
      */
-    public function copy_entire_receiving(int $receiving_id): void
+    public function copy_entire_receiving(int $receivingId): void
     {
         $this->empty_cart();
         $this->remove_supplier();
 
-        foreach ($this->receiving->get_receiving_items($receiving_id)->getResult() as $row) {
-            $this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
+        foreach ($this->receiving->get_receiving_items($receivingId)->getResult() as $row) {
+            $this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receivingId, true);
         }
 
-        $this->set_supplier((int) $this->receiving->get_supplier($receiving_id)->person_id);
-        // $this->set_reference($this->receiving->get_info($receiving_id)->getRow()->reference);    // TODO: If this code won't be added back in, then let's delete it.
+        $this->set_supplier((int) $this->receiving->get_supplier($receivingId)->person_id);
+        // $this->set_reference($this->receiving->get_info($receivingId)->getRow()->reference);    // TODO: If this code won't be added back in, then let's delete it.
     }
 
     /**
@@ -484,17 +484,17 @@ class Receiving_lib
      * @param float $quantity
      * @param float $price
      * @param float $discount
-     * @param int|null $discount_type
-     * @param float $receiving_quantity
+     * @param int|null $discountType
+     * @param float $receivingQuantity
      * @return string
      */
-    public function get_item_total(float $quantity, float $price, float $discount, ?int $discount_type, float $receiving_quantity): string
+    public function get_item_total(float $quantity, float $price, float $discount, ?int $discountType, float $receivingQuantity): string
     {
-        $extended_quantity = bcmul($quantity, $receiving_quantity);
+        $extended_quantity = bcmul($quantity, $receivingQuantity);
         $total = bcmul($extended_quantity, $price);
         $discount_amount = $discount;
 
-        if ($discount_type == PERCENT) {    // TODO: === ?
+        if ($discountType == PERCENT) {    // TODO: === ?
             $discount_fraction = bcdiv($discount, 100);
             $discount_amount = bcmul($total, $discount_fraction);
         }

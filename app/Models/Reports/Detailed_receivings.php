@@ -52,10 +52,10 @@ class Detailed_receivings extends Report
     }
 
     /**
-     * @param string $receiving_id
+     * @param string $receivingId
      * @return array
      */
-    public function getDataByReceivingId(string $receiving_id): array
+    public function getDataByReceivingId(string $receivingId): array
     {
         $builder = $this->db->table('receivings_items_temp');
         $builder->select('receiving_id,
@@ -71,7 +71,7 @@ class Detailed_receivings extends Report
             MAX(reference) as reference');
         $builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
         $builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-        $builder->where('receiving_id', $receiving_id);
+        $builder->where('receiving_id', $receivingId);
         $builder->groupBy('receiving_id');
 
         return $builder->get()->getRowArray();

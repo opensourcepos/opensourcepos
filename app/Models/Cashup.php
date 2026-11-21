@@ -37,10 +37,10 @@ class Cashup extends Model
     /**
      * Determines if a given Cashup_id is a Cashup
      */
-    public function exists(int $cashup_id): bool
+    public function exists(int $cashupId): bool
     {
         $builder = $this->db->table('cash_up');
-        $builder->where('cashup_id', $cashup_id);
+        $builder->where('cashup_id', $cashupId);
 
         return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
@@ -48,10 +48,10 @@ class Cashup extends Model
     /**
      * Gets employee info
      */
-    public function get_employee(int $cashup_id): object    // TODO: This function is never called and if it were called, would not yield proper results.  There is no employee_id field in the cash_up table.
+    public function get_employee(int $cashupId): object    // TODO: This function is never called and if it were called, would not yield proper results.  There is no employee_id field in the cash_up table.
     {
         $builder = $this->db->table('cash_up');
-        $builder->where('cashup_id', $cashup_id);
+        $builder->where('cashup_id', $cashupId);
 
         $employee = model(Employee::class);
 
@@ -59,13 +59,13 @@ class Cashup extends Model
     }
 
     /**
-     * @param string $cashup_ids
+     * @param string $cashupIds
      * @return ResultInterface
      */
-    public function get_multiple_info(string $cashup_ids): ResultInterface
+    public function get_multiple_info(string $cashupIds): ResultInterface
     {
         $builder = $this->db->table('cash_up');
-        $builder->whereIn('cashup_id', $cashup_ids);
+        $builder->whereIn('cashup_id', $cashupIds);
         $builder->orderBy('cashup_id', 'asc');
 
         return $builder->get();
@@ -161,7 +161,7 @@ class Cashup extends Model
     /**
      * Gets information about a particular cashup
      */
-    public function get_info(int $cashup_id): object
+    public function get_info(int $cashupId): object
     {
         $builder = $this->db->table('cash_up AS cash_up');
         $builder->select('
@@ -187,7 +187,7 @@ class Cashup extends Model
         ');
         $builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
         $builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
-        $builder->where('cashup_id', $cashup_id);
+        $builder->where('cashup_id', $cashupId);
 
         $query = $builder->get();
         if ($query->getNumRows() == 1) {    // TODO: ===
@@ -225,12 +225,12 @@ class Cashup extends Model
     /**
      * Inserts or updates a cashup
      */
-    public function save_value(array &$cash_up_data, $cashup_id = NEW_ENTRY): bool
+    public function save_value(array &$cashUpData, $cashupId = NEW_ENTRY): bool
     {
-        if (!$cashup_id == NEW_ENTRY || !$this->exists($cashup_id)) {
+        if (!$cashupId == NEW_ENTRY || !$this->exists($cashupId)) {
             $builder = $this->db->table('cash_up');
-            if ($builder->insert($cash_up_data)) {
-                $cash_up_data['cashup_id'] = $this->db->insertID();
+            if ($builder->insert($cashUpData)) {
+                $cashUpData['cashup_id'] = $this->db->insertID();
 
                 return true;
             }
@@ -239,20 +239,20 @@ class Cashup extends Model
         }
 
         $builder = $this->db->table('cash_up');
-        $builder->where('cashup_id', $cashup_id);
+        $builder->where('cashup_id', $cashupId);
 
-        return $builder->update($cash_up_data);
+        return $builder->update($cashUpData);
     }
 
     /**
      * Deletes a list of cashups
      */
-    public function delete_list(array $cashup_ids): bool
+    public function delete_list(array $cashupIds): bool
     {
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
         $builder = $this->db->table('cash_up');
-        $builder->whereIn('cashup_id', $cashup_ids);
+        $builder->whereIn('cashup_id', $cashupIds);
         $success = $builder->update(['deleted' => 1]);
         $this->db->transComplete();
 

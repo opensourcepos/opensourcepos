@@ -21,62 +21,62 @@ function generate_import_items_csv(array $stock_locations, array $attributes): s
  */
 function generate_stock_location_headers(array $locations): string
 {
-    $location_headers = '';
+    $locationHeaders = '';
 
-    foreach ($locations as $location_name) {
-        $location_headers .= ',"location_' . $location_name . '"';
+    foreach ($locations as $locationName) {
+        $locationHeaders .= ',"location_' . $locationName . '"';
     }
 
-    return $location_headers;
+    return $locationHeaders;
 }
 
 /**
- * @param array $attribute_names
+ * @param array $attributeNames
  * @return string
  */
-function generate_attribute_headers(array $attribute_names): string
+function generate_attribute_headers(array $attributeNames): string
 {
-    $attribute_headers = '';
-    unset($attribute_names[-1]);
+    $attributeHeaders = '';
+    unset($attributeNames[-1]);
 
-    foreach ($attribute_names as $attribute_name) {
-        $attribute_headers .= ',"attribute_' . $attribute_name . '"';
+    foreach ($attributeNames as $attributeName) {
+        $attributeHeaders .= ',"attribute_' . $attributeName . '"';
     }
 
-    return $attribute_headers;
+    return $attributeHeaders;
 }
 
 /**
  * Processes a CSV file and returns it.
- * @param string $file_name
+ * @param string $fileName
  * @return array A multidimensional array of rows found within the file and their associative key/value pairs.
  */
-function get_csv_file(string $file_name): array
+function get_csv_file(string $fileName): array
 {
-    $csv_rows = false;
+    $csvRows = false;
 
-    if (($csv_file = fopen($file_name, 'r')) !== false) {
+    if (($csvFile = fopen($fileName, 'r')) !== false) {
         helper('security');
 
-        $csv_rows = [];
+        $csvRows = [];
 
         // Skip Byte-Order Mark
-        if (bom_exists($csv_file)) {
-            fseek($csv_file, 3);
+        if (bom_exists($csvFile)) {
+            fseek($csvFile, 3);
         }
 
-        $headers = fgetcsv($csv_file);
+        $headers = fgetcsv($csvFile);
 
-        while (($row = fgetcsv($csv_file)) !== false) {
+        while (($row = fgetcsv($csvFile)) !== false) {
             if ($row !== [null]) {
-                $csv_rows[] = array_combine($headers, $row);
+                $csvRows[] = array_combine($headers, $row);
             }
         }
 
-        fclose($csv_file);
+        fclose($csvFile);
     }
 
-    return $csv_rows;
+    return $csvRows;
 }
 
 /**
@@ -109,21 +109,21 @@ function bom_exists(&$file_handle): bool
  * the same function that builds the downloadable template, so location and
  * attribute columns stay in sync automatically.
  *
- * @param array $csv_rows Rows returned by get_csv_file().
+ * @param array $csvRows Rows returned by get_csv_file().
  * @param array $stock_locations Stock locations, as returned by Stock_location::get_allowed_locations().
- * @param array $attribute_names Attribute definition names, as returned by Attribute::get_definition_names().
+ * @param array $attributeNames Attribute definition names, as returned by Attribute::get_definition_names().
  * @return bool True when the required columns are present.
  */
-function csvImportHasRequiredItemHeaders(array $csv_rows, array $stock_locations, array $attribute_names): bool
+function csvImportHasRequiredItemHeaders(array $csvRows, array $stock_locations, array $attributeNames): bool
 {
-    if (empty($csv_rows)) {
+    if (empty($csvRows)) {
         return false;
     }
 
-    $template_header_line = substr(generate_import_items_csv($stock_locations, $attribute_names), 3);
+    $template_header_line = substr(generate_import_items_csv($stock_locations, $attributeNames), 3);
     $required_headers = str_getcsv($template_header_line);
 
-    $present_headers = array_keys(reset($csv_rows));
+    $present_headers = array_keys(reset($csvRows));
 
     return empty(array_diff($required_headers, $present_headers));
 }

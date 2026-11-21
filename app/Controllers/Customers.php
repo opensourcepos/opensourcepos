@@ -248,7 +248,7 @@ class Customers extends Persons
         $first_name = $this->nameize($first_name);
         $last_name = $this->nameize($last_name);
 
-        $person_data = [
+        $personData = [
             'first_name'   => $first_name,
             'last_name'    => $last_name,
             'gender'       => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
@@ -265,7 +265,7 @@ class Customers extends Persons
 
         $date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
 
-        $customer_data = [
+        $customerData = [
             'consent'           => $this->request->getPost('consent') != null,
             'account_number'    => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
             'tax_id'            => $this->request->getPost('tax_id'),
@@ -279,7 +279,7 @@ class Customers extends Persons
             'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? null : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        if ($this->customer->saveCustomer($person_data, $customer_data, $customer_id)) {
+        if ($this->customer->saveCustomer($personData, $customerData, $customer_id)) {
             // Save customer to Mailchimp selected list    // TODO: addOrUpdateMember should be refactored. Potentially pass an array or object instead of 6 parameters.
             $mailchimp_status = $this->request->getPost('mailchimp_status');
             $this->mailchimp_lib->addOrUpdateMember(
@@ -296,7 +296,7 @@ class Customers extends Persons
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Customers.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-                    'id'      => $customer_data['person_id']
+                    'id'      => $customerData['person_id']
                 ]);
             } else { // Existing customer
                 return $this->response->setJSON([
@@ -428,7 +428,7 @@ class Customers extends Persons
                             continue;
                         }
                         
-                        $person_data = [
+                        $personData = [
                             'first_name'   => $data[0],
                             'last_name'    => $data[1],
                             'gender'       => $data[2],
@@ -443,7 +443,7 @@ class Customers extends Persons
                             'comments'     => $data[12]
                         ];
 
-                        $customer_data = [
+                        $customerData = [
                             'consent'       => $consent,
                             'company_name'  => $data[13],
                             'discount'      => $data[15],
@@ -452,14 +452,14 @@ class Customers extends Persons
                             'date'          => date('Y-m-d H:i:s'),
                             'employee_id'   => $this->employee->get_logged_in_employee_info()->person_id
                         ];
-                        $account_number = $data[14];
+                        $accountNumber = $data[14];
 
                         // Don't duplicate people with same email
                         $invalidated = $this->customer->check_email_exists($email);
 
-                        if ($account_number != '') {
-                            $customer_data['account_number'] = $account_number;
-                            $invalidated &= $this->customer->check_account_number_exists($account_number);
+                        if ($accountNumber != '') {
+                            $customerData['account_number'] = $accountNumber;
+                            $invalidated &= $this->customer->check_account_number_exists($accountNumber);
                         }
                     } else {
                         $invalidated = true;
@@ -468,9 +468,9 @@ class Customers extends Persons
                     if ($invalidated) {
                         $failCodes[] = $rowNumber;
                         log_message('error', "Row $rowNumber was not imported: Either email or account number already exist or data was invalid.");
-                    } elseif ($this->customer->saveCustomer($person_data, $customer_data)) {
+                    } elseif ($this->customer->saveCustomer($personData, $customerData)) {
                         // Save customer to Mailchimp selected list
-                        $this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
+                        $this->mailchimp_lib->addOrUpdateMember($this->_list_id, $personData['email'], $personData['first_name'], '', $personData['last_name']);
                     } else {
                         $failCodes[] = $rowNumber;
                     }

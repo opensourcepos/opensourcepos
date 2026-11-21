@@ -89,28 +89,28 @@ class Barcode_lib
      * Returns the value to be used in the barcode.
      *
      * @param array $item Contains item data
-     * @param array $barcode_config Contains barcode configuration
+     * @param array $barcodeConfig Contains barcode configuration
      * @return string Barcode value
      */
-    private function get_barcode_value(array $item, array $barcode_config): string
+    private function get_barcode_value(array $item, array $barcodeConfig): string
     {
-        return $barcode_config['barcode_content'] !== 'id'
+        return $barcodeConfig['barcode_content'] !== 'id'
             ? ($item['item_number'] ?? $item['name'])
             : $item['item_id'];
     }
 
     /**
      * @param array $item
-     * @param array $barcode_config
+     * @param array $barcodeConfig
      * @return string
      */
-    private function generate_barcode(array $item, array $barcode_config): string
+    private function generate_barcode(array $item, array $barcodeConfig): string
     {
         try {
             $generator = new BarcodeGeneratorSVG();
-            $barcode_value = $this->get_barcode_value($item, $barcode_config);
+            $barcodeValue = $this->get_barcode_value($item, $barcodeConfig);
 
-            return $generator->getBarcode($barcode_value, $barcode_config['barcode_type'], 2, $barcode_config['barcode_height']);
+            return $generator->getBarcode($barcodeValue, $barcodeConfig['barcode_type'], 2, $barcodeConfig['barcode_height']);
         } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
             echo 'Stack trace: ', $e->getTraceAsString();
@@ -120,14 +120,14 @@ class Barcode_lib
     }
 
     /**
-     * @param $barcode_content
+     * @param $barcodeContent
      * @return string
      */
-    public function generate_receipt_barcode($barcode_content): string
+    public function generate_receipt_barcode($barcodeContent): string
     {
         try {
             $generator = new BarcodeGeneratorSVG();
-            return $generator->getBarcode($barcode_content, $generator::TYPE_CODE_128);
+            return $generator->getBarcode($barcodeContent, $generator::TYPE_CODE_128);
         } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
             return '';
@@ -138,18 +138,18 @@ class Barcode_lib
      * Displays the barcode.  Called in a View.
      *
      * @param array $item
-     * @param array $barcode_config
+     * @param array $barcodeConfig
      * @return string
      */
-    public function display_barcode(array $item, array $barcode_config): string
+    public function display_barcode(array $item, array $barcodeConfig): string
     {
         if ((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id'])) {
-            $barcode = $this->generate_barcode($item, $barcode_config);
+            $barcode = $this->generate_barcode($item, $barcodeConfig);
             $display_table = '<table>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcodeConfig['barcode_first_row'], $item, $barcodeConfig) . '</td></tr>';
             $display_table .= '<tr><td style="text-align: center;"><div class="barcode">' . $barcode . '</div></td></tr>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
-            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcodeConfig['barcode_second_row'], $item, $barcodeConfig) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manageDisplayLayout($barcodeConfig['barcode_third_row'], $item, $barcodeConfig) . '</td></tr>';
             $display_table .= '</table>';
 
             return $display_table;

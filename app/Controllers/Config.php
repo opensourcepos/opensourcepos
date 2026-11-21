@@ -308,7 +308,7 @@ class Config extends Secure_Controller
         $upload_data = $this->upload_logo();
         $upload_success = empty($upload_data['error']);
 
-        $batch_save_data = [
+        $batchSaveData = [
             'company'       => $this->request->getPost('company'),
             'address'       => $this->request->getPost('address'),
             'phone'         => $this->request->getPost('phone'),
@@ -319,10 +319,10 @@ class Config extends Secure_Controller
         ];
 
         if (!empty($upload_data['orig_name']) && $upload_data['raw_name']) {
-            $batch_save_data['company_logo'] = $upload_data['raw_name'] . '.' . $upload_data['file_ext'];
+            $batchSaveData['company_logo'] = $upload_data['raw_name'] . '.' . $upload_data['file_ext'];
         }
 
-        $result = $this->appconfig->batch_save($batch_save_data);
+        $result = $this->appconfig->batch_save($batchSaveData);
         $success = $upload_success && $result;
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
         $message = $upload_success ? $message : strip_tags($upload_data['error']);
@@ -342,7 +342,7 @@ class Config extends Secure_Controller
         }
 
         helper(['form']);
-        $validation_rule = [
+        $validationRule = [
             'company_logo' => [
                 'label' => 'Company logo',
                 'rules' => [
@@ -356,7 +356,7 @@ class Config extends Secure_Controller
             ]
         ];
 
-        if (!$this->validate($validation_rule)) {
+        if (!$this->validate($validationRule)) {
             return (['error' => $this->validator->getError('company_logo')]);
         }
 
@@ -365,15 +365,15 @@ class Config extends Secure_Controller
         $info = pathinfo($filename);
         helper('security');
 
-        $file_info = [
+        $fileInfo = [
             'orig_name' => $filename,
             'raw_name'  => sanitize_filename($info['filename']),
             'file_ext'  => $file->guessExtension()
         ];
 
-        $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+        $file->move(FCPATH . 'uploads/', $fileInfo['raw_name'] . '.' . $fileInfo['file_ext'], true);
 
-        return ($file_info);
+        return ($fileInfo);
     }
 
     /**
@@ -513,7 +513,7 @@ class Config extends Secure_Controller
 
         $exploded = explode(":", $language);
         $currency_symbol = $this->request->getPost('currency_symbol');
-        $batch_save_data = [
+        $batchSaveData = [
             'currency_symbol'            => htmlspecialchars($currency_symbol ?? ''),
             'currency_code'              => $this->request->getPost('currency_code'),
             'language_code'              => $exploded[0],
@@ -536,7 +536,7 @@ class Config extends Secure_Controller
             'financial_year'             => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -578,7 +578,7 @@ class Config extends Secure_Controller
             return $error;
         }
 
-        $batch_save_data = [
+        $batchSaveData = [
             'protocol'     => $protocol,
             'mailpath'     => $mailpath,
             'smtp_host'    => $this->request->getPost('smtp_host'),
@@ -589,7 +589,7 @@ class Config extends Secure_Controller
             'smtp_crypto'  => $this->request->getPost('smtp_crypto')
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -611,14 +611,14 @@ class Config extends Secure_Controller
             $password = (string) ($this->config['msg_pwd'] ?? '');
         }
 
-        $batch_save_data = [
+        $batchSaveData = [
             'msg_msg' => $this->request->getPost('msg_msg'),
             'msg_uid' => $this->request->getPost('msg_uid'),
             'msg_pwd' => $password,
             'msg_src' => $this->request->getPost('msg_src')
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -692,9 +692,9 @@ class Config extends Secure_Controller
                 : (string) ($this->config['mailchimp_list_id'] ?? '');
         }
 
-        $batch_save_data = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];
+        $batchSaveData = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -950,17 +950,17 @@ class Config extends Secure_Controller
      */
     public function postSaveTax(): ResponseInterface
     {
-        $default_tax_1_rate = parse_tax(filter_var($this->request->getPost('default_tax_1_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-        $default_tax_2_rate = parse_tax(filter_var($this->request->getPost('default_tax_2_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        $defaultTax1Rate = parse_tax(filter_var($this->request->getPost('default_tax_1_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        $defaultTax2Rate = parse_tax(filter_var($this->request->getPost('default_tax_2_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
-        if ((is_numeric($default_tax_1_rate) && $default_tax_1_rate < 0) || (is_numeric($default_tax_2_rate) && $default_tax_2_rate < 0)) {
+        if ((is_numeric($defaultTax1Rate) && $defaultTax1Rate < 0) || (is_numeric($defaultTax2Rate) && $defaultTax2Rate < 0)) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Config.default_tax_rate_non_negative')]);
         }
 
-        $batch_save_data = [
-            'default_tax_1_rate'        => $default_tax_1_rate,
+        $batchSaveData = [
+            'default_tax_1_rate'        => $defaultTax1Rate,
             'default_tax_1_name'        => $this->request->getPost('default_tax_1_name'),
-            'default_tax_2_rate'        => $default_tax_2_rate,
+            'default_tax_2_rate'        => $defaultTax2Rate,
             'default_tax_2_name'        => $this->request->getPost('default_tax_2_name'),
             'tax_included'              => $this->request->getPost('tax_included') != null,
             'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != null,
@@ -970,7 +970,7 @@ class Config extends Secure_Controller
             'tax_id'                    => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         $message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 
@@ -1040,7 +1040,7 @@ class Config extends Secure_Controller
      */
     public function postSaveBarcode(): ResponseInterface
     {
-        $batch_save_data = [
+        $batchSaveData = [
             'barcode_type'              => $this->request->getPost('barcode_type'),
             'barcode_width'             => $this->request->getPost('barcode_width', FILTER_SANITIZE_NUMBER_INT),
             'barcode_height'            => $this->request->getPost('barcode_height', FILTER_SANITIZE_NUMBER_INT),
@@ -1058,7 +1058,7 @@ class Config extends Secure_Controller
             'barcode_formats'           => json_encode($this->request->getPost('barcode_formats'))
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -1072,7 +1072,7 @@ class Config extends Secure_Controller
      */
     public function postSaveReceipt(): ResponseInterface
     {
-        $batch_save_data = [
+        $batchSaveData = [
             'receipt_template'              => Sale_lib::isValidReceiptTemplate($this->request->getPost('receipt_template'))
                 ? $this->request->getPost('receipt_template')
                 : 'receipt_default',
@@ -1095,7 +1095,7 @@ class Config extends Secure_Controller
             'print_right_margin'            => $this->request->getPost('print_right_margin', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
     }
@@ -1147,7 +1147,7 @@ class Config extends Secure_Controller
      */
     public function postSaveInvoice(): ResponseInterface
     {
-        $batch_save_data = [
+        $batchSaveData = [
             'invoice_enable'              => $this->request->getPost('invoice_enable') != null,
             'sales_invoice_format'        => $this->request->getPost('sales_invoice_format'),
             'sales_quote_format'          => $this->request->getPost('sales_quote_format'),
@@ -1166,7 +1166,7 @@ class Config extends Secure_Controller
                 : 'invoice'
         ];
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         if ($success) {
             $settings = config(OSPOS::class)->settings;

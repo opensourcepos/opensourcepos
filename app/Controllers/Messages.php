@@ -27,13 +27,13 @@ class Messages extends Secure_Controller
     }
 
     /**
-     * @param int $person_id
+     * @param int $personId
      * @return string
      */
-    public function getView(int $person_id = NEW_ENTRY): string
+    public function getView(int $personId = NEW_ENTRY): string
     {
         $person = model(Person::class);
-        $info = $person->getInfo($person_id);
+        $info = $person->getInfo($personId);
 
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
@@ -63,11 +63,11 @@ class Messages extends Secure_Controller
     /**
      * Sends an SMS message to a user. Used in app/Views/messages/form_sms.php.
      *
-     * @param int $person_id
+     * @param int $personId
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function send_form(int $person_id = NEW_ENTRY): ResponseInterface
+    public function send_form(int $personId = NEW_ENTRY): ResponseInterface
     {
         $phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -78,7 +78,7 @@ class Messages extends Secure_Controller
             return $this->response->setJSON([
                 'success'   => true,
                 'message'   => lang('Messages.successfully_sent') . ' ' . esc($phone),
-                'person_id' => $person_id
+                'person_id' => $personId
             ]);
         } else {
             return $this->response->setJSON([
