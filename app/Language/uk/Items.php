@@ -76,6 +76,7 @@ return [
     'none'                               => 'Нічого',
     'none_selected'                      => 'Ви не обрали жодного товару для редагування',
     'nonstock'                           => 'Немає в наявності',
+    'not_authorized'                      => '',
     'number_information'                 => 'Номер товару',
     'number_required'                    => 'Штрих-код - обов\'язкове поле.',
     'one_or_multiple'                    => 'Товар(и)',

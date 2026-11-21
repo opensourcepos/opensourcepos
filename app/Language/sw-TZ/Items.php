@@ -76,6 +76,7 @@ return [
     'none'                               => 'Hakuna',
     'none_selected'                      => 'Hujachagua Bidhaa yoyote kuhariri',
     'nonstock'                           => 'Isiyo na Akiba',
+    'not_authorized'                      => '',
     'number_information'                 => 'Namba ya Bidhaa',
     'number_required'                    => 'Msimbo wa Mstari ni kiashiria kinachohitajika.',
     'one_or_multiple'                    => 'bidhaa',
