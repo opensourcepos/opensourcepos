@@ -56,7 +56,7 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
             });
 
             // Update URL without page reload
-            const new_url = window.location.pathname;
+            let new_url = window.location.pathname;
             const params_str = params.toString();
             if (params_str) {
                 new_url += '?' + params_str;

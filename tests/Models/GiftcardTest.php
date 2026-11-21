@@ -5,6 +5,7 @@ namespace Tests\Models;
 use App\Models\Giftcard;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
 use Tests\Support\ConcurrentDbRaceTrait;
 use Tests\Support\DatabaseBootstrapTrait;
 
@@ -36,7 +37,7 @@ class GiftcardTest extends CIUnitTestCase
     {
         $giftcardNumber = random_int(1000000, 9999999);
 
-        \Config\Database::connect()->table('giftcards')->insert([
+        Database::connect()->table('giftcards')->insert([
             'giftcard_number' => $giftcardNumber,
             'value'           => $value,
             'deleted'         => 0,
@@ -48,7 +49,7 @@ class GiftcardTest extends CIUnitTestCase
 
     protected function getGiftcardValue(int $giftcardNumber): float
     {
-        $row = \Config\Database::connect()->table('giftcards')
+        $row = Database::connect()->table('giftcards')
             ->where('giftcard_number', $giftcardNumber)
             ->get()
             ->getRow();
@@ -115,7 +116,7 @@ class GiftcardTest extends CIUnitTestCase
     {
         $giftcardNumber = $this->createGiftcard(100.00);
 
-        \Config\Database::connect()->table('giftcards')
+        Database::connect()->table('giftcards')
             ->where('giftcard_number', $giftcardNumber)
             ->update(['deleted' => 1]);
 
@@ -156,7 +157,7 @@ class GiftcardTest extends CIUnitTestCase
     {
         $giftcardNumber = $this->createGiftcard(50.00);
 
-        \Config\Database::connect()->table('giftcards')
+        Database::connect()->table('giftcards')
             ->where('giftcard_number', $giftcardNumber)
             ->update(['deleted' => 1]);
 
@@ -188,5 +189,37 @@ class GiftcardTest extends CIUnitTestCase
 
         $this->assertFalse($result);
         $this->assertEqualsWithDelta(50.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+    }
+
+    public function testSaveValue_PreservesGiftcardNumberOnInsert(): void
+    {
+        $giftcardModel = model(Giftcard::class);
+        $customNumber = 'GC-CUSTOM-' . random_int(100000, 999999);
+        $giftcardData = [
+            'record_time'     => date('Y-m-d H:i:s'),
+            'giftcard_number' => $customNumber,
+            'value'           => 25.00,
+            'person_id'       => null,
+        ];
+
+        $result = $giftcardModel->save_value($giftcardData, NEW_ENTRY);
+
+        $this->assertTrue($result);
+        $this->assertSame($customNumber, $giftcardData['giftcard_number']);
+        $this->assertGreaterThan(0, (int) $giftcardData['giftcard_id']);
+    }
+
+    public function testGetGiftcardValue_ReturnsZeroForNonexistentGiftcardNumber(): void
+    {
+        $giftcardModel = model(Giftcard::class);
+
+        $this->assertSame(0.0, $giftcardModel->get_giftcard_value('NONEXISTENT_GC_999999'));
+    }
+
+    public function testGetGiftcardCustomer_ReturnsZeroForNonexistentGiftcardNumber(): void
+    {
+        $giftcardModel = model(Giftcard::class);
+
+        $this->assertSame(0, $giftcardModel->get_giftcard_customer('NONEXISTENT_GC_999999'));
     }
 }

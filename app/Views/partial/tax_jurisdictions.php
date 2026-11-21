@@ -45,7 +45,7 @@ foreach ($tax_jurisdictions as $tax_jurisdiction => $jurisdiction) {
         </div>
 
         <div class="col-xs-2">
-            <?= form_dropdown('tax_type[]' . $i, $tax_types, $tax_type, ['class' => 'form-control'])    ?>
+            <?= form_dropdown('tax_type[]', $tax_types, $tax_type, ['class' => 'form-control']) ?>
         </div>
 
         <div class="col-xs-2">

@@ -175,7 +175,7 @@ helper('url');
                                 echo form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]);
                                 ?>
                             </td>
-                            <?php if ($item['item_type'] == ITEM_TEMP) { ?>
+                            <?php if ((int) $item['item_type'] === ITEM_TEMP) { ?>
                                 <td><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'form-control input-sm', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
                                 <td style="text-align: center;">
                                     <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
@@ -185,7 +185,7 @@ helper('url');
                                 <td style="text-align: center;">
                                     <?= esc($item['name']) . ' ' . esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
                                     <br>
-                                    <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
+                                    <?php if ($item['stock_type'] === '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
                                     endif; ?>
                                 </td>
                             <?php } ?>
@@ -216,14 +216,14 @@ helper('url');
                                 <div class="input-group">
                                     <?= form_input(['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
                                     <span class="input-group-btn">
-                                        <?= form_checkbox(['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle", 'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . $config['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => $line, 'checked' => $item['discount_type'] == 1]) ?>
+                                        <?= form_checkbox(['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle", 'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . esc($config['currency_symbol']) . '</b>', 'data-off' => '<b>%</b>', 'data-line' => $line, 'checked' => (int) $item['discount_type'] === 1]) ?>
                                     </span>
                                 </div>
                             </td>
 
                             <td>
                                 <?php
-                                if ($item['item_type'] == ITEM_AMOUNT_ENTRY) {    // TODO: === ?
+                                if ((int) $item['item_type'] === ITEM_AMOUNT_ENTRY) {
                                     echo form_input(['name' => 'discounted_total', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['discounted_total']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
                                     echo to_currency($item['discounted_total']);
@@ -238,7 +238,7 @@ helper('url');
                             </td>
                         </tr>
                         <tr>
-                            <?php if ($item['item_type'] == ITEM_TEMP) { ?>
+                            <?php if ((int) $item['item_type'] === ITEM_TEMP) { ?>
                                 <td><?= form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
                                 <td style="text-align: center;" colspan="6">
                                     <?= form_input(['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
@@ -457,7 +457,7 @@ helper('url');
 
                         if (count($payments) > 0) {
                             foreach ($payments as $payment_id => $payment) {
-                                if ($payment['payment_type'] == lang(ucfirst($controller_name) . '.due')) {
+                                if ($payment['payment_type'] === lang(ucfirst($controller_name) . '.due')) {
                                     $due_payment = true;
                                 }
                             }
@@ -526,7 +526,7 @@ helper('url');
                             <?php foreach ($payments as $payment_id => $payment) { ?>
                                 <tr>
                                     <td><?= anchor("$controller_name/deletePayment/". esc(base64url_encode($payment_id), 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
-                                    <td><?= $payment['payment_type'] ?></td>
+                                    <td><?= esc($payment['payment_type']) ?></td>
                                     <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
                                 </tr>
                             <?php } ?>

@@ -32,12 +32,11 @@ class Email_lib
         if (!empty($smtp_pass) && checkEncryption()) {
             try {
                 $smtp_pass = $encrypter->decrypt($smtp_pass);
-            } catch (\EncryptionException $e) {
+            } catch (EncryptionException $e) {
                 // Decryption failed, use the original value
                 log_message('error', 'SMTP password decryption failed: ' . $e->getMessage());
                 $smtp_pass = '';
             }
-
         }
 
         $email_config = [
@@ -49,9 +48,9 @@ class Email_lib
             'SMTPHost'    => $this->config['smtp_host'] ?? '',
             'SMTPUser'    => $this->config['smtp_user'] ?? '',
             'SMTPPass'    => $smtp_pass,
-            'SMTPPort'    => (int)(!empty($this->config['smtp_port']) ? $this->config['smtp_port'] : 465),
-            'SMTPTimeout' => (int)(!empty($this->config['smtp_timeout']) ? $this->config['smtp_timeout'] : 5),
-            'SMTPCrypto'  => $this->config['smtp_crypto'] ?? 'ssl'
+            'SMTPPort'    => (int) (!empty($this->config['smtp_port']) ? $this->config['smtp_port'] : 465),
+            'SMTPTimeout' => (int) (!empty($this->config['smtp_timeout']) ? $this->config['smtp_timeout'] : 5),
+            'SMTPCrypto'  => $this->config['smtp_crypto'] ?? 'ssl',
         ];
         $this->email->initialize($email_config);
     }
@@ -90,9 +89,13 @@ class Email_lib
      */
     public function getLogoMimeType(): string
     {
-        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+        if (empty($this->config['company_logo'])) {
+            return '';
+        }
 
-        if (!empty($this->config['company_logo']) && file_exists($logo_path)) {
+        $logo_path = FCPATH . 'uploads/' . basename($this->config['company_logo']);
+
+        if (file_exists($logo_path)) {
             $mimeType = mime_content_type($logo_path);
             return $mimeType !== false ? $mimeType : '';
         }
@@ -113,7 +116,7 @@ class Email_lib
             return '';
         }
 
-        $logo_path = FCPATH . 'uploads/' . $this->config['company_logo'];
+        $logo_path = FCPATH . 'uploads/' . basename($this->config['company_logo']);
         $logo_data = base64_encode(file_get_contents($logo_path));
 
         return '<img id="image" src="data:' . $mimeType . ';base64,' . $logo_data . '" alt="company_logo">';

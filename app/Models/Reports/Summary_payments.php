@@ -7,29 +7,25 @@ use Config\OSPOS;
 class Summary_payments extends Summary_report
 {
     /**
-     * @return array[]
+     * @return list<array>
      */
     protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
-            ['trans_group'    => lang('Reports.trans_group')],
-            ['trans_type'     => lang('Reports.trans_type')],
-            ['trans_sales'    => lang('Reports.sales')],
-            ['trans_amount'   => lang('Reports.trans_amount')],
+            ['trans_group' => lang('Reports.trans_group')],
+            ['trans_type' => lang('Reports.trans_type')],
+            ['trans_sales' => lang('Reports.sales')],
+            ['trans_amount' => lang('Reports.trans_amount')],
             ['trans_payments' => lang('Reports.trans_payments')],
             ['trans_refunded' => lang('Reports.trans_refunded')],
-            ['trans_due'      => lang('Reports.trans_due')]
+            ['trans_due' => lang('Reports.trans_due')],
         ];
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getData(array $inputs): array
     {
         $cash_payment = lang('Sales.cash');    // TODO: This is never used.  Should it be?
-        $config = config(OSPOS::class)->settings;
+        $config      = config(OSPOS::class)->settings;
 
         $separator[] = [
             'trans_group'    => '<HR>',
@@ -38,7 +34,7 @@ class Summary_payments extends Summary_report
             'trans_amount'   => '',
             'trans_payments' => '',
             'trans_refunded' => '',
-            'trans_due'      => ''
+            'trans_due'      => '',
         ];
 
         $where = '';    // TODO: Duplicated code
@@ -52,18 +48,18 @@ class Summary_payments extends Summary_report
 
         $this->create_summary_payments_temp_tables($where);
 
-        $select = '\'' . lang('Reports.trans_sales') . '\' AS trans_group, ';
-        $select .= '(CASE sale_type WHEN ' . SALE_TYPE_POS . ' THEN \'' . lang('Reports.code_pos')
-            . '\' WHEN ' . SALE_TYPE_INVOICE . ' THEN \'' . lang('Sales.invoice')
-            . '\' WHEN ' . SALE_TYPE_RETURN . ' THEN \'' . lang('Sales.return')
-            . '\' END) AS trans_type, ';
+        $select = $this->db->escape(lang('Reports.trans_sales')) . ' AS trans_group, ';
+        $select .= '(CASE sale_type WHEN ' . SALE_TYPE_POS . ' THEN ' . $this->db->escape(lang('Reports.code_pos'))
+            . ' WHEN ' . SALE_TYPE_INVOICE . ' THEN ' . $this->db->escape(lang('Sales.invoice'))
+            . ' WHEN ' . SALE_TYPE_RETURN . ' THEN ' . $this->db->escape(lang('Sales.return'))
+            . ' END) AS trans_type, ';
         $select .= 'COUNT(sales.sale_id) AS trans_sales, ';
         $select .= 'SUM(sumpay_items.trans_amount) AS trans_amount, ';
         $select .= 'IFNULL(SUM(sumpay_payments.total_payments),0) AS trans_payments, ';
         $select .= 'IFNULL(SUM(sumpay_payments.total_cash_refund),0) AS trans_refunded, ';
         $select .= 'SUM(CASE WHEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) > 0 THEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) ELSE 0 END) as trans_due ';
 
-        $builder = $this->db->table('ospos_sales AS sales');
+        $builder = $this->db->table('sales AS sales');
         $builder->select($select);
         $builder->join('sumpay_items_temp AS sumpay_items', 'sales.sale_id = sumpay_items.sale_id', 'left outer');
         $builder->join('sumpay_payments_temp AS sumpay_payments', 'sales.sale_id = sumpay_payments.sale_id', 'left outer');
@@ -76,13 +72,14 @@ class Summary_payments extends Summary_report
 
         // At this point in time refunds are assumed to be cash refunds.
         $total_cash_refund = 0;
+
         foreach ($sales as $key => $sale_summary) {
-            if ($sale_summary['trans_refunded'] <> 0) {
+            if ($sale_summary['trans_refunded'] !== 0) {
                 $total_cash_refund += $sale_summary['trans_refunded'];
             }
         }
 
-        $select = '\'' . lang('Reports.trans_payments') . '\' AS trans_group, ';
+        $select = $this->db->escape(lang('Reports.trans_payments')) . ' AS trans_group, ';
         $select .= 'sales_payments.payment_type as trans_type, ';
         $select .= 'COUNT(sales.sale_id) AS trans_sales, ';
         $select .= 'SUM(payment_amount - cash_refund) AS trans_amount,';
@@ -101,10 +98,11 @@ class Summary_payments extends Summary_report
         $payments = $builder->get()->getResultArray();
 
         // Consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
-        $gift_card_count = 0;
+        $gift_card_count  = 0;
         $gift_card_amount = 0;
+
         foreach ($payments as $key => $payment) {
-            if (str_contains($payment['trans_type'], lang('Sales.giftcard'))) {
+            if (str_contains((string) $payment['trans_type'], lang('Sales.giftcard'))) {
                 $gift_card_count += $payment['trans_sales'];
                 $gift_card_amount += $payment['trans_amount'];
 
@@ -121,24 +119,20 @@ class Summary_payments extends Summary_report
                 'trans_amount'   => $gift_card_amount,
                 'trans_payments' => $gift_card_amount,
                 'trans_refunded' => 0,
-                'trans_due'      => 0
+                'trans_due'      => 0,
             ];
         }
 
         return array_merge($sales, $separator, $payments);
     }
 
-    /**
-     * @param string $where
-     * @return void
-     */
     protected function create_summary_payments_temp_tables(string $where): void
     {
         // TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
         $decimals = totals_decimals();
 
         $trans_amount = 'SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
-            . " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
+            . " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, {$decimals}) "
             . ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END) AS trans_amount';
 
         $this->db->query(
@@ -151,7 +145,7 @@ class Summary_payments extends Summary_report
                     ON sales.sale_id = sales_taxes.sale_id
                 WHERE ' . $where . ' AND sales_taxes.tax_type = \'1\'
                 GROUP BY sales.sale_id
-            )'
+            )',
         );
 
         $this->db->query(
@@ -165,7 +159,7 @@ class Summary_payments extends Summary_report
                 . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sumpay_taxes_temp') . ' AS sumpay_taxes '
                 . 'ON sales.sale_id = sumpay_taxes.sale_id '
                 . 'WHERE ' . $where . ' GROUP BY sales.sale_id
-            )'
+            )',
         );
 
         $this->db->query('UPDATE ' . $this->db->prefixTable('sumpay_items_temp') . ' AS sumpay_items '
@@ -185,7 +179,7 @@ class Summary_payments extends Summary_report
                     ON sales.sale_id = sales_payments.sale_id
                 WHERE ' . $where . '
                 GROUP BY sales.sale_id
-            )'
+            )',
         );
     }
 }

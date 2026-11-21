@@ -3,10 +3,16 @@
 namespace Tests\Libraries;
 
 use App\Libraries\Token_lib;
+use App\Models\Tokens\Token;
+use App\Models\Tokens\Token_invoice_count;
+use App\Models\Tokens\Token_quote_sequence;
 use CodeIgniter\Test\CIUnitTestCase;
+use Tests\Support\OsposConfigFixtureTrait;
 
 class Token_libTest extends CIUnitTestCase
 {
+    use OsposConfigFixtureTrait;
+
     private Token_lib $tokenLib;
 
     protected function setUp(): void
@@ -310,5 +316,42 @@ class Token_libTest extends CIUnitTestCase
         $this->assertNotEmpty($result);
         $this->assertStringNotContainsString('%h', $result);
         $this->assertMatchesRegularExpression('/Month: [A-Za-z]{3}/', $result);
+    }
+
+    public function testGetValue_ReturnsCustomValueOnTokenInvoiceCount(): void
+    {
+        $token = new Token_invoice_count('POS 42');
+        $this->assertSame('POS 42', $token->get_value());
+    }
+
+    public function testGetTokens_DoesNotDuplicateTokenQuoteSequence(): void
+    {
+        $tokens = Token::get_tokens();
+        $quoteSequenceCount = 0;
+
+        foreach ($tokens as $token) {
+            if ($token instanceof Token_quote_sequence) {
+                $quoteSequenceCount++;
+            }
+        }
+
+        $this->assertSame(1, $quoteSequenceCount);
+    }
+
+    public function testParseBarcode_StopsAtFirstMatchingFormat(): void
+    {
+        $this->injectOsposSettings([
+            'barcode_formats' => json_encode(['^02{I:5}{W:5}$', '^99{I:5}{W:5}$']),
+        ]);
+
+        $quantity = null;
+        $price = null;
+        $barcode = '021234501500';
+
+        $this->tokenLib->parse_barcode($quantity, $price, $barcode);
+
+        $this->assertEquals(1.5, $quantity);
+        $this->assertSame('12345', $barcode);
+        $this->assertNull($price);
     }
 }

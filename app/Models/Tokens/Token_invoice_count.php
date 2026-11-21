@@ -29,11 +29,11 @@ class Token_invoice_count extends Token
     }
 
     /**
-     * @return int
+     * @return int|string
      */
-    public function get_value(): int
+    public function get_value(): int|string
     {
         $sale = model(Sale::class);
-        return empty($value) ? $sale->get_invoice_count() : $value;
+        return empty($this->value) ? $sale->get_invoice_count() : $this->value;
     }
 }

@@ -9,7 +9,7 @@ use App\Models\Customer;
 use App\Models\Employee;
 use Tests\Support\DatabaseBootstrapTrait;
 
-class CustomersCsvImportTest extends CIUnitTestCase
+class CustomersControllerTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
     use DatabaseBootstrapTrait;
@@ -25,14 +25,9 @@ class CustomersCsvImportTest extends CIUnitTestCase
 
     protected function setUp(): void
     {
-        // Reset the test database to a clean schema on the first test in this
-        // class so leftover customers with the same emails from prior runs
-        // cannot be rejected as duplicates by the import (check_email_exists).
         $this->resetDatabaseOnce();
 
         parent::setUp();
-        // Reset any stale transaction state left on the shared in-process DB
-        // connection by a previous test.
         $this->db->resetTransStatus();
 
         $this->customer = model(Customer::class);
@@ -82,7 +77,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
             ->first();
     }
 
-    public function testValidEmailIsAccepted(): void
+    public function testPostImportCsvFile_AcceptsValidEmail(): void
     {
         $this->loginAsEmployee();
 
@@ -113,7 +108,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         unlink($tempFile);
     }
 
-    public function testInvalidEmailIsRejected(): void
+    public function testPostImportCsvFile_RejectsInvalidEmail(): void
     {
         $this->loginAsEmployee();
 
@@ -147,7 +142,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         unlink($tempFile);
     }
 
-    public function testXssPayloadInEmailIsSanitized(): void
+    public function testPostImportCsvFile_SanitizesXssPayloadInEmail(): void
     {
         $this->loginAsEmployee();
 
@@ -181,7 +176,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         unlink($tempFile);
     }
 
-    public function testMixedValidAndInvalidEmails(): void
+    public function testPostImportCsvFile_AcceptsMixedValidAndInvalidEmails(): void
     {
         $this->loginAsEmployee();
 
@@ -218,7 +213,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         unlink($tempFile);
     }
 
-    public function testEmailWithSpecialCharactersIsSanitized(): void
+    public function testPostImportCsvFile_SanitizesEmailWithSpecialCharacters(): void
     {
         $this->loginAsEmployee();
 
@@ -250,7 +245,7 @@ class CustomersCsvImportTest extends CIUnitTestCase
         unlink($tempFile);
     }
 
-    public function testEmptyEmailIsAccepted(): void
+    public function testPostImportCsvFile_AcceptsEmptyEmail(): void
     {
         $this->loginAsEmployee();
 
@@ -288,5 +283,50 @@ class CustomersCsvImportTest extends CIUnitTestCase
         $this->assertEquals('', $importedCustomer['email'], 'Email should be empty string');
 
         unlink($tempFile);
+    }
+
+    public function testPostImportCsvFile_RejectsDuplicateAccountNumberWhenEmailIsUnique(): void
+    {
+        $this->loginAsEmployee();
+
+        $accountNumber = 'ACC-' . uniqid();
+        $firstEmail = 'first.' . uniqid() . '@example.com';
+        $secondEmail = 'second.' . uniqid() . '@example.com';
+
+        $firstCsv = [
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['First', 'Customer', '1', '1', $firstEmail, '555-1234', '123 Main St', '', 'Springfield', 'IL', '62701', 'US', '', '', $accountNumber, '', '', '']
+        ];
+        $tempFile1 = $this->createCsvFile($firstCsv);
+        $_FILES['file_path'] = [
+            'name'     => 'first.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile1,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile1)
+        ];
+        $firstResult = $this->post('/customers/importCsvFile');
+        $firstResult->assertOK();
+        $this->assertTrue(json_decode($firstResult->getJSON(), true)['success']);
+        unlink($tempFile1);
+
+        $secondCsv = [
+            ['First Name', 'Last Name', 'Gender', 'Consent', 'Email', 'Phone', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Comments', 'Company', 'Account Number', 'Discount', 'Discount Type', 'Taxable'],
+            ['Second', 'Customer', '1', '1', $secondEmail, '555-5678', '456 Oak Ave', '', 'Springfield', 'IL', '62701', 'US', '', '', $accountNumber, '', '', '']
+        ];
+        $tempFile2 = $this->createCsvFile($secondCsv);
+        $_FILES['file_path'] = [
+            'name'     => 'second.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile2,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile2)
+        ];
+        $secondResult = $this->post('/customers/importCsvFile');
+        $secondResult->assertOK();
+        $secondBody = json_decode($secondResult->getJSON(), true);
+        $this->assertFalse($secondBody['success']);
+        $this->assertNull($this->findCustomerByEmail($secondEmail));
+        unlink($tempFile2);
     }
 }

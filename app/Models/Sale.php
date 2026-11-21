@@ -518,18 +518,18 @@ class Sale extends Model
      * @throws ReflectionException
      */
     public function save_value(
-        int     $saleId,
+        int     $sale_id,
         string  &$saleStatus,
         array   &$items,
         int     $customerId,
         int     $employeeId,
         string  $comment,
         ?string $invoiceNumber,
-        ?string $workOrderNumber,
+        ?string $work_order_number,
         ?string $quoteNumber,
         int     $saleType,
         ?array  $payments,
-        ?int    $dinnerTableId,
+        ?int    $dinner_table_id,
         ?array  &$salesTaxes
     ): int {    // TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
         $config = config(OSPOS::class)->settings;
@@ -552,24 +552,24 @@ class Sale extends Model
             'sale_status'       => $saleStatus,
             'invoice_number'    => $invoiceNumber,
             'quote_number'      => $quoteNumber,
-            'work_order_number' => $workOrderNumber,
-            'dinner_table_id'   => $dinnerTableId,
+            'work_order_number' => $work_order_number,
+            'dinner_table_id'   => $dinner_table_id,
             'sale_type'         => $saleType
         ];
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if ($saleId != NEW_ENTRY) {
-            $this->clear_suspended_sale_detail($saleId);
+        if ($sale_id != NEW_ENTRY) {
+            $this->clear_suspended_sale_detail($sale_id);
         }
 
         $builder = $this->db->table('sales');
-        if ($saleId == NEW_ENTRY) {
+        if ($sale_id == NEW_ENTRY) {
             $builder->insert($salesData);
-            $saleId = $this->db->insertID();
+            $sale_id = $this->db->insertID();
         } else {
-            $builder->where('sale_id', $saleId);
+            $builder->where('sale_id', $sale_id);
             $builder->update($salesData);
         }
 
@@ -580,29 +580,31 @@ class Sale extends Model
             $splitPayment = explode(':', $payment['payment_type'], 2);
             $paymentPrefix = $splitPayment[0];
 
-            if ($paymentPrefix === lang('Sales.giftcard')) {
-                if (! $this->applyGiftcardPayment(
-                    $splitPayment[1] ?? null,
-                    (float) $payment['payment_amount'],
-                    $saleType,
-                    $saleStatus
-                )) {
-                    $this->db->transRollback();
+            if ($saleStatus == COMPLETED) {
+                if ($paymentPrefix === lang('Sales.giftcard')) {
+                    if (!$this->applyGiftcardPayment(
+                        $splitPayment[1] ?? null,
+                        (float) $payment['payment_amount'],
+                        $saleType,
+                        $saleStatus
+                    )) {
+                        $this->db->transRollback();
 
-                    return INSUFFICIENT_GIFTCARD_BALANCE;
+                        return INSUFFICIENT_GIFTCARD_BALANCE;
+                    }
+                } elseif ($paymentPrefix === lang('Sales.rewards')) {
+                    if (!$customer->adjustRewardPoints($customerId, -(float) $payment['payment_amount'])) {
+                        $this->db->transRollback();
+
+                        return INSUFFICIENT_REWARD_POINTS;
+                    }
+
+                    $totalAmountUsed = floatval($totalAmountUsed) + floatval($payment['payment_amount']);
                 }
-            } elseif ($paymentPrefix === lang('Sales.rewards')) {
-                if (! $customer->adjustRewardPoints($customerId, -(float) $payment['payment_amount'])) {
-                    $this->db->transRollback();
-
-                    return INSUFFICIENT_REWARD_POINTS;
-                }
-
-                $totalAmountUsed = floatval($totalAmountUsed) + floatval($payment['payment_amount']);
             }
 
             $salesPaymentsData = [
-                'sale_id'         => $saleId,
+                'sale_id'         => $sale_id,
                 'payment_type'    => $payment['payment_type'],
                 'payment_amount'  => $payment['payment_amount'],
                 'cash_refund'     => $payment['cash_refund'],
@@ -617,7 +619,9 @@ class Sale extends Model
             $totalAmount = floatval($totalAmount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
         }
 
-        $this->save_customer_rewards($customerId, $saleId, $totalAmount, $totalAmountUsed);
+        if ($saleStatus == COMPLETED) {
+            $this->save_customer_rewards($customerId, $sale_id, $totalAmount, $totalAmountUsed);
+        }
 
         $customer = $customer->getInfo($customerId);
 
@@ -629,7 +633,7 @@ class Sale extends Model
             }
 
             $salesItemsData = [
-                'sale_id'            => $saleId,
+                'sale_id'            => $sale_id,
                 'item_id'            => $itemData['item_id'],
                 'line'               => $itemData['line'],
                 'description'        => character_limiter($itemData['description'], 255),
@@ -664,7 +668,7 @@ class Sale extends Model
                 }
 
                 // Inventory Count Details
-                $saleRemarks = 'POS ' . $saleId;    // TODO: Use string interpolation here.
+                $saleRemarks = 'POS ' . $sale_id;    // TODO: Use string interpolation here.
                 $invData = [
                     'trans_date'      => date('Y-m-d H:i:s'),
                     'trans_items'     => $itemData['item_id'],
@@ -677,26 +681,26 @@ class Sale extends Model
                 $inventory->insert($invData, false);
             }
 
-            $attribute->copy_attribute_links($itemData['item_id'], 'sale_id', $saleId);
+            $attribute->copy_attribute_links($itemData['item_id'], 'sale_id', $sale_id);
         }
 
         if ($customerId == NEW_ENTRY || $customer->taxable) {
-            $this->save_sales_tax($saleId, $salesTaxes[0]);
-            $this->save_sales_items_taxes($saleId, $salesTaxes[1]);
+            $this->save_sales_tax($sale_id, $salesTaxes[0]);
+            $this->save_sales_items_taxes($sale_id, $salesTaxes[1]);
         }
 
-        if ($config['dinner_table_enable']) {
-            $dinnerTable = model(Dinner_table::class);
+        if ($config['dinner_table_enable'] && $dinner_table_id !== null) {
+            $dinner_table = model(Dinner_table::class);
             if ($saleStatus == COMPLETED) {    // TODO: === ?
-                $dinnerTable->release($dinnerTableId);
+                $dinner_table->release($dinner_table_id);
             } else {
-                $dinnerTable->occupy($dinnerTableId);
+                $dinner_table->occupy($dinner_table_id);
             }
         }
 
         $this->db->transComplete();
 
-        return $this->db->transStatus() ? $saleId : -1;
+        return $this->db->transStatus() ? $sale_id : -1;
     }
 
     private function applyGiftcardPayment(?string $giftcardNumber, float $amount, int $saleType, string $saleStatus): bool
@@ -1033,7 +1037,7 @@ class Sale extends Model
     public function check_work_order_number_exists(string $work_order_number, string $sale_id = ''): bool
     {
         $builder = $this->db->table('sales');
-        $builder->where('invoice_number', $work_order_number);
+        $builder->where('work_order_number', $work_order_number);
         if (!empty($sale_id)) {
             $builder->where('sale_id !=', $sale_id);
         }
@@ -1349,7 +1353,9 @@ class Sale extends Model
         if ($config['dinner_table_enable']) {
             $dinner_table = model(Dinner_table::class);
             $dinner_table_id = $this->get_dinner_table($sale_id);
-            $dinner_table->release($dinner_table_id);
+            if ($dinner_table_id !== null) {
+                $dinner_table->release((int) $dinner_table_id);
+            }
         }
 
         $this->update_sale_status($sale_id, CANCELED);
@@ -1371,7 +1377,9 @@ class Sale extends Model
         if ($config['dinner_table_enable']) {
             $dinner_table = model(Dinner_table::class);
             $dinner_table_id = $this->get_dinner_table($sale_id);
-            $dinner_table->release($dinner_table_id);
+            if ($dinner_table_id !== null) {
+                $dinner_table->release((int) $dinner_table_id);
+            }
         }
 
         $builder = $this->db->table('sales_payments');
@@ -1457,7 +1465,6 @@ class Sale extends Model
         $builder->groupBy('payments.sale_id');
 
         $sub_query = $builder->getCompiledSelect();
-        log_message('error', $sub_query);
 
         $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
             . $this->db->prefixTable('sales_search_payments_temp')

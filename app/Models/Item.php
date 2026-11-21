@@ -100,7 +100,6 @@ class Item extends Model
         $builder = $this->db->table('items');
         $builder->where('item_number', $item_number);
         $builder->where('deleted !=', 1);
-        $builder->where('item_id !=', intval($item_id));
 
         // Check if $item_id is a number and not a string starting with 0
         // because cases like 00012345 will be seen as a number where it is a barcode
@@ -1072,9 +1071,7 @@ class Item extends Model
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 
-                if (!array_walk($suggestions, function ($value, $label) use ($entry) {
-                    return $entry['label'] != $label;
-                })) {
+                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1082,12 +1079,14 @@ class Item extends Model
             // Search in attributes
             if ($filters['search_custom'] !== false) {
                 $builder = $this->db->table('attribute_links');
+                $builder->select($this->get_search_suggestion_format('items.item_id, items.name, items.pack_name'));
                 $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
                 $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+                $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
-                $builder->where('deleted', $filters['is_deleted']);
-                $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+                $builder->where('items.deleted', $filters['is_deleted']);
+                $builder->whereIn('items.item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
 
                 foreach ($builder->get()->getResult() as $row) {
                     $suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
@@ -1180,9 +1179,7 @@ class Item extends Model
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
-                if (!array_walk($suggestions, function ($value, $label) use ($entry) {
-                    return $entry['label'] != $label;
-                })) {
+                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1190,12 +1187,14 @@ class Item extends Model
             // Search by custom fields
             if ($filters['search_custom'] !== false) {    // TODO: duplicated code.  We should refactor out a method... this can be replaced with `if ($filters['search_custom']`... no need for the double negative
                 $builder = $this->db->table('attribute_links');
+                $builder->select($this->get_search_suggestion_format('items.item_id, items.name, items.pack_name'));
                 $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
                 $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+                $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
-                $builder->where('stock_type', '0'); // Stocked items only
-                $builder->where('deleted', $filters['is_deleted']);
+                $builder->where('items.stock_type', '0'); // Stocked items only
+                $builder->where('items.deleted', $filters['is_deleted']);
 
                 foreach ($builder->get()->getResult() as $row) {
                     $suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
@@ -1283,9 +1282,7 @@ class Item extends Model
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $row->name];
-                if (!array_walk($suggestions, function ($value, $label) use ($entry) {
-                    return $entry['label'] != $label;
-                })) {
+                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1293,12 +1290,14 @@ class Item extends Model
             // Search in attributes
             if ($filters['search_custom'] !== false) {    // TODO: Duplicate code... same as above... no double negatives
                 $builder = $this->db->table('attribute_links');
+                $builder->select($this->get_search_suggestion_format('items.item_id, items.name, items.pack_name'));
                 $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
                 $builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+                $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
-                $builder->where('stock_type', '0'); // Stocked items only
-                $builder->where('deleted', $filters['is_deleted']);
+                $builder->where('items.stock_type', '0'); // Stocked items only
+                $builder->where('items.deleted', $filters['is_deleted']);
 
                 foreach ($builder->get()->getResult() as $row) {
                     $suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
@@ -1420,7 +1419,12 @@ class Item extends Model
         $old_total_quantity = $builder->get()->getRow()->quantity;
 
         $total_quantity = $old_total_quantity + $items_received;
-        $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
+
+        if ($old_total_quantity <= 0 || $total_quantity <= 0) {
+            $average_price = number_format($new_price, max(2, totals_decimals()), '.', '');
+        } else {
+            $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
+        }
 
         $data = ['cost_price' => $average_price];
 

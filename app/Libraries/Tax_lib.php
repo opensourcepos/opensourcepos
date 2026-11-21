@@ -126,7 +126,6 @@ class Tax_lib
                         if ($tax_amount <> 0) {
                             $tax_group_sequence++;
                             $this->update_taxes($taxes, $tax_type, $tax['name'], $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, Rounding_mode::HALF_UP, -1, $tax['name']);    // TODO: Replace -1 with constant.
-                            $tax_group_sequence += 1;    // TODO: $tax_group_sequence++;
                             $taxed = true;
                         }
 
@@ -267,29 +266,13 @@ class Tax_lib
         }
 
         foreach ($taxes as $row_number => $sales_tax) {
-            $tax_amount = $sales_tax['sale_tax_amount'];
+            $tax_amount = (float) $sales_tax['sale_tax_amount'];
             $rounding_code = $sales_tax['rounding_code'];
-            $rounded_tax_amount = $tax_amount;
 
-            if ($rounding_code == Rounding_mode::HALF_UP) {    // TODO: this block needs to be converted to a switch statement
-                $rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_UP);
-            } elseif ($rounding_code == Rounding_mode::HALF_DOWN) {
-                $rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_DOWN);
-            } elseif ($rounding_code == Rounding_mode::HALF_EVEN) {
-                $rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_EVEN);
-            } elseif ($rounding_code == Rounding_mode::HALF_ODD) {
-                $rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_UP);
-            } elseif ($rounding_code == Rounding_mode::ROUND_UP) {
-                $fig = (int)str_pad('1', $decimals, '0');
-                $rounded_tax_amount = ceil($tax_amount * $fig) / $fig;
-            } elseif ($rounding_code == Rounding_mode::ROUND_DOWN) {
-                $fig = (int)str_pad('1', $decimals, '0');
-                $rounded_tax_amount = floor($tax_amount * $fig) / $fig;
-            } elseif ($rounding_code == Rounding_mode::HALF_FIVE) {
-                $rounded_tax_amount = round($tax_amount / 5) * 5;
+            $taxes[$row_number]['sale_tax_amount'] = Rounding_mode::round_number($rounding_code, $tax_amount, $decimals);
+            if (isset($sales_tax['cash_tax_amount'])) {
+                $taxes[$row_number]['cash_tax_amount'] = Rounding_mode::round_number($rounding_code, (float) $sales_tax['cash_tax_amount'], $decimals);
             }
-
-            $taxes[$row_number]['sale_tax_amount'] = $rounded_tax_amount;
         }
     }
 
@@ -297,14 +280,14 @@ class Tax_lib
      * Determine the applicable tax code and then determine the tax amount to be applied.
      * If a tax amount was identified then accumulate into the sales_taxes array
      */
-    public function apply_destination_tax(array &$item, string $city, string $state, int $sales_tax_code_id, string $register_mode, int $sale_id, array &$taxes, array &$item_taxes, int $line): bool
+    public function apply_destination_tax(array &$item, ?string $city, ?string $state, ?int $sales_tax_code_id, string $register_mode, int $sale_id, array &$taxes, array &$item_taxes, int $line): bool
     {
         $taxed = false;
 
         $tax_code_id = $this->get_applicable_tax_code($register_mode, $city, $state, $sales_tax_code_id);
 
         // If tax code cannot be determined or the price is zero then skip this item
-        if ($tax_code_id != -1 && $item['price'] != 0) {    // TODO: Replace -1 with constant. Also === ?
+        if ($tax_code_id != null && $tax_code_id != -1 && $item['price'] != 0) {    // TODO: Replace -1 with constant. Also === ?
             $tax_decimals = tax_decimals();
 
             $tax_definition = $this->tax->get_taxes($tax_code_id, $item['tax_category_id']);
@@ -365,18 +348,18 @@ class Tax_lib
 
     /**
      * @param string $register_mode
-     * @param string $city
-     * @param string $state
-     * @param int $sales_tax_code_id
-     * @return int
+     * @param string|null $city
+     * @param string|null $state
+     * @param int|null $sales_tax_code_id
+     * @return int|null
      */
-    public function get_applicable_tax_code(string $register_mode, string $city, string $state, int $sales_tax_code_id): int
+    public function get_applicable_tax_code(string $register_mode, ?string $city, ?string $state, ?int $sales_tax_code_id): ?int
     {
         if ($register_mode == 'sale') {
             $sales_tax_code_id = $this->config['default_tax_code']; // Overrides customer assigned code
         } else {
             if ($sales_tax_code_id == null || $sales_tax_code_id == 0) {
-                $sales_tax_code_id = $this->tax_code->get_sales_tax_code($city, $state);
+                $sales_tax_code_id = $this->tax_code->get_sales_tax_code($city ?? '', $state ?? '');
 
                 if ($sales_tax_code_id == null || $sales_tax_code_id == 0) {
                     $sales_tax_code_id = $this->config['default_tax_code']; // Overrides customer assigned code
@@ -384,7 +367,7 @@ class Tax_lib
             }
         }
 
-        return $sales_tax_code_id;
+        return ($sales_tax_code_id === '' || $sales_tax_code_id === null) ? null : (int) $sales_tax_code_id;
     }
 
     /**
@@ -459,7 +442,7 @@ class Tax_lib
      */
     public function get_tax_type_options(string $selected_tax_type): string
     {
-        $selected = 'selected=\"selected\" ';
+        $selected = 'selected="selected" ';
 
         $s1 = '';    // TODO: Need to refactor short variables into meaningful variable names
         $s2 = '';
@@ -470,7 +453,7 @@ class Tax_lib
             $s2 = $selected;
         }
 
-        return '<option value=\"' . Tax_lib::TAX_TYPE_EXCLUDED . '\" ' . $s1 . '> ' . lang('Taxes.sales_tax') . '</option>'
-            . '<option value=\"' . Tax_lib::TAX_TYPE_INCLUDED . '\" ' . $s2 . '> ' . lang('Taxes.vat_tax') . '</option>';
+        return '<option value="' . Tax_lib::TAX_TYPE_EXCLUDED . '" ' . $s1 . '> ' . lang('Taxes.sales_tax') . '</option>'
+            . '<option value="' . Tax_lib::TAX_TYPE_INCLUDED . '" ' . $s2 . '> ' . lang('Taxes.vat_tax') . '</option>';
     }
 }

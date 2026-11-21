@@ -35,7 +35,7 @@
         }
 
         const hide_show_remove_tax_category = function() {
-            if ($("input[name*='tax_category']:enabled").length > 1) {
+            if ($("input[name='tax_category[]']:enabled").length > 1) {
                 $(".remove_tax_category").show();
             } else {
                 $(".remove_tax_category").hide();
@@ -110,7 +110,7 @@
             invalidHandler: function(event, validator) {
                 $.notify("<?= lang('Common.correct_errors') ?>");
             },
-            errorLabelContainer: "#tax_category_error_message_box"
+            errorLabelContainer: "#tax_categories_error_message_box"
         }));
 
         <?php

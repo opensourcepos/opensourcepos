@@ -34,7 +34,7 @@
                         'name'    => 'tax_included',
                         'id'      => 'tax_included',
                         'value'   => 'tax_included',
-                        'checked' => $config['tax_included'] == 1
+                        'checked' => (int) $config['tax_included'] === 1
                     ]) ?>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                         'name'    => 'use_destination_based_tax',
                         'id'      => 'use_destination_based_tax',
                         'value'   => 'use_destination_based_tax',
-                        'checked' => $config['use_destination_based_tax'] == 1
+                        'checked' => (int) $config['use_destination_based_tax'] === 1
                     ]) ?>
                 </div>
             </div>
@@ -185,7 +185,7 @@
                 default_tax_1_rate: {
                     remote: "<?= "$controller_name/checkNumeric" ?>"
                 },
-                default_tax2_rate: {
+                default_tax_2_rate: {
                     remote: "<?= "$controller_name/checkNumeric" ?>"
                 },
             },

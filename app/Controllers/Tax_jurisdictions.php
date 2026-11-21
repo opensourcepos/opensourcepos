@@ -91,12 +91,12 @@ class Tax_jurisdictions extends Secure_Controller
             'reporting_authority' => $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        if ($this->tax_jurisdiction->save_value($tax_jurisdiction_data)) {
+        if ($this->tax_jurisdiction->save_value($tax_jurisdiction_data, $jurisdiction_id)) {
             if ($jurisdiction_id == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_adding'),
-                    'id'      => $tax_jurisdiction_data['jurisdiction_id']
+                    'id'      => $tax_jurisdiction_data['jurisdiction_id'] ?? $jurisdiction_id
                 ]);
             } else {
                 return $this->response->setJSON([

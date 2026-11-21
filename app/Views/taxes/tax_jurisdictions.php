@@ -37,7 +37,7 @@
         const tax_type_options = '<?= esc($tax_type_options, 'js') ?>';
 
         const hide_show_remove_tax_jurisdiction = function() {
-            if ($("input[name*='tax_jurisdiction']:enabled").length > 1) {
+            if ($("input[name='jurisdiction_name[]']:enabled").length > 1) {
                 $(".remove_tax_jurisdiction").show();
             } else {
                 $(".remove_tax_jurisdiction").hide();
@@ -114,7 +114,7 @@
             invalidHandler: function(event, validator) {
                 $.notify("<?= lang('Common.correct_errors') ?>");
             },
-            errorLabelContainer: "#tax_jurisdiction_error_message_box"
+            errorLabelContainer: "#tax_jurisdictions_error_message_box"
         }));
 
         <?php

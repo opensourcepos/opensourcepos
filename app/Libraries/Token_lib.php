@@ -166,22 +166,27 @@ class Token_lib
         return $token_tree;
     }
 
-    public function parse_barcode(?string &$quantity, ?string &$price, ?string &$item_id_or_number_or_item_kit_or_receipt): void
+    public function parse_barcode(&$quantity, &$price, ?string &$item_id_or_number_or_item_kit_or_receipt): void
     {
         $config = config(OSPOS::class)->settings;
         $barcode_formats = json_decode($config['barcode_formats']);
         $barcode_tokens = Token::get_barcode_tokens();
 
+        $quantity = 1;
+        $price = null;
+
         if (!empty($barcode_formats)) {
             foreach ($barcode_formats as $barcode_format) {
                 $parsed_results = $this->parse($item_id_or_number_or_item_kit_or_receipt, $barcode_format, $barcode_tokens);
-                $quantity = (isset($parsed_results['W'])) ? (int) $parsed_results['W'] / 1000 : 1;
-                $item_id_or_number_or_item_kit_or_receipt = (isset($parsed_results['I'])) ?
-                    $parsed_results['I'] : $item_id_or_number_or_item_kit_or_receipt;
-                $price = (isset($parsed_results['P'])) ? (float) $parsed_results['P'] : null;
+                if (!empty($parsed_results)) {
+                    $quantity = (isset($parsed_results['W'])) ? (int) $parsed_results['W'] / 1000 : 1;
+                    $item_id_or_number_or_item_kit_or_receipt = (isset($parsed_results['I']))
+                        ? $parsed_results['I']
+                        : $item_id_or_number_or_item_kit_or_receipt;
+                    $price = (isset($parsed_results['P'])) ? (float) $parsed_results['P'] : null;
+                    break;
+                }
             }
-        } else {
-            $quantity = 1;
         }
     }
 

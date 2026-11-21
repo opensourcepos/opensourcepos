@@ -19,7 +19,7 @@
                         'name'    => 'dinner_table_enable',
                         'value'   => 'dinner_table_enable',
                         'id'      => 'dinner_table_enable',
-                        'checked' => $config['dinner_table_enable'] == 1
+                        'checked' => (int) $config['dinner_table_enable'] === 1
                     ]) ?>
                 </div>
             </div>

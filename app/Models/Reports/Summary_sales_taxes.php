@@ -15,24 +15,19 @@ class Summary_sales_taxes extends Summary_report
     }
 
     /**
-     * @return array[]
+     * @return list<array>
      */
     protected function _get_data_columns(): array    // TODO: hungarian notation
     {
         return [
             ['reporting_authority' => lang('Reports.authority')],
-            ['jurisdiction_name'   => lang('Reports.jurisdiction')],
-            ['tax_category'        => lang('Reports.tax_category')],
-            ['tax_rate'            => lang('Reports.tax_rate'), 'sorter' => 'number_sorter'],
-            ['tax'                 => lang('Reports.tax'), 'sorter' => 'number_sorter']
+            ['jurisdiction_name' => lang('Reports.jurisdiction')],
+            ['tax_category' => lang('Reports.tax_category')],
+            ['tax_rate' => lang('Reports.tax_rate'), 'sorter' => 'number_sorter'],
+            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
         ];
     }
 
-    /**
-     * @param array $inputs
-     * @param object $builder
-     * @return void
-     */
     protected function _where(array $inputs, object &$builder): void
     {
         $builder->where('sales.sale_status', COMPLETED);
@@ -46,10 +41,6 @@ class Summary_sales_taxes extends Summary_report
         }
     }
 
-    /**
-     * @param array $inputs
-     * @return array
-     */
     public function getData(array $inputs): array
     {
         $builder = $this->db->table('sales_taxes');
@@ -58,9 +49,11 @@ class Summary_sales_taxes extends Summary_report
             $builder->where('DATE(sale_time) >=', $inputs['start_date']);
             $builder->where('DATE(sale_time) <=', $inputs['end_date']);
         } else {
-            $builder->where('sale_time >=', $inputs['start_date']);
-            $builder->where('sale_time <=', $inputs['end_date']);
+            $builder->where('sale_time >=', rawurldecode($inputs['start_date']));
+            $builder->where('sale_time <=', rawurldecode($inputs['end_date']));
         }
+
+        $builder->where('sale_status', COMPLETED);
 
         $builder->select('reporting_authority, jurisdiction_name, tax_category, tax_rate, SUM(sale_tax_amount) AS tax');
         $builder->join('sales', 'sales_taxes.sale_id = sales.sale_id', 'left');

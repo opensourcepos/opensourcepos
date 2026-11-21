@@ -267,7 +267,7 @@ class Items extends Secure_Controller
 
         // Security: Sanitize filename to prevent path traversal
         // Use basename() to strip directory components and prevent '../' attacks
-        $pic_filename = basename(rawurldecode($pic_filename));
+        $pic_filename = str_replace(['*', '?', '[', ']'], '', basename(rawurldecode($pic_filename)));
         $file_extension = strtolower(pathinfo($pic_filename, PATHINFO_EXTENSION));
 
         // Validate file extension against system-configured allowed image types
@@ -903,7 +903,7 @@ class Items extends Secure_Controller
             'receiving_quantity'    => $receivingQuantity,
             'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
             'is_serialized'         => $this->request->getPost('is_serialized') != null,
-            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($qtyPerPack),
+            'qty_per_pack'          => $this->request->getPost('qty_per_pack') == null ? 1 : $qtyPerPack,
             'pack_name'             => $this->request->getPost('pack_name') == null ? $defaultPackName : $this->request->getPost('pack_name'),
             'low_sell_item_id'      => $this->request->getPost('low_sell_item_id') === null ? $itemId : intval($this->request->getPost('low_sell_item_id')),
             'deleted'               => $this->request->getPost('is_deleted') != null,
@@ -952,8 +952,8 @@ class Items extends Secure_Controller
 
                 $taxNameIndex = 0;
 
-                foreach ($taxPercents as $taxPercent) {
-                    $taxPercentage = parse_tax($taxPercent);
+                foreach ($taxPercents as $tax_percent) {
+                    $taxPercentage = parse_tax($tax_percent);
 
                     if (isset($taxNames[$taxNameIndex]) && trim((string) $taxNames[$taxNameIndex]) !== '' && is_numeric($taxPercentage)) {
                         $itemsTaxesData[] = ['name' => $taxNames[$taxNameIndex], 'percent' => $taxPercentage];
@@ -1021,7 +1021,7 @@ class Items extends Secure_Controller
     private function upload_image(): array
     {
         $file = $this->request->getFile('items_image');
-        if (!$file) {
+        if (!$file || $file->getError() === UPLOAD_ERR_NO_FILE) {
             return [];
         }
 
@@ -1166,10 +1166,10 @@ class Items extends Secure_Controller
             $taxPercents = $this->request->getPost('tax_percents');
             $taxUpdated = false;
 
-            foreach ($taxPercents as $tax_percent) {
-                if (!empty($taxNames[$tax_percent]) && is_numeric($taxPercents[$tax_percent])) {
+            foreach ($taxPercents ?? [] as $key => $tax_percent) {
+                if (!empty($taxNames[$key]) && is_numeric($taxPercents[$key])) {
                     $taxUpdated = true;
-                    $itemsTaxesData[] = ['name' => $taxNames[$tax_percent], 'percent' => $taxPercents[$tax_percent]];
+                    $itemsTaxesData[] = ['name' => $taxNames[$key], 'percent' => $taxPercents[$key]];
                 }
             }
 
@@ -1240,11 +1240,15 @@ class Items extends Secure_Controller
                     set_time_limit(240);
 
                     $failCodes = [];
-                    $csvRows = get_csv_file($_FILES['file_path']['tmp_name']);
+                    $csvHeaders = [];
+                    $csvRows = get_csv_file($_FILES['file_path']['tmp_name'], $failCodes, $csvHeaders);
                     $allowedStockLocations = $this->stock_location->get_allowed_locations();
-                    $attributeDefinitionNames    = $this->attribute->getDefinitionNames();
+                    $attributeDefinitionNames = $this->attribute->getDefinitionNames();
+                    $headerCheckRows = !empty($csvRows)
+                        ? $csvRows
+                        : (!empty($failCodes) && !empty($csvHeaders) ? [array_fill_keys($csvHeaders, '')] : []);
 
-                    if (!csvImportHasRequiredItemHeaders($csvRows, $allowedStockLocations, $attributeDefinitionNames)) {
+                    if (!csvImportHasRequiredItemHeaders($headerCheckRows, $allowedStockLocations, $attributeDefinitionNames)) {
                         return $this->response->setJSON(['success' => false, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
                     }
 
@@ -1279,7 +1283,7 @@ class Items extends Secure_Controller
                             'reorder_level' => $row['Reorder Level'],
                             'deleted'       => false,
                             'hsn_code'      => $row['HSN'],
-                            'pic_filename'  => $row['Image']
+                            'pic_filename'  => str_replace(['*', '?', '[', ']'], '', basename($row['Image']))
                         ];
 
                         if (!empty($row['Supplier ID'])) {
@@ -1346,6 +1350,7 @@ class Items extends Secure_Controller
                     $csvRows = null;
 
                     if (count($failCodes) > 0) {
+                        sort($failCodes, SORT_NUMERIC);
                         $message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
                         $db->transRollback();
                         return $this->response->setJSON(['success' => false, 'message' => $message]);

@@ -66,7 +66,7 @@
                         'name'    => 'kit_discount_type',
                         'type'    => 'radio',
                         'value'   => 0,
-                        'checked' => $item_kit_info->kit_discount_type == PERCENT
+                        'checked' => (int) $item_kit_info->kit_discount_type === PERCENT
                     ]) ?> <?= lang('Item_kits.discount_percent') ?>
                 </label>
                 <label class="radio-inline">
@@ -74,7 +74,7 @@
                         'name'    => 'kit_discount_type',
                         'type'    => 'radio',
                         'value'   => 1,
-                        'checked' => $item_kit_info->kit_discount_type == FIXED
+                        'checked' => (int) $item_kit_info->kit_discount_type === FIXED
                     ]) ?> <?= lang('Item_kits.discount_fixed') ?>
                 </label>
             </div>
@@ -90,7 +90,7 @@
                         'maxlength' => '5',
                         'id'        => 'kit_discount',
                         'class'     => 'form-control input-sm',
-                        'value'     => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
+                        'value'     => (int) $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
                     ]) ?>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                         'name'    => 'price_option',
                         'type'    => 'radio',
                         'value'   => 0,
-                        'checked' => $item_kit_info->price_option == PRICE_ALL
+                        'checked' => (int) $item_kit_info->price_option === PRICE_ALL
                     ]) ?> <?= lang('Item_kits.kit_and_components') ?>
                 </label>
                 <label class="radio-inline">
@@ -112,7 +112,7 @@
                         'name'    => 'price_option',
                         'type'    => 'radio',
                         'value'   => 1,
-                        'checked' => $item_kit_info->price_option == PRICE_KIT
+                        'checked' => (int) $item_kit_info->price_option === PRICE_KIT
                     ]) ?> <?= lang('Item_kits.kit_only') ?>
                 </label>
                 <label class="radio-inline">
@@ -120,7 +120,7 @@
                         'name'    => 'price_option',
                         'type'    => 'radio',
                         'value'   => 2,
-                        'checked' => $item_kit_info->price_option == PRICE_KIT_ITEMS    // TODO: === for all of these?
+                        'checked' => (int) $item_kit_info->price_option === PRICE_KIT_ITEMS
                     ]) ?> <?= lang('Item_kits.kit_and_stock') ?>
                 </label>
             </div>
@@ -134,7 +134,7 @@
                         'name'    => 'print_option',
                         'type'    => 'radio',
                         'value'   => 0,
-                        'checked' => $item_kit_info->print_option == PRINT_ALL
+                        'checked' => (int) $item_kit_info->print_option === PRINT_ALL
                     ]) ?> <?= lang('Item_kits.all') ?>
                 </label>
                 <label class="radio-inline">
@@ -142,7 +142,7 @@
                         'name'    => 'print_option',
                         'type'    => 'radio',
                         'value'   => 1,
-                        'checked' => $item_kit_info->print_option == PRINT_PRICED
+                        'checked' => (int) $item_kit_info->print_option === PRINT_PRICED
                     ]) ?> <?= lang('Item_kits.priced_only') ?>
                 </label>
                 <label class="radio-inline">
@@ -150,7 +150,7 @@
                         'name'    => 'print_option',
                         'type'    => 'radio',
                         'value'   => 2,
-                        'checked' => $item_kit_info->print_option == PRINT_KIT
+                        'checked' => (int) $item_kit_info->print_option === PRINT_KIT
                     ]) ?> <?= lang('Item_kits.kit_only') ?>
                 </label>
             </div>
@@ -214,8 +214,8 @@
             delay: 10,
             appendTo: '.modal-content',
             select: function(e, ui) {
-                if ($('#item_kit_item_' + ui.item.value).length == 1) {
-                    $('#item_kit_item_' + ui.item.value).val(parseFloat($('#item_kit_item_' + ui.item.value).val()) + 1);
+                if ($('#item_qty_' + ui.item.value).length == 1) {
+                    $('#item_qty_' + ui.item.value).val(parseFloat($('#item_qty_' + ui.item.value).val()) + 1);
                 } else {
                     $('#item_kit_items').append('<tr>' +
                         '<td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>' +

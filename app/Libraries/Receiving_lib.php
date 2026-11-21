@@ -8,7 +8,6 @@ use App\Models\Item_kit_items;
 use App\Models\Item_quantity;
 use App\Models\Receiving;
 use App\Models\Stock_location;
-
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
 
@@ -217,7 +216,9 @@ class Receiving_lib
      */
     public function set_stock_source(int $stock_source): void
     {
-        $this->session->set('recv_stock_source', $stock_source);
+        if ($this->stock_location->is_allowed_location($stock_source, 'receivings')) {
+            $this->session->set('recv_stock_source', $stock_source);
+        }
     }
 
     /**
@@ -244,12 +245,14 @@ class Receiving_lib
     }
 
     /**
-     * @param string $stock_destination
+     * @param string|null $stock_destination
      * @return void
      */
     public function set_stock_destination(?string $stock_destination): void
     {
-        $this->session->set('recv_stock_destination', $stock_destination);
+        if ($stock_destination === null || $this->stock_location->is_allowed_location((int) $stock_destination, 'receivings')) {
+            $this->session->set('recv_stock_destination', $stock_destination);
+        }
     }
 
     /**
@@ -263,19 +266,19 @@ class Receiving_lib
 
     /**
      * @param string $itemId
-     * @param int $quantity
+     * @param float|int|string $quantity
      * @param int|null $itemLocation
      * @param float $discount
-     * @param int $discountType
+     * @param int $discount_type
      * @param float|null $price
      * @param string|null $description
      * @param string|null $serialNumber
-     * @param float|null $receivingQuantity
-     * @param int|null $receivingId
+     * @param float|null $receiving_quantity
+     * @param int|null $receiving_id
      * @param bool $includeDeleted
      * @return bool
      */
-    public function add_item(string $itemId, int $quantity = 1, ?int $itemLocation = null, float $discount = 0, int $discountType = 0, ?float $price = null, ?string $description = null, ?string $serialNumber = null, ?float $receivingQuantity = null, ?int $receivingId = null, bool $includeDeleted = false): bool
+    public function add_item(string $itemId, float|int|string $quantity = 1, ?int $itemLocation = null, float $discount = 0, int $discount_type = 0, ?float $price = null, ?string $description = null, ?string $serialNumber = null, ?float $receiving_quantity = null, ?int $receiving_id = null, bool $includeDeleted = false): bool
     {
         $config = config(OSPOS::class)->settings;
         $itemInfo = $this->item->get_info_by_id_or_number($itemId, $includeDeleted);
@@ -320,11 +323,11 @@ class Receiving_lib
             ];
         }
 
-        if (is_null($receivingQuantity)) {
-            $receivingQuantity = $itemInfo->receiving_quantity;
+        if (is_null($receiving_quantity)) {
+            $receiving_quantity = $itemInfo->receiving_quantity;
         }
 
-        $attributeLinks = $this->attribute->get_link_values((int) $itemId, 'receiving_id', $receivingId, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
+        $attributeLinks = $this->attribute->get_link_values((int) $itemId, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
         $item = [
             $insertKey => [
@@ -342,18 +345,18 @@ class Receiving_lib
                 'is_serialized'              => $itemInfo->is_serialized,
                 'quantity'                   => $quantity,
                 'discount'                   => $discount,
-                'discount_type'              => $discountType,
+                'discount_type'              => $discount_type,
                 'in_stock'                   => $this->item_quantity->get_item_quantity((int) $itemId, $itemLocation)->quantity,
                 'price'                      => $price,
-                'receiving_quantity'         => $receivingQuantity,
+                'receiving_quantity'         => $receiving_quantity,
                 'receiving_quantity_choices' => $receivingQuantityChoices,
-                'total'                      => $this->get_item_total($quantity, $price, $discount, $discountType, $receivingQuantity)
+                'total'                      => $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
             ]
         ];
 
         if ($itemAlreadyInSale) {
             $items[$updateKey]['quantity'] += $quantity;
-            $items[$updateKey]['total'] = $this->get_item_total($items[$updateKey]['quantity'], $price, $discount, $discountType, $items[$updateKey]['receiving_quantity']);
+            $items[$updateKey]['total'] = $this->get_item_total($items[$updateKey]['quantity'], $items[$updateKey]['price'], $items[$updateKey]['discount'], $items[$updateKey]['discount_type'], $items[$updateKey]['receiving_quantity']);
         } else {
             $items += $item;
         }
@@ -366,35 +369,36 @@ class Receiving_lib
     /**
      * @param $line
      * @param string $description
-     * @param string $serialnumber
-     * @param float $quantity
+     * @param string $serialNumber
+     * @param float|int|string $quantity
      * @param float $discount
      * @param int|null $discount_type
      * @param float $price
      * @param float $receiving_quantity
      * @return bool
      */
-    public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, ?int $discount_type, float $price, float $receiving_quantity): bool
+    public function edit_item($line, string $description, string $serialNumber, float|int|string $quantity, float $discount, ?int $discount_type, float $price, float $receiving_quantity): bool
     {
         $items = $this->get_cart();
         if (isset($items[$line])) {
-            $line = &$items[$line];
-            $line['description'] = $description;
-            $line['serialnumber'] = $serialnumber;
-            $line['quantity'] = $quantity;
-            $line['receiving_quantity'] = $receiving_quantity;
-            $line['discount'] = $discount;
+            $items[$line]['description'] = $description;
+            $items[$line]['serialnumber'] = $serialNumber;
+            $items[$line]['quantity'] = $quantity;
+            $items[$line]['receiving_quantity'] = $receiving_quantity;
+            $items[$line]['discount'] = $discount;
 
             if (!is_null($discount_type)) {
-                $line['discount_type'] = $discount_type;
+                $items[$line]['discount_type'] = $discount_type;
             }
 
-            $line['price'] = $price;
-            $line['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity);
+            $items[$line]['price'] = $price;
+            $items[$line]['total'] = $this->get_item_total($quantity, $price, $discount, $items[$line]['discount_type'], $receiving_quantity);
             $this->set_cart($items);
+
+            return true;
         }
 
-        return false;    // TODO: This function will always return false.
+        return false;
     }
 
     /**
@@ -408,18 +412,22 @@ class Receiving_lib
     }
 
     /**
-     * @param int $receipt_receiving_id
+     * @param int|string $receipt_receiving_id
      * @return void
      */
-    public function return_entire_receiving(int $receipt_receiving_id): void
+    public function return_entire_receiving(int|string $receipt_receiving_id): void
     {
         // RECV #
-        $pieces = explode(' ', $receipt_receiving_id);
+        $pieces = explode(' ', (string) $receipt_receiving_id);
 
         if (preg_match("/(RECV|KIT)/", $pieces[0])) {    // TODO: this needs to be converted to ternary notation.
-            $receiving_id = $pieces[1];
+            $receiving_id = (int) $pieces[1];
         } else {
-            $receiving_id = $this->receiving->get_receiving_by_reference($receipt_receiving_id)->getRow()->receiving_id;
+            $row = $this->receiving->get_receiving_by_reference((string) $receipt_receiving_id)->getRow();
+            if ($row === null) {
+                return;
+            }
+            $receiving_id = (int) $row->receiving_id;
         }
 
         $this->empty_cart();
@@ -430,7 +438,10 @@ class Receiving_lib
             $this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
         }
 
-        $this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
+        $supplier = $this->receiving->get_supplier($receiving_id);
+        if (!empty($supplier->person_id)) {
+            $this->set_supplier((int) $supplier->person_id);
+        }
     }
 
     /**
@@ -452,19 +463,22 @@ class Receiving_lib
     }
 
     /**
-     * @param int $receiving_id
+     * @param int|string $receiving_id
      * @return void
      */
-    public function copy_entire_receiving(int $receiving_id): void
+    public function copy_entire_receiving(int|string $receiving_id): void
     {
         $this->empty_cart();
         $this->remove_supplier();
 
-        foreach ($this->receiving->get_receiving_items($receiving_id)->getResult() as $row) {
-            $this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
+        foreach ($this->receiving->get_receiving_items((int) $receiving_id)->getResult() as $row) {
+            $this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, (int) $receiving_id, true);
         }
 
-        $this->set_supplier((int) $this->receiving->get_supplier($receiving_id)->person_id);
+        $supplier = $this->receiving->get_supplier((int) $receiving_id);
+        if (!empty($supplier->person_id)) {
+            $this->set_supplier((int) $supplier->person_id);
+        }
         // $this->set_reference($this->receiving->get_info($receiving_id)->getRow()->reference);    // TODO: If this code won't be added back in, then let's delete it.
     }
 

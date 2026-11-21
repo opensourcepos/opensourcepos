@@ -67,21 +67,23 @@ class Inventory extends Model
     public function reset_quantity(int $item_id): bool|int|string
     {
         $inventory_sums = $this->get_inventory_sum($item_id);
-        foreach ($inventory_sums as $inventory_sum) {
-            if ($inventory_sum['sum'] > 0) {
-                $employee = model(Employee::class);
+        $employee = model(Employee::class);
+        $success = true;
 
-                return $this->insert([
+        foreach ($inventory_sums as $inventory_sum) {
+            if ((float) $inventory_sum['sum'] != 0) {
+                $result = $this->insert([
                     'trans_inventory' => -1 * $inventory_sum['sum'],
                     'trans_items'     => $item_id,
                     'trans_location'  => $inventory_sum['location_id'],
                     'trans_comment'   => lang('Items.is_deleted'),
                     'trans_user'      => $employee->get_logged_in_employee_info()->person_id
                 ]);
+                $success = $success && ($result !== false);
             }
         }
 
-        return true;
+        return $success;
     }
 
     /**

@@ -459,7 +459,7 @@ class Customers extends Persons
 
                         if ($account_number != '') {
                             $customer_data['account_number'] = $account_number;
-                            $invalidated &= $this->customer->check_account_number_exists($account_number);
+                            $invalidated = $invalidated || $this->customer->check_account_number_exists($account_number);
                         }
                     } else {
                         $invalidated = true;
@@ -470,7 +470,7 @@ class Customers extends Persons
                         log_message('error', "Row $rowNumber was not imported: Either email or account number already exist or data was invalid.");
                     } elseif ($this->customer->saveCustomer($person_data, $customer_data)) {
                         // Save customer to Mailchimp selected list
-                        $this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
+                        $this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], $person_data['last_name'], '');
                     } else {
                         $failCodes[] = $rowNumber;
                     }

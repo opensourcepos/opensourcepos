@@ -24,7 +24,7 @@
 
 <?php
 if (isset($error_message)) {
-    echo '<div class="alert alert-dismissible alert-danger">' . $error_message . '</div>';
+    echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
     exit;
 }
 ?>
@@ -200,7 +200,7 @@ if (isset($error_message)) {
         ?>
             <tr>
                 <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                <td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
+                <td colspan="2" class="total-line"><?= esc($splitpayment[0]) ?></td>
                 <td class="total-value" id="paid"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>
@@ -225,7 +225,7 @@ if (isset($error_message)) {
     <div id="terms">
         <div id="sale_return_policy">
             <h5>
-                <span><?= nl2br($config['payment_message']) ?></span>
+                <span><?= nl2br(esc($config['payment_message'])) ?></span>
                 <span style="padding: 4%;"><?= empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></span>
                 <span style="padding: 4%;"><?= esc($config['invoice_default_comments']) ?></span>
             </h5>

@@ -46,7 +46,7 @@ class Messages extends Secure_Controller
     /**
      * @return ResponseInterface
      */
-    public function send(): ResponseInterface
+    public function postSend(): ResponseInterface
     {
         $phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -67,7 +67,7 @@ class Messages extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
-    public function send_form(int $person_id = NEW_ENTRY): ResponseInterface
+    public function postSend_form(int $person_id = NEW_ENTRY): ResponseInterface
     {
         $phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

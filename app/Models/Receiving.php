@@ -228,6 +228,8 @@ class Receiving extends Model
             $item_quantity = model(Item_quantity::class);
 
             foreach ($items as $item) {
+                $itemsReceived = (float) $item['receiving_quantity'] != 0 ? $item['quantity_purchased'] * (-$item['receiving_quantity']) : -$item['quantity_purchased'];
+
                 // Create query to update inventory tracking
                 $inv_data = [
                     'trans_date'      => date('Y-m-d H:i:s'),
@@ -235,13 +237,13 @@ class Receiving extends Model
                     'trans_user'      => $employee_id,
                     'trans_comment'   => 'Deleting receiving ' . $receiving_id,
                     'trans_location'  => $item['item_location'],
-                    'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
+                    'trans_inventory' => $itemsReceived
                 ];
                 // Update inventory
                 $inventory->insert($inv_data, false);
 
                 // Update quantities
-                $item_quantity->changeQuantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
+                $item_quantity->changeQuantity($item['item_id'], $item['item_location'], $itemsReceived);
             }
         }
 
@@ -339,7 +341,7 @@ class Receiving extends Model
             'MAX(`' . $db_prefix . 'receivings_items`.`description`) AS description',
             'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS subtotal',
             'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS total',
-            'MAX((CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - discount END) - (`item_cost_price` * `quantity_purchased`)) AS profit',
+            'MAX((CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) - (`item_cost_price` * `quantity_purchased`)) AS profit',
             'MAX(`item_cost_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` ) AS cost'
         ]);
         $builder->join('receivings', 'receivings_items.receiving_id = receivings.receiving_id', 'inner');

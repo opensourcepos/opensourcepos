@@ -25,7 +25,7 @@
 <body>
     <?php
     if (isset($error_message)) {
-        echo '<div class="alert alert-dismissible alert-danger">' . $error_message . '</div>';
+        echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
         exit;
     }
     ?>

@@ -2,9 +2,13 @@
 
 namespace Tests\Models;
 
+use App\Models\Dinner_table;
+use App\Models\Rewards;
 use App\Models\Sale;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Database;
+use Config\OSPOS;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\FailedQueryConnectionTrait;
@@ -560,5 +564,210 @@ class SaleTest extends CIUnitTestCase
 
         $this->assertSame(INSUFFICIENT_GIFTCARD_BALANCE, $result);
         $this->assertSame($salesCountBefore, $this->countSalesRows());
+    }
+
+    public function testSaveValue_SkipsGiftcardAndRewardsDeductionWhenSuspendedAndAppliesOnceWhenCompleted(): void
+    {
+        $employeeId     = $this->createEmployee();
+        $giftcardNumber = $this->createGiftcard(100.00);
+        $customerId     = $this->createCustomerWithPoints(50);
+        $itemId         = $this->createTestItem(HAS_NO_STOCK);
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items      = $this->buildCartLine($itemId, 1, 60.00);
+        $payments   = [
+            0 => [
+                'payment_type'    => lang('Sales.giftcard') . ':' . $giftcardNumber,
+                'payment_amount'  => 40.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+            1 => [
+                'payment_type'    => lang('Sales.rewards'),
+                'payment_amount'  => 20.00,
+                'cash_refund'     => 0,
+                'cash_adjustment' => 0,
+                'reference_code'  => null,
+            ],
+        ];
+        $salesTaxes = [[], []];
+
+        $suspendedSaleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            $customerId,
+            $employeeId,
+            'suspended sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $suspendedSaleId);
+        $this->assertEqualsWithDelta(100.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+        $this->assertSame(50, $this->getCustomerPoints($customerId));
+
+        $saleStatus = COMPLETED;
+        $completedSaleId = $saleModel->save_value(
+            $suspendedSaleId,
+            $saleStatus,
+            $items,
+            $customerId,
+            $employeeId,
+            'completed sale',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            $payments,
+            null,
+            $salesTaxes
+        );
+
+        $this->assertSame($suspendedSaleId, $completedSaleId);
+        $this->assertEqualsWithDelta(60.00, $this->getGiftcardValue($giftcardNumber), 0.001);
+        $this->assertSame(30, $this->getCustomerPoints($customerId));
+    }
+
+    public function testCheckWorkOrderNumberExists_MatchesWorkOrderNumberColumn(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId     = $this->createTestItem(HAS_NO_STOCK);
+
+        $saleModel  = model(Sale::class);
+        $saleStatus = SUSPENDED;
+        $items      = $this->buildCartLine($itemId, 1, 10.00);
+        $salesTaxes = [[], []];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'work order test',
+            'INV-ONLY-999',
+            'WO-REAL-123',
+            null,
+            SALE_TYPE_WORK_ORDER,
+            [],
+            null,
+            $salesTaxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+        $this->assertTrue($saleModel->check_work_order_number_exists('WO-REAL-123'));
+        $this->assertFalse($saleModel->check_work_order_number_exists('INV-ONLY-999'));
+    }
+
+    public function testDeleteSuspendedSale_HandlesNullDinnerTableWhenEnabled(): void
+    {
+        $ospos = config(OSPOS::class);
+        $priorSetting = $ospos->settings['dinner_table_enable'] ?? false;
+        $ospos->settings['dinner_table_enable'] = true;
+
+        try {
+            $employeeId = $this->createEmployee();
+            $itemId     = $this->createTestItem(HAS_NO_STOCK);
+
+            $saleModel  = model(Sale::class);
+            $saleStatus = SUSPENDED;
+            $items      = $this->buildCartLine($itemId, 1, 10.00);
+            $salesTaxes = [[], []];
+
+            $saleId = $saleModel->save_value(
+                NEW_ENTRY,
+                $saleStatus,
+                $items,
+                NEW_ENTRY,
+                $employeeId,
+                'null table test',
+                null,
+                null,
+                null,
+                SALE_TYPE_POS,
+                [],
+                null,
+                $salesTaxes
+            );
+
+            $this->assertGreaterThan(0, $saleId);
+            $this->assertTrue($saleModel->clear_suspended_sale_detail($saleId));
+            $this->assertTrue($saleModel->delete_suspended_sale($saleId));
+        } finally {
+            $ospos->settings['dinner_table_enable'] = $priorSetting;
+        }
+    }
+
+    public function testSaveValue_InsertsAndUpdatesRewardsRow(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId     = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items      = $this->buildCartLine($itemId, 1, 10.00);
+        $salesTaxes = [[], []];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'rewards test',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            [],
+            null,
+            $salesTaxes
+        );
+
+        $rewardsModel = model(Rewards::class);
+        $rewardsData  = [
+            'sale_id' => $saleId,
+            'earned'  => 10.0,
+            'used'    => 0.0,
+        ];
+
+        $this->assertTrue($rewardsModel->save_value($rewardsData));
+        $this->assertArrayHasKey('id', $rewardsData);
+        $rewardsId = (int) $rewardsData['id'];
+        $this->assertTrue($rewardsModel->exists($rewardsId));
+
+        $rewardsData['used'] = 5.0;
+        $this->assertTrue($rewardsModel->save_value($rewardsData, $rewardsId));
+    }
+
+    public function testGetEmptyTables_ExcludesDeletedTablesWithStatusZero(): void
+    {
+        $db = Database::connect();
+        $db->table('dinner_tables')->insert([
+            'name'    => 'Deleted Empty Table',
+            'status'  => 0,
+            'deleted' => 1,
+        ]);
+        $deletedTableId = (int) $db->insertID();
+
+        $db->table('dinner_tables')->insert([
+            'name'    => 'Active Occupied Table',
+            'status'  => 1,
+            'deleted' => 0,
+        ]);
+        $currentTableId = (int) $db->insertID();
+
+        $dinnerTableModel = model(Dinner_table::class);
+        $emptyTables      = $dinnerTableModel->get_empty_tables($currentTableId);
+
+        $this->assertArrayNotHasKey($deletedTableId, $emptyTables);
+        $this->assertArrayHasKey($currentTableId, $emptyTables);
     }
 }

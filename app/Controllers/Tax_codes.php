@@ -33,9 +33,8 @@ class Tax_codes extends Secure_Controller
     /**
      * @return array
      */
-    public function get_data(): array
+    private function get_data(): array
     {
-
         $data['table_headers'] = get_tax_code_table_headers();
         return $data;
     }
@@ -101,12 +100,12 @@ class Tax_codes extends Secure_Controller
             'state'         => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        if ($this->tax_code->save($tax_code_data)) {
+        if ($this->tax_code->save_value($tax_code_data, $tax_code_id)) {
             if ($tax_code_id == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_adding'),
-                    'id'      => $tax_code_data['tax_code_id']
+                    'id'      => $tax_code_data['tax_code_id'] ?? $tax_code_id
                 ]);
             } else {
                 return $this->response->setJSON([
@@ -118,7 +117,7 @@ class Tax_codes extends Secure_Controller
         } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
+                'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_id,
                 'id'      => NEW_ENTRY
             ]);
         }

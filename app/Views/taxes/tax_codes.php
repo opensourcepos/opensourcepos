@@ -35,7 +35,7 @@
         }
 
         const hide_show_remove_tax_code = function() {
-            if ($("input[name*='tax_code']:enabled").length > 1) {
+            if ($("input[name='tax_code[]']:enabled").length > 1) {
                 $(".remove_tax_code").show();
             } else {
                 $(".remove_tax_code").hide();
@@ -110,7 +110,7 @@
             invalidHandler: function(event, validator) {
                 $.notify("<?= lang('Common.correct_errors') ?>");
             },
-            errorLabelContainer: "#tax_code_error_message_box"
+            errorLabelContainer: "#tax_codes_error_message_box"
         }));
 
         <?php

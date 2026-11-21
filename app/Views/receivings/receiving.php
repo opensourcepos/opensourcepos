@@ -79,7 +79,7 @@ if (isset($success)) {
         <ul>
             <li class="pull-left first_li">
                 <label for="item" class="control-label">
-                    <?php if ($mode == 'receive' or $mode == 'requisition') { ?>
+                    <?php if ($mode === 'receive' || $mode === 'requisition') { ?>
                         <?= lang(ucfirst($controller_name) . '.find_or_scan_item') ?>
                     <?php } else { ?>
                         <?= lang(ucfirst($controller_name) . '.find_or_scan_item_or_receipt') ?>
@@ -181,10 +181,10 @@ if (isset($success)) {
                                             'data-toggle'  => "toggle",
                                             'data-size'    => 'small',
                                             'data-onstyle' => 'success',
-                                            'data-on'      => '<b>' . $config['currency_symbol'] . '</b>',
+                                            'data-on'      => '<b>' . esc($config['currency_symbol']) . '</b>',
                                             'data-off'     => '<b>%</b>',
                                             'data-line'    => $line,
-                                            'checked'      => $item['discount_type'] == 1
+                                            'checked'      => (int) $item['discount_type'] === 1
                                         ]) ?>
                                     </span>
                                 </div>
@@ -366,7 +366,7 @@ if (isset($success)) {
                                             'id'      => 'recv_print_after_sale',
                                             'class'   => 'checkbox',
                                             'value'   => 1,
-                                            'checked' => $print_after_sale == 1
+                                            'checked' => (bool) $print_after_sale
                                         ]) ?>
                                     </td>
                                 </tr>

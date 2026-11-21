@@ -24,7 +24,7 @@ function generate_stock_location_headers(array $locations): string
     $location_headers = '';
 
     foreach ($locations as $location_name) {
-        $location_headers .= ',"location_' . $location_name . '"';
+        $location_headers .= ',"location_' . str_replace('"', '""', $location_name) . '"';
     }
 
     return $location_headers;
@@ -40,7 +40,7 @@ function generate_attribute_headers(array $attribute_names): string
     unset($attribute_names[-1]);
 
     foreach ($attribute_names as $attribute_name) {
-        $attribute_headers .= ',"attribute_' . $attribute_name . '"';
+        $attribute_headers .= ',"attribute_' . str_replace('"', '""', $attribute_name) . '"';
     }
 
     return $attribute_headers;
@@ -51,26 +51,39 @@ function generate_attribute_headers(array $attribute_names): string
  * @param string $file_name
  * @return array A multidimensional array of rows found within the file and their associative key/value pairs.
  */
-function get_csv_file(string $file_name): array
+function get_csv_file(string $file_name, array &$failedLines = [], array &$headers = []): array
 {
-    $csv_rows = false;
+    $csv_rows = [];
 
     if (($csv_file = fopen($file_name, 'r')) !== false) {
         helper('security');
-
-        $csv_rows = [];
 
         // Skip Byte-Order Mark
         if (bom_exists($csv_file)) {
             fseek($csv_file, 3);
         }
 
-        $headers = fgetcsv($csv_file);
+        $parsedHeaders = fgetcsv($csv_file);
+
+        if (!is_array($parsedHeaders) || $parsedHeaders === [null]) {
+            fclose($csv_file);
+
+            return $csv_rows;
+        }
+
+        $headers = $parsedHeaders;
+        $rowIndex = 0;
 
         while (($row = fgetcsv($csv_file)) !== false) {
             if ($row !== [null]) {
-                $csv_rows[] = array_combine($headers, $row);
+                if (is_array($row) && count($headers) === count($row)) {
+                    $csv_rows[$rowIndex] = array_combine($headers, $row);
+                } else {
+                    $failedLines[] = $rowIndex + 2;
+                }
             }
+
+            ++$rowIndex;
         }
 
         fclose($csv_file);

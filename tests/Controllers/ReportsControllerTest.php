@@ -2,11 +2,15 @@
 
 namespace Tests\Controllers;
 
+use App\Controllers\Reports;
+use App\Models\Employee;
+use App\Models\Reports\Summary_categories;
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use App\Models\Employee;
 use Config\OSPOS;
+use ReflectionMethod;
 use Tests\Support\DatabaseBootstrapTrait;
 
 /**
@@ -272,5 +276,94 @@ class ReportsControllerTest extends CIUnitTestCase
 
         $this->assertStringContainsString('Mallory', $body, 'Seeded customer missing from the Specific Customer report dropdown.');
         $this->assertStringNotContainsString($payload, $body, 'Raw XSS payload leaked into the Specific Customer report dropdown.');
+    }
+
+    public function testGetPaymentType_IsPrivateHelper(): void
+    {
+        $paymentTypeReflection = new ReflectionMethod(Reports::class, 'get_payment_type');
+        $saleTypeReflection    = new ReflectionMethod(Reports::class, 'get_sale_type_options');
+
+        $this->assertTrue($paymentTypeReflection->isPrivate());
+        $this->assertTrue($saleTypeReflection->isPrivate());
+    }
+
+    public function testDetailedSales_RendersEmptyDateRangeWithoutError(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/detailed_sales/2020-01-01/2020-01-02/complete/all');
+
+        $response->assertStatus(200);
+    }
+
+    public function testDetailedReceivings_RendersEmptyDateRangeWithoutError(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/detailed_receivings/2020-01-01/2020-01-02/receiving/all');
+
+        $response->assertStatus(200);
+    }
+
+    public function testSummaryPayments_RendersEmptyDateRangeWithoutError(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/summary_payments/2020-01-01/2020-01-02/complete/all');
+
+        $response->assertStatus(200);
+    }
+
+    public function testGraphicalSummaryDiscounts_OutputsUnescapedJsonArrays(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/graphical_summary_discounts/2020-01-01/2020-01-02/complete/all/0');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('labels: []', $response->getBody());
+    }
+
+    public function testGraphicalSummaryCategories_HandlesZeroTotalWithoutDivisionByZero(): void
+    {
+        $this->loginAs(1);
+
+        $mockSummaryCategories = $this->createMock(Summary_categories::class);
+        $mockSummaryCategories->method('getData')->willReturn([
+            ['category' => 'ZeroCategory', 'total' => 0.0],
+        ]);
+        $mockSummaryCategories->method('getSummaryData')->willReturn([
+            'subtotal' => 0.0,
+            'tax'      => 0.0,
+            'total'    => 0.0,
+            'cost'     => 0.0,
+            'profit'   => 0.0,
+        ]);
+        Factories::injectMock('models', Summary_categories::class, $mockSummaryCategories);
+
+        $response = $this->get('/reports/graphical_summary_categories/2020-01-01/2020-01-02/complete/all');
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('ZeroCategory 0%', $response->getBody());
+    }
+
+    public function testGetGetDetailedSalesRow_RejectsMissingSaleWith404(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/get_detailed_sales_row/999999');
+
+        $response->assertStatus(404);
+        $this->assertSame([], json_decode($response->getJSON(), true));
+    }
+
+    public function testGetGetDetailedReceivingsRow_RejectsMissingReceivingWith404(): void
+    {
+        $this->loginAs(1);
+
+        $response = $this->get('/reports/get_detailed_receivings_row/999999');
+
+        $response->assertStatus(404);
+        $this->assertSame([], json_decode($response->getJSON(), true));
     }
 }

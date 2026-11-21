@@ -112,8 +112,7 @@ class Barcode_lib
 
             return $generator->getBarcode($barcode_value, $barcode_config['barcode_type'], 2, $barcode_config['barcode_height']);
         } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n";
-            echo 'Stack trace: ', $e->getTraceAsString();
+            log_message('error', 'Caught exception: ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
 
             return '';
         }
@@ -129,7 +128,7 @@ class Barcode_lib
             $generator = new BarcodeGeneratorSVG();
             return $generator->getBarcode($barcode_content, $generator::TYPE_CODE_128);
         } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n";
+            log_message('error', 'Caught exception: ' . $e->getMessage());
             return '';
         }
     }
@@ -161,10 +160,10 @@ class Barcode_lib
     /**
      * @param string $layoutType
      * @param array $item
-     * @param array $barcodeConfig
+     * @param array $barcode_config
      * @return string
      */
-    private function manageDisplayLayout(string $layoutType, array $item, array $barcodeConfig): string
+    private function manageDisplayLayout(string $layoutType, array $item, array $barcode_config): string
     {
         $result = '';
         helper('text');
@@ -178,9 +177,9 @@ class Barcode_lib
         } elseif ($layoutType == 'unit_price' && isset($item['unit_price'])) {
             $result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
         } elseif ($layoutType == 'company_name') {
-            $result = esc($barcodeConfig['company']);
+            $result = esc($barcode_config['company']);
         } elseif ($layoutType == 'item_code') {
-            $result = $barcodeConfig['barcode_content'] !== "id" && isset($item['item_number'])
+            $result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
                 ? esc($item['item_number'])
                 : esc($item['item_id']);
         }
@@ -204,9 +203,8 @@ class Barcode_lib
                     $array[$file] = $file;
                 }
             }
+            closedir($handle);
         }
-
-        closedir($handle);
 
         array_unshift($array, lang('Config.none'));
 

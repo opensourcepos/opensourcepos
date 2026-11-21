@@ -41,7 +41,7 @@
         <div id="sale_id"><?= lang('Sales.id') . esc(": $sale_id") ?></div>
 
         <?php if (!empty($invoice_number)) { ?>
-            <div id="invoice_number"><?= lang('Sales.invoice_number') . ": $invoice_number" ?></div>
+            <div id="invoice_number"><?= lang('Sales.invoice_number') . esc(": $invoice_number") ?></div>
         <?php } ?>
 
         <div id="employee"><?= lang('Employees.employee') . esc(": $employee") ?></div>
@@ -126,7 +126,7 @@
             $show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
         ?>
             <tr>
-                <td colspan="2" style="text-align: right;"><?= $splitpayment[0] ?> </td>
+                <td colspan="2" style="text-align: right;"><?= esc($splitpayment[0]) ?> </td>
                 <td class="total-value"><?= to_currency($payment['payment_amount'] * -1) ?></td>
             </tr>
         <?php } ?>

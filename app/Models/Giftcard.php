@@ -106,10 +106,10 @@ class Giftcard extends Model
     /**
      * Gets a giftcard id given a giftcard number
      */
-    public function getGiftcardId(string $giftcardNumber): int|false
+    public function getGiftcardId(string $giftcard_number): int|false
     {
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcardNumber);
+        $builder->where('giftcard_number', $giftcard_number);
         $builder->where('deleted', 0);
 
         $query = $builder->get();
@@ -143,7 +143,6 @@ class Giftcard extends Model
 
         if ($giftcard_id == NEW_ENTRY || !$this->exists($giftcard_id)) {
             if ($builder->insert($giftcard_data)) {
-                $giftcard_data['giftcard_number'] = $this->db->insertID();
                 $giftcard_data['giftcard_id'] = $this->db->insertID();
 
                 return true;
@@ -291,7 +290,8 @@ class Giftcard extends Model
      */
     public function get_giftcard_value(string $giftcard_number): float    // TODO: we may need to do a search for all float values and for currencies cast them to strings at the point where we get them from the database.
     {
-        if (!$this->exists($this->getGiftcardId($giftcard_number))) {
+        $giftcard_id = $this->getGiftcardId($giftcard_number);
+        if ($giftcard_id === false || !$this->exists($giftcard_id)) {
             return 0;
         }
 
@@ -311,14 +311,14 @@ class Giftcard extends Model
         $builder->update(['value' => $value]);
     }
 
-    public function decrementGiftcardValue(string $giftcardNumber, float $amount): bool
+    public function decrementGiftcardValue(string $giftcard_number, float $amount): bool
     {
         if ($amount <= 0.0) {
             return false;
         }
 
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcardNumber);
+        $builder->where('giftcard_number', $giftcard_number);
         $builder->where('deleted', 0);
         $builder->where('value >=', $amount);
         $builder->set('value', 'value - ' . $this->db->escape($amount), false);
@@ -326,14 +326,14 @@ class Giftcard extends Model
         return $builder->update() && $this->db->affectedRows() > 0;
     }
 
-    public function incrementGiftcardValue(string $giftcardNumber, float $amount): bool
+    public function incrementGiftcardValue(string $giftcard_number, float $amount): bool
     {
         if ($amount <= 0.0) {
             return false;
         }
 
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcardNumber);
+        $builder->where('giftcard_number', $giftcard_number);
         $builder->where('deleted', 0);
         $builder->set('value', 'value + ' . $this->db->escape($amount), false);
 
@@ -364,7 +364,7 @@ class Giftcard extends Model
         $giftcard_name = "$random-$value";
 
         if ($this->exists_giftcard_name($giftcard_name)) {
-            $this->generate_unique_giftcard_name($value);
+            return $this->generate_unique_giftcard_name($value);
         }
 
         return strtoupper($giftcard_name);
@@ -378,7 +378,8 @@ class Giftcard extends Model
      */
     public function get_giftcard_customer(string $giftcard_number): int|null
     {
-        if (!$this->exists($this->getGiftcardId($giftcard_number))) {
+        $giftcard_id = $this->getGiftcardId($giftcard_number);
+        if ($giftcard_id === false || !$this->exists($giftcard_id)) {
             return 0;
         }
 

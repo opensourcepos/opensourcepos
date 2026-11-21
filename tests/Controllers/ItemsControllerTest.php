@@ -14,6 +14,7 @@ use App\Models\Item_taxes;
 use App\Models\Attribute;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use Config\Database;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\EmployeeFixtureTrait;
 
@@ -422,6 +423,30 @@ class ItemsControllerTest extends CIUnitTestCase
         $this->assertEquals('Item One', $rows[0]['Item Name']);
         $this->assertEquals('Item Two', $rows[1]['Item Name']);
         $this->assertEquals('Item Three', $rows[2]['Item Name']);
+
+        unlink($tempFile);
+    }
+
+    public function testGetCsvFile_PreservesRowIndicesAndRecordsMismatchedRows(): void
+    {
+        $csvContent = "Id,\"Item Name\",Category\n";
+        $csvContent .= "1,Item One,Cat A\n";
+        $csvContent .= "\n";
+        $csvContent .= "2,Too Few Columns\n";
+        $csvContent .= "3,Item Four,Cat D\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_test_indices_');
+        file_put_contents($tempFile, $csvContent);
+
+        $failedLines = [];
+        $headers     = [];
+        $rows        = get_csv_file($tempFile, $failedLines, $headers);
+
+        $this->assertSame(['Id', 'Item Name', 'Category'], $headers);
+        $this->assertSame([0, 3], array_keys($rows));
+        $this->assertSame('Item One', $rows[0]['Item Name']);
+        $this->assertSame('Item Four', $rows[3]['Item Name']);
+        $this->assertSame([4], $failedLines);
 
         unlink($tempFile);
     }
@@ -1874,6 +1899,127 @@ class ItemsControllerTest extends CIUnitTestCase
         $html = (string) $response->getBody();
         $this->assertStringContainsString('424242', $html);
         $this->assertStringNotContainsString('987654', $html);
+    }
+
+    public function testPostBulkUpdate_PersistsTaxesByIndexAndHandlesNullTaxes(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+
+        $itemData = [
+            'name'       => 'BulkTaxItem ' . uniqid(),
+            'category'   => 'Test',
+            'cost_price' => 10.00,
+            'unit_price' => 20.00,
+            'deleted'    => 0,
+        ];
+        $this->assertTrue($this->item->save_value($itemData));
+        $itemId = (int) $itemData['item_id'];
+
+        $response = $this->post('/items/bulkupdate', [
+            'item_ids'     => (string) $itemId,
+            'tax_names'    => ['VAT', 'GST'],
+            'tax_percents' => ['20', '5'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $savedTaxes = $this->item_taxes->get_info($itemId);
+        $this->assertCount(2, $savedTaxes);
+        $taxesByName = array_column($savedTaxes, 'percent', 'name');
+        $this->assertArrayHasKey('VAT', $taxesByName);
+        $this->assertEqualsWithDelta(20.0, (float) $taxesByName['VAT'], 0.01);
+        $this->assertArrayHasKey('GST', $taxesByName);
+        $this->assertEqualsWithDelta(5.0, (float) $taxesByName['GST'], 0.01);
+
+        $responseNoTaxes = $this->post('/items/bulkupdate', [
+            'item_ids' => (string) $itemId,
+            'category' => 'UpdatedCategory',
+        ]);
+        $responseNoTaxes->assertStatus(200);
+        $this->assertTrue(json_decode($responseNoTaxes->getJSON(), true)['success']);
+    }
+
+    public function testPostImportCsvFile_RejectsMismatchedRowCountAndPreservesLineNumbers(): void
+    {
+        $employeeId = $this->createItemsEmployee();
+        $this->loginAsItemsEmployee($employeeId);
+        session()->set('person_id', $employeeId);
+
+        $allowedLocations  = $this->stock_location->get_allowed_locations();
+        $attributeDefNames = $this->attribute->getDefinitionNames();
+        unset($attributeDefNames[NEW_ENTRY]);
+
+        $headerLine = trim(substr(generate_import_items_csv($allowedLocations, $attributeDefNames), 3));
+        $headers    = str_getcsv($headerLine);
+
+        $buildRow = static function (array $overrides) use ($headers): string {
+            $values = [];
+            foreach ($headers as $header) {
+                $values[] = $overrides[$header] ?? '';
+            }
+
+            $stream = fopen('php://temp', 'r+');
+            fputcsv($stream, $values);
+            rewind($stream);
+            $line = (string) stream_get_contents($stream);
+            fclose($stream);
+
+            return $line;
+        };
+
+        $validName = 'ValidShouldRollback_' . uniqid();
+        $csv       = $headerLine . "\n"
+            . $buildRow([
+                'Barcode'       => 'BC-OK-' . uniqid(),
+                'Item Name'     => $validName,
+                'Category'      => 'Cat',
+                'Cost Price'    => '5.00',
+                'Unit Price'    => '10.00',
+                'Reorder Level' => '1',
+            ])
+            . "\n"
+            . "1,TooFewColumns\n"
+            . $buildRow([
+                'Barcode'       => 'BC-BAD-' . uniqid(),
+                'Item Name'     => '',
+                'Category'      => 'Cat',
+                'Cost Price'    => '5.00',
+                'Unit Price'    => '10.00',
+                'Reorder Level' => '1',
+            ]);
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'items_csv_import_');
+        file_put_contents($tempFile, $csv);
+
+        $_FILES['file_path'] = [
+            'name'     => 'items.csv',
+            'type'     => 'text/csv',
+            'tmp_name' => $tempFile,
+            'error'    => UPLOAD_ERR_OK,
+            'size'     => filesize($tempFile),
+        ];
+
+        try {
+            $response = $this->post('/items/importCsvFile');
+            $response->assertStatus(200);
+            $body = json_decode($response->getJSON(), true);
+
+            $this->assertFalse($body['success']);
+            $this->assertStringContainsString('4, 5', $body['message']);
+
+            $rolledBackCount = Database::connect()->table('items')
+                ->where('name', $validName)
+                ->countAllResults();
+            $this->assertSame(0, $rolledBackCount);
+        } finally {
+            unset($_FILES['file_path']);
+            if (file_exists($tempFile)) {
+                unlink($tempFile);
+            }
+        }
     }
 }
 

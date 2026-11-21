@@ -60,7 +60,7 @@ class Reports extends Secure_Controller
         $request = Services::request();
         $methodName = urldecode($request->getUri()->getSegment(2));
 
-        $this->attribute = config(Attribute::class);
+        $this->attribute = model(Attribute::class);
         $this->config = config(OSPOS::class)->settings;
         $this->customer = model(Customer::class);
         $this->stock_location = model(Stock_location::class);
@@ -786,7 +786,7 @@ class Reports extends Secure_Controller
         foreach ($report_data as $row) {
             $labels[] = $row['category_name'];
             $series[] = [
-                'meta'  => $row['category_name'] . ' ' . round($row['total_amount'] / $summary['expenses_total_amount'] * 100, 2) . '%',
+                'meta'  => $row['category_name'] . ' ' . ((float) $summary['expenses_total_amount'] !== 0.0 ? round($row['total_amount'] / $summary['expenses_total_amount'] * 100, 2) : 0) . '%',
                 'value' => $row['total_amount']
             ];
         }
@@ -924,7 +924,7 @@ class Reports extends Secure_Controller
         $series = [];
         foreach ($report_data as $row) {
             $labels[] = $row['category'];
-            $series[] = ['meta' => $row['category'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
+            $series[] = ['meta' => $row['category'] . ' ' . ((float) $summary['total'] !== 0.0 ? round($row['total'] / $summary['total'] * 100, 2) : 0) . '%', 'value' => $row['total']];
         }
 
         $data = [
@@ -1057,7 +1057,7 @@ class Reports extends Secure_Controller
 
         foreach ($report_data as $row) {
             $labels[] = $row['percent'];
-            $series[] = ['meta' => $row['percent'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
+            $series[] = ['meta' => $row['percent'] . ' ' . ((float) $summary['total'] !== 0.0 ? round($row['total'] / $summary['total'] * 100, 2) : 0) . '%', 'value' => $row['total']];
         }
 
         $data = [
@@ -1288,7 +1288,7 @@ class Reports extends Secure_Controller
     /**
      * @return array
      */
-    public function get_payment_type(): array
+    private function get_payment_type(): array
     {
         return [
             'all'           => lang('Common.none_selected_text'),
@@ -1678,6 +1678,9 @@ class Reports extends Secure_Controller
         $this->detailed_sales->create($inputs);
 
         $report_data = $this->detailed_sales->getDataBySaleId($sale_id);
+        if (empty($report_data)) {
+            return $this->response->setStatusCode(404)->setJSON([]);
+        }
 
         if ($report_data['sale_status'] == CANCELED) {
             $button_key = 'data-btn-restore';
@@ -1796,7 +1799,7 @@ class Reports extends Secure_Controller
     /**
      * @return array
      */
-    public function get_sale_type_options(): array
+    private function get_sale_type_options(): array
     {
         $sale_type_options = [];
         $sale_type_options['complete'] = lang('Reports.complete');
@@ -1823,7 +1826,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_SALES, true);
+        $definition_names = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_SALES, true);
 
         $inputs = [
             'start_date'     => $start_date,
@@ -2001,6 +2004,9 @@ class Reports extends Secure_Controller
         $this->detailed_receivings->create($inputs);
 
         $report_data = $this->detailed_receivings->getDataByReceivingId($receiving_id);
+        if (empty($report_data)) {
+            return $this->response->setStatusCode(404)->setJSON([]);
+        }
 
         $summary_data = [
             'receiving_id'   => $report_data['receiving_id'],
@@ -2038,7 +2044,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $definition_names = $this->attribute->getDefinitionsByFlags(attribute::SHOW_IN_RECEIVINGS, true);
+        $definition_names = $this->attribute->getDefinitionsByFlags(Attribute::SHOW_IN_RECEIVINGS, true);
 
         $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
 

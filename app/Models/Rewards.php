@@ -20,13 +20,21 @@ class Rewards extends Model    // TODO: This class is named with plural while th
         'used'
     ];
 
+    public function exists(int $rewards_id): bool
+    {
+        $builder = $this->db->table('sales_reward_points');
+        $builder->where('id', $rewards_id);
+
+        return $builder->get()->getNumRows() >= 1;
+    }
+
     /**
      * Inserts or updates a rewards
      */
-    public function save_value(array &$rewards_data, bool $rewards_id = false): bool
+    public function save_value(array &$rewards_data, int|bool $rewards_id = false): bool
     {
         $builder = $this->db->table('sales_reward_points');
-        if (!$rewards_id || !$this->exists($rewards_id)) {    // TODO: looks like we are missing the exists function in this class
+        if (!$rewards_id || !$this->exists((int) $rewards_id)) {
             if ($builder->insert($rewards_data)) {
                 $rewards_data['id'] = $this->db->insertID();
 

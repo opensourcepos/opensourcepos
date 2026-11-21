@@ -22,7 +22,7 @@ const pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?= current_language_code() ?>"
-    }, <?php echo isset($config) ?>);
+    }, config || {});
 };
 
 $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
