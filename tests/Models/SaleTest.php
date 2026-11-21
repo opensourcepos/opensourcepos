@@ -2,8 +2,6 @@
 
 namespace Tests\Models;
 
-use App\Models\Dinner_table;
-use App\Models\Rewards;
 use App\Models\Sale;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
@@ -704,70 +702,5 @@ class SaleTest extends CIUnitTestCase
         } finally {
             $ospos->settings['dinner_table_enable'] = $priorSetting;
         }
-    }
-
-    public function testSaveValue_InsertsAndUpdatesRewardsRow(): void
-    {
-        $employeeId = $this->createEmployee();
-        $itemId     = $this->createTestItem(HAS_NO_STOCK);
-        $saleModel  = model(Sale::class);
-        $saleStatus = COMPLETED;
-        $items      = $this->buildCartLine($itemId, 1, 10.00);
-        $salesTaxes = [[], []];
-
-        $saleId = $saleModel->save_value(
-            NEW_ENTRY,
-            $saleStatus,
-            $items,
-            NEW_ENTRY,
-            $employeeId,
-            'rewards test',
-            null,
-            null,
-            null,
-            SALE_TYPE_POS,
-            [],
-            null,
-            $salesTaxes
-        );
-
-        $rewardsModel = model(Rewards::class);
-        $rewardsData  = [
-            'sale_id' => $saleId,
-            'earned'  => 10.0,
-            'used'    => 0.0,
-        ];
-
-        $this->assertTrue($rewardsModel->save_value($rewardsData));
-        $this->assertArrayHasKey('id', $rewardsData);
-        $rewardsId = (int) $rewardsData['id'];
-        $this->assertTrue($rewardsModel->exists($rewardsId));
-
-        $rewardsData['used'] = 5.0;
-        $this->assertTrue($rewardsModel->save_value($rewardsData, $rewardsId));
-    }
-
-    public function testGetEmptyTables_ExcludesDeletedTablesWithStatusZero(): void
-    {
-        $db = Database::connect();
-        $db->table('dinner_tables')->insert([
-            'name'    => 'Deleted Empty Table',
-            'status'  => 0,
-            'deleted' => 1,
-        ]);
-        $deletedTableId = (int) $db->insertID();
-
-        $db->table('dinner_tables')->insert([
-            'name'    => 'Active Occupied Table',
-            'status'  => 1,
-            'deleted' => 0,
-        ]);
-        $currentTableId = (int) $db->insertID();
-
-        $dinnerTableModel = model(Dinner_table::class);
-        $emptyTables      = $dinnerTableModel->get_empty_tables($currentTableId);
-
-        $this->assertArrayNotHasKey($deletedTableId, $emptyTables);
-        $this->assertArrayHasKey($currentTableId, $emptyTables);
     }
 }

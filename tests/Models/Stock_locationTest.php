@@ -5,6 +5,7 @@ namespace Tests\Models;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Stock_location;
+use Config\Database;
 use Tests\Support\DatabaseBootstrapTrait;
 
 class Stock_locationTest extends CIUnitTestCase
@@ -309,5 +310,50 @@ class Stock_locationTest extends CIUnitTestCase
         $this->assertTrue($this->stockLocation->saveValue($updatedData, $locationId));
 
         $this->assertSame("NewLoc_{$suffix}", $this->stockLocation->getLocationName($locationId));
+
+        $db = Database::connect();
+        $newPermissions = $db->table('permissions')->where('location_id', $locationId)->get()->getResultArray();
+        $this->assertCount(3, $newPermissions);
+
+        $permissionIds = array_column($newPermissions, 'permission_id');
+        $this->assertContains("items_NewLoc_{$suffix}", $permissionIds);
+        $this->assertContains("sales_NewLoc_{$suffix}", $permissionIds);
+        $this->assertContains("receivings_NewLoc_{$suffix}", $permissionIds);
+
+        $newGrants = $db->table('grants')->whereIn('permission_id', $permissionIds)->get()->getResultArray();
+        $this->assertNotEmpty($newGrants);
+
+        $oldPermissions = $db->table('permissions')->like('permission_id', "OldLoc_{$suffix}")->get()->getResultArray();
+        $this->assertEmpty($oldPermissions);
+    }
+
+    public function testSaveValue_RollsBackRenameAndPreservesOriginalPermissionsOnFailure(): void
+    {
+        $suffix = bin2hex(random_bytes(8));
+        $locationData1 = ['location_name' => "LocA_{$suffix}"];
+        $this->assertTrue($this->stockLocation->saveValue($locationData1, NEW_ENTRY));
+        $locationId1 = (int) $locationData1['location_id'];
+
+        $locationData2 = ['location_name' => "LocB_{$suffix}"];
+        $this->assertTrue($this->stockLocation->saveValue($locationData2, NEW_ENTRY));
+        $locationId2 = (int) $locationData2['location_id'];
+
+        $db = Database::connect();
+        $origPermissions = $db->table('permissions')->where('location_id', $locationId2)->get()->getResultArray();
+        $this->assertCount(3, $origPermissions);
+
+        $origGrants = $db->table('grants')->whereIn('permission_id', array_column($origPermissions, 'permission_id'))->get()->getResultArray();
+        $this->assertNotEmpty($origGrants);
+
+        $duplicateData = ['location_name' => "LocA_{$suffix}"];
+        $result = $this->stockLocation->saveValue($duplicateData, $locationId2);
+        $this->assertFalse($result);
+
+        $this->assertSame("LocB_{$suffix}", $this->stockLocation->getLocationName($locationId2));
+        $currentPermissions = $db->table('permissions')->where('location_id', $locationId2)->get()->getResultArray();
+        $this->assertSame($origPermissions, $currentPermissions);
+
+        $currentGrants = $db->table('grants')->whereIn('permission_id', array_column($currentPermissions, 'permission_id'))->get()->getResultArray();
+        $this->assertSame($origGrants, $currentGrants);
     }
 }

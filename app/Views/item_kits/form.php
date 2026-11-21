@@ -1,4 +1,7 @@
 <?php
+
+use Config\OSPOS;
+
 /**
  * @var object $item_kit_info
  * @var string $selected_kit_item
@@ -207,6 +210,37 @@
 <script type="text/javascript">
     // Validation and submit handling
     $(document).ready(function() {
+        <?php
+        $config = config(OSPOS::class)->settings;
+        $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
+        $decimal_separator = $fmt->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
+        $grouping_separator = !empty($config['thousands_separator'])
+            ? $fmt->getSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL)
+            : '';
+        ?>
+        const decimalSeparator = <?= json_encode($decimal_separator) ?>;
+        const groupingSeparator = <?= json_encode($grouping_separator) ?>;
+        const numberLocale = <?= json_encode($config['number_locale']) ?>;
+        const qtyDecimals = <?= quantity_decimals() ?>;
+        const useGrouping = <?= !empty($config['thousands_separator']) ? 'true' : 'false' ?>;
+        const qtyFormatter = new Intl.NumberFormat(numberLocale, {
+            minimumFractionDigits: qtyDecimals,
+            maximumFractionDigits: qtyDecimals,
+            useGrouping: useGrouping
+        });
+
+        const parseLocaleQty = function(val) {
+            let clean = String(val);
+            if (groupingSeparator) {
+                clean = clean.split(groupingSeparator).join('');
+            }
+            if (decimalSeparator && decimalSeparator !== '.') {
+                clean = clean.split(decimalSeparator).join('.');
+            }
+            const parsed = parseFloat(clean);
+            return isNaN(parsed) ? 0 : parsed;
+        };
+
         $('#item').autocomplete({
             source: '<?= "items/suggest" ?>',
             minChars: 0,
@@ -215,13 +249,14 @@
             appendTo: '.modal-content',
             select: function(e, ui) {
                 if ($('#item_qty_' + ui.item.value).length == 1) {
-                    $('#item_qty_' + ui.item.value).val(parseFloat($('#item_qty_' + ui.item.value).val()) + 1);
+                    const currentQty = parseLocaleQty($('#item_qty_' + ui.item.value).val());
+                    $('#item_qty_' + ui.item.value).val(qtyFormatter.format(currentQty + 1));
                 } else {
                     $('#item_kit_items').append('<tr>' +
                         '<td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>' +
                         '<td><input class="quantity form-control input-sm" id="item_seq_' + ui.item.value + '" name="item_kit_seq[' + ui.item.value + ']" value="0"></td>' +
                         '<td>' + DOMPurify.sanitize(ui.item.label) + '</td>' +
-                        '<td><input class="quantity form-control input-sm" id="item_qty_' + ui.item.value + '" name="item_kit_qty[' + ui.item.value + ']" value="1"></td>' +
+                        '<td><input class="quantity form-control input-sm" id="item_qty_' + ui.item.value + '" name="item_kit_qty[' + ui.item.value + ']" value="' + qtyFormatter.format(1) + '"></td>' +
                         '</tr>');
                 }
                 $('#item').val('');

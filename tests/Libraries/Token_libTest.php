@@ -324,6 +324,12 @@ class Token_libTest extends CIUnitTestCase
         $this->assertSame('POS 42', $token->get_value());
     }
 
+    public function testGetValue_AcceptsZeroStringOnTokenInvoiceCount(): void
+    {
+        $token = new Token_invoice_count('0');
+        $this->assertSame('0', $token->get_value());
+    }
+
     public function testGetTokens_DoesNotDuplicateTokenQuoteSequence(): void
     {
         $tokens = Token::get_tokens();

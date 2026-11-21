@@ -1071,7 +1071,7 @@ class Item extends Model
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 
-                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
+                if (!array_filter($suggestions, static fn (array $s): bool => (int) $s['value'] === (int) $entry['value'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1179,7 +1179,7 @@ class Item extends Model
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
-                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
+                if (!array_filter($suggestions, static fn (array $s): bool => (int) $s['value'] === (int) $entry['value'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1194,6 +1194,7 @@ class Item extends Model
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
                 $builder->where('items.stock_type', '0'); // Stocked items only
+                $builder->whereIn('items.item_type', $non_kit);
                 $builder->where('items.deleted', $filters['is_deleted']);
 
                 foreach ($builder->get()->getResult() as $row) {
@@ -1282,7 +1283,7 @@ class Item extends Model
 
             foreach ($builder->get()->getResult() as $row) {
                 $entry = ['value' => $row->item_id, 'label' => $row->name];
-                if (!array_filter($suggestions, static fn (array $s): bool => $s['label'] === $entry['label'])) {
+                if (!array_filter($suggestions, static fn (array $s): bool => (int) $s['value'] === (int) $entry['value'])) {
                     $suggestions[] = $entry;
                 }
             }
@@ -1296,7 +1297,7 @@ class Item extends Model
                 $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
-                $builder->where('items.stock_type', '0'); // Stocked items only
+                $builder->where('items.item_type', ITEM_KIT);
                 $builder->where('items.deleted', $filters['is_deleted']);
 
                 foreach ($builder->get()->getResult() as $row) {

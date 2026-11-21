@@ -101,17 +101,18 @@ class Tax_codes extends Secure_Controller
         ];
 
         if ($this->tax_code->save_value($tax_code_data, $tax_code_id)) {
+            $savedTaxCodeId = $tax_code_data['tax_code_id'] ?? $tax_code_id;
             if ($tax_code_id == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_adding'),
-                    'id'      => $tax_code_data['tax_code_id'] ?? $tax_code_id
+                    'id'      => $savedTaxCodeId,
                 ]);
             } else {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_updating'),
-                    'id'      => $tax_code_id
+                    'id'      => $savedTaxCodeId,
                 ]);
             }
         } else {

@@ -36,8 +36,8 @@ class Summary_sales_taxes extends Summary_report
             $builder->where('DATE(sales.sale_time) >=', $inputs['start_date']);
             $builder->where('DATE(sales.sale_time) <=', $inputs['end_date']);
         } else {
-            $builder->where('sales.sale_time >=', $inputs['start_date']);
-            $builder->where('sales.sale_time <=', $inputs['end_date']);
+            $builder->where('sales.sale_time >=', rawurldecode($inputs['start_date']));
+            $builder->where('sales.sale_time <=', rawurldecode($inputs['end_date']));
         }
     }
 

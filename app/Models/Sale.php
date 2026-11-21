@@ -817,7 +817,9 @@ class Sale extends Model
     public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = true): bool    // TODO: $employee_id and $update_inventory are never used in the function.
     {
         foreach ($sale_ids as $sale_id) {
-            $this->update_sale_status($sale_id, SUSPENDED);
+            if ($this->getSaleStatus($sale_id) === CANCELED) {
+                $this->update_sale_status($sale_id, SUSPENDED);
+            }
         }
 
         return true;

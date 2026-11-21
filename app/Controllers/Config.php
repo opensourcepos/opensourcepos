@@ -394,7 +394,7 @@ class Config extends Secure_Controller
 
         $allowedImageTypes = $this->request->getPost('image_allowed_types');
         $allowedImageTypes = is_array($allowedImageTypes)
-            ? array_intersect($allowedImageTypes, ['gif', 'jpg', 'jpeg', 'png'])
+            ? array_intersect($allowedImageTypes, ['gif', 'jpg', 'jpeg', 'png', 'webp', 'bmp', 'tif', 'tiff'])
             : [];
 
         $batch_save_data = [

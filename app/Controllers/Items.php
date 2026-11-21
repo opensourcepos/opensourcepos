@@ -1167,9 +1167,10 @@ class Items extends Secure_Controller
             $taxUpdated = false;
 
             foreach ($taxPercents ?? [] as $key => $tax_percent) {
-                if (!empty($taxNames[$key]) && is_numeric($taxPercents[$key])) {
+                $taxPercentage = parse_tax($tax_percent);
+                if (!empty($taxNames[$key]) && is_numeric($taxPercentage)) {
                     $taxUpdated = true;
-                    $itemsTaxesData[] = ['name' => $taxNames[$key], 'percent' => $taxPercents[$key]];
+                    $itemsTaxesData[] = ['name' => $taxNames[$key], 'percent' => $taxPercentage];
                 }
             }
 

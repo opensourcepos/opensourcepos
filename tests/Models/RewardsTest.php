@@ -1,0 +1,75 @@
+<?php
+
+namespace Tests\Models;
+
+use App\Models\Rewards;
+use App\Models\Sale;
+use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\DatabaseBootstrapTrait;
+use Tests\Support\EmployeeFixtureTrait;
+use Tests\Support\ItemFixtureTrait;
+use Tests\Support\SaleFixtureTrait;
+
+class RewardsTest extends CIUnitTestCase
+{
+    use DatabaseTestTrait;
+    use DatabaseBootstrapTrait;
+    use EmployeeFixtureTrait;
+    use ItemFixtureTrait;
+    use SaleFixtureTrait;
+
+    protected $migrate     = true;
+    protected $migrateOnce = true;
+    protected $seedOnce    = true;
+    protected $refresh     = false;
+    protected $namespace   = null;
+
+    protected function setUp(): void
+    {
+        $this->resetDatabaseOnce();
+
+        parent::setUp();
+    }
+
+    public function testSaveValue_InsertsAndUpdatesRewardsRow(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId     = $this->createTestItem(HAS_NO_STOCK);
+        $saleModel  = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items      = $this->buildCartLine($itemId, 1, 10.00);
+        $salesTaxes = [[], []];
+
+        $saleId = $saleModel->save_value(
+            NEW_ENTRY,
+            $saleStatus,
+            $items,
+            NEW_ENTRY,
+            $employeeId,
+            'rewards test',
+            null,
+            null,
+            null,
+            SALE_TYPE_POS,
+            [],
+            null,
+            $salesTaxes
+        );
+
+        $rewardsModel = model(Rewards::class);
+        $rewardsData  = [
+            'sale_id' => $saleId,
+            'earned'  => 10.0,
+            'used'    => 0.0,
+        ];
+
+        $this->assertTrue($rewardsModel->save_value($rewardsData));
+        $this->assertArrayHasKey('id', $rewardsData);
+        $rewardsId = (int) $rewardsData['id'];
+        $this->assertTrue($rewardsModel->exists($rewardsId));
+
+        $rewardsData['used'] = 5.0;
+        $this->assertTrue($rewardsModel->save_value($rewardsData, $rewardsId));
+    }
+}

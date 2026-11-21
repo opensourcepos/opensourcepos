@@ -92,17 +92,18 @@ class Tax_jurisdictions extends Secure_Controller
         ];
 
         if ($this->tax_jurisdiction->save_value($tax_jurisdiction_data, $jurisdiction_id)) {
+            $savedJurisdictionId = $tax_jurisdiction_data['jurisdiction_id'] ?? $jurisdiction_id;
             if ($jurisdiction_id == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_adding'),
-                    'id'      => $tax_jurisdiction_data['jurisdiction_id'] ?? $jurisdiction_id
+                    'id'      => $savedJurisdictionId,
                 ]);
             } else {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_updating'),
-                    'id'      => $jurisdiction_id
+                    'id'      => $savedJurisdictionId,
                 ]);
             }
         } else {

@@ -55,7 +55,7 @@ class Customer extends Person
             $builder->where('person_id !=', $person_id);
         }
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return ($builder->get()->getNumRows() >= 1);
     }
 
     /**
@@ -204,7 +204,7 @@ class Customer extends Person
             $builder->where('customers.person_id !=', $customer_id);
         }
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return ($builder->get()->getNumRows() >= 1);
     }
 
     /**

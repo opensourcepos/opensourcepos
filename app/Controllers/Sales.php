@@ -347,7 +347,10 @@ class Sales extends Secure_Controller
      */
     public function postSetInvoiceNumber(): ResponseInterface|string
     {
-        $this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number', FILTER_SANITIZE_NUMBER_INT));
+        $rawInvoiceNumber = $this->request->getPost('sales_invoice_number');
+        $invoiceNumber = $rawInvoiceNumber !== null ? preg_replace('/[^a-zA-Z0-9_\-\/\. ]/', '', trim((string)$rawInvoiceNumber)) : null;
+        $this->sale_lib->set_invoice_number($invoiceNumber);
+
         return $this->response->setJSON(['success' => true]);
     }
 

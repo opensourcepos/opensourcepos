@@ -324,15 +324,20 @@ class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file p
      */
     public function addOrUpdateMember(string $list_id, string $email, string $first_name, string $last_name, string $status, array $parameters = []): bool|array
     {
-        $parameters += [
+        $defaultParameters = [
             'email_address' => $email,
-            'status'        => $status,
             'status_if_new' => 'subscribed',
             'merge_fields'  => [
                 'FNAME' => $first_name,
-                'LNAME' => $last_name
-            ]
+                'LNAME' => $last_name,
+            ],
         ];
+
+        if ($status !== '') {
+            $defaultParameters['status'] = $status;
+        }
+
+        $parameters += $defaultParameters;
 
         return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'PUT', $parameters);    // TODO: Hungarian notation
     }

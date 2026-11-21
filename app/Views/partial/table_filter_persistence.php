@@ -21,15 +21,63 @@ $filter_select_id = $options['filter_select_id'] ?? 'filters';
         const additional_params = <?= json_encode($additional_params) ?>;
         const filter_select_id = '<?= esc($filter_select_id) ?>';
 
+        function get_date_range() {
+            let sDate = null;
+            let eDate = null;
+
+            if (typeof table_support !== 'undefined' && typeof table_support.query_params === 'function') {
+                const qp = table_support.query_params();
+                if (qp && qp.start_date) {
+                    sDate = qp.start_date;
+                }
+                if (qp && qp.end_date) {
+                    eDate = qp.end_date;
+                }
+            }
+
+            if (!sDate && typeof start_date !== 'undefined') {
+                sDate = start_date;
+            }
+            if (!eDate && typeof end_date !== 'undefined') {
+                eDate = end_date;
+            }
+
+            if ((!sDate || !eDate) && $('#daterangepicker').length && $('#daterangepicker').data('daterangepicker')) {
+                const picker = $('#daterangepicker').data('daterangepicker');
+                if (picker.startDate && picker.endDate) {
+                    const format = picker.timePicker ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+                    if (!sDate) {
+                        sDate = picker.startDate.format(format);
+                    }
+                    if (!eDate) {
+                        eDate = picker.endDate.format(format);
+                    }
+                }
+            }
+
+            if (!sDate || !eDate) {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (!sDate && urlParams.has('start_date')) {
+                    sDate = urlParams.get('start_date');
+                }
+                if (!eDate && urlParams.has('end_date')) {
+                    eDate = urlParams.get('end_date');
+                }
+            }
+
+            return { start_date: sDate, end_date: eDate };
+        }
+
         function update_url() {
             const params = new URLSearchParams();
 
             // Add dates
-            if (typeof start_date !== 'undefined') {
-                params.set('start_date', start_date);
+            const dates = get_date_range();
+            if (dates.start_date) {
+                params.set('start_date', dates.start_date);
             }
-            if (typeof end_date !== 'undefined') {
-                params.set('end_date', end_date);
+            if (dates.end_date) {
+                params.set('end_date', dates.end_date);
             }
 
             // Add filters

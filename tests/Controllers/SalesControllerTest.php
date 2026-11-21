@@ -810,4 +810,19 @@ class SalesControllerTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
     }
+
+    public function testPostSetInvoiceNumber_AcceptsAlphanumericInvoiceNumber(): void
+    {
+        $cashierId = $this->createCashierEmployee();
+        $this->loginAs($cashierId);
+
+        $response = $this->post('/sales/setInvoiceNumber', [
+            'sales_invoice_number' => 'INV-2026-01',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+        $this->assertSame('INV-2026-01', Services::session()->get('sales_invoice_number'));
+    }
 }
