@@ -76,6 +76,7 @@ return [
     'none'                               => 'Nichts',
     'none_selected'                      => 'Sie haben keine Artikel zum Ändern gewählt',
     'nonstock'                           => '',
+    'not_authorized'                      => '',
     'number_information'                 => 'Artikelnummer',
     'number_required'                    => 'UPC/EAN/ISBN ist erforderlich',
     'one_or_multiple'                    => 'Artikel',
