@@ -740,4 +740,16 @@ class ConfigControllerTest extends CIUnitTestCase
         $this->db->table('app_config')->where('key', 'number_locale')->update(['value' => 'en_US']);
         config(OSPOS::class)->update_settings();
     }
+
+    public function testGetIndex_SplitsPipeAndCommaSeparatedImageAllowedTypes(): void
+    {
+        $this->loginAsAdminWithGrants(['config']);
+        $this->db->table('app_config')->where('key', 'image_allowed_types')->update(['value' => 'gif|jpg|png']);
+        config(OSPOS::class)->update_settings();
+
+        $response = $this->get('/config');
+        $response->assertStatus(200);
+        $response->assertSee('value="jpg" selected');
+        $response->assertSee('value="png" selected');
+    }
 }

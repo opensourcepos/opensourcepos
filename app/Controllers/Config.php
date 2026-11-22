@@ -90,34 +90,36 @@ class Config extends Secure_Controller
             $license[$i]['text'] = 'LICENSE file must be in OSPOS license directory. You are not allowed to use OSPOS application until the distribution copy of LICENSE file is present.';
         }
 
-        $dir = new DirectoryIterator('license');    // Read all the files in the dir license
+        if (is_dir('license')) {
+            $dir = new DirectoryIterator('license');    // Read all the files in the dir license
 
-        foreach ($dir as $fileinfo) {    // TODO: $fileinfo doesn't match our variable naming convention
-            // License files must be in couples: .version (name & version) & .license (license text)
-            if ($fileinfo->isFile()) {
-                if ($fileinfo->getExtension() == 'version') {
-                    ++$i;
+            foreach ($dir as $fileinfo) {    // TODO: $fileinfo doesn't match our variable naming convention
+                // License files must be in couples: .version (name & version) & .license (license text)
+                if ($fileinfo->isFile()) {
+                    if ($fileinfo->getExtension() == 'version') {
+                        ++$i;
 
-                    $basename = 'license/' . $fileinfo->getBasename('.version');
+                        $basename = 'license/' . $fileinfo->getBasename('.version');
 
-                    $license[$i]['title'] = file_get_contents($basename . '.version', false, null, 0, 100);
+                        $license[$i]['title'] = file_get_contents($basename . '.version', false, null, 0, 100);
 
-                    $license_text_file = $basename . '.license';
+                        $license_text_file = $basename . '.license';
 
-                    if (file_exists($license_text_file)) {
-                        $license[$i]['text'] = file_get_contents($license_text_file, false, null, 0, 2000);
-                    } else {
-                        $license[$i]['text'] = $license_text_file . ' file is missing';
+                        if (file_exists($license_text_file)) {
+                            $license[$i]['text'] = file_get_contents($license_text_file, false, null, 0, 2000);
+                        } else {
+                            $license[$i]['text'] = $license_text_file . ' file is missing';
+                        }
+                    } elseif ($fileinfo->getBasename() == 'composer.LICENSES') {
+                        // Set a flag to indicate that the composer.LICENSES file is available and needs to be attached at the end
+                        $composer = true;
+                    } elseif ($fileinfo->getBasename() == 'npm-prod.LICENSES') {
+                        // Set a flag to indicate that the npm-prod.LICENSES file is available and needs to be attached at the end
+                        $npmProd = true;
+                    } elseif ($fileinfo->getBasename() == 'npm-dev.LICENSES') {
+                        // Set a flag to indicate that the npm-dev.LICENSES file is available and needs to be attached at the end
+                        $npmDev = true;
                     }
-                } elseif ($fileinfo->getBasename() == 'composer.LICENSES') {
-                    // Set a flag to indicate that the composer.LICENSES file is available and needs to be attached at the end
-                    $composer = true;
-                } elseif ($fileinfo->getBasename() == 'npm-prod.LICENSES') {
-                    // Set a flag to indicate that the npm-prod.LICENSES file is available and needs to be attached at the end
-                    $npmProd = true;
-                } elseif ($fileinfo->getBasename() == 'npm-dev.LICENSES') {
-                    // Set a flag to indicate that the npm-dev.LICENSES file is available and needs to be attached at the end
-                    $npmDev = true;
                 }
             }
         }
@@ -263,7 +265,7 @@ class Config extends Secure_Controller
         // General related fields
         $image_allowed_types = ['jpg', 'jpeg', 'gif', 'webp', 'bmp', 'png', 'tif', 'tiff'];
         $data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
-        $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
+        $data['selected_image_allowed_types'] = preg_split('/[,|]/', $this->config['image_allowed_types'] ?? '');
 
         // Integrations Related fields
         $data['mailchimp']     = [];

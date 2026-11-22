@@ -211,6 +211,13 @@ class Receiving_libTest extends CIUnitTestCase
         $this->assertEquals('1.00', $smallQuantityTotal);
     }
 
+    public function testGetItemTotal_TreatsZeroReceivingQuantityAsMultiplierOfOne(): void
+    {
+        // 2.0 quantity * price 5.00 with receiving_quantity = 0.0 -> treats 0 as multiplier 1, returning 10.00
+        $total = $this->receivingLib->get_item_total(2.0, 5.00, 0.0, PERCENT, 0.0);
+        $this->assertEquals('10.00', $total);
+    }
+
     public function testReturnEntireReceiving_RoutesReferenceWithKitSubstringToReferenceLookup(): void
     {
         $employeeId = $this->createEmployee();

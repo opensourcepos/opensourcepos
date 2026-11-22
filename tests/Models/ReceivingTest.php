@@ -251,5 +251,9 @@ class ReceivingTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(10.00, (float) $row['total'], 0.001);
         $this->assertEqualsWithDelta(6.00, (float) $row['cost'], 0.001);
         $this->assertEqualsWithDelta(4.00, (float) $row['profit'], 0.001);
+
+        $receivingLib = new \App\Libraries\Receiving_lib();
+        $itemTotal = $receivingLib->get_item_total(2, 5.00, 0, PERCENT, 0);
+        $this->assertEquals(number_format((float) $row['total'], 2, '.', ''), $itemTotal);
     }
 }

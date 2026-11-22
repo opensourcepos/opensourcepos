@@ -507,7 +507,8 @@ class Receiving_lib
         $scale = totals_decimals();
         $intermediate_scale = max(quantity_decimals() * 2, $scale) + 4;
         $quantity_string = stripos((string) $quantity, 'e') !== false ? (rtrim(rtrim(number_format($quantity, 14, '.', ''), '0'), '.') ?: '0') : (string) $quantity;
-        $receiving_quantity_string = stripos((string) $receiving_quantity, 'e') !== false ? (rtrim(rtrim(number_format($receiving_quantity, 14, '.', ''), '0'), '.') ?: '0') : (string) $receiving_quantity;
+        $effective_receiving_quantity = (float) $receiving_quantity === 0.0 ? 1.0 : $receiving_quantity;
+        $receiving_quantity_string = stripos((string) $effective_receiving_quantity, 'e') !== false ? (rtrim(rtrim(number_format($effective_receiving_quantity, 14, '.', ''), '0'), '.') ?: '1') : (string) $effective_receiving_quantity;
         $extended_quantity = bcmul($quantity_string, $receiving_quantity_string, $intermediate_scale);
         $total = bcmul($extended_quantity, (string) $price, $intermediate_scale);
         $discount_amount = (string) $discount;

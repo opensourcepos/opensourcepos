@@ -197,7 +197,7 @@ class Barcode_lib
     {
         $array = [];    // TODO: Naming of this variable should be changed.  The variable should never be named the data type.  $fonts would be a better name.
 
-        if (($handle = opendir($folder)) !== false) {
+        if (is_dir($folder) && ($handle = @opendir($folder)) !== false) {
             while (($file = readdir($handle)) !== false) {
                 if (str_ends_with($file, '.ttf')) {
                     $array[$file] = $file;

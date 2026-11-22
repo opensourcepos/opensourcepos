@@ -66,12 +66,12 @@ use Config\OSPOS;
 
                     return $browser . ($version ? ' ' . $version : '');
                 }
-                echo esc(getBrowserNameAndVersion($_SERVER['HTTP_USER_AGENT']));
+                echo esc(getBrowserNameAndVersion($_SERVER['HTTP_USER_AGENT'] ?? ''));
                 ?><br>
-                Server Software: <?= esc($_SERVER['SERVER_SOFTWARE']) ?><br>
+                Server Software: <?= esc($_SERVER['SERVER_SOFTWARE'] ?? '') ?><br>
                 PHP Version: <?= PHP_VERSION ?><br>
                 DB Version: <?= esc($dbVersion) ?><br>
-                Server Port: <?= esc($_SERVER['SERVER_PORT']) ?><br>
+                Server Port: <?= esc($_SERVER['SERVER_PORT'] ?? '') ?><br>
                 OS: <?= php_uname('s') . ' ' . php_uname('r') ?><br><br>
             </div>
         </div>

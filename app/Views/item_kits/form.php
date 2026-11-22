@@ -243,6 +243,7 @@ use Config\OSPOS;
         const qtyDecimals = <?= quantity_decimals() ?>;
         const useGrouping = <?= !empty($config['thousands_separator']) ? 'true' : 'false' ?>;
         let qtyFormatter;
+        const baseLocale = numberLocale ? numberLocale.split('-u-')[0] : 'en';
         try {
             qtyFormatter = new Intl.NumberFormat(numberLocale, {
                 minimumFractionDigits: qtyDecimals,
@@ -250,12 +251,21 @@ use Config\OSPOS;
                 useGrouping: useGrouping
             });
         } catch (e) {
-            numberLocale = undefined;
-            qtyFormatter = new Intl.NumberFormat(undefined, {
-                minimumFractionDigits: qtyDecimals,
-                maximumFractionDigits: qtyDecimals,
-                useGrouping: useGrouping
-            });
+            try {
+                numberLocale = baseLocale;
+                qtyFormatter = new Intl.NumberFormat(numberLocale, {
+                    minimumFractionDigits: qtyDecimals,
+                    maximumFractionDigits: qtyDecimals,
+                    useGrouping: useGrouping
+                });
+            } catch (e2) {
+                numberLocale = 'en';
+                qtyFormatter = new Intl.NumberFormat('en', {
+                    minimumFractionDigits: qtyDecimals,
+                    maximumFractionDigits: qtyDecimals,
+                    useGrouping: useGrouping
+                });
+            }
         }
 
         let browserGrouping = '';
@@ -307,8 +317,12 @@ use Config\OSPOS;
             if (decimalSeparator && decimalSeparator !== '.' && decimalSeparator !== decSep) {
                 clean = clean.split(decimalSeparator).join('.');
             }
+            clean = clean.trim();
+            if (clean === '' || isNaN(clean)) {
+                return val;
+            }
             const parsed = parseFloat(clean);
-            return isNaN(parsed) ? val : parsed;
+            return isFinite(parsed) ? parsed : val;
         };
 
         $('#item').autocomplete({

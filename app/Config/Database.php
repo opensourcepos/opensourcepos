@@ -61,7 +61,7 @@ class Database extends Config
         'hostname'    => 'localhost',
         'username'    => 'admin',
         'password'    => 'pointofsale',
-        'database'    => 'ospos',
+        'database'    => 'ospos_tests',
         'DBDriver'    => 'MySQLi',
         'DBPrefix'    => 'ospos_',
         'pConnect'    => false,
@@ -132,11 +132,13 @@ class Database extends Config
                 break;
         }
 
-        foreach ([&$this->development, &$this->tests, &$this->default] as &$config) {
+        foreach (['development' => &$this->development, 'tests' => &$this->tests, 'default' => &$this->default] as $groupName => &$config) {
             $config['hostname'] = !getenv('MYSQL_HOST_NAME') ? $config['hostname'] : getenv('MYSQL_HOST_NAME');
             $config['username'] = !getenv('MYSQL_USERNAME') ? $config['username'] : getenv('MYSQL_USERNAME');
             $config['password'] = !getenv('MYSQL_PASSWORD') ? $config['password'] : getenv('MYSQL_PASSWORD');
-            $config['database'] = !getenv('MYSQL_DB_NAME') ? $config['database'] : getenv('MYSQL_DB_NAME');
+            if ($groupName !== 'tests') {
+                $config['database'] = !getenv('MYSQL_DB_NAME') ? $config['database'] : getenv('MYSQL_DB_NAME');
+            }
         }
     }
 }

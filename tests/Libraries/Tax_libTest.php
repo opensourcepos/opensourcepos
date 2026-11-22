@@ -117,4 +117,45 @@ class Tax_libTest extends CIUnitTestCase
             $this->assertEqualsWithDelta($expectedDown, $roundedDown, 0.0001);
         }
     }
+
+    public function testRoundNumber_PreservesLargeAndNegativeExactCentsIdempotently(): void
+    {
+        $exactCents = [
+            0.07, -0.07,
+            12345678.07, -12345678.07,
+            9876543210.07, -9876543210.07,
+        ];
+
+        foreach ($exactCents as $amount) {
+            $roundedUp = (float) Rounding_mode::round_number(Rounding_mode::ROUND_UP, $amount, 2);
+            $roundedDown = (float) Rounding_mode::round_number(Rounding_mode::ROUND_DOWN, $amount, 2);
+
+            $this->assertEqualsWithDelta($amount, $roundedUp, 0.0001);
+            $this->assertEqualsWithDelta($amount, $roundedDown, 0.0001);
+
+            $idempotentUp = (float) Rounding_mode::round_number(Rounding_mode::ROUND_UP, $roundedUp, 2);
+            $idempotentDown = (float) Rounding_mode::round_number(Rounding_mode::ROUND_DOWN, $roundedDown, 2);
+
+            $this->assertEqualsWithDelta($roundedUp, $idempotentUp, 0.0001);
+            $this->assertEqualsWithDelta($roundedDown, $idempotentDown, 0.0001);
+        }
+    }
+
+    public function testRoundNumber_RoundsLargeAndNegativeSubCentsCorrectly(): void
+    {
+        $cases = [
+            [12345678.0701, 12345678.08, 12345678.07],
+            [-12345678.0701, -12345678.07, -12345678.08],
+            [9876543210.0701, 9876543210.08, 9876543210.07],
+            [-9876543210.0701, -9876543210.07, -9876543210.08],
+        ];
+
+        foreach ($cases as [$amount, $expectedUp, $expectedDown]) {
+            $roundedUp = (float) Rounding_mode::round_number(Rounding_mode::ROUND_UP, $amount, 2);
+            $roundedDown = (float) Rounding_mode::round_number(Rounding_mode::ROUND_DOWN, $amount, 2);
+
+            $this->assertEqualsWithDelta($expectedUp, $roundedUp, 0.0001);
+            $this->assertEqualsWithDelta($expectedDown, $roundedDown, 0.0001);
+        }
+    }
 }
