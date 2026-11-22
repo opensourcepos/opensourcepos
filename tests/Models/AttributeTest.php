@@ -107,4 +107,32 @@ class AttributeTest extends CIUnitTestCase
 
         $this->assertSame($beforeCount, $afterCount);
     }
+
+    public function testSaveCSVRowAttributeData_CompletesTransactionOnLinkFailure(): void
+    {
+        $definitionData = [
+            'definition_name'  => 'CSVTestDef_' . uniqid(),
+            'definition_type'  => TEXT,
+            'definition_flags' => Attribute::SHOW_IN_ITEMS,
+            'deleted'          => 0,
+        ];
+        $this->assertTrue($this->attribute->saveDefinition($definitionData));
+        $definitionId = (int) $definitionData['definition_id'];
+
+        $itemId = $this->createTestItem();
+        $this->attribute->saveAttributeValue('ExistingVal', $definitionId, $itemId, false, TEXT);
+
+        $attributeValues = [$definitionData['definition_name'] => 'ExistingVal'];
+        $itemData = ['item_id' => 999999];
+        $definitions = [[
+            'definition_id'   => $definitionId,
+            'definition_name' => $definitionData['definition_name'],
+            'definition_type' => TEXT,
+        ]];
+
+        $result = $this->attribute->saveCSVRowAttributeData($attributeValues, $itemData, $definitions);
+
+        $this->assertFalse($result);
+        $this->assertSame(0, $this->db->transDepth);
+    }
 }

@@ -319,6 +319,16 @@ class SalesControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
     }
 
+    public function testGetEdit_Returns404WhenSaleDoesNotExist(): void
+    {
+        $supervisorId = $this->createReportsSalesEmployee();
+        $this->loginAs($supervisorId);
+
+        $response = $this->get('/sales/edit/999999');
+
+        $response->assertStatus(404);
+    }
+
     public function testCashierWithoutGrantCannotChangePrice(): void
     {
         $cashierId = $this->createCashierWithoutChangePriceGrant();

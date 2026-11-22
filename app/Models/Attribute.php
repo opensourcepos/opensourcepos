@@ -1009,6 +1009,8 @@ class Attribute extends Model
                 && $storedValue !== $value) {
                 $attributeId = $this->saveAttributeValue($value, $attributeData['definition_id'], $itemId, $attributeId, $attributeData['definition_type']);
             } elseif (!$this->saveAttributeLink($itemId, $attributeData['definition_id'], $attributeId)) {
+                $this->db->transComplete();
+
                 return false;
             }
         }

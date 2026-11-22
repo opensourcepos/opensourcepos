@@ -457,6 +457,19 @@ class ConfigControllerTest extends CIUnitTestCase
         $this->assertFalse($result['success']);
     }
 
+    public function testSaveTax_RejectsInvalidDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => 'not-a-number',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
     public function testSaveTax_AcceptsZeroDefaultTaxRate(): void
     {
         $this->resetSession();

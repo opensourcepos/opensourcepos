@@ -1485,6 +1485,10 @@ class Sales extends Secure_Controller
         $data = [];
 
         $saleInfo = $this->sale->getInfo($saleId)->getRowArray();
+        if ($saleInfo === null) {
+            return $this->response->setStatusCode(404);
+        }
+
         $data['selected_customer_id'] = $saleInfo['customer_id'];
         $data['selected_customer_name'] = $saleInfo['customer_name'];
         $employeeInfo = $this->employee->getInfo($saleInfo['employee_id']);
