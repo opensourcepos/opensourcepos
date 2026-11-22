@@ -762,11 +762,23 @@ helper('url');
         });
 
         <?php if ($config['invoice_enable']) { ?>
+            let invoiceRevision = 0;
+
             $('#sales_invoice_number').keyup(function() {
+                invoiceRevision++;
                 $.post("<?= esc(site_url("$controller_name/setInvoiceNumber")) ?>", {
-                    sales_invoice_number: $('#sales_invoice_number').val()
+                    sales_invoice_number: $(this).val()
+                });
+            });
+
+            $('#sales_invoice_number').blur(function() {
+                const currentRevision = ++invoiceRevision;
+                const submittedValue = $(this).val();
+
+                $.post("<?= esc(site_url("$controller_name/setInvoiceNumber")) ?>", {
+                    sales_invoice_number: submittedValue
                 }, function(response) {
-                    if (response.invoice_number !== undefined && response.invoice_number !== $('#sales_invoice_number').val()) {
+                    if (currentRevision === invoiceRevision && $('#sales_invoice_number').val() === submittedValue && response.invoice_number !== undefined && response.invoice_number !== null) {
                         $('#sales_invoice_number').val(response.invoice_number);
                     }
                 }, 'json');
