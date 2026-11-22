@@ -106,10 +106,10 @@ class Giftcard extends Model
     /**
      * Gets a giftcard id given a giftcard number
      */
-    public function getGiftcardId(string $giftcard_number): int|false
+    public function getGiftcardId(string $giftcardNumber): int|false
     {
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcard_number);
+        $builder->where('giftcard_number', $giftcardNumber);
         $builder->where('deleted', 0);
 
         $query = $builder->get();
@@ -311,14 +311,14 @@ class Giftcard extends Model
         $builder->update(['value' => $value]);
     }
 
-    public function decrementGiftcardValue(string $giftcard_number, float $amount): bool
+    public function decrementGiftcardValue(string $giftcardNumber, float $amount): bool
     {
         if ($amount <= 0.0) {
             return false;
         }
 
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcard_number);
+        $builder->where('giftcard_number', $giftcardNumber);
         $builder->where('deleted', 0);
         $builder->where('value >=', $amount);
         $builder->set('value', 'value - ' . $this->db->escape($amount), false);
@@ -326,14 +326,14 @@ class Giftcard extends Model
         return $builder->update() && $this->db->affectedRows() > 0;
     }
 
-    public function incrementGiftcardValue(string $giftcard_number, float $amount): bool
+    public function incrementGiftcardValue(string $giftcardNumber, float $amount): bool
     {
         if ($amount <= 0.0) {
             return false;
         }
 
         $builder = $this->db->table('giftcards');
-        $builder->where('giftcard_number', $giftcard_number);
+        $builder->where('giftcard_number', $giftcardNumber);
         $builder->where('deleted', 0);
         $builder->set('value', 'value + ' . $this->db->escape($amount), false);
 

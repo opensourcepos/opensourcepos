@@ -952,8 +952,8 @@ class Items extends Secure_Controller
 
                 $taxNameIndex = 0;
 
-                foreach ($taxPercents as $tax_percent) {
-                    $taxPercentage = parse_tax($tax_percent);
+                foreach ($taxPercents as $taxPercent) {
+                    $taxPercentage = parse_tax($taxPercent);
 
                     if (isset($taxNames[$taxNameIndex]) && trim((string) $taxNames[$taxNameIndex]) !== '' && is_numeric($taxPercentage)) {
                         $itemsTaxesData[] = ['name' => $taxNames[$taxNameIndex], 'percent' => $taxPercentage];
@@ -1244,7 +1244,7 @@ class Items extends Secure_Controller
                     $csvHeaders = [];
                     $csvRows = get_csv_file($_FILES['file_path']['tmp_name'], $failCodes, $csvHeaders);
                     $allowedStockLocations = $this->stock_location->get_allowed_locations();
-                    $attributeDefinitionNames = $this->attribute->getDefinitionNames();
+                    $attributeDefinitionNames    = $this->attribute->getDefinitionNames();
                     $headerCheckRows = !empty($csvRows)
                         ? $csvRows
                         : (!empty($failCodes) && !empty($csvHeaders) ? [array_fill_keys($csvHeaders, '')] : []);

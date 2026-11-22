@@ -5,10 +5,17 @@ namespace App\Models\Reports;
 use App\Models\Receiving;
 
 /**
- * @property Receiving receiving
+ *
+ *
+ * @property receiving receiving
+ *
  */
 class Detailed_receivings extends Report
 {
+    /**
+     * @param array $inputs
+     * @return void
+     */
     public function create(array $inputs): void
     {
         // Create our temp tables to work with the data in our report
@@ -16,19 +23,22 @@ class Detailed_receivings extends Report
         $receiving->create_temp_table($inputs);
     }
 
+    /**
+     * @return array
+     */
     public function getDataColumns(): array
     {
         return [
             'summary' => [
-                ['id' => lang('Reports.receiving_id')],
+                ['id'             => lang('Reports.receiving_id')],
                 ['receiving_time' => lang('Reports.date'), 'sortable' => false],
-                ['quantity' => lang('Reports.quantity')],
-                ['employee_name' => lang('Reports.received_by')],
-                ['supplier_name' => lang('Reports.supplied_by')],
-                ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['payment_type' => lang('Reports.payment_type')],
-                ['comment' => lang('Reports.comments')],
-                ['reference' => lang('Receivings.reference')],
+                ['quantity'       => lang('Reports.quantity')],
+                ['employee_name'  => lang('Reports.received_by')],
+                ['supplier_name'  => lang('Reports.supplied_by')],
+                ['total'          => lang('Reports.total'), 'sorter' => 'number_sorter'],
+                ['payment_type'   => lang('Reports.payment_type')],
+                ['comment'        => lang('Reports.comments')],
+                ['reference'      => lang('Receivings.reference')]
             ],
             'details' => [
                 lang('Reports.item_number'),
@@ -36,11 +46,15 @@ class Detailed_receivings extends Report
                 lang('Reports.category'),
                 lang('Reports.quantity'),
                 lang('Reports.total'),
-                lang('Reports.discount'),
-            ],
+                lang('Reports.discount')
+            ]
         ];
     }
 
+    /**
+     * @param string $receiving_id
+     * @return array
+     */
     public function getDataByReceivingId(string $receiving_id): array
     {
         $builder = $this->db->table('receivings_items_temp');
@@ -63,6 +77,10 @@ class Detailed_receivings extends Report
         return $builder->get()->getRowArray() ?? [];
     }
 
+    /**
+     * @param array $inputs
+     * @return array
+     */
     public function getData(array $inputs): array
     {
         $builder = $this->db->table('receivings_items_temp AS receivings_items_temp');
@@ -94,7 +112,7 @@ class Detailed_receivings extends Report
         $builder->groupBy('receiving_id', 'receiving_time');
         $builder->orderBy('MAX(receiving_id)');
 
-        $data            = [];
+        $data = [];
         $data['summary'] = $builder->get()->getResultArray();
         $data['details'] = [];
 
@@ -116,7 +134,7 @@ class Detailed_receivings extends Report
 
             if (!empty($inputs['definition_ids'])) {
                 $definitionIds = array_map('intval', $inputs['definition_ids']);
-                $format        = $this->db->escape(dateformat_mysql());
+                $format = $this->db->escape(dateformat_mysql());
                 $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
                 $builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, {$format})) SEPARATOR '|') AS attribute_dtvalues");
                 $builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
@@ -132,6 +150,10 @@ class Detailed_receivings extends Report
         return $data;
     }
 
+    /**
+     * @param array $inputs
+     * @return array
+     */
     public function getSummaryData(array $inputs): array
     {
         $builder = $this->db->table('receivings_items_temp');
@@ -155,6 +177,6 @@ class Detailed_receivings extends Report
                 break;
         }
 
-        return $builder->get()->getRowArray();
+        return $builder->get()->getRowArray() ?? [];
     }
 }

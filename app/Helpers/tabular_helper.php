@@ -416,8 +416,8 @@ function itemSortColumns(?array $definitionIds = null): array
 
     $headers = item_headers();
 
-    foreach ($definitionIds as $definition_id) {
-        $headers[] = [(string) $definition_id => ''];
+    foreach ($definitionIds as $definitionId) {
+        $headers[] = [(string) $definitionId => ''];
     }
 
     return $headers;
@@ -442,8 +442,8 @@ function getItemsManageTableHeaders(): string
 
     $headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
-    foreach ($definitionsWithTypes as $definition_id => $definitionInfo) {
-        $headers[] = [$definition_id => $definitionInfo['name'], 'sortable' => true];
+    foreach ($definitionsWithTypes as $definitionId => $definitionInfo) {
+        $headers[] = [$definitionId => $definitionInfo['name'], 'sortable' => true];
     }
 
     $headers[] = ['inventory' => '', 'escape' => false];
@@ -456,11 +456,11 @@ function getItemsManageTableHeaders(): string
  * Get the html data row for the item
  *
  * @param object $item
- * @param array $definition_names Attribute definitions with types, keyed by definition_id (see Attribute::getDefinitionsByFlags(..., true))
+ * @param array $definitionNames Attribute definitions with types, keyed by definition_id (see Attribute::getDefinitionsByFlags(..., true))
  * @param array $taxPercentsByItemId Pre-computed tax percent strings, keyed by item_id (see Items::buildTaxPercentsByItem())
  * @return array
  */
-function getItemDataRow(object $item, array $definition_names, array $taxPercentsByItemId): array
+function getItemDataRow(object $item, array $definitionNames, array $taxPercentsByItemId): array
 {
     $config = config(OSPOS::class)->settings;
 
@@ -528,7 +528,7 @@ function getItemDataRow(object $item, array $definition_names, array $taxPercent
         )
     ];
 
-    return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
+    return $columns + expand_attribute_values($definitionNames, (array) $item) + $icons;
 }
 
 function giftcard_headers(): array
@@ -667,7 +667,7 @@ function expand_attribute_values(array $definition_names, array $row): array
                 $attribute_values["$definition_id"] = $raw_value;
             }
         } else {
-            $attribute_values["$definition_id"] = '';
+            $attribute_values["$definition_id"] = "";
         }
     }
 
@@ -699,13 +699,14 @@ function get_attribute_definition_manage_table_headers(): string
  */
 function get_attribute_definition_data_row(object $attribute_row): array
 {
+
     $attribute = model(Attribute::class);
     $controller = get_controller();
 
     if (count($attribute->getDefinitionFlags()) == 0) {
         $definition_flags = lang('Common.none_selected_text');
     } elseif ($attribute_row->definition_type == GROUP) {
-        $definition_flags = '-';
+        $definition_flags = "-";
     } else {
         $definition_flags = implode(', ', $attribute_row->definition_flags);
     }
@@ -722,7 +723,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
             [
                 'class'           => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
-                'title'           => lang(ucfirst($controller) . '.update')
+                'title'           => lang(ucfirst($controller) . ".update")
             ]
         )
     ];

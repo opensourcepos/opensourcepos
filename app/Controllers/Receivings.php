@@ -183,7 +183,7 @@ class Receivings extends Secure_Controller
             $this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
         } elseif ($this->item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt)) {
             $this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type);
-        } elseif (!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type)) {
+        } elseif (!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount,  $discount_type)) {
             $data['error'] = lang('Receivings.unable_to_add_item');
         }
 
@@ -212,7 +212,7 @@ class Receivings extends Secure_Controller
         $raw_receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity') ?? '');
 
         $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: Duplicated code
-        $serialNumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+        $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
         $discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT);
         $discount = $discount_type
             ? parse_quantity($this->request->getPost('discount') ?? '')
@@ -222,7 +222,7 @@ class Receivings extends Secure_Controller
         $receiving_quantity = filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
         if ($this->validate($validation_rule)) {
-            $this->receiving_lib->edit_item($item_id, $description, $serialNumber, $quantity, $discount, $discount_type !== null ? (int) $discount_type : null, $price, (float) $receiving_quantity);
+            $this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type !== null ? (int) $discount_type : null, $price, (float) $receiving_quantity);
         } else {
             $data['error'] = lang('Receivings.error_editing_item');
         }

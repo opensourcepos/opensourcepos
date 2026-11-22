@@ -352,13 +352,14 @@ class Config extends Secure_Controller
                     'mime_in[company_logo,image/png,image/jpg,image/jpeg,image/gif]',
                     'ext_in[company_logo,png,jpg,gif]',
                     'max_dims[company_logo,800,680]',
-                ],
-            ],
+                ]
+            ]
         ];
 
         if (!$this->validate($validation_rule)) {
-            return ['error' => $this->validator->getError('company_logo')];
+            return (['error' => $this->validator->getError('company_logo')]);
         }
+
 
         $filename = $file->getClientName();
         $info = pathinfo($filename);
@@ -367,12 +368,12 @@ class Config extends Secure_Controller
         $file_info = [
             'orig_name' => $filename,
             'raw_name'  => sanitize_filename($info['filename']),
-            'file_ext'  => $file->guessExtension(),
+            'file_ext'  => $file->guessExtension()
         ];
 
         $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
 
-        return $file_info;
+        return ($file_info);
     }
 
     /**
@@ -397,7 +398,7 @@ class Config extends Secure_Controller
             ? array_intersect($allowedImageTypes, ['gif', 'jpg', 'jpeg', 'png', 'webp', 'bmp', 'tif', 'tiff'])
             : [];
 
-        $batch_save_data = [
+        $batchSaveData = [
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),
             'default_sales_discount_type'       => $this->request->getPost('default_sales_discount_type') != null,
@@ -431,7 +432,7 @@ class Config extends Secure_Controller
         $this->db->transStart();
 
         $attributeSuccess = true;
-        if ($batch_save_data['category_dropdown']) {
+        if ($batchSaveData['category_dropdown']) {
             $definitionData['definition_name'] = 'ospos_category';
             $definitionData['definition_flags'] = 0;
             $definitionData['definition_type'] = 'DROPDOWN';
@@ -439,11 +440,11 @@ class Config extends Secure_Controller
             $definitionData['deleted'] = 0;
 
             $attributeSuccess = $this->attribute->saveDefinition($definitionData, CATEGORY_DEFINITION_ID);
-        } elseif ($batch_save_data['category_dropdown'] == NO_DEFINITION_ID) {
+        } elseif ($batchSaveData['category_dropdown'] == NO_DEFINITION_ID) {
             $attributeSuccess = $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
         }
 
-        $success = $attributeSuccess && $this->appconfig->batch_save($batch_save_data);
+        $success = $attributeSuccess && $this->appconfig->batch_save($batchSaveData);
 
         $this->db->transComplete();
 
@@ -971,7 +972,7 @@ class Config extends Secure_Controller
             'default_tax_code'          => $this->request->getPost('default_tax_code'),
             'default_tax_category'      => $this->request->getPost('default_tax_category'),
             'default_tax_jurisdiction'  => $this->request->getPost('default_tax_jurisdiction'),
-            'tax_id'                    => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT),
+            'tax_id'                    => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         $success = $this->appconfig->batch_save($batch_save_data);
@@ -1114,7 +1115,7 @@ class Config extends Secure_Controller
     {
         $allowedShortcuts = array_keys($this->sale_lib->getKeyShortcutsOptions());
         $currentShortcuts = $this->sale_lib->getKeyShortcuts();
-        $batch_save_data = [];
+        $batchSaveData = [];
 
         foreach ($currentShortcuts as $name => $shortcut) {
             $postedValue = trim((string)$this->request->getPost('key_' . $name));
@@ -1123,10 +1124,10 @@ class Config extends Secure_Controller
                 $postedValue = $shortcut['value'];
             }
 
-            $batch_save_data['key_' . $name] = $postedValue;
+            $batchSaveData['key_' . $name] = $postedValue;
         }
 
-        $duplicateValues = array_filter(array_count_values($batch_save_data), static fn(int $count): bool => $count > 1);
+        $duplicateValues = array_filter(array_count_values($batchSaveData), static fn(int $count): bool => $count > 1);
         if (!empty($duplicateValues)) {
             return $this->response->setJSON([
                 'success' => false,
@@ -1134,7 +1135,7 @@ class Config extends Secure_Controller
             ]);
         }
 
-        $success = $this->appconfig->batch_save($batch_save_data);
+        $success = $this->appconfig->batch_save($batchSaveData);
 
         return $this->response->setJSON([
             'success' => $success,

@@ -2,15 +2,13 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Database\BaseBuilder;
 use Config\OSPOS;
+use CodeIgniter\Database\BaseBuilder;
 
 abstract class Summary_report extends Report
 {
     /**
      * Private interface implementing the core basic functionality for all reports
-     *
-     * @param mixed $builder
      */
     private function __common_select(array $inputs, &$builder): void    // TODO: Hungarian notation
     {
@@ -31,16 +29,16 @@ abstract class Summary_report extends Report
             . 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
         $sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
-        $sales_tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
+        $sales_tax = "IFNULL(SUM(sales_items_taxes.tax), 0)";
 
         $cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
         if ($config['tax_included']) {
-            $sale_total    = "ROUND(SUM({$sale_price}), {$decimals}) + {$cash_adjustment}";
-            $sale_subtotal = "{$sale_total} - {$sales_tax}";
+            $sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
+            $sale_subtotal = "$sale_total - $sales_tax";
         } else {
-            $sale_subtotal = "ROUND(SUM({$sale_price}), {$decimals}) + {$cash_adjustment}";
-            $sale_total    = "ROUND(SUM({$sale_price}), {$decimals}) + {$sales_tax} + {$cash_adjustment}";
+            $sale_subtotal = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
+            $sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
         }
 
         // Create a temporary table to contain all the sum of taxes per sale item
@@ -61,7 +59,7 @@ abstract class Summary_report extends Report
                     ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
                 WHERE ' . $where . '
                 GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id, sales_items_taxes.line
-            )',
+            )'
         );
 
         $this->db->query(
@@ -79,29 +77,38 @@ abstract class Summary_report extends Report
                     ON sales.sale_id = payments.sale_id
                 WHERE ' . $where . '
                 GROUP BY payments.sale_id
-            )',
+            )'
         );
 
         $builder->select("
-                IFNULL({$sale_subtotal}, {$sale_total}) AS subtotal,
-                {$sales_tax} AS tax,
-                IFNULL({$sale_total}, {$sale_subtotal}) AS total,
-                {$sale_cost} AS cost,
-                (IFNULL({$sale_subtotal}, {$sale_total}) - {$sale_cost}) AS profit
+                IFNULL($sale_subtotal, $sale_total) AS subtotal,
+                $sales_tax AS tax,
+                IFNULL($sale_total, $sale_subtotal) AS total,
+                $sale_cost AS cost,
+                (IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit
         ");
     }
 
+    /**
+     * @param BaseBuilder $builder
+     * @return void
+     */
     private function __common_from(BaseBuilder &$builder): void    // TODO: hungarian notation
     {
         $builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
         $builder->join(
             'sales_items_taxes_temp AS sales_items_taxes',
             'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
-            'left outer',
+            'left outer'
         );
         $builder->join('sales_report_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
     }
 
+    /**
+     * @param array $inputs
+     * @param $builder
+     * @return void
+     */
     private function __common_where(array $inputs, &$builder): void
     {
         $config = config(OSPOS::class)->settings;
@@ -149,35 +156,56 @@ abstract class Summary_report extends Report
      */
     abstract protected function _get_data_columns(): array;    // TODO: hungarian notation
 
+    /**
+     * @param array $inputs
+     * @param BaseBuilder $builder
+     * @return void
+     */
     protected function _select(array $inputs, BaseBuilder &$builder): void
     {
         $this->__common_select($inputs, $builder);
     }    // TODO: hungarian notation
 
+    /**
+     * @param BaseBuilder $builder
+     * @return void
+     */
     protected function _from(BaseBuilder &$builder): void
     {
         $this->__common_from($builder);
     }    // TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
 
+    /**
+     * @param array $inputs
+     * @param BaseBuilder $builder
+     * @return void
+     */
     protected function _where(array $inputs, BaseBuilder &$builder): void
     {
         $this->__common_where($inputs, $builder);
     }    // TODO: hungarian notation
 
-    protected function _group_order(BaseBuilder &$builder): void
-    {
-    }    // TODO: hungarian notation
+    /**
+     * @param BaseBuilder $builder
+     * @return void
+     */
+    protected function _group_order(BaseBuilder &$builder): void {}    // TODO: hungarian notation
 
     /**
      * Public interface implementing the base abstract class,
      * in general it should not be extended unless there is a valid reason
      * like a non sale report (e.g. expenses)
      */
+
     public function getDataColumns(): array
     {
         return $this->_get_data_columns();
     }
 
+    /**
+     * @param array $inputs
+     * @return array
+     */
     public function getData(array $inputs): array
     {
         $builder = $this->db->table('sales_items AS sales_items');
@@ -190,6 +218,10 @@ abstract class Summary_report extends Report
         return $builder->get()->getResultArray();
     }
 
+    /**
+     * @param array $inputs
+     * @return array
+     */
     public function getSummaryData(array $inputs): array
     {
         $builder = $this->db->table('sales_items AS sales_items');

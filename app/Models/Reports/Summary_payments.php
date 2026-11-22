@@ -7,25 +7,29 @@ use Config\OSPOS;
 class Summary_payments extends Summary_report
 {
     /**
-     * @return list<array>
+     * @return array[]
      */
     protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
-            ['trans_group' => lang('Reports.trans_group')],
-            ['trans_type' => lang('Reports.trans_type')],
-            ['trans_sales' => lang('Reports.sales')],
-            ['trans_amount' => lang('Reports.trans_amount')],
+            ['trans_group'    => lang('Reports.trans_group')],
+            ['trans_type'     => lang('Reports.trans_type')],
+            ['trans_sales'    => lang('Reports.sales')],
+            ['trans_amount'   => lang('Reports.trans_amount')],
             ['trans_payments' => lang('Reports.trans_payments')],
             ['trans_refunded' => lang('Reports.trans_refunded')],
-            ['trans_due' => lang('Reports.trans_due')],
+            ['trans_due'      => lang('Reports.trans_due')]
         ];
     }
 
+    /**
+     * @param array $inputs
+     * @return array
+     */
     public function getData(array $inputs): array
     {
         $cash_payment = lang('Sales.cash');    // TODO: This is never used.  Should it be?
-        $config      = config(OSPOS::class)->settings;
+        $config = config(OSPOS::class)->settings;
 
         $separator[] = [
             'trans_group'    => '<HR>',
@@ -34,7 +38,7 @@ class Summary_payments extends Summary_report
             'trans_amount'   => '',
             'trans_payments' => '',
             'trans_refunded' => '',
-            'trans_due'      => '',
+            'trans_due'      => ''
         ];
 
         $where = '';    // TODO: Duplicated code
@@ -72,7 +76,6 @@ class Summary_payments extends Summary_report
 
         // At this point in time refunds are assumed to be cash refunds.
         $total_cash_refund = 0;
-
         foreach ($sales as $key => $sale_summary) {
             if ($sale_summary['trans_refunded'] !== 0) {
                 $total_cash_refund += $sale_summary['trans_refunded'];
@@ -98,9 +101,8 @@ class Summary_payments extends Summary_report
         $payments = $builder->get()->getResultArray();
 
         // Consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
-        $gift_card_count  = 0;
+        $gift_card_count = 0;
         $gift_card_amount = 0;
-
         foreach ($payments as $key => $payment) {
             if (str_contains((string) $payment['trans_type'], lang('Sales.giftcard'))) {
                 $gift_card_count += $payment['trans_sales'];
@@ -119,13 +121,17 @@ class Summary_payments extends Summary_report
                 'trans_amount'   => $gift_card_amount,
                 'trans_payments' => $gift_card_amount,
                 'trans_refunded' => 0,
-                'trans_due'      => 0,
+                'trans_due'      => 0
             ];
         }
 
         return array_merge($sales, $separator, $payments);
     }
 
+    /**
+     * @param string $where
+     * @return void
+     */
     protected function create_summary_payments_temp_tables(string $where): void
     {
         // TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
@@ -145,7 +151,7 @@ class Summary_payments extends Summary_report
                     ON sales.sale_id = sales_taxes.sale_id
                 WHERE ' . $where . ' AND sales_taxes.tax_type = \'1\'
                 GROUP BY sales.sale_id
-            )',
+            )'
         );
 
         $this->db->query(
@@ -159,7 +165,7 @@ class Summary_payments extends Summary_report
                 . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sumpay_taxes_temp') . ' AS sumpay_taxes '
                 . 'ON sales.sale_id = sumpay_taxes.sale_id '
                 . 'WHERE ' . $where . ' GROUP BY sales.sale_id
-            )',
+            )'
         );
 
         $this->db->query('UPDATE ' . $this->db->prefixTable('sumpay_items_temp') . ' AS sumpay_items '
@@ -179,7 +185,7 @@ class Summary_payments extends Summary_report
                     ON sales.sale_id = sales_payments.sale_id
                 WHERE ' . $where . '
                 GROUP BY sales.sale_id
-            )',
+            )'
         );
     }
 }

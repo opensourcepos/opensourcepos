@@ -160,10 +160,10 @@ class Barcode_lib
     /**
      * @param string $layoutType
      * @param array $item
-     * @param array $barcode_config
+     * @param array $barcodeConfig
      * @return string
      */
-    private function manageDisplayLayout(string $layoutType, array $item, array $barcode_config): string
+    private function manageDisplayLayout(string $layoutType, array $item, array $barcodeConfig): string
     {
         $result = '';
         helper('text');
@@ -177,9 +177,9 @@ class Barcode_lib
         } elseif ($layoutType == 'unit_price' && isset($item['unit_price'])) {
             $result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
         } elseif ($layoutType == 'company_name') {
-            $result = esc($barcode_config['company']);
+            $result = esc($barcodeConfig['company']);
         } elseif ($layoutType == 'item_code') {
-            $result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
+            $result = $barcodeConfig['barcode_content'] !== "id" && isset($item['item_number'])
                 ? esc($item['item_number'])
                 : esc($item['item_id']);
         }

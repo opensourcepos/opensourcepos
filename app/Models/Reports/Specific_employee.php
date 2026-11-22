@@ -5,10 +5,17 @@ namespace App\Models\Reports;
 use App\Models\Sale;
 
 /**
+ *
+ *
  * @property Sale sale
+ *
  */
 class Specific_employee extends Report
 {
+    /**
+     * @param array $inputs
+     * @return void
+     */
     public function create(array $inputs): void
     {
         // Create our temp tables to work with the data in our report
@@ -16,22 +23,25 @@ class Specific_employee extends Report
         $sale->create_temp_table($inputs);
     }
 
+    /**
+     * @return array
+     */
     public function getDataColumns(): array
     {
         return [
             'summary' => [
-                ['id' => lang('Reports.sale_id')],
-                ['type_code' => lang('Reports.code_type')],
-                ['sale_time' => lang('Reports.date'), 'sortable' => false],
-                ['quantity' => lang('Reports.quantity')],
+                ['id'            => lang('Reports.sale_id')],
+                ['type_code'     => lang('Reports.code_type')],
+                ['sale_time'     => lang('Reports.date'), 'sortable' => false],
+                ['quantity'      => lang('Reports.quantity')],
                 ['customer_name' => lang('Reports.sold_to')],
-                ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-                ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-                ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-                ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
-                ['payment_type' => lang('Reports.payment_type'), 'sortable' => false],
-                ['comment' => lang('Reports.comments')],
+                ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+                ['tax'           => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+                ['total'         => lang('Reports.total'), 'sorter' => 'number_sorter'],
+                ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+                ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+                ['payment_type'  => lang('Reports.payment_type'), 'sortable' => false],
+                ['comment'       => lang('Reports.comments')]
             ],
             'details' => [
                 lang('Reports.name'),
@@ -44,15 +54,19 @@ class Specific_employee extends Report
                 lang('Reports.total'),
                 lang('Reports.cost'),
                 lang('Reports.profit'),
-                lang('Reports.discount'),
+                lang('Reports.discount')
             ],
             'details_rewards' => [
                 lang('Reports.used'),
-                lang('Reports.earned'),
-            ],
+                lang('Reports.earned')
+            ]
         ];
     }
 
+    /**
+     * @param array $inputs
+     * @return array
+     */
     public function getData(array $inputs): array
     {
         $builder = $this->db->table('sales_items_temp');
@@ -122,7 +136,7 @@ class Specific_employee extends Report
         $builder->groupBy('sale_id');
         $builder->orderBy('MAX(sale_time)');
 
-        $data            = [];
+        $data = [];
         $data['summary'] = $builder->get()->getResultArray();
         $data['details'] = [];
         $data['rewards'] = [];
@@ -142,6 +156,10 @@ class Specific_employee extends Report
         return $data;
     }
 
+    /**
+     * @param array $inputs
+     * @return array
+     */
     public function getSummaryData(array $inputs): array
     {
         $builder = $this->db->table('sales_items_temp');
@@ -175,6 +193,6 @@ class Specific_employee extends Report
             $builder->where('sale_type', SALE_TYPE_RETURN);
         }
 
-        return $builder->get()->getRowArray();
+        return $builder->get()->getRowArray() ?? [];
     }
 }

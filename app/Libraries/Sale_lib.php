@@ -1262,6 +1262,16 @@ class Sale_lib
         return -1;    // TODO: Replace -1 with constant
     }
 
+    /* @param string $line
+     * @param string $description
+     * @param string $serialnumber
+     * @param string $quantity
+     * @param string $discount
+     * @param int|string|null $discount_type
+     * @param string|null $price
+     * @param string|null $discounted_total
+     * @return bool
+     */
     public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, int|string|null $discount_type, ?string $price, ?string $discounted_total = null): bool
     {
         $items = $this->get_cart();

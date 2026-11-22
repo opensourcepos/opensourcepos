@@ -33,6 +33,7 @@ class Receiving_libTest extends CIUnitTestCase
     {
         $this->resetDatabaseOnce();
         parent::setUp();
+        $this->db->resetTransStatus();
         config(OSPOS::class)->update_settings();
         Services::session()->set('person_id', 1);
         $this->receivingLib = new Receiving_lib();

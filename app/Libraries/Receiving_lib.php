@@ -269,16 +269,16 @@ class Receiving_lib
      * @param float|int|string $quantity
      * @param int|null $itemLocation
      * @param float $discount
-     * @param int $discount_type
+     * @param int $discountType
      * @param float|null $price
      * @param string|null $description
      * @param string|null $serialNumber
-     * @param float|null $receiving_quantity
-     * @param int|null $receiving_id
+     * @param float|null $receivingQuantity
+     * @param int|null $receivingId
      * @param bool $includeDeleted
      * @return bool
      */
-    public function add_item(string $itemId, float|int|string $quantity = 1, ?int $itemLocation = null, float $discount = 0, int $discount_type = 0, ?float $price = null, ?string $description = null, ?string $serialNumber = null, ?float $receiving_quantity = null, ?int $receiving_id = null, bool $includeDeleted = false): bool
+    public function add_item(string $itemId, float|int|string $quantity = 1, ?int $itemLocation = null, float $discount = 0, int $discountType = 0, ?float $price = null, ?string $description = null, ?string $serialNumber = null, ?float $receivingQuantity = null, ?int $receivingId = null, bool $includeDeleted = false): bool
     {
         $config = config(OSPOS::class)->settings;
         $itemInfo = $this->item->get_info_by_id_or_number($itemId, $includeDeleted);
@@ -323,11 +323,11 @@ class Receiving_lib
             ];
         }
 
-        if (is_null($receiving_quantity)) {
-            $receiving_quantity = $itemInfo->receiving_quantity;
+        if (is_null($receivingQuantity)) {
+            $receivingQuantity = $itemInfo->receiving_quantity;
         }
 
-        $attributeLinks = $this->attribute->get_link_values((int) $itemId, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
+        $attributeLinks = $this->attribute->get_link_values((int) $itemId, 'receiving_id', $receivingId, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
         $item = [
             $insertKey => [
@@ -345,12 +345,12 @@ class Receiving_lib
                 'is_serialized'              => $itemInfo->is_serialized,
                 'quantity'                   => $quantity,
                 'discount'                   => $discount,
-                'discount_type'              => $discount_type,
+                'discount_type'              => $discountType,
                 'in_stock'                   => $this->item_quantity->get_item_quantity((int) $itemId, $itemLocation)->quantity,
                 'price'                      => $price,
-                'receiving_quantity'         => $receiving_quantity,
+                'receiving_quantity'         => $receivingQuantity,
                 'receiving_quantity_choices' => $receivingQuantityChoices,
-                'total'                      => $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
+                'total'                      => $this->get_item_total($quantity, $price, $discount, $discountType, $receivingQuantity)
             ]
         ];
 
@@ -369,7 +369,7 @@ class Receiving_lib
     /**
      * @param $line
      * @param string $description
-     * @param string $serialNumber
+     * @param string $serialnumber
      * @param float|int|string $quantity
      * @param float $discount
      * @param int|null $discount_type
@@ -377,12 +377,12 @@ class Receiving_lib
      * @param float $receiving_quantity
      * @return bool
      */
-    public function edit_item($line, string $description, string $serialNumber, float|int|string $quantity, float $discount, ?int $discount_type, float $price, float $receiving_quantity): bool
+    public function edit_item($line, string $description, string $serialnumber, float|int|string $quantity, float $discount, ?int $discount_type, float $price, float $receiving_quantity): bool
     {
         $items = $this->get_cart();
         if (isset($items[$line])) {
             $items[$line]['description'] = $description;
-            $items[$line]['serialnumber'] = $serialNumber;
+            $items[$line]['serialnumber'] = $serialnumber;
             $items[$line]['quantity'] = $quantity;
             $items[$line]['receiving_quantity'] = $receiving_quantity;
             $items[$line]['discount'] = $discount;
@@ -504,16 +504,17 @@ class Receiving_lib
      */
     public function get_item_total(float $quantity, float $price, float $discount, ?int $discount_type, float $receiving_quantity): string
     {
-        $extended_quantity = bcmul($quantity, $receiving_quantity);
-        $total = bcmul($extended_quantity, $price);
-        $discount_amount = $discount;
+        $scale = totals_decimals();
+        $extended_quantity = bcmul((string) $quantity, (string) $receiving_quantity, max(quantity_decimals(), $scale));
+        $total = bcmul($extended_quantity, (string) $price, $scale);
+        $discount_amount = (string) $discount;
 
         if ($discount_type == PERCENT) {    // TODO: === ?
-            $discount_fraction = bcdiv($discount, 100);
-            $discount_amount = bcmul($total, $discount_fraction);
+            $discount_fraction = bcdiv((string) $discount, '100', $scale + 2);
+            $discount_amount = bcmul($total, $discount_fraction, $scale);
         }
 
-        return bcsub($total, $discount_amount);
+        return bcsub($total, $discount_amount, $scale);
     }
 
     /**
