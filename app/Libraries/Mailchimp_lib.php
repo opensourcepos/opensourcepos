@@ -49,7 +49,7 @@ class MailchimpConnector
         if (!empty($mailchimpApiKey)) {
             $this->_api_key = empty($apiKey)
                 ? $encrypter->decrypt($mailchimpApiKey)
-                : $apiKey;    // TODO: Hungarian notation
+                : $apiKey;
         }
 
         if (!empty($this->_api_key)) {    // TODO: Hungarian notation
