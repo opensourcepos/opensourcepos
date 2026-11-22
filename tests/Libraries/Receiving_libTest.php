@@ -195,4 +195,55 @@ class Receiving_libTest extends CIUnitTestCase
         $this->assertCount(1, $cart);
         $this->assertSame(-1, $this->receivingLib->get_supplier());
     }
+
+    public function testGetItemTotal_PreservesPrecisionWithFractionalQuantitiesAndDiscounts(): void
+    {
+        // 0.125 quantity * 0.125 receiving_quantity * 1000.0 price = 15.625 -> rounds to 15.63 at 2 decimals
+        $total = $this->receivingLib->get_item_total(0.125, 1000.0, 0.0, PERCENT, 0.125);
+        $this->assertEquals('15.63', $total);
+
+        // 1 * 1 * 1.99 with 10% discount = 1.99 - 0.199 = 1.791 -> rounds to 1.79
+        $discountedTotal = $this->receivingLib->get_item_total(1.0, 1.99, 10.0, PERCENT, 1.0);
+        $this->assertEquals('1.79', $discountedTotal);
+
+        // Small quantity formatted in exponent notation (1.0E-5) is normalized without BCMath ValueError
+        $smallQuantityTotal = $this->receivingLib->get_item_total(0.00001, 100000.0, 0.0, PERCENT, 1.0);
+        $this->assertEquals('1.00', $smallQuantityTotal);
+    }
+
+    public function testReturnEntireReceiving_RoutesReferenceWithKitSubstringToReferenceLookup(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId = $this->createTestItem(HAS_STOCK);
+        $receivingModel = model(Receiving::class);
+
+        $reference = 'KIT-SUPPLIER-42';
+        $receivingId = $receivingModel->save_value(
+            [
+                0 => [
+                    'item_id'            => $itemId,
+                    'line'               => 0,
+                    'description'        => 'Kit Substring Item',
+                    'serialnumber'       => '',
+                    'quantity'           => 2,
+                    'receiving_quantity' => 1,
+                    'discount'           => 0,
+                    'discount_type'      => PERCENT,
+                    'price'              => 8.00,
+                    'item_location'      => 1,
+                ],
+            ],
+            -1,
+            $employeeId,
+            'Supplier Kit Ref',
+            $reference,
+            'Cash'
+        );
+
+        $this->receivingLib->return_entire_receiving($reference);
+
+        $cart = $this->receivingLib->get_cart();
+        $this->assertCount(1, $cart);
+        $this->assertEqualsWithDelta(-2.0, (float) $cart[1]['quantity'], 0.001);
+    }
 }

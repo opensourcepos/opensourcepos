@@ -420,7 +420,7 @@ class Receiving_lib
         // RECV #
         $pieces = explode(' ', (string) $receipt_receiving_id);
 
-        if (preg_match("/(RECV|KIT)/", $pieces[0])) {    // TODO: this needs to be converted to ternary notation.
+        if (count($pieces) === 2 && preg_match('/^(RECV|KIT)$/i', $pieces[0]) && is_numeric($pieces[1])) {    // TODO: this needs to be converted to ternary notation.
             $receiving_id = (int) $pieces[1];
         } else {
             $row = $this->receiving->get_receiving_by_reference((string) $receipt_receiving_id)->getRow();
@@ -505,16 +505,21 @@ class Receiving_lib
     public function get_item_total(float $quantity, float $price, float $discount, ?int $discount_type, float $receiving_quantity): string
     {
         $scale = totals_decimals();
-        $extended_quantity = bcmul((string) $quantity, (string) $receiving_quantity, max(quantity_decimals(), $scale));
-        $total = bcmul($extended_quantity, (string) $price, $scale);
+        $intermediate_scale = max(quantity_decimals() * 2, $scale) + 4;
+        $quantity_string = stripos((string) $quantity, 'e') !== false ? (rtrim(rtrim(number_format($quantity, 14, '.', ''), '0'), '.') ?: '0') : (string) $quantity;
+        $receiving_quantity_string = stripos((string) $receiving_quantity, 'e') !== false ? (rtrim(rtrim(number_format($receiving_quantity, 14, '.', ''), '0'), '.') ?: '0') : (string) $receiving_quantity;
+        $extended_quantity = bcmul($quantity_string, $receiving_quantity_string, $intermediate_scale);
+        $total = bcmul($extended_quantity, (string) $price, $intermediate_scale);
         $discount_amount = (string) $discount;
 
         if ($discount_type == PERCENT) {    // TODO: === ?
-            $discount_fraction = bcdiv((string) $discount, '100', $scale + 2);
-            $discount_amount = bcmul($total, $discount_fraction, $scale);
+            $discount_fraction = bcdiv((string) $discount, '100', $intermediate_scale);
+            $discount_amount = bcmul($total, $discount_fraction, $intermediate_scale);
         }
 
-        return bcsub($total, $discount_amount, $scale);
+        $discounted_total = bcsub($total, $discount_amount, $intermediate_scale);
+
+        return number_format((float) $discounted_total, $scale, '.', '');
     }
 
     /**
