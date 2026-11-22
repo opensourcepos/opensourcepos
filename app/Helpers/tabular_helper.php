@@ -175,7 +175,7 @@ function getSalesManagePaymentsSummary(array $payments): string
     foreach ($payments as $key => $payment) {
         $amount = $payment['payment_amount'];
         $total = bcadd($total, $amount);
-        $table .= '<div class="summary_row">' . esc($payment['payment_type']) . ': ' . to_currency($amount) . '</div>';
+        $table .= '<div class="summary_row">' . esc(html_entity_decode($payment['payment_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . ': ' . to_currency($amount) . '</div>';
     }
 
     $table .= '<div class="summary_row">' . lang('Sales.total') . ': ' . to_currency($total) . '</div>';
@@ -854,7 +854,7 @@ function get_expenses_manage_payments_summary(array $payments, ResultInterface $
 
     foreach ($payments as $key => $payment) {
         $amount = $payment['amount'];
-        $table .= '<div class="summary_row">' . esc($payment['payment_type']) . ': ' . to_currency($amount) . '</div>';
+        $table .= '<div class="summary_row">' . esc(html_entity_decode($payment['payment_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . ': ' . to_currency($amount) . '</div>';
     }
 
     $table .= '</div>';

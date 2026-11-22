@@ -218,11 +218,12 @@ class Receivings extends Secure_Controller
             ? parse_quantity($this->request->getPost('discount') ?? '')
             : parse_decimals($this->request->getPost('discount') ?? '');
         $discount = $discount ?: 0;
+        $discount_type = ($discount_type !== null && $discount_type !== '') ? (int) $discount_type : null;
 
         $receiving_quantity = filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
         if ($this->validate($validation_rule)) {
-            $this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type !== null ? (int) $discount_type : null, $price, (float) $receiving_quantity);
+            $this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, (float) $receiving_quantity);
         } else {
             $data['error'] = lang('Receivings.error_editing_item');
         }

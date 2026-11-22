@@ -34,6 +34,8 @@ class Stock_locationTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
+        $this->db->resetTransStatus();
+
         parent::tearDown();
     }
 

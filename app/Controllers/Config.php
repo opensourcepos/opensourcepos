@@ -261,7 +261,7 @@ class Config extends Secure_Controller
         $data['themes'] = $this->_themes();
 
         // General related fields
-        $image_allowed_types = ['jpg', 'jpeg', 'gif', 'svg', 'webp', 'bmp', 'png', 'tif', 'tiff'];
+        $image_allowed_types = ['jpg', 'jpeg', 'gif', 'webp', 'bmp', 'png', 'tif', 'tiff'];
         $data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
         $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 

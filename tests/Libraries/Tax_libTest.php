@@ -80,4 +80,41 @@ class Tax_libTest extends CIUnitTestCase
 
         $this->assertSame(12, $result);
     }
+
+    public function testRoundNumber_PreservesExactCentsIdempotently(): void
+    {
+        $exactCents = [0.07, 0.14, 0.28, 0.29, 0.55, 0.56, 0.57, 0.58, 1.07, 10.29];
+
+        foreach ($exactCents as $amount) {
+            $roundedUp = (float) Rounding_mode::round_number(Rounding_mode::ROUND_UP, $amount, 2);
+            $roundedDown = (float) Rounding_mode::round_number(Rounding_mode::ROUND_DOWN, $amount, 2);
+
+            $this->assertEqualsWithDelta($amount, $roundedUp, 0.0001);
+            $this->assertEqualsWithDelta($amount, $roundedDown, 0.0001);
+
+            $idempotentUp = (float) Rounding_mode::round_number(Rounding_mode::ROUND_UP, $roundedUp, 2);
+            $idempotentDown = (float) Rounding_mode::round_number(Rounding_mode::ROUND_DOWN, $roundedDown, 2);
+
+            $this->assertEqualsWithDelta($roundedUp, $idempotentUp, 0.0001);
+            $this->assertEqualsWithDelta($roundedDown, $idempotentDown, 0.0001);
+        }
+    }
+
+    public function testRoundNumber_RoundsSubCentsCorrectly(): void
+    {
+        $subCents = [
+            [0.0701, 0.08, 0.07],
+            [0.14001, 0.15, 0.14],
+            [0.2899, 0.29, 0.28],
+            [0.5500000001, 0.56, 0.55],
+        ];
+
+        foreach ($subCents as [$amount, $expectedUp, $expectedDown]) {
+            $roundedUp = (float) Rounding_mode::round_number(Rounding_mode::ROUND_UP, $amount, 2);
+            $roundedDown = (float) Rounding_mode::round_number(Rounding_mode::ROUND_DOWN, $amount, 2);
+
+            $this->assertEqualsWithDelta($expectedUp, $roundedUp, 0.0001);
+            $this->assertEqualsWithDelta($expectedDown, $roundedDown, 0.0001);
+        }
+    }
 }

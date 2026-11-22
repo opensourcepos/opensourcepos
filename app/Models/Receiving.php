@@ -318,6 +318,8 @@ class Receiving extends Model
             $where = 'receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
         }
 
+        $quantityMultiplier = 'CASE WHEN `' . $db_prefix . 'receivings_items`.`receiving_quantity` = 0 THEN 1 ELSE `' . $db_prefix . 'receivings_items`.`receiving_quantity` END';
+
         $builder = $this->db->table('receivings_items');
         $builder->select([
             'MAX(DATE(`receiving_time`)) AS receiving_date',
@@ -339,10 +341,10 @@ class Receiving extends Model
             'receivings_items.line AS line',
             'MAX(`serialnumber`) AS serialnumber',
             'MAX(`' . $db_prefix . 'receivings_items`.`description`) AS description',
-            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS subtotal',
-            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS total',
-            'MAX((CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) - (`item_cost_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity`)) AS profit',
-            'MAX(`item_cost_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` ) AS cost'
+            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' - `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' - `discount` END) AS subtotal',
+            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' - `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' - `discount` END) AS total',
+            'MAX((CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' - `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * ' . $quantityMultiplier . ' - `discount` END) - (`item_cost_price` * `quantity_purchased` * ' . $quantityMultiplier . ')) AS profit',
+            'MAX(`item_cost_price` * `quantity_purchased` * ' . $quantityMultiplier . ') AS cost'
         ]);
         $builder->join('receivings', 'receivings_items.receiving_id = receivings.receiving_id', 'inner');
         $builder->join('items', 'receivings_items.item_id = items.item_id', 'inner');

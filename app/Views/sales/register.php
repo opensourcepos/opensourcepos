@@ -185,7 +185,7 @@ helper('url');
                                 <td style="text-align: center;">
                                     <?= esc($item['name']) . ' ' . esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
                                     <br>
-                                    <?php if ($item['stock_type'] === '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
+                                    <?php if ((int) $item['stock_type'] === HAS_STOCK): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
                                     endif; ?>
                                 </td>
                             <?php } ?>

@@ -130,9 +130,13 @@ class AttributeTest extends CIUnitTestCase
             'definition_type' => TEXT,
         ]];
 
-        $result = $this->attribute->saveCSVRowAttributeData($attributeValues, $itemData, $definitions);
+        try {
+            $result = $this->attribute->saveCSVRowAttributeData($attributeValues, $itemData, $definitions);
 
-        $this->assertFalse($result);
-        $this->assertSame(0, $this->db->transDepth);
+            $this->assertFalse($result);
+            $this->assertSame(0, $this->db->transDepth);
+        } finally {
+            $this->db->resetTransStatus();
+        }
     }
 }

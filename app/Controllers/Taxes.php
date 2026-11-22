@@ -513,6 +513,22 @@ class Taxes extends Secure_Controller
             }
         }
 
+        if (empty($jurisdiction_id) || !is_array($jurisdiction_id) || !is_array($tax_type) || count($tax_type) !== count($jurisdiction_id)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => lang('Taxes.tax_jurisdictions_saved_unsuccessfully')
+            ]);
+        }
+
+        foreach ($jurisdiction_id as $key => $val) {
+            if (!isset($tax_type[$key]) || $tax_type[$key] === '' || $tax_type[$key] === null) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Taxes.tax_jurisdictions_saved_unsuccessfully')
+                ]);
+            }
+        }
+
         $array_save = [];
         $unique_tax_groups = [];
 

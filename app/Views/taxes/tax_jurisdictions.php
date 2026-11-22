@@ -97,6 +97,18 @@
 
         }, "<?= lang('Taxes.tax_jurisdiction_required') ?>");
 
+        $.validator.addMethod('requireTaxType', function(value, element) {
+            let valid = true;
+            $("select[name='tax_type[]']").each(function() {
+                const val = $(this).val();
+                if (val === '' || val === null || typeof val === 'undefined') {
+                    valid = false;
+                }
+            });
+            return valid;
+
+        }, "<?= lang('Taxes.tax_jurisdiction_required') ?>");
+
         $('#tax_jurisdictions_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
@@ -127,5 +139,13 @@
                 validateTaxJurisdictionCharacters: true
             });
         <?php } ?>
+
+        $('select[name="tax_type[]"]').rules("add", {
+            requireTaxType: true
+        });
+
+        $(document).on('change', "select[name='tax_type[]']", function() {
+            $("select[name='tax_type[]']").valid();
+        });
     });
 </script>

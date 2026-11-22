@@ -207,4 +207,49 @@ class ReceivingTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(60.00, (float) $row['cost'], 0.001);
         $this->assertEqualsWithDelta(40.00, (float) $row['profit'], 0.001);
     }
+
+    public function testCreateTempTable_TreatsZeroReceivingQuantityAsUnitMultiplier(): void
+    {
+        $employeeId = $this->createEmployee();
+        $supplierId = $this->createSupplier();
+        $itemId     = $this->createTestItem(HAS_STOCK);
+
+        $db = Database::connect();
+        $db->table('items')->where('item_id', $itemId)->update(['cost_price' => 3.00, 'unit_price' => 5.00]);
+
+        $receivingModel = model(Receiving::class);
+        $items = [
+            0 => [
+                'item_id'            => $itemId,
+                'line'               => 0,
+                'description'        => 'Zero Pack Item',
+                'serialnumber'       => '',
+                'quantity'           => 2,
+                'receiving_quantity' => 0,
+                'discount'           => 0,
+                'discount_type'      => PERCENT,
+                'price'              => 5.00,
+                'item_location'      => self::LOCATION_ID,
+            ],
+        ];
+
+        $receivingId = $receivingModel->save_value(
+            $items,
+            $supplierId,
+            $employeeId,
+            'zero receiving quantity test',
+            'REF-' . uniqid(),
+            'Cash'
+        );
+
+        $db->query('DROP TEMPORARY TABLE IF EXISTS ' . $db->prefixTable('receivings_items_temp'));
+        $receivingModel->create_temp_table(['receiving_id' => $receivingId]);
+
+        $row = $db->table('receivings_items_temp')->where('receiving_id', $receivingId)->get()->getRowArray();
+        $this->assertNotEmpty($row);
+        // Revenue: 5 * 2 * 1 = 10. Cost: 3 * 2 * 1 = 6. Profit: 10 - 6 = 4.
+        $this->assertEqualsWithDelta(10.00, (float) $row['total'], 0.001);
+        $this->assertEqualsWithDelta(6.00, (float) $row['cost'], 0.001);
+        $this->assertEqualsWithDelta(4.00, (float) $row['profit'], 0.001);
+    }
 }

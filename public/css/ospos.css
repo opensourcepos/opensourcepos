@@ -52,6 +52,7 @@ a.none {
 
 .navbar .menu-icon img {
     width: 24px;
+    height: 24px;
 }
 
 .wrapper {
@@ -92,6 +93,11 @@ a.none {
 
 .module_item a {
     display: block;
+}
+
+.module_item img {
+    width: 64px;
+    height: 64px;
 }
 
 #config_wrapper {

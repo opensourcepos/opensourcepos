@@ -214,31 +214,101 @@ use Config\OSPOS;
         $config = config(OSPOS::class)->settings;
         $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
         $decimal_separator = $fmt->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
-        $grouping_separator = !empty($config['thousands_separator'])
-            ? $fmt->getSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL)
-            : '';
+        $grouping_separator = $fmt->getSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
+        $bcp47_locale = str_replace('_', '-', $config['number_locale']);
+        if (strpos($bcp47_locale, '@') !== false) {
+            [$base, $keywords] = explode('@', $bcp47_locale, 2);
+            $key_map = [
+                'numbers'   => 'nu',
+                'calendar'  => 'ca',
+                'collation' => 'co',
+                'currency'  => 'cu',
+                'timezone'  => 'tz',
+                'hours'     => 'hc',
+            ];
+            $u_extensions = [];
+            foreach (explode(';', $keywords) as $keyword) {
+                if (strpos($keyword, '=') !== false) {
+                    [$key, $val] = explode('=', $keyword, 2);
+                    $bcp_key = $key_map[strtolower($key)] ?? strtolower($key);
+                    $u_extensions[] = $bcp_key . '-' . strtolower($val);
+                }
+            }
+            $bcp47_locale = $base . (!empty($u_extensions) ? '-u-' . implode('-', $u_extensions) : '');
+        }
         ?>
         const decimalSeparator = <?= json_encode($decimal_separator) ?>;
         const groupingSeparator = <?= json_encode($grouping_separator) ?>;
-        const numberLocale = <?= json_encode(str_replace('_', '-', $config['number_locale'])) ?>;
+        let numberLocale = <?= json_encode($bcp47_locale) ?>;
         const qtyDecimals = <?= quantity_decimals() ?>;
         const useGrouping = <?= !empty($config['thousands_separator']) ? 'true' : 'false' ?>;
-        const qtyFormatter = new Intl.NumberFormat(numberLocale, {
-            minimumFractionDigits: qtyDecimals,
-            maximumFractionDigits: qtyDecimals,
-            useGrouping: useGrouping
-        });
+        let qtyFormatter;
+        try {
+            qtyFormatter = new Intl.NumberFormat(numberLocale, {
+                minimumFractionDigits: qtyDecimals,
+                maximumFractionDigits: qtyDecimals,
+                useGrouping: useGrouping
+            });
+        } catch (e) {
+            numberLocale = undefined;
+            qtyFormatter = new Intl.NumberFormat(undefined, {
+                minimumFractionDigits: qtyDecimals,
+                maximumFractionDigits: qtyDecimals,
+                useGrouping: useGrouping
+            });
+        }
+
+        let browserGrouping = '';
+        let browserDecimal = '';
+        if (typeof qtyFormatter.formatToParts === 'function') {
+            const parts = qtyFormatter.formatToParts(1000.1);
+            for (const part of parts) {
+                if (part.type === 'group') {
+                    browserGrouping = part.value;
+                } else if (part.type === 'decimal') {
+                    browserDecimal = part.value;
+                }
+            }
+        }
+
+        const digitMap = {};
+        let digitFormatter = qtyFormatter;
+        try {
+            digitFormatter = new Intl.NumberFormat(numberLocale, { useGrouping: false });
+        } catch (e) {
+            digitFormatter = qtyFormatter;
+        }
+        for (let i = 0; i <= 9; i++) {
+            digitMap[digitFormatter.format(i)] = String(i);
+        }
 
         const parseLocaleQty = function(val) {
             let clean = String(val);
-            if (groupingSeparator) {
+            for (const [localizedDigit, asciiDigit] of Object.entries(digitMap)) {
+                if (localizedDigit !== asciiDigit) {
+                    clean = clean.split(localizedDigit).join(asciiDigit);
+                }
+            }
+            clean = clean.replace(/[\u0660-\u0669]/g, function(d) {
+                return String(d.charCodeAt(0) - 1632);
+            }).replace(/[\u06F0-\u06F9]/g, function(d) {
+                return String(d.charCodeAt(0) - 1776);
+            });
+            if (browserGrouping) {
+                clean = clean.split(browserGrouping).join('');
+            }
+            if (groupingSeparator && groupingSeparator !== browserGrouping) {
                 clean = clean.split(groupingSeparator).join('');
             }
-            if (decimalSeparator && decimalSeparator !== '.') {
+            const decSep = browserDecimal || decimalSeparator;
+            if (decSep && decSep !== '.') {
+                clean = clean.split(decSep).join('.');
+            }
+            if (decimalSeparator && decimalSeparator !== '.' && decimalSeparator !== decSep) {
                 clean = clean.split(decimalSeparator).join('.');
             }
             const parsed = parseFloat(clean);
-            return isNaN(parsed) ? 0 : parsed;
+            return isNaN(parsed) ? val : parsed;
         };
 
         $('#item').autocomplete({
@@ -250,7 +320,9 @@ use Config\OSPOS;
             select: function(e, ui) {
                 if ($('#item_qty_' + ui.item.value).length == 1) {
                     const currentQty = parseLocaleQty($('#item_qty_' + ui.item.value).val());
-                    $('#item_qty_' + ui.item.value).val(qtyFormatter.format(currentQty + 1));
+                    if (typeof currentQty === 'number' && !isNaN(currentQty)) {
+                        $('#item_qty_' + ui.item.value).val(qtyFormatter.format(currentQty + 1));
+                    }
                 } else {
                     $('#item_kit_items').append('<tr>' +
                         '<td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>' +

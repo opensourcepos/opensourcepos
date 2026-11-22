@@ -1085,6 +1085,8 @@ class Item extends Model
                 $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
+                $builder->where('attribute_links.receiving_id IS NULL');
+                $builder->where('attribute_links.sale_id IS NULL');
                 $builder->where('items.deleted', $filters['is_deleted']);
                 $builder->whereIn('items.item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
 
@@ -1193,6 +1195,8 @@ class Item extends Model
                 $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
+                $builder->where('attribute_links.receiving_id IS NULL');
+                $builder->where('attribute_links.sale_id IS NULL');
                 $builder->where('items.stock_type', '0'); // Stocked items only
                 $builder->whereIn('items.item_type', $non_kit);
                 $builder->where('items.deleted', $filters['is_deleted']);
@@ -1297,6 +1301,8 @@ class Item extends Model
                 $builder->join('items', 'items.item_id = attribute_links.item_id');
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
+                $builder->where('attribute_links.receiving_id IS NULL');
+                $builder->where('attribute_links.sale_id IS NULL');
                 $builder->where('items.item_type', ITEM_KIT);
                 $builder->where('items.deleted', $filters['is_deleted']);
 

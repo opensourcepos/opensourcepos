@@ -284,4 +284,38 @@ class TaxesControllerTest extends CIUnitTestCase
         $result = json_decode($response->getJSON(), true);
         $this->assertFalse($result['success']);
     }
+
+    public function testPostSaveTaxJurisdictions_RejectsMissingOrEmptyTaxType(): void
+    {
+        $employeeId = $this->createTaxesEmployee();
+        $this->loginAsTaxesEmployee($employeeId);
+
+        $response = $this->post('/taxes/save_tax_jurisdictions', [
+            'jurisdiction_id'     => ['-1'],
+            'jurisdiction_name'   => ['State Tax'],
+            'tax_group'           => ['1'],
+            'tax_type'            => [''],
+            'reporting_authority' => [''],
+            'tax_group_sequence'  => ['1'],
+            'cascade_sequence'    => ['1'],
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+
+        $responseMissing = $this->post('/taxes/save_tax_jurisdictions', [
+            'jurisdiction_id'     => ['-1'],
+            'jurisdiction_name'   => ['State Tax'],
+            'tax_group'           => ['1'],
+            'tax_type'            => [],
+            'reporting_authority' => [''],
+            'tax_group_sequence'  => ['1'],
+            'cascade_sequence'    => ['1'],
+        ]);
+
+        $responseMissing->assertStatus(200);
+        $resultMissing = json_decode($responseMissing->getJSON(), true);
+        $this->assertFalse($resultMissing['success']);
+    }
 }

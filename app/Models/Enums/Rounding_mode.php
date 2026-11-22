@@ -71,10 +71,12 @@ class Rounding_mode
     {   // TODO: this needs to be replaced with a switch statement
         if ($rounding_mode == Rounding_mode::ROUND_UP) {
             $fig = pow(10, $decimals);
-            $rounded_total = (ceil($fig * $amount) + ceil($fig * $amount - ceil($fig * $amount))) / $fig;
+            $scaled = round($fig * $amount, 10);
+            $rounded_total = ceil($scaled) / $fig;
         } elseif ($rounding_mode == Rounding_mode::ROUND_DOWN) {
             $fig = pow(10, $decimals);
-            $rounded_total = (floor($fig * $amount) + floor($fig * $amount - floor($fig * $amount))) / $fig;
+            $scaled = round($fig * $amount, 10);
+            $rounded_total = floor($scaled) / $fig;
         } elseif ($rounding_mode == Rounding_mode::HALF_FIVE) {
             $rounded_total = round($amount / 5, $decimals, Rounding_mode::HALF_EVEN) * 5;
         } else {
