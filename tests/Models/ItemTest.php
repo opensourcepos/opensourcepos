@@ -5,6 +5,7 @@ namespace Tests\Models;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use App\Models\Item;
+use Config\Database;
 use Tests\Support\DatabaseBootstrapTrait;
 use Tests\Support\ItemFixtureTrait;
 
@@ -99,5 +100,62 @@ class ItemTest extends CIUnitTestCase
         $result = $itemModel->getMultipleInfo([$itemId], self::LOCATION_ID);
 
         $this->assertSame(1, $result->getNumRows());
+    }
+
+    protected function createItemQuantityRow(int $itemId, float $quantity): void
+    {
+        Database::connect()->table('item_quantities')->insert([
+            'item_id'     => $itemId,
+            'location_id' => self::LOCATION_ID,
+            'quantity'    => $quantity,
+        ]);
+    }
+
+    public function testChangeCostPrice_CalculatesWeightedAverageForPositiveStock(): void
+    {
+        $itemId = $this->createTestItem();
+        $this->createItemQuantityRow($itemId, 10);
+
+        $itemModel = model(Item::class);
+
+        $this->assertTrue($itemModel->change_cost_price($itemId, 10, 20.00, 10.00));
+        $this->assertEqualsWithDelta(15.00, (float) $itemModel->getInfo($itemId)->cost_price, 0.001);
+    }
+
+    public function testChangeCostPrice_UsesReceivedPriceWhenStockIsZero(): void
+    {
+        $itemId = $this->createTestItem();
+
+        $itemModel = model(Item::class);
+
+        $this->assertTrue($itemModel->change_cost_price($itemId, 10, 20.00, 10.00));
+        $this->assertEqualsWithDelta(20.00, (float) $itemModel->getInfo($itemId)->cost_price, 0.001);
+    }
+
+    public function testChangeCostPrice_DoesNotDivideByZeroWhenStockAndReceivedQuantityAreZero(): void
+    {
+        $itemId = $this->createTestItem();
+        $this->createItemQuantityRow($itemId, 0);
+
+        $itemModel = model(Item::class);
+
+        $this->assertTrue($itemModel->change_cost_price($itemId, 0, 20.00, 10.00));
+        $this->assertEqualsWithDelta(20.00, (float) $itemModel->getInfo($itemId)->cost_price, 0.001);
+    }
+
+    public function testChangeCostPrice_UsesReceivedPriceWhenStockIsNegative(): void
+    {
+        $itemId = $this->createTestItem();
+        $this->createItemQuantityRow($itemId, -5);
+
+        $itemModel = model(Item::class);
+
+        $this->assertTrue($itemModel->change_cost_price($itemId, 10, 20.00, 10.00));
+
+        $costPrice = (float) $itemModel->getInfo($itemId)->cost_price;
+
+        $this->assertEqualsWithDelta(20.00, $costPrice, 0.001);
+        $this->assertGreaterThanOrEqual(10.00, $costPrice);
+        $this->assertLessThanOrEqual(20.00, $costPrice);
     }
 }
