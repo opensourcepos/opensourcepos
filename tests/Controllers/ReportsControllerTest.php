@@ -375,12 +375,12 @@ class ReportsControllerTest extends CIUnitTestCase
     }
 
     /**
-     * The specific customer input helper (auto-routed) lists all customers and
+     * The specific customer input helper (explicit route /specific_customers) lists all customers and
      * must require the reports_customers grant, not just the parent reports grant.
      *
      * @return void
      */
-    public function testSpecificCustomerInput_RequiresReportsCustomersGrant(): void
+    public function testSpecificCustomersInput_RequiresReportsCustomersGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'username' => 'specificcustinputdenied',
@@ -392,7 +392,7 @@ class ReportsControllerTest extends CIUnitTestCase
         ]);
         $this->loginAs($employeeId);
 
-        $response = $this->get('/reports/specific_customer_input');
+        $response = $this->get('/reports/specific_customers');
 
         $response->assertRedirect();
         $this->assertStringContainsString('no_access/index/reports/reports_customers', $response->getRedirectUrl());
@@ -404,7 +404,7 @@ class ReportsControllerTest extends CIUnitTestCase
      *
      * @return void
      */
-    public function testSpecificCustomerInput_AcceptsReportsCustomersGrant(): void
+    public function testSpecificCustomersInput_AcceptsReportsCustomersGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'username' => 'specificcustinputallowed',
@@ -416,18 +416,18 @@ class ReportsControllerTest extends CIUnitTestCase
         ]);
         $this->loginAs($employeeId);
 
-        $response = $this->get('/reports/specific_customer_input');
+        $response = $this->get('/reports/specific_customers');
 
         $response->assertStatus(200);
     }
 
     /**
-     * The specific employee input helper (auto-routed) lists all employees and
+     * The specific employee input helper (explicit route /specific_employees) lists all employees and
      * must require the reports_employees grant.
      *
      * @return void
      */
-    public function testSpecificEmployeeInput_RequiresReportsEmployeesGrant(): void
+    public function testSpecificEmployeesInput_RequiresReportsEmployeesGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'username' => 'specificempinputdenied',
@@ -439,7 +439,7 @@ class ReportsControllerTest extends CIUnitTestCase
         ]);
         $this->loginAs($employeeId);
 
-        $response = $this->get('/reports/specific_employee_input');
+        $response = $this->get('/reports/specific_employees');
 
         $response->assertRedirect();
         $this->assertStringContainsString('no_access/index/reports/reports_employees', $response->getRedirectUrl());
@@ -451,7 +451,7 @@ class ReportsControllerTest extends CIUnitTestCase
      *
      * @return void
      */
-    public function testSpecificEmployeeInput_AcceptsReportsEmployeesGrant(): void
+    public function testSpecificEmployeesInput_AcceptsReportsEmployeesGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'username' => 'specificempinputallowed',
@@ -463,18 +463,18 @@ class ReportsControllerTest extends CIUnitTestCase
         ]);
         $this->loginAs($employeeId);
 
-        $response = $this->get('/reports/specific_employee_input');
+        $response = $this->get('/reports/specific_employees');
 
         $response->assertStatus(200);
     }
 
     /**
-     * The specific supplier input helper (auto-routed) lists all suppliers and
+     * The specific supplier input helper (explicit route /specific_suppliers) lists all suppliers and
      * must require the reports_suppliers grant.
      *
      * @return void
      */
-    public function testSpecificSupplierInput_RequiresReportsSuppliersGrant(): void
+    public function testSpecificSuppliersInput_RequiresReportsSuppliersGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'username' => 'specificsupinputdenied',
@@ -486,7 +486,7 @@ class ReportsControllerTest extends CIUnitTestCase
         ]);
         $this->loginAs($employeeId);
 
-        $response = $this->get('/reports/specific_supplier_input');
+        $response = $this->get('/reports/specific_suppliers');
 
         $response->assertRedirect();
         $this->assertStringContainsString('no_access/index/reports/reports_suppliers', $response->getRedirectUrl());
@@ -498,7 +498,7 @@ class ReportsControllerTest extends CIUnitTestCase
      *
      * @return void
      */
-    public function testSpecificSupplierInput_AcceptsReportsSuppliersGrant(): void
+    public function testSpecificSuppliersInput_AcceptsReportsSuppliersGrant(): void
     {
         $employeeId = $this->createNonAdminEmployee([
             'username' => 'specificsupinputallowed',
@@ -510,7 +510,7 @@ class ReportsControllerTest extends CIUnitTestCase
         ]);
         $this->loginAs($employeeId);
 
-        $response = $this->get('/reports/specific_supplier_input');
+        $response = $this->get('/reports/specific_suppliers');
 
         $response->assertStatus(200);
     }
