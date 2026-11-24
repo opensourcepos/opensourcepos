@@ -105,7 +105,10 @@ class ReportsControllerTest extends CIUnitTestCase
     public function testNonAdminWithoutReportGrantIsDeniedSummaryCustomers(): void
     {
         $nonAdminId = $this->createNonAdminEmployee([
-            'grants' => [
+            'username' => 'summarycustomersdenied',
+            'email'    => 'summarycustomersdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
                 ['permission_id' => 'reports_sales', 'menu_group' => 'home']
             ]
         ]);
@@ -114,7 +117,7 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/summary_customers');
 
         $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $this->assertStringContainsString('no_access/index/reports/reports_customers', $response->getRedirectUrl());
     }
 
     /**
@@ -127,7 +130,10 @@ class ReportsControllerTest extends CIUnitTestCase
     public function testDoubleEncodedUnderscoreCannotBypassSummaryCustomersGrantCheck(): void
     {
         $nonAdminId = $this->createNonAdminEmployee([
-            'grants' => [
+            'username' => 'summarybypassdenied',
+            'email'    => 'summarybypassdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
                 ['permission_id' => 'reports_sales', 'menu_group' => 'home']
             ]
         ]);
@@ -136,7 +142,7 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/summary%255Fcustomers');
 
         $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $this->assertStringContainsString('no_access/index/reports/reports', $response->getRedirectUrl());
     }
 
     /**
@@ -148,7 +154,10 @@ class ReportsControllerTest extends CIUnitTestCase
     public function testDoubleEncodedUnderscoreCannotBypassDetailedSalesGrantCheck(): void
     {
         $nonAdminId = $this->createNonAdminEmployee([
-            'grants' => [
+            'username' => 'detailedbypassdenied',
+            'email'    => 'detailedbypassdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
                 ['permission_id' => 'reports_customers', 'menu_group' => 'home']
             ]
         ]);
@@ -157,7 +166,7 @@ class ReportsControllerTest extends CIUnitTestCase
         $response = $this->get('/reports/detailed%255Fsales');
 
         $response->assertRedirect();
-        $this->assertStringContainsString('no_access', $response->getRedirectUrl());
+        $this->assertStringContainsString('no_access/index/reports/reports', $response->getRedirectUrl());
     }
 
     /**
@@ -202,6 +211,306 @@ class ReportsControllerTest extends CIUnitTestCase
         $this->loginAs($employeeId);
 
         $response = $this->get('/reports');
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Seed a customer whose company_name holds an attacker-controlled XSS payload.
+     * company_name is stored raw on save (not nameize()'d), mirroring what an
+     * attacker with customer-management permission can persist.
+     *
+     * @param string $companyName
+     * @return int
+     */
+    protected function createCustomerWithCompanyName(string $companyName): int
+    {
+        $db = \Config\Database::connect();
+
+        $db->table('people')->insert([
+            'first_name'   => 'Mallory',
+            'last_name'    => 'Attacker',
+            'phone_number' => '555-0100',
+            'email'        => 'mallory-' . uniqid() . '@test.com',
+            'address_1'    => '',
+            'address_2'    => '',
+            'city'         => '',
+            'state'        => '',
+            'zip'          => '',
+            'country'        => '',
+            'comments'     => '',
+        ]);
+        $personId = (int) $db->insertID();
+
+        $db->table('customers')->insert([
+            'person_id'    => $personId,
+            'employee_id'  => 1,
+            'company_name' => $companyName,
+            'points'       => 0,
+        ]);
+
+        return $personId;
+    }
+
+    /**
+     * The detailed sales row refresh endpoint must require reports_sales.
+     *
+     * @return void
+     */
+    public function testGetGet_detailed_sales_row_RequiresReportsSalesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'salesrowdenied',
+            'email'    => 'salesrowdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/get_detailed_sales_row/1');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_sales', $response->getRedirectUrl());
+    }
+
+    /**
+     * The detailed receivings row refresh endpoint must require reports_receivings.
+     *
+     * @return void
+     */
+    public function testGetGet_detailed_receivings_row_RequiresReportsReceivingsGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'receivingsrowdenied',
+            'email'    => 'receivingsrowdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/get_detailed_receivings_row/1');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_receivings', $response->getRedirectUrl());
+    }
+
+    /**
+     * The detailed item sales input form must require reports_sales.
+     *
+     * @return void
+     */
+    public function testDateInputItemSales_RequiresReportsSalesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'itemsalesinputdenied',
+            'email'    => 'itemsalesinputdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/detailed_item_sales');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_sales', $response->getRedirectUrl());
+    }
+
+    /**
+     * The detailed item sales input form must accept the reports_sales grant.
+     *
+     * @return void
+     */
+    public function testDateInputItemSales_AcceptsReportsSalesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'itemsalesinputallowed',
+            'email'    => 'itemsalesinputallowed@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/detailed_item_sales');
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * A customer's company_name may hold an attacker-controlled XSS payload.
+     * The Specific Customer report input page must render it as escaped text in
+     * the dropdown label, never as live HTML (form_dropdown() does not escape).
+     *
+     * @return void
+     */
+    public function testSpecificCustomerReportEscapesCustomerCompanyName(): void
+    {
+        $payload = '<img src=x onerror=alert(1)>';
+        $this->createCustomerWithCompanyName($payload);
+
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificreportviewer',
+            'email'    => 'specificreportviewer@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_customers');
+
+        $response->assertStatus(200);
+        $body = (string) $response->getBody();
+
+        $this->assertStringContainsString('Mallory', $body, 'Seeded customer missing from the Specific Customer report dropdown.');
+        $this->assertStringNotContainsString($payload, $body, 'Raw XSS payload leaked into the Specific Customer report dropdown.');
+    }
+
+    /**
+     * The specific customer input helper (explicit route /specific_customers) lists all customers and
+     * must require the reports_customers grant, not just the parent reports grant.
+     *
+     * @return void
+     */
+    public function testSpecificCustomersInput_RequiresReportsCustomersGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificcustinputdenied',
+            'email'    => 'specificcustinputdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_customers');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_customers', $response->getRedirectUrl());
+    }
+
+    /**
+     * An employee with the reports_customers grant must be able to access
+     * the specific customer input helper.
+     *
+     * @return void
+     */
+    public function testSpecificCustomersInput_AcceptsReportsCustomersGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificcustinputallowed',
+            'email'    => 'specificcustinputallowed@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_customers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_customers');
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * The specific employee input helper (explicit route /specific_employees) lists all employees and
+     * must require the reports_employees grant.
+     *
+     * @return void
+     */
+    public function testSpecificEmployeesInput_RequiresReportsEmployeesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificempinputdenied',
+            'email'    => 'specificempinputdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_employees');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_employees', $response->getRedirectUrl());
+    }
+
+    /**
+     * An employee with the reports_employees grant must be able to access
+     * the specific employee input helper.
+     *
+     * @return void
+     */
+    public function testSpecificEmployeesInput_AcceptsReportsEmployeesGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificempinputallowed',
+            'email'    => 'specificempinputallowed@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_employees', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_employees');
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * The specific supplier input helper (explicit route /specific_suppliers) lists all suppliers and
+     * must require the reports_suppliers grant.
+     *
+     * @return void
+     */
+    public function testSpecificSuppliersInput_RequiresReportsSuppliersGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificsupinputdenied',
+            'email'    => 'specificsupinputdenied@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_sales', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_suppliers');
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('no_access/index/reports/reports_suppliers', $response->getRedirectUrl());
+    }
+
+    /**
+     * An employee with the reports_suppliers grant must be able to access
+     * the specific supplier input helper.
+     *
+     * @return void
+     */
+    public function testSpecificSuppliersInput_AcceptsReportsSuppliersGrant(): void
+    {
+        $employeeId = $this->createNonAdminEmployee([
+            'username' => 'specificsupinputallowed',
+            'email'    => 'specificsupinputallowed@test.com',
+            'grants'   => [
+                ['permission_id' => 'reports', 'menu_group' => 'home'],
+                ['permission_id' => 'reports_suppliers', 'menu_group' => 'home']
+            ]
+        ]);
+        $this->loginAs($employeeId);
+
+        $response = $this->get('/reports/specific_suppliers');
 
         $response->assertStatus(200);
     }
