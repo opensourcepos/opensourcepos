@@ -82,10 +82,10 @@
             <div class="form-group form-group-sm">
                 <?= form_label(lang('Sales.payment'), "payment_$i", ['class' => 'control-label col-xs-3']) ?>
                 <div class="col-xs-4">
-                    <?php // No editing of Gift Card payments as it's a complex change ?>
+                    <?php // No editing of Gift Card payments as it's a complex change, nor of verified Nano payments ?>
                     <?= form_hidden("payment_id_$i", $row->payment_id) ?>
                     <?= form_hidden("reference_code_$i", $row->reference_code ?? '') ?>
-                    <?php if (!empty(strstr($row->payment_type, lang('Sales.giftcard')))): ?>
+                    <?php if (!empty(strstr($row->payment_type, lang('Sales.giftcard'))) || $row->payment_type === lang('Sales.nano')): ?>
                         <?= form_input(['name' => "payment_type_$i", 'value' => $row->payment_type, 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
                     <?php else: ?>
                         <?= form_dropdown("payment_type_$i", $payment_options, $row->payment_type, ['id' => "payment_types_$i", 'class' => 'form-control']) ?>

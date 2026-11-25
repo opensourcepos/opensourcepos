@@ -276,6 +276,10 @@ function get_payment_options(): array
     $payments[lang('Sales.bank_transfer')] = lang('Sales.bank_transfer');
     $payments[lang('Sales.wallet')]        = lang('Sales.wallet');
 
+    // Nano (XNO) is deliberately not in this shared list (used by sale edit,
+    // receivings and expenses): it is added only by the sales register, the one
+    // place a Nano payment is verified against the node.
+
     return $payments;
 }
 
@@ -285,10 +289,18 @@ function get_payment_options(): array
  */
 function get_reference_code_payment_types(): array
 {
-    return [
+    $types = [
         lang('Sales.debit'),
         lang('Sales.credit'),
     ];
+
+    // When Nano is on, the Nano block hash is entered in the same reference-code
+    // field, so the register shows the field for it with no extra view code.
+    if (App\Libraries\Nano\PaymentGateway::isEnabled(config(OSPOS::class)->settings)) {
+        $types[] = lang('Sales.nano');
+    }
+
+    return $types;
 }
 
 /**

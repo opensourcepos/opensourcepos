@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
 use App\Libraries\Email_lib;
+use App\Libraries\Nano\PaymentGateway;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
 use App\Libraries\Token_lib;
@@ -25,6 +26,7 @@ use Config\Services;
 use Config\OSPOS;
 use ReflectionException;
 use stdClass;
+use Throwable;
 
 class Sales extends Secure_Controller
 {
@@ -424,12 +426,39 @@ class Sales extends Secure_Controller
             return $this->reload($data);
         }
 
+        // A Nano payment is only ever recorded after its block is verified, so a
+        // posted Nano type is refused outright while Nano is turned off rather
+        // than falling through to the generic, unverified payment path.
+        if ($paymentType === lang('Sales.nano') && !PaymentGateway::isEnabled($this->config)) {
+            $data['error'] = lang('Sales.nano_not_enabled');
+
+            return $this->reload($data);
+        }
+
         $isReturnMode = $this->sale_lib->get_mode() === 'return';
         $amountTenderedRule = $isReturnMode ? 'trim|required|decimal_locale' : 'trim|required|decimal_locale|nonNegativeDecimal';
 
         if ($paymentType === lang('Sales.giftcard')) {
             $rules    = ['amount_tendered' => 'trim|required|integer'];
             $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
+        } elseif ($paymentType === lang('Sales.nano')) {
+            // The Nano reference code is a 64-hex block hash, longer than the
+            // generic reference-code limits, so it only has to be present here;
+            // the gateway checks it is a valid hash and reports a clear message.
+            $rules    = [
+                'amount_tendered' => $amountTenderedRule,
+                'reference_code'  => 'trim|required',
+            ];
+            $messages = [
+                'amount_tendered' => [
+                    'required'           => lang('Sales.must_enter_numeric'),
+                    'decimal_locale'     => lang('Sales.must_enter_numeric'),
+                    'nonNegativeDecimal' => lang('Sales.negative_amount_tendered'),
+                ],
+                'reference_code'  => [
+                    'required' => lang('Sales.must_enter_reference_code'),
+                ],
+            ];
         } elseif (in_array($paymentType, get_reference_code_payment_types())) {
             $min      = (int)($this->config['payment_reference_code_min'] ?? 3);
             $max      = (int)($this->config['payment_reference_code_max'] ?? 20);
@@ -525,6 +554,39 @@ class Sales extends Secure_Controller
                     $this->session->set('cash_mode', CASH_MODE_TRUE);
                     $this->sale_lib->addPayment(lang('Sales.cash_adjustment'), $cashAdjustmentAmount, null, CASH_ADJUSTMENT_TRUE);
                 }
+            } elseif ($paymentType === lang('Sales.nano')) {
+                // Read the entered block from the operator's node and credit the
+                // sale only if it is a confirmed send of the exact quoted amount,
+                // to the configured account, bound to this sale, and not already
+                // spent. A durable claims ledger refuses any replay.
+                //
+                // The amount credited is the sale-currency amount stored with the
+                // quote on the server, never the posted amount_tendered: the block
+                // pays exactly that quote, so a larger posted tender cannot create
+                // change the payer never sent.
+                $blockHash = (string)$this->request->getPost('reference_code');
+                $quote = $this->sale_lib->get_nano_quote();
+
+                if ($quote === null || !isset($quote['order_ref'], $quote['price_raw'], $quote['amount_due'])) {
+                    $data['error'] = lang('Sales.nano_not_initiated');
+                } elseif (bccomp((string)$quote['amount_due'], $this->sale_lib->get_amount_due(), totals_decimals()) !== 0) {
+                    // The sale changed after the payer was shown the amount; the
+                    // quote no longer describes this sale, so nothing is verified.
+                    $data['error'] = lang('Sales.nano_quote_changed');
+                } else {
+                    try {
+                        $gateway = new PaymentGateway($this->config);
+                        $result  = $gateway->verify($blockHash, (string)$quote['order_ref'], (string)$quote['price_raw']);
+                        if ($result['ok']) {
+                            $this->sale_lib->addPayment($paymentType, (string)$quote['amount_due'], strtoupper(trim($blockHash)));
+                            $this->sale_lib->clear_nano_quote();
+                        } else {
+                            $data['error'] = lang('Sales.nano_payment_refused', [$result['error']]);
+                        }
+                    } catch (Throwable $e) {
+                        $data['error'] = lang('Sales.nano_payment_refused', [$e->getMessage()]);
+                    }
+                }
             } else {
                 $amountTendered = parse_decimals($this->request->getPost('amount_tendered'));
                 $referenceCode = $this->request->getPost('reference_code');
@@ -533,6 +595,42 @@ class Sales extends Secure_Controller
         }
 
         return $this->reload($data);
+    }
+
+    /**
+     * Returns the Nano (XNO) payment request for the in-progress sale: the exact
+     * amount to send (in XNO and in raw) and the representative account the payer
+     * must set so the send block belongs to this one sale (binding option C). The
+     * order reference and the exact raw are stored with the sale so postAddPayment
+     * checks the block against the amount the payer was shown. Used in
+     * app/Views/sales/register.php; auto-routed to GET sales/nanoPaymentRequest.
+     *
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function getNanoPaymentRequest(): ResponseInterface
+    {
+        if (!PaymentGateway::isEnabled($this->config)) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => lang('Sales.nano_not_enabled')]);
+        }
+
+        $amountDue = $this->sale_lib->get_amount_due();
+
+        $quote = $this->sale_lib->get_nano_quote();
+        $orderRef = ($quote !== null && !empty($quote['order_ref'])) ? (string)$quote['order_ref'] : bin2hex(random_bytes(16));
+
+        try {
+            $gateway = new PaymentGateway($this->config);
+            $request = $gateway->quote($orderRef, (string)$amountDue);
+        } catch (Throwable $e) {
+            return $this->response->setStatusCode(422)->setJSON(['error' => $e->getMessage()]);
+        }
+
+        // The sale-currency amount is kept with the quote so postAddPayment
+        // credits exactly what the block pays and can tell when the sale changed.
+        $this->sale_lib->set_nano_quote(['order_ref' => $orderRef, 'price_raw' => $request['amount_raw'], 'amount_due' => (string)$amountDue]);
+
+        return $this->response->setJSON($request);
     }
 
     /**
@@ -1373,6 +1471,13 @@ class Sales extends Secure_Controller
             $data['payment_options'] = $this->sale->get_payment_options();
         }
 
+        // Nano (XNO) is offered only here, in the register, where every Nano
+        // payment is checked against the node; the shared payment list used by
+        // sale edit, receivings and expenses never includes it.
+        if (PaymentGateway::isEnabled($this->config)) {
+            $data['payment_options'][lang('Sales.nano')] = lang('Sales.nano');
+        }
+
         $data['reference_code_payment_types'] = get_reference_code_payment_types();
 
         $data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
@@ -1607,6 +1712,13 @@ class Sales extends Secure_Controller
         // Validate reference_code for the new payment if applicable
         $paymentTypeNewCheck = $this->request->getPost('payment_type_new', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $paymentAmountNewCheck = $this->request->getPost('payment_amount_new');
+
+        // A Nano payment is only taken in the register, where its block is
+        // verified; sale edit has no node check, so it never adds one.
+        if ($paymentTypeNewCheck === lang('Sales.nano') && !empty($paymentAmountNewCheck)) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Sales.nano_not_enabled'), 'id' => $saleId]);
+        }
+
         if ($paymentTypeNewCheck != PAYMENT_TYPE_UNASSIGNED && !empty($paymentAmountNewCheck)
             && in_array($paymentTypeNewCheck, get_reference_code_payment_types())) {
             $min = (int)($this->config['payment_reference_code_min'] ?? 3);
@@ -1794,6 +1906,11 @@ class Sales extends Secure_Controller
             $this->sale_lib->clear_all();
         } else {
             $data['success'] = lang('Sales.successfully_suspended_sale');
+            // An outstanding Nano quote stays with the suspended sale so a block
+            // the payer already sent still verifies after unsuspend.
+            if (!$this->sale_lib->suspend_nano_quote($saleIdNum)) {
+                log_message('error', "Could not save the Nano quote of suspended sale $saleIdNum.");
+            }
             $this->sale_lib->clear_all();
         }
 
@@ -1833,6 +1950,7 @@ class Sales extends Secure_Controller
         if ($saleId > 0 && $this->sale->getSaleStatus($saleId) == SUSPENDED) {
             $this->sale_lib->clear_all();
             $this->sale_lib->copy_entire_sale($saleId);
+            $this->sale_lib->restore_nano_quote((int)$saleId);
         }
 
         // Set current register mode to reflect that of unsuspended order type
