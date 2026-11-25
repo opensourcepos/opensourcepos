@@ -43,7 +43,7 @@ This document provides guidance for AI agents working on the Open Source Point o
       protected $migrateOnce = true;
       protected $seedOnce    = true;
       protected $refresh     = false;
-      protected $namespace   = null;
+      protected $namespace   = 'App';
 
       protected function setUp(): void
       {
@@ -54,6 +54,10 @@ This document provides guidance for AI agents working on the Open Source Point o
       }
   }
   ```
+  **Always set `$namespace = 'App'`** — never `null`. `null` causes CI4 to run migrations from every registered namespace including vendor packages, which creates tables without the app's extra columns and breaks tests. Only app-namespace migrations may ever touch the test database.
+
+  `$namespace = 'App'` only limits *forward* migrations. A `$refresh = true` run calls `regress(0)`, which rolls back every recorded migration in the migrations table regardless of namespace, so vendor migrations recorded by an earlier run are rolled back too. Always clear the test database (drop all tables, including the migrations table) before a `$refresh = true` run; prefer `DatabaseBootstrapTrait` over `$refresh`.
+
   `DatabaseBootstrapTrait` (`tests/Support/DatabaseBootstrapTrait.php`) wraps `TestDatabaseBootstrapSeeder::reset()` with a per-class static guard so it only runs once per test class. Do **not** reinvent this with a local `private static bool $doneBootstrap` flag, `setUpBeforeClass()`, or `Config::seeder($this->DBGroup)->call('App\Database\Seeds\TestDatabaseBootstrapSeeder')` followed by a manual `Config::connect($this->DBGroup)->close()`/`resetDataCache()` in the test file — those are the old patterns the trait replaces, and the manual version reintroduces the exact stale-connection bug `TestDatabaseBootstrapSeeder::reset()` already fixes internally. Only add this trait to test classes that actually touch the real test database (`DatabaseTestTrait` users) — pure unit tests that mock everything don't need it.
   If a test class reads `config(OSPOS::class)->settings` for real (not mocking it out), also call `config(OSPOS::class)->update_settings();` right after `parent::setUp();` to force a fresh settings read post-reset. See `tests/Controllers/ReportsControllerTest.php` for that shape.
 - **Mocking OSPOS config settings.** When a test needs `config(OSPOS::class)->settings` to return fixed values instead of reading from the database, `use Tests\Support\OsposConfigFixtureTrait;` and call `$this->injectOsposSettings([...])` instead of manually constructing `new OSPOS()` + `Factories::injectMock('config', OSPOS::class, $ospos)`:

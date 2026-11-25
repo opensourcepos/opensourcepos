@@ -18,7 +18,7 @@ class AppconfigTest extends CIUnitTestCase
     protected $seed = '';
     protected $seedOnce = true;
     protected $refresh = true;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     protected function setUp(): void
     {
