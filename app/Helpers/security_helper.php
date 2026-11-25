@@ -125,6 +125,10 @@ function applyEnvKeyReplacement(string $configFile, string $envKey, string $valu
  * Writes $contents to a temp file in the same directory as $path, then
  * renames it onto $path so readers never observe a partially written file.
  *
+ * If rename() is blocked (e.g. $path is a single-file bind mount on Linux,
+ * which returns EBUSY), falls back to a direct in-place write via
+ * fopen('r+') + ftruncate + fwrite, which works on bind mounts.
+ *
  * @param string $path
  * @param string $contents
  * @return bool
@@ -163,18 +167,37 @@ function atomicWriteFile(string $path, string $contents): bool
 
     fclose($handle);
 
-    // On Windows rename() does not overwrite an existing destination. Fall back to unlink()+rename().
-    if (!@rename($tmpPath, $path)) {
-        if (PHP_OS_FAMILY !== 'Windows' || !@unlink($path) || !@rename($tmpPath, $path)) {
-            @unlink($tmpPath);
+    if (@rename($tmpPath, $path)) {
+        @chmod($path, 0640);
 
-            return false;
-        }
+        return true;
     }
 
-    @chmod($path, 0640);
+    // rename() is blocked when $path is a single-file bind mount (Linux
+    // returns EBUSY). Fall back to a direct in-place write, which works
+    // on bind mounts and is safe during single-process startup provisioning.
+    $fh = @fopen($path, 'r+');
+    if ($fh !== false && ftruncate($fh, 0) && fwrite($fh, $contents) !== false && fflush($fh)) {
+        fclose($fh);
+        @unlink($tmpPath);
+        @chmod($path, 0640);
 
-    return true;
+        return true;
+    }
+    if ($fh !== false) {
+        fclose($fh);
+    }
+
+    // Windows: rename() cannot overwrite an existing destination.
+    if (PHP_OS_FAMILY === 'Windows' && @unlink($path) && @rename($tmpPath, $path)) {
+        @chmod($path, 0640);
+
+        return true;
+    }
+
+    @unlink($tmpPath);
+
+    return false;
 }
 
 /**
