@@ -8,7 +8,7 @@ class ReportPermissions extends BaseConfig
 {
     public array $routes = [
         'summary_sales'             => 'reports_sales',
-        'summary_expenses_categories' => 'reports_expenses_categories',
+        'summary_expenses_categories' => 'reports_expenses',
         'summary_payments'          => 'reports_payments',
         'summary_discounts'         => 'reports_discounts',
         'summary_categories'        => 'reports_categories',
