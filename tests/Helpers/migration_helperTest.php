@@ -15,7 +15,7 @@ class migration_helperTest extends CIUnitTestCase
     protected $migrate     = true;
     protected $migrateOnce = true;
     protected $refresh     = false;
-    protected $namespace   = null;
+    protected $namespace   = 'App';
 
     public function testIndexExists_ThrowsWhenQueryFails(): void
     {
