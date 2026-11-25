@@ -322,7 +322,7 @@ return [
     'system_info_copy_success'                  => '',
     'table'                                     => '',
     'table_configuration'                       => '',
-    'takings_printer'                           => '',
+    'takings_printer'                           => 'Takings Printer',
     'tax'                                       => '',
     'tax_category'                              => '',
     'tax_category_duplicate'                    => '',

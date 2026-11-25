@@ -302,7 +302,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $stockLocations = ['Warehouse'];
         $attributes = [];
 
-        $csv = generate_import_items_csv($stockLocations, $attributes);
+        $csv = generateImportItemsCsv($stockLocations, $attributes);
 
         $this->assertStringContainsString('Id,Barcode,"Item Name"', $csv);
         $this->assertStringContainsString('Category,"Supplier ID"', $csv);
@@ -322,7 +322,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $stockLocations = ['Warehouse', 'Store', 'Backroom'];
         $attributes = [];
 
-        $csv = generate_import_items_csv($stockLocations, $attributes);
+        $csv = generateImportItemsCsv($stockLocations, $attributes);
 
         $this->assertStringContainsString('"location_Warehouse"', $csv);
         $this->assertStringContainsString('"location_Store"', $csv);
@@ -334,7 +334,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $stockLocations = ['Warehouse'];
         $attributes = ['Color', 'Size', 'Weight'];
 
-        $csv = generate_import_items_csv($stockLocations, $attributes);
+        $csv = generateImportItemsCsv($stockLocations, $attributes);
 
         $this->assertStringContainsString('"attribute_Color"', $csv);
         $this->assertStringContainsString('"attribute_Size"', $csv);
@@ -345,7 +345,7 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $locations = ['Warehouse', 'Store'];
 
-        $headers = generate_stock_location_headers($locations);
+        $headers = generateStockLocationHeaders($locations);
 
         $this->assertEquals(',"location_Warehouse","location_Store"', $headers);
     }
@@ -354,7 +354,7 @@ class ItemsControllerTest extends CIUnitTestCase
     {
         $attributes = ['Color', 'Size'];
 
-        $headers = generate_attribute_headers($attributes);
+        $headers = generateAttributeHeaders($attributes);
 
         $this->assertEquals(',"attribute_Color","attribute_Size"', $headers);
     }
@@ -364,7 +364,7 @@ class ItemsControllerTest extends CIUnitTestCase
         $attributes = [-1 => 'None', 'Color' => 'Color'];
         unset($attributes[-1]);
 
-        $headers = generate_attribute_headers($attributes);
+        $headers = generateAttributeHeaders($attributes);
 
         $this->assertStringContainsString('"attribute_Color"', $headers);
     }
@@ -500,7 +500,7 @@ class ItemsControllerTest extends CIUnitTestCase
         file_put_contents($tempFile, $contentWithBom);
 
         $handle = fopen($tempFile, 'r');
-        $result = bom_exists($handle);
+        $result = bomExists($handle);
         fclose($handle);
 
         $this->assertTrue($result);
@@ -515,7 +515,7 @@ class ItemsControllerTest extends CIUnitTestCase
         file_put_contents($tempFile, $contentWithoutBom);
 
         $handle = fopen($tempFile, 'r');
-        $result = bom_exists($handle);
+        $result = bomExists($handle);
         fclose($handle);
 
         $this->assertFalse($result);
