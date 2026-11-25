@@ -16,7 +16,7 @@ class Stock_locationTest extends CIUnitTestCase
     protected $migrateOnce = true;
     protected $seedOnce = true;
     protected $refresh = true;
-    protected $namespace = null;
+    protected $namespace = 'App';
 
     protected $stockLocation;
 
