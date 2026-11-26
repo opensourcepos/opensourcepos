@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Temukan atau pindai Item atau Faktur',
     'giftcard'                          => 'Kartu Hadiah',
     'giftcard_balance'                  => 'Nilai Kupon Bonus',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Nomor Kartu Hadiah',
     'group_by_category'                 => 'Dikelompokkan berdasarkan Kategori',
     'group_by_type'                     => 'Dikelompokkan berdasarkan Jenis',

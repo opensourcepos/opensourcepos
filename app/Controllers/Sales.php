@@ -832,6 +832,14 @@ class Sales extends Secure_Controller
             return $this->reload($data);
         }
 
+        if ($this->sale_lib->get_mode() === 'return') {
+            $error = $this->validateGiftcardCreditForReturn($data['payments'], $totals['total']);
+            if ($error !== null) {
+                $data['error'] = $error;
+                return $this->reload($data);
+            }
+        }
+
         if ($data['cash_mode']) {    // TODO: Convert this to ternary notation
             $data['amount_due'] = $totals['cash_amount_due'];
         } else {
@@ -1299,6 +1307,28 @@ class Sales extends Secure_Controller
         $data['receipt_template_view'] = $receipt_template;
 
         return $data;
+    }
+
+    private function validateGiftcardCreditForReturn(array $payments, string $total): ?string
+    {
+        $precision = 0;
+        foreach (array_merge([$total], array_column($payments, 'payment_amount')) as $amount) {
+            $fraction = explode('.', (string) $amount, 2)[1] ?? '';
+            $precision = max($precision, strlen($fraction));
+        }
+
+        $giftcardCredit = '0';
+        foreach ($payments as $payment) {
+            $splitPayment = explode(':', $payment['payment_type'], 2);
+            if ($splitPayment[0] === lang('Sales.giftcard') && bccomp((string) $payment['payment_amount'], '0', $precision) < 0) {
+                $giftcardCredit = bcsub($giftcardCredit, (string) $payment['payment_amount'], $precision);
+            }
+        }
+
+        $returnTotal = bccomp($total, '0', $precision) < 0 ? bcmul($total, '-1', $precision) : $total;
+        return bccomp($giftcardCredit, $returnTotal, $precision) > 0
+            ? lang('Sales.giftcard_credit_exceeds_return')
+            : null;
     }
 
     /**

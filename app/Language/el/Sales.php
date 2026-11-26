@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Εύρεση ή Σκανάρισμα είδους ή Απόδειξης',
     'giftcard'                          => 'Δωροκάρτα',
     'giftcard_balance'                  => 'Υπόλοιπο Δωροκάρτας',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Αριθμός Δωροκάρτας',
     'group_by_category'                 => 'Ομαδοποίηση ανά Κατηγορία',
     'group_by_type'                     => 'Ομαδοποίηση ανά Είδος',

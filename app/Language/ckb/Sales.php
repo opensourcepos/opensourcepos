@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'دۆزینەوە یان سکانکردنی ئایتم یان پسوڵە',
     'giftcard'                          => 'کارتی دیاری',
     'giftcard_balance'                  => 'باڵانسی کارتی دیاری',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'ژمارەی کارتی دیاری',
     'group_by_category'                 => 'گروپ بەپێی پۆلێن',
     'group_by_type'                     => 'گروپ بەپێی جۆر',

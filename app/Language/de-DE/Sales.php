@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Finde/Scanne Artikel oder Quittung',
     'giftcard'                          => 'Gutschein',
     'giftcard_balance'                  => 'Gutschein Restwert',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Gutschein Nummer',
     'group_by_category'                 => 'Gruppiere nach Kategorie',
     'group_by_type'                     => 'Gruppiere nach Typ',

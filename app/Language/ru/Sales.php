@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Найти или сканировать товар или чек',
     'giftcard'                          => 'Подарочная карта',
     'giftcard_balance'                  => 'Баланс подарочной карты',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Номер подарочной карты',
     'group_by_category'                 => 'Группировать по категориям',
     'group_by_type'                     => 'Группировать по типу',

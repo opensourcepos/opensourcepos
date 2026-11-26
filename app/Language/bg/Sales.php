@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Намерете или сканирайте елемент или разпис',
     'giftcard'                          => 'Gift Карта',
     'giftcard_balance'                  => 'Gift Card Баланс',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Gift Card Номер',
     'group_by_category'                 => 'Групирайте по категория',
     'group_by_type'                     => 'Групиране по тип',

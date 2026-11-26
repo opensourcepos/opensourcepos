@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'Termék keresése',
     'giftcard'                          => 'Ajándék utalvány',
     'giftcard_balance'                  => 'Ajándék utalvány egyenleg',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Ajándék utalvány sorszáma',
     'group_by_category'                 => '',
     'group_by_type'                     => '',

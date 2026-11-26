@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => 'חיפוש או סריקה של פריט או קבלה',
     'giftcard'                          => 'כרטיס מתנה',
     'giftcard_balance'                  => 'מאזן כרטיס מתנה',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'מספר כרטיס מתנה',
     'group_by_category'                 => 'קבוצה או קטגוריה',
     'group_by_type'                     => 'קבוצה לפי סוג',

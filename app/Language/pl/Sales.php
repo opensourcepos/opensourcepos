@@ -64,6 +64,7 @@ return [
     'find_or_scan_item_or_receipt'      => '',
     'giftcard'                          => 'Karta Podarunkowa',
     'giftcard_balance'                  => '',
+    'giftcard_credit_exceeds_return'    => '',
     'giftcard_number'                   => 'Numer Karty Podarunkowej',
     'group_by_category'                 => '',
     'group_by_type'                     => '',
