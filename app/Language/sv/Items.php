@@ -76,6 +76,7 @@ return [
     'none'                               => 'inga',
     'none_selected'                      => 'Du har inte valt några artiklar att redigera',
     'nonstock'                           => 'Icke-lager',
+    'not_authorized'                      => '',
     'number_information'                 => 'Artikelnummer',
     'number_required'                    => 'Streckkod är ett obligatoriskt fält.',
     'one_or_multiple'                    => 'Artikel',

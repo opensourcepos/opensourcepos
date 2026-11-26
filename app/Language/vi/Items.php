@@ -76,6 +76,7 @@ return [
     'none'                               => 'Không',
     'none_selected'                      => 'Bạn chưa chọn bất kỳ một Hàng hóa nào để mà sửa',
     'nonstock'                           => 'Hết hàng',
+    'not_authorized'                      => '',
     'number_information'                 => 'Số hàng hóa',
     'number_required'                    => 'Trường Mã vạch là bắt buộc.',
     'one_or_multiple'                    => 'hàng hóa',

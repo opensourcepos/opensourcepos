@@ -76,6 +76,7 @@ return [
     'none'                               => 'Nenhum',
     'none_selected'                      => 'Não selecionou nenhum produto para editar',
     'nonstock'                           => 'Sem estoque',
+    'not_authorized'                      => '',
     'number_information'                 => 'Item Número',
     'number_required'                    => 'Cod. Barra é um campo obrigatório.',
     'one_or_multiple'                    => '',

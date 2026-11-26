@@ -76,6 +76,7 @@ return [
     'none'                               => 'Nichts',
     'none_selected'                      => 'Sie haben keine Artikel zum Ändern gewählt',
     'nonstock'                           => 'Nicht lagernd',
+    'not_authorized'                      => '',
     'number_information'                 => 'Artikelnummer',
     'number_required'                    => 'Barcode ist ein Pflichtfeld.',
     'one_or_multiple'                    => 'Artikel',

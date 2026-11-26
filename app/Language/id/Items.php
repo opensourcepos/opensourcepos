@@ -76,6 +76,7 @@ return [
     'none'                               => 'Tidak Ada',
     'none_selected'                      => 'Anda belum memilih Barang untuk diubah',
     'nonstock'                           => 'Tidak ada stok',
+    'not_authorized'                      => '',
     'number_information'                 => 'Nomor Barang',
     'number_required'                    => 'Barcode harus diisi.',
     'one_or_multiple'                    => 'Item Barang',

@@ -76,6 +76,7 @@ return [
     'none'                               => 'هیچیان',
     'none_selected'                      => 'تۆ هیچ ئایتمێکت هەڵنەبژاردووە بۆ دەستکاریکردن',
     'nonstock'                           => 'لە کۆگادانەنراو',
+    'not_authorized'                      => '',
     'number_information'                 => 'ژمارەی ئایتم',
     'number_required'                    => 'خانەی باڕکۆد پێویستە.',
     'one_or_multiple'                    => 'ئایتم(ەکان)',

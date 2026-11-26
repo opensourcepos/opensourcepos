@@ -76,6 +76,7 @@ return [
     'none'                               => 'Ninguno',
     'none_selected'                      => 'No has seleccionado artículos para editar',
     'nonstock'                           => 'Sin stock',
+    'not_authorized'                      => '',
     'number_information'                 => 'Número del Artículo',
     'number_required'                    => 'UPC/EAN/ISBN es un campo requerido.',
     'one_or_multiple'                    => 'articulo(s)',

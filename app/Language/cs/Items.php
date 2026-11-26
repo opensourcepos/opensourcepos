@@ -76,6 +76,7 @@ return [
     'none'                               => 'Žádný',
     'none_selected'                      => '',
     'nonstock'                           => 'Neskladová',
+    'not_authorized'                      => '',
     'number_information'                 => 'Číslo položky',
     'number_required'                    => 'Musíte zadat čárový kód.',
     'one_or_multiple'                    => 'Položky',

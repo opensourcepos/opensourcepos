@@ -76,6 +76,7 @@ return [
     'none'                               => 'ריק',
     'none_selected'                      => 'לא בחרת פריט כלשהו לעריכה',
     'nonstock'                           => 'לא במלאי',
+    'not_authorized'                      => '',
     'number_information'                 => 'מספר פריט',
     'number_required'                    => 'ברקוד הינו שדה חובה.',
     'one_or_multiple'                    => 'פריט(ים)',

@@ -76,6 +76,7 @@ return [
     'none'                               => 'Ninguno',
     'none_selected'                      => 'Debe elegir algún articulo para poder modificarlo',
     'nonstock'                           => 'No inventariable',
+    'not_authorized'                      => '',
     'number_information'                 => 'Número de artículo/producto',
     'number_required'                    => 'El código de barras es obligatorio.',
     'one_or_multiple'                    => 'Articulos',

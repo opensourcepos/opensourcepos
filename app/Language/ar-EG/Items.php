@@ -76,6 +76,7 @@ return [
     'none'                               => 'لاشىء',
     'none_selected'                      => 'لم تختار أى أصناف لتحريرها',
     'nonstock'                           => 'غير مخزنة',
+    'not_authorized'                      => '',
     'number_information'                 => 'رقم الصنف',
     'number_required'                    => 'مطلوب UPC/EAN/ISBN رقم الباركود.',
     'one_or_multiple'                    => 'صنف/أصناف',
