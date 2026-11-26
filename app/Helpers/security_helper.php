@@ -125,6 +125,17 @@ function applyEnvKeyReplacement(string $configFile, string $envKey, string $valu
  * Writes $contents to a temp file in the same directory as $path, then
  * renames it onto $path so readers never observe a partially written file.
  *
+ * The rename path is fully atomic and is used whenever it works. rename()
+ * fails on a Linux single-file bind mount (EBUSY), where the file can only be
+ * modified in place; an in-place write cannot guarantee that concurrent
+ * readers never see a truncated or partial file. To keep the no-partial-read
+ * guarantee, the in-place fallback is restricted to the CLI SAPI (the
+ * `env:provision` command, where Apache has not started and no other process
+ * can load .env at the same time). Under a web SAPI the in-place write is
+ * refused and the function returns false so a truncated key is never exposed;
+ * the key must instead be supplied via an environment variable
+ * (THROTTLE_KEY / ENCRYPTION_KEY), which needs no write to .env.
+ *
  * @param string $path
  * @param string $contents
  * @return bool
@@ -163,18 +174,88 @@ function atomicWriteFile(string $path, string $contents): bool
 
     fclose($handle);
 
-    // On Windows rename() does not overwrite an existing destination. Fall back to unlink()+rename().
-    if (!@rename($tmpPath, $path)) {
-        if (PHP_OS_FAMILY !== 'Windows' || !@unlink($path) || !@rename($tmpPath, $path)) {
-            @unlink($tmpPath);
+    if (@rename($tmpPath, $path)) {
+        @chmod($path, 0640);
 
-            return false;
-        }
+        return true;
     }
 
-    @chmod($path, 0640);
+    // Windows: rename() cannot overwrite an existing destination.
+    // unlink() + rename() is effectively atomic (a concurrent reader sees a
+    // missing file in the gap, never a partial one), so it is safe under any
+    // SAPI.
+    if (PHP_OS_FAMILY === 'Windows') {
+        if (@unlink($path) && @rename($tmpPath, $path)) {
+            @chmod($path, 0640);
 
-    return true;
+            return true;
+        }
+
+        @unlink($tmpPath);
+
+        return false;
+    }
+
+    // Non-Windows: rename() failed, which on a normal file is unexpected but
+    // on a Linux single-file bind mount is expected (EBUSY). The only way to
+    // modify a bind-mounted file is an in-place write, which cannot guarantee
+    // that concurrent readers never see a truncated or partial file while it
+    // runs. That guarantee only holds when no other process can load .env at
+    // the same time — true for the `env:provision` CLI command (Apache starts
+    // only after it succeeds) and false under a web SAPI, where other requests
+    // can read .env concurrently. So only the CLI is allowed to fall back to
+    // the in-place write; under a web SAPI we refuse it and let the caller
+    // report that the key must be supplied via an environment variable
+    // (THROTTLE_KEY / ENCRYPTION_KEY).
+    if (PHP_SAPI !== 'cli') {
+        @unlink($tmpPath);
+
+        return false;
+    }
+
+    // Single-process CLI context: safe to fall back to an in-place write.
+    // Back up the original first; if the write fails, restore it so a
+    // truncated or empty .env is never left behind.
+    $backupPath = $path . '.bak.' . bin2hex(random_bytes(8));
+    if (!@copy($path, $backupPath)) {
+        @unlink($tmpPath);
+
+        return false;
+    }
+
+    $fh = @fopen($path, 'r+');
+    if ($fh === false) {
+        @unlink($tmpPath);
+        @unlink($backupPath);
+
+        return false;
+    }
+
+    $written = ftruncate($fh, 0) ? fwrite($fh, $contents) : false;
+    $ok      = $written !== false && $written === strlen($contents) && fflush($fh)
+        && (!function_exists('fsync') || fsync($fh));
+    fclose($fh);
+
+    if ($ok) {
+        @unlink($tmpPath);
+        @unlink($backupPath);
+        @chmod($path, 0640);
+
+        return true;
+    }
+
+    // The in-place write left .env truncated or incomplete: restore the
+    // original from the backup taken before the write.
+    if (@copy($backupPath, $path)) {
+        @unlink($tmpPath);
+        @unlink($backupPath);
+    } else {
+        // Keep the backup and the validated temp file so an operator can
+        // recover; report their locations.
+        log_message('critical', 'atomicWriteFile(): in-place write failed and the backup could not be restored. Recoverable files: backup=' . $backupPath . ' tmp=' . $tmpPath);
+    }
+
+    return false;
 }
 
 /**
