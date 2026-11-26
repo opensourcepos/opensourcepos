@@ -561,6 +561,12 @@ class Sale extends Model
         $this->db->transStart();
 
         if ($saleId != NEW_ENTRY) {
+            if (!$this->lockSuspendedSale($saleId)) {
+                $this->db->transComplete();
+
+                return -1;
+            }
+
             $this->clear_suspended_sale_detail($saleId);
         }
 
@@ -697,6 +703,25 @@ class Sale extends Model
         $this->db->transComplete();
 
         return $this->db->transStatus() ? $saleId : -1;
+    }
+
+    /**
+     * Lock the sale until the current transaction ends.
+     */
+    private function lockSuspendedSale(int $saleId): bool
+    {
+        $query = $this->db->query(
+            'SELECT sale_status FROM ' . $this->db->prefixTable('sales') . ' WHERE sale_id = ? FOR UPDATE',
+            [$saleId]
+        );
+
+        if ($query === false) {
+            return false;
+        }
+
+        $sale = $query->getRow();
+
+        return $sale !== null && (int) $sale->sale_status === SUSPENDED;
     }
 
     private function applyGiftcardPayment(?string $giftcardNumber, float $amount, int $saleType, string $saleStatus): bool
