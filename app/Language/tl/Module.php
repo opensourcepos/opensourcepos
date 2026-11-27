@@ -32,6 +32,7 @@ return [
     'migrate_desc'               => '',
     'office'                     => '',
     'office_desc'                => '',
+    'plugins'                    => 'Mga Plugin',
     'receivings'                 => '',
     'receivings_desc'            => '',
     'reports'                    => '',
