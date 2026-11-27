@@ -446,4 +446,33 @@ class SaleTest extends CIUnitTestCase
         $this->assertSame([], $model->get_all_suspended(NEW_ENTRY));
         $this->assertSame([], $model->get_all_suspended(123));
     }
+    public function testSaveValue_PreservesSaleNameWithoutRenamingItem(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $model = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items = $this->buildCartLine($itemId, 1, 5.00);
+        $items[0]['name'] = 'Sale-specific name';
+        $payments = [];
+        $taxes = [[], []];
+
+        $saleId = $model->save_value(
+            NEW_ENTRY, $saleStatus, $items, NEW_ENTRY, $employeeId, '', null, null, null,
+            SALE_TYPE_POS, $payments, null, $taxes
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+        $this->assertSame('Sale-specific name', $model->get_sale_items_ordered($saleId)->getRow()->name);
+        $item = \Config\Database::connect()->table('items')->where('item_id', $itemId)->get()->getRow();
+        $this->assertSame('Test Item', $item->name);
+
+        \Config\Database::connect()->table('items')->where('item_id', $itemId)->update(['name' => 'Renamed inventory item']);
+        $this->assertSame('Sale-specific name', $model->get_sale_items_ordered($saleId)->getRow()->name);
+
+        \Config\Database::connect()->table('sales_items')->where('sale_id', $saleId)->update(['sale_item_name' => null]);
+        $this->assertSame('Renamed inventory item', $model->get_sale_items_ordered($saleId)->getRow()->name);
+    }
+
+
 }

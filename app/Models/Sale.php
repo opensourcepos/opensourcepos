@@ -629,6 +629,7 @@ class Sale extends Model
                 'item_id'            => $itemData['item_id'],
                 'line'               => $itemData['line'],
                 'description'        => character_limiter($itemData['description'], 255),
+                'sale_item_name'     => $itemData['name'] ?? null,
                 'serialnumber'       => character_limiter($itemData['serialnumber'], 30),
                 'quantity_purchased' => $itemData['quantity'],
                 'discount'           => $itemData['discount'],
@@ -879,10 +880,10 @@ class Sale extends Model
             discount_type,
             item_location,
             print_option,
-            ' . $item->get_item_name('name') . ',
             category,
             item_type,
             stock_type');
+        $builder->select('COALESCE(sales_items.sale_item_name, ' . $item->get_item_name() . ') AS name', false);
         $builder->join('items AS items', 'sales_items.item_id = items.item_id');
         $builder->where('sales_items.sale_id', $sale_id);
 

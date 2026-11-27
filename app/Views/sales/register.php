@@ -179,7 +179,8 @@ helper('url');
                             <?php } else { ?>
                                 <td><?= esc($item['item_number']) ?></td>
                                 <td style="text-align: center;">
-                                    <?= esc($item['name']) . ' ' . esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
+                                    <?= form_input(['name' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'maxlength' => 255, 'tabindex' => ++$tabindex]) ?>
+                                    <?= esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
                                     <br>
                                     <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
                                     endif; ?>
@@ -655,20 +656,6 @@ helper('url');
             });
         });
 
-        $("input[name='name']").change(function() {
-            const item_id = $(this).parents('tr').find("input[name='item_id']").val();
-            const item_name = $(this).val();
-            $.ajax({
-                url: "<?= site_url('sales/changeItemName') ?>",
-                method: 'post',
-                data: {
-                    'item_id': item_id,
-                    'item_name': item_name,
-                },
-                dataType: 'json'
-            });
-        });
-
         $("input[name='item_description']").change(function() {
             const item_id = $(this).parents('tr').find("input[name='item_id']").val();
             const item_description = $(this).val();
@@ -857,7 +844,7 @@ helper('url');
             }
         }
 
-        $('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="discounted_total"]').change(function() {
+        $('[name="name"],[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="discounted_total"]').change(function() {
             $(this).parents('tr').prevAll('form:first').submit()
         });
 

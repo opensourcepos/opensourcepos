@@ -1037,7 +1037,7 @@ class Sale_lib
      * @param bool|null $line
      * @return bool
      */
-    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null): bool
+    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null, ?string $saleItemName = null): bool
     {
         $item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
@@ -1106,7 +1106,7 @@ class Sale_lib
                 $maxkey = $item['line'];
             }
 
-            if ($item['item_id'] == $item_id && $item['item_location'] == $item_location) {    // TODO: === ?
+            if ($saleItemName === null && $item['item_id'] == $item_id && $item['item_location'] == $item_location) {    // TODO: === ?
                 $itemalreadyinsale = true;
                 $updatekey = $item['line'];
                 if (!$item_info->is_serialized) {
@@ -1153,7 +1153,7 @@ class Sale_lib
                     'item_location'         => $item_location,
                     'stock_name'            => $this->stock_location->get_location_name($item_location),
                     'line'                  => $insertkey,
-                    'name'                  => $item_info->name,
+                    'name'                  => $saleItemName ?? $item_info->name,
                     'item_number'           => $item_info->item_number,
                     'attribute_values'      => $attribute_links->attribute_values,
                     'attribute_dtvalues'    => $attribute_links->attribute_dtvalues,
@@ -1262,7 +1262,7 @@ class Sale_lib
      * @param string|null $discounted_total
      * @return bool
      */
-    public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discount_type, ?string $price, ?string $discounted_total = null): bool
+    public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discount_type, ?string $price, ?string $discounted_total = null, ?string $name = null): bool
     {
         $items = $this->get_cart();
         if (isset($items[$line])) {
@@ -1270,6 +1270,9 @@ class Sale_lib
             if ($discounted_total != null && $discounted_total != $line['discounted_total']) {
                 // Note when entered the "discounted_total" is expected to be entered without a discount
                 $quantity = $this->get_quantity_sold($discounted_total, $price);
+            }
+            if ($name !== null) {
+                $line['name'] = $name;
             }
             $line['description'] = $description;
             $line['serialnumber'] = $serialnumber;
@@ -1321,7 +1324,7 @@ class Sale_lib
         $this->remove_customer();
 
         foreach ($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row) {
-            $this->add_item($row->item_id, $row->item_location, -$row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, null, true);
+            $this->add_item($row->item_id, $row->item_location, -$row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, null, true, null, null, $row->name);
         }
 
         $this->set_customer($this->sale->get_customer($sale_id)->person_id);
@@ -1366,7 +1369,7 @@ class Sale_lib
         $this->remove_customer();
 
         foreach ($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row) {
-            $this->add_item($row->item_id, $row->item_location, $row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, true, $row->print_option);
+            $this->add_item($row->item_id, $row->item_location, $row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, true, $row->print_option, null, $row->name);
         }
 
         $this->session->set('cash_mode', CASH_MODE_FALSE);

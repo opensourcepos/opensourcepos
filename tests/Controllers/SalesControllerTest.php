@@ -728,4 +728,24 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertNotEmpty($cart);
         $this->assertNotSame($itemId, array_values($cart)[0]['item_id']);
     }
+    public function testPostEditItem_ChangesSaleNameWithoutRenamingInventory(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+
+        $response = $this->post('/sales/editItem/1', [
+            'name' => 'Custom sale name', 'description' => 'Test Item', 'serialnumber' => '',
+            'price' => '5.00', 'quantity' => '1', 'discount' => '0', 'discount_type' => '0', 'location' => '1',
+        ]);
+
+        $response->assertStatus(200);
+        $cart = Services::session()->get('sales_cart');
+        $this->assertSame('Custom sale name', $cart[1]['name']);
+        $item = Database::connect()->table('items')->where('item_id', $itemId)->get()->getRow();
+        $this->assertSame('Test Item', $item->name);
+    }
+
+
 }

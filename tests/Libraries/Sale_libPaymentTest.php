@@ -197,4 +197,19 @@ class Sale_libPaymentTest extends CIUnitTestCase
         $this->assertArrayNotHasKey('credit', $payments);
         $this->assertArrayHasKey('debit', $payments);
     }
+    public function testEditItem_UpdatesOnlySelectedSaleLineName(): void
+    {
+        $cart = [
+            1 => ['name' => 'First', 'quantity' => '1', 'discount' => '0', 'discount_type' => 0, 'price' => '10', 'discounted_total' => '10'],
+            2 => ['name' => 'Second', 'quantity' => '1', 'discount' => '0', 'discount_type' => 0, 'price' => '10', 'discounted_total' => '10'],
+        ];
+        $this->saleLib->set_cart($cart);
+
+        $this->saleLib->edit_item('1', '', '', '1', '0', '0', '10', null, 'Changed');
+
+        $this->assertSame('Changed', $this->saleLib->get_cart()[1]['name']);
+        $this->assertSame('Second', $this->saleLib->get_cart()[2]['name']);
+    }
+
+
 }

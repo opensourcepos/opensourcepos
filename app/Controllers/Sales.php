@@ -648,6 +648,10 @@ class Sales extends Secure_Controller
             'discount' => 'trim|permit_empty|decimal_locale|nonNegativeDecimal',
         ];
 
+        if ($this->request->getPost('name') !== null) {
+            $rules['name'] = 'trim|required|max_length[255]';
+        }
+
         $messages = [
             'price' => [
                 'nonNegativeDecimal' => lang('Sales.negative_price_invalid'),
@@ -658,6 +662,8 @@ class Sales extends Secure_Controller
         ];
 
         if ($this->validate($rules, $messages)) {
+            $name = $this->request->getPost('name');
+            $name = $name === null ? null : trim($name);
             $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $price = parse_decimals($this->request->getPost('price'));
@@ -700,7 +706,7 @@ class Sales extends Secure_Controller
                 ? parse_decimals($this->request->getPost('discounted_total') ?? '')
                 : null;
 
-            $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
+            $this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total, $name);
 
             $this->sale_lib->empty_payments();
 
@@ -1917,20 +1923,7 @@ class Sales extends Secure_Controller
      */
     public function postChangeItemName(): ResponseInterface
     {
-        $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
-        $name = $this->request->getPost('item_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        $this->item->update_item_name($item_id, $name);
-
-        $cart = $this->sale_lib->get_cart();
-        $x = $this->search_cart_for_item_id($item_id, $cart);
-
-        if ($x !== null) {
-            $cart[$x]['name'] = $name;
-        }
-
-        $this->sale_lib->set_cart($cart);
-        return $this->response->setJSON(['success' => true]);
+        return $this->response->setStatusCode(410);
     }
 
     /**
