@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Barcode_lib;
+use InvalidArgumentException;
 use App\Libraries\Email_lib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
@@ -557,6 +558,25 @@ class Sales extends Secure_Controller
      * @return ResponseInterface
      * @noinspection PhpUnused
      */
+    public function postApplyBillDiscount(): ResponseInterface|string
+    {
+        $raw = (string) $this->request->getPost('bill_discount_value');
+        $type = (string) $this->request->getPost('bill_discount_type');
+        if (!$this->validate(['bill_discount_value' => 'trim|required|decimal_locale|nonNegativeDecimal'])) {
+            return $this->reload(['error' => lang('Sales.bill_discount_invalid')]);
+        }
+        $value = parse_decimals($raw, 4);
+        if ($value === false || !is_numeric($value)) {
+            return $this->reload(['error' => lang('Sales.bill_discount_invalid')]);
+        }
+        try {
+            $this->sale_lib->applyBillDiscount($type, number_format((float) $value, 4, '.', ''));
+        } catch (InvalidArgumentException $exception) {
+            return $this->reload(['error' => lang('Sales.bill_discount_invalid')]);
+        }
+        return $this->reload();
+    }
+
     public function postAdd(): ResponseInterface|string
     {
         $data = [];
@@ -811,6 +831,7 @@ class Sales extends Secure_Controller
         $taxDetails = $this->tax_lib->get_taxes($data['cart']);    // TODO: Duplicated code
         $data['taxes'] = $taxDetails[0];
         $data['discount'] = $this->sale_lib->get_discount();
+        $data['bill_discount'] = $this->sale_lib->getBillDiscount();
         $data['payments'] = $this->sale_lib->getPayments();
 
         // Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
@@ -891,7 +912,7 @@ class Sales extends Secure_Controller
                 $invoiceView = $invoiceType;
 
                 // Save the data to the sales table
-                $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails);
+                $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails, $this->sale_lib->getBillDiscountSettings());
                 $data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
                 // Resort and filter cart lines for printing
@@ -935,7 +956,7 @@ class Sales extends Secure_Controller
                 $data['sale_status'] = SUSPENDED;
                 $saleType = SALE_TYPE_WORK_ORDER;
 
-                $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails);
+                $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails, $this->sale_lib->getBillDiscountSettings());
 
                 if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
                     $data['error_message'] = lang('Sales.insufficient_giftcard_balance');
@@ -975,7 +996,7 @@ class Sales extends Secure_Controller
                 $data['sale_status'] = SUSPENDED;
                 $saleType = SALE_TYPE_QUOTE;
 
-                $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails);
+                $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails, $this->sale_lib->getBillDiscountSettings());
 
                 if ($data['sale_id_num'] === INSUFFICIENT_GIFTCARD_BALANCE) {
                     $data['error_message'] = lang('Sales.insufficient_giftcard_balance');
@@ -1005,7 +1026,7 @@ class Sales extends Secure_Controller
                 $saleType = SALE_TYPE_POS;
             }
 
-            $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails);
+            $data['sale_id_num'] = $this->sale->save_value($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails, $this->sale_lib->getBillDiscountSettings());
 
             $data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
@@ -1221,6 +1242,7 @@ class Sales extends Secure_Controller
         $tax_details = $this->tax_lib->get_taxes($data['cart'], $sale_id);
         $data['taxes'] = $this->sale->get_sales_taxes($sale_id);
         $data['discount'] = $this->sale_lib->get_discount();
+        $data['bill_discount'] = $this->sale_lib->getBillDiscount();
         $data['transaction_time'] = to_datetime(strtotime($sale_info['sale_time']));
         $data['transaction_date'] = to_date(strtotime($sale_info['sale_time']));
         $data['show_stock_locations'] = $this->stock_location->show_locations('sales');
@@ -1325,6 +1347,15 @@ class Sales extends Secure_Controller
         $data['cash_rounding'] = $cash_rounding;
 
         $data['cart'] = $this->sale_lib->get_cart();
+        $data['bill_discount_settings'] = $this->sale_lib->getBillDiscountSettings();
+        $data['bill_discount_total'] = '0';
+        foreach ($data['cart'] as $line) {
+            $data['bill_discount_total'] = bcadd($data['bill_discount_total'], (string) ($line['bill_discount'] ?? '0'));
+        }
+        if ($this->session->get('bill_discount_cleared')) {
+            $this->session->remove('bill_discount_cleared');
+            $data['warning'] = trim(($data['warning'] ?? '') . ' ' . lang('Sales.bill_discount_cleared'));
+        }
         $customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, true);
 
         $data['modes'] = $this->sale_lib->get_register_mode_options();
@@ -1337,6 +1368,7 @@ class Sales extends Secure_Controller
         $tax_details = $this->tax_lib->get_taxes($data['cart']);    // TODO: Duplicated code.
         $data['taxes'] = $tax_details[0];
         $data['discount'] = $this->sale_lib->get_discount();
+        $data['bill_discount'] = $this->sale_lib->getBillDiscount();
         $data['payments'] = $this->sale_lib->getPayments();
 
         // Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
@@ -1789,7 +1821,7 @@ class Sales extends Secure_Controller
         $data = [];
         $sales_taxes = [[], []];
 
-        $saleIdNum = $this->sale->save_value($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes);
+        $saleIdNum = $this->sale->save_value($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes, $this->sale_lib->getBillDiscountSettings());
 
         if ($saleIdNum === INSUFFICIENT_GIFTCARD_BALANCE) {
             $data['error'] = lang('Sales.insufficient_giftcard_balance');

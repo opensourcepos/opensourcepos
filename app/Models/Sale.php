@@ -51,6 +51,7 @@ class Sale extends Model
         $sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
             . " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
             . 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
+        $sale_price = '(' . $sale_price . ') - sales_items.bill_discount';
 
         $sale_total = $config['tax_included']
             ? "ROUND(SUM($sale_price), $decimals) + $cash_adjustment"
@@ -136,6 +137,7 @@ class Sale extends Model
         $sale_price = 'CASE WHEN `sales_items`.`discount_type` = ' . PERCENT
             . " THEN `sales_items`.`quantity_purchased` * `sales_items`.`item_unit_price` - ROUND(`sales_items`.`quantity_purchased` * `sales_items`.`item_unit_price` * `sales_items`.`discount` / 100, $decimals) "
             . 'ELSE `sales_items`.`quantity_purchased` * (`sales_items`.`item_unit_price` - `sales_items`.`discount`) END';
+        $sale_price = '(' . $sale_price . ') - `sales_items`.`bill_discount`';
 
         $sale_cost = 'SUM(`sales_items`.`item_cost_price` * `sales_items`.`quantity_purchased`)';
 
@@ -530,7 +532,8 @@ class Sale extends Model
         int     $saleType,
         ?array  $payments,
         ?int    $dinnerTableId,
-        ?array  &$salesTaxes
+        ?array  &$salesTaxes,
+        ?array  $billDiscountSettings = null
     ): int {    // TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
         $config = config(OSPOS::class)->settings;
         $attribute = model(Attribute::class);
@@ -555,7 +558,9 @@ class Sale extends Model
             'quote_number'      => $quoteNumber,
             'work_order_number' => $workOrderNumber,
             'dinner_table_id'   => $dinnerTableId,
-            'sale_type'         => $saleType
+            'sale_type'         => $saleType,
+            'bill_discount_type' => $billDiscountSettings['type'] ?? null,
+            'bill_discount_value' => $billDiscountSettings['value'] ?? null
         ];
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
@@ -634,6 +639,7 @@ class Sale extends Model
                 'quantity_purchased' => $itemData['quantity'],
                 'discount'           => $itemData['discount'],
                 'discount_type'      => $itemData['discount_type'],
+                'bill_discount'      => $itemData['bill_discount'] ?? '0',
                 'item_cost_price'    => $itemData['cost_price'],
                 'item_unit_price'    => $itemData['price'],
                 'item_location'      => $itemData['item_location'],
@@ -850,6 +856,15 @@ class Sale extends Model
     /**
      * Gets sale item
      */
+    public function getBillDiscountSettings(int $saleId): array
+    {
+        $row = $this->db->table('sales')->select('bill_discount_type, bill_discount_value')->where('sale_id', $saleId)->get()->getRowArray();
+        if (empty($row['bill_discount_type'])) {
+            return [];
+        }
+        return ['type' => $row['bill_discount_type'], 'value' => $row['bill_discount_value']];
+    }
+
     public function get_sale_items(int $sale_id): ResultInterface
     {
         $builder = $this->db->table('sales_items');
@@ -878,6 +893,7 @@ class Sale extends Model
             item_unit_price,
             discount,
             discount_type,
+            sales_items.bill_discount,
             item_location,
             print_option,
             category,

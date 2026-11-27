@@ -112,12 +112,12 @@ class Tax_lib
 
                     foreach ($tax_info as $tax) {
                         // This computes tax for each line item and adds it to the tax type total
-                        $tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], true);
+                        $tax_basis = bcsub($this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], true), (string) ($item['bill_discount'] ?? '0'));
                         $tax_amount = '0.0';
 
                         if ($this->config['tax_included']) {
                             $tax_type = Tax_lib::TAX_TYPE_INCLUDED;
-                            $tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax['percent'], $tax_decimals, Rounding_mode::HALF_UP);
+                            $tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax['percent'], $tax_decimals, Rounding_mode::HALF_UP, (string) ($item['bill_discount'] ?? '0'));
                         } else {
                             $tax_type = Tax_lib::TAX_TYPE_EXCLUDED;
                             $tax_amount = $this->get_tax_for_amount($tax_basis, $tax['percent'], Rounding_mode::HALF_UP, $tax_decimals);
@@ -180,9 +180,9 @@ class Tax_lib
      * @param $rounding_code
      * @return string
      */
-    public function get_included_tax(string $quantity, string $price, string $discount_percentage, int $discount_type, string $tax_percentage, $tax_decimal, $rounding_code): string    // TODO: $tax_decimal and $rounding_code are in the signature but never used in the function.
+    public function get_included_tax(string $quantity, string $price, string $discount_percentage, int $discount_type, string $tax_percentage, $tax_decimal, $rounding_code, string $billDiscount = '0'): string    // TODO: $tax_decimal and $rounding_code are in the signature but never used in the function.
     {
-        $item_total = $this->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, true);
+        $item_total = bcsub($this->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, true), $billDiscount);
         $tax_fraction = bcdiv(bcadd('100', $tax_percentage), '100');
         $price_tax_excl = bcdiv($item_total, $tax_fraction);
         return bcsub($item_total, $price_tax_excl);
@@ -310,7 +310,7 @@ class Tax_lib
             $tax_definition = $this->tax->get_taxes($tax_code_id, $item['tax_category_id']);
 
             // The tax basis should be returned to the currency scale
-            $tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], true);
+            $tax_basis = bcsub($this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], true), (string) ($item['bill_discount'] ?? '0'));
 
             $row = 0;    // TODO: This variable is set but never used.
 
@@ -331,7 +331,7 @@ class Tax_lib
                 $tax_type = $tax['tax_type'];
 
                 if ($tax_type == Tax_lib::TAX_TYPE_INCLUDED) {
-                    $tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax_rate, $tax_decimals, $rounding_code);
+                    $tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax_rate, $tax_decimals, $rounding_code, (string) ($item['bill_discount'] ?? '0'));
                 } else {
                     $tax_amount = $this->get_tax_for_amount($tax_basis, $tax_rate, $rounding_code, $tax_decimals);
                     $cascade_tax_amount = bcadd($cascade_tax_amount, $tax_amount);

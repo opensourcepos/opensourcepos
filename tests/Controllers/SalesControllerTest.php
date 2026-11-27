@@ -9,6 +9,7 @@ use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use Config\Database;
+use Config\OSPOS;
 use Tests\Support\ItemFixtureTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\SaleFixtureTrait;
@@ -728,6 +729,118 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertNotEmpty($cart);
         $this->assertNotSame($itemId, array_values($cart)[0]['item_id']);
     }
+    public function testPostApplyBillDiscount_AppliesPercentage(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+
+        $response = $this->post('/sales/applyBillDiscount', [
+            'bill_discount_value' => '20',
+            'bill_discount_type' => 'percent',
+        ]);
+
+        $response->assertStatus(200);
+        $cart = Services::session()->get('sales_cart');
+        $this->assertEqualsWithDelta(1.0, (float) $cart[1]['bill_discount'], 0.00001);
+    }
+
+    public function testPostApplyBillDiscount_RejectsExcessAmount(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+
+        $response = $this->post('/sales/applyBillDiscount', [
+            'bill_discount_value' => '6',
+            'bill_discount_type' => 'fixed',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.bill_discount_invalid'));
+        $cart = Services::session()->get('sales_cart');
+        $this->assertEmpty($cart[1]['bill_discount'] ?? null);
+    }
+
+    public function testPostComplete_SavesAndPrintsBillDiscount(): void
+    {
+        $employeeId = $this->createReportsSalesEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+        $cart = $this->session['sales_cart'];
+        $cart[1]['bill_discount'] = '1.00';
+        $cart[1]['name'] = 'Receipt sale name';
+        $this->withSession(array_merge($this->session, [
+            'sale_id' => NEW_ENTRY,
+            'sales_cart' => $cart,
+            'sales_payments' => [lang('Sales.cash') => [
+                'payment_type' => lang('Sales.cash'),
+                'payment_amount' => '4.00',
+                'cash_refund' => 0,
+                'cash_adjustment' => 0,
+                'reference_code' => null,
+            ]],
+        ]));
+
+        $response = $this->post('/sales/complete');
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.bill_discount'));
+        $saved = Database::connect()->table('sales_items')->where('item_id', $itemId)->get()->getRow();
+        $this->assertNotNull($saved);
+        $this->assertEqualsWithDelta(1.0, (float) $saved->bill_discount, 0.00001);
+        $this->assertEqualsWithDelta(4.0, (float) model(\App\Models\Sale::class)->get_info((int) $saved->sale_id)->getRowArray()['amount_due'], 0.00001);
+        $response->assertSee('Receipt sale name');
+
+        $db = Database::connect();
+        foreach (['sales_items_taxes_temp', 'sales_payments_temp', 'sales_items_temp'] as $table) {
+            $db->query('DROP TEMPORARY TABLE IF EXISTS ' . $db->prefixTable($table));
+        }
+        $this->withSession(['person_id' => $employeeId, 'menu_group' => 'home']);
+        $reprint = $this->get('/sales/receipt/' . $saved->sale_id);
+        $reprint->assertStatus(200);
+        $reprint->assertSee(lang('Sales.bill_discount'));
+        $reprint->assertSee('Receipt sale name');
+    }
+
+    public function testPostComplete_ChargesTaxAfterBillDiscount(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        Database::connect()->table('items_taxes')->insert(['item_id' => $itemId, 'name' => 'VAT', 'percent' => 10]);
+        $this->seedCartLine(1, '10.00', $itemId);
+        $cart = $this->session['sales_cart'];
+        $cart[1]['bill_discount'] = '1.00';
+        $this->withSession(array_merge($this->session, [
+            'sale_id' => NEW_ENTRY,
+            'sales_cart' => $cart,
+            'sales_payments' => [lang('Sales.cash') => [
+                'payment_type' => lang('Sales.cash'), 'payment_amount' => '9.90',
+                'cash_refund' => 0, 'cash_adjustment' => 0, 'reference_code' => null,
+            ]],
+        ]));
+
+        $response = $this->post('/sales/complete');
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.bill_discount'));
+        $saved = Database::connect()->table('sales_items')->where('item_id', $itemId)->get()->getRow();
+        $this->assertNotNull($saved);
+        $tax = Database::connect()->table('sales_items_taxes')->where('sale_id', $saved->sale_id)->get()->getRow();
+        $this->assertNotNull($tax);
+        $this->assertEqualsWithDelta(0.90, (float) $tax->item_tax_amount, 0.00001);
+        // Feature tests share one connection; production requests get fresh temporary tables.
+        $db = Database::connect();
+        foreach (['sales_items_taxes_temp', 'sales_payments_temp', 'sales_items_temp'] as $table) {
+            $db->query('DROP TEMPORARY TABLE IF EXISTS ' . $db->prefixTable($table));
+        }
+        $this->assertEqualsWithDelta(9.90, (float) model(\App\Models\Sale::class)->get_info((int) $saved->sale_id)->getRowArray()['amount_due'], 0.00001);
+    }
+
     public function testPostEditItem_ChangesSaleNameWithoutRenamingInventory(): void
     {
         $employeeId = $this->createCashierEmployee();
@@ -747,5 +860,149 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertSame('Test Item', $item->name);
     }
 
+    public function testPostComplete_HandlesIncludedTaxAfterBillDiscount(): void
+    {
+        $config = config(OSPOS::class);
+        $prior = $config->settings['tax_included'];
+        $config->settings['tax_included'] = '1';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            Database::connect()->table('items_taxes')->insert(['item_id' => $itemId, 'name' => 'VAT', 'percent' => 10]);
+            $this->seedCartLine(1, '11.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['bill_discount'] = '1.10';
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY,
+                'sales_cart' => $cart,
+                'sales_payments' => [lang('Sales.cash') => [
+                    'payment_type' => lang('Sales.cash'), 'payment_amount' => '9.90',
+                    'cash_refund' => 0, 'cash_adjustment' => 0, 'reference_code' => null,
+                ]],
+            ]));
+
+            $response = $this->post('/sales/complete');
+
+            $response->assertStatus(200);
+            $response->assertSee(lang('Sales.bill_discount'));
+            $saved = Database::connect()->table('sales_items')->where('item_id', $itemId)->get()->getRow();
+            $this->assertNotNull($saved);
+            $tax = Database::connect()->table('sales_items_taxes')->where('sale_id', $saved->sale_id)->get()->getRow();
+            $this->assertNotNull($tax);
+            $this->assertEqualsWithDelta(0.90, (float) $tax->item_tax_amount, 0.0001);
+        } finally {
+            $config->settings['tax_included'] = $prior;
+        }
+    }
+
+    public function testPostApplyBillDiscount_AppliesFixedAmount(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+
+        $response = $this->post('/sales/applyBillDiscount', [
+            'bill_discount_value' => '1.25', 'bill_discount_type' => 'fixed',
+        ]);
+
+        $response->assertStatus(200);
+        $cart = Services::session()->get('sales_cart');
+        $this->assertEqualsWithDelta(1.25, (float) $cart[1]['bill_discount'], 0.00001);
+    }
+
+    public function testPostComplete_HandlesMultipleTaxRatesAndSplitPayment(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $firstItem = $this->createTestItem(HAS_NO_STOCK);
+        $secondItem = $this->createTestItem(HAS_NO_STOCK);
+        $db = Database::connect();
+        $db->table('items_taxes')->insert(['item_id' => $firstItem, 'name' => 'VAT5', 'percent' => 5]);
+        $db->table('items_taxes')->insert(['item_id' => $secondItem, 'name' => 'VAT10', 'percent' => 10]);
+        $this->seedCartLine(1, '10.00', $firstItem);
+        $cart = $this->session['sales_cart'];
+        $cart[2] = $cart[1];
+        $cart[2]['line'] = 2;
+        $cart[2]['item_id'] = $secondItem;
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY, 'sales_cart' => $cart]));
+
+        $apply = $this->post('/sales/applyBillDiscount', ['bill_discount_value' => '10', 'bill_discount_type' => 'percent']);
+        $apply->assertStatus(200);
+        $cart = Services::session()->get('sales_cart');
+        $this->assertEqualsWithDelta(1, (float) $cart[1]['bill_discount'], 0.0001);
+        $this->assertEqualsWithDelta(1, (float) $cart[2]['bill_discount'], 0.0001);
+        $this->withSession(array_merge($this->session, [
+            'sale_id' => NEW_ENTRY,
+            'sales_cart' => $cart,
+            'sales_payments' => [
+                lang('Sales.cash') => ['payment_type' => lang('Sales.cash'), 'payment_amount' => '10', 'cash_refund' => 0, 'cash_adjustment' => 0, 'reference_code' => null],
+                lang('Sales.debit') => ['payment_type' => lang('Sales.debit'), 'payment_amount' => '9.35', 'cash_refund' => 0, 'cash_adjustment' => 0, 'reference_code' => null],
+            ],
+        ]));
+
+        $response = $this->post('/sales/complete');
+
+        $response->assertStatus(200);
+        $response->assertSee(lang('Sales.bill_discount'));
+        $line = $db->table('sales_items')->where('item_id', $firstItem)->get()->getRow();
+        $this->assertNotNull($line);
+        $taxes = $db->table('sales_items_taxes')->selectSum('item_tax_amount')->where('sale_id', $line->sale_id)->get()->getRow();
+        $this->assertEqualsWithDelta(1.35, (float) $taxes->item_tax_amount, 0.0001);
+        $payments = $db->table('sales_payments')->selectSum('payment_amount')->where('sale_id', $line->sale_id)->get()->getRow();
+        $this->assertEqualsWithDelta(19.35, (float) $payments->payment_amount, 0.0001);
+    }
+
+    public function testPostAdd_RestoresDiscountAndNameForReturn(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $saleId = $this->createSale($employeeId);
+        Database::connect()->table('sales_items')->where('sale_id', $saleId)->update([
+            'sale_item_name' => 'Original receipt name',
+            'bill_discount' => '0.25',
+        ]);
+        $this->loginAs($employeeId);
+        $this->withSession(array_merge($this->session, ['sales_mode' => 'return', 'sale_id' => NEW_ENTRY]));
+
+        $response = $this->post('/sales/add', ['item' => 'POS ' . $saleId]);
+
+        $response->assertStatus(200);
+        $cart = array_values(Services::session()->get('sales_cart'));
+        $this->assertCount(1, $cart);
+        $this->assertSame('Original receipt name', $cart[0]['name']);
+        $this->assertEqualsWithDelta(-1, (float) $cart[0]['quantity'], 0.0001);
+        $this->assertEqualsWithDelta(-0.25, (float) $cart[0]['bill_discount'], 0.0001);
+    }
+
+    public function testPostUnsuspend_RestoresBillDiscountSettings(): void
+    {
+        $employeeId = $this->createReportsSalesEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+        $this->withSession(array_merge($this->session, ['sale_id' => NEW_ENTRY]));
+        $apply = $this->post('/sales/applyBillDiscount', ['bill_discount_value' => '10', 'bill_discount_type' => 'percent']);
+        $apply->assertStatus(200);
+        $cart = Services::session()->get('sales_cart');
+        $settings = Services::session()->get('sales_bill_discount');
+        $this->withSession(array_merge($this->session, [
+            'sale_id' => NEW_ENTRY, 'sales_cart' => $cart, 'sales_bill_discount' => $settings,
+        ]));
+
+        $suspend = $this->post('/sales/suspend');
+        $suspend->assertStatus(200);
+        $line = Database::connect()->table('sales_items')->where('item_id', $itemId)->get()->getRow();
+        $this->assertNotNull($line);
+        $this->withSession(['person_id' => $employeeId, 'menu_group' => 'home']);
+        $resume = $this->post('/sales/unsuspend', ['suspended_sale_id' => (string) $line->sale_id]);
+
+        $resume->assertStatus(200);
+        $restored = array_values(Services::session()->get('sales_cart'));
+        $this->assertEqualsWithDelta(0.5, (float) $restored[0]['bill_discount'], 0.0001);
+        $restoredSettings = Services::session()->get('sales_bill_discount');
+        $this->assertSame('percent', $restoredSettings['type']);
+        $this->assertEqualsWithDelta(10, (float) $restoredSettings['value'], 0.0001);
+    }
 
 }

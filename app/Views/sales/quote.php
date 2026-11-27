@@ -155,6 +155,13 @@ if (isset($error_message)) {
             <td class="blank" colspan="<?= $quote_columns ?>" style="text-align: center;"><?= '&nbsp;' //TODO: align is deprecated. Also should replace the php echo for nbsp with simple html ?></td>
         </tr>
 
+        <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
+        <tr>
+            <td colspan="<?= $quote_columns - 3 ?>" class="blank"> </td>
+            <td colspan="2" class="total-line"><?= lang('Sales.bill_discount') ?></td>
+            <td class="total-value"><?= to_currency(bcsub('0', (string) $bill_discount)) ?></td>
+        </tr>
+        <?php endif; ?>
         <tr>
             <td colspan="<?= $quote_columns - 3 ?>" class="blank-bottom"> </td>
             <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>

@@ -170,6 +170,13 @@ if (isset($error_message)) {
             <td class="blank" colspan="<?= $invoice_columns ?>" style="text-align: center;"><?= '&nbsp;' ?></td>
         </tr>
 
+        <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
+        <tr>
+            <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+            <td colspan="2" class="total-line"><?= lang('Sales.bill_discount') ?></td>
+            <td class="total-value"><?= to_currency(bcsub('0', (string) $bill_discount)) ?></td>
+        </tr>
+        <?php endif; ?>
         <tr>
             <td colspan="<?= $invoice_columns - 3 ?>" class="blank-bottom"> </td>
             <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>

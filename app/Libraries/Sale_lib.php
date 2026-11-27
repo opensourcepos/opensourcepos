@@ -15,6 +15,8 @@ use CodeIgniter\Session\Session;
 use App\Models\Stock_location;
 use Config\OSPOS;
 use ReflectionException;
+use InvalidArgumentException;
+use App\Libraries\BillDiscountAllocation;
 
 /**
  * Sale library
@@ -253,8 +255,35 @@ class Sale_lib
      * @param array $cart_data
      * @return void
      */
-    public function set_cart(array $cart_data): void
+    public function set_cart(array $cart_data, bool $preserveBillDiscount = false): void
     {
+        $previous = $this->session->get('sales_cart') ?? [];
+        $fields = static function (array $cart): array {
+            return array_map(static fn (array $line): array => [
+                $line['item_id'] ?? null,
+                $line['item_location'] ?? null,
+                $line['quantity'] ?? null,
+                $line['price'] ?? null,
+                $line['discount'] ?? null,
+                $line['discount_type'] ?? null,
+            ], $cart);
+        };
+        $hadBillDiscount = false;
+        foreach ($previous as $line) {
+            if (bccomp((string) ($line['bill_discount'] ?? '0'), '0', 4) !== 0) {
+                $hadBillDiscount = true;
+                break;
+            }
+        }
+        if (!$preserveBillDiscount && $hadBillDiscount && $fields($previous) !== $fields($cart_data)) {
+            foreach ($cart_data as &$line) {
+                $line['bill_discount'] = '0';
+            }
+            unset($line);
+            $this->empty_payments();
+            $this->session->remove('sales_bill_discount');
+            $this->session->set('bill_discount_cleared', true);
+        }
         $this->session->set('sales_cart', $cart_data);
     }
 
@@ -264,6 +293,7 @@ class Sale_lib
     public function empty_cart(): void
     {
         $this->session->remove('sales_cart');
+        $this->session->remove('sales_bill_discount');
     }
 
     /**
@@ -714,6 +744,7 @@ class Sale_lib
                 $total_units += $item['quantity'];
             }
             $discount_amount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_type']);
+            $discount_amount = bcadd($discount_amount, (string) ($item['bill_discount'] ?? '0'));
             $total_discount = bcadd($total_discount, $discount_amount);
 
             $extended_amount = $this->get_extended_amount($item['quantity'], $item['price']);
@@ -1037,7 +1068,7 @@ class Sale_lib
      * @param bool|null $line
      * @return bool
      */
-    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null, ?string $saleItemName = null): bool
+    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null, ?string $saleItemName = null, string $billDiscount = '0'): bool
     {
         $item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
@@ -1154,6 +1185,7 @@ class Sale_lib
                     'stock_name'            => $this->stock_location->get_location_name($item_location),
                     'line'                  => $insertkey,
                     'name'                  => $saleItemName ?? $item_info->name,
+                    'bill_discount'         => $billDiscount,
                     'item_number'           => $item_info->item_number,
                     'attribute_values'      => $attribute_links->attribute_values,
                     'attribute_dtvalues'    => $attribute_links->attribute_dtvalues,
@@ -1186,7 +1218,7 @@ class Sale_lib
             $line['discounted_total'] = $discounted_total;
         }
 
-        $this->set_cart($items);
+        $this->set_cart($items, $saleItemName !== null);
 
         return true;
     }
@@ -1324,7 +1356,7 @@ class Sale_lib
         $this->remove_customer();
 
         foreach ($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row) {
-            $this->add_item($row->item_id, $row->item_location, -$row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, null, true, null, null, $row->name);
+            $this->add_item($row->item_id, $row->item_location, -$row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, null, true, null, null, $row->name, bcsub('0', $row->bill_discount));
         }
 
         $this->set_customer($this->sale->get_customer($sale_id)->person_id);
@@ -1369,7 +1401,12 @@ class Sale_lib
         $this->remove_customer();
 
         foreach ($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row) {
-            $this->add_item($row->item_id, $row->item_location, $row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, true, $row->print_option, null, $row->name);
+            $this->add_item($row->item_id, $row->item_location, $row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, true, $row->print_option, null, $row->name, $row->bill_discount);
+        }
+
+        $settings = $this->sale->getBillDiscountSettings($sale_id);
+        if ($settings !== []) {
+            $this->session->set('sales_bill_discount', $settings);
         }
 
         $this->session->set('cash_mode', CASH_MODE_FALSE);
@@ -1507,6 +1544,64 @@ class Sale_lib
     /**
      * @return string
      */
+    public function applyBillDiscount(string $type, string $value): void
+    {
+        if (!in_array($type, ['fixed', 'percent'], true) || !preg_match('/^\d+(?:\.\d{1,4})?$/D', $value)) {
+            throw new InvalidArgumentException('Invalid bill discount.');
+        }
+        $scale = totals_decimals();
+        if ($scale < 0 || $scale > 4 || ($type === 'percent' && bccomp($value, '100', 4) > 0)) {
+            throw new InvalidArgumentException('Unsupported bill discount.');
+        }
+        $factor = bcpow('10', (string) $scale, 0);
+        $cart = $this->get_cart();
+        if ($cart === []) {
+            throw new InvalidArgumentException('Cannot discount an empty sale.');
+        }
+        $lineAmounts = [];
+        foreach ($cart as $line => $item) {
+            $amount = $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], true);
+            if (bccomp($amount, '0', 4) < 0) {
+                throw new InvalidArgumentException('Cannot apply a bill discount to negative lines.');
+            }
+            $minor = bcadd(bcmul($amount, $factor, 8), '0.5', 0);
+            if (bccomp($minor, (string) PHP_INT_MAX, 0) > 0) {
+                throw new InvalidArgumentException('Bill amount exceeds allocation precision.');
+            }
+            $lineAmounts[$line] = (int) $minor;
+        }
+
+        if ($type === 'percent') {
+            $allocation = BillDiscountAllocation::allocatePercentage($lineAmounts, (int) bcmul($value, '10000', 0));
+        } else {
+            $minor = bcmul($value, $factor, 0);
+            if (bccomp($value, bcdiv($minor, $factor, 4), 4) !== 0 || bccomp($minor, (string) PHP_INT_MAX, 0) > 0) {
+                throw new InvalidArgumentException('Invalid fixed bill discount.');
+            }
+            $allocation = BillDiscountAllocation::allocate($lineAmounts, (int) $minor);
+        }
+        foreach ($allocation as $line => $minor) {
+            $cart[$line]['bill_discount'] = bcdiv((string) $minor, $factor, $scale);
+        }
+        $this->set_cart($cart, true);
+        $this->session->set('sales_bill_discount', ['type' => $type, 'value' => $value]);
+        $this->empty_payments();
+    }
+
+    public function getBillDiscountSettings(): array
+    {
+        return $this->session->get('sales_bill_discount') ?? [];
+    }
+
+    public function getBillDiscount(): string
+    {
+        $total = '0';
+        foreach ($this->get_cart() as $item) {
+            $total = bcadd($total, (string) ($item['bill_discount'] ?? '0'));
+        }
+        return $total;
+    }
+
     public function get_discount(): string
     {
         $discount = '0.0';
@@ -1515,6 +1610,7 @@ class Sale_lib
                 $item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_type']);
                 $discount = bcadd($discount, $item_discount);
             }
+            $discount = bcadd($discount, (string) ($item['bill_discount'] ?? '0'));
         }
 
         return $discount;
@@ -1539,15 +1635,18 @@ class Sale_lib
      * @param bool $include_discount
      * @return string
      */
-    public function get_item_total_tax_exclusive(int $item_id, string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = false): string
+    public function get_item_total_tax_exclusive(int $item_id, string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = false, string $billDiscount = '0'): string
     {
         $tax_info = $this->item_taxes->get_info($item_id);
         $item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, $include_discount);
+        if ($include_discount) {
+            $item_total = bcsub($item_total, $billDiscount);
+        }
 
         // Only additive tax here
         foreach ($tax_info as $tax) {
             $tax_percentage = $tax['percent'];
-            $item_total = bcsub($item_total, $this->get_item_tax($quantity, $price, $discount, $discount_type, $tax_percentage));
+            $item_total = bcsub($item_total, $this->get_item_tax($quantity, $price, $discount, $discount_type, $tax_percentage, $include_discount ? $billDiscount : '0'));
         }
 
         return $item_total;
@@ -1649,9 +1748,9 @@ class Sale_lib
      * @param string $tax_percentage
      * @return string
      */
-    public function get_item_tax(string $quantity, string $price, string $discount, int $discount_type, string $tax_percentage): string
+    public function get_item_tax(string $quantity, string $price, string $discount, int $discount_type, string $tax_percentage, string $billDiscount = '0'): string
     {
-        $item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, true);
+        $item_total = bcsub($this->get_item_total($quantity, $price, $discount, $discount_type, true), $billDiscount);
 
         if ($this->config['tax_included']) {
             $tax_fraction = bcdiv(bcadd('100', $tax_percentage), '100');
@@ -1675,9 +1774,13 @@ class Sale_lib
         $subtotal = '0.0';
         foreach ($this->get_cart() as $item) {
             if ($exclude_tax && $this->config['tax_included']) {
-                $subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount));
+                $subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount, (string) ($item['bill_discount'] ?? '0')));
             } else {
-                $subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount));
+                $lineTotal = $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount);
+                if ($include_discount) {
+                    $lineTotal = bcsub($lineTotal, (string) ($item['bill_discount'] ?? '0'));
+                }
+                $subtotal = bcadd($subtotal, $lineTotal);
             }
         }
 

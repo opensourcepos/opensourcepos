@@ -75,6 +75,104 @@ class Sale_libPaymentTest extends CIUnitTestCase
         parent::tearDown();
     }
 
+    public function testEditItem_UpdatesOnlySelectedSaleLineName(): void
+    {
+        $cart = [
+            1 => ['name' => 'First', 'quantity' => '1', 'discount' => '0', 'discount_type' => 0, 'price' => '10', 'discounted_total' => '10'],
+            2 => ['name' => 'Second', 'quantity' => '1', 'discount' => '0', 'discount_type' => 0, 'price' => '10', 'discounted_total' => '10'],
+        ];
+        $this->saleLib->set_cart($cart);
+
+        $this->saleLib->edit_item('1', '', '', '1', '0', '0', '10', null, 'Changed');
+
+        $this->assertSame('Changed', $this->saleLib->get_cart()[1]['name']);
+        $this->assertSame('Second', $this->saleLib->get_cart()[2]['name']);
+    }
+
+    public function testGetTotals_SubtractsBillDiscountBeforePayments(): void
+    {
+        $this->saleLib->set_cart([
+            1 => ['stock_type' => HAS_NO_STOCK, 'quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0, 'bill_discount' => '10'],
+        ]);
+        $this->saleLib->addPayment('credit', '50');
+
+        $totals = $this->saleLib->get_totals([['tax_type' => '1', 'sale_tax_amount' => '9']]);
+
+        $this->assertEquals(90, $this->saleLib->get_subtotal(true));
+        $this->assertEquals(10, $this->saleLib->get_discount());
+        $this->assertEquals(99, $totals['total']);
+        $this->assertEquals(49, $totals['amount_due']);
+        $this->assertFalse($totals['payments_cover_total']);
+    }
+
+    public function testApplyBillDiscount_AllocatesFixedAmountAndClearsPayments(): void
+    {
+        $this->saleLib->set_cart([
+            1 => ['quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0],
+            2 => ['quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0],
+        ]);
+        $this->saleLib->addPayment('credit', '10');
+
+        $this->saleLib->applyBillDiscount('fixed', '25');
+
+        $this->assertSame('12.50', $this->saleLib->get_cart()[1]['bill_discount']);
+        $this->assertSame('12.50', $this->saleLib->get_cart()[2]['bill_discount']);
+        $this->assertSame([], $this->saleLib->getPayments());
+    }
+
+    public function testApplyBillDiscount_AllocatesPercentage(): void
+    {
+        $this->saleLib->set_cart([
+            1 => ['quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0],
+            2 => ['quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0],
+        ]);
+
+        $this->saleLib->applyBillDiscount('percent', '12.5');
+
+        $this->assertSame('12.50', $this->saleLib->get_cart()[1]['bill_discount']);
+        $this->assertSame('12.50', $this->saleLib->get_cart()[2]['bill_discount']);
+    }
+
+    public function testApplyBillDiscount_RejectsExcessFixedAmountWithoutChangingCart(): void
+    {
+        $cart = [1 => ['quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0]];
+        $this->saleLib->set_cart($cart);
+        try {
+            $this->saleLib->applyBillDiscount('fixed', '101');
+            $this->fail('An excessive discount must be rejected.');
+        } catch (\InvalidArgumentException $exception) {
+            $this->assertSame($cart, $this->saleLib->get_cart());
+        }
+    }
+
+    public function testSetCart_ClearsBillDiscountWhenPriceChanges(): void
+    {
+        $cart = [1 => ['item_id' => 1, 'quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0]];
+        $this->saleLib->set_cart($cart);
+        $this->saleLib->applyBillDiscount('fixed', '10');
+        $this->saleLib->addPayment('credit', '10');
+        $cart = $this->saleLib->get_cart();
+        $cart[1]['price'] = '90';
+
+        $this->saleLib->set_cart($cart);
+
+        $this->assertSame('0', $this->saleLib->get_cart()[1]['bill_discount']);
+        $this->assertSame([], $this->saleLib->getPayments());
+    }
+
+    public function testSetCart_PreservesBillDiscountWhenNameChanges(): void
+    {
+        $cart = [1 => ['item_id' => 1, 'name' => 'Original', 'quantity' => '1', 'price' => '100', 'discount' => '0', 'discount_type' => 0]];
+        $this->saleLib->set_cart($cart);
+        $this->saleLib->applyBillDiscount('fixed', '10');
+        $cart = $this->saleLib->get_cart();
+        $cart[1]['name'] = 'Sale name';
+
+        $this->saleLib->set_cart($cart);
+
+        $this->assertSame('10.00', $this->saleLib->get_cart()[1]['bill_discount']);
+    }
+
     // ========== getPayments / setPayments ==========
 
     public function testGetPaymentsReturnsEmptyArrayInitially(): void
@@ -197,19 +295,4 @@ class Sale_libPaymentTest extends CIUnitTestCase
         $this->assertArrayNotHasKey('credit', $payments);
         $this->assertArrayHasKey('debit', $payments);
     }
-    public function testEditItem_UpdatesOnlySelectedSaleLineName(): void
-    {
-        $cart = [
-            1 => ['name' => 'First', 'quantity' => '1', 'discount' => '0', 'discount_type' => 0, 'price' => '10', 'discounted_total' => '10'],
-            2 => ['name' => 'Second', 'quantity' => '1', 'discount' => '0', 'discount_type' => 0, 'price' => '10', 'discounted_total' => '10'],
-        ];
-        $this->saleLib->set_cart($cart);
-
-        $this->saleLib->edit_item('1', '', '', '1', '0', '0', '10', null, 'Changed');
-
-        $this->assertSame('Changed', $this->saleLib->get_cart()[1]['name']);
-        $this->assertSame('Second', $this->saleLib->get_cart()[2]['name']);
-    }
-
-
 }

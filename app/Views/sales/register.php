@@ -370,6 +370,21 @@ helper('url');
             <?php } ?>
         <?= form_close() ?>
 
+        <?php
+        $billDiscountFormatter = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
+        $billDiscountFormatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, 4);
+        $billDiscountFormatter->setAttribute(NumberFormatter::GROUPING_USED, 0);
+        $billDiscountInput = $billDiscountFormatter->format((float) ($bill_discount_settings['value'] ?? 0));
+        ?>
+        <?php if (count($cart) > 0 && $mode !== 'return'): ?>
+            <?= form_open("$controller_name/applyBillDiscount", ['class' => 'form-inline']) ?>
+                <label for="bill_discount_value"><?= lang('Sales.bill_discount') ?></label>
+                <?= form_input(['name' => 'bill_discount_value', 'id' => 'bill_discount_value', 'class' => 'form-control input-sm', 'value' => $billDiscountInput, 'size' => 8]) ?>
+                <?= form_dropdown('bill_discount_type', ['fixed' => lang('Sales.bill_discount_fixed'), 'percent' => lang('Sales.bill_discount_percent')], $bill_discount_settings['type'] ?? 'fixed', ['class' => 'form-control input-sm']) ?>
+                <?= form_submit(['class' => 'btn btn-default btn-sm', 'value' => lang('Common.submit')]) ?>
+            <?= form_close() ?>
+        <?php endif; ?>
+
         <table class="sales_table_100" id="sale_totals">
             <tr>
                 <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.quantity_of_items', [$item_count]) ?></th>
@@ -379,6 +394,12 @@ helper('url');
                 <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.sub_total') ?></th>
                 <th style="width: 45%; text-align: right;"><?= to_currency($subtotal) ?></th>
             </tr>
+            <?php if (bccomp((string) $bill_discount_total, '0', totals_decimals()) !== 0): ?>
+                <tr>
+                    <th><?= lang('Sales.bill_discount') ?></th>
+                    <th style="text-align: right;">-<?= to_currency($bill_discount_total) ?></th>
+                </tr>
+            <?php endif; ?>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <th style="width: 55%;"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?></th>

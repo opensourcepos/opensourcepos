@@ -103,9 +103,16 @@
             </tr>
             <tr>
                 <td colspan="3" class="total-value"><?= lang('Sales.customer_discount') ?>:</td>
-                <td class="total-value"><?= to_currency($discount * -1) ?></td>
+                <td class="total-value"><?= to_currency(bcsub((string) $bill_discount, (string) $discount)) ?></td>
             </tr>
         <?php } ?>
+
+        <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
+            <tr>
+                <td colspan="3" class="total-value"><?= lang('Sales.bill_discount') ?>:</td>
+                <td class="total-value"><?= to_currency(bcsub('0', (string) $bill_discount)) ?></td>
+            </tr>
+        <?php endif; ?>
 
         <?php if ($config['receipt_show_taxes']) { ?>
             <tr>

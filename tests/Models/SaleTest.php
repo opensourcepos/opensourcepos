@@ -446,6 +446,30 @@ class SaleTest extends CIUnitTestCase
         $this->assertSame([], $model->get_all_suspended(NEW_ENTRY));
         $this->assertSame([], $model->get_all_suspended(123));
     }
+    public function testSaveValue_PersistsAllocatedBillDiscount(): void
+    {
+        $employeeId = $this->createEmployee();
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $model = model(Sale::class);
+        $saleStatus = COMPLETED;
+        $items = $this->buildCartLine($itemId, 1, 5.00);
+        $items[0]['bill_discount'] = '1.25';
+        $payments = [];
+        $taxes = [[], []];
+
+        $saleId = $model->save_value(
+            NEW_ENTRY, $saleStatus, $items, NEW_ENTRY, $employeeId, '', null, null, null,
+            SALE_TYPE_POS, $payments, null, $taxes, ['type' => 'percent', 'value' => '25.0000']
+        );
+
+        $this->assertGreaterThan(0, $saleId);
+        $this->assertEqualsWithDelta(1.25, (float) $model->get_sale_items_ordered($saleId)->getRow()->bill_discount, 0.00001);
+        $settings = $model->getBillDiscountSettings($saleId);
+        $this->assertSame('percent', $settings['type']);
+        $this->assertEqualsWithDelta(25.0, (float) $settings['value'], 0.00001);
+        $this->assertEqualsWithDelta(3.75, (float) $model->get_info($saleId)->getRowArray()['amount_due'], 0.00001);
+    }
+
     public function testSaveValue_PreservesSaleNameWithoutRenamingItem(): void
     {
         $employeeId = $this->createEmployee();
@@ -473,6 +497,5 @@ class SaleTest extends CIUnitTestCase
         \Config\Database::connect()->table('sales_items')->where('sale_id', $saleId)->update(['sale_item_name' => null]);
         $this->assertSame('Renamed inventory item', $model->get_sale_items_ordered($saleId)->getRow()->name);
     }
-
 
 }
