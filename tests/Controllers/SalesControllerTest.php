@@ -790,7 +790,8 @@ class SalesControllerTest extends CIUnitTestCase
         $response = $this->post('/sales/complete');
 
         $response->assertStatus(200);
-        $response->assertSee(lang('Sales.bill_discount'));
+        $response->assertSee(lang('Sales.discount'));
+        $response->assertDontSee(lang('Sales.bill_discount'));
         $saved = Database::connect()->table('sales_items')->where('item_id', $itemId)->get()->getRow();
         $this->assertNotNull($saved);
         $this->assertEqualsWithDelta(1.0, (float) $saved->bill_discount, 0.00001);
@@ -811,8 +812,48 @@ class SalesControllerTest extends CIUnitTestCase
         $this->withSession(['person_id' => $employeeId, 'menu_group' => 'home']);
         $reprint = $this->get('/sales/receipt/' . $saved->sale_id);
         $reprint->assertStatus(200);
-        $reprint->assertSee(lang('Sales.bill_discount'));
+        $reprint->assertSee(lang('Sales.discount'));
+        $reprint->assertDontSee(lang('Sales.bill_discount'));
         $reprint->assertSee('Receipt sale name');
+    }
+
+    public function testPostComplete_CombinesItemAndBillDiscountOnReceipt(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_total_discount'];
+        $previousTaxes = $config->settings['receipt_show_taxes'];
+        try {
+            $config->settings['receipt_show_total_discount'] = '1';
+            $config->settings['receipt_show_taxes'] = '0';
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['discount'] = '10';
+            $cart[1]['discount_type'] = PERCENT;
+            $cart[1]['discounted_total'] = '4.50';
+            $cart[1]['bill_discount'] = '0.50';
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY, 'sales_cart' => $cart,
+                'sales_payments' => [lang('Sales.cash') => [
+                    'payment_type' => lang('Sales.cash'), 'payment_amount' => '4.00',
+                    'cash_refund' => 0, 'cash_adjustment' => 0, 'reference_code' => null,
+                ]],
+            ]));
+            $response = $this->post('/sales/complete');
+            $response->assertStatus(200);
+            $document = new DOMDocument();
+            @$document->loadHTML($response->getBody());
+            $xpath = new DOMXPath($document);
+            $rows = $xpath->query('//table[@id="receipt_items"]//tr[td[contains(@class,"total-value") and contains(normalize-space(.), "Discount:")]]');
+            $this->assertSame(1, $rows->length);
+            $this->assertSame(to_currency('-1.00'), trim($xpath->query('./td[last()]', $rows->item(0))->item(0)->textContent));
+            $this->assertStringNotContainsString(lang('Sales.bill_discount'), $response->getBody());
+        } finally {
+            $config->settings['receipt_show_total_discount'] = $previous;
+            $config->settings['receipt_show_taxes'] = $previousTaxes;
+        }
     }
 
     public function testPostComplete_ChargesTaxAfterBillDiscount(): void
@@ -836,7 +877,8 @@ class SalesControllerTest extends CIUnitTestCase
         $response = $this->post('/sales/complete');
 
         $response->assertStatus(200);
-        $response->assertSee(lang('Sales.bill_discount'));
+        $response->assertSee(lang('Sales.discount'));
+        $response->assertDontSee(lang('Sales.bill_discount'));
         $saved = Database::connect()->table('sales_items')->where('item_id', $itemId)->get()->getRow();
         $this->assertNotNull($saved);
         $tax = Database::connect()->table('sales_items_taxes')->where('sale_id', $saved->sale_id)->get()->getRow();
@@ -894,7 +936,8 @@ class SalesControllerTest extends CIUnitTestCase
             $response = $this->post('/sales/complete');
 
             $response->assertStatus(200);
-            $response->assertSee(lang('Sales.bill_discount'));
+            $response->assertSee(lang('Sales.discount'));
+        $response->assertDontSee(lang('Sales.bill_discount'));
             $saved = Database::connect()->table('sales_items')->where('item_id', $itemId)->get()->getRow();
             $this->assertNotNull($saved);
             $tax = Database::connect()->table('sales_items_taxes')->where('sale_id', $saved->sale_id)->get()->getRow();
@@ -954,7 +997,8 @@ class SalesControllerTest extends CIUnitTestCase
         $response = $this->post('/sales/complete');
 
         $response->assertStatus(200);
-        $response->assertSee(lang('Sales.bill_discount'));
+        $response->assertSee(lang('Sales.discount'));
+        $response->assertDontSee(lang('Sales.bill_discount'));
         $line = $db->table('sales_items')->where('item_id', $firstItem)->get()->getRow();
         $this->assertNotNull($line);
         $taxes = $db->table('sales_items_taxes')->selectSum('item_tax_amount')->where('sale_id', $line->sale_id)->get()->getRow();
