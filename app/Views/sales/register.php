@@ -49,6 +49,8 @@ use App\Models\Employee;
     #register tr.register-item-row > td { vertical-align: top; }
     #register tr.register-item-row > td.register-row-text { padding-top: 9px; }
     #register tr.register-item-spacer > td { padding: 0; height: 12px; }
+    #register .register-item-description { max-width: 0; overflow-wrap: anywhere; }
+    #register .register-item-details > td { vertical-align: top; }
     #add_payment_form > table.sales_table_100 td:first-child, #bill_discount_form table td:first-child { width: 60%; }
     #add_payment_form > table.sales_table_100 td:nth-child(2), #bill_discount_form table td:nth-child(2) { width: 40%; }
     #bill_discount_form { margin-top: 6px; }
@@ -198,8 +200,6 @@ helper('url');
                                 <td style="text-align: center;">
                                     <?= form_input(['name' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'maxlength' => 255, 'tabindex' => ++$tabindex]) ?>
                                     <?= esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
-                                    <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
-                                    endif; ?>
                                 </td>
                             <?php } ?>
 
@@ -250,11 +250,11 @@ helper('url');
                                 </a>
                             </td>
                         </tr>
-                        <?php if ($config['receipt_show_description'] || $item['is_serialized']): ?>
-                            <tr>
+                        <?php if ($config['receipt_show_description'] || $item['is_serialized'] || ($item['item_type'] != ITEM_TEMP && $item['stock_type'] == '0')): ?>
+                            <tr class="register-item-details">
                                 <td></td>
                                 <td></td>
-                                <td colspan="2" style="text-align: left;">
+                                <td colspan="2" class="register-item-description" style="text-align: left;">
                                     <?php if ($config['receipt_show_description']): ?>
                                         <?php if ($item['item_type'] == ITEM_TEMP): ?>
                                             <?= form_hidden('item_id', (string) $item['item_id']) ?>
@@ -268,7 +268,12 @@ helper('url');
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 </td>
-                                <td colspan="4" style="text-align: left;">
+                                <td style="text-align: center;">
+                                    <?php if ($item['item_type'] != ITEM_TEMP && $item['stock_type'] == '0'): ?>
+                                        [<?= to_quantity_decimals($item['in_stock']) ?> in <?= esc($item['stock_name']) ?>]
+                                    <?php endif; ?>
+                                </td>
+                                <td colspan="3" style="text-align: left;">
                                     <?php if ($item['is_serialized']): ?>
                                         <?= lang(ucfirst($controller_name) . '.serial') ?>
                                         <?= form_input(['name' => 'serialnumber', 'class' => 'form-control input-sm', 'value' => $item['serialnumber'], 'onClick' => 'this.select();']) ?>
@@ -397,7 +402,7 @@ helper('url');
             </tr>
             <tr>
                 <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.sub_total') ?></th>
-                <th style="width: 45%; text-align: right;"><?= to_currency($subtotal) ?></th>
+                <th style="width: 45%; text-align: right;"><?= to_currency(bcadd((string) $subtotal, (string) $bill_discount_total)) ?></th>
             </tr>
             <?php if (bccomp((string) $bill_discount_total, '0', totals_decimals()) !== 0): ?>
                 <tr>

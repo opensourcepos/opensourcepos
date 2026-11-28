@@ -1224,6 +1224,55 @@ class SalesControllerTest extends CIUnitTestCase
         }
     }
 
+    public function testGetRegister_ShowsSubtotalBeforeBillDiscount(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+        $cart = $this->session['sales_cart'];
+        $cart[1]['bill_discount'] = '1.00';
+        $this->withSession(array_merge($this->session, ['sales_cart' => $cart]));
+
+        $response = $this->get('/sales');
+        $response->assertStatus(200);
+        $document = new DOMDocument();
+        @$document->loadHTML($response->getBody());
+        $xpath = new DOMXPath($document);
+        $rows = $xpath->query('//table[@id="sale_totals"]/tr');
+        $this->assertSame(to_currency('5.00'), trim($xpath->query('./th[2]', $rows->item(1))->item(0)->textContent));
+        $this->assertSame('-' . to_currency('1.00'), trim($xpath->query('./th[2]', $rows->item(2))->item(0)->textContent));
+        $this->assertSame(to_currency('4.00'), trim($xpath->query('./th[2]', $rows->item(3))->item(0)->textContent));
+    }
+
+    public function testGetRegister_ShowsStockAndDescriptionInSeparateDetailColumns(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_description'];
+        $config->settings['receipt_show_description'] = '1';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['description'] = 'Description for this item';
+            $cart[1]['stock_type'] = '0';
+            $cart[1]['in_stock'] = '14';
+            $cart[1]['stock_name'] = 'stock';
+            $this->withSession(array_merge($this->session, ['sales_cart' => $cart]));
+            $response = $this->get('/sales');
+            $response->assertStatus(200);
+            $document = new DOMDocument();
+            @$document->loadHTML($response->getBody());
+            $xpath = new DOMXPath($document);
+            $this->assertSame(1, $xpath->query('//tr[contains(@class,"register-item-details")]/td[3][contains(.,"Description for this item")]')->length);
+            $this->assertSame(1, $xpath->query('//tr[contains(@class,"register-item-details")]/td[4][contains(.,"14 in stock")]')->length);
+        } finally {
+            $config->settings['receipt_show_description'] = $previous;
+        }
+    }
+
     public function testGetRegister_ShowsFixedBillDiscountToggle(): void
     {
         $employeeId = $this->createCashierEmployee();
