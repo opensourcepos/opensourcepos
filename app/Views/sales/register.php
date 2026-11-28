@@ -49,7 +49,10 @@ use App\Models\Employee;
     #register tr.register-item-row > td { vertical-align: top; }
     #register tr.register-item-row > td.register-row-text { padding-top: 9px; }
     #register tr.register-item-spacer > td { padding: 0; height: 12px; }
-    #bill_discount_form .input-group { display: inline-table; width: 145px; vertical-align: middle; }
+    #add_payment_form > table.sales_table_100 td:first-child, #bill_discount_form table td:first-child { width: 60%; }
+    #add_payment_form > table.sales_table_100 td:nth-child(2), #bill_discount_form table td:nth-child(2) { width: 40%; }
+    #bill_discount_form { margin-top: 6px; }
+    #bill_discount_form .input-group { display: table; width: 100%; }
     #bill_discount_form .toggle.btn { margin: 0; }
 </style>
 
@@ -195,7 +198,6 @@ helper('url');
                                 <td style="text-align: center;">
                                     <?= form_input(['name' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'maxlength' => 255, 'tabindex' => ++$tabindex]) ?>
                                     <?= esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
-                                    <br>
                                     <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
                                     endif; ?>
                                 </td>
@@ -370,18 +372,23 @@ helper('url');
         $billDiscountFormatter->setAttribute(NumberFormatter::GROUPING_USED, 0);
         $billDiscountInput = $billDiscountFormatter->format((float) ($bill_discount_settings['value'] ?? 0));
         ?>
+        <?php ob_start(); ?>
         <?php if (count($cart) > 0 && $mode !== 'return'): ?>
             <?= form_open("$controller_name/applyBillDiscount", ['class' => 'form-inline', 'id' => 'bill_discount_form']) ?>
-                <label for="bill_discount_value"><?= lang('Sales.bill_discount') ?></label>
-                <div class="input-group">
+                <table class="sales_table_100"><tr>
+                <td><label for="bill_discount_value"><?= lang('Sales.bill_discount') ?></label></td>
+                <td><div class="input-group">
                     <?= form_input(['name' => 'bill_discount_value', 'id' => 'bill_discount_value', 'class' => 'form-control input-sm', 'value' => $billDiscountInput, 'size' => 8, 'onClick' => 'this.select();']) ?>
                     <span class="input-group-btn">
                         <?= form_checkbox(['id' => 'bill_discount_toggle', 'name' => 'bill_discount_toggle', 'value' => 1, 'data-toggle' => 'toggle', 'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . esc($config['currency_symbol']) . '</b>', 'data-off' => '<b>%</b>', 'checked' => ($bill_discount_settings['type'] ?? 'fixed') === 'fixed', 'aria-label' => lang('Sales.bill_discount')]) ?>
                     </span>
-                </div>
+                </div></td>
+                </tr></table>
                 <?= form_input(['type' => 'hidden', 'name' => 'bill_discount_type', 'id' => 'bill_discount_type', 'value' => $bill_discount_settings['type'] ?? 'fixed']) ?>
             <?= form_close() ?>
         <?php endif; ?>
+
+        <?php $billDiscountControl = ob_get_clean(); ?>
 
         <table class="sales_table_100" id="sale_totals">
             <tr>
@@ -465,6 +472,7 @@ helper('url');
                             </tr>
                         </table>
                     <?= form_close() ?>
+                    <?= $billDiscountControl ?>
 
                     <?php
                     // Only show this part if in sale or return mode
@@ -522,6 +530,7 @@ helper('url');
                             </tr>
                         </table>
                     <?= form_close() ?>
+                    <?= $billDiscountControl ?>
 
                     <div class="btn btn-sm btn-success pull-right" id="add_payment_button" tabindex="<?= ++$tabindex ?>">
                         <span class="glyphicon glyphicon-credit-card">&nbsp;</span><?= lang(ucfirst($controller_name) . '.add_payment') ?>
