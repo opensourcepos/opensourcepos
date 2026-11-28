@@ -950,8 +950,12 @@ class Config extends Secure_Controller
      */
     public function postSaveTax(): ResponseInterface
     {
-        $default_tax_1_rate = parse_tax(filter_var($this->request->getPost('default_tax_1_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-        $default_tax_2_rate = parse_tax(filter_var($this->request->getPost('default_tax_2_rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        $default_tax_1_rate = parse_tax((string) $this->request->getPost('default_tax_1_rate'));
+        $default_tax_2_rate = parse_tax((string) $this->request->getPost('default_tax_2_rate'));
+
+        if ($default_tax_1_rate === false || $default_tax_2_rate === false) {
+            return $this->response->setJSON(['success' => false, 'message' => lang('Config.default_tax_rate_number')]);
+        }
 
         if ((is_numeric($default_tax_1_rate) && $default_tax_1_rate < 0) || (is_numeric($default_tax_2_rate) && $default_tax_2_rate < 0)) {
             return $this->response->setJSON(['success' => false, 'message' => lang('Config.default_tax_rate_non_negative')]);

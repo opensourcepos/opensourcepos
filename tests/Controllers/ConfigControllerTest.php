@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use App\Models\Appconfig;
 use App\Models\Stock_location;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
@@ -469,6 +470,55 @@ class ConfigControllerTest extends CIUnitTestCase
         $response->assertStatus(200);
         $result = json_decode($response->getJSON(), true);
         $this->assertTrue($result['success']);
+    }
+
+    public function testSaveTax_RejectsUnicodeMinusDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_1_rate' => "\u{2212}5",
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_RejectsNonNumericDefaultTaxRate(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+            'default_tax_2_rate' => 'abc',
+        ]));
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testSaveTax_ParsesDefaultTaxRateInCommaDecimalLocale(): void
+    {
+        $this->resetSession();
+
+        $appconfig = model(Appconfig::class);
+        $appconfig->save(['number_locale' => 'de_DE']);
+
+        try {
+            $response = $this->post('/config/saveTax', $this->baseTaxPayload([
+                'default_tax_1_rate' => '19,000',
+                'default_tax_2_rate' => '7,5',
+            ]));
+
+            $response->assertStatus(200);
+            $result = json_decode($response->getJSON(), true);
+            $this->assertTrue($result['success']);
+            $this->assertEquals(19, (float) $appconfig->get_value('default_tax_1_rate'));
+            $this->assertEquals(7.5, (float) $appconfig->get_value('default_tax_2_rate'));
+        } finally {
+            $appconfig->save(['number_locale' => 'en_US']);
+        }
     }
 
     // ========== postSaveLocations ==========
