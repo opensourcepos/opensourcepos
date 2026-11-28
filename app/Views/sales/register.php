@@ -55,7 +55,7 @@ use App\Models\Employee;
     #add_payment_form > table.sales_table_100 td:nth-child(2), #bill_discount_form table td:nth-child(2) { width: 40%; }
     #bill_discount_form { margin-top: 6px; }
     #bill_discount_form .input-group { display: table; width: 100%; }
-    #bill_discount_form .toggle.btn { margin: 0; }
+    #bill_discount_form .toggle.btn, #bill_discount_form .toggle-group > .btn { margin: 0; }
 </style>
 
 <?php
