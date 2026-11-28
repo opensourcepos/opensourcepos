@@ -1408,8 +1408,8 @@ class Item extends Model
     public function change_cost_price(int $item_id, float $items_received, float $new_price, ?float $old_price = null): bool
     {
         if ($old_price === null) {
-            $item_info = $this->getInfo($item_id);
-            $old_price = $item_info->cost_price;
+            $itemInfo  = $this->getInfo($item_id);
+            $old_price = $itemInfo->cost_price;
         }
 
         $builder = $this->db->table('item_quantities');
@@ -1417,12 +1417,27 @@ class Item extends Model
         $builder->where('item_id', $item_id);
         $builder->join('stock_locations', 'stock_locations.location_id=item_quantities.location_id');
         $builder->where('stock_locations.deleted', 0);
-        $old_total_quantity = $builder->get()->getRow()->quantity;
+        $oldTotalQuantity = $builder->get()->getRow()?->quantity;
 
-        $total_quantity = $old_total_quantity + $items_received;
-        $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
+        $totalQuantity = (float) ($oldTotalQuantity ?? 0) + $items_received;
 
-        $data = ['cost_price' => $average_price];
+        if (
+            $oldTotalQuantity === null
+            || (float) $oldTotalQuantity < 0
+            || $items_received <= 0
+            || $totalQuantity <= 0
+        ) {
+            $data = ['cost_price' => $new_price];
+
+            return $this->save_value($data, $item_id);
+        }
+
+        $averagePrice = bcdiv(
+            bcadd(bcmul((string) $items_received, (string) $new_price), bcmul((string) $oldTotalQuantity, (string) $old_price)),
+            (string) $totalQuantity,
+        );
+
+        $data = ['cost_price' => $averagePrice];
 
         return $this->save_value($data, $item_id);
     }
