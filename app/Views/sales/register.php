@@ -45,6 +45,10 @@ use App\Models\Employee;
 
 <?= view('partial/header') ?>
 
+<style>
+    #register tr.register-item-row > td { vertical-align: top; }
+</style>
+
 <?php
 if (isset($error)) {
     echo '<div class="alert alert-dismissible alert-danger">' . esc($error) . '</div>';
@@ -163,12 +167,18 @@ helper('url');
                 foreach (array_reverse($cart, true) as $line => $item) {
             ?>
                     <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
-                        <tr>
+                        <tr class="register-item-row">
                             <td>
                                 <?php
                                 echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
                                 echo form_hidden('location', (string)$item['item_location']);
                                 echo form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]);
+                                if ($item['item_type'] == ITEM_TEMP || !$config['receipt_show_description']) {
+                                    echo form_hidden('description', (string) $item['description']);
+                                }
+                                if ($item['item_type'] == ITEM_TEMP || !$item['is_serialized']) {
+                                    echo form_hidden('serialnumber', '');
+                                }
                                 ?>
                             </td>
                             <?php if ($item['item_type'] == ITEM_TEMP) { ?>
@@ -234,53 +244,31 @@ helper('url');
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <?php if ($item['item_type'] == ITEM_TEMP) { ?>
-                                <td><?= form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
-                                <td style="text-align: center;" colspan="6">
-                                    <?= form_input(['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
-                                </td>
-                                <td> </td>
-                            <?php } else { ?>
-                                <td>&nbsp;</td>
-                                <?php if ($item['allow_alt_description']) { ?>
-                                    <td style="color: #2F4F4F;"><?= lang(ucfirst($controller_name) . '.description_abbrv') ?></td>
-                                <?php } ?>
-
-                                <td colspan="2" style="text-align: left;">
-                                    <?php
-                                    if ($item['allow_alt_description']) {
-                                        echo form_input(['name' => 'description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'onClick' => 'this.select();']);
-                                    } else {
-                                        if ($item['description'] != '') {
-                                            echo esc($item['description']);
-                                            echo form_hidden('description', $item['description']);
-                                        } else {
-                                            echo lang(ucfirst($controller_name) . '.no_description');
-                                            echo form_hidden('description', '');
-                                        }
-                                    }
-                                    ?>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td style="color: #2F4F4F;">
-                                    <?php
-                                    if ($item['is_serialized']) {
-                                        echo lang(ucfirst($controller_name) . '.serial');
-                                    }
-                                    ?>
+                        <?php if ($config['receipt_show_description'] || $item['is_serialized']): ?>
+                            <tr>
+                                <td></td>
+                                <td colspan="3" style="text-align: left;">
+                                    <?php if ($config['receipt_show_description']): ?>
+                                        <?php if ($item['item_type'] == ITEM_TEMP): ?>
+                                            <?= form_hidden('item_id', (string) $item['item_id']) ?>
+                                            <?= form_input(['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
+                                        <?php elseif ($item['allow_alt_description']): ?>
+                                            <?= lang(ucfirst($controller_name) . '.description_abbrv') ?>
+                                            <?= form_input(['name' => 'description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'onClick' => 'this.select();']) ?>
+                                        <?php else: ?>
+                                            <?= $item['description'] !== '' ? esc($item['description']) : lang(ucfirst($controller_name) . '.no_description') ?>
+                                            <?= form_hidden('description', (string) $item['description']) ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
                                 </td>
                                 <td colspan="4" style="text-align: left;">
-                                    <?php
-                                    if ($item['is_serialized']) {
-                                        echo form_input(['name' => 'serialnumber', 'class' => 'form-control input-sm', 'value' => $item['serialnumber'], 'onClick' => 'this.select();']);
-                                    } else {
-                                        echo form_hidden('serialnumber', '');
-                                    }
-                                    ?>
+                                    <?php if ($item['is_serialized']): ?>
+                                        <?= lang(ucfirst($controller_name) . '.serial') ?>
+                                        <?= form_input(['name' => 'serialnumber', 'class' => 'form-control input-sm', 'value' => $item['serialnumber'], 'onClick' => 'this.select();']) ?>
+                                    <?php endif; ?>
                                 </td>
-                            <?php } ?>
-                        </tr>
+                            </tr>
+                        <?php endif; ?>
                     <?= form_close() ?>
             <?php
                 }

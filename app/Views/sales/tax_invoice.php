@@ -152,11 +152,11 @@ if (isset($error_message)) {
                     <?php endif; ?>
                     <td style="border-right: solid 1px; text-align: right;"><?= to_currency($item['discounted_total']) ?></td>
                 </tr>
-                <?php if ($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description'])) { ?>
+                <?php if ($item['is_serialized'] || ($config['receipt_show_description'] && $item['allow_alt_description'] && !empty($item['description']))) { ?>
                     <tr class="item-row">
                         <td><?= esc($item['hsn_code']) ?></td>
                         <td class="item-description" colspan="<?= $invoice_columns - 2 ?>">
-                            <?= esc($item['description']) ?>
+                            <?= $config['receipt_show_description'] ? esc($item['description']) : '' ?>
                         </td>
                         <td style="text-align: center;"><?= esc($item['serialnumber'])    // TODO: serialnumber does not meet naming conventions for this project ?></td>
                     </tr>

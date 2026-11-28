@@ -133,10 +133,10 @@ if (isset($error_message)) {
                     <td style="border-right: solid 1px; text-align: right;"><?php if ($print_price_info) echo to_currency($item['discounted_total']) ?></td>
                 </tr>
 
-                <?php if ($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description'])) { ?>
+                <?php if ($item['is_serialized'] || ($config['receipt_show_description'] && $item['allow_alt_description'] && !empty($item['description']))) { ?>
                     <tr class="item-row">
                         <td></td>
-                        <td class="item-name" colspan="4"><?= esc($item['description']) ?></td>
+                        <td class="item-name" colspan="4"><?= $config['receipt_show_description'] ? esc($item['description']) : '' ?></td>
                         <td style="text-align: center;"><?= esc($item['serialnumber']) ?></td>
                     </tr>
         <?php

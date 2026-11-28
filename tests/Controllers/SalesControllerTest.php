@@ -10,6 +10,8 @@ use CodeIgniter\Config\Services;
 use App\Models\Employee;
 use Config\Database;
 use Config\OSPOS;
+use DOMDocument;
+use DOMXPath;
 use Tests\Support\ItemFixtureTrait;
 use Tests\Support\EmployeeFixtureTrait;
 use Tests\Support\SaleFixtureTrait;
@@ -1003,6 +1005,220 @@ class SalesControllerTest extends CIUnitTestCase
         $restoredSettings = Services::session()->get('sales_bill_discount');
         $this->assertSame('percent', $restoredSettings['type']);
         $this->assertEqualsWithDelta(10, (float) $restoredSettings['value'], 0.0001);
+    }
+
+    public function testGetRegister_HidesDescriptionWhenDisabled(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_description'];
+        $config->settings['receipt_show_description'] = '0';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['description'] = 'Distinct hidden description';
+            $this->withSession(array_merge($this->session, ['sales_cart' => $cart]));
+
+            $response = $this->get('/sales');
+
+            $response->assertStatus(200);
+            $document = new DOMDocument();
+            @$document->loadHTML($response->getBody());
+            $xpath = new DOMXPath($document);
+            $this->assertSame(0, $xpath->query('//td[contains(normalize-space(.), "Distinct hidden description")]')->length);
+            $hidden = $xpath->query('//input[@type="hidden" and @name="description"]')->item(0);
+            $this->assertNotNull($hidden);
+            $this->assertSame('Distinct hidden description', $hidden->getAttribute('value'));
+            $this->assertSame(8, $xpath->query('//tr[contains(@class, "register-item-row")]/td')->length);
+        } finally {
+            $config->settings['receipt_show_description'] = $previous;
+        }
+    }
+
+    public function testGetRegister_ShowsDescriptionWhenEnabled(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_description'];
+        $config->settings['receipt_show_description'] = '1';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['description'] = 'Distinct visible description';
+            $this->withSession(array_merge($this->session, ['sales_cart' => $cart]));
+
+            $response = $this->get('/sales');
+
+            $response->assertStatus(200);
+            $document = new DOMDocument();
+            @$document->loadHTML($response->getBody());
+            $xpath = new DOMXPath($document);
+            $this->assertGreaterThan(0, $xpath->query('//td[contains(normalize-space(.), "Distinct visible description")]')->length);
+            $detailRow = $xpath->query('//tr[contains(@class, "register-item-row")]/following-sibling::tr[1]')->item(0);
+            $this->assertNotNull($detailRow);
+            $columns = 0;
+            foreach ($xpath->query('./td', $detailRow) as $cell) {
+                $columns += max(1, (int) $cell->getAttribute('colspan'));
+            }
+            $this->assertSame(8, $columns);
+        } finally {
+            $config->settings['receipt_show_description'] = $previous;
+        }
+    }
+
+    public function testGetRegister_PreservesSerialInputWhenDescriptionDisabled(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_description'];
+        $config->settings['receipt_show_description'] = '0';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['is_serialized'] = true;
+            $cart[1]['serialnumber'] = 'SERIAL-42';
+            $this->withSession(array_merge($this->session, ['sales_cart' => $cart]));
+
+            $response = $this->get('/sales');
+
+            $response->assertStatus(200);
+            $document = new DOMDocument();
+            @$document->loadHTML($response->getBody());
+            $xpath = new DOMXPath($document);
+            $serial = $xpath->query('//input[@name="serialnumber" and not(@type="hidden")]')->item(0);
+            $this->assertNotNull($serial);
+            $this->assertSame('SERIAL-42', $serial->getAttribute('value'));
+        } finally {
+            $config->settings['receipt_show_description'] = $previous;
+        }
+    }
+
+    public function testPostEditItem_PreservesHiddenDescription(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_description'];
+        $config->settings['receipt_show_description'] = '0';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['description'] = 'Keep this description';
+            $this->withSession(array_merge($this->session, ['sales_cart' => $cart]));
+
+            $response = $this->post('/sales/editItem/1', [
+                'name' => 'Updated sale name', 'description' => 'Keep this description', 'serialnumber' => '',
+                'price' => '5.00', 'quantity' => '1', 'discount' => '0', 'discount_type' => '0', 'location' => '1',
+            ]);
+
+            $response->assertStatus(200);
+            $savedCart = Services::session()->get('sales_cart');
+            $this->assertSame('Keep this description', $savedCart[1]['description']);
+            $this->assertSame('Updated sale name', $savedCart[1]['name']);
+        } finally {
+            $config->settings['receipt_show_description'] = $previous;
+        }
+    }
+
+    public function testPostComplete_HidesInvoiceDescriptionWhenDisabled(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_description'];
+        $previousInvoice = $config->settings['invoice_type'];
+        $config->settings['receipt_show_description'] = '0';
+        $config->settings['invoice_type'] = 'invoice';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['name'] = 'Invoice item name';
+            $cart[1]['description'] = 'Hidden invoice description';
+            $cart[1]['allow_alt_description'] = true;
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY, 'sales_mode' => 'sale_invoice', 'sales_cart' => $cart,
+            ]));
+
+            $response = $this->post('/sales/complete');
+
+            $response->assertStatus(200);
+            $response->assertSee('Invoice item name');
+            $response->assertDontSee('Hidden invoice description');
+        } finally {
+            $config->settings['receipt_show_description'] = $previous;
+            $config->settings['invoice_type'] = $previousInvoice;
+        }
+    }
+
+    public function testPostComplete_HidesTaxInvoiceDescriptionWhenDisabled(): void
+    {
+        $config = config(OSPOS::class);
+        $previousDescription = $config->settings['receipt_show_description'];
+        $previousInvoice = $config->settings['invoice_type'];
+        $config->settings['receipt_show_description'] = '0';
+        $config->settings['invoice_type'] = 'tax_invoice';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['name'] = 'Tax invoice item';
+            $cart[1]['description'] = 'Hidden tax invoice description';
+            $cart[1]['allow_alt_description'] = true;
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY, 'sales_mode' => 'sale_invoice', 'sales_cart' => $cart,
+            ]));
+
+            $response = $this->post('/sales/complete');
+
+            $response->assertStatus(200);
+            $response->assertSee('Tax invoice item');
+            $response->assertDontSee('Hidden tax invoice description');
+        } finally {
+            $config->settings['receipt_show_description'] = $previousDescription;
+            $config->settings['invoice_type'] = $previousInvoice;
+        }
+    }
+
+    public function testPostComplete_PreservesWorkOrderSerialWhenDescriptionDisabled(): void
+    {
+        $config = config(OSPOS::class);
+        $previous = $config->settings['receipt_show_description'];
+        $config->settings['receipt_show_description'] = '0';
+        try {
+            $employeeId = $this->createCashierEmployee();
+            $this->loginAs($employeeId);
+            $itemId = $this->createTestItem(HAS_NO_STOCK);
+            $this->seedCartLine(1, '5.00', $itemId);
+            $cart = $this->session['sales_cart'];
+            $cart[1]['description'] = 'Hidden work order description';
+            $cart[1]['is_serialized'] = true;
+            $cart[1]['serialnumber'] = 'WORK-SERIAL-42';
+            $this->withSession(array_merge($this->session, [
+                'sale_id' => NEW_ENTRY, 'sales_mode' => 'sale_work_order', 'sales_cart' => $cart,
+                'sales_payments' => [lang('Sales.cash') => [
+                    'payment_type' => lang('Sales.cash'), 'payment_amount' => '5.00',
+                    'cash_refund' => 0, 'cash_adjustment' => 0, 'reference_code' => null,
+                ]],
+            ]));
+
+            $response = $this->post('/sales/complete');
+
+            $response->assertStatus(200);
+            $response->assertSee('WORK-SERIAL-42');
+            $response->assertDontSee('Hidden work order description');
+        } finally {
+            $config->settings['receipt_show_description'] = $previous;
+        }
     }
 
 }

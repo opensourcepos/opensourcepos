@@ -145,7 +145,7 @@ if ($include_hsn) {
                     <?php endif; ?>
                     <td class="item-name">
                         <?= esc($item['name'] . ' ' . $item['attribute_values']) ?>
-                        <?php if (($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description'])): ?>
+                        <?php if ($config['receipt_show_description'] && ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description'])): ?>
                             <br><?= esc($item['description']) ?>
                         <?php endif; ?>
                     </td>
