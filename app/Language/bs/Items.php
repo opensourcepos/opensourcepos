@@ -76,6 +76,7 @@ return [
     'none'                               => 'Nijedan',
     'none_selected'                      => 'Niste odabrali nijedan artikal za uređivanje',
     'nonstock'                           => 'Bez zaliha',
+    'not_authorized'                      => '',
     'number_information'                 => 'Redni broj',
     'number_required'                    => 'Barkod je obavezno polje.',
     'one_or_multiple'                    => 'artikal(i)',

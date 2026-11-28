@@ -76,6 +76,7 @@ return [
     'none'                               => 'Egysem',
     'none_selected'                      => 'Niste odabrali nijedan artikal za uređivanje',
     'nonstock'                           => '',
+    'not_authorized'                      => '',
     'number_information'                 => 'Redni broj',
     'number_required'                    => 'UPC/EAN/ISBN je potreban',
     'one_or_multiple'                    => 'Artikal(i)',

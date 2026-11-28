@@ -1,25 +1,16 @@
 <?php
 
-/**
- * @param array $stock_locations
- * @param array $attributes
- * @return string
- */
-function generate_import_items_csv(array $stock_locations, array $attributes): string
+function generateImportItemsCsv(array $stockLocations, array $attributes): string
 {
-    $csv_headers = pack('CCC', 0xef, 0xbb, 0xbf);    // Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
-    $csv_headers .= 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN';
-    $csv_headers .= generate_stock_location_headers($stock_locations);
-    $csv_headers .= generate_attribute_headers($attributes);
+    $csvHeaders = pack('CCC', 0xef, 0xbb, 0xbf);    // Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
+    $csvHeaders .= 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN';
+    $csvHeaders .= generateStockLocationHeaders($stockLocations);
+    $csvHeaders .= generateAttributeHeaders($attributes);
 
-    return $csv_headers;
+    return $csvHeaders;
 }
 
-/**
- * @param array $locations
- * @return string
- */
-function generate_stock_location_headers(array $locations): string
+function generateStockLocationHeaders(array $locations): string
 {
     $locationHeaders = '';
 
@@ -30,11 +21,7 @@ function generate_stock_location_headers(array $locations): string
     return $locationHeaders;
 }
 
-/**
- * @param array $attributeNames
- * @return string
- */
-function generate_attribute_headers(array $attributeNames): string
+function generateAttributeHeaders(array $attributeNames): string
 {
     $attributeHeaders = '';
     unset($attributeNames[-1]);
@@ -60,8 +47,7 @@ function get_csv_file(string $fileName): array
 
         $csvRows = [];
 
-        // Skip Byte-Order Mark
-        if (bom_exists($csvFile)) {
+        if (bomExists($csvFile)) {
             fseek($csvFile, 3);
         }
 
@@ -79,24 +65,15 @@ function get_csv_file(string $fileName): array
     return $csvRows;
 }
 
-/**
- * @param $file_handle
- * @return bool
- */
-function bom_exists(&$file_handle): bool
+function bomExists(mixed &$fileHandle): bool
 {
-    $result        = false;
-    $candidate    = fread($file_handle, 3);
+    $candidate = fread($fileHandle, 3);
 
-    rewind($file_handle);
+    rewind($fileHandle);
 
     $bom = pack('CCC', 0xef, 0xbb, 0xbf);
 
-    if (0 === strncmp($candidate, $bom, 3)) {
-        $result = true;
-    }
-
-    return $result;
+    return 0 === strncmp($candidate, $bom, 3);
 }
 
 /**
@@ -105,7 +82,7 @@ function bom_exists(&$file_handle): bool
  * (for example when the "Id" column is missing, an attribute column was
  * renamed, or a stock location was added since the file was last downloaded)
  * would otherwise trigger "Undefined array key" errors while building each
- * item. The required columns are derived from generate_import_items_csv(),
+ * item. The required columns are derived from generateImportItemsCsv(),
  * the same function that builds the downloadable template, so location and
  * attribute columns stay in sync automatically.
  *
@@ -120,8 +97,8 @@ function csvImportHasRequiredItemHeaders(array $csvRows, array $stockLocations, 
         return false;
     }
 
-    $templateHeaderLine = substr(generate_import_items_csv($stockLocations, $attributeNames), 3);
-    $requiredHeaders = str_getcsv($templateHeaderLine);
+    $templateHeaderLine = substr(generateImportItemsCsv($stockLocations, $attributeNames), 3);
+    $requiredHeaders = str_getcsv($templateHeaderLine, ',', '"', '\\');
 
     $presentHeaders = array_keys(reset($csvRows));
 

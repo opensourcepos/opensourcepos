@@ -27,7 +27,7 @@ return [
     'items'                      => 'Producten',
     'items_desc'                 => 'Zoek, bewerk, verwijder en voeg producten toe.',
     'messages'                   => '',
-    'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
+    'messages_desc'              => '',
     'migrate'                    => 'Migreer',
     'migrate_desc'               => 'Update de OSPOS database.',
     'office'                     => 'Kantoor',

@@ -27,7 +27,7 @@ return [
     'items'                      => 'Termékek',
     'items_desc'                 => 'Termékek hozzáadása, módosítása, törlése és keresése',
     'messages'                   => '',
-    'messages_desc'              => 'Send Messages to Customers, Suppliers, Employees et al.',
+    'messages_desc'              => '',
     'migrate'                    => '',
     'migrate_desc'               => '',
     'office'                     => '',
