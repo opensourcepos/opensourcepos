@@ -44,7 +44,7 @@ class Summary_taxes extends Summary_report
 
         $sale_amount = '(CASE WHEN ' . $db_prefix . 'sales_items.discount_type = ' . PERCENT
             . " THEN " . $db_prefix . "sales_items.quantity_purchased * " . $db_prefix . "sales_items.item_unit_price - ROUND(" . $db_prefix . "sales_items.quantity_purchased * " . $db_prefix . "sales_items.item_unit_price * " . $db_prefix . "sales_items.discount / 100, $decimals)"
-            . ' ELSE ' . $db_prefix . 'sales_items.quantity_purchased * (' . $db_prefix . "sales_items.item_unit_price - " . $db_prefix . "sales_items.discount) END)";
+            . ' ELSE ' . $db_prefix . 'sales_items.quantity_purchased * (' . $db_prefix . "sales_items.item_unit_price - " . $db_prefix . "sales_items.discount) END - COALESCE(" . $db_prefix . "sales_items.bill_discount, 0))";
 
         $sale_tax = "IFNULL(" . $db_prefix . "sales_items_taxes.item_tax_amount, 0)";
 

@@ -1883,7 +1883,8 @@ class Reports extends Secure_Controller
                     to_currency($drow['total']),
                     to_currency($drow['cost']),
                     to_currency($drow['profit']),
-                    ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount'])
+                    ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount']),
+                    to_currency($drow['bill_discount'])
                 ], $attribute_values);
             }
 
@@ -1941,6 +1942,7 @@ class Reports extends Secure_Controller
                 'quantity'      => to_quantity_decimals($row['quantity_purchased']),
                 'unit_price'    => to_currency($row['item_unit_price']),
                 'discount'      => ($row['discount_type'] == PERCENT) ? $row['discount'] . '%' : to_currency($row['discount']),
+                'bill_discount' => to_currency($row['bill_discount']),
                 'subtotal'      => to_currency($row['subtotal']),
                 'tax'           => to_currency_tax($row['tax']),
                 'total'         => to_currency($row['total']),

@@ -27,6 +27,7 @@ abstract class Summary_report extends Report
         $sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
             . " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
             . 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
+        $sale_price = '(' . $sale_price . ') - COALESCE(sales_items.bill_discount, 0)';
 
         $sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
         $sales_tax = "IFNULL(SUM(sales_items_taxes.tax), 0)";
@@ -95,13 +96,13 @@ abstract class Summary_report extends Report
      */
     private function __common_from(BaseBuilder &$builder): void    // TODO: hungarian notation
     {
-        $builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+        $builder->join($this->db->prefixTable('sales') . ' AS sales', 'sales_items.sale_id = sales.sale_id', 'inner', false);
         $builder->join(
-            'sales_items_taxes_temp AS sales_items_taxes',
+            $this->db->prefixTable('sales_items_taxes_temp') . ' AS sales_items_taxes',
             'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
-            'left outer'
+            'left outer', false
         );
-        $builder->join('sales_report_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
+        $builder->join($this->db->prefixTable('sales_report_payments_temp') . ' AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER', false);
     }
 
     /**

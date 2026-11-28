@@ -55,7 +55,8 @@ class Detailed_sales extends Report
                 lang('Reports.total'),
                 lang('Reports.cost'),
                 lang('Reports.profit'),
-                lang('Reports.discount')
+                lang('Reports.discount'),
+                lang('Sales.bill_discount')
             ],
             'details_rewards' => [
                 lang('Reports.used'),
@@ -184,6 +185,7 @@ class Detailed_sales extends Report
                 MAX(cost) AS cost,
                 MAX(profit) AS profit,
                 MAX(discount) AS discount,
+                MAX(bill_discount) AS bill_discount,
                 MAX(discount_type) AS discount_type,
                 MAX(sale_status) AS sale_status');
 
@@ -196,7 +198,7 @@ class Detailed_sales extends Report
                 $builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
             }
 
-            $builder->groupBy('sales_items_temp.sale_id, sales_items_temp.item_id, sales_items_temp.sale_id');
+            $builder->groupBy('sales_items_temp.sale_id, sales_items_temp.item_id, sales_items_temp.line');
             $builder->where('sales_items_temp.sale_id', $value['sale_id']);
             $data['details'][$key] = $builder->get()->getResultArray();
 

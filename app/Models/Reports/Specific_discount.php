@@ -95,8 +95,10 @@ class Specific_discount extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment');
 
-        $builder->where('discount >=', $inputs['discount']);    // TODO: Duplicated code
-        $builder->where('discount_type', $inputs['discount_type']);
+        $builder->groupStart();
+        $builder->groupStart()->where('discount >=', $inputs['discount'])->where('discount_type', $inputs['discount_type'])->groupEnd();
+        $builder->orGroupStart()->where('bill_discount_value >=', $inputs['discount'])->where('bill_discount_type', (int) $inputs['discount_type'] === FIXED ? 'fixed' : 'percent')->groupEnd();
+        $builder->groupEnd();
 
         switch ($inputs['sale_type']) {
             case 'complete':
@@ -168,8 +170,10 @@ class Specific_discount extends Report
         $builder = $this->db->table('sales_items_temp');
         $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 
-        $builder->where('discount >=', $inputs['discount']);    // TODO: Duplicated code
-        $builder->where('discount_type', $inputs['discount_type']);
+        $builder->groupStart();
+        $builder->groupStart()->where('discount >=', $inputs['discount'])->where('discount_type', $inputs['discount_type'])->groupEnd();
+        $builder->orGroupStart()->where('bill_discount_value >=', $inputs['discount'])->where('bill_discount_type', (int) $inputs['discount_type'] === FIXED ? 'fixed' : 'percent')->groupEnd();
+        $builder->groupEnd();
 
         // TODO: this needs to be converted to a switch statement
         if ($inputs['sale_type'] == 'complete') {

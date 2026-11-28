@@ -1073,6 +1073,7 @@ class Sale extends Model
         $sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
             . " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
             . 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
+        $sale_price = '(' . $sale_price . ') - COALESCE(sales_items.bill_discount, 0)';
 
         $sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
@@ -1151,7 +1152,7 @@ class Sale extends Model
                     MAX(sales.employee_id) AS employee_id,
                     MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
                     items.item_id AS item_id,
-                    MAX(' . $item->get_item_name() . ') AS name,
+                    MAX(COALESCE(sales_items.sale_item_name, ' . $item->get_item_name() . ')) AS name,
                     MAX(items.item_number) AS item_number,
                     MAX(items.category) AS category,
                     MAX(items.supplier_id) AS supplier_id,
@@ -1159,6 +1160,9 @@ class Sale extends Model
                     MAX(sales_items.item_cost_price) AS item_cost_price,
                     MAX(sales_items.item_unit_price) AS item_unit_price,
                     MAX(sales_items.discount) AS discount,
+                    MAX(sales_items.bill_discount) AS bill_discount,
+                    MAX(sales.bill_discount_type) AS bill_discount_type,
+                    MAX(sales.bill_discount_value) AS bill_discount_value,
                     sales_items.discount_type AS discount_type,
                     sales_items.line AS line,
                     MAX(sales_items.serialnumber) AS serialnumber,
