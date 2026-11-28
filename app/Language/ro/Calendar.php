@@ -32,7 +32,7 @@ return [
     'aug'       => 'Aug',
     'sep'       => 'Sep',
     'oct'       => 'Oct',
-    'nov'       => 'Nov',
+    'nov'       => 'Noi',
     'dec'       => 'Dec',
     'january'   => 'Ianuarie',
     'february'  => 'Februarie',

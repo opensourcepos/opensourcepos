@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'half_down'  => '',
-    'half_even'  => '',
-    'half_five'  => '',
-    'half_odd'   => '',
-    'half_up'    => '',
-    'round_down' => '',
-    'round_up'   => '',
+    'half_down'  => 'Jumătate în jos',
+    'half_even'  => 'Jumătate par',
+    'half_five'  => 'Jumătate cinci',
+    'half_odd'   => 'Jumătate impar',
+    'half_up'    => 'Jumătate în sus',
+    'round_down' => 'Rotunjire în jos',
+    'round_up'   => 'Rotunjire în sus',
 ];
