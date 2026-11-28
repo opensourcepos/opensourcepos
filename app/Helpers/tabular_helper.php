@@ -628,50 +628,50 @@ function get_item_kit_data_row(object $item_kit): array
  */
 function parse_attribute_values(array $columns, array $row): array
 {
-    $attribute_values = [];
+    $attributeValues = [];
     foreach ($columns as $column) {
         if (array_key_exists($column, $row)) {
-            $attribute_value = explode('|', $row[$column]);
-            $attribute_values = array_merge($attribute_values, $attribute_value);
+            $attributeValue = explode('|', $row[$column]);
+            $attributeValues = array_merge($attributeValues, $attributeValue);
         }
     }
-    return $attribute_values;
+    return $attributeValues;
 }
 
 /**
- * @param array $definition_names Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
+ * @param array $definitionNames Array of definition_id => ['name' => name, 'type' => type] or definition_id => name
  * @param array $row
  * @return array
  */
-function expand_attribute_values(array $definition_names, array $row): array
+function expand_attribute_values(array $definitionNames, array $row): array
 {
     $values = parse_attribute_values(['attribute_values', 'attribute_dtvalues', 'attribute_dvalues'], $row);
 
-    $indexed_values = [];
-    foreach ($values as $attribute_value) {
-        $exploded_value = explode('_', $attribute_value);
-        if (sizeof($exploded_value) > 1) {
-            $indexed_values[$exploded_value[0]] = $exploded_value[1];
+    $indexedValues = [];
+    foreach ($values as $attributeValue) {
+        $explodedValue = explode('_', $attributeValue);
+        if (sizeof($explodedValue) > 1) {
+            $indexedValues[$explodedValue[0]] = $explodedValue[1];
         }
     }
 
-    $attribute_values = [];
-    foreach ($definition_names as $definition_id => $definitionInfo) {
-        if (isset($indexed_values[$definition_id])) {
-            $raw_value = $indexed_values[$definition_id];
+    $attributeValues = [];
+    foreach ($definitionNames as $definitionId => $definitionInfo) {
+        if (isset($indexedValues[$definitionId])) {
+            $rawValue = $indexedValues[$definitionId];
 
             // Format DECIMAL attributes according to locale
             if (is_array($definitionInfo) && isset($definitionInfo['type']) && $definitionInfo['type'] === DECIMAL) {
-                $attribute_values["$definition_id"] = to_decimals($raw_value);
+                $attributeValues["$definitionId"] = to_decimals($rawValue);
             } else {
-                $attribute_values["$definition_id"] = $raw_value;
+                $attributeValues["$definitionId"] = $rawValue;
             }
         } else {
-            $attribute_values["$definition_id"] = "";
+            $attributeValues["$definitionId"] = "";
         }
     }
 
-    return $attribute_values;
+    return $attributeValues;
 }
 
 function attribute_definition_headers(): array
@@ -694,31 +694,31 @@ function get_attribute_definition_manage_table_headers(): string
 }
 
 /**
- * @param object $attribute_row
+ * @param object $attributeRow
  * @return array
  */
-function get_attribute_definition_data_row(object $attribute_row): array
+function get_attribute_definition_data_row(object $attributeRow): array
 {
 
     $attribute = model(Attribute::class);
     $controller = get_controller();
 
     if (count($attribute->getDefinitionFlags()) == 0) {
-        $definition_flags = lang('Common.none_selected_text');
+        $definitionFlags = lang('Common.none_selected_text');
     } elseif ($attribute->definition_type == GROUP) {
-        $definition_flags = "-";
+        $definitionFlags = "-";
     } else {
-        $definition_flags = implode(', ', $attribute_row->definition_flags);
+        $definitionFlags = implode(', ', $attributeRow->definition_flags);
     }
 
     return [
-        'definition_id'    => $attribute_row->definition_id,
-        'definition_name'  => $attribute_row->definition_name,
-        'definition_type'  => $attribute_row->definition_type,
-        'definition_group' => $attribute_row->definition_group,
-        'definition_flags' => $definition_flags,
+        'definition_id'    => $attributeRow->definition_id,
+        'definition_name'  => $attributeRow->definition_name,
+        'definition_type'  => $attributeRow->definition_type,
+        'definition_group' => $attributeRow->definition_group,
+        'definition_flags' => $definitionFlags,
         'edit'             => anchor(
-            "$controller/view/$attribute_row->definition_id",
+            "$controller/view/$attributeRow->definition_id",
             '<span class="glyphicon glyphicon-edit"></span>',
             [
                 'class'           => 'modal-dlg',

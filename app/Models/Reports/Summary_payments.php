@@ -28,7 +28,7 @@ class Summary_payments extends Summary_report
      */
     public function getData(array $inputs): array
     {
-        $cash_payment = lang('Sales.cash');    // TODO: This is never used.  Should it be?
+        $cashPayment = lang('Sales.cash');    // TODO: This is never used.  Should it be?
         $config = config(OSPOS::class)->settings;
 
         $separator[] = [
@@ -75,10 +75,10 @@ class Summary_payments extends Summary_report
         $sales = $builder->get()->getResultArray();
 
         // At this point in time refunds are assumed to be cash refunds.
-        $total_cash_refund = 0;
-        foreach ($sales as $key => $sale_summary) {
-            if ($sale_summary['trans_refunded'] <> 0) {
-                $total_cash_refund += $sale_summary['trans_refunded'];
+        $totalCashRefund = 0;
+        foreach ($sales as $key => $saleSummary) {
+            if ($saleSummary['trans_refunded'] <> 0) {
+                $totalCashRefund += $saleSummary['trans_refunded'];
             }
         }
 
@@ -101,25 +101,25 @@ class Summary_payments extends Summary_report
         $payments = $builder->get()->getResultArray();
 
         // Consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
-        $gift_card_count = 0;
-        $gift_card_amount = 0;
+        $giftCardCount = 0;
+        $giftCardAmount = 0;
         foreach ($payments as $key => $payment) {
             if (str_contains($payment['trans_type'], lang('Sales.giftcard'))) {
-                $gift_card_count += $payment['trans_sales'];
-                $gift_card_amount += $payment['trans_amount'];
+                $giftCardCount += $payment['trans_sales'];
+                $giftCardAmount += $payment['trans_amount'];
 
                 // Remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
                 unset($payments[$key]);
             }
         }
 
-        if ($gift_card_count > 0) {
+        if ($giftCardCount > 0) {
             $payments[] = [
                 'trans_group'    => lang('Reports.trans_payments'),
                 'trans_type'     => lang('Sales.giftcard'),
-                'trans_sales'    => $gift_card_count,
-                'trans_amount'   => $gift_card_amount,
-                'trans_payments' => $gift_card_amount,
+                'trans_sales'    => $giftCardCount,
+                'trans_amount'   => $giftCardAmount,
+                'trans_payments' => $giftCardAmount,
                 'trans_refunded' => 0,
                 'trans_due'      => 0
             ];

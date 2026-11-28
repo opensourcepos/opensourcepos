@@ -61,46 +61,46 @@ class Expenses_categories extends Secure_Controller
     }
 
     /**
-     * @param int $expense_category_id
+     * @param int $expenseCategoryId
      * @return void
      */
-    public function getView(int $expense_category_id = NEW_ENTRY): string
+    public function getView(int $expenseCategoryId = NEW_ENTRY): string
     {
-        $data['category_info'] = $this->expense_category->get_info($expense_category_id);
+        $data['category_info'] = $this->expense_category->get_info($expenseCategoryId);
 
         return view("expenses_categories/form", $data);
     }
 
     /**
-     * @param int $expense_category_id
+     * @param int $expenseCategoryId
      * @return void
      */
-    public function postSave(int $expense_category_id = NEW_ENTRY): ResponseInterface
+    public function postSave(int $expenseCategoryId = NEW_ENTRY): ResponseInterface
     {
-        $expense_category_data = [
+        $expenseCategoryData = [
             'category_name'        => $this->request->getPost('category_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category_description' => $this->request->getPost('category_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        if ($this->expense_category->save_value($expense_category_data, $expense_category_id)) {
+        if ($this->expense_category->save_value($expenseCategoryData, $expenseCategoryId)) {
             // New expense_category
-            if ($expense_category_id == NEW_ENTRY) {
+            if ($expenseCategoryId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_adding'),
-                    'id'      => $expense_category_data['expense_category_id']
+                    'id'      => $expenseCategoryData['expense_category_id']
                 ]);
             } else { // Existing Expense Category
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_updating'),
-                    'id'      => $expense_category_id
+                    'id'      => $expenseCategoryId
                 ]);
             }
         } else { // Failure
             return $this->response->setJSON([
                 'success' => true,
-                'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
+                'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expenseCategoryData['category_name'],
                 'id'      => NEW_ENTRY
             ]);
         }

@@ -35,14 +35,14 @@ function generateAttributeHeaders(array $attributeNames): string
 
 /**
  * Processes a CSV file and returns it.
- * @param string $file_name
+ * @param string $fileName
  * @return array A multidimensional array of rows found within the file and their associative key/value pairs.
  */
-function get_csv_file(string $file_name): array
+function get_csv_file(string $fileName): array
 {
     $csvRows = false;
 
-    if (($csvFile = fopen($file_name, 'r')) !== false) {
+    if (($csvFile = fopen($fileName, 'r')) !== false) {
         helper('security');
 
         $csvRows = [];

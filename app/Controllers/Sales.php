@@ -689,8 +689,8 @@ class Sales extends Secure_Controller
 
             // sales_change_price grant is enforced server-side here; the UI-only "change_price" flag must not be trusted
             $current_price = $this->sale_lib->get_cart()[$line]['price'] ?? null;
-            $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-            if ($current_price !== null && bccomp((string)$price, (string)$current_price, $precision) != 0 && !$this->employee->has_grant('sales_change_price', $employee_id)) {
+            $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+            if ($current_price !== null && bccomp((string)$price, (string)$current_price, $precision) != 0 && !$this->employee->has_grant('sales_change_price', $employeeId)) {
                 $data['error'] = lang('Sales.not_authorized');
                 return $this->reload($data);
             }
@@ -716,14 +716,14 @@ class Sales extends Secure_Controller
     /**
      * Deletes an item specified in the parameter from the shopping cart. Used in app/Views/sales/register.php
      *
-     * @param int $item_id
+     * @param int $itemId
      * @return ResponseInterface
      * @throws ReflectionException
      * @noinspection PhpUnused
      */
-    public function getDeleteItem(int $item_id): ResponseInterface|string
+    public function getDeleteItem(int $itemId): ResponseInterface|string
     {
-        $this->sale_lib->delete_item($item_id);
+        $this->sale_lib->delete_item($itemId);
 
         $this->sale_lib->empty_payments();
 
@@ -1196,24 +1196,24 @@ class Sales extends Secure_Controller
     }
 
     /**
-     * @param $sale_id
+     * @param $saleId
      * @return array
      */
-    private function _load_sale_data($sale_id): array    // TODO: Hungarian notation
+    private function _load_sale_data($saleId): array    // TODO: Hungarian notation
     {
         $this->sale_lib->clear_all();
         $cash_rounding = $this->sale_lib->reset_cash_rounding();
         $data['cash_rounding'] = $cash_rounding;
 
-        $sale_info = $this->sale->getInfo($sale_id)->getRowArray();
-        $this->sale_lib->copy_entire_sale($sale_id);
+        $sale_info = $this->sale->getInfo($saleId)->getRowArray();
+        $this->sale_lib->copy_entire_sale($saleId);
         $data = [];
         $data['cart'] = $this->sale_lib->get_cart();
         $data['payments'] = $this->sale_lib->getPayments();
         $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
 
-        $tax_details = $this->tax_lib->get_taxes($data['cart'], $sale_id);
-        $data['taxes'] = $this->sale->get_sales_taxes($sale_id);
+        $tax_details = $this->tax_lib->get_taxes($data['cart'], $saleId);
+        $data['taxes'] = $this->sale->get_sales_taxes($saleId);
         $data['discount'] = $this->sale_lib->get_discount();
         $data['transaction_time'] = to_datetime(strtotime($sale_info['sale_time']));
         $data['transaction_date'] = to_date(strtotime($sale_info['sale_time']));
@@ -1248,8 +1248,8 @@ class Sales extends Secure_Controller
         $data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
         $this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
-        $data['sale_id_num'] = $sale_id;
-        $data['sale_id'] = 'POS ' . $sale_id;
+        $data['sale_id_num'] = $saleId;
+        $data['sale_id'] = 'POS ' . $saleId;
         $data['comments'] = $sale_info['comment'];
         $data['invoice_number'] = $sale_info['invoice_number'];
         $data['quote_number'] = $sale_info['quote_number'];
@@ -1307,10 +1307,10 @@ class Sales extends Secure_Controller
      */
     private function reload(array $data = []): ResponseInterface|string
     {
-        $sale_id = $this->session->get('sale_id');    // TODO: This variable is never used
+        $saleId = $this->session->get('sale_id');    // TODO: This variable is never used
 
-        if ($sale_id == '') {
-            $sale_id = NEW_ENTRY;
+        if ($saleId == '') {
+            $saleId = NEW_ENTRY;
             $this->session->set('sale_id', NEW_ENTRY);
         }
         $cash_rounding = $this->sale_lib->reset_cash_rounding();
@@ -1522,25 +1522,25 @@ class Sales extends Secure_Controller
     }
 
     /**
-     * @param int $sale_id
+     * @param int $saleId
      * @return ResponseInterface
      * @throws ReflectionException
      */
-    public function postDelete(int $sale_id = NEW_ENTRY, bool $update_inventory = true): ResponseInterface
+    public function postDelete(int $saleId = NEW_ENTRY, bool $updateInventory = true): ResponseInterface
     {
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-        $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
+        $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+        $hasGrant = $this->employee->has_grant('sales_delete', $employeeId);
 
-        if (!$has_grant) {
+        if (!$hasGrant) {
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         } else {
-            $sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
+            $saleIds = $saleId == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$saleId];
 
-            if ($this->sale->delete_list($sale_ids, $employee_id, $update_inventory)) {
+            if ($this->sale->delete_list($saleIds, $employeeId, $updateInventory)) {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Sales.successfully_deleted') . ' ' . count($sale_ids) . ' ' . lang('Sales.one_or_multiple'),
-                    'ids'     => $sale_ids
+                    'message' => lang('Sales.successfully_deleted') . ' ' . count($saleIds) . ' ' . lang('Sales.one_or_multiple'),
+                    'ids'     => $saleIds
                 ]);
             } else {
                 return $this->response->setJSON(['success' => false, 'message' => lang('Sales.unsuccessfully_deleted')]);
@@ -1549,25 +1549,25 @@ class Sales extends Secure_Controller
     }
 
     /**
-     * @param int $sale_id
-     * @param bool $update_inventory
+     * @param int $saleId
+     * @param bool $updateInventory
      * @return ResponseInterface
      */
-    public function restore(int $sale_id = NEW_ENTRY, bool $update_inventory = true): ResponseInterface
+    public function restore(int $saleId = NEW_ENTRY, bool $updateInventory = true): ResponseInterface
     {
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-        $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
+        $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
+        $hasGrant = $this->employee->has_grant('sales_delete', $employeeId);
 
-        if (!$has_grant) {
+        if (!$hasGrant) {
             return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => lang('Sales.not_authorized')]);
         } else {
-            $sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
+            $saleIds = $saleId == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$saleId];
 
-            if ($this->sale->restore_list($sale_ids, $employee_id, $update_inventory)) {
+            if ($this->sale->restore_list($saleIds, $employeeId, $updateInventory)) {
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => lang('Sales.successfully_restored') . ' ' . count($sale_ids) . ' ' . lang('Sales.one_or_multiple'),
-                    'ids'     => $sale_ids
+                    'message' => lang('Sales.successfully_restored') . ' ' . count($saleIds) . ' ' . lang('Sales.one_or_multiple'),
+                    'ids'     => $saleIds
                 ]);
             } else {
                 return $this->response->setJSON(['success' => false, 'message' => lang('Sales.unsuccessfully_restored')]);
@@ -1715,8 +1715,8 @@ class Sales extends Secure_Controller
      */
     public function postCancel(): ResponseInterface|string
     {
-        $sale_id = $this->sale_lib->get_sale_id();
-        if ($sale_id != NEW_ENTRY && $sale_id != '') {
+        $saleId = $this->sale_lib->get_sale_id();
+        if ($saleId != NEW_ENTRY && $saleId != '') {
             $sale_type = $this->sale_lib->getSaleType();
 
             if ($this->config['dinner_table_enable']) {
@@ -1725,9 +1725,9 @@ class Sales extends Secure_Controller
             }
 
             if ($sale_type == SALE_TYPE_WORK_ORDER) {
-                $this->sale->update_sale_status($sale_id, CANCELED);
+                $this->sale->update_sale_status($saleId, CANCELED);
             } else {
-                $this->sale->delete($sale_id);
+                $this->sale->delete($saleId);
                 $this->session->set('sale_id', NEW_ENTRY);
             }
         } else {
@@ -1762,11 +1762,11 @@ class Sales extends Secure_Controller
      */
     public function postSuspend(): ResponseInterface|string
     {
-        $sale_id = $this->sale_lib->get_sale_id();
+        $saleId = $this->sale_lib->get_sale_id();
         $dinner_table = $this->sale_lib->get_dinner_table();
         $cart = $this->sale_lib->get_cart();
         $payments = $this->sale_lib->getPayments();
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $employeeId = $this->employee->get_logged_in_employee_info()->person_id;
         $customer_id = $this->sale_lib->get_customer();
         $invoice_number = $this->sale_lib->get_invoice_number();
         $work_order_number = $this->sale_lib->get_work_order_number();
@@ -1783,7 +1783,7 @@ class Sales extends Secure_Controller
         $data = [];
         $sales_taxes = [[], []];
 
-        $saleIdNum = $this->sale->save_value($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes);
+        $saleIdNum = $this->sale->save_value($saleId, $sale_status, $cart, $customer_id, $employeeId, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes);
 
         if ($saleIdNum === INSUFFICIENT_GIFTCARD_BALANCE) {
             $data['error'] = lang('Sales.insufficient_giftcard_balance');
@@ -1862,9 +1862,9 @@ class Sales extends Secure_Controller
      */
     public function postCheckInvoiceNumber(): ResponseInterface
     {
-        $sale_id = $this->request->getPost('sale_id', FILTER_SANITIZE_NUMBER_INT);
+        $saleId = $this->request->getPost('sale_id', FILTER_SANITIZE_NUMBER_INT);
         $invoice_number = $this->request->getPost('invoice_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $exists = !empty($invoice_number) && $this->sale->check_invoice_number_exists($invoice_number, $sale_id);
+        $exists = !empty($invoice_number) && $this->sale->check_invoice_number_exists($invoice_number, $saleId);
         return $this->response->setJSON(!$exists ? 'true' : 'false');
     }
 
@@ -1897,13 +1897,13 @@ class Sales extends Secure_Controller
      */
     public function postChangeItemNumber(): ResponseInterface
     {
-        $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
-        $item_number = $this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $this->item->update_item_number($item_id, $item_number);
+        $itemId = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+        $itemNumber = $this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->item->update_item_number($itemId, $itemNumber);
         $cart = $this->sale_lib->get_cart();
-        $x = $this->search_cart_for_item_id($item_id, $cart);
+        $x = $this->search_cart_for_item_id($itemId, $cart);
         if ($x !== null) {
-            $cart[$x]['item_number'] = $item_number;
+            $cart[$x]['item_number'] = $itemNumber;
         }
         $this->sale_lib->set_cart($cart);
         return $this->response->setJSON(['success' => true]);
@@ -1917,13 +1917,13 @@ class Sales extends Secure_Controller
      */
     public function postChangeItemName(): ResponseInterface
     {
-        $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+        $itemId = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
         $name = $this->request->getPost('item_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $this->item->update_item_name($item_id, $name);
+        $this->item->update_item_name($itemId, $name);
 
         $cart = $this->sale_lib->get_cart();
-        $x = $this->search_cart_for_item_id($item_id, $cart);
+        $x = $this->search_cart_for_item_id($itemId, $cart);
 
         if ($x !== null) {
             $cart[$x]['name'] = $name;
@@ -1941,13 +1941,13 @@ class Sales extends Secure_Controller
      */
     public function postChangeItemDescription(): ResponseInterface
     {
-        $item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+        $itemId = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
         $description = $this->request->getPost('item_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $this->item->update_item_description($item_id, $description);
+        $this->item->update_item_description($itemId, $description);
 
         $cart = $this->sale_lib->get_cart();
-        $x = $this->search_cart_for_item_id($item_id, $cart);
+        $x = $this->search_cart_for_item_id($itemId, $cart);
 
         if ($x !== null) {
             $cart[$x]['description'] = $description;

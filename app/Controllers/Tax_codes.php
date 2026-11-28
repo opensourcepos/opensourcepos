@@ -77,48 +77,48 @@ class Tax_codes extends Secure_Controller
     }
 
     /**
-     * @param int $tax_code_id
+     * @param int $taxCodeId
      * @return string
      */
-    public function getView(int $tax_code_id = NEW_ENTRY): string
+    public function getView(int $taxCodeId = NEW_ENTRY): string
     {
-        $data['tax_code_info'] = $this->tax_code->get_info($tax_code_id);
+        $data['tax_code_info'] = $this->tax_code->get_info($taxCodeId);
 
         return view("taxes/tax_code_form", $data);
     }
 
 
     /**
-     * @param int $tax_code_id
+     * @param int $taxCodeId
      * @return ResponseInterface
      */
-    public function postSave(int $tax_code_id = NEW_ENTRY): ResponseInterface
+    public function postSave(int $taxCodeId = NEW_ENTRY): ResponseInterface
     {
-        $tax_code_data = [
+        $taxCodeData = [
             'tax_code'      => $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'tax_code_name' => $this->request->getPost('tax_code_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'city'          => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'state'         => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        if ($this->tax_code->save($tax_code_data)) {
-            if ($tax_code_id == NEW_ENTRY) {
+        if ($this->tax_code->save($taxCodeData)) {
+            if ($taxCodeId == NEW_ENTRY) {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_adding'),
-                    'id'      => $tax_code_data['tax_code_id']
+                    'id'      => $taxCodeData['tax_code_id']
                 ]);
             } else {
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_updating'),
-                    'id'      => $tax_code_id
+                    'id'      => $taxCodeId
                 ]);
             }
         } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
+                'message' => lang('Tax_codes.error_adding_updating') . ' ' . $taxCodeData['tax_code_id'],
                 'id'      => NEW_ENTRY
             ]);
         }

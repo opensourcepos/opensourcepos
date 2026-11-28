@@ -40,10 +40,10 @@ class Sale extends Model
     /**
      * Get sale info
      */
-    public function getInfo(int $sale_id): ResultInterface
+    public function getInfo(int $saleId): ResultInterface
     {
         $config = config(OSPOS::class)->settings;
-        $this->create_temp_table(['sale_id' => $sale_id]);
+        $this->create_temp_table(['sale_id' => $saleId]);
 
         $decimals = totals_decimals();
         $sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
@@ -93,7 +93,7 @@ class Sale extends Model
             'LEFT OUTER'
         );
 
-        $builder->where('sales.sale_id', $sale_id);
+        $builder->where('sales.sale_id', $saleId);
 
         $builder->groupBy('sales.sale_id, payments.reference_code');
         $builder->orderBy('sales.sale_time', 'asc');
@@ -439,10 +439,10 @@ class Sale extends Model
     /**
      * Checks if sale exists
      */
-    public function exists(int $sale_id): bool
+    public function exists(int $saleId): bool
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
@@ -450,10 +450,10 @@ class Sale extends Model
     /**
      * Update sale
      */
-    public function update($sale_id = null, $sale_data = null): bool
+    public function update($saleId = null, $sale_data = null): bool
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
         $update_data = $sale_data;
         unset($update_data['payments']);
         $success = $builder->update($update_data);
@@ -477,7 +477,7 @@ class Sale extends Model
                 if ($payment_id == NEW_ENTRY && $payment_amount != 0) {
                     // Add a new payment transaction
                     $sales_payments_data = [
-                        'sale_id'         => $sale_id,
+                        'sale_id'         => $saleId,
                         'payment_type'    => $payment_type,
                         'payment_amount'  => $payment_amount,
                         'cash_refund'     => $cash_refund,
@@ -723,12 +723,12 @@ class Sale extends Model
     /**
      * Saves sale tax
      */
-    public function save_sales_tax(int $sale_id, array $sales_taxes): void    // TODO: should we return the result of the insert here as a bool?
+    public function save_sales_tax(int $saleId, array $sales_taxes): void    // TODO: should we return the result of the insert here as a bool?
     {
         $builder = $this->db->table('sales_taxes');
 
         foreach ($sales_taxes as $line => $sales_tax) {
-            $sales_tax['sale_id'] = $sale_id;
+            $sales_tax['sale_id'] = $saleId;
             $builder->insert($sales_tax);
         }
     }
@@ -740,13 +740,13 @@ class Sale extends Model
      * of VAT tax which becomes a price component.  VAT taxes must still be reported
      * as a separate tax entry on the invoice.
      */
-    public function save_sales_items_taxes(int $sale_id, array $sales_item_taxes): void
+    public function save_sales_items_taxes(int $saleId, array $sales_item_taxes): void
     {
         $builder = $this->db->table('sales_items_taxes');
 
         foreach ($sales_item_taxes as $line => $tax_item) {
             $sales_items_taxes = [
-                'sale_id'           => $sale_id,
+                'sale_id'           => $saleId,
                 'item_id'           => $tax_item['item_id'],
                 'line'              => $tax_item['line'],
                 'name'              => $tax_item['name'],
@@ -767,10 +767,10 @@ class Sale extends Model
     /**
      * Return the taxes that were charged
      */
-    public function get_sales_taxes(int $sale_id): array
+    public function get_sales_taxes(int $saleId): array
     {
         $builder = $this->db->table('sales_taxes');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
         $builder->orderBy('print_sequence', 'asc');
 
         $query = $builder->get();
@@ -781,11 +781,11 @@ class Sale extends Model
     /**
      * Return the taxes applied to a sale for a particular item
      */
-    public function get_sales_item_taxes(int $sale_id, int $item_id): array
+    public function get_sales_item_taxes(int $saleId, int $item_id): array
     {
         $builder = $this->db->table('sales_items_taxes');
         $builder->select('item_id, name, percent');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
         $builder->where('item_id', $item_id);
 
         // Return an array of taxes for an item
@@ -800,8 +800,8 @@ class Sale extends Model
     {
         $result = true;
 
-        foreach ($sale_ids as $sale_id) {
-            $result &= $this->delete($sale_id, false, $update_inventory, $employee_id);
+        foreach ($sale_ids as $saleId) {
+            $result &= $this->delete($saleId, false, $update_inventory, $employee_id);
         }
 
         return $result;
@@ -812,8 +812,8 @@ class Sale extends Model
      */
     public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = true): bool    // TODO: $employee_id and $update_inventory are never used in the function.
     {
-        foreach ($sale_ids as $sale_id) {
-            $this->update_sale_status($sale_id, SUSPENDED);
+        foreach ($sale_ids as $saleId) {
+            $this->update_sale_status($saleId, SUSPENDED);
         }
 
         return true;
@@ -825,12 +825,12 @@ class Sale extends Model
      * However, if applicable the inventory still needs to be updated
      * @throws ReflectionException
      */
-    public function delete($sale_id = null, bool $purge = false, bool $update_inventory = true, $employee_id = null): bool
+    public function delete($saleId = null, bool $purge = false, bool $update_inventory = true, $employee_id = null): bool
     {
         // Start a transaction to assure data integrity
         $this->db->transStart();
 
-        $sale_status = $this->getSaleStatus($sale_id);
+        $sale_status = $this->getSaleStatus($saleId);
 
         if ($update_inventory && $sale_status == COMPLETED) {
             // Defect, not all item deletions will be undone?
@@ -839,7 +839,7 @@ class Sale extends Model
             $item = model(Item::class);
             $item_quantity = model(Item_quantity::class);
 
-            $items = $this->getSaleItems($sale_id)->getResultArray();
+            $items = $this->getSaleItems($saleId)->getResultArray();
 
             foreach ($items as $item_data) {
                 $cur_item_info = $item->getInfo($item_data['item_id']);
@@ -850,7 +850,7 @@ class Sale extends Model
                         'trans_date'      => date('Y-m-d H:i:s'),
                         'trans_items'     => $item_data['item_id'],
                         'trans_user'      => $employee_id,
-                        'trans_comment'   => 'Deleting sale ' . $sale_id,
+                        'trans_comment'   => 'Deleting sale ' . $saleId,
                         'trans_location'  => $item_data['item_location'],
                         'trans_inventory' => $item_data['quantity_purchased']
                     ];
@@ -863,7 +863,7 @@ class Sale extends Model
             }
         }
 
-        $this->update_sale_status($sale_id, CANCELED);
+        $this->update_sale_status($saleId, CANCELED);
 
         // Execute transaction
         $this->db->transComplete();
@@ -874,10 +874,10 @@ class Sale extends Model
     /**
      * Gets sale item
      */
-    public function getSaleItems(int $sale_id): ResultInterface
+    public function getSaleItems(int $saleId): ResultInterface
     {
         $builder = $this->db->table('sales_items');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         return $builder->get();
     }
@@ -885,7 +885,7 @@ class Sale extends Model
     /**
      * Used by the invoice and receipt programs
      */
-    public function get_sale_items_ordered(int $sale_id): ResultInterface
+    public function get_sale_items_ordered(int $saleId): ResultInterface
     {
         $config = config(OSPOS::class)->settings;
         $item = model(Item::class);
@@ -909,7 +909,7 @@ class Sale extends Model
             item_type,
             stock_type');
         $builder->join('items AS items', 'sales_items.item_id = items.item_id');
-        $builder->where('sales_items.sale_id', $sale_id);
+        $builder->where('sales_items.sale_id', $saleId);
 
         // Entry sequence (this will render kits in the expected sequence)
         if ($config['line_sequence'] == '0') {    // TODO: Replace these with constants and this should be converted to a switch.
@@ -940,10 +940,10 @@ class Sale extends Model
     /**
      * Gets sale payments
      */
-    public function getSalePayments(int $sale_id): ResultInterface
+    public function getSalePayments(int $saleId): ResultInterface
     {
         $builder = $this->db->table('sales_payments');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         return $builder->get();
     }
@@ -974,12 +974,12 @@ class Sale extends Model
     /**
      * Gets sale customer name
      */
-    public function get_customer(int $sale_id): object
+    public function get_customer(int $saleId): object
     {
         $customer = model(Customer::class);
 
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         return $customer->getInfo($builder->get()->getRow()->customer_id);
     }
@@ -987,10 +987,10 @@ class Sale extends Model
     /**
      * Gets sale employee name
      */
-    public function get_employee(int $sale_id): object
+    public function get_employee(int $saleId): object
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         $employee = model(Employee::class);
 
@@ -1000,13 +1000,13 @@ class Sale extends Model
     /**
      * Checks if quote number exists
      */
-    public function check_quote_number_exists(string $quote_number, string $sale_id = ''): bool
+    public function check_quote_number_exists(string $quote_number, string $saleId = ''): bool
     {
         $builder = $this->db->table('sales');
         $builder->where('quote_number', $quote_number);
 
-        if (!empty($sale_id)) {
-            $builder->where('sale_id !=', $sale_id);
+        if (!empty($saleId)) {
+            $builder->where('sale_id !=', $saleId);
         }
 
         return ($builder->get()->getNumRows() == 1);    // TODO: ===
@@ -1015,13 +1015,13 @@ class Sale extends Model
     /**
      * Checks if invoice number exists
      */
-    public function check_invoice_number_exists(string $invoice_number, string $sale_id = ''): bool
+    public function check_invoice_number_exists(string $invoice_number, string $saleId = ''): bool
     {
         $builder = $this->db->table('sales');
         $builder->where('invoice_number', $invoice_number);
 
-        if (!empty($sale_id)) {
-            $builder->where('sale_id !=', $sale_id);
+        if (!empty($saleId)) {
+            $builder->where('sale_id !=', $saleId);
         }
 
         return ($builder->get()->getNumRows() == 1);    // TODO: ===
@@ -1030,12 +1030,12 @@ class Sale extends Model
     /**
      * Checks if work order number exists
      */
-    public function check_work_order_number_exists(string $work_order_number, string $sale_id = ''): bool
+    public function check_work_order_number_exists(string $workOrderNumber, string $saleId = ''): bool
     {
         $builder = $this->db->table('sales');
-        $builder->where('invoice_number', $work_order_number);
-        if (!empty($sale_id)) {
-            $builder->where('sale_id !=', $sale_id);
+        $builder->where('invoice_number', $workOrderNumber);
+        if (!empty($saleId)) {
+            $builder->where('sale_id !=', $saleId);
         }
 
         return ($builder->get()->getNumRows() == 1);    // TODO: ===
@@ -1224,14 +1224,14 @@ class Sale extends Model
     /**
      * Gets the dinner table for the selected sale
      */
-    public function get_dinner_table(int $sale_id)    // TODO: this is returning null or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
+    public function get_dinner_table(int $saleId)    // TODO: this is returning null or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
     {
-        if ($sale_id == NEW_ENTRY) {
+        if ($saleId == NEW_ENTRY) {
             return null;
         }
 
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         return $builder->get()->getRow()->dinner_table_id;
     }
@@ -1239,10 +1239,10 @@ class Sale extends Model
     /**
      * Gets the sale type for the selected sale
      */
-    public function get_sale_type(int $sale_id)
+    public function get_sale_type(int $saleId)
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         return $builder->get()->getRow()->sale_type;
     }
@@ -1250,10 +1250,10 @@ class Sale extends Model
     /**
      * Gets the sale status for the selected sale
      */
-    public function getSaleStatus(int $sale_id): ?int
+    public function getSaleStatus(int $saleId): ?int
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         $row = $builder->get()->getRow();
 
@@ -1261,25 +1261,25 @@ class Sale extends Model
     }
 
     /**
-     * @param int $sale_id
+     * @param int $saleId
      * @param int $sale_status
      * @return void
      */
-    public function update_sale_status(int $sale_id, int $sale_status): void
+    public function update_sale_status(int $saleId, int $sale_status): void
     {
         $builder = $this->db->table('sales');
 
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
         $builder->update(['sale_status' => $sale_status]);
     }
 
     /**
      * Gets the quote_number for the selected sale
      */
-    public function get_quote_number(int $sale_id): ?string
+    public function get_quote_number(int $saleId): ?string
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         $row = $builder->get()->getRow();
 
@@ -1293,10 +1293,10 @@ class Sale extends Model
     /**
      * Gets the work order number for the selected sale
      */
-    public function get_work_order_number(int $sale_id): ?string
+    public function get_work_order_number(int $saleId): ?string
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         $row = $builder->get()->getRow();
 
@@ -1310,10 +1310,10 @@ class Sale extends Model
     /**
      * Gets the quote_number for the selected sale
      */
-    public function get_comment(int $sale_id): ?string
+    public function get_comment(int $saleId): ?string
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
 
         $row = $builder->get()->getRow();
 
@@ -1340,19 +1340,19 @@ class Sale extends Model
      * Removes a selected sale from the sales table.
      * This function should only be called for suspended sales that are being restored to the current cart
      */
-    public function delete_suspended_sale(int $sale_id): bool
+    public function delete_suspended_sale(int $saleId): bool
     {
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
         $config = config(OSPOS::class)->settings;
 
         if ($config['dinner_table_enable']) {
-            $dinner_table = model(Dinner_table::class);
-            $dinner_table_id = $this->get_dinner_table($sale_id);
-            $dinner_table->release($dinner_table_id);
+            $dinnerTable = model(Dinner_table::class);
+            $dinnerTableId = $this->get_dinner_table($saleId);
+            $dinnerTable->release($dinnerTableId);
         }
 
-        $this->update_sale_status($sale_id, CANCELED);
+        $this->update_sale_status($saleId, CANCELED);
 
         $this->db->transComplete();
 
@@ -1363,28 +1363,28 @@ class Sale extends Model
      * This clears the sales detail for a given sale_id before the detail is re-saved.
      * This allows us to reuse the same sale_id
      */
-    public function clear_suspended_sale_detail(int $sale_id): bool
+    public function clear_suspended_sale_detail(int $saleId): bool
     {
         $this->db->transStart();
         $config = config(OSPOS::class)->settings;
 
         if ($config['dinner_table_enable']) {
-            $dinner_table = model(Dinner_table::class);
-            $dinner_table_id = $this->get_dinner_table($sale_id);
-            $dinner_table->release($dinner_table_id);
+            $dinnerTable = model(Dinner_table::class);
+            $dinnerTableId = $this->get_dinner_table($saleId);
+            $dinnerTable->release($dinnerTableId);
         }
 
         $builder = $this->db->table('sales_payments');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $builder = $this->db->table('sales_items_taxes');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $builder = $this->db->table('sales_items');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $builder = $this->db->table('sales_taxes');
-        $builder->delete(['sale_id' => $sale_id]);
+        $builder->delete(['sale_id' => $saleId]);
 
         $this->db->transComplete();
 
@@ -1394,10 +1394,10 @@ class Sale extends Model
     /**
      * Gets suspended sale info
      */
-    public function get_suspended_sale_info(int $sale_id): ResultInterface
+    public function get_suspended_sale_info(int $saleId): ResultInterface
     {
         $builder = $this->db->table('sales');
-        $builder->where('sale_id', $sale_id);
+        $builder->where('sale_id', $saleId);
         $builder->join('people', 'people.person_id = sales.customer_id', 'LEFT');
         $builder->where('sale_status', SUSPENDED);
 
@@ -1406,11 +1406,11 @@ class Sale extends Model
 
     /**
      * @param int $customer_id
-     * @param int $sale_id
+     * @param int $saleId
      * @param float $total_amount
      * @param float $total_amount_used
      */
-    private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used): void
+    private function save_customer_rewards(int $customer_id, int $saleId, float $total_amount, float $total_amount_used): void
     {
         $config = config(OSPOS::class)->settings;
 
@@ -1428,7 +1428,7 @@ class Sale extends Model
 
                 $customer->adjustRewardPoints($customer_id, $totalAmountEarned);
 
-                $rewardsData = ['sale_id' => $sale_id, 'earned' => $totalAmountEarned, 'used' => $total_amount_used];
+                $rewardsData = ['sale_id' => $saleId, 'earned' => $totalAmountEarned, 'used' => $total_amount_used];
 
                 $rewards->save_value($rewardsData);
             }
@@ -1456,12 +1456,12 @@ class Sale extends Model
         $builder->where($where);
         $builder->groupBy('payments.sale_id');
 
-        $sub_query = $builder->getCompiledSelect();
-        log_message('error', $sub_query);
+        $subQuery = $builder->getCompiledSelect();
+        log_message('error', $subQuery);
 
         $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
             . $this->db->prefixTable('sales_search_payments_temp')
-            . ' (PRIMARY KEY(`sale_id`), INDEX(`sale_id`)) AS (' . $sub_query . ')');
+            . ' (PRIMARY KEY(`sale_id`), INDEX(`sale_id`)) AS (' . $subQuery . ')');
     }
 
     /**
@@ -1486,11 +1486,11 @@ class Sale extends Model
         $builder->join('sales_items', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line', 'inner');
         $builder->where($where);
         $builder->groupBy(['sale_id', 'item_id', 'line']);
-        $sub_query = $builder->getCompiledSelect();
+        $subQuery = $builder->getCompiledSelect();
 
         $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
             . $this->db->prefixTable('sales_items_taxes_temp')
-            . ' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY AS (' . $sub_query . ')');
+            . ' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY AS (' . $subQuery . ')');
     }
 
     /**

@@ -36,20 +36,20 @@ class MailchimpConnector
     /**
      * Constructor
      */
-    public function __construct(string $api_key = '')
+    public function __construct(string $apiKey = '')
     {
         $config = config(OSPOS::class)->settings;
 
         $encrypter = Services::encrypter();
 
-        $mailchimp_api_key = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
+        $mailchimpApiKey = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
             ? $this->config['mailchimp_api_key']
             : '';
 
-        if (!empty($mailchimp_api_key)) {
-            $this->_api_key = empty($api_key)
-                ? $encrypter->decrypt($mailchimp_api_key)    // TODO: Hungarian notation
-                : $api_key;    // TODO: Hungarian notation
+        if (!empty($mailchimpApiKey)) {
+            $this->_api_key = empty($apiKey)
+                ? $encrypter->decrypt($mailchimpApiKey)
+                : $apiKey;
         }
 
         if (!empty($this->_api_key)) {    // TODO: Hungarian notation
@@ -141,8 +141,8 @@ class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file p
      */
     public function __construct(array $params = [])
     {
-        $api_key = (count($params) > 0 && !empty($params['api_key'])) ? $params['api_key'] : '';
-        $this->_connector = new MailchimpConnector($api_key);
+        $apiKey = (count($params) > 0 && !empty($params['api_key'])) ? $params['api_key'] : '';
+        $this->_connector = new MailchimpConnector($apiKey);
     }
 
     /**

@@ -71,12 +71,12 @@ class Item extends Model
     /**
      * Determines if a given item_id is an item
      */
-    public function exists(string $item_id, bool $ignore_deleted = false, bool $deleted = false): bool
+    public function exists(string $itemId, bool $ignore_deleted = false, bool $deleted = false): bool
     {
         $builder = $this->db->table('items');
         $builder->groupStart();
-        $builder->where('item_id', $item_id);
-        $builder->orWhere('item_number', $item_id);
+        $builder->where('item_id', $itemId);
+        $builder->orWhere('item_number', $itemId);
         $builder->groupEnd();
 
         if (!$ignore_deleted) {
@@ -89,7 +89,7 @@ class Item extends Model
     /**
      * Determines if a given item_number exists
      */
-    public function item_number_exists(string $item_number, string $item_id = ''): bool
+    public function item_number_exists(string $itemNumber, string $itemId = ''): bool
     {
         $config = config(OSPOS::class)->settings;
 
@@ -98,14 +98,14 @@ class Item extends Model
         }
 
         $builder = $this->db->table('items');
-        $builder->where('item_number', $item_number);
+        $builder->where('item_number', $itemNumber);
         $builder->where('deleted !=', 1);
-        $builder->where('item_id !=', intval($item_id));
+        $builder->where('item_id !=', intval($itemId));
 
-        // Check if $item_id is a number and not a string starting with 0
+        // Check if $itemId is a number and not a string starting with 0
         // because cases like 00012345 will be seen as a number where it is a barcode
-        if (ctype_digit($item_id) && !str_starts_with($item_id, '0')) {
-            $builder->where('item_id !=', intval($item_id));
+        if (ctype_digit($itemId) && !str_starts_with($itemId, '0')) {
+            $builder->where('item_id !=', intval($itemId));
         }
         return ($builder->get()->getNumRows()) >= 1;
     }
@@ -589,7 +589,7 @@ class Item extends Model
     /**
      * Gets information about a particular item
      */
-    public function getInfo(int $item_id): object
+    public function getInfo(int $itemId): object
     {
         $builder = $this->db->table('items');
         $builder->select('items.*');
@@ -598,7 +598,7 @@ class Item extends Model
         $builder->select('GROUP_CONCAT(attribute_date SEPARATOR \'|\') AS attribute_dtvalues');
         $builder->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
         $builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
-        $builder->where('items.item_id', $item_id);
+        $builder->where('items.item_id', $itemId);
         $builder->groupBy('items.item_id');
 
         $query = $builder->get();
@@ -617,7 +617,7 @@ class Item extends Model
      */
     private function getEmptyObject(string $table_name): object
     {
-        // Return an empty base parent object, as $item_id is NOT an item
+        // Return an empty base parent object, as $itemId is NOT an item
         $empty_obj = new stdClass();
 
         // Iterate through field definitions to determine how the fields should be initialized
@@ -637,16 +637,16 @@ class Item extends Model
     /**
      * Gets information about a particular item by item id or number
      */
-    public function get_info_by_id_or_number(string $item_id, bool $include_deleted = true): stdClass|string
+    public function get_info_by_id_or_number(string $itemId, bool $include_deleted = true): stdClass|string
     {
         $builder = $this->db->table('items');
         $builder->groupStart();
-        $builder->where('items.item_number', $item_id);
+        $builder->where('items.item_number', $itemId);
 
-        // Check if $item_id is a number and not a string starting with 0
+        // Check if $itemId is a number and not a string starting with 0
         // because cases like 00012345 will be seen as a number where it is a barcode
-        if (ctype_digit(strval($item_id)) && !str_starts_with($item_id, '0')) {
-            $builder->orWhere('items.item_id', $item_id);
+        if (ctype_digit(strval($itemId)) && !str_starts_with($itemId, '0')) {
+            $builder->orWhere('items.item_id', $itemId);
         }
 
         $builder->groupEnd();
@@ -671,12 +671,12 @@ class Item extends Model
     /**
      * Get an item id given an item number
      */
-    public function get_item_id(string $item_number, bool $ignore_deleted = false, bool $deleted = false): bool|int
+    public function get_item_id(string $itemNumber, bool $ignore_deleted = false, bool $deleted = false): bool|int
     {
         $builder = $this->db->table('items');
         $builder->groupStart();
-        $builder->where('item_number', $item_number);
-        $builder->orWhere('item_id', $item_number);
+        $builder->where('item_number', $itemNumber);
+        $builder->orWhere('item_id', $itemNumber);
         $builder->groupEnd();
 
         if (!$ignore_deleted) {
@@ -727,14 +727,14 @@ class Item extends Model
     /**
      * Inserts or updates an item
      */
-    public function save_value(array &$item_data, int $item_id = NEW_ENTRY): bool    // TODO: need to bring this in line with parent or change the name
+    public function save_value(array &$item_data, int $itemId = NEW_ENTRY): bool    // TODO: need to bring this in line with parent or change the name
     {
         $builder = $this->db->table('items');
 
-        if ($item_id < 1 || !$this->exists($item_id, true)) {
+        if ($itemId < 1 || !$this->exists($itemId, true)) {
             if ($builder->insert($item_data)) {
                 $item_data['item_id'] = (int)$this->db->insertID();
-                if ($item_id < 1) {
+                if ($itemId < 1) {
                     $builder = $this->db->table('items');
                     $builder->where('item_id', $item_data['item_id']);
                     $builder->update(['low_sell_item_id' => $item_data['item_id']]);
@@ -745,11 +745,11 @@ class Item extends Model
 
             return false;
         } else {
-            $item_data['item_id'] = $item_id;
+            $item_data['item_id'] = $itemId;
         }
 
         $builder = $this->db->table('items');
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
 
         return $builder->update($item_data);
     }
@@ -825,20 +825,20 @@ class Item extends Model
     /**
      * Deletes one item
      */
-    public function delete($item_id = null, bool $purge = false): bool
+    public function delete($itemId = null, bool $purge = false): bool
     {
         $this->db->transStart();
 
         // Set to 0 quantities
         $item_quantity = model(Item_quantity::class);
-        $item_quantity->reset_quantity($item_id);
+        $item_quantity->reset_quantity($itemId);
 
         $builder = $this->db->table('items');
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
         $builder->update(['deleted' => 1]);
 
         $inventory = model(Inventory::class);
-        $inventory->reset_quantity($item_id);
+        $inventory->reset_quantity($itemId);
 
         $this->db->transComplete();
 
@@ -848,10 +848,10 @@ class Item extends Model
     /**
      * Undeletes one item
      */
-    public function undelete(int $item_id): bool
+    public function undelete(int $itemId): bool
     {
         $builder = $this->db->table('items');
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
 
         return $builder->update(['deleted' => 0]);
     }
@@ -874,8 +874,8 @@ class Item extends Model
 
         $inventory = model(Inventory::class);
 
-        foreach ($item_ids as $item_id) {
-            $inventory->reset_quantity($item_id);
+        foreach ($item_ids as $itemId) {
+            $inventory->reset_quantity($itemId);
         }
 
         $this->db->transComplete();
@@ -978,23 +978,23 @@ class Item extends Model
     /**
      * @param string $label
      * @param string $item_field_name
-     * @param object $item_info
+     * @param object $itemInfo
      * @return void
      */
-    private function append_label(string &$label, string $item_field_name, object $item_info): void
+    private function append_label(string &$label, string $item_field_name, object $itemInfo): void
     {
         if ($item_field_name !== '') {
             if ($label == '') {
                 if ($item_field_name == 'name') {    // TODO: This needs to be replaced with Ternary notation if possible
-                    $label .= implode(NAME_SEPARATOR, [$item_info->name, $item_info->pack_name]);    // TODO: no need for .= operator.  If it gets here then that means label is an empty string.
+                    $label .= implode(NAME_SEPARATOR, [$itemInfo->name, $itemInfo->pack_name]);    // TODO: no need for .= operator.  If it gets here then that means label is an empty string.
                 } else {
-                    $label .= $item_info->$item_field_name;
+                    $label .= $itemInfo->$item_field_name;
                 }
             } else {
                 if ($item_field_name == 'name') {
-                    $label .= implode(NAME_SEPARATOR, ['', $item_info->name, $item_info->pack_name]);
+                    $label .= implode(NAME_SEPARATOR, ['', $itemInfo->name, $itemInfo->pack_name]);
                 } else {
-                    $label .= NAME_SEPARATOR . $item_info->$item_field_name;
+                    $label .= NAME_SEPARATOR . $itemInfo->$item_field_name;
                 }
             }
         }
@@ -1010,12 +1010,12 @@ class Item extends Model
     public function get_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
     {
         $suggestions = [];
-        $non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
+        $nonKit = [ITEM, ITEM_AMOUNT_ENTRY];
 
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->like('name', $search);    // TODO: this and the next 11 lines are duplicated directly below.  We should extract a method here.
         $builder->orderBy('name', 'asc');
 
@@ -1026,7 +1026,7 @@ class Item extends Model
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->like('item_number', $search);
         $builder->orderBy('item_number', 'asc');
 
@@ -1087,7 +1087,7 @@ class Item extends Model
                 $builder->like('attribute_value', $search);
                 $builder->where('definition_type', TEXT);
                 $builder->where('deleted', $filters['is_deleted']);
-                $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+                $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
 
                 foreach ($builder->get()->getResult() as $row) {
                     $suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
@@ -1114,12 +1114,12 @@ class Item extends Model
     public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
     {
         $suggestions = [];
-        $non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
+        $nonKit = [ITEM, ITEM_AMOUNT_ENTRY];
 
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->where('stock_type', '0'); // Stocked items only
         $builder->like('name', $search);
         $builder->orderBy('name', 'asc');
@@ -1131,7 +1131,7 @@ class Item extends Model
         $builder = $this->db->table('items');
         $builder->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
         $builder->where('deleted', $filters['is_deleted']);
-        $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+        $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
         $builder->where('stock_type', '0'); // Stocked items only
         $builder->like('item_number', $search);
         $builder->orderBy('item_number', 'asc');
@@ -1145,7 +1145,7 @@ class Item extends Model
             $builder = $this->db->table('items');
             $builder->select('category');
             $builder->where('deleted', $filters['is_deleted']);
-            $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+            $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
             $builder->where('stock_type', '0'); // Stocked items only
             $builder->distinct();
             $builder->like('category', $search);
@@ -1173,7 +1173,7 @@ class Item extends Model
             $builder = $this->db->table('items');
             $builder->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
             $builder->where('deleted', $filters['is_deleted']);
-            $builder->whereIn('item_type', $non_kit); // Standard, exclude kit items since kits will be picked up later
+            $builder->whereIn('item_type', $nonKit); // Standard, exclude kit items since kits will be picked up later
             $builder->where('stock_type', '0'); // Stocked items only
             $builder->like('description', $search);    // TODO: duplicated code, refactor method.
             $builder->orderBy('description', 'asc');
@@ -1221,7 +1221,7 @@ class Item extends Model
     public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
     {
         $suggestions = [];
-        $non_kit = [ITEM, ITEM_AMOUNT_ENTRY];    // TODO: This variable is never used.
+        $nonKit = [ITEM, ITEM_AMOUNT_ENTRY];    // TODO: This variable is never used.
 
         $builder = $this->db->table('items');
         $builder->select('item_id, name');
@@ -1396,70 +1396,70 @@ class Item extends Model
     /**
      * changes the cost price of a given item
      * calculates the average price between received items and items on stock
-     * $item_id : the item which price should be changed
-     * $items_received : the amount of new items received
-     * $new_price : the cost-price for the newly received items
-     * $old_price (optional) : the current-cost-price
+     * $itemId : the item which price should be changed
+     * $itemsReceived : the amount of new items received
+     * $newPrice : the cost-price for the newly received items
+     * $oldPrice (optional) : the current-cost-price
      *
      * used in receiving-process to update cost-price if changed
      * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
      *
      */
-    public function change_cost_price(int $item_id, float $items_received, float $new_price, ?float $old_price = null): bool
+    public function change_cost_price(int $itemId, float $itemsReceived, float $newPrice, ?float $oldPrice = null): bool
     {
-        if ($old_price === null) {
-            $item_info = $this->getInfo($item_id);
-            $old_price = $item_info->cost_price;
+        if ($oldPrice === null) {
+            $itemInfo = $this->getInfo($itemId);
+            $oldPrice = $itemInfo->cost_price;
         }
 
         $builder = $this->db->table('item_quantities');
         $builder->selectSum('quantity');
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
         $builder->join('stock_locations', 'stock_locations.location_id=item_quantities.location_id');
         $builder->where('stock_locations.deleted', 0);
-        $old_total_quantity = $builder->get()->getRow()->quantity;
+        $oldTotalQuantity = $builder->get()->getRow()->quantity;
 
-        $total_quantity = $old_total_quantity + $items_received;
-        $average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
+        $totalQuantity = $oldTotalQuantity + $itemsReceived;
+        $averagePrice = bcdiv(bcadd(bcmul((string)$itemsReceived, (string)$newPrice), bcmul((string)$oldTotalQuantity, (string)$oldPrice)), (string)$totalQuantity);
 
-        $data = ['cost_price' => $average_price];
+        $data = ['cost_price' => $averagePrice];
 
-        return $this->save_value($data, $item_id);
+        return $this->save_value($data, $itemId);
     }
 
     /**
-     * @param int $item_id
-     * @param string $item_number
+     * @param int $itemId
+     * @param string $itemNumber
      * @return void
      */
-    public function update_item_number(int $item_id, string $item_number): void
+    public function update_item_number(int $itemId, string $itemNumber): void
     {
         $builder = $this->db->table('items');
-        $builder->where('item_id', $item_id);
-        $builder->update(['item_number' => $item_number]);    // TODO: this function should probably return the result of update() and add ": bool" to the function signature
+        $builder->where('item_id', $itemId);
+        $builder->update(['item_number' => $itemNumber]);    // TODO: this function should probably return the result of update() and add ": bool" to the function signature
     }
 
     /**
-     * @param int $item_id
+     * @param int $itemId
      * @param string $item_name
      * @return void
      */
-    public function update_item_name(int $item_id, string $item_name): void    // TODO: this function should probably return the result of update() and add ": bool" to the function signature
+    public function update_item_name(int $itemId, string $item_name): void    // TODO: this function should probably return the result of update() and add ": bool" to the function signature
     {
         $builder = $this->db->table('items');
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
         $builder->update(['name' => $item_name]);
     }
 
     /**
-     * @param int $item_id
+     * @param int $itemId
      * @param string $item_description
      * @return void
      */
-    public function update_item_description(int $item_id, string $item_description): void    // TODO: this function should probably return the result of update() and add ": bool" to the function signature
+    public function update_item_description(int $itemId, string $item_description): void    // TODO: this function should probably return the result of update() and add ": bool" to the function signature
     {
         $builder = $this->db->table('items');
-        $builder->where('item_id', $item_id);
+        $builder->where('item_id', $itemId);
         $builder->update(['description' => $item_description]);
     }
 

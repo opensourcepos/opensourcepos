@@ -495,17 +495,17 @@ function parse_decimals(string $number, ?int $decimals = null): mixed
     }
 
     try {
-        $locale_safe_number = $fmt->parse($number);
+        $localeSafeNumber = $fmt->parse($number);
 
         if (
-            $locale_safe_number === false
-            || $locale_safe_number > MAX_PRECISION
-            || $locale_safe_number > 1.e14
+            $localeSafeNumber === false
+            || $localeSafeNumber > MAX_PRECISION
+            || $localeSafeNumber > 1.e14
         ) {
             return false;
         }
 
-        return (float) $locale_safe_number;
+        return (float) $localeSafeNumber;
     } catch (Exception $e) {
         return false;
     }
