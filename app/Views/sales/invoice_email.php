@@ -83,7 +83,7 @@
                     <th><?= lang('Sales.discount') ?></th>
                     <?php
                     $invoice_columns = 6;
-                    if ($discount > 0) {
+                    if (bccomp(bcsub((string) $discount, (string) $bill_discount), '0', totals_decimals()) > 0) {
                         $invoice_columns = $invoice_columns + 1;
                     ?>
                         <th><?= lang('Sales.customer_discount') ?></th>
@@ -101,7 +101,7 @@
                             <td><?= to_quantity_decimals($item['quantity']) ?></td>
                             <td><?= to_currency($item['price']) ?></td>
                             <td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
-                            <?php if ($discount > 0): ?>
+                            <?php if (bccomp(bcsub((string) $discount, (string) $bill_discount), '0', totals_decimals()) > 0): ?>
                                 <td><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
                             <?php endif; ?>
                             <td class="total-line"><?= to_currency($item['discounted_total']) ?></td>
@@ -114,6 +114,11 @@
                 <tr>
                     <td colspan="<?= $invoice_columns ?>" style="text-align: center;"><?= '&nbsp;' ?></td>
                 </tr>
+                <tr>
+                    <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
+                    <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
+                    <td id="subtotal" class="total-value"><?= to_currency(bcadd((string) $subtotal, (string) $bill_discount)) ?></td>
+                </tr>
 
                 <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
                 <tr>
@@ -122,11 +127,6 @@
                     <td class="total-value"><?= to_currency(bcsub('0', (string) $bill_discount)) ?></td>
                 </tr>
                 <?php endif; ?>
-                <tr>
-                    <td colspan="<?= $invoice_columns - 3 ?>" class="blank"> </td>
-                    <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
-                    <td id="subtotal" class="total-value"><?= to_currency($subtotal) ?></td>
-                </tr>
 
                 <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                     <tr>

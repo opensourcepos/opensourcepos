@@ -796,6 +796,13 @@ class SalesControllerTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(1.0, (float) $saved->bill_discount, 0.00001);
         $this->assertEqualsWithDelta(4.0, (float) model(\App\Models\Sale::class)->get_info((int) $saved->sale_id)->getRowArray()['amount_due'], 0.00001);
         $response->assertSee('Receipt sale name');
+        $receiptDocument = new DOMDocument();
+        @$receiptDocument->loadHTML($response->getBody());
+        $receiptXpath = new DOMXPath($receiptDocument);
+        $subtotalRow = $receiptXpath->query('//table[@id="receipt_items"]//tr[td[contains(normalize-space(.), "Subtotal")]]')->item(0);
+        $this->assertNotNull($subtotalRow);
+        $this->assertSame(to_currency('5.00'), trim($receiptXpath->query('./td[last()]', $subtotalRow)->item(0)->textContent));
+
 
         $db = Database::connect();
         foreach (['sales_items_taxes_temp', 'sales_payments_temp', 'sales_items_temp'] as $table) {
@@ -1271,6 +1278,94 @@ class SalesControllerTest extends CIUnitTestCase
         } finally {
             $config->settings['receipt_show_description'] = $previous;
         }
+    }
+
+    public function testReports_UseBillDiscountAndSaleSpecificNames(): void
+    {
+        $employeeId = $this->createReportsSalesEmployee();
+        $db = Database::connect();
+        $saleId = $this->createSale($employeeId);
+        $line = $db->table('sales_items')->where('sale_id', $saleId)->get()->getRowArray();
+        $db->table('sales')->where('sale_id', $saleId)->update([
+            'sale_time' => '2035-04-03 00:00:00', 'bill_discount_type' => 'percent', 'bill_discount_value' => '10.0000',
+        ]);
+        $db->table('sales_items')->where('sale_id', $saleId)->update([
+            'item_unit_price' => '100', 'bill_discount' => '10', 'sale_item_name' => 'First sale name',
+        ]);
+        $line['line'] = 2;
+        $line['item_unit_price'] = '50';
+        $line['bill_discount'] = '5';
+        $line['sale_item_name'] = 'Second sale name';
+        $db->table('sales_items')->insert($line);
+        $inputs = ['start_date' => '2035-04-03', 'end_date' => '2035-04-03', 'location_id' => 'all', 'sale_type' => 'sales', 'definition_ids' => [], 'discount_type' => PERCENT];
+        foreach (['sales_items_taxes_temp', 'sales_payments_temp', 'sales_items_temp', 'sales_report_payments_temp', 'sumpay_taxes_temp', 'sumpay_items_temp', 'sumpay_payments_temp'] as $table) {
+            $db->query('DROP TEMPORARY TABLE IF EXISTS ' . $db->prefixTable($table));
+        }
+        try {
+            $summary = model(\App\Models\Reports\Summary_sales::class)->getSummaryData($inputs);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException((string) $db->getLastQuery(), 0, $e);
+        }
+        $this->assertEqualsWithDelta(135, (float) $summary['total'], 0.001, (string) $db->getLastQuery());
+        $this->assertEqualsWithDelta(133, (float) $summary['profit'], 0.001);
+        $details = model(\App\Models\Reports\Detailed_sales::class);
+        $details->create($inputs);
+        $data = $details->getData($inputs);
+        $this->assertCount(2, $data['details'][0]);
+        $this->assertEqualsCanonicalizing(['First sale name', 'Second sale name'], array_column($data['details'][0], 'name'));
+        $this->assertEqualsWithDelta(135, (float) $data['summary'][0]['total'], 0.001);
+        $discounts = model(\App\Models\Reports\Summary_discounts::class)->getData($inputs);
+        $bill = array_values(array_filter($discounts, static fn ($row) => str_contains($row['discount'], lang('Sales.bill_discount'))));
+        $this->assertCount(1, $bill);
+        $this->assertEqualsWithDelta(15, (float) $bill[0]['total'], 0.001);
+        $this->assertSame(1, (int) $bill[0]['count']);
+        $payments = model(\App\Models\Reports\Summary_payments::class)->getData($inputs);
+        $this->assertEqualsWithDelta(135, (float) $payments[0]['trans_amount'], 0.001);
+        $itemReport = model(\App\Models\Reports\Detailed_item_sales::class)->getData($inputs);
+        $this->assertCount(2, $itemReport);
+        $this->assertEqualsWithDelta(15, array_sum(array_column($itemReport, 'bill_discount')), 0.001);
+        $inputs['discount'] = '10';
+        $specific = model(\App\Models\Reports\Specific_discount::class)->getData($inputs);
+        $this->assertCount(1, $specific['summary']);
+        $this->assertEqualsWithDelta(135, (float) $specific['summary'][0]['total'], 0.001);
+
+        foreach ([1 => '9.00', 2 => '4.50'] as $lineNumber => $tax) {
+            $db->table('sales_items_taxes')->insert([
+                'sale_id' => $saleId, 'item_id' => $line['item_id'], 'line' => $lineNumber,
+                'name' => 'VAT', 'percent' => '10', 'tax_type' => 1, 'item_tax_amount' => $tax,
+            ]);
+        }
+        $taxReport = model(\App\Models\Reports\Summary_taxes::class)->getData($inputs);
+        $this->assertEqualsWithDelta(135, (float) $taxReport[0]['subtotal'], 0.001);
+        $this->assertEqualsWithDelta(13.5, (float) $taxReport[0]['tax'], 0.001);
+        $this->assertEqualsWithDelta(148.5, (float) $taxReport[0]['total'], 0.001);
+        $config = config(OSPOS::class);
+        $previousTaxIncluded = $config->settings['tax_included'];
+        $config->settings['tax_included'] = '1';
+        try {
+            $inclusiveTaxes = (new \App\Models\Reports\Summary_taxes())->getData($inputs);
+            $this->assertEqualsWithDelta(121.5, (float) $inclusiveTaxes[0]['subtotal'], 0.001);
+            $this->assertEqualsWithDelta(135, (float) $inclusiveTaxes[0]['total'], 0.001);
+        } finally {
+            $config->settings['tax_included'] = $previousTaxIncluded;
+        }
+
+        $db->table('sales')->where('sale_id', $saleId)->update(['sale_type' => SALE_TYPE_RETURN]);
+        $db->query('UPDATE ' . $db->prefixTable('sales_items') . ' SET quantity_purchased = -quantity_purchased, bill_discount = -bill_discount WHERE sale_id = ?', [$saleId]);
+        $db->query('UPDATE ' . $db->prefixTable('sales_items_taxes') . ' SET item_tax_amount = -item_tax_amount WHERE sale_id = ?', [$saleId]);
+        foreach (['sales_items_taxes_temp', 'sales_report_payments_temp'] as $table) {
+            $db->query('DROP TEMPORARY TABLE IF EXISTS ' . $db->prefixTable($table));
+        }
+        $inputs['sale_type'] = 'returns';
+        $returnSummary = model(\App\Models\Reports\Summary_sales::class)->getSummaryData($inputs);
+        $this->assertEqualsWithDelta(-148.5, (float) $returnSummary['total'], 0.001);
+        $returnDiscounts = model(\App\Models\Reports\Summary_discounts::class)->getData($inputs);
+        $this->assertEqualsWithDelta(-15, (float) $returnDiscounts[0]['total'], 0.001);
+        $db->table('sales')->where('sale_id', $saleId)->update(['bill_discount_type' => null, 'bill_discount_value' => null]);
+        $inputs['discount_type'] = FIXED;
+        $returnDiscounts = model(\App\Models\Reports\Summary_discounts::class)->getData($inputs);
+        $this->assertEqualsWithDelta(-15, (float) $returnDiscounts[0]['total'], 0.001);
+
     }
 
     public function testGetRegister_ShowsFixedBillDiscountToggle(): void

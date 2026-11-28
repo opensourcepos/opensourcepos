@@ -148,6 +148,11 @@ if (isset($error_message)) {
             <td class="blank" colspan="6" style="text-align: center;"><?= '&nbsp;' //TODO: Why is PHP needed for an HTML `&nbsp;`? ?></td>
         </tr>
         <?php if ($print_price_info) { ?>
+            <tr>
+                <td colspan="3" class="blank-bottom"> </td>
+                <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
+                <td class="total-value" id="subtotal"><?= to_currency(bcadd((string) $subtotal, (string) $bill_discount)) ?></td>
+            </tr>
             <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
             <tr>
                 <td colspan="3" class="blank"> </td>
@@ -155,11 +160,6 @@ if (isset($error_message)) {
                 <td class="total-value"><?= to_currency(bcsub('0', (string) $bill_discount)) ?></td>
             </tr>
             <?php endif; ?>
-            <tr>
-                <td colspan="3" class="blank-bottom"> </td>
-                <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
-                <td class="total-value" id="subtotal"><?= to_currency($subtotal) ?></td>
-            </tr>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="3" class="blank"> </td>

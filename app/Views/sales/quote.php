@@ -116,7 +116,7 @@ if (isset($error_message)) {
             <th><?= lang('Sales.discount') ?></th>
             <?php
             $quote_columns = 6;
-            if ($discount > 0) {
+            if (bccomp(bcsub((string) $discount, (string) $bill_discount), '0', totals_decimals()) > 0) {
                 $quote_columns = $quote_columns + 1;
             ?>
                 <th><?= lang('Sales.customer_discount') ?></th>
@@ -134,7 +134,7 @@ if (isset($error_message)) {
                     <td style="text-align: center;"><?= to_quantity_decimals($item['quantity']) ?></td>
                     <td><?= to_currency($item['price']) ?></td>
                     <td style="text-align: center;"><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
-                    <?php if ($discount > 0): ?>
+                    <?php if (bccomp(bcsub((string) $discount, (string) $bill_discount), '0', totals_decimals()) > 0): ?>
                         <td style="text-align: center;"><?= to_currency($item['discounted_total'] / $item['quantity']) ?></td>
                     <?php endif; ?>
                     <td style="border-right: solid 1px; text-align: right;"><?= to_currency($item['discounted_total']) ?></td>
@@ -154,6 +154,11 @@ if (isset($error_message)) {
         <tr>
             <td class="blank" colspan="<?= $quote_columns ?>" style="text-align: center;"><?= '&nbsp;' //TODO: align is deprecated. Also should replace the php echo for nbsp with simple html ?></td>
         </tr>
+        <tr>
+            <td colspan="<?= $quote_columns - 3 ?>" class="blank-bottom"> </td>
+            <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
+            <td class="total-value" id="subtotal"><?= to_currency(bcadd((string) $subtotal, (string) $bill_discount)) ?></td>
+        </tr>
 
         <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
         <tr>
@@ -162,11 +167,6 @@ if (isset($error_message)) {
             <td class="total-value"><?= to_currency(bcsub('0', (string) $bill_discount)) ?></td>
         </tr>
         <?php endif; ?>
-        <tr>
-            <td colspan="<?= $quote_columns - 3 ?>" class="blank-bottom"> </td>
-            <td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
-            <td class="total-value" id="subtotal"><?= to_currency($subtotal) ?></td>
-        </tr>
 
         <?php foreach ($taxes as $tax_group_index => $tax) { ?>
             <tr>

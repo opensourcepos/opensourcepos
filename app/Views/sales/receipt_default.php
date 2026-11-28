@@ -96,7 +96,7 @@
         }
         ?>
 
-        <?php if ($config['receipt_show_total_discount'] && $discount > 0) { ?>
+        <?php if ($config['receipt_show_total_discount'] && bccomp(bcsub((string) $discount, (string) $bill_discount), '0', totals_decimals()) > 0) { ?>
             <tr>
                 <td colspan="3" style="text-align: right; border-top: 2px solid #000000;"><?= lang('Sales.sub_total') ?></td>
                 <td style="text-align: right; border-top:2px solid #000000;"><?= to_currency($prediscount_subtotal) ?></td>
@@ -109,16 +109,25 @@
 
         <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
             <tr>
+                <td colspan="3" class="total-value"><?= lang('Sales.sub_total') ?>:</td>
+                <td class="total-value"><?= to_currency(bcadd((string) $subtotal, (string) $bill_discount)) ?></td>
+            </tr>
+        <?php endif; ?>
+
+        <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) !== 0): ?>
+            <tr>
                 <td colspan="3" class="total-value"><?= lang('Sales.bill_discount') ?>:</td>
                 <td class="total-value"><?= to_currency(bcsub('0', (string) $bill_discount)) ?></td>
             </tr>
         <?php endif; ?>
 
         <?php if ($config['receipt_show_taxes']) { ?>
+            <?php if (bccomp((string) $bill_discount, '0', totals_decimals()) === 0): ?>
             <tr>
                 <td colspan="3" style="text-align: right; border-top: 2px solid #000000;"><?= lang('Sales.sub_total') ?></td>
                 <td style="text-align: right; border-top: 2px solid #000000;"><?= to_currency($subtotal) ?></td>
             </tr>
+            <?php endif; ?>
             <?php foreach ($taxes as $tax_group_index => $tax) { ?>
                 <tr>
                     <td colspan="3" class="total-value"><?= (float)$tax['tax_rate'] . '% ' . esc($tax['tax_group']) ?>:</td>
@@ -131,7 +140,7 @@
 
         <tr></tr>
 
-        <?php $border = (!$config['receipt_show_taxes'] && !($config['receipt_show_total_discount'] && $discount > 0)); ?>
+        <?php $border = (!$config['receipt_show_taxes'] && !($config['receipt_show_total_discount'] && bccomp(bcsub((string) $discount, (string) $bill_discount), '0', totals_decimals()) > 0)); ?>
         <tr>
             <td colspan="3" style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= lang('Sales.total') ?></td>
             <td style="text-align: right;<?= $border ? ' border-top: 2px solid black;' : '' ?>"><?= to_currency($total) ?></td>

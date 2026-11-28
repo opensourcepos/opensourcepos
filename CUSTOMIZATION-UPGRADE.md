@@ -6,7 +6,7 @@ Before an upgrade, back up the application image, database, configuration and up
 
 The migrations add nullable sale-name and discount-setting fields, plus a zero-default line allocation. Historical sales without a stored sale name continue to use the inventory name. The migration down methods remove the added data; restoring the pre-upgrade backup is the safer rollback after sales have been recorded with these fields.
 
-Reporting changes are deferred: sales reports and profit/discount summaries may not account for bill-level discounts. Do not rely on those reports for reconciliation until reporting is updated and tested. The sales takings and saved-sale balance calculations have been updated for the bill discount.
+Sales, item, payment, tax and discount reports use stored bill-discount allocations. Detailed sales and item reports show the allocation separately; a return without its original discount type is grouped as an untyped bill discount in the fixed-amount discount summary. Subtotals in reports remain net of discounts, while sales documents show a pre-bill-discount subtotal and the bill discount separately. Validate report reconciliation against representative sales and returns before production use.
 
 Applying a new bill discount is available for non-return sales, with up to four decimal places in a percentage and up to four currency decimal places. A return created from an existing receipt restores the stored line allocations with reversed signs. Manual application of a new bill discount to a return is not available. Changing a line's price, quantity or item discount clears the bill discount and existing payments; the register displays a warning so the cashier can reapply them.
 
