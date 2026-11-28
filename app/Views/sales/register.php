@@ -47,6 +47,10 @@ use App\Models\Employee;
 
 <style>
     #register tr.register-item-row > td { vertical-align: top; }
+    #register tr.register-item-row > td.register-row-text { padding-top: 9px; }
+    #register tr.register-item-spacer > td { padding: 0; height: 12px; }
+    #bill_discount_form .input-group { display: inline-table; width: 145px; vertical-align: middle; }
+    #bill_discount_form .toggle.btn { margin: 0; }
 </style>
 
 <?php
@@ -168,7 +172,7 @@ helper('url');
             ?>
                     <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
                         <tr class="register-item-row">
-                            <td>
+                            <td class="register-row-text">
                                 <?php
                                 echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
                                 echo form_hidden('location', (string)$item['item_location']);
@@ -187,7 +191,7 @@ helper('url');
                                     <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
                                 </td>
                             <?php } else { ?>
-                                <td><?= esc($item['item_number']) ?></td>
+                                <td class="register-row-text"><?= esc($item['item_number']) ?></td>
                                 <td style="text-align: center;">
                                     <?= form_input(['name' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'maxlength' => 255, 'tabindex' => ++$tabindex]) ?>
                                     <?= esc(implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?>
@@ -197,7 +201,7 @@ helper('url');
                                 </td>
                             <?php } ?>
 
-                            <td>
+                            <td<?= ($items_module_allowed && $change_price) ? '' : ' class="register-row-text"' ?>>
                                 <?php
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
@@ -208,7 +212,7 @@ helper('url');
                                 ?>
                             </td>
 
-                            <td>
+                            <td<?= $item['is_serialized'] ? ' class="register-row-text"' : '' ?>>
                                 <?php
                                 if ($item['is_serialized']) {
                                     echo to_quantity_decimals($item['quantity']);
@@ -228,7 +232,7 @@ helper('url');
                                 </div>
                             </td>
 
-                            <td>
+                            <td<?= $item['item_type'] == ITEM_AMOUNT_ENTRY ? '' : ' class="register-row-text"' ?>>
                                 <?php
                                 if ($item['item_type'] == ITEM_AMOUNT_ENTRY) {    // TODO: === ?
                                     echo form_input(['name' => 'discounted_total', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['discounted_total']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
@@ -238,7 +242,7 @@ helper('url');
                                 ?>
                             </td>
 
-                            <td>
+                            <td class="register-row-text">
                                 <a href="javascript:document.getElementById('<?= "cart_$line" ?>').submit();" title="<?= lang(ucfirst($controller_name) . '.update') ?>">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                 </a>
@@ -247,7 +251,8 @@ helper('url');
                         <?php if ($config['receipt_show_description'] || $item['is_serialized']): ?>
                             <tr>
                                 <td></td>
-                                <td colspan="3" style="text-align: left;">
+                                <td></td>
+                                <td colspan="2" style="text-align: left;">
                                     <?php if ($config['receipt_show_description']): ?>
                                         <?php if ($item['item_type'] == ITEM_TEMP): ?>
                                             <?= form_hidden('item_id', (string) $item['item_id']) ?>
@@ -269,6 +274,7 @@ helper('url');
                                 </td>
                             </tr>
                         <?php endif; ?>
+                        <tr class="register-item-spacer" aria-hidden="true"><td colspan="8"></td></tr>
                     <?= form_close() ?>
             <?php
                 }
@@ -365,11 +371,15 @@ helper('url');
         $billDiscountInput = $billDiscountFormatter->format((float) ($bill_discount_settings['value'] ?? 0));
         ?>
         <?php if (count($cart) > 0 && $mode !== 'return'): ?>
-            <?= form_open("$controller_name/applyBillDiscount", ['class' => 'form-inline']) ?>
+            <?= form_open("$controller_name/applyBillDiscount", ['class' => 'form-inline', 'id' => 'bill_discount_form']) ?>
                 <label for="bill_discount_value"><?= lang('Sales.bill_discount') ?></label>
-                <?= form_input(['name' => 'bill_discount_value', 'id' => 'bill_discount_value', 'class' => 'form-control input-sm', 'value' => $billDiscountInput, 'size' => 8]) ?>
-                <?= form_dropdown('bill_discount_type', ['fixed' => lang('Sales.bill_discount_fixed'), 'percent' => lang('Sales.bill_discount_percent')], $bill_discount_settings['type'] ?? 'fixed', ['class' => 'form-control input-sm']) ?>
-                <?= form_submit(['class' => 'btn btn-default btn-sm', 'value' => lang('Common.submit')]) ?>
+                <div class="input-group">
+                    <?= form_input(['name' => 'bill_discount_value', 'id' => 'bill_discount_value', 'class' => 'form-control input-sm', 'value' => $billDiscountInput, 'size' => 8, 'onClick' => 'this.select();']) ?>
+                    <span class="input-group-btn">
+                        <?= form_checkbox(['id' => 'bill_discount_toggle', 'name' => 'bill_discount_toggle', 'value' => 1, 'data-toggle' => 'toggle', 'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . esc($config['currency_symbol']) . '</b>', 'data-off' => '<b>%</b>', 'checked' => ($bill_discount_settings['type'] ?? 'fixed') === 'fixed', 'aria-label' => lang('Sales.bill_discount')]) ?>
+                    </span>
+                </div>
+                <?= form_input(['type' => 'hidden', 'name' => 'bill_discount_type', 'id' => 'bill_discount_type', 'value' => $bill_discount_settings['type'] ?? 'fixed']) ?>
             <?= form_close() ?>
         <?php endif; ?>
 
@@ -855,6 +865,20 @@ helper('url');
 
         $('[name="name"],[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="discounted_total"]').change(function() {
             $(this).parents('tr').prevAll('form:first').submit()
+        });
+
+        let billDiscountTimer;
+        $('#bill_discount_form').on('submit', function() {
+            clearTimeout(billDiscountTimer);
+        });
+        $('#bill_discount_value').on('change', function() {
+            clearTimeout(billDiscountTimer);
+            billDiscountTimer = setTimeout(() => $('#bill_discount_form').submit(), 150);
+        });
+        $('#bill_discount_toggle').on('change', function() {
+            clearTimeout(billDiscountTimer);
+            $('#bill_discount_type').val(this.checked ? 'fixed' : 'percent');
+            $('#bill_discount_form').submit();
         });
 
         $('[name="discount_toggle"]').change(function() {

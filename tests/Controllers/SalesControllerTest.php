@@ -1032,6 +1032,9 @@ class SalesControllerTest extends CIUnitTestCase
             $this->assertNotNull($hidden);
             $this->assertSame('Distinct hidden description', $hidden->getAttribute('value'));
             $this->assertSame(8, $xpath->query('//tr[contains(@class, "register-item-row")]/td')->length);
+            $this->assertSame(1, $xpath->query('//tr[contains(@class, "register-item-row")]/td[1][contains(@class, "register-row-text")]')->length);
+            $this->assertSame(1, $xpath->query('//tr[contains(@class, "register-item-row")]/td[2][contains(@class, "register-row-text")]')->length);
+            $this->assertSame(1, $xpath->query('//tr[contains(@class, "register-item-spacer")]/td[@colspan="8"]')->length);
         } finally {
             $config->settings['receipt_show_description'] = $previous;
         }
@@ -1219,6 +1222,50 @@ class SalesControllerTest extends CIUnitTestCase
         } finally {
             $config->settings['receipt_show_description'] = $previous;
         }
+    }
+
+    public function testGetRegister_ShowsFixedBillDiscountToggle(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+
+        $response = $this->get('/sales');
+
+        $response->assertStatus(200);
+        $document = new DOMDocument();
+        @$document->loadHTML($response->getBody());
+        $xpath = new DOMXPath($document);
+        $this->assertSame(1, $xpath->query('//form[@id="bill_discount_form"]//input[@id="bill_discount_toggle" and @type="checkbox" and @checked]')->length);
+        $this->assertSame(1, $xpath->query('//form[@id="bill_discount_form"]//input[@name="bill_discount_type" and @value="fixed"]')->length);
+        $this->assertSame(0, $xpath->query('//form[@id="bill_discount_form"]//select | //form[@id="bill_discount_form"]//input[@type="submit"] | //form[@id="bill_discount_form"]//button[@type="submit"]')->length);
+    }
+
+    public function testGetRegister_RestoresPercentageBillDiscountToggle(): void
+    {
+        $employeeId = $this->createCashierEmployee();
+        $this->loginAs($employeeId);
+        $itemId = $this->createTestItem(HAS_NO_STOCK);
+        $this->seedCartLine(1, '5.00', $itemId);
+        $cart = $this->session['sales_cart'];
+        $cart[1]['bill_discount'] = '0.50';
+        $this->withSession(array_merge($this->session, [
+            'sales_cart' => $cart,
+            'sales_bill_discount' => ['type' => 'percent', 'value' => '10.0000'],
+        ]));
+
+        $response = $this->get('/sales');
+
+        $response->assertStatus(200);
+        $document = new DOMDocument();
+        @$document->loadHTML($response->getBody());
+        $xpath = new DOMXPath($document);
+        $this->assertSame(1, $xpath->query('//form[@id="bill_discount_form"]//input[@id="bill_discount_toggle" and not(@checked)]')->length);
+        $this->assertSame(1, $xpath->query('//form[@id="bill_discount_form"]//input[@name="bill_discount_type" and @value="percent"]')->length);
+        $input = $xpath->query('//form[@id="bill_discount_form"]//input[@name="bill_discount_value"]')->item(0);
+        $this->assertNotNull($input);
+        $this->assertEqualsWithDelta(10, (float) $input->getAttribute('value'), 0.0001);
     }
 
 }
